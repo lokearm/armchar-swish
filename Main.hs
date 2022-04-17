@@ -28,9 +28,10 @@ main = do
         resourceGraph <- readGraph resourceFile 
         DTIO.putStrLn $ formatGraphAsText character
         let cs  = fwdApplySimple csRule character
-        print cs
         DTIO.putStrLn $ formatGraphAsText $ head cs
         let m  = fwdApplyMerge csRule character
+        print "====="
+        print m
         print "====="
         DTIO.putStrLn $ formatGraphAsText $ m
 
