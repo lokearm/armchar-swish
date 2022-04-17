@@ -24,6 +24,17 @@ As far as I can tell:
 + Filter on classes.
 + Query
 
+## Graphs
+
+1.  Character as Loaded from File
+    - Base Character
+    - Initial Character Sheet
+    - Advancement per Season
+2.  Resources
+3.  ArM Schema (mainly for use with OWL/RDFS reasoners)
+4.  Derived Character Sheet per Season
+5.  Derived Character Sheet with implied traits
+
 ## TODO
 
 1. Hand-code XP/score calculation rules.
@@ -31,3 +42,5 @@ As far as I can tell:
 3. Advancement Rules
 4. Make both hasTrait and subproperties
 5. Query Advancements
+
+
