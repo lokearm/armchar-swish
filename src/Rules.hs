@@ -10,13 +10,11 @@ import Swish.Rule
 import Swish.RDF.Graph
 
 -- Apply Rules
-fwdApplySimple :: RDFRule -> (Either String RDFGraph) -> [RDFGraph]
-fwdApplySimple _ (Left _) = [emptyRDFGraph]
-fwdApplySimple r (Right c) = fwdApply r [c]
+fwdApplySimple :: RDFRule ->  RDFGraph -> [RDFGraph]
+fwdApplySimple r c = fwdApply r [c]
 
-fwdApplyMerge :: RDFRule -> (Either String RDFGraph) -> RDFGraph
-fwdApplyMerge _ (Left _) = emptyRDFGraph
-fwdApplyMerge r (Right c) = merge c $ head $ fwdApply r [c]
+fwdApplyMerge :: RDFRule ->  RDFGraph -> RDFGraph
+fwdApplyMerge r  c = merge c $ head $ fwdApply r [c]
 
 
 -- URIs
@@ -47,4 +45,10 @@ makeRule ln s1 s2 = makeN3ClosureSimpleRule
 csRule = makeRule "csRule" 
     "?cs <https://hg.schaathun.net/armchar/schema#isCharacter> ?c . ?c ?p ?o ."
                   "?cs ?p ?o ."
+subclassRule = makeRule "subclassRule" 
+    "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
+                  "?s rdf:type ?c ."
 
+
+prepareInitialCharacter :: RDFGraph -> RDFGraph
+prepareInitialCharacter c = fwdApplyMerge csRule c
