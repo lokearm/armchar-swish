@@ -1,0 +1,39 @@
+arm:Characteristic owl:disjointUnionOf ( 
+   armr:int armr:per armr:str armr:sta
+   armr:com armr:pre armr:dex armr:qik
+) .
+
+armr:int a arm:LeafTraitClass ;  arm:hasLabel "Intelligence" ; arm:hasOrder 1 .
+armr:per a arm:LeafTraitClass ;  arm:hasLabel "Perception" ; arm:hasOrder 2 .
+armr:com a arm:LeafTraitClass ;  arm:hasLabel "Communication" ; arm:hasOrder 3 .
+armr:pre a arm:LeafTraitClass ;  arm:hasLabel "Presence" ; arm:hasOrder 4 .
+armr:str a arm:LeafTraitClass ;  arm:hasLabel "Strenghth" ; arm:hasOrder 5 .
+armr:sta a arm:LeafTraitClass ;  arm:hasLabel "Stamina" ; arm:hasOrder 6 .
+armr:dex a arm:LeafTraitClass ;  arm:hasLabel "Dexterity" ; arm:hasOrder 7 .
+armr:qik a arm:LeafTraitClass ;  arm:hasLabel "Quickness" ; arm:hasOrder 8 .
+
+arm:Tech owl:disjointUnionOf ( 
+   armr:creo armr:intellego armr:muto armr:perdo armr:rego
+) .
+arm:Form owl:disjointUnionOf ( 
+   armr:animal armr:aquam armr:auram armr:corpus armr:herbam
+   armr:ignem armr:imaginem armr:mentem armr:terram armr:vim  
+
+) .
+
+armr:creo  rdfs:subClassOf  arm:Tech ; a arm:TechClass ; arm:hasLabel "Creo" ; arm:abbr "Cr" .
+armr:intellego   rdfs:subClassOf  arm:Tech ; a arm:TechClass ; arm:hasLabel "Intellego" ; arm:abbr "In" .
+armr:muto  rdfs:subClassOf  arm:Tech ; a arm:TechClass ; arm:hasLabel "Muto" ; arm:abbr "Mu" .
+armr:perdo  rdfs:subClassOf  arm:Tech ; a arm:TechClass ; arm:hasLabel "Perdo" ; arm:abbr "Pe" .
+armr:rego   rdfs:subClassOf  arm:Tech ; a arm:TechClass ; arm:hasLabel "Rego" ; arm:abbr "Re" .
+
+armr:animal   rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Animal" ; arm:abbr "An" .
+armr:aquam   rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Aquam" ; arm:abbr "Aq" .
+armr:auram   rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Auram" ; arm:abbr "Au" .
+armr:corpus  rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Corpus" ; arm:abbr "Co" .
+armr:herbam  rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Herbam" ; arm:abbr "He" .
+armr:ignem   rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Ignem" ; arm:abbr "Ig" .
+armr:imaginem rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Imaginem" ; arm:abbr "Im" .
+armr:mentem   rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Mentem" ; arm:abbr "Me" .
+armr:terram   rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Terram" ; arm:abbr "Te" .
+armr:vim      rdfs:subClassOf  arm:Form  ; a arm:FormClass ; arm:hasLabel "Vim" ; arm:abbr "Vi" .

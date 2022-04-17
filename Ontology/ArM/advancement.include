@@ -1,0 +1,114 @@
+
+## arm:SeasonAdvancement rdfs:subClassOf arm:Advancement .
+## arm:EarlyChildhood rdfs:subClassOf arm:Advancement .
+## arm:LaterLife rdfs:subClassOf arm:Advancement .
+## arm:Apprenticeship rdfs:subClassOf arm:Advancement .
+## arm:PostApprenticeship rdfs:subClassOf arm:Advancement .
+
+
+# Character Advancement
+arm:CharacterAdvancement a owl:Class .
+arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:CharacterAdvancement .
+arm:LaterLifeAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
+arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
+ 
+arm:advanceCharacter a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:Character .
+arm:hasAdvancement a owl:ObjectProperty ;
+	owl:inverseOf  arm:advanceCharacter  .
+arm:hasAdvancementList a owl:ObjectProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   arm:AdvancementList .
+arm:hasPregameAdvancementList a owl:ObjectProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   arm:AdvancementList .
+arm:advanceFromCharacterSheet a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:CharacterSheet .
+arm:advanceToCharacterSheet a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:CharacterSheet .
+arm:hasAdvancementType   a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:AdvancementType .
+arm:hasAdvancementTypeString   a owl:DatatypeProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   xsd:string .
+arm:atSeasonTime a   owl:ObjectProperty ;
+        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
+                                             arm:CharacterAdvancement ) ] ;
+        rdfs:range   arm:SeasonTime .
+arm:atSeason a   owl:DatatypeProperty ;
+        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
+                                             arm:CharacterAdvancement ) ] ;
+        rdfs:range   xsd:string .
+arm:inYear a   owl:DatatypeProperty ;
+        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
+                                             arm:CharacterAdvancement ) ] ;
+        rdfs:range   xsd:int .
+
+arm:hasAdvancementDescription a owl:DatatypeProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   xsd:string .
+arm:awardsXP a owl:DatatypeProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   xsd:int .
+
+arm:hasNextCharacterSheet a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterSheet ;
+        rdfs:range   arm:CharacterSheet .
+arm:hasPrevCharacterSheet a owl:ObjectProperty ;
+        owl:inverseOf  arm:hasNextCharacterSheet .
+
+arm:AdvancementType a owl:Class ;
+     owl:oneOf ( arm:Exposure arm:Practice arm:Adventure arm:Training
+        arm:Teaching arm:Reading ) .
+arm:Exposure  rdfs:label  "Exposure" .
+arm:Practice  rdfs:label  "Practice" .
+arm:Adventure  rdfs:label  "Adventure" .
+arm:Training  rdfs:label  "Training" .
+arm:Teaching  rdfs:label  "Teaching" .
+arm:Reading  rdfs:label  "Reading" .
+
+# Trait Advancement
+# arm:TraitAdvancement a arm:LeafTraitClass .
+arm:advanceTrait a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:Trait .
+arm:advanceTraitList a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:TraitList .
+arm:advancedFromTrait a owl:ObjectProperty ;
+        rdfs:comment "Reference to a previous trait instance from which this trait instance has been advanced." ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   arm:Trait .
+arm:addedXP a   owl:DatatypeProperty ;
+        rdfs:comment  "XP added in the last advancement of the trait.  This is a bit of a hack, allowing the trait defined as an advancement to be reused as a trait in future character sheets.  Thus we do not depend on creating new nodes in the reasoner." ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   xsd:int .
+
+arm:hasListXP  a owl:DatatypeProperty ;
+    rdfs:domain   arm:TraitList ;
+    rdfs:range   xsd:int .
+arm:hasSpentXP  a owl:DatatypeProperty ;
+    rdfs:domain   arm:Advancement ;
+    rdfs:range   xsd:int .
+
+# Possession Advancement
+## Alternatives
+## 1.  Chain modifications explicitely
+## 2.  Create classes even for unique possessions
+## 3.  Link to prototype
+## Requirements
+## 1.  Modify description
+## 2.  Change quantity
+## 3.  Add/Remove
+## Variations
+## 1.  Unique Items
+## 2.  Classed Items with Unique Description
+## 3.  Standard Items 
+## A.  Countable versus singleton
+## B.  Expendable versus durable
+#
+## NOTE.  Some items are entities in their own right.

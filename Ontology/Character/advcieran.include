@@ -1,0 +1,220 @@
+armchar:cieran  arm:hasAdvancementList
+( [ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1217 ;
+  arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
+  arm:advanceTraitList ( [ a armr:herbam ; arm:addedXP 21 ]  ) ;
+  arm:awardsXP 21 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :autumn1217 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1217 ;
+  arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
+  arm:advanceTraitList ( [ a armr:mentem ; arm:addedXP 16 ] )   ;
+  arm:awardsXP 16 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :winter1218 
+  ]
+
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:winter1218 ;
+  arm:hasAdvancementDescription "Studies Terram L8 Q15 +3" ;
+  arm:advanceTraitList ( [ a armr:terram ; arm:addedXP 18 ] )   ;
+  arm:awardsXP 18 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :spring1218 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:spring1218 ;
+  arm:hasAdvancementDescription "Covenant Service 1217- Cieran's adventure 14xp; 3p Rego, 1p Perdo vis" ;
+  arm:advanceTraitList ( [ a armab:infernallore ; arm:addedXP 5 ]  
+        [ a armab:parmamagica ; arm:addedXP 5 ]  
+        [ a armab:secondsight ; arm:addedXP 4 ]  ) ;
+  arm:awardsXP 14 ;
+  arm:hasAdvancementType arm:Adventure ;
+  arm:advanceToCharacterSheet :summer1218 
+  ]
+
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1218 ;
+  arm:hasAdvancementDescription "Studies Servants of the People 14xp+3" ;
+  arm:advanceTraitList ( [ a armab:socplore ; arm:hasSpeciality "Self Initiation" ; arm:addedXP 17 ] )   ;
+  arm:awardsXP 17 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :autumn1218 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1218 ;
+  arm:hasAdvancementDescription "Covenant Service 1218 - Enchants Bookstand of Hespera (using 3p He). Earns 3p Terram vis  + 2xp in Parma." ;
+  arm:advanceTraitList ( [ a armab:parmamagica ; arm:addedXP 2 ] )   ;
+  arm:awardsXP 2 ;
+  arm:hasAdvancementType arm:Exposure ;
+  arm:advanceToCharacterSheet :winter1219 
+  ]
+
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:winter1219 ;
+  arm:hasAdvancementDescription "Read Intellego Q13+3" ;
+  arm:advanceTraitList ( [ a armr:intellego ; arm:addedXP 16 ] )   ;
+  arm:awardsXP 16 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :spring1219 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:spring1219 ;
+  arm:hasAdvancementDescription "Read Terram Q10+3" ;
+  arm:advanceTraitList ( [ a armr:terram ; arm:addedXP 13 ] )   ;
+  arm:awardsXP 13 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :summer1219 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1219 ;
+  arm:hasAdvancementDescription "Read Rego Q13+3" ;
+  arm:advanceTraitList ( [ a armr:rego ; arm:addedXP 16 ] )   ;
+  arm:awardsXP 16 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :autumn1219 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1219 ;
+  arm:hasAdvancementDescription "Read Latin L5Q15+3" ;
+  arm:advanceTraitList ( [ a armab:latin ; arm:addedXP 18 ] )   ;
+  arm:awardsXP 18 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :winter1220 
+  ]
+
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:winter1220 ;
+  arm:hasAdvancementDescription "Learn fist of demon's Oblivion + 2xp Latin" ;
+  arm:advanceTraitList ( [ a armab:latin ; arm:addedXP 2 ]
+    [ a armr:PeVi5Fist  ; arm:addedXP 5 ]
+    [ a armr:PeVi15Fist  ; arm:addedXP 5 ] ) ;
+  arm:awardsXP 2 ;
+  arm:hasAdvancementType arm:Exposure ;
+  arm:advanceToCharacterSheet :spring1220 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:spring1220 ;
+  arm:hasAdvancementDescription "Jerome's Tower 5xp Parma" ;
+  arm:advanceTraitList ( [ a armab:parmamagica ; arm:addedXP 5 ] )   ;
+  arm:awardsXP 5 ;
+  arm:hasAdvancementType arm:Adventure ;
+  arm:advanceToCharacterSheet :summer1220 ;
+  arm:acquiredPossession 
+    [ arm:isVisOfArt  arm:rego ; 
+      arm:hasQuantity 4 ;
+      arm:hasPossessionDescription "Marbles" ;
+      arm:hasOrigin  "Found on Jerome's body" ]
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1220 ;
+  arm:hasAdvancementDescription "Vim L15Q13 - 16xp" ;
+  arm:advanceTraitList ( [ a armr:vim ; arm:addedXP 16 ] )   ;
+  arm:awardsXP 16 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :autumn1220 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1220 ;
+  arm:hasAdvancementDescription "Muto L6Q20 - 21xp" ;
+  arm:advanceTraitList ( [ a armr:muto ; arm:addedXP 21 ] )   ;
+  arm:awardsXP 21 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :winter1221 
+  ]
+
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:winter1221 ;
+  arm:hasAdvancementDescription "Read Aquam root 18+3= 21xp" ;
+  arm:advanceTraitList ( [ a armr:aquam ; arm:addedXP 21 ] )   ;
+  arm:awardsXP 21 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :spring1221 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:spring1221 ;
+  arm:hasAdvancementDescription "Jerome's Tower 10xp (Second Sight 5, Parma 5) 3 conf" ;
+  arm:advanceTraitList ( [ a armab:secondsight ; arm:addedXP 5 ] 
+                   [ a armab:parmamagica ; arm:addedXP 5 ]
+                   [ a arm:Warping ; arm:addedXP 1 ] ) ;
+  arm:awardsXP 10 ;
+  arm:hasAdvancementType arm:Adventure ;
+  arm:advanceToCharacterSheet :summer1221 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1221 ;
+  arm:hasAdvancementDescription "Read Philosophiae (Causes and Curies) half xp due to injuries = 8" ;
+  arm:advanceTraitList ( [ a armab:philosophiae ; arm:addedXP 8 ] )   ;
+  arm:awardsXP 8 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :autumn1221 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1221 ;
+  arm:hasAdvancementDescription "Read Auram 21xp" ;
+  arm:advanceTraitList ( [ a armr:auram ; arm:addedXP 21 ] )   ;
+  arm:awardsXP 21 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :winter1222 
+  ]
+
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:winter1222 ;
+  arm:hasAdvancementDescription "Read Intellego L15Q13+3" ;
+  arm:advanceTraitList ( [ a armr:intellego ; arm:addedXP 16 ] )   ;
+  arm:awardsXP 16 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :spring1222 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:spring1222 ;
+  arm:hasAdvancementDescription "Read Ignem L8Q15+3" ;
+  arm:advanceTraitList ( [ a armr:ignem ; arm:addedXP 18 ] )   ;
+  arm:awardsXP 18 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :summer1222
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1222 ;
+  arm:hasAdvancementDescription "Covenant Service 1222. Lab work: ReTe items from text + 2xp parma;  earn 3p vis " ;
+  arm:advanceTraitList ( [ a armab:parmamagica ; arm:addedXP 2 ] )   ;
+  arm:awardsXP 2 ;
+  arm:hasAdvancementType arm:Exposure ;
+  arm:advanceToCharacterSheet :autumn1222 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1222 ;
+  arm:hasAdvancementDescription "Read Intellego L15Q13+3" ;
+  arm:advanceTraitList ( [ a armr:intellego ; arm:addedXP 16 ] )   ;
+  arm:awardsXP 16 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :winter1223 
+  ]
+
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:winter1223 ;
+  arm:hasAdvancementDescription "Lab work: InVi5 Sense the Nature of Vis + InVi20 Piercing the magic veil (from texts) + 2xp parma" ;
+  arm:advanceTraitList ( [ a armab:parmamagica ; arm:addedXP 2 ]
+   [ a armr:InVi5Sense  ; arm:addedXP 5 ]
+   [ a armr:InVi20PiercingMagical  ; arm:addedXP 5 ]  );
+  arm:awardsXP 2 ;
+  arm:hasAdvancementType arm:Exposure ;
+  arm:advanceToCharacterSheet :spring1223 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:spring1223 ;
+  arm:hasAdvancementDescription "Lab work: spell from text: Stone Tell of Mind that Sits InTe30  + 2xp parma" ;
+  arm:advanceTraitList ( [ a armab:parmamagica ; arm:addedXP 2 ]
+   [ a armr:InTe30Stone  ; arm:addedXP 5 ] ) ;
+  arm:awardsXP 2 ;
+  arm:hasAdvancementType arm:Exposure ;
+  arm:advanceToCharacterSheet :summer1223 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1223 ;
+  arm:hasAdvancementDescription "Story (2conf pts) Lab work: InVi5 Spot the Vis + InVi5 Scales of M W + InVi20 Piercing the faerie veil (from texts) (lab total InVi 14 + Int 3 + MT 4 + Aura 5 + similar spell 4 = 30) + 2xp parma" ;
+  arm:advanceTraitList ( [ a armab:parmamagica ; arm:addedXP 2 ]
+   [ a armr:InVi5Spot  ; arm:addedXP 5 ]
+   [ a armr:InVi5Scales ; arm:addedXP 5 ]
+   [ a armr:InVi20PiercingFaerie  ; arm:addedXP 5 ] ) ;
+  arm:awardsXP 2 ;
+  arm:hasAdvancementType arm:Exposure ;
+  arm:advanceToCharacterSheet :autumn1223 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1223 ;
+  arm:hasAdvancementDescription "Read Animal L15Q14+3" ;
+  arm:advanceTraitList ( [ a armr:animal ; arm:addedXP 17 ] )   ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :winter1224 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:winter1224 ;
+  arm:hasAdvancementDescription "Read Ignem L8Q15+3" ;
+  arm:advanceTraitList ( [ a armr:ignem ; arm:addedXP 18 ] )   ;
+  arm:awardsXP 18 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :spring1224
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:spring1224 ;
+  arm:hasAdvancementDescription "Read Corpus Branch L19Q16+3" ;
+  arm:advanceTraitList ( [ a armr:corpus ; arm:addedXP 19 ] )   ;
+  arm:awardsXP 19 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :summer1224
+  ] ) .

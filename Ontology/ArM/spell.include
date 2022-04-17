@@ -1,0 +1,74 @@
+
+arm:SpellClass rdfs:subClassOf arm:LeafTraitClass .
+arm:Spell rdfs:subClassOf arm:Trait ;
+    owl:disjointWith arm:Ability, arm:PersonalityTrait, arm:Characteristic,
+                     arm:Art, arm:Reputation .
+
+arm:Range a owl:Class .
+arm:Duration a owl:Class .
+arm:Target a owl:Class .
+
+arm:Rper a arm:Range ; rdfs:label  "Personal" ; arm:hasMagnitudeCost 0 .
+arm:Rtouch a arm:Range ; rdfs:label  "Touch" ; arm:hasMagnitudeCost 1 .
+arm:Rvoice a arm:Range ; rdfs:label  "Voice" ; arm:hasMagnitudeCost 2 .
+arm:Rsight a arm:Range ; rdfs:label  "Sight" ; arm:hasMagnitudeCost 3 .
+arm:Rac a arm:Range ; rdfs:label  "Arcane Connection" ; arm:hasMagnitudeCost 4 .
+arm:Dmom a arm:Duration ; rdfs:label  "Momentary" ; arm:hasMagnitudeCost 0 .
+arm:Dconc a arm:Duration ; rdfs:label  "Concentration" ; arm:hasMagnitudeCost 1 .
+arm:Ddiam a arm:Duration ; rdfs:label  "Diameter" ; arm:hasMagnitudeCost 1 .
+arm:Dsun a arm:Duration ; rdfs:label  "Sun" ; arm:hasMagnitudeCost 2 .
+arm:Dmoon a arm:Duration ; rdfs:label  "Moon" ; arm:hasMagnitudeCost 3 .
+arm:Tind a arm:Target ; rdfs:label  "Individual" ; arm:hasMagnitudeCost 0 .
+arm:Tpart a arm:Target ; rdfs:label  "Part" ; arm:hasMagnitudeCost 1 .
+arm:Troom a arm:Target ; rdfs:label  "Room" ; arm:hasMagnitudeCost 2 .
+arm:Tgroup a arm:Target ; rdfs:label  "Group" ; arm:hasMagnitudeCost 2 .
+arm:Tstr a arm:Target ; rdfs:label  "Structure" ; arm:hasMagnitudeCost 3 .
+arm:Tbound a arm:Target ; rdfs:label  "Boundary" ; arm:hasMagnitudeCost 4 .
+
+arm:hasMagnitudeCost a owl:DatatypeProperty, arm:TraitProperty ;
+           rdfs:domain [ owl:unionOf ( arm:Range arm:Duration arm:Target ) ] ;
+           rdfs:range xsd:int .
+
+arm:hasLevel a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:int .
+arm:hasCastingScore a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:int .
+arm:hasTechnique a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:TechClass .
+arm:hasForm a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:FormClass .
+arm:hasRequisite a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:ArtClass .
+arm:hasRange a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:Range .
+arm:hasDuration a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:Duration .
+arm:hasTarget a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:Target .
+arm:hasSize a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:int .
+
+arm:hasTechniqueString a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+arm:hasFormString a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+arm:hasRangeString a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+arm:hasDurationString a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+arm:hasTargetString a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .

@@ -1,0 +1,53 @@
+
+rdf:nil    a       arm:AdvancementList, arm:TraitList , arm:PossessionList .
+
+arm:TraitList  a owl:Class ;
+    rdfs:subClassOf  [ a                   owl:Class ;
+              owl:intersectionOf  ( rdf:List [ a   owl:Restriction ;
+                                           owl:allValuesFrom  arm:Trait ;
+                                           owl:onProperty     rdf:first
+                                           ] [ a owl:Restriction ;
+                                               owl:allValuesFrom  arm:TraitList ;
+                                               owl:onProperty     rdf:rest
+                                           ] )
+                         ] .
+arm:PossessionList  a owl:Class ;
+    rdfs:subClassOf  [ a                   owl:Class ;
+              owl:intersectionOf  ( rdf:List [ a   owl:Restriction ;
+                                           owl:allValuesFrom  arm:Possession ;
+                                           owl:onProperty     rdf:first
+                                           ] [ a owl:Restriction ;
+                                               owl:allValuesFrom  arm:PossessionList ;
+                                               owl:onProperty     rdf:rest
+                                           ] )
+                         ] .
+arm:AdvancementList  a owl:Class ;
+    rdfs:subClassOf  [ a                   owl:Class ;
+              owl:intersectionOf  ( rdf:List [ a   owl:Restriction ;
+                                           owl:allValuesFrom  arm:Advancement ;
+                                           owl:onProperty     rdf:first
+                                           ] [ a owl:Restriction ;
+                                               owl:allValuesFrom  arm:AdvancementList ;
+                                               owl:onProperty     rdf:rest
+                                           ] )
+                         ] .
+
+
+[ a                      owl:Axiom ;
+  rdfs:comment           "It's probably a good idea to specify that nil is an ElementList.  This could also be inferred, though, if there is a nil-terminated List that is known to be an ElementList." ;
+  owl:annotatedProperty  rdf:type ;
+  owl:annotatedSource    rdf:nil ;
+  owl:annotatedTarget    arm:TraitList
+] .
+[ a                      owl:Axiom ;
+  rdfs:comment           "It's probably a good idea to specify that nil is an ElementList.  This could also be inferred, though, if there is a nil-terminated List that is known to be an ElementList." ;
+  owl:annotatedProperty  rdf:type ;
+  owl:annotatedSource    rdf:nil ;
+  owl:annotatedTarget    arm:PossessionList
+] .
+[ a                      owl:Axiom ;
+  rdfs:comment           "It's probably a good idea to specify that nil is an ElementList.  This could also be inferred, though, if there is a nil-terminated List that is known to be an ElementList." ;
+  owl:annotatedProperty  rdf:type ;
+  owl:annotatedSource    rdf:nil ;
+  owl:annotatedTarget    arm:AdvancementList
+] .

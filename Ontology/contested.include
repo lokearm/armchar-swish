@@ -1,0 +1,7 @@
+
+
+
+armchar:contestedlands a arm:Saga ;
+   arm:hasSG "George" ;
+   arm:hasTitle "Contested Lands" ;
+   arm:hasSagaDescription "Played on Discord and Roll20 from Januar 2020." .

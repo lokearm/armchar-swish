@@ -1,0 +1,124 @@
+<https://hg.schaathun.net/schema/arm.owl> a owl:Ontology ;
+     dc:creator "Hans Georg Schaathun" ;
+     rdfs:comment "This is a crude attempt to make an ontology for Ars Magica characters." .
+
+# Saga
+arm:Saga a owl:Class .
+arm:hasSG a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  [ owl:unionOf ( arm:Saga arm:GeneralCharacter ) ] ;
+        rdfs:range   xsd:string .
+arm:hasTitle a   owl:DatatypeProperty ;
+        rdfs:domain  arm:Saga ;
+        rdfs:range   xsd:string .
+arm:hasSetting a   owl:DatatypeProperty ;
+        rdfs:domain  arm:Saga ;
+        rdfs:range   xsd:string .
+arm:hasCharacter a   owl:ObjectProperty ;
+        rdfs:domain  arm:Saga ;
+        rdfs:range   arm:Character .
+arm:hasSeasonTime a   owl:ObjectProperty ;
+        rdfs:domain  arm:Saga ;
+        rdfs:range   arm:SeasonTime .
+
+# Covenant and Character
+arm:GeneralCharacter a owl:Class .
+arm:Covenant a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter .
+arm:Character a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter .
+arm:Magus a owl:Class ;
+    rdfs:subClassOf arm:Character .
+arm:Companion a owl:Class ;
+    rdfs:subClassOf arm:Character ;
+    owl:disjointWith arm:Magus .
+arm:Grog a owl:Class ;
+    rdfs:subClassOf arm:Character ;
+    owl:disjointWith arm:Companion, arm:Magus .
+
+# Covenant and Character - Shared Properties
+arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   xsd:string .
+arm:hasSaga a   owl:ObjectProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   arm:Saga .
+arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   xsd:string .
+arm:hasTribunal a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   xsd:string .
+arm:hasFoundingYear a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   xsd:int .
+
+# Covenant Properties
+arm:hasCovenant a   owl:ObjectProperty ;
+        rdfs:domain  arm:Saga ;
+        rdfs:range   arm:Covenant .
+arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  [ owl:unionOf( arm:Saga arm:GeneralCharacter ) ] ;
+        rdfs:range   xsd:string .
+
+# Character Properties
+arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   xsd:string .
+arm:hasGender a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   xsd:string .
+arm:hasProfession a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   xsd:string .
+arm:hasNationality a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   xsd:string .
+arm:hasAlmaMater a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   xsd:string .
+arm:hasBirthYear a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   xsd:int .
+arm:hasAge a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:domain  arm:Character ;
+        rdfs:range   xsd:int .
+
+# Seasons and Time
+arm:Season a owl:Class ;
+   owl:oneOf ( arm:Winter arm:Spring arm:Summer arm:Autumn ) .
+arm:Winter  rdfs:label   "Winter" .
+arm:Spring  rdfs:label   "Spring" .
+arm:Summer  rdfs:label   "Summer" .
+arm:Autumn   rdfs:label   "Autumn" .
+arm:precedes a   owl:ObjectProperty ;
+        rdfs:domain  arm:Season ;
+        rdfs:range   arm:Season .
+arm:Winter arm:precedes arm:Spring .
+arm:Spring arm:precedes arm:Summer .
+arm:Summer arm:precedes arm:Autumn .
+
+arm:SeasonTime a owl:Class .
+arm:beforeSeasonTime a   owl:ObjectProperty ;
+	a owl:TransitiveProperty ;
+        rdfs:domain  arm:SeasonTime ;
+        rdfs:range   arm:SeasonTime .
+arm:isPrecedingSeasonOf a   owl:ObjectProperty ;
+        rdfs:domain  arm:SeasonTime ;
+        rdfs:range   arm:SeasonTime .
+arm:isSuccedingSeasonOf a   owl:ObjectProperty ;
+        owl:inverseOf arm:isPrecedingSeasonOf .
+arm:isSeason a   owl:ObjectProperty ;
+        rdfs:domain  arm:SeasonTime ;
+        rdfs:range   arm:Season .
+arm:isYear a   owl:DatatypeProperty ;
+        rdfs:domain  arm:SeasonTime ;
+        rdfs:range   xsd:int .
+
+
+# Character Sheet and Base Character
+arm:CharacterSheet a owl:Class ; rdfs:subClassOf arm:Character ;
+    rdfs:comment "A CharacterSheet represents the character at a particular point in time, is contains the character's dynamic properties and a reference to the base character." .
+arm:BaseCharacter a owl:Class ; rdfs:subClassOf arm:Character ;
+    rdfs:comment "The BaseCharacter represents the character itself, and contains the character's static properties." .
+
+arm:isCharacter a   owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterSheet ;
+        rdfs:range   arm:BaseCharacter .

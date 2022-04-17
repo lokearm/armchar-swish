@@ -1,0 +1,13 @@
+
+armr:personality-meticulous rdfs:subClassOf arm:PersonalityTrait ;
+                           a arm:LeafTraitClass ;
+                           arm:hasLabel "Meticulous" .
+armr:personality-villager   rdfs:subClassOf arm:PersonalityTrait ;
+                           a arm:LeafTraitClass ;
+                           arm:hasLabel "Villager" .
+armr:personality-carefree   rdfs:subClassOf arm:PersonalityTrait ;
+                           a arm:LeafTraitClass ;
+                           arm:hasLabel "Carefree" .
+armr:personality-meddler    rdfs:subClassOf arm:PersonalityTrait ;
+                           a arm:LeafTraitClass ;
+                           arm:hasLabel "Meddler" .
