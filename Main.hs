@@ -1,6 +1,7 @@
 module Main where
 
 import System.IO
+import Data.Text.Lazy.IO as DTIO
 import Control.Monad
 import Swish.RDF.Parser.Turtle
 import Swish.RDF.Formatter.Turtle
@@ -20,11 +21,9 @@ baseURI = Nothing
 main :: IO ()
 main = do
         let list = []
-        handle <- openFile characterFile ReadMode
-        contents <- hGetContents handle
-        let character = parseTurtle ( pack contents ) baseURI 
+        contents <- DTIO.readFile characterFile 
+        let character = parseTurtle ( contents ) baseURI 
         case (character) of
            (Left s) -> print s
            (Right c) -> print $ formatGraphAsText c
-        hClose handle
 
