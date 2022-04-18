@@ -4,6 +4,7 @@ import Swish.RDF.Graph
 import Swish.RDF.Query as Q
 import ArM.Resources 
 import ArM.Query 
+import Data.Maybe 
 
 -- Class:
 --    a arm:CharacterAdvancement ;
@@ -18,21 +19,35 @@ import ArM.Query
 -- Traits (multiple)
 --    arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ] ;
 
-qs c = qparse $ prefixes 
-      ++ "?id rdf:type arm:IngameCharacterAdvancement ; "
-      ++ " ?property ?value ; "
-      ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> " ++ c ++ " . "
-      ++ "?property rdfs:label ?label . "
 
+qt :: String -> RDFGraph
 qt s = qparse $ prefixes 
-      ++ s ++ " arm:advanceTrait ?s . " 
+      ++ s ++ " <https://hg.schaathun.net/armchar/schema#advanceTrait> ?s . " 
       ++ "?s ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
 getLogQuads :: RDFGraph -> String -> [Quad]
 getLogQuads g c = map quadFromBinding $ rdfQueryFind (qs c) g
+   where
+     qs c = qparse $ prefixes 
+       ++ "?id rdf:type arm:IngameCharacterAdvancement ; "
+       ++ " ?property ?value ; "
+       ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> "
+       ++ c ++ " . "
+       ++ "?property rdfs:label ?label . "
+
 getAdvancements :: RDFGraph -> String -> [Advancement]
-getAdvancements g = map toAdvancement . quadSplit . getLogQuads g 
+getAdvancements g = fixAdvancements g . getAdvancements' g 
+
+getAdvancements' :: RDFGraph -> String -> [Advancement]
+getAdvancements' g = map toAdvancement . quadSplit . getLogQuads g
+
+fixAdvancements :: RDFGraph -> [Advancement] -> [Advancement]
+fixAdvancements g adv = map (fixAdv g) adv
+fixAdv :: RDFGraph -> Advancement -> Advancement
+fixAdv g a = a { traits = map quadFromBinding $ rdfQueryFind q g }
+    where qt' = qt . show . fromJust . rdfid 
+          q = qt' a
 
 data Advancement = Advancement {
     year :: Maybe Int,
@@ -46,7 +61,9 @@ defaultAdvancement = Advancement { year = Nothing,
                 contents = [], traits = [] }
 instance Show Advancement where
    show a = "**" ++ s (season a) ++ " " ++ y (year a) ++ "**\n" 
-                 ++ sc (contents a) ++ "\n"
+                 ++ sc (contents a) 
+                 ++ st (traits a) 
+                 ++ "\n"
       where 
          y Nothing = ""
          y (Just x) = show x
@@ -54,6 +71,9 @@ instance Show Advancement where
          s (Just x) = x
          sc [] = ""
          sc ((_,x,y):xs) = x ++ ": " ++ y ++ "\n" ++ sc xs
+         st [] = ""
+         st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
+                                  ++  "\n" ++ st xs
 instance Ord Advancement where
    compare x y | year x < year y = LT
                | year x > year y = GT
