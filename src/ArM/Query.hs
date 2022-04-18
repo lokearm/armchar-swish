@@ -90,7 +90,6 @@ quadVB vb = (vbMap vb (G.Var "id"),
              vbMap vb (G.Var "property"),
              vbMap vb (G.Var "label"),
              vbMap vb (G.Var "value"))
-
 quadFromLabels ::
     (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
     -> (RDFLabel,URI, String, String)
