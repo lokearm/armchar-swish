@@ -10,5 +10,7 @@ readGraph :: String -> IO RDFGraph
 readGraph fn = do
         contents <- DTLIO.readFile fn 
         case ( parseTurtle ( contents ) baseURI ) of
-           (Left _ ) -> return emptyGraph
+           (Left s ) -> do
+               print s
+               return emptyGraph
            (Right g ) -> return g

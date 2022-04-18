@@ -6,10 +6,12 @@
 arm:Saga a owl:Class .
 arm:hasSG a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  [ owl:unionOf ( arm:Saga arm:GeneralCharacter ) ] ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label "Storyguide" .
 arm:hasTitle a   owl:DatatypeProperty ;
         rdfs:domain  arm:Saga ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label "Saga Title" .
 arm:hasSetting a   owl:DatatypeProperty ;
         rdfs:domain  arm:Saga ;
         rdfs:range   xsd:string .
@@ -36,16 +38,19 @@ arm:Grog a owl:Class ;
 # Covenant and Character - Shared Properties
 arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Name" .
 arm:hasSaga a   owl:ObjectProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   arm:Saga .
 arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Saga Title" .
 arm:hasTribunal a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Tribunal" .
 arm:hasFoundingYear a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:int .
@@ -56,30 +61,38 @@ arm:hasCovenant a   owl:ObjectProperty ;
         rdfs:range   arm:Covenant .
 arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  [ owl:unionOf( arm:Saga arm:GeneralCharacter ) ] ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Covenant"  .
 
 # Character Properties
 arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:Character ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Player" .
 arm:hasGender a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:Character ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Gender" .
 arm:hasProfession a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:Character ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Profession" .
 arm:hasNationality a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:Character ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Nationality" .
 arm:hasAlmaMater a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:Character ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label    "Alma Mater" .
 arm:hasBirthYear a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:Character ;
-        rdfs:range   xsd:int .
+        rdfs:range   xsd:int ;
+        rdfs:label    "Birth Year" .
 arm:hasAge a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:Character ;
-        rdfs:range   xsd:int .
+        rdfs:range   xsd:int ;
+        rdfs:label    "Age" .
 
 # Seasons and Time
 arm:Season a owl:Class ;

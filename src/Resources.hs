@@ -2,7 +2,7 @@ module Resources where
 
 armFile = "Ontology/arm.ttl"
 resourceFile = "Ontology/resources.ttl"
-characterFile = "Ontology/cieran.ttl"
+characterFile = "Test/cieran.ttl"
 baseURI = Nothing
 
 prefixes = "@prefix owl: <http://www.w3.org/2002/07/owl#> . "

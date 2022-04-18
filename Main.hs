@@ -10,6 +10,7 @@ import qualified Data.Text.Lazy as  T
 import Swish.RDF.Graph
 
 
+import Metadata
 import Rules
 import AuxIO
 import Resources
@@ -18,20 +19,21 @@ import Swish.RDF.Ruleset
 
 
 
-
+testCharacter = "<https://hg.schaathun.net/armchar/character/cieran>"
+-- testCharacter = "armchar:cieran"
 
 main :: IO ()
 main = do
         let list = []
         character <- readGraph characterFile 
-        armGraph <- readGraph armFile 
+        schemaGraph <- readGraph armFile 
         resourceGraph <- readGraph resourceFile 
-        DTIO.putStrLn $ formatGraphAsText character
+        let armGraph = merge schemaGraph resourceGraph
         let cs  = fwdApplySimple csRule character
-        DTIO.putStrLn $ formatGraphAsText $ head cs
         let m  = fwdApplyMerge csRule character
+        let g = merge armGraph m 
+        DTIO.putStrLn $ formatGraphAsText $ g
         print "====="
-        print m
-        print "====="
-        DTIO.putStrLn $ formatGraphAsText $ m
+        let vb = getCharacterMetadata g testCharacter 
+        print vb
 
