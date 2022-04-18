@@ -20,6 +20,21 @@ import Network.URI (URI)
 import Swish.VarBinding  (vbMap)
 import Data.Maybe
 
+type Triple = (URI, String, String)
+type Quad = (RDFLabel,URI, String, String)
+
+sameID :: Quad -> Quad -> Bool
+sameID (x,_,_,_) (y,_,_,_) = x == y
+
+split :: [Quad] -> [[Quad]]
+split xs = fst $ split' ([],xs)
+split' :: ([[Quad]], [Quad]) -> ([[Quad]], [Quad]) 
+split' (xs,[]) = (xs,[])
+split' ([],y:ys) = split' ([[y]],ys)
+split' ((x:xs):xss,y:ys) 
+    | sameID  x y = split' ((y:x:xs):xss, ys)
+    | otherwise   = split' ([y]:(x:xs):xss, ys)
+
 -- | Create a query graph from an N3 string.
 qparse :: String -> RDFGraph
 qparse = either error id . parseN3fromText . T.pack
@@ -57,3 +72,21 @@ labelToMaybeString ml = case (n) of
              (Just nn) -> Just $ show nn
     where l = fromJust ml
           n =  fromRDFLabel l :: Maybe Int
+
+-- | Map variable bindings to quads of (id,property,label,value)
+-- Three variables should be bound, id, property, label, and value.
+quadFromBinding :: VB.RDFVarBinding -> (RDFLabel,URI, String, String)
+quadFromBinding = quadFromLabels . quadVB 
+
+quadVB :: VB.RDFVarBinding 
+        -> (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
+quadVB vb = (vbMap vb (G.Var "id"),
+             vbMap vb (G.Var "property"),
+             vbMap vb (G.Var "label"),
+             vbMap vb (G.Var "value"))
+
+quadFromLabels ::
+    (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
+    -> (RDFLabel,URI, String, String)
+quadFromLabels (id,p,label,value) =
+    (fromJust id,labelToURI p, labelToString label, labelToString value) 
