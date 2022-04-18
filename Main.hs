@@ -10,7 +10,7 @@ import qualified Data.Text.Lazy as  T
 import Swish.RDF.Graph
 
 
-import Metadata
+import ArM.Metadata
 import Rules
 import AuxIO
 import Resources
