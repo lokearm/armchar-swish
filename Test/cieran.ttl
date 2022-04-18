@@ -1,0 +1,146 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix arm: <https://hg.schaathun.net/armchar/schema#> .
+@prefix armr: <https://hg.schaathun.net/armchar/resources#> .
+@prefix armab: <https://hg.schaathun.net/armchar/resources/abilities#> .
+@prefix armchar: <https://hg.schaathun.net/armchar/character/> .
+@prefix armpyramid: <https://hg.schaathun.net/armchar/pyramid#> .
+@prefix : <https://hg.schaathun.net/armchar/character/cieran#> .
+
+<https://hg.schaathun.net/armcharacter/cieran> a owl:Ontology ;
+     dc:creator "Hans Georg Schaathun" ;
+     rdfs:comment "This is a sample character for the ArM ontology." .
+
+armchar:cieran a arm:Magus ; 
+               arm:hasName "Cieran the Fletcher" ;
+	       arm:hasGender "Male" ;
+               arm:hasBirthYear 1192 ;
+	       arm:hasPlayer "George" ;
+               arm:hasOtherTrait [ a arm:Size ; arm:hasScore 0 ] ;
+	       arm:hasProfession "Rusticus (magus ex Miscellanea)" ;
+	       arm:hasNationality "Irish" ;
+               arm:hasAlmaMater "Stonehenge" ;
+               arm:hasSaga armchar:contestedlands .
+
+armchar:elksrun  a arm:Covenant ; 
+               arm:hasName "Elk's Run" ;
+	       arm:hasSetting "Hibernia" ;
+               arm:hasSaga armchar:contestedlands .
+
+
+:zero arm:isCharacter armchar:cieran ; a arm:CharacterSheet .
+:summer1217   arm:atSeasonTime arm:summer1217 .
+
+:zero arm:hasVirtue
+    [ a armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
+    [ a armr:craftmagic ; arm:hasScore 0 ],
+    [ a armr:spellfoci ; arm:hasScore 0 ],
+    [ a armr:flawlessMagic ],
+    [ a armr:skilledParens ],
+    [ a armr:bookLearner ],
+    [ a armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
+    [ a armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ] .
+:zero arm:hasFlaw
+    [ a armr:meddler, armr:majorFlaw ],
+    [ a armr:shortRangedMagic ],
+    [ a armr:weakSpontaneousMagic ; arm:hasScore 0 ],
+    [ a armr:mistakenIdentity ],
+    [ a armr:carefree, armr:minorFlaw ] .
+
+:zero arm:hasCharacteristic
+    [ a armr:int ; arm:hasScore 3 ], [ a armr:per ; arm:hasScore -1 ],
+    [ a armr:com ; arm:hasScore -1 ], [ a armr:pre ; arm:hasScore 0 ],
+    [ a armr:str ; arm:hasScore 2 ], [ a armr:sta ; arm:hasScore 3 ],
+    [ a armr:dex ; arm:hasScore 2 ], [ a armr:qik ; arm:hasScore -3 ] . 
+
+# General Abilities
+:zero arm:hasAbility
+   [ a armab:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
+
+armchar:cieran  arm:hasPregameAdvancementList
+( [ a arm:EarlyChildhoodAdvancement ; 
+   arm:advanceTraitList (
+   [ a armab:secondsight ; arm:hasSpeciality "Faerie Illusions" ]
+   [ a armab:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ]
+   [ a armab:brawl ; arm:hasSpeciality "Dodge" ;  arm:addedXP 15  ]
+   [ a armab:arealore-munster ; arm:hasSpeciality "Hiding places" ;
+     arm:addedXP 5  ]
+   [ a armab:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ]
+   [ a armab:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ) ;
+  arm:advanceFromCharacterSheet :zero ;
+  arm:advanceToCharacterSheet :early 
+  ]
+[ a arm:LaterLifeAdvancement ; 
+  arm:advanceFromCharacterSheet :early ;
+  arm:advanceToCharacterSheet :laterlife ;
+  arm:advanceTraitList (
+      [ a armab:bargain ;  arm:addedXP 5  ]
+      [ a armab:conc ; arm:hasSpeciality "Spell Concentration" ;
+        arm:addedXP 5  ]
+      [ a armab:craft-cooking ; arm:addedXP 30  ]
+      [ a armab:craft-fletching ; arm:addedXP 30  ]
+      [ a armab:hermeslore ; arm:hasSpeciality "Hibernia" ;
+        arm:addedXP 5  ]
+  ) ]
+[ a arm:ApprenticeshipAdvancement ; 
+  arm:advanceFromCharacterSheet :laterlife ;
+  arm:advanceToCharacterSheet :summer1217 ;
+  arm:advanceTraitList (
+      [ a armr:creo ; arm:addedXP 21 ]
+      [ a armr:intellego ; arm:addedXP 0 ]
+      [ a armr:muto ; arm:addedXP 0 ]
+      [ a armr:perdo ; arm:addedXP 36 ]
+      [ a armr:rego ; arm:addedXP 36 ]
+      [ a armr:animal ; arm:addedXP 0 ]
+      [ a armr:aquam ; arm:addedXP 0 ]
+      [ a armr:auram ; arm:addedXP 0 ]
+      [ a armr:corpus ; arm:addedXP 15 ]
+      [ a armr:herbam ; arm:addedXP 0 ]
+      [ a armr:ignem ; arm:addedXP 0 ]
+      [ a armr:imaginem ; arm:addedXP 53 ]
+      [ a armr:mentem ; arm:addedXP 1 ]
+      [ a armr:terram ; arm:addedXP 15 ]
+      [ a armr:vim ; arm:addedXP 3 ]
+    [ a armab:artlib ; arm:addedXP 5 ; arm:hasSpeciality "rituals" ]
+    [ a armab:philosophiae ; arm:addedXP 0 ; arm:hasSpeciality "rituals" ]
+    [ a armab:latin ; arm:addedXP 30 ; arm:hasSpeciality "Hermetic Usage" ]
+   [ a armab:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ]
+   [ a armab:hermescode ; arm:addedXP 5 ; arm:hasSpeciality "Stonehenge" ]
+   [ a armab:infernallore ; arm:addedXP 0 ; arm:hasSpeciality "Undead" ]
+   [ a armab:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ]
+   [ a armab:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Rego" ]
+   [ a armr:PeCo20Wound ; arm:hasTotalXP 5 ]
+   [ a armr:ReCo5Spasms ; arm:hasTotalXP 5 ]
+   [ a armr:CrIg15Lamp ; arm:hasTotalXP 5 ]
+   [ a armr:PeIm20Veil ; arm:hasTotalXP 5 ]
+   [ a armr:CrIm10Clarity ; arm:hasTotalXP 5 ]
+   [ a armr:MuIm10Aura ; arm:hasTotalXP 5 ]
+   [ a armr:PeMe10Trust ; arm:hasTotalXP 5 ]
+   [ a armr:ReMe15Arrow ; arm:hasTotalXP 5 ]
+   [ a armr:ReMe5Touch ; arm:hasTotalXP 5 ]
+   [ a armr:PeTe20Obliteration  ; arm:hasTotalXP 5 ]
+   [ a armr:PeTe20End  ; arm:hasTotalXP 5 ] 
+   [ a armab:bows ; arm:addedXP 30 ; arm:hasSpeciality "Longbow" ]
+   [ a armab:thrown ; arm:addedXP 5 ; arm:hasSpeciality "Dart" ]
+   [ a armab:arealore-ireland ; arm:hasSpeciality "Legends" ;
+     arm:addedXP 5  ]
+  ) ] ) .
+armchar:cieran  arm:hasAdvancementList
+( [ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1217 ;
+  arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
+  arm:advanceTraitList ( [ a armr:herbam ; arm:addedXP 21 ]  ) ;
+  arm:awardsXP 21 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :autumn1217 
+  ]
+[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1217 ;
+  arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
+  arm:advanceTraitList ( [ a armr:mentem ; arm:addedXP 16 ] )   ;
+  arm:awardsXP 16 ;
+  arm:hasAdvancementType arm:Reading ;
+  arm:advanceToCharacterSheet :winter1218 
+] ) .
