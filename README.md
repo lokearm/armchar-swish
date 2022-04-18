@@ -44,7 +44,6 @@ As far as I can tell:
 1. Advance Character Sheet
 1. Hand-code XP/score calculation rules.
 4. Make both hasTrait and subproperties
-5. Query Advancements
 5. Make JSON
 6. Make LaTeX
     1.  Pull metadata
