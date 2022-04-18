@@ -19,7 +19,7 @@ extra-source-files:  CHANGELOG.md, README.md
 
 executable armchar-swish
   main-is:             Main.hs
-  other-modules:       Rules, AuxIO, Resources
+  other-modules:       Rules, AuxIO, Resources, AuxPure, Metadata
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14

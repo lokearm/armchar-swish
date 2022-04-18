@@ -1,7 +1,6 @@
 module Advancement where
 
 import Swish.RDF.Query as Q
-import Swish.RDF.Parser.N3 (parseN3fromText)
 
 -- Class:
 --    a arm:CharacterAdvancement ;
@@ -16,7 +15,6 @@ import Swish.RDF.Parser.N3 (parseN3fromText)
 -- Traits
 --    arm:advanceTraitList ( [ a armr:herbam ; arm:addedXP 21 ]  ) ;
 
-qparse = either error id . parseN3fromText
 qs c = qparse $ prefixes ++ "?a arm:hasCharacter " ++ c ++
        " . ?a ?p ?o ."
 qgr = qparse "?node a ?type."
