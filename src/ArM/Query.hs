@@ -26,8 +26,13 @@ type Quad = (RDFLabel,URI, String, String)
 sameID :: Quad -> Quad -> Bool
 sameID (x,_,_,_) (y,_,_,_) = x == y
 
+-- | Split a list of Quads so that quads who belong to the same resource,
+-- as defined by the first element, are place in the same constituent
+-- list.
 split :: [Quad] -> [[Quad]]
 split xs = fst $ split' ([],xs)
+
+-- | split' is a mere auxiliary for 'split'
 split' :: ([[Quad]], [Quad]) -> ([[Quad]], [Quad]) 
 split' (xs,[]) = (xs,[])
 split' ([],y:ys) = split' ([[y]],ys)
