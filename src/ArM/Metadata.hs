@@ -22,7 +22,6 @@ import Swish.RDF.VarBinding as VB
 import Swish.VarBinding 
 import Network.URI (URI)
 
-import Data.Maybe
 
 -- | Construct the query for a given character 'c', for use
 -- with the following functions .
