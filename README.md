@@ -40,6 +40,7 @@ As far as I can tell:
 1. Season Log
     - Pregame Advancement
     - Group and Sort TraitAdvancements
+1. Web Server
 1. Advance Character Sheet
 1. Hand-code XP/score calculation rules.
 4. Make both hasTrait and subproperties
