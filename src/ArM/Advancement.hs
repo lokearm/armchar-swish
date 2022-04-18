@@ -29,22 +29,23 @@ qt s = qparse $ prefixes
       ++ "?s ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
--- getSeason g c =  rdfQueryFind (qs c) g
 getLogQuads :: RDFGraph -> String -> [Quad]
 getLogQuads g c = map quadFromBinding $ rdfQueryFind (qs c) g
+getAdvancements :: RDFGraph -> String -> [Advancement]
+getAdvancements g = map toAdvancement . quadSplit . getLogQuads g 
 
-data Season = Season {
+data Advancement = Advancement {
     year :: Maybe Int,
     season :: Maybe String,
     rdfid :: Maybe RDFLabel,
     contents :: [Triple]
    }
-defaultSeason = Season { year = Nothing,
+defaultAdvancement = Advancement { year = Nothing,
                 season = Nothing, rdfid = Nothing, contents = [] }
 
-toSeason :: [Quad] -> Season
-toSeason [] = defaultSeason 
-toSeason xs = defaultSeason { rdfid = Just $ qfst $ head xs,
+toAdvancement :: [Quad] -> Advancement
+toAdvancement [] = defaultAdvancement 
+toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
          year = getYear ys,
          season = getSeason ys,
          contents = ys }
