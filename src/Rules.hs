@@ -17,7 +17,7 @@ fwdApplySimple r c = fwdApply r [c]
 fwdApplyMerge :: RDFRule ->  RDFGraph -> RDFGraph
 fwdApplyMerge r c
       | n == []     = c
-      | otherwise   = merge c $ head n
+      | otherwise   = addGraphs c $ head n
       where n = fwdApply r [c]
 
 
@@ -53,8 +53,11 @@ advtypeRule = makeRule "advtypeRule"
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementType> ?c .  ?c rdfs:label ?l ."
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementTypeString> ?l . "
 traitclassRule = makeRule "traitclassRule" 
-    "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c .  ?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ."
-    "?s <https://hg.schaathun.net/armchar/schema#traitClassString> ?l . "
+    ( "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c . "
+    ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
+    ( "?s <https://hg.schaathun.net/armchar/schema#traitClassString> ?l . "
+    ++ "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c . "
+    ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
 
 
 subclassRule = makeRule "subclassRule" 
@@ -62,7 +65,7 @@ subclassRule = makeRule "subclassRule"
                   "?s rdf:type ?c ."
 
 fwdApplyList rs g =
-     foldl merge g $ map (head . (`fwdApplySimple` g)) rs
+     foldl addGraphs g $ map (head . (`fwdApplySimple` g)) rs
 
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 

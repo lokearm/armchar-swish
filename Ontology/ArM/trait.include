@@ -68,7 +68,8 @@ arm:hasDetail  a   owl:DatatypeProperty ;
         rdfs:range   xsd:string .
 arm:hasSpeciality  a   owl:DatatypeProperty ;
         rdfs:domain  [ owl:unionOf ( arm:Ability arm:Characteristic ) ] ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label   "Speciality" .
 arm:hasType  a   owl:ObjectProperty ;
         rdfs:domain  arm:Reputation ;
         rdfs:range   arm:ReputationType .
