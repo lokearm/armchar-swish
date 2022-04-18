@@ -1,16 +1,10 @@
 
-## arm:SeasonAdvancement rdfs:subClassOf arm:Advancement .
-## arm:EarlyChildhood rdfs:subClassOf arm:Advancement .
-## arm:LaterLife rdfs:subClassOf arm:Advancement .
-## arm:Apprenticeship rdfs:subClassOf arm:Advancement .
-## arm:PostApprenticeship rdfs:subClassOf arm:Advancement .
-
-
 # Character Advancement
 arm:CharacterAdvancement a owl:Class .
 arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:CharacterAdvancement .
 arm:LaterLifeAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
 arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
+arm:PGAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
  
 arm:advanceCharacter a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
@@ -37,6 +31,10 @@ arm:atSeason a   owl:DatatypeProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
         rdfs:range   xsd:string .
+arm:inSeason a   owl:ObjectProperty ;
+        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
+                                             arm:CharacterAdvancement ) ] ;
+        rdfs:range   arm:Season .
 arm:inYear a   owl:DatatypeProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;

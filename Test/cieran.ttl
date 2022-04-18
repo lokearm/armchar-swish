@@ -64,81 +64,80 @@ armchar:elksrun  a arm:Covenant ;
    [ a armab:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
 
 # Pre-game Advancement
-armchar:cieran  arm:hasPregameAdvancementList
-( [ a arm:EarlyChildhoodAdvancement ; 
-   arm:advanceTraitList (
-   [ a armab:secondsight ; arm:hasSpeciality "Faerie Illusions" ]
-   [ a armab:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ]
-   [ a armab:brawl ; arm:hasSpeciality "Dodge" ;  arm:addedXP 15  ]
+:earlyadv arm:advanceCharacter armchar:cieran ;
+   a arm:EarlyChildhoodAdvancement ; 
+   arm:advanceTrait 
+   [ a armab:secondsight ; arm:hasSpeciality "Faerie Illusions" ],
+   [ a armab:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
+   [ a armab:brawl ; arm:hasSpeciality "Dodge" ;  arm:addedXP 15  ],
    [ a armab:arealore-munster ; arm:hasSpeciality "Hiding places" ;
-     arm:addedXP 5  ]
-   [ a armab:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ]
+     arm:addedXP 5  ],
+   [ a armab:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ],
    [ a armab:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ) ;
   arm:advanceFromCharacterSheet :zero ;
-  arm:advanceToCharacterSheet :early 
-  ]
-[ a arm:LaterLifeAdvancement ; 
+  arm:advanceToCharacterSheet :early  .
+:lateradv arm:advanceCharacter armchar:cieran ;
+  a arm:LaterLifeAdvancement ; 
   arm:advanceFromCharacterSheet :early ;
   arm:advanceToCharacterSheet :laterlife ;
-  arm:advanceTraitList (
-      [ a armab:bargain ;  arm:addedXP 5  ]
+  arm:advanceTrait 
+      [ a armab:bargain ;  arm:addedXP 5  ],
       [ a armab:conc ; arm:hasSpeciality "Spell Concentration" ;
-        arm:addedXP 5  ]
-      [ a armab:craft-cooking ; arm:addedXP 30  ]
-      [ a armab:craft-fletching ; arm:addedXP 30  ]
+        arm:addedXP 5  ],
+      [ a armab:craft-cooking ; arm:addedXP 30  ],
+      [ a armab:craft-fletching ; arm:addedXP 30  ],
       [ a armab:hermeslore ; arm:hasSpeciality "Hibernia" ;
-        arm:addedXP 5  ]
-  ) ]
-[ a arm:ApprenticeshipAdvancement ; 
+        arm:addedXP 5  ] .
+:apprenticeadv arm:advanceCharacter armchar:cieran ;
+  a arm:ApprenticeshipAdvancement ; 
   arm:advanceFromCharacterSheet :laterlife ;
   arm:advanceToCharacterSheet :summer1217 ;
-  arm:advanceTraitList (
-      [ a armr:creo ; arm:addedXP 21 ]
-      [ a armr:intellego ; arm:addedXP 0 ]
-      [ a armr:muto ; arm:addedXP 0 ]
-      [ a armr:perdo ; arm:addedXP 36 ]
-      [ a armr:rego ; arm:addedXP 36 ]
-      [ a armr:animal ; arm:addedXP 0 ]
-      [ a armr:aquam ; arm:addedXP 0 ]
-      [ a armr:auram ; arm:addedXP 0 ]
-      [ a armr:corpus ; arm:addedXP 15 ]
-      [ a armr:herbam ; arm:addedXP 0 ]
-      [ a armr:ignem ; arm:addedXP 0 ]
-      [ a armr:imaginem ; arm:addedXP 53 ]
-      [ a armr:mentem ; arm:addedXP 1 ]
-      [ a armr:terram ; arm:addedXP 15 ]
-      [ a armr:vim ; arm:addedXP 3 ]
-    [ a armab:artlib ; arm:addedXP 5 ; arm:hasSpeciality "rituals" ]
-    [ a armab:philosophiae ; arm:addedXP 0 ; arm:hasSpeciality "rituals" ]
-    [ a armab:latin ; arm:addedXP 30 ; arm:hasSpeciality "Hermetic Usage" ]
-   [ a armab:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ]
-   [ a armab:hermescode ; arm:addedXP 5 ; arm:hasSpeciality "Stonehenge" ]
-   [ a armab:infernallore ; arm:addedXP 0 ; arm:hasSpeciality "Undead" ]
-   [ a armab:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ]
-   [ a armab:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Rego" ]
-   [ a armr:PeCo20Wound ; arm:hasTotalXP 5 ]
-   [ a armr:ReCo5Spasms ; arm:hasTotalXP 5 ]
-   [ a armr:CrIg15Lamp ; arm:hasTotalXP 5 ]
-   [ a armr:PeIm20Veil ; arm:hasTotalXP 5 ]
-   [ a armr:CrIm10Clarity ; arm:hasTotalXP 5 ]
-   [ a armr:MuIm10Aura ; arm:hasTotalXP 5 ]
-   [ a armr:PeMe10Trust ; arm:hasTotalXP 5 ]
-   [ a armr:ReMe15Arrow ; arm:hasTotalXP 5 ]
-   [ a armr:ReMe5Touch ; arm:hasTotalXP 5 ]
-   [ a armr:PeTe20Obliteration  ; arm:hasTotalXP 5 ]
-   [ a armr:PeTe20End  ; arm:hasTotalXP 5 ] 
-   [ a armab:bows ; arm:addedXP 30 ; arm:hasSpeciality "Longbow" ]
-   [ a armab:thrown ; arm:addedXP 5 ; arm:hasSpeciality "Dart" ]
-   [ a armab:arealore-ireland ; arm:hasSpeciality "Legends" ;
-     arm:addedXP 5  ]
-  ) ] ) .
+  arm:advanceTrait 
+      [ a armr:creo ; arm:addedXP 21 ],
+      [ a armr:intellego ; arm:addedXP 0 ],
+      [ a armr:muto ; arm:addedXP 0 ],
+      [ a armr:perdo ; arm:addedXP 36 ],
+      [ a armr:rego ; arm:addedXP 36 ],
+      [ a armr:animal ; arm:addedXP 0 ],
+      [ a armr:aquam ; arm:addedXP 0 ],
+      [ a armr:auram ; arm:addedXP 0 ],
+      [ a armr:corpus ; arm:addedXP 15 ],
+      [ a armr:herbam ; arm:addedXP 0 ],
+      [ a armr:ignem ; arm:addedXP 0 ],
+      [ a armr:imaginem ; arm:addedXP 53 ],
+      [ a armr:mentem ; arm:addedXP 1 ],
+      [ a armr:terram ; arm:addedXP 15 ],
+      [ a armr:vim ; arm:addedXP 3 ],
+    [ a armab:artlib ; arm:addedXP 5 ; arm:hasSpeciality "rituals" ],
+    [ a armab:philosophiae ; arm:addedXP 0 ; arm:hasSpeciality "rituals" ],
+    [ a armab:latin ; arm:addedXP 30 ; arm:hasSpeciality "Hermetic Usage" ],
+   [ a armab:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
+   [ a armab:hermescode ; arm:addedXP 5 ; arm:hasSpeciality "Stonehenge" ],
+   [ a armab:infernallore ; arm:addedXP 0 ; arm:hasSpeciality "Undead" ],
+   [ a armab:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ],
+   [ a armab:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Rego" ],
+   [ a armr:PeCo20Wound ; arm:hasTotalXP 5 ],
+   [ a armr:ReCo5Spasms ; arm:hasTotalXP 5 ],
+   [ a armr:CrIg15Lamp ; arm:hasTotalXP 5 ],
+   [ a armr:PeIm20Veil ; arm:hasTotalXP 5 ],
+   [ a armr:CrIm10Clarity ; arm:hasTotalXP 5 ],
+   [ a armr:MuIm10Aura ; arm:hasTotalXP 5 ],
+   [ a armr:PeMe10Trust ; arm:hasTotalXP 5 ],
+   [ a armr:ReMe15Arrow ; arm:hasTotalXP 5 ],
+   [ a armr:ReMe5Touch ; arm:hasTotalXP 5 ],
+   [ a armr:PeTe20Obliteration  ; arm:hasTotalXP 5 ],
+   [ a armr:PeTe20End  ; arm:hasTotalXP 5 ] ,
+   [ a armab:bows ; arm:addedXP 30 ; arm:hasSpeciality "Longbow" ],
+   [ a armab:thrown ; arm:addedXP 5 ; arm:hasSpeciality "Dart" ],
+   [ a armab:arealore-ireland ; arm:hasSpeciality "Legends" ;,
+     arm:addedXP 5  ] .
 
 # Date the game entry sheet
 :summer1217   arm:atSeasonTime arm:summer1217 .
 
 # In-game advancement
 :summer1217adv arm:advanceCharacter armchar:cieran ;
-  a arm:CharacterAdvancement ; 
+  a arm:IngameCharacterAdvancement ; 
   arm:inSeason arm:summer ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
@@ -148,7 +147,7 @@ armchar:cieran  arm:hasPregameAdvancementList
   arm:advanceToCharacterSheet :autumn1217 .
 
 :autumn1217adv arm:advanceCharacter armchar:cieran ;
-  a arm:CharacterAdvancement ;
+  a arm:IngameCharacterAdvancement ;
   arm:atSeasonTime arm:autumn1217 ;
   arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
   arm:advanceTrait [ a armr:mentem ; arm:addedXP 16 ] ;
