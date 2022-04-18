@@ -55,6 +55,17 @@ data TraitAdvancement = TraitAdvancement {
     traitID :: Maybe RDFLabel,
     traitContents :: [Triple]
    } deriving Eq
+--
+-- | Make a TraitAdvancement object from a list of Quads
+toTraitAdvancement :: [Quad] -> TraitAdvancement
+toTraitAdvancement [] = TraitAdvancement {
+         traitID = Nothing,
+         traitContents = [] }
+toTraitAdvancement xs = TraitAdvancement { 
+         traitID = Just $ qfst $ head xs,
+         traitContents = ys }
+         where ys = toTripleList xs 
+
 
 -- | CharacterAdvancement Resource
 -- Key computational features are extracted in separate constructors.
