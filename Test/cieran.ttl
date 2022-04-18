@@ -15,6 +15,7 @@
      dc:creator "Hans Georg Schaathun" ;
      rdfs:comment "This is a sample character for the ArM ontology." .
 
+# Metadata.  Defined for character, copied to character sheet
 armchar:cieran a arm:Magus ; 
                arm:hasName "Cieran the Fletcher" ;
 	       arm:hasGender "Male" ;
@@ -32,8 +33,9 @@ armchar:elksrun  a arm:Covenant ;
                arm:hasSaga armchar:contestedlands .
 
 
+
+# Initial character sheet.
 :zero arm:isCharacter armchar:cieran ; a arm:CharacterSheet .
-:summer1217   arm:atSeasonTime arm:summer1217 .
 
 :zero arm:hasVirtue
     [ a armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
@@ -61,6 +63,7 @@ armchar:elksrun  a arm:Covenant ;
 :zero arm:hasAbility
    [ a armab:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
 
+# Pre-game Advancement
 armchar:cieran  arm:hasPregameAdvancementList
 ( [ a arm:EarlyChildhoodAdvancement ; 
    arm:advanceTraitList (
@@ -129,6 +132,11 @@ armchar:cieran  arm:hasPregameAdvancementList
    [ a armab:arealore-ireland ; arm:hasSpeciality "Legends" ;
      arm:addedXP 5  ]
   ) ] ) .
+
+# Date the game entry sheet
+:summer1217   arm:atSeasonTime arm:summer1217 .
+
+# In-game advancement
 armchar:cieran  arm:hasAdvancementList
 ( [ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1217 ;
   arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
