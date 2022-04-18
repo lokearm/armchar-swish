@@ -137,18 +137,21 @@ armchar:cieran  arm:hasPregameAdvancementList
 :summer1217   arm:atSeasonTime arm:summer1217 .
 
 # In-game advancement
-armchar:cieran  arm:hasAdvancementList
-( [ a arm:CharacterAdvancement ; arm:atSeasonTime arm:summer1217 ;
+:summer1217adv arm:advanceCharacter armchar:cieran ;
+  a arm:CharacterAdvancement ; 
+  arm:inSeason arm:summer ;
+  arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
-  arm:advanceTraitList ( [ a armr:herbam ; arm:addedXP 21 ]  ) ;
+  arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ]  ;
   arm:awardsXP 21 ;
   arm:hasAdvancementType arm:Reading ;
-  arm:advanceToCharacterSheet :autumn1217 
-  ]
-[ a arm:CharacterAdvancement ; arm:atSeasonTime arm:autumn1217 ;
+  arm:advanceToCharacterSheet :autumn1217 .
+
+:autumn1217adv arm:advanceCharacter armchar:cieran ;
+  a arm:CharacterAdvancement ;
+  arm:atSeasonTime arm:autumn1217 ;
   arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
-  arm:advanceTraitList ( [ a armr:mentem ; arm:addedXP 16 ] )   ;
+  arm:advanceTrait [ a armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
   arm:hasAdvancementType arm:Reading ;
-  arm:advanceToCharacterSheet :winter1218 
-] ) .
+  arm:advanceToCharacterSheet :winter1218 .

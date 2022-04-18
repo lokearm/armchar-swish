@@ -17,5 +17,3 @@ import Swish.RDF.Query as Q
 
 qs c = qparse $ prefixes ++ "?a arm:hasCharacter " ++ c ++
        " . ?a ?p ?o ."
-qgr = qparse "?node a ?type."
-

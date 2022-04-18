@@ -17,12 +17,6 @@ arm:advanceCharacter a owl:ObjectProperty ;
         rdfs:range   arm:Character .
 arm:hasAdvancement a owl:ObjectProperty ;
 	owl:inverseOf  arm:advanceCharacter  .
-arm:hasAdvancementList a owl:ObjectProperty ;
-        rdfs:domain  arm:Character ;
-        rdfs:range   arm:AdvancementList .
-arm:hasPregameAdvancementList a owl:ObjectProperty ;
-        rdfs:domain  arm:Character ;
-        rdfs:range   arm:AdvancementList .
 arm:advanceFromCharacterSheet a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:CharacterSheet .
@@ -76,9 +70,9 @@ arm:Reading  rdfs:label  "Reading" .
 arm:advanceTrait a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Trait .
-arm:advanceTraitList a owl:ObjectProperty ;
+arm:advanceTrait a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:TraitList .
+        rdfs:range   arm:Trait .
 arm:advancedFromTrait a owl:ObjectProperty ;
         rdfs:comment "Reference to a previous trait instance from which this trait instance has been advanced." ;
         rdfs:domain  arm:Trait ;
@@ -88,9 +82,6 @@ arm:addedXP a   owl:DatatypeProperty ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
 
-arm:hasListXP  a owl:DatatypeProperty ;
-    rdfs:domain   arm:TraitList ;
-    rdfs:range   xsd:int .
 arm:hasSpentXP  a owl:DatatypeProperty ;
     rdfs:domain   arm:Advancement ;
     rdfs:range   xsd:int .
