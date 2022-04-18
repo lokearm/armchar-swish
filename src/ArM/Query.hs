@@ -19,6 +19,7 @@ import Swish.RDF.VarBinding as VB
 import Network.URI (URI)
 import Swish.VarBinding  (vbMap)
 import Data.Maybe
+import Data.List (sort)
 
 type Triple = (URI, String, String)
 type Quad = (RDFLabel,URI, String, String)
@@ -30,7 +31,7 @@ sameID (x,_,_,_) (y,_,_,_) = x == y
 -- as defined by the first element, are place in the same constituent
 -- list.
 split :: [Quad] -> [[Quad]]
-split xs = fst $ split' ([],xs)
+split xs = fst $ split' ([],sort xs)
 
 -- | split' is a mere auxiliary for 'split'
 split' :: ([[Quad]], [Quad]) -> ([[Quad]], [Quad]) 
