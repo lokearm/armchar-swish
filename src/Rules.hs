@@ -1,4 +1,5 @@
-module Rules where
+module Rules ( prepareInitialCharacter
+             , typedClosure  ) where
 
 import Swish.RDF.Ruleset
 import Swish.Namespace
@@ -52,3 +53,6 @@ subclassRule = makeRule "subclassRule"
 
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter c = fwdApplyMerge csRule c
+
+typedClosure :: RDFGraph -> RDFGraph
+typedClosure c = fwdApplyMerge subclassRule c

@@ -12,7 +12,7 @@ import Swish.RDF.Graph
 
 import ArM.Metadata
 import Rules
-import AuxIO
+import ArM.AuxIO
 import Resources
 
 import Swish.RDF.Ruleset
@@ -29,8 +29,7 @@ main = do
         schemaGraph <- readGraph armFile 
         resourceGraph <- readGraph resourceFile 
         let armGraph = merge schemaGraph resourceGraph
-        let cs  = fwdApplySimple csRule character
-        let m  = fwdApplyMerge csRule character
+        let m  = prepareInitialCharacter character
         let g = merge armGraph m 
         DTIO.putStrLn $ formatGraphAsText $ g
         let vb = getCharacterMetadata g testCharacter 
