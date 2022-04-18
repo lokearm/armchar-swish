@@ -13,7 +13,7 @@
 module ArM.Metadata (
      getCharacterMetadata ) where
 
-import Resources
+import ArM.Resources
 import ArM.Query
 
 import Swish.RDF.Graph as G
@@ -26,9 +26,9 @@ import Network.URI (URI)
 -- | Construct the query for a given character 'c', for use
 -- with the following functions .
 query c = qparse $  prefixes
-     ++ " " ++ c ++ " ?p ?value . "
-     ++ " ?p rdf:type  arm:CharacterProperty . "
-     ++ " ?p rdfs:label ?label . "
+     ++ " " ++ c ++ " ?property ?value . "
+     ++ " ?property rdf:type  arm:CharacterProperty . "
+     ++ " ?property rdfs:label ?label . "
 
 -- | Make a list of metadata, where each data item is
 -- a triple consisting of URI, Label, and Value.
@@ -39,7 +39,7 @@ getCharacterMetadata g =
       (map triplesFromBinding) 
       . ( getCharacterMetadataVB g )
 
--- | Step 1.  Get the variable bindings from the graph.
+-- | Get the variable bindings from the graph.
 getCharacterMetadataVB :: G.RDFGraph -> String -> [VB.RDFVarBinding]
 getCharacterMetadataVB g c = Q.rdfQueryFind (query c) g
 

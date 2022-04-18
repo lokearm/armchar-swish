@@ -1,6 +1,8 @@
-module Advancement where
+module ArM.Advancement where
 
 import Swish.RDF.Query as Q
+import ArM.Resources 
+import ArM.Query 
 
 -- Class:
 --    a arm:CharacterAdvancement ;
@@ -16,12 +18,15 @@ import Swish.RDF.Query as Q
 --    arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ] ;
 
 qs c = qparse $ prefixes 
-      ++ "?a arm:advanceCharacter " ++ c ++ " . "
-      ++ "?a rdf:type arm:PregameCharacterAdvancement . "
-      ++ "?a ?p ?value . "
-      ++ "?p rdfs:label ?label . "
+      ++ "?a rdf:type arm:IngameCharacterAdvancement ; "
+      ++ " ?property ?value ; "
+      ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> " ++ c ++ " . "
+      ++ "?property rdfs:label ?label . "
 
 qt s = qparse $ prefixes 
       ++ s ++ " arm:advanceTrait ?s . " 
-      ++ "?s ?p ?value . "
-      ++ "?p rdfs:label ?label . "
+      ++ "?s ?property ?value . "
+      ++ "?property rdfs:label ?label . "
+
+getSeason g c = Q.rdfQueryFind (qs c) g
+

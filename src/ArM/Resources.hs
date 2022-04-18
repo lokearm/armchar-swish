@@ -1,4 +1,4 @@
-module Resources where
+module ArM.Resources where
 
 armFile = "Ontology/arm.ttl"
 resourceFile = "Ontology/resources.ttl"
@@ -16,3 +16,4 @@ prefixes = "@prefix owl: <http://www.w3.org/2002/07/owl#> . "
    ++ "@prefix armab: <https://hg.schaathun.net/armchar/resources/abilities#> . "
    ++ "@prefix armchar: <https://hg.schaathun.net/armchar/character/> . "
 
+    

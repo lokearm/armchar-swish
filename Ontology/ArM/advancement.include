@@ -19,7 +19,8 @@ arm:advanceToCharacterSheet a owl:ObjectProperty ;
         rdfs:range   arm:CharacterSheet .
 arm:hasAdvancementType   a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:AdvancementType .
+        rdfs:range   arm:AdvancementType ;
+        rdfs:label   "Mode of Study" .
 arm:hasAdvancementTypeString   a owl:DatatypeProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:string .
@@ -30,7 +31,8 @@ arm:atSeasonTime a   owl:ObjectProperty ;
 arm:atSeason a   owl:DatatypeProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label   "Season" .
 arm:inSeason a   owl:ObjectProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
@@ -38,14 +40,17 @@ arm:inSeason a   owl:ObjectProperty ;
 arm:inYear a   owl:DatatypeProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
-        rdfs:range   xsd:int .
+        rdfs:range   xsd:int ;
+        rdfs:label   "Year" .
 
 arm:hasAdvancementDescription a owl:DatatypeProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   xsd:string .
+        rdfs:range   xsd:string ;
+        rdfs:label   "Description" .
 arm:awardsXP a owl:DatatypeProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   xsd:int .
+        rdfs:range   xsd:int ;
+        rdfs:label   "XP awarded" .
 
 arm:hasNextCharacterSheet a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterSheet ;

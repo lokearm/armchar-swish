@@ -11,9 +11,10 @@ import Swish.RDF.Graph
 
 
 import ArM.Metadata
+import ArM.Advancement
 import Rules
 import ArM.AuxIO
-import Resources
+import ArM.Resources
 
 import Swish.RDF.Ruleset
 
@@ -32,4 +33,12 @@ main = do
         let g = merge armGraph m 
         DTIO.putStrLn $ formatGraphAsText $ g
         let vb = getCharacterMetadata g testCharacter 
+        print vb
+        let c = testCharacter
+        print $ prefixes 
+            ++ "?a rdf:type arm:IngameCharacterAdvancement ; "
+            ++ " ?property ?value ; "
+            ++ " aarm:advanceCharacter " ++ c ++ " . "
+            ++ "?property rdfs:label ?label . "
+        let vb = getSeason g testCharacter 
         print vb

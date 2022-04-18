@@ -16,7 +16,7 @@ import System.IO as IO
 import Swish.RDF.Graph
 import Data.Text.Lazy.IO as DTLIO
 import Swish.RDF.Parser.Turtle
-import Resources
+import ArM.Resources
 
 -- | Read an RDFGraph, ignoring errors.
 readGraph :: String -> IO RDFGraph

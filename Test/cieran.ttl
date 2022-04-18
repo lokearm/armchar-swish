@@ -138,7 +138,7 @@ armchar:elksrun  a arm:Covenant ;
 # In-game advancement
 :summer1217adv arm:advanceCharacter armchar:cieran ;
   a arm:IngameCharacterAdvancement ; 
-  arm:inSeason arm:summer ;
+  arm:atSeason "Summer" ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
   arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ]  ;
@@ -148,7 +148,8 @@ armchar:elksrun  a arm:Covenant ;
 
 :autumn1217adv arm:advanceCharacter armchar:cieran ;
   a arm:IngameCharacterAdvancement ;
-  arm:atSeasonTime arm:autumn1217 ;
+  arm:atSeason "Autumn" ;
+  arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
   arm:advanceTrait [ a armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
