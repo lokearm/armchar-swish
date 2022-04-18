@@ -12,8 +12,14 @@ import Swish.RDF.Query as Q
 --    arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
 --    arm:awardsXP 21 ;
 --    arm:hasAdvancementType arm:Reading ;
--- Traits
---    arm:advanceTraitList ( [ a armr:herbam ; arm:addedXP 21 ]  ) ;
+-- Traits (multiple)
+--    arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ] ;
 
-qs c = qparse $ prefixes ++ "?a arm:hasCharacter " ++ c ++
-       " . ?a ?p ?o ."
+qs c = qparse $ prefixes 
+      ++ "?a arm:advanceCharacter " ++ c ++ " . "
+      ++ "?a rdf:type arm:PregameCharacterAdvancement . "
+      ++ "?a ?p ?o . "
+
+qt s = qparse $ prefixes 
+      ++ s ++ " arm:advanceTrait ?s . " 
+      ++ "?s ?p ?o . "

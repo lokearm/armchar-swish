@@ -24,6 +24,8 @@ import Network.URI (URI)
 
 import Data.Maybe
 
+-- | Construct the query for a given character 'c', for use
+-- with the following functions .
 query c = qparse $  prefixes
      ++ " " ++ c ++ " ?p ?value . "
      ++ " ?p rdf:type  arm:CharacterProperty . "

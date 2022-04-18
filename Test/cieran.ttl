@@ -73,7 +73,7 @@ armchar:elksrun  a arm:Covenant ;
    [ a armab:arealore-munster ; arm:hasSpeciality "Hiding places" ;
      arm:addedXP 5  ],
    [ a armab:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ],
-   [ a armab:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ) ;
+   [ a armab:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ;
   arm:advanceFromCharacterSheet :zero ;
   arm:advanceToCharacterSheet :early  .
 :lateradv arm:advanceCharacter armchar:cieran ;
@@ -129,7 +129,7 @@ armchar:elksrun  a arm:Covenant ;
    [ a armr:PeTe20End  ; arm:hasTotalXP 5 ] ,
    [ a armab:bows ; arm:addedXP 30 ; arm:hasSpeciality "Longbow" ],
    [ a armab:thrown ; arm:addedXP 5 ; arm:hasSpeciality "Dart" ],
-   [ a armab:arealore-ireland ; arm:hasSpeciality "Legends" ;,
+   [ a armab:arealore-ireland ; arm:hasSpeciality "Legends" ;
      arm:addedXP 5  ] .
 
 # Date the game entry sheet

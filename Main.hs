@@ -19,8 +19,7 @@ import Swish.RDF.Ruleset
 
 
 
-testCharacter = "<https://hg.schaathun.net/armchar/character/cieran>"
--- testCharacter = "armchar:cieran"
+testCharacterS = "armchar:cieran"
 
 main :: IO ()
 main = do
@@ -33,5 +32,7 @@ main = do
         let g = merge armGraph m 
         DTIO.putStrLn $ formatGraphAsText $ g
         let vb = getCharacterMetadata g testCharacter 
+        print vb
+        let vb = getCharacterMetadata g testCharacterS
         print vb
 
