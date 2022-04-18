@@ -38,9 +38,11 @@ As far as I can tell:
 ## TODO
 
 1. Hand-code XP/score calculation rules.
-2. Spell String Rules
 3. Advancement Rules
 4. Make both hasTrait and subproperties
 5. Query Advancements
-
-
+6. Make LaTeX
+    1.  Pull metadata
+    2.  Pull Characteristics
+6. Pretty-print Advancement Log
+2. Spell String Rules
