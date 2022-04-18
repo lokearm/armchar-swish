@@ -1,7 +1,0 @@
-
-
-owl:differentFrom a arm:ignoredProperty .
-# arm:hasNextCharacterSheet a arm:ignoredProperty .
-arm:hasTrait a arm:ignoredProperty .
-arm:hasPossession a arm:ignoredProperty .
-# rdf:type a arm:ignoredProperty .

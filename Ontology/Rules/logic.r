@@ -1,37 +1,4 @@
 
-### SEASONS
-
-# Season Sequence
-[ seasonsequence1:
-  ( ?s1 arm:isSeason ?o1 ) ( ?s2 arm:isSeason ?o2 )
-  ( ?s1 arm:isYear ?y1 ) ( ?s2 arm:isYear ?y1 )
-  ( ?o1 arm:precedes ?o2 ) 
-  -> ( ?s1 arm:isPrecedingSeasonOf ?s2 ) ]
-
-[ seasonsequence2: 
-  ( ?s1 arm:isSeason arm:Autumn ) 
-  ( ?s1 arm:isYear ?y1 )
-  sum(?y1,1,?y2)
-  ( ?s2 arm:isYear ?y2  )
-  ( ?s2 arm:isSeason arm:Winter )
-  -> ( ?s1 arm:isPrecedingSeasonOf ?s2 ) ]
-
-# Deduced timestamp on resources
-[ seasonanyear: 
-  ( ?r arm:atSeasonTime ?time )
-  ( ?time arm:isSeason ?s )
-  ( ?s rdfs:label ?season )
-  ( ?time arm:isYear ?year )
-  ->
-  ( ?r arm:atSeason ?season )
-  ( ?r arm:inYear ?year ) ]
-
-[ seasonlabel:
-  ( ?s rdf:type arm:SeasonTime )
-  ( ?s arm:isSeason ?season ) ( ?s arm:isYear ?y )
-  ( ?season rdfs:label ?st ) ( ?s arm:isYear ?y )
-  strConcat(?st,?y,?l)
-  -> ( ?s rdfs:label ?l ) ]
 
 ### SAGA
 
@@ -65,12 +32,10 @@
 [ charsheet1: ( ?c rdf:type arm:CharacterSheet )
              ( ?c arm:isCharacter ?b ) ( ?b ?p ?o )
 	     ( ?p rdfs:domain arm:GeneralCharacter )
-             noValue(?p,rdf:type,arm:ignoredProperty)
 	     -> ( ?c ?p ?o ) ]
 [ charsheet2: ( ?c rdf:type arm:CharacterSheet )
              ( ?c arm:isCharacter ?b ) ( ?b ?p ?o )
 	     ( ?p rdfs:domain arm:Character )
-             noValue(?p,rdf:type,arm:ignoredProperty)
 	     -> ( ?c ?p ?o ) ]
 
 ### TRAITS
