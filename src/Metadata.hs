@@ -1,4 +1,5 @@
-module Metadata where
+module Metadata (
+     getCharacterMetadata ) where
 
 import Resources
 import AuxPure
