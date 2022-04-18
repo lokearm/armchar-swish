@@ -8,6 +8,7 @@ import Swish.RDF.Formatter.Turtle
 import qualified Data.Text.Lazy as  T
 -- import Swish.Rule
 import Swish.RDF.Graph
+import Data.List
 
 
 import ArM.Query
@@ -35,5 +36,5 @@ main = do
         let vb = getCharacterMetadata g testCharacter 
         print vb
 
-        let vb = getAdvancements g testCharacter 
+        let vb = sort $ getAdvancements g testCharacter 
         print vb

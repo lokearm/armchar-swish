@@ -38,8 +38,12 @@ data Advancement = Advancement {
     year :: Maybe Int,
     season :: Maybe String,
     rdfid :: Maybe RDFLabel,
-    contents :: [Triple]
-   }
+    contents :: [Triple],
+    traits :: [Quad]
+   } deriving Eq
+defaultAdvancement = Advancement { year = Nothing,
+                season = Nothing, rdfid = Nothing, 
+                contents = [], traits = [] }
 instance Show Advancement where
    show a = "**" ++ s (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) ++ "\n"
@@ -50,8 +54,24 @@ instance Show Advancement where
          s (Just x) = x
          sc [] = ""
          sc ((_,x,y):xs) = x ++ ": " ++ y ++ "\n" ++ sc xs
-defaultAdvancement = Advancement { year = Nothing,
-                season = Nothing, rdfid = Nothing, contents = [] }
+instance Ord Advancement where
+   compare x y | year x < year y = LT
+               | year x > year y = GT
+               | sno x < sno y = LT
+               | sno x > sno y = GT
+               | rdfid x < rdfid y = LT
+               | rdfid x > rdfid y = GT
+               | contents x < contents y = LT
+               | contents x > contents y = GT
+               | traits x < traits y = LT
+               | traits x > traits y = GT
+               where sno = seasonNo . season
+
+seasonNo Nothing = 0
+seasonNo (Just "Spring") = 1
+seasonNo (Just "Summer") = 2
+seasonNo (Just "Autumn") = 3
+seasonNo (Just "Winter") = 4
 
 toAdvancement :: [Quad] -> Advancement
 toAdvancement [] = defaultAdvancement 
