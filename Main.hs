@@ -35,5 +35,5 @@ main = do
         let vb = getCharacterMetadata g testCharacter 
         print vb
 
-        let vb = quadSplit $ getLogQuads g testCharacter 
+        let vb = getAdvancements g testCharacter 
         print vb

@@ -40,6 +40,16 @@ data Advancement = Advancement {
     rdfid :: Maybe RDFLabel,
     contents :: [Triple]
    }
+instance Show Advancement where
+   show a = "**" ++ s (season a) ++ " " ++ y (year a) ++ "**\n" 
+                 ++ sc (contents a) ++ "\n"
+      where 
+         y Nothing = ""
+         y (Just x) = show x
+         s Nothing = ""
+         s (Just x) = x
+         sc [] = ""
+         sc ((_,x,y):xs) = x ++ ": " ++ y ++ "\n" ++ sc xs
 defaultAdvancement = Advancement { year = Nothing,
                 season = Nothing, rdfid = Nothing, contents = [] }
 
@@ -50,6 +60,7 @@ toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
          season = getSeason ys,
          contents = ys }
          where ys = toTripleList xs 
+
 
 qfst (a,b,c,d) = a
 toTriple :: Quad -> Triple
