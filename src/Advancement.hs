@@ -18,8 +18,10 @@ import Swish.RDF.Query as Q
 qs c = qparse $ prefixes 
       ++ "?a arm:advanceCharacter " ++ c ++ " . "
       ++ "?a rdf:type arm:PregameCharacterAdvancement . "
-      ++ "?a ?p ?o . "
+      ++ "?a ?p ?value . "
+      ++ "?p rdfs:label ?label . "
 
 qt s = qparse $ prefixes 
       ++ s ++ " arm:advanceTrait ?s . " 
-      ++ "?s ?p ?o . "
+      ++ "?s ?p ?value . "
+      ++ "?p rdfs:label ?label . "

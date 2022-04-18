@@ -19,7 +19,7 @@ import Swish.RDF.Ruleset
 
 
 
-testCharacterS = "armchar:cieran"
+testCharacter = "armchar:cieran"
 
 main :: IO ()
 main = do
@@ -33,6 +33,3 @@ main = do
         DTIO.putStrLn $ formatGraphAsText $ g
         let vb = getCharacterMetadata g testCharacter 
         print vb
-        let vb = getCharacterMetadata g testCharacterS
-        print vb
-
