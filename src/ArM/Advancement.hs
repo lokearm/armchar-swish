@@ -45,16 +45,27 @@ getAdvancements' g = map toAdvancement . quadSplit . getLogQuads g
 fixAdvancements :: RDFGraph -> [Advancement] -> [Advancement]
 fixAdvancements g adv = map (fixAdv g) adv
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g a = a { traits = map quadFromBinding $ rdfQueryFind q g }
+fixAdv g a = a { traits = getTraits q g }
     where qt' = qt . show . fromJust . rdfid 
           q = qt' a
+getTraits q g = quadSplit $ map quadFromBinding $ rdfQueryFind q g 
 
+-- | TraitAdvancement Resource
+data TraitAdvancement = TraitAdvancement {
+    traitID :: Maybe RDFLabel,
+    traitContents :: [Triple]
+   } deriving Eq
+
+-- | CharacterAdvancement Resource
+-- Key computational features are extracted in separate constructors.
+-- TraitAdvancements are represented as a list of Quads.
+-- Other properties are listed as 'contents'.
 data Advancement = Advancement {
     year :: Maybe Int,
     season :: Maybe String,
     rdfid :: Maybe RDFLabel,
     contents :: [Triple],
-    traits :: [Quad]
+    traits :: [[Quad]]
    } deriving Eq
 defaultAdvancement = Advancement { year = Nothing,
                 season = Nothing, rdfid = Nothing, 
@@ -62,7 +73,7 @@ defaultAdvancement = Advancement { year = Nothing,
 instance Show Advancement where
    show a = "**" ++ s (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) 
-                 ++ st (traits a) 
+                 ++ show (traits a) 
                  ++ "\n"
       where 
          y Nothing = ""
@@ -92,7 +103,9 @@ seasonNo (Just "Spring") = 1
 seasonNo (Just "Summer") = 2
 seasonNo (Just "Autumn") = 3
 seasonNo (Just "Winter") = 4
+seasonNo (Just _) = 10
 
+-- | Make an Advancement object from a list of Quads
 toAdvancement :: [Quad] -> Advancement
 toAdvancement [] = defaultAdvancement 
 toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
@@ -102,15 +115,24 @@ toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
          where ys = toTripleList xs 
 
 
+-- | Return the first element of a Quad
+qfst :: (a,b,c,d) -> a
 qfst (a,b,c,d) = a
+
+-- | Remove the first element of a Quad
 toTriple :: Quad -> Triple
 toTriple (a,b,c,d) = (b,c,d)
+
+-- | Remove the first element from each Quad in a list
 toTripleList :: [Quad] -> [Triple]
 toTripleList = map toTriple
+
+-- | Get the year from a list of Triples belonging to an Advancement
 getYear [] = Nothing
 getYear ((x,y,z):xs) 
    | y == "Year"  = Just $ read z
    | otherwise    = getYear xs
+-- | Get the season from a list of Triples belonging to an Advancement
 getSeason [] = Nothing
 getSeason ((x,y,z):xs) 
    | y == "Season"  = Just z
