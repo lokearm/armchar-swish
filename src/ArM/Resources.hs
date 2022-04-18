@@ -1,5 +1,9 @@
 module ArM.Resources where
 
+import Swish.Namespace
+import Network.URI
+import qualified Data.Text as T
+
 armFile = "Ontology/arm.ttl"
 resourceFile = "Ontology/resources.ttl"
 characterFile = "Test/cieran.ttl"
@@ -17,3 +21,17 @@ prefixes = "@prefix owl: <http://www.w3.org/2002/07/owl#> . "
    ++ "@prefix armchar: <https://hg.schaathun.net/armchar/character/> . "
 
     
+-- URIs
+auth = URIAuth "" "hg.schaathun.net" ""
+armURI = URI { uriScheme = "https:",
+           uriAuthority = Just auth,
+           uriPath = "/armchar/schema",
+           uriQuery = "",
+           uriFragment = "#" }
+rulesURI = URI { uriScheme = "https:",
+           uriAuthority = Just auth,
+           uriPath = "/armchar/rules",
+           uriQuery = "",
+           uriFragment = "#" }
+armNS = makeNamespace (Just $ T.pack "arm") armURI
+rulesNS = makeNamespace (Just $ T.pack "armrules") armURI
