@@ -48,13 +48,13 @@ fixAdv :: RDFGraph -> Advancement -> Advancement
 fixAdv g a = a { traits = getTraits q g }
     where qt' = qt . show . fromJust . rdfid 
           q = qt' a
-getTraits q g = quadSplit $ map quadFromBinding $ rdfQueryFind q g 
+getTraits q g = map toTraitAdvancement $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
 
 -- | TraitAdvancement Resource
 data TraitAdvancement = TraitAdvancement {
     traitID :: Maybe RDFLabel,
     traitContents :: [Triple]
-   } deriving Eq
+   } deriving (Eq, Show)
 --
 -- | Make a TraitAdvancement object from a list of Quads
 toTraitAdvancement :: [Quad] -> TraitAdvancement
@@ -76,7 +76,7 @@ data Advancement = Advancement {
     season :: Maybe String,
     rdfid :: Maybe RDFLabel,
     contents :: [Triple],
-    traits :: [[Quad]]
+    traits :: [TraitAdvancement]
    } deriving Eq
 defaultAdvancement = Advancement { year = Nothing,
                 season = Nothing, rdfid = Nothing, 
@@ -105,8 +105,6 @@ instance Ord Advancement where
                | rdfid x > rdfid y = GT
                | contents x < contents y = LT
                | contents x > contents y = GT
-               | traits x < traits y = LT
-               | traits x > traits y = GT
                where sno = seasonNo . season
 
 seasonNo Nothing = 0
