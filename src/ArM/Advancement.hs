@@ -22,8 +22,8 @@ import Data.Maybe
 
 qt :: String -> RDFGraph
 qt s = qparse $ prefixes 
-      ++ s ++ " <https://hg.schaathun.net/armchar/schema#advanceTrait> ?s . " 
-      ++ "?s ?property ?value . "
+      ++ s ++ " <https://hg.schaathun.net/armchar/schema#advanceTrait> ?id . " 
+      ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
 getLogQuads :: RDFGraph -> String -> [Quad]

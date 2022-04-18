@@ -49,18 +49,24 @@ makeRule ln s1 s2 = makeN3ClosureSimpleRule
 csRule = makeRule "csRule" 
     "?cs <https://hg.schaathun.net/armchar/schema#isCharacter> ?c . ?c ?p ?o ."
                   "?cs ?p ?o ."
-advtypeRule = makeRule "csRule" 
+advtypeRule = makeRule "advtypeRule" 
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementType> ?c .  ?c rdfs:label ?l ."
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementTypeString> ?l . "
+traitclassRule = makeRule "traitclassRule" 
+    "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c .  ?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ."
+    "?s <https://hg.schaathun.net/armchar/schema#traitClassString> ?l . "
+
+
 subclassRule = makeRule "subclassRule" 
     "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
                   "?s rdf:type ?c ."
 
+fwdApplyList rs g =
+     foldl merge g $ map (head . (`fwdApplySimple` g)) rs
 
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
-   ( fwdApplyMerge advtypeRule )
-   . ( fwdApplyMerge csRule )
+   fwdApplyList [ advtypeRule, traitclassRule, csRule ]
 
 typedClosure :: RDFGraph -> RDFGraph
 typedClosure c = fwdApplyMerge subclassRule c

@@ -76,7 +76,15 @@ arm:Reading  rdfs:label  "Reading" .
 # arm:TraitAdvancement a arm:LeafTraitClass .
 arm:advanceTrait a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:Trait .
+        rdfs:range   arm:TraitAdvancement .
+arm:traitClass a owl:ObjectProperty ;
+        rdfs:domain  arm:TraitAdvancement ;
+        rdfs:range   owl:Class ;
+        rdfs:label   "Trait ID" .
+arm:traitClassString a owl:DatatypeProperty ;
+        rdfs:domain  arm:TraitAdvancement ;
+        rdfs:range   xsd:string ;
+        rdfs:label   "Trait to Advance" .
 arm:advanceTrait a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Trait .
@@ -87,7 +95,8 @@ arm:advancedFromTrait a owl:ObjectProperty ;
 arm:addedXP a   owl:DatatypeProperty ;
         rdfs:comment  "XP added in the last advancement of the trait.  This is a bit of a hack, allowing the trait defined as an advancement to be reused as a trait in future character sheets.  Thus we do not depend on creating new nodes in the reasoner." ;
         rdfs:domain  arm:Trait ;
-        rdfs:range   xsd:int .
+        rdfs:range   xsd:int ;
+        rdfs:label   "Added XP" .
 
 arm:hasSpentXP  a owl:DatatypeProperty ;
     rdfs:domain   arm:Advancement ;
