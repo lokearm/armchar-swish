@@ -17,10 +17,14 @@ arm:advanceFromCharacterSheet a owl:ObjectProperty ;
 arm:advanceToCharacterSheet a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:CharacterSheet .
+arm:hasAdvancementTypeString   a owl:DatatypeProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   xsd:string ;
+        rdfs:label   "Mode of Study" .
 arm:hasAdvancementType   a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:AdvancementType ;
-        rdfs:label   "Mode of Study" .
+        rdfs:label   "Study Mode" .
 arm:hasAdvancementTypeString   a owl:DatatypeProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:string .

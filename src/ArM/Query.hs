@@ -30,16 +30,16 @@ sameID (x,_,_,_) (y,_,_,_) = x == y
 -- | Split a list of Quads so that quads who belong to the same resource,
 -- as defined by the first element, are place in the same constituent
 -- list.
-split :: [Quad] -> [[Quad]]
-split xs = fst $ split' ([],sort xs)
+quadSplit :: [Quad] -> [[Quad]]
+quadSplit xs = fst $ quadSplit' ([],sort xs)
 
--- | split' is a mere auxiliary for 'split'
-split' :: ([[Quad]], [Quad]) -> ([[Quad]], [Quad]) 
-split' (xs,[]) = (xs,[])
-split' ([],y:ys) = split' ([[y]],ys)
-split' ((x:xs):xss,y:ys) 
-    | sameID  x y = split' ((y:x:xs):xss, ys)
-    | otherwise   = split' ([y]:(x:xs):xss, ys)
+-- | quadSplit' is a mere auxiliary for 'quadSplit'
+quadSplit' :: ([[Quad]], [Quad]) -> ([[Quad]], [Quad]) 
+quadSplit' (xs,[]) = (xs,[])
+quadSplit' ([],y:ys) = quadSplit' ([[y]],ys)
+quadSplit' ((x:xs):xss,y:ys) 
+    | sameID  x y = quadSplit' ((y:x:xs):xss, ys)
+    | otherwise   = quadSplit' ([y]:(x:xs):xss, ys)
 
 -- | Create a query graph from an N3 string.
 qparse :: String -> RDFGraph
@@ -71,13 +71,13 @@ labelToURI = fromJust . fromRDFLabel . fromJust
 -- Integers and Strings are handled.  
 -- Other datatypes will cause error. 
 labelToString :: Maybe RDFLabel -> String
-labelToString = fromJust .  labelToMaybeString 
-labelToMaybeString :: Maybe RDFLabel -> Maybe String
-labelToMaybeString ml = case (n) of 
-             (Nothing) -> fromRDFLabel l 
-             (Just nn) -> Just $ show nn
-    where l = fromJust ml
-          n =  fromRDFLabel l :: Maybe Int
+labelToString ml = 
+    case (n) of 
+       (Nothing) -> show l 
+       (Just nn) -> nn
+    where l = fromJust ml 
+          n = fromRDFLabel l :: Maybe String
+
 
 -- | Map variable bindings to quads of (id,property,label,value)
 -- Three variables should be bound, id, property, label, and value.

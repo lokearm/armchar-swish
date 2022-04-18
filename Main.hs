@@ -10,6 +10,7 @@ import qualified Data.Text.Lazy as  T
 import Swish.RDF.Graph
 
 
+import ArM.Query
 import ArM.Metadata
 import ArM.Advancement
 import Rules
@@ -24,21 +25,15 @@ testCharacter = "armchar:cieran"
 
 main :: IO ()
 main = do
-        let list = []
         character <- readGraph characterFile 
         schemaGraph <- readGraph armFile 
         resourceGraph <- readGraph resourceFile 
         let armGraph = merge schemaGraph resourceGraph
-        let m  = prepareInitialCharacter character
-        let g = merge armGraph m 
+        let g = prepareInitialCharacter $ merge armGraph character 
+
         DTIO.putStrLn $ formatGraphAsText $ g
         let vb = getCharacterMetadata g testCharacter 
         print vb
-        let c = testCharacter
-        print $ prefixes 
-            ++ "?a rdf:type arm:IngameCharacterAdvancement ; "
-            ++ " ?property ?value ; "
-            ++ " aarm:advanceCharacter " ++ c ++ " . "
-            ++ "?property rdfs:label ?label . "
-        let vb = getSeason g testCharacter 
+
+        let vb = quadSplit $ getSeason g testCharacter 
         print vb

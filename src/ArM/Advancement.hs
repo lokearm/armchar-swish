@@ -18,7 +18,7 @@ import ArM.Query
 --    arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ] ;
 
 qs c = qparse $ prefixes 
-      ++ "?a rdf:type arm:IngameCharacterAdvancement ; "
+      ++ "?id rdf:type arm:IngameCharacterAdvancement ; "
       ++ " ?property ?value ; "
       ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> " ++ c ++ " . "
       ++ "?property rdfs:label ?label . "
@@ -28,5 +28,7 @@ qt s = qparse $ prefixes
       ++ "?s ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
-getSeason g c = Q.rdfQueryFind (qs c) g
+-- getSeason g c =  rdfQueryFind (qs c) g
+getSeason g c = map quadFromBinding $ rdfQueryFind (qs c) g
+-- TODO: advancementType is an ObjectProperty (e.g. arm:Reading)
 

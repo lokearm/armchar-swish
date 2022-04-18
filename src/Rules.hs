@@ -15,7 +15,10 @@ fwdApplySimple :: RDFRule ->  RDFGraph -> [RDFGraph]
 fwdApplySimple r c = fwdApply r [c]
 
 fwdApplyMerge :: RDFRule ->  RDFGraph -> RDFGraph
-fwdApplyMerge r  c = merge c $ head $ fwdApply r [c]
+fwdApplyMerge r c
+      | n == []     = c
+      | otherwise   = merge c $ head n
+      where n = fwdApply r [c]
 
 
 -- URIs
@@ -46,13 +49,18 @@ makeRule ln s1 s2 = makeN3ClosureSimpleRule
 csRule = makeRule "csRule" 
     "?cs <https://hg.schaathun.net/armchar/schema#isCharacter> ?c . ?c ?p ?o ."
                   "?cs ?p ?o ."
+advtypeRule = makeRule "csRule" 
+    "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementType> ?c .  ?c rdfs:label ?l ."
+    "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementTypeString> ?l . "
 subclassRule = makeRule "subclassRule" 
     "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
                   "?s rdf:type ?c ."
 
 
 prepareInitialCharacter :: RDFGraph -> RDFGraph
-prepareInitialCharacter c = fwdApplyMerge csRule c
+prepareInitialCharacter = 
+   ( fwdApplyMerge advtypeRule )
+   . ( fwdApplyMerge csRule )
 
 typedClosure :: RDFGraph -> RDFGraph
 typedClosure c = fwdApplyMerge subclassRule c
