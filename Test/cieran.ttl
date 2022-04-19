@@ -45,7 +45,8 @@ armchar:cieran a arm:Magus ;
 	       arm:hasProfession "Rusticus (magus ex Miscellanea)" ;
 	       arm:hasNationality "Irish" ;
                arm:hasAlmaMater "Stonehenge" ;
-               arm:hasSaga armchar:contestedlands .
+               arm:hasSaga armchar:contestedlands ;
+               arm:hasInitialSheet :zero .
 
 armchar:elksrun  a arm:Covenant ; 
                arm:hasName "Elk's Run" ;
@@ -53,8 +54,6 @@ armchar:elksrun  a arm:Covenant ;
                arm:hasSaga armchar:contestedlands .
 
 # Initial character sheet.
-:zero arm:isCharacter armchar:cieran ; a arm:CharacterSheet .
-
 :zero arm:hasVirtue
     [ a armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
     [ a armr:craftmagic ; arm:hasScore 0 ],

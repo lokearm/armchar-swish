@@ -135,3 +135,6 @@ arm:BaseCharacter a owl:Class ; rdfs:subClassOf arm:Character ;
 arm:isCharacter a   owl:ObjectProperty ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:BaseCharacter .
+arm:hasInitialSheet  a   owl:ObjectProperty ;
+        rdfs:range    arm:CharacterSheet ;
+        rdfs:domain   arm:BaseCharacter .

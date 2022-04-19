@@ -84,9 +84,15 @@ advancementindexRule = makeRule "advancementindexRule"
     )
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementIndex> ?c ." 
 
+-- | Add indices used for sorting advancements
+initialsheetRule = makeRule "initialsheetRule" 
+    "?c <https://hg.schaathun.net/armchar/schema#hasInitialSheet>  ?s . "
+    ( "?s <https://hg.schaathun.net/armchar/schema#isCharacter> ?c ." 
+    ++ "?s rdf:type <https://hg.schaathun.net/armchar/schema#CharacterSheet> ."  )
+
 -- Make all necessary inferences before retrieving character data
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
    fwdApplyList [ subclassRule, advtypeRule, traitclassRule, csRule,
-                  advancementindexRule ]
+                  advancementindexRule, initialsheetRule ]
 
