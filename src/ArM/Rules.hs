@@ -77,9 +77,16 @@ traitclassRule = makeRule "traitclassRule"
 subclassRule = makeRule "subclassRule" 
     "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
                   "?s rdf:type ?c ."
+-- | Add indices used for sorting advancements
+advancementindexRule = makeRule "advancementindexRule" 
+    ( "?s rdf:type ?t . "
+    ++ "?t <https://hg.schaathun.net/armchar/schema#hasAdvancementIndex> ?c ." 
+    )
+    "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementIndex> ?c ." 
 
 -- Make all necessary inferences before retrieving character data
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
-   fwdApplyList [ subclassRule, advtypeRule, traitclassRule, csRule ]
+   fwdApplyList [ subclassRule, advtypeRule, traitclassRule, csRule,
+                  advancementindexRule ]
 

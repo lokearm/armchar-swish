@@ -39,5 +39,5 @@ main = do
         let x = sort $ getIngameAdvancements g testCharacter 
         print x
 
-        let z = sort $ getPregameAdvancements g testCharacter 
+        let z = getPregameAdvancements g testCharacter 
         print z
