@@ -37,21 +37,18 @@ As far as I can tell:
 
 ## TODO
 
-1. Get initial character sheet
-1. Season Log
-    - Pregame Advancement
-    - Group and Sort TraitAdvancements
-1. Advance Character Sheet
-    - well-defined Haskell types
-1. Web Server - get character sheet
-1. Web Server - put advancement resource
-1. Hand-code XP/score calculation rules.
-4. Make both hasTrait and subproperties
-5. Make JSON
-6. Make LaTeX
+1. get traits for (initial) character sheet
+2. Implement advanceCharacter
+    - should resulting sheets be pushed into the graph?
+3. Make JSON
+4. Web Server - get character sheet
+5. Web Server - put advancement resource
+6. Hand-code XP/score calculation rules.
+7. Make both hasTrait and subproperties
+8. Make LaTeX
     1.  Pull metadata
     2.  Pull Characteristics
-2. Spell String Rules
+9. Spell String Rules
 
 ## Data Management Proposal
 
