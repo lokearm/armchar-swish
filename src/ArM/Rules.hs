@@ -10,8 +10,9 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules ( prepareInitialCharacter
-               ) where
+module ArM.Rules 
+  -- ( prepareInitialCharacter)
+  where
 
 import Swish.RDF.Ruleset
 import qualified Swish.QName as QN
@@ -93,6 +94,6 @@ initialsheetRule = makeRule "initialsheetRule"
 -- Make all necessary inferences before retrieving character data
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
-   fwdApplyList [ subclassRule, advtypeRule, traitclassRule, csRule,
-                  advancementindexRule, initialsheetRule ]
+   fwdApplyList [ csRule, subclassRule, advtypeRule, traitclassRule, advancementindexRule ]
+   . fwdApplyList [ initialsheetRule ]
 

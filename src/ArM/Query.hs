@@ -14,18 +14,28 @@ module ArM.Query where
 import Swish.RDF.Parser.N3 (parseN3fromText)
 import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
-import Data.Text.Lazy as T
+import qualified Data.Text.Lazy as T
 import Swish.RDF.VarBinding as VB 
 import Network.URI (URI)
 import Swish.VarBinding  (vbMap)
 import Data.Maybe
 import Data.List (sort)
+import ArM.Resources
 
 type Triple = (URI, String, String)
 type Quad = (RDFLabel,URI, String, String)
 
 sameID :: Quad -> Quad -> Bool
 sameID (x,_,_,_) (y,_,_,_) = x == y
+
+-- | Given an identifier for the character, find the identifier for
+-- the initial character sheet
+getInitialSheet :: RDFGraph -> String -> Maybe RDFLabel
+getInitialSheet g c = vbMap vb (G.Var "s")
+    where 
+      vb = head $ rdfQueryFind q g
+      q = qparse $ prefixes ++ c
+        ++ " <https://hg.schaathun.net/armchar/schema#hasInitialSheet> ?s . " 
 
 -- | Split a list of Quads so that quads who belong to the same resource,
 -- as defined by the first element, are place in the same constituent
