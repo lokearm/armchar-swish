@@ -40,8 +40,10 @@ As far as I can tell:
 1. Season Log
     - Pregame Advancement
     - Group and Sort TraitAdvancements
-1. Web Server
 1. Advance Character Sheet
+    - well-defined Haskell types
+1. Web Server - get character sheet
+1. Web Server - put advancement resource
 1. Hand-code XP/score calculation rules.
 4. Make both hasTrait and subproperties
 5. Make JSON
