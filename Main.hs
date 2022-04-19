@@ -36,5 +36,8 @@ main = do
         let vb = getCharacterMetadata g testCharacter 
         print vb
 
-        let z = sort $ getAdvancements g testCharacter 
+        let x = sort $ getIngameAdvancements g testCharacter 
+        print x
+
+        let z = sort $ getPregameAdvancements g testCharacter 
         print z

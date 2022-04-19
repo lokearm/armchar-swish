@@ -11,7 +11,7 @@
 -----------------------------------------------------------------------------
 
 module ArM.Rules ( prepareInitialCharacter
-             , typedClosure  ) where
+               ) where
 
 import Swish.RDF.Ruleset
 import qualified Swish.QName as QN
@@ -73,20 +73,13 @@ traitclassRule = makeRule "traitclassRule"
     ++ "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c . "
     ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
 
--- Make all necessary inferences before retrieving character data
-prepareInitialCharacter :: RDFGraph -> RDFGraph
-prepareInitialCharacter = 
-   fwdApplyList [ advtypeRule, traitclassRule, csRule ]
-
--- Type Closure Rules
-
 -- | Infer additional types from subclass relationships 
 subclassRule = makeRule "subclassRule" 
     "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
                   "?s rdf:type ?c ."
 
--- | Apply the Type Closure Rules 
--- This is not currently used.  When used it will probably have a wider scope,
--- adding other rules
-typedClosure :: RDFGraph -> RDFGraph
-typedClosure = fwdApplyList [subclassRule]
+-- Make all necessary inferences before retrieving character data
+prepareInitialCharacter :: RDFGraph -> RDFGraph
+prepareInitialCharacter = 
+   fwdApplyList [ subclassRule, advtypeRule, traitclassRule, csRule ]
+
