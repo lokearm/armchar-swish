@@ -14,7 +14,7 @@ import Data.List
 import ArM.Query
 import ArM.Metadata
 import ArM.Advancement
-import Rules
+import ArM.Rules
 import ArM.AuxIO
 import ArM.Resources
 
