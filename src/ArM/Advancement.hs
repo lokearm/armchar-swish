@@ -25,9 +25,8 @@ qt s = qparse $ prefixes
       ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
-getGenQuads :: RDFGraph -> RDFGraph -> [Quad]
-getGenQuads g q = map quadFromBinding $ rdfQueryFind q g
 
+-- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> String -> [Advancement]
 getPregameAdvancements g c = getAdvancements g $ qparse $ prefixes 
        ++ "?id rdf:type arm:PregameAdvancement ; "
@@ -35,6 +34,7 @@ getPregameAdvancements g c = getAdvancements g $ qparse $ prefixes
        ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> "
        ++ c ++ " . "
        ++ "?property rdfs:label ?label . "
+-- | Get a list of all Ingame Advancements of a character.
 getIngameAdvancements :: RDFGraph -> String -> [Advancement]
 getIngameAdvancements g c = getAdvancements g $ qparse $ prefixes 
        ++ "?id rdf:type arm:IngameAdvancement ; "
@@ -43,17 +43,27 @@ getIngameAdvancements g c = getAdvancements g $ qparse $ prefixes
        ++ c ++ " . "
        ++ "?property rdfs:label ?label . "
 
+-- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
 getAdvancements :: RDFGraph -> RDFGraph -> [Advancement]
 getAdvancements g = fixAdvancements g . 
                map toAdvancement . quadSplit . getGenQuads g 
 
+-- | Auxiliary for 'getAdvancements'
+getGenQuads :: RDFGraph -> RDFGraph -> [Quad]
+getGenQuads g q = map quadFromBinding $ rdfQueryFind q g
+
+-- | Auxiliary for 'getAdvancements'
 fixAdvancements :: RDFGraph -> [Advancement] -> [Advancement]
 fixAdvancements g adv = map (fixAdv g) adv
+
+-- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
 fixAdv g a = a { traits = getTraits q g }
     where qt' = qt . show . fromJust . rdfid 
           q = qt' a
-getTraits q g = map toTraitAdvancement $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
+          getTraits q g = map toTraitAdvancement 
+               $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
+
 
 -- | TraitAdvancement Resource
 data TraitAdvancement = TraitAdvancement {
