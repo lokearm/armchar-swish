@@ -37,6 +37,7 @@ As far as I can tell:
 
 ## TODO
 
+1. Get initial character sheet
 1. Season Log
     - Pregame Advancement
     - Group and Sort TraitAdvancements

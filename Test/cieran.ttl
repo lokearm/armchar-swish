@@ -1,3 +1,19 @@
+# Test file: Character Sheet for armchar-swish
+#
+# This is intended to show the main features.
+# The schema (arm.ttl) is not necessarily complete.
+# It has not been practical to update the schema file as the 
+# de facto schema has had to change to simplify the implementation.
+#
+# Four kinds of resources are defined.
+#   1. The character, with presumably immutable attributes
+#   2. The initial character sheet, with traits that may change
+#   3. Character advancements which changes the character sheet
+#      as the character advances over time
+#   4. The covenant, which is only used implicitly, indirectly
+#      defining some attributes for the character.
+
+
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -11,6 +27,10 @@
 @prefix armpyramid: <https://hg.schaathun.net/armchar/pyramid#> .
 @prefix : <https://hg.schaathun.net/armchar/character/cieran#> .
 
+# Identifier for the sheet (graph) itself.
+# This is not used at present.
+# Note that the subject in the following statement is not the
+# same as armchar:cieran which identifies the character.
 <https://hg.schaathun.net/armcharacter/cieran> a owl:Ontology ;
      dc:creator "Hans Georg Schaathun" ;
      rdfs:comment "This is a sample character for the ArM ontology." .
@@ -31,8 +51,6 @@ armchar:elksrun  a arm:Covenant ;
                arm:hasName "Elk's Run" ;
 	       arm:hasSetting "Hibernia" ;
                arm:hasSaga armchar:contestedlands .
-
-
 
 # Initial character sheet.
 :zero arm:isCharacter armchar:cieran ; a arm:CharacterSheet .
