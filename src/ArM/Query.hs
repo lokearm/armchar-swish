@@ -28,15 +28,6 @@ type Quad = (RDFLabel,URI, String, String)
 sameID :: Quad -> Quad -> Bool
 sameID (x,_,_,_) (y,_,_,_) = x == y
 
--- | Given an identifier for the character, find the identifier for
--- the initial character sheet
-getInitialSheet :: RDFGraph -> String -> Maybe RDFLabel
-getInitialSheet g c = vbMap vb (G.Var "s")
-    where 
-      vb = head $ rdfQueryFind q g
-      q = qparse $ prefixes ++ c
-        ++ " <https://hg.schaathun.net/armchar/schema#hasInitialSheet> ?s . " 
-
 -- | Split a list of Quads so that quads who belong to the same resource,
 -- as defined by the first element, are place in the same constituent
 -- list.

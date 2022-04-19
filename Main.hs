@@ -18,6 +18,7 @@ import ArM.Advancement
 import ArM.Rules
 import ArM.AuxIO
 import ArM.Resources
+import ArM.Character
 
 import Swish.RDF.Ruleset
 

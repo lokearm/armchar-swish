@@ -20,7 +20,7 @@ import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
 import Swish.RDF.VarBinding as VB 
 import Swish.VarBinding 
-import Network.URI (URI)
+-- import Network.URI (URI)
 
 
 -- | Construct the query for a given character 'c', for use
@@ -34,7 +34,7 @@ query c = qparse $  prefixes
 -- a triple consisting of URI, Label, and Value.
 -- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
 -- either as a prefixed name or as a full URI in angled brackets (<uri>).
-getCharacterMetadata :: G.RDFGraph -> String -> [(URI,String,String)]
+getCharacterMetadata :: G.RDFGraph -> String -> [Triple]
 getCharacterMetadata g = 
       (map triplesFromBinding) 
       . ( getCharacterMetadataVB g )
