@@ -12,6 +12,10 @@ arm:PGAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
 arm:PregameAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
 arm:IngameAdvancement  rdfs:subClassOf arm:CharacterAdvancement ;
    arm:hasAdvancementIndex  100 .
+
+arm:hasAdvancementIndex  a owl:DatatypeProperty ;
+        rdfs:range   xsd:int ;
+        rdfs:label   "Sort index" .
  
 arm:advanceCharacter a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;

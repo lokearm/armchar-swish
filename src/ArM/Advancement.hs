@@ -29,7 +29,7 @@ qt s = qparse $ prefixes
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> String -> [Advancement]
 getPregameAdvancements g c = getAdvancements g $ qparse $ prefixes 
-       ++ "?id rdf:type arm:PregameAdvancement ; "
+       ++ " ?id rdf:type <https://hg.schaathun.net/armchar/schema#PregameAdvancement> ;"
        ++ " ?property ?value ; "
        ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> "
        ++ c ++ " . "
@@ -37,7 +37,7 @@ getPregameAdvancements g c = getAdvancements g $ qparse $ prefixes
 -- | Get a list of all Ingame Advancements of a character.
 getIngameAdvancements :: RDFGraph -> String -> [Advancement]
 getIngameAdvancements g c = getAdvancements g $ qparse $ prefixes 
-       ++ "?id rdf:type arm:IngameAdvancement ; "
+       ++ " ?id rdf:type arm:IngameAdvancement ; "
        ++ " ?property ?value ; "
        ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> "
        ++ c ++ " . "
@@ -111,11 +111,13 @@ data Advancement = Advancement {
     season :: Maybe String,
     rdfid :: Maybe RDFLabel,
     contents :: [Triple],
+    advSortIndex :: Int,
     traits :: [TraitAdvancement]
    } deriving Eq
 
 defaultAdvancement = Advancement { year = Nothing,
                 season = Nothing, rdfid = Nothing, 
+                advSortIndex = 0,
                 contents = [], traits = [] }
 instance Show Advancement where
    show a = "**" ++ s (season a) ++ " " ++ y (year a) ++ "**\n" 
@@ -133,7 +135,9 @@ instance Show Advancement where
          st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
                                   ++  "\n" ++ st xs
 instance Ord Advancement where
-   compare x y | year x < year y = LT
+   compare x y | advSortIndex x < advSortIndex y = LT
+               | advSortIndex x > advSortIndex y = GT
+               | year x < year y = LT
                | year x > year y = GT
                | sno x < sno y = LT
                | sno x > sno y = GT
@@ -157,6 +161,7 @@ toAdvancement [] = defaultAdvancement
 toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
          year = getYear ys,
          season = getSeason ys,
+         advSortIndex = getSortIndex ys,
          contents = ys }
          where ys = toTripleList xs 
 
@@ -184,6 +189,12 @@ getSeason [] = Nothing
 getSeason ((x,y,z):xs) 
    | y == "Season"  = Just z
    | otherwise      = getSeason xs
+
+-- | Get sort index from a list of Triples belonging to an Advancement
+getSortIndex [] = 2^30
+getSortIndex ((x,y,z):xs) 
+   | y == "Sort index"  = read z
+   | otherwise      = getSortIndex xs
 
 -- | Get the Trait Class from a list of Triples belonging to
 -- an Trait Advancement
