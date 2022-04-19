@@ -56,8 +56,8 @@ main = do
         -- print y
 
 
-        -- let x = sort $ getIngameAdvancements g testCharacter 
-        -- print x
+        let x = getCharacter g testCharacter 
+        print x
 
         -- let z = sort $ getPregameAdvancements g testCharacter 
         -- print z
