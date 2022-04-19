@@ -33,5 +33,6 @@ executable armchar-swish
                        , text >= 1.2.4.0
                        , network-uri >= 2.6.3.0
                        , scotty >= 0.12
+                       , aeson >= 2.0.3
   hs-source-dirs:      . , ./src
   default-language:    Haskell2010
