@@ -25,12 +25,29 @@ import ArM.Advancement
 import ArM.Query
 import ArM.Metadata
 
+data CharacterSheet = CharacterSheet {
+         csID :: String,
+         sheetID :: Maybe String,
+         csTraits :: [Trait],
+         csMetadata :: [Triple]
+       }  deriving (Eq,Show)
+defaultCS = CharacterSheet {
+         csID = "",
+         sheetID = Nothing,
+         csTraits = [],
+         csMetadata = []
+       }  
+
+-- | apply a given Advancement to a given CharacterSheet
+advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
+advanceCharacter cs adv = cs
+
 data Character = Character {
          characterID :: String,
          initialSheetID :: String,
          pregameAdv :: [Advancement],
          ingameAdv :: [Advancement],
-         csTraits :: [Trait],
+         characterTraits :: [Trait],
          metadata :: [Triple]
        }  deriving (Eq,Show)
 defaultCharacter = Character {
@@ -38,13 +55,23 @@ defaultCharacter = Character {
          initialSheetID = "",
          pregameAdv = [],
          ingameAdv = [],
-         csTraits = [],
+         characterTraits = [],
          metadata = []
        }  
 
 data Trait = Trait {
           traitID :: String
        }  deriving (Eq,Show)
+
+-- | get initial CharacterSheet from an RDFGraph
+getInitialCS :: RDFGraph -> String -> CharacterSheet
+getInitialCS g c = defaultCS {
+            csID = c,
+            sheetID = Just cs, 
+            csTraits = [],
+            csMetadata = getCharacterMetadata g cs
+         }
+         where cs = show $ fromJust $ getInitialSheet g c
      
 -- | get a Character from an RDFGraph
 getCharacter :: RDFGraph -> String -> Character
@@ -53,7 +80,7 @@ getCharacter g c = defaultCharacter {
            initialSheetID = cs,
            pregameAdv = sort $ getPregameAdvancements g c,
            ingameAdv = sort $ getIngameAdvancements g c,
-           csTraits = [],
+           characterTraits = [],
            metadata = getCharacterMetadata g cs
          }
          where cs = show $ fromJust $ getInitialSheet g c
@@ -66,4 +93,13 @@ getInitialSheet g c = vbMap vb (G.Var "s")
       vb = head $ rdfQueryFind q g
       q = qparse $ prefixes ++ c
         ++ " <https://hg.schaathun.net/armchar/schema#hasInitialSheet> ?s . " 
+
+
+-- | Query Graph to get traits for CharacterSheet
+qt :: String -> RDFGraph
+qt s = qparse $ prefixes 
+      ++ s ++ " <https://hg.schaathun.net/armchar/schema#Trait> ?id . " 
+      ++ "?id ?property ?value . "
+      ++ "?property rdfs:label ?label . "
+
 
