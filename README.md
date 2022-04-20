@@ -70,6 +70,7 @@ The «raw» data objects correspond to files.
 1. Implement advanceTrait
 1. Implement advanceCharacter
     - should resulting sheets be pushed into the graph?
+3. Generate documentation
 3. Make JSON
 4. Web Server - get character sheet
 5. Web Server - put advancement resource
