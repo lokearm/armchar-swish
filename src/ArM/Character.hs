@@ -105,9 +105,9 @@ getInitialSheet g c = vbMap vb (G.Var "s")
 -- | Auxiliary for 'getInitialSheet'
 fixCS :: RDFGraph -> CharacterSheet -> CharacterSheet
 fixCS g a = a { csTraits = sort $ getTraits q g }
-    where cqt' = cqt . show . fromJust . sheetID 
-          q = cqt' a
-          getTraits q g = map toTrait 
+    where q = cqt $ fromJust $ sheetID a
+
+getTraits q g = map toTrait 
                $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
 
 -- | Query Graph to get traits for CharacterSheet
