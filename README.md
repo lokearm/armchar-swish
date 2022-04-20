@@ -32,8 +32,38 @@ As far as I can tell:
     - Advancement per Season
 2.  Resources
 3.  ArM Schema (mainly for use with OWL/RDFS reasoners)
-4.  Derived Character Sheet per Season
 5.  Derived Character Sheet with implied traits
+4.  Derived Character Sheet per Season
+    - this must be generated after the implied traits
+    - implied trais may be advanced later
+
+```
+               prepareCS
+raw character  --------> preliminary graph --
+                                            |
+           prepareSchema                    |
+raw schema ------------> schema graph ------| merge
+                                            |
+                    prepareInitialCharacter |
+                                            v
+raw resources                            Character Graph
+    |              merge                    |
+    -----------------------------------------
+                     |
+                     | [implied traits and trait descriptions]
+                     v
+             initial character sheet
+                     |
+                     | [advance character]
+                     v
+             character sheet per season
+```
+
+In the figure, brackets `[]` indicate description of 
+funcions not yet implemented.
+Other arrow labels are function names.
+The «raw» data objects correspond to files.
+
 
 ## TODO
 
