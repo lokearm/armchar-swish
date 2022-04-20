@@ -48,7 +48,18 @@ defaultCS = CharacterSheet {
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
-advanceCharacter cs adv = cs
+advanceCharacter cs adv = cs { 
+     sheetID = Nothing,
+     csTraits = advanceTraitList (csTraits cs) (traits adv)
+     }
+
+advanceTraitList :: [Trait] -> [Trait] -> [Trait]
+advanceTraitList xs [] = xs
+advanceTraitList [] (y:ys) = makeNewTrait y:advanceTraitList [] ys
+advanceTraitList (x:xs) (y:ys) = x:xs
+
+makeNewTrait :: Trait -> Trait
+makeNewTrait x = x
 
 -- | Type ot collect all relevant data about a character.
 -- This may be redundant.  CharacterSheet may suffice.

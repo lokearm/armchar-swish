@@ -67,9 +67,6 @@ fixAdv g a = a { traits = sort $ getTraits q g }
                $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
 
 
--- | TraitAdvancement Resource
-type TraitAdvancement = Trait
-
 -- | CharacterAdvancement Resource
 -- Key computational features are extracted in separate constructors.
 -- TraitAdvancements are represented as a list of Quads.
@@ -80,7 +77,7 @@ data Advancement = Advancement {
     rdfid :: Maybe RDFLabel,
     contents :: [Triple],
     advSortIndex :: Int,
-    traits :: [TraitAdvancement]
+    traits :: [Trait]
    } deriving Eq
 
 defaultAdvancement = Advancement { year = Nothing,
