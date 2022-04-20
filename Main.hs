@@ -27,7 +27,7 @@ testCharacter = "armchar:cieran"
 
 main :: IO ()
 main = do
-        (rg,schema,g) <- getGraph characterFile armFile resourceFile
+        g <- getGraph characterFile armFile resourceFile
 
 
         DTIO.putStrLn $ formatGraphAsText $ g

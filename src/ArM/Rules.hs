@@ -125,3 +125,5 @@ prepareCS :: RDFGraph -> RDFGraph
 prepareCS = 
    fwdApplyList [ initialsheetRule, traitclasstypeRule ]
 
+-- | Make inferences on the joint graph including resources
+prepareGraph = id

@@ -35,7 +35,7 @@ readGraph fn = do
 -- 1. The resource graph (defining traits with descriptions etc.)
 -- 2. The schema graph (defining the ontology and vocabulary)
 -- 3. The character graph extended with the schema and initial inference
-getGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
+getGraph :: String -> String -> String -> IO RDFGraph
 getGraph characterFile armFile resourceFile = do
         character <- readGraph characterFile 
         schemaGraph' <- readGraph armFile 
@@ -44,5 +44,5 @@ getGraph characterFile armFile resourceFile = do
         let characterGraph' = prepareCS character
         let characterGraph =
               prepareInitialCharacter $ merge schemaGraph characterGraph'
-        return ( resourceGraph, schemaGraph, characterGraph )
+        return $ prepareGraph $ merge resourceGraph characterGraph 
 

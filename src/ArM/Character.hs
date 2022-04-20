@@ -53,16 +53,6 @@ advanceCharacter cs adv = cs {
      csTraits = advanceTraitList (csTraits cs) (traits adv)
      }
 
-advanceTraitList :: [Trait] -> [Trait] -> [Trait]
-advanceTraitList xs [] = xs
-advanceTraitList [] (y:ys) = makeNewTrait y:advanceTraitList [] ys
-advanceTraitList (x:xs) (y:ys) 
-     | xc < yc  = x:advanceTraitList xs (y:ys)
-     | xc > yc  = makeNewTrait y:advanceTraitList (x:xs) ys
-     | otherwise = advanceTraitList ( advanceTrait x y:xs ) ys
-     where xc = traitClass x
-           yc = traitClass y
-
 -- | Type ot collect all relevant data about a character.
 -- This may be redundant.  CharacterSheet may suffice.
 data Character = Character {
