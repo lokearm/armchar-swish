@@ -92,8 +92,6 @@ instance Show Advancement where
       where 
          y Nothing = ""
          y (Just x) = show x
-         s Nothing = ""
-         s (Just x) = x
          sc [] = ""
          sc ((_,x,y):xs) = x ++ ": " ++ show y ++ "\n" ++ sc xs
          st [] = ""
