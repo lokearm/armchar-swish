@@ -54,16 +54,20 @@ arm:MartialAbility rdfs:subClassOf arm:Ability .
 arm:SupernaturalAbility rdfs:subClassOf arm:Ability .
 
 arm:hasScore  a   owl:DatatypeProperty ;
+        rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
 arm:hasTotalXP  a   owl:DatatypeProperty ;
+        rdfs:label   "Total XP" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
 arm:hasXP  a   owl:DatatypeProperty ;
+        rdfs:label   "XP towards next level" ;
 	rdfs:comment "XP towards next level" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
 arm:hasDetail  a   owl:DatatypeProperty ;
+        rdfs:label   "Detail" ;
         rdfs:domain  [ owl:unionOf ( arm:Virtue arm:Flaw arm:Spell ) ] ;
         rdfs:range   xsd:string .
 arm:hasSpeciality  a   owl:DatatypeProperty ;
