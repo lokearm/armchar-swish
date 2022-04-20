@@ -53,24 +53,6 @@ advanceCharacter cs adv = cs {
      csTraits = advanceTraitList (csTraits cs) (traits adv)
      }
 
--- | Type ot collect all relevant data about a character.
--- This may be redundant.  CharacterSheet may suffice.
-data Character = Character {
-         characterID :: String,
-         initialSheetID :: String,
-         pregameAdv :: [Advancement],
-         ingameAdv :: [Advancement],
-         characterTraits :: [Trait],
-         metadata :: [Triple]
-       }  deriving (Eq,Show)
-defaultCharacter = Character {
-         characterID = "",
-         initialSheetID = "",
-         pregameAdv = [],
-         ingameAdv = [],
-         characterTraits = [],
-         metadata = []
-       }  
 
 -- | get initial CharacterSheet from an RDFGraph
 getInitialCS :: RDFGraph -> String -> CharacterSheet
@@ -85,17 +67,6 @@ getInitialCS' g c = defaultCS {
          }
          where cs = show $ fromJust $ getInitialSheet g c
      
--- | get a Character from an RDFGraph
-getCharacter :: RDFGraph -> String -> Character
-getCharacter g c = defaultCharacter {
-           characterID = c,
-           initialSheetID = cs,
-           pregameAdv = sort $ getPregameAdvancements g c,
-           ingameAdv = sort $ getIngameAdvancements g c,
-           characterTraits = [],
-           metadata = getCharacterMetadata g cs
-         }
-         where cs = show $ fromJust $ getInitialSheet g c
 
 -- | Given an identifier for the character, find the identifier for
 -- the initial character sheet
