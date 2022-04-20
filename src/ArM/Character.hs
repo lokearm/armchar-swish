@@ -42,6 +42,10 @@ defaultCS = CharacterSheet {
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = cs
 
+-- | apply a given TraitAdvancement to a given Trait
+advanceTrait :: Trait -> TraitAdvancement -> Trait 
+advanceTrait trait adv = trait
+
 data Character = Character {
          characterID :: String,
          initialSheetID :: String,
