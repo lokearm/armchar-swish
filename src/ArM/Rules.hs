@@ -78,6 +78,11 @@ traitclassRule = makeRule "traitclassRule"
     ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
     "?s <https://hg.schaathun.net/armchar/schema#traitClassString> ?l . "
 
+-- | traitClass also defines rdf:type
+traitclasstypeRule = makeRule "traitclasstypeRule" 
+    "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?t . "
+    "?s rdf:type ?t . "
+
 -- | Infer subclasses from transitivity
 subclassRule = makeRule "subclassRule" 
     "?s rdfs:subClasOf ?t . ?t rdfs:subClassOf ?c ."
@@ -109,5 +114,5 @@ prepareSchema =
    fwdApplyListR [ subclassRule ]
 prepareCS :: RDFGraph -> RDFGraph
 prepareCS = 
-   fwdApplyList [ initialsheetRule ]
+   fwdApplyList [ initialsheetRule, traitclasstypeRule ]
 

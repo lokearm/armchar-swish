@@ -55,30 +55,30 @@ armchar:elksrun  a arm:Covenant ;
 
 # Initial character sheet.
 :zero arm:hasVirtue
-    [ a armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
-    [ a armr:craftmagic ; arm:hasScore 0 ],
-    [ a armr:spellfoci ; arm:hasScore 0 ],
-    [ a armr:flawlessMagic ],
-    [ a armr:skilledParens ],
-    [ a armr:bookLearner ],
-    [ a armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
-    [ a armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ] .
+    [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
+    [ arm:traitClass armr:craftmagic ; arm:hasScore 0 ],
+    [ arm:traitClass armr:spellfoci ; arm:hasScore 0 ],
+    [ arm:traitClass armr:flawlessMagic ],
+    [ arm:traitClass armr:skilledParens ],
+    [ arm:traitClass armr:bookLearner ],
+    [ arm:traitClass armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
+    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ] .
 :zero arm:hasFlaw
-    [ a armr:meddler, armr:majorFlaw ],
-    [ a armr:shortRangedMagic ],
-    [ a armr:weakSpontaneousMagic ; arm:hasScore 0 ],
-    [ a armr:mistakenIdentity ],
-    [ a armr:carefree, armr:minorFlaw ] .
+    [ arm:traitClass armr:meddler, armr:majorFlaw ],
+    [ arm:traitClass armr:shortRangedMagic ],
+    [ arm:traitClass armr:weakSpontaneousMagic ; arm:hasScore 0 ],
+    [ arm:traitClass armr:mistakenIdentity ],
+    [ arm:traitClass armr:carefree, armr:minorFlaw ] .
 
 :zero arm:hasCharacteristic
-    [ a armr:int ; arm:hasScore 3 ], [ a armr:per ; arm:hasScore -1 ],
-    [ a armr:com ; arm:hasScore -1 ], [ a armr:pre ; arm:hasScore 0 ],
-    [ a armr:str ; arm:hasScore 2 ], [ a armr:sta ; arm:hasScore 3 ],
-    [ a armr:dex ; arm:hasScore 2 ], [ a armr:qik ; arm:hasScore -3 ] . 
+    [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore -1 ],
+    [ arm:traitClass armr:com ; arm:hasScore -1 ], [ arm:traitClass armr:pre ; arm:hasScore 0 ],
+    [ arm:traitClass armr:str ; arm:hasScore 2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
+    [ arm:traitClass armr:dex ; arm:hasScore 2 ], [ arm:traitClass armr:qik ; arm:hasScore -3 ] . 
 
 # General Abilities
 :zero arm:hasAbility
-   [ a armab:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
+   [ arm:traitClass armab:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:cieran ;
