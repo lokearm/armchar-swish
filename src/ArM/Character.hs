@@ -30,7 +30,14 @@ data CharacterSheet = CharacterSheet {
          sheetID :: Maybe String,
          csTraits :: [Trait],
          csMetadata :: [Triple]
-       }  deriving (Eq,Show)
+       }  deriving (Eq)
+instance Show CharacterSheet where
+    show cs = "**" ++ csID cs ++ "**\n" 
+           ++ "-- " ++ fromJust ( sheetID cs ) ++ "\n"
+           ++ "Traits:\n" ++ showw ( csTraits cs )
+           ++ "Metadata Triples:\n" ++ showw ( csMetadata cs )
+        where showw [] = ""
+              showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
 defaultCS = CharacterSheet {
          csID = "",
          sheetID = Nothing,

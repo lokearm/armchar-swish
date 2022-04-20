@@ -47,17 +47,6 @@ main = do
         let sheet0 = show $ fromJust $ getInitialSheet g testCharacter
         print sheet0
 
-        let vb2 = getCharacterMetadata g sheet0
-        print vb2
-
-        -- let x = fwdApplySimple csRule g
-        -- print x
-        -- let y = fwdApplySimple csRule g0
-        -- print y
-
-
-        let x = getCharacter g testCharacter 
+        let x = getInitialCS g testCharacter 
+        print "Initial Sheet"
         print x
-
-        -- let z = sort $ getPregameAdvancements g testCharacter 
-        -- print z
