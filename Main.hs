@@ -46,6 +46,3 @@ main = do
         let x = getInitialCS g testCharacter 
         print "Initial Sheet"
         print x
-
-        print $ ( show . fromJust . sheetID ) x
-
