@@ -74,8 +74,12 @@ traitclassRule = makeRule "traitclassRule"
     ++ "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c . "
     ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
 
--- | Infer additional types from subclass relationships 
+-- | Infer subclasses from transitivity
 subclassRule = makeRule "subclassRule" 
+    "?s rdfs:subClasOf ?t . ?t rdfs:subClassOf ?c ."
+                  "?s rdfs:subClasOf ?c ."
+-- | Infer additional types from subclass relationships 
+subclasstypeRule = makeRule "subclasstypeRule" 
     "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
                   "?s rdf:type ?c ."
 -- | Add indices used for sorting advancements
@@ -94,6 +98,12 @@ initialsheetRule = makeRule "initialsheetRule"
 -- Make all necessary inferences before retrieving character data
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
-   fwdApplyList [ csRule, subclassRule, advtypeRule, traitclassRule, advancementindexRule ]
-   . fwdApplyList [ initialsheetRule ]
+   fwdApplyList [ csRule, subclasstypeRule, advtypeRule, traitclassRule, advancementindexRule ]
+
+prepareSchema :: RDFGraph -> RDFGraph
+prepareSchema = 
+   fwdApplyList [ subclassRule ]
+prepareCS :: RDFGraph -> RDFGraph
+prepareCS = 
+   fwdApplyList [ initialsheetRule ]
 

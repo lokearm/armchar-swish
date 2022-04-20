@@ -15,8 +15,7 @@ import Data.Maybe
 import ArM.Query
 import ArM.Metadata
 import ArM.Advancement
-import ArM.Rules
-import ArM.AuxIO
+import ArM.Load
 import ArM.Resources
 import ArM.Character
 
@@ -26,18 +25,9 @@ import Swish.RDF.Ruleset
 
 testCharacter = "armchar:cieran"
 
--- | Construct the test graph
-getGraph :: IO RDFGraph
-getGraph = do
-        character <- readGraph characterFile 
-        schemaGraph <- readGraph armFile 
-        resourceGraph <- readGraph resourceFile 
-        let armGraph = merge schemaGraph resourceGraph
-        return $ prepareInitialCharacter $ merge armGraph character 
-
 main :: IO ()
 main = do
-        g <- getGraph
+        (rg,schema,g) <- getGraph characterFile armFile resourceFile
 
 
         DTIO.putStrLn $ formatGraphAsText $ g
