@@ -88,6 +88,8 @@ rdfsRules = [
        "?s rdfs:subPropertyOf ?c ."
        ]
 
+-- | Rules to infer additional types and properties from subclass 
+-- and subproperty relations (using RDFS vocabulary).
 rdfstypeRules = [
     makeRule "subclasstypeRule"
        "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
