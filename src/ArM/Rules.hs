@@ -15,7 +15,6 @@ module ArM.Rules
   where
 
 import Swish.RDF.Ruleset
-import qualified Swish.QName as QN
 import qualified Data.Text as T
 import Data.Text.Lazy.Builder
 import Swish.Rule
@@ -50,10 +49,6 @@ fwdApplyListR rs g = if (g' == g) then g'
                      else fwdApplyListR rs g'
                      where g' = fwdApplyList rs g
 
--- | Define a local name from a String
-newLName s = case (QN.newLName $ T.pack s) of
-   (Nothing) -> QN.emptyLName
-   (Just ln) -> ln
 
 -- | Convenience function to make a Rule from Strings of Notation3 data.
 makeRule ln s1 s2 = makeN3ClosureSimpleRule 

@@ -3,6 +3,7 @@ module ArM.Resources where
 import Swish.Namespace
 import Network.URI
 import qualified Data.Text as T
+import qualified Swish.QName as QN
 
 armFile = "Ontology/arm.ttl"
 resourceFile = "Ontology/resources.ttl"
@@ -35,3 +36,10 @@ rulesURI = URI { uriScheme = "https:",
            uriFragment = "#" }
 armNS = makeNamespace (Just $ T.pack "arm") armURI
 rulesNS = makeNamespace (Just $ T.pack "armrules") armURI
+
+-- | Define a local name from a String
+newLName s = case (QN.newLName $ T.pack s) of
+   (Nothing) -> QN.emptyLName
+   (Just ln) -> ln
+
+makeSN s = makeScopedName (Just $ T.pack "arm:") armURI (newLName s)

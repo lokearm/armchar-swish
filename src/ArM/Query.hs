@@ -22,8 +22,8 @@ import Data.Maybe
 import Data.List (sort)
 import ArM.Resources
 
-type Triple = (URI, String, String)
-type Quad = (RDFLabel,URI, String, String)
+type Triple = (RDFLabel, String, String)
+type Quad = (RDFLabel,RDFLabel, String, String)
 
 -- | Return the first element of a Quad
 qfst :: (a,b,c,d) -> a
@@ -60,7 +60,7 @@ qparse = either error id . parseN3fromText . T.pack
 
 -- | Map variable bindings to triples of (property,label,value)
 -- Three variables should be bound, property, label, and value.
-triplesFromBinding :: VB.RDFVarBinding -> (URI, String, String)
+triplesFromBinding :: VB.RDFVarBinding -> Triple
 triplesFromBinding = metadataFromLabels . metadataFromBinding 
 
 -- | Step 1. Map the variable bindings to Maybe RDFLabel
@@ -72,9 +72,9 @@ metadataFromBinding vb = (vbMap vb (G.Var "property"),
 
 -- | Step 2.  Map the RDFLabels into URIs and Strings.
 metadataFromLabels :: (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
-                  -> (URI, String, String)
+                  -> Triple
 metadataFromLabels (p,label,value) =
-            (labelToURI p, labelToString label, labelToString value) 
+            (fromJust p, labelToString label, labelToString value) 
 
 -- | Step 2a.  Map RDFLabel to URI
 labelToURI :: Maybe RDFLabel -> URI
@@ -94,7 +94,7 @@ labelToString ml =
 
 -- | Map variable bindings to quads of (id,property,label,value)
 -- Three variables should be bound, id, property, label, and value.
-quadFromBinding :: VB.RDFVarBinding -> (RDFLabel,URI, String, String)
+quadFromBinding :: VB.RDFVarBinding -> Quad
 quadFromBinding = quadFromLabels . quadVB 
 
 quadVB :: VB.RDFVarBinding 
@@ -105,6 +105,6 @@ quadVB vb = (vbMap vb (G.Var "id"),
              vbMap vb (G.Var "value"))
 quadFromLabels ::
     (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
-    -> (RDFLabel,URI, String, String)
+    -> Quad
 quadFromLabels (id,p,label,value) =
-    (fromJust id,labelToURI p, labelToString label, labelToString value) 
+    (fromJust id,fromJust p, labelToString label, labelToString value) 

@@ -67,9 +67,14 @@ The «raw» data objects correspond to files.
 
 ## TODO
 
-1. Implement advanceTrait
-1. Implement advanceCharacter
-    - should resulting sheets be pushed into the graph?
+1. Distinguish between different kinds of traits
+    - Repeatable traits (i.e. certain virtues)
+    - XP Traits
+    - Accellerated XP Traits
+1. Complete the advancement functions based on the above
+    1. advanceTrait
+    1. Fix makeNewTrait 
+    3. should resulting sheets be pushed into the graph?
 3. Generate documentation
 3. Make JSON
 4. Web Server - get character sheet

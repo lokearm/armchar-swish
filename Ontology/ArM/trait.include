@@ -1,6 +1,8 @@
 arm:Trait a owl:Class .
 arm:TraitProperty a owl:Property .
 
+arm:RepeatableTrait rdfs:subClassOf arm:Trait ;
+   rdfs:comment "This class f traits can be taken more than once." .
 arm:XPTrait rdfs:subClassOf arm:Trait .
 arm:AccelleratedTrait rdfs:subClassOf arm:Trait ;
     owl:disjointWith arm:XPTrait .

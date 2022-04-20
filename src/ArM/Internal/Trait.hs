@@ -23,6 +23,8 @@ import Data.List (sort)
 import ArM.Resources
 import ArM.Query
 import ArM.Metadata
+import Swish.Namespace
+
 
 -- | apply a given Trait Advancement to a given Trait
 -- 1.  apply addedXP
@@ -30,14 +32,48 @@ import ArM.Metadata
 -- 3.  take other properties from the second Trait if available
 -- 4.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = trait
+advanceTrait trait adv = trait { traitID = Nothing }
 
 -- | Make a new trait (for a CharacterSheet) from a Trait Advancement.
 --  - replace addedXP with totalXP 
 --  - add Score
 --  - add implied traits
 makeNewTrait :: Trait -> Trait
-makeNewTrait x = x
+makeNewTrait x = x { traitID = Nothing,
+        traitContents = makeNewTraitTriples $ traitContents x }
+
+makeNewTraitTriples :: [Triple] -> [Triple]
+makeNewTraitTriples ts = x:y:z:ys
+    where (xp,ys) = makeNewTraitTriples' (defaultXPType,[]) ts
+          (x,y,z) = processXP xp
+
+processXP :: XPType -> (Triple,Triple,Triple)
+processXP xp = ( (totalXPLabel,"Total XP",show t),
+                 (scoreLabel,"Score",show s),
+                 (hasXPLabel,"XP towards next level",show r) ) 
+   where t = totalXP xp + addXP xp
+         s = scoreFromXP t
+         r = t - (s*(s+1) `div` 2)
+scoreFromXP :: Int -> Int
+scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
+    where x = fromIntegral y  :: Double
+
+addXPLabel = Res $ makeSN  "addedXP"
+totalXPLabel = Res $ makeSN "hasTotalXP" 
+scoreLabel = Res $ makeSN "hasScore" 
+hasXPLabel = Res $ makeSN "hasXP" 
+
+data XPType = XP { addXP :: Int, totalXP :: Int, score :: Int, hasXP :: Int }
+defaultXPType = XP { addXP = 0, totalXP = 0, score = 0, hasXP = 0 }
+
+makeNewTraitTriples' :: (XPType,[Triple]) -> [Triple] -> (XPType,[Triple]) 
+makeNewTraitTriples' xt [] = xt
+makeNewTraitTriples' (xp,ys) ((a,b,c):zs) 
+    | a == addXPLabel = makeNewTraitTriples' (xp { addXP = read c },ys) zs
+    | a == totalXPLabel = makeNewTraitTriples' (xp { totalXP = read c },ys) zs
+    | a == scoreLabel = makeNewTraitTriples' (xp { score = read c },ys) zs
+    | a == hasXPLabel = makeNewTraitTriples' (xp { hasXP = read c },ys) zs
+    | otherwise       = makeNewTraitTriples' (xp, (a,b,c):ys) zs
 
 -- | Trait Resource
 data Trait = Trait {
