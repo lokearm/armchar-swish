@@ -6,6 +6,7 @@ import ArM.Resources
 import ArM.Query 
 import Data.Maybe 
 import Data.List
+import ArM.Internal.Trait
 
 -- Class:
 --    a arm:CharacterAdvancement ;
@@ -62,46 +63,12 @@ fixAdv :: RDFGraph -> Advancement -> Advancement
 fixAdv g a = a { traits = sort $ getTraits q g }
     where qt' = qt . show . fromJust . rdfid 
           q = qt' a
-          getTraits q g = map toTraitAdvancement 
+          getTraits q g = map toTrait
                $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
 
 
 -- | TraitAdvancement Resource
-data TraitAdvancement = TraitAdvancement {
-    tAdvID :: Maybe RDFLabel,
-    tAdvClass :: Maybe String,
-    tAdvContents :: [Triple]
-   } deriving (Eq)
-
--- | Make a TraitAdvancement object from a list of Quads
-toTraitAdvancement :: [Quad] -> TraitAdvancement
-toTraitAdvancement [] = TraitAdvancement {
-         tAdvID = Nothing,
-         tAdvClass = Nothing,
-         tAdvContents = [] }
-toTraitAdvancement xs = TraitAdvancement { 
-         tAdvID = Just $ qfst $ head xs,
-         tAdvClass = getTraitClass ys,
-         tAdvContents = ys }
-         where ys = toTripleList xs 
-
-instance Show TraitAdvancement where
-   show a = "**" ++ y (tAdvID a) ++ " " ++ s (tAdvClass a) ++ "**\n" 
-                 ++ sc (tAdvContents a) 
-                 ++ "\n"
-      where 
-         y Nothing = ""
-         y (Just x) = show x
-         s Nothing = ""
-         s (Just x) = x
-         sc [] = ""
-         sc ((_,x,y):xs) = "  " ++ x ++ ": " ++ y ++ "\n" ++ sc xs
-instance Ord TraitAdvancement where
-   compare x y | tAdvClass x < tAdvClass y = LT
-               | tAdvClass x > tAdvClass y = GT
-               | tAdvID x < tAdvID y = LT
-               | tAdvID x > tAdvID y = GT
-               | otherwise = EQ
+type TraitAdvancement = Trait
 
 -- | CharacterAdvancement Resource
 -- Key computational features are extracted in separate constructors.
@@ -187,11 +154,4 @@ getSortIndex [] = 2^30
 getSortIndex ((x,y,z):xs) 
    | y == "Sort index"  = read z
    | otherwise      = getSortIndex xs
-
--- | Get the Trait Class from a list of Triples belonging to
--- an Trait Advancement
-getTraitClass [] = Nothing
-getTraitClass ((x,y,z):xs) 
-   | y == "Trait ID"  = Just z
-   | otherwise      = getTraitClass xs
 

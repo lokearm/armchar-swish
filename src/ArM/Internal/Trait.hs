@@ -24,7 +24,7 @@ import ArM.Resources
 import ArM.Query
 import ArM.Metadata
 
--- | apply a given TraitAdvancement to a given Trait
+-- | apply a given Trait Advancement to a given Trait
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = trait
 

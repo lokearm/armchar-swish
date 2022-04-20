@@ -21,6 +21,7 @@ import Swish.VarBinding  (vbMap)
 import Data.Maybe
 import Data.List (sort)
 import ArM.Resources
+import ArM.Internal.Trait
 import ArM.Advancement
 import ArM.Query
 import ArM.Metadata
@@ -48,10 +49,6 @@ defaultCS = CharacterSheet {
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = cs
-
--- | apply a given TraitAdvancement to a given Trait
-advanceTrait :: Trait -> TraitAdvancement -> Trait 
-advanceTrait trait adv = trait
 
 data Character = Character {
          characterID :: String,
@@ -104,45 +101,6 @@ getInitialSheet g c = vbMap vb (G.Var "s")
       q = qparse $ prefixes ++ c
         ++ " <https://hg.schaathun.net/armchar/schema#hasInitialSheet> ?s . " 
 
-
-
-
--- | Trait Resource
-data Trait = Trait {
-    traitID :: Maybe RDFLabel,
-    traitClass :: Maybe String,
-    traitContents :: [Triple]
-   } deriving (Eq)
-
--- | Make a Trait object from a list of Quads
-toTrait :: [Quad] -> Trait
-toTrait [] = Trait {
-         traitID = Nothing,
-         traitClass = Nothing,
-         traitContents = [] }
-toTrait xs = Trait { 
-         traitID = Just $ qfst $ head xs,
-         traitClass = getTraitClass ys,
-         traitContents = ys }
-         where ys = toTripleList xs 
-
-instance Show Trait where
-   show a = "**" ++ y (traitID a) ++ " " ++ s (traitClass a) ++ "**\n" 
-                 ++ sc (traitContents a) 
-                 ++ "\n"
-      where 
-         y Nothing = ""
-         y (Just x) = show x
-         s Nothing = ""
-         s (Just x) = x
-         sc [] = ""
-         sc ((_,x,y):xs) = "  " ++ x ++ ": " ++ y ++ "\n" ++ sc xs
-instance Ord Trait where
-   compare x y | traitClass x < traitClass y = LT
-               | traitClass x > traitClass y = GT
-               | traitID x < traitID y = LT
-               | traitID x > traitID y = GT
-               | otherwise = EQ
 
 -- | Auxiliary for 'getInitialSheet'
 fixCS :: RDFGraph -> CharacterSheet -> CharacterSheet
