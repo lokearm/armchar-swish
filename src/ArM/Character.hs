@@ -59,13 +59,12 @@ defaultCharacter = Character {
          metadata = []
        }  
 
-data Trait = Trait {
-          traitID :: String
-       }  deriving (Eq,Show)
-
 -- | get initial CharacterSheet from an RDFGraph
 getInitialCS :: RDFGraph -> String -> CharacterSheet
-getInitialCS g c = defaultCS {
+getInitialCS g = fixCS g . getInitialCS' g
+
+getInitialCS' :: RDFGraph -> String -> CharacterSheet
+getInitialCS' g c = defaultCS {
             csID = c,
             sheetID = Just cs, 
             csTraits = [],
@@ -95,11 +94,56 @@ getInitialSheet g c = vbMap vb (G.Var "s")
         ++ " <https://hg.schaathun.net/armchar/schema#hasInitialSheet> ?s . " 
 
 
+
+
+-- | Trait Resource
+data Trait = Trait {
+    traitID :: Maybe RDFLabel,
+    traitClass :: Maybe String,
+    traitContents :: [Triple]
+   } deriving (Eq)
+
+-- | Make a Trait object from a list of Quads
+toTrait :: [Quad] -> Trait
+toTrait [] = Trait {
+         traitID = Nothing,
+         traitClass = Nothing,
+         traitContents = [] }
+toTrait xs = Trait { 
+         traitID = Just $ qfst $ head xs,
+         traitClass = getTraitClass ys,
+         traitContents = ys }
+         where ys = toTripleList xs 
+
+instance Show Trait where
+   show a = "**" ++ y (traitID a) ++ " " ++ s (traitClass a) ++ "**\n" 
+                 ++ sc (traitContents a) 
+                 ++ "\n"
+      where 
+         y Nothing = ""
+         y (Just x) = show x
+         s Nothing = ""
+         s (Just x) = x
+         sc [] = ""
+         sc ((_,x,y):xs) = "  " ++ x ++ ": " ++ y ++ "\n" ++ sc xs
+instance Ord Trait where
+   compare x y | traitClass x < traitClass y = LT
+               | traitClass x > traitClass y = GT
+               | traitID x < traitID y = LT
+               | traitID x > traitID y = GT
+               | otherwise = EQ
+
+-- | Auxiliary for 'getInitialSheet'
+fixCS :: RDFGraph -> CharacterSheet -> CharacterSheet
+fixCS g a = a { csTraits = sort $ getTraits q g }
+    where cqt' = cqt . show . fromJust . sheetID 
+          q = cqt' a
+          getTraits q g = map toTrait 
+               $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
+
 -- | Query Graph to get traits for CharacterSheet
-qt :: String -> RDFGraph
-qt s = qparse $ prefixes 
+cqt :: String -> RDFGraph
+cqt s = qparse $ prefixes 
       ++ s ++ " <https://hg.schaathun.net/armchar/schema#Trait> ?id . " 
       ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "
-
-

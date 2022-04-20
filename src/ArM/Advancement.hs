@@ -5,6 +5,7 @@ import Swish.RDF.Query as Q
 import ArM.Resources 
 import ArM.Query 
 import Data.Maybe 
+import Data.List
 
 -- Class:
 --    a arm:CharacterAdvancement ;
@@ -58,7 +59,7 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g a = a { traits = getTraits q g }
+fixAdv g a = a { traits = sort $ getTraits q g }
     where qt' = qt . show . fromJust . rdfid 
           q = qt' a
           getTraits q g = map toTraitAdvancement 
@@ -67,26 +68,26 @@ fixAdv g a = a { traits = getTraits q g }
 
 -- | TraitAdvancement Resource
 data TraitAdvancement = TraitAdvancement {
-    traitID :: Maybe RDFLabel,
-    traitClass :: Maybe String,
-    traitContents :: [Triple]
+    tAdvID :: Maybe RDFLabel,
+    tAdvClass :: Maybe String,
+    tAdvContents :: [Triple]
    } deriving (Eq)
 
 -- | Make a TraitAdvancement object from a list of Quads
 toTraitAdvancement :: [Quad] -> TraitAdvancement
 toTraitAdvancement [] = TraitAdvancement {
-         traitID = Nothing,
-         traitClass = Nothing,
-         traitContents = [] }
+         tAdvID = Nothing,
+         tAdvClass = Nothing,
+         tAdvContents = [] }
 toTraitAdvancement xs = TraitAdvancement { 
-         traitID = Just $ qfst $ head xs,
-         traitClass = getTraitClass ys,
-         traitContents = ys }
+         tAdvID = Just $ qfst $ head xs,
+         tAdvClass = getTraitClass ys,
+         tAdvContents = ys }
          where ys = toTripleList xs 
 
 instance Show TraitAdvancement where
-   show a = "**" ++ y (traitID a) ++ " " ++ s (traitClass a) ++ "**\n" 
-                 ++ sc (traitContents a) 
+   show a = "**" ++ y (tAdvID a) ++ " " ++ s (tAdvClass a) ++ "**\n" 
+                 ++ sc (tAdvContents a) 
                  ++ "\n"
       where 
          y Nothing = ""
@@ -96,10 +97,10 @@ instance Show TraitAdvancement where
          sc [] = ""
          sc ((_,x,y):xs) = "  " ++ x ++ ": " ++ y ++ "\n" ++ sc xs
 instance Ord TraitAdvancement where
-   compare x y | traitClass x < traitClass y = LT
-               | traitClass x > traitClass y = GT
-               | traitID x < traitID y = LT
-               | traitID x > traitID y = GT
+   compare x y | tAdvClass x < tAdvClass y = LT
+               | tAdvClass x > tAdvClass y = GT
+               | tAdvID x < tAdvID y = LT
+               | tAdvID x > tAdvID y = GT
                | otherwise = EQ
 
 -- | CharacterAdvancement Resource
