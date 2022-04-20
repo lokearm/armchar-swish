@@ -73,7 +73,7 @@ fixAdv g a = a { traits = sort $ getTraits q g }
 -- Other properties are listed as 'contents'.
 data Advancement = Advancement {
     year :: Maybe Int,
-    season :: Maybe String,
+    season :: Maybe RDFLabel,
     rdfid :: Maybe RDFLabel,
     contents :: [Triple],
     advSortIndex :: Int,
@@ -85,7 +85,7 @@ defaultAdvancement = Advancement { year = Nothing,
                 advSortIndex = 0,
                 contents = [], traits = [] }
 instance Show Advancement where
-   show a = "**" ++ s (season a) ++ " " ++ y (year a) ++ "**\n" 
+   show a = "**" ++ y (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
                  ++ "\n"
@@ -95,7 +95,7 @@ instance Show Advancement where
          s Nothing = ""
          s (Just x) = x
          sc [] = ""
-         sc ((_,x,y):xs) = x ++ ": " ++ y ++ "\n" ++ sc xs
+         sc ((_,x,y):xs) = x ++ ": " ++ show y ++ "\n" ++ sc xs
          st [] = ""
          st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
                                   ++  "\n" ++ st xs
@@ -114,11 +114,11 @@ instance Ord Advancement where
                where sno = seasonNo . season
 
 seasonNo Nothing = 0
-seasonNo (Just "Spring") = 1
-seasonNo (Just "Summer") = 2
-seasonNo (Just "Autumn") = 3
-seasonNo (Just "Winter") = 4
-seasonNo (Just _) = 10
+seasonNo (Just x ) | x == springLabel = 1
+                   | x == summerLabel = 2
+                   | x == autumnLabel = 3
+                   | x == winterLabel = 4
+                   | otherwise  = 10
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [Quad] -> Advancement
@@ -137,7 +137,7 @@ toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear [] = Nothing
 getYear ((x,y,z):xs) 
-   | y == "Year"  = Just $ read z
+   | y == "Year"  = fromRDFLabel z
    | otherwise    = getYear xs
 
 -- | Get the season from a list of Triples belonging to an Advancement
@@ -147,8 +147,9 @@ getSeason ((x,y,z):xs)
    | otherwise      = getSeason xs
 
 -- | Get sort index from a list of Triples belonging to an Advancement
+getSortIndex :: [Triple] -> Int
 getSortIndex [] = 2^30
 getSortIndex ((x,y,z):xs) 
-   | y == "Sort index"  = read z
+   | y == "Sort index"  = fromJust $ fromRDFLabel z
    | otherwise      = getSortIndex xs
 

@@ -30,7 +30,7 @@ import Swish.Namespace
 -- | Trait Resource
 data Trait = Trait {
     traitID :: Maybe RDFLabel,
-    traitClass :: Maybe String,
+    traitClass :: Maybe RDFLabel,
     isRepeatableTrait :: Bool,
     isXPTrait :: Bool,
     isAccelleratedTrait :: Bool,
@@ -38,7 +38,7 @@ data Trait = Trait {
    } deriving (Eq)
 
 instance Show Trait where
-   show a = "**" ++ y (traitID a) ++ " " ++ s (traitClass a) ++ "**\n" 
+   show a = "**" ++ y (traitID a) ++ " " ++ y (traitClass a) ++ "**\n" 
                  ++ sc (traitContents a) 
                  ++ "\n"
       where 
@@ -47,7 +47,7 @@ instance Show Trait where
          s Nothing = ""
          s (Just x) = x
          sc [] = ""
-         sc ((_,x,y):xs) = "  " ++ x ++ ": " ++ y ++ "\n" ++ sc xs
+         sc ((_,x,y):xs) = "  " ++ x ++ ": " ++ show y ++ "\n" ++ sc xs
 instance Ord Trait where
    compare x y | traitClass x < traitClass y = LT
                | traitClass x > traitClass y = GT
@@ -125,14 +125,15 @@ makeNewTraitTriples' (xp,ys) ((a,b,c):zs)
     | a == scoreLabel = makeNewTraitTriples' (xp { score = read c },ys) zs
     | a == hasXPLabel = makeNewTraitTriples' (xp { hasXP = read c },ys) zs
     | otherwise       = makeNewTraitTriples' (xp, (a,b,c):ys) zs
+    where read = fromJust . fromRDFLabel
 
 
 -- | Calculate the triples for total XP, score, and remaining XP,
 -- given an XPType object.
 processXP :: Int -> XPType -> (Triple,Triple,Triple)
-processXP n xp = ( (totalXPLabel,"Total XP",show t),
-                 (scoreLabel,"Score",show s),
-                 (hasXPLabel,"XP towards next level",show r) ) 
+processXP n xp = ( (totalXPLabel,"Total XP",toRDFLabel t),
+                 (scoreLabel,"Score",toRDFLabel s),
+                 (hasXPLabel,"XP towards next level",toRDFLabel r) ) 
    where t = totalXP xp + addXP xp
          s = scoreFromXP (t `div` n)
          r = t - n*(s*(s+1) `div` 2)
@@ -143,10 +144,6 @@ scoreFromXP :: Int -> Int
 scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
     where x = fromIntegral y  :: Double
 
-addXPLabel = Res $ makeSN  "addedXP"
-totalXPLabel = Res $ makeSN "hasTotalXP" 
-scoreLabel = Res $ makeSN "hasScore" 
-hasXPLabel = Res $ makeSN "hasXP" 
 
 -- ** Parsing Trait from RDF **
 
@@ -176,9 +173,9 @@ traitTripleList' :: (Bool,Bool,Bool,[Triple]) -> [Quad]
 traitTripleList' (a,b,c,xs) [] = (a,b,c,xs)
 traitTripleList' (a,b,c,xs) (y:ys) =
          traitTripleList' (a',b',c',(y2,y3,y4):xs) ys
-         where  a' = a || y4 == "arm:RepeatableTrait"
-                b' = b || y4 == "arm:XPTrait"
-                c' = c || y4 == "arm:AccelleratedTrait"
+         where  a' = a || y4 == repeatableLabel
+                b' = b || y4 == xptraitLabel
+                c' = c || y4 == accelleratedtraitLabel
                 (_,y2,y3,y4) = y
 
 -- | Get the Trait Class from a list of Triples belonging to

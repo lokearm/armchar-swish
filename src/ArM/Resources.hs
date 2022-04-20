@@ -1,6 +1,7 @@
 module ArM.Resources where
 
 import Swish.Namespace
+import Swish.RDF.Graph
 import Network.URI
 import qualified Data.Text as T
 import qualified Swish.QName as QN
@@ -43,3 +44,15 @@ newLName s = case (QN.newLName $ T.pack s) of
    (Just ln) -> ln
 
 makeSN s = makeScopedName (Just $ T.pack "arm:") armURI (newLName s)
+
+repeatableLabel = Res $ makeSN  "RepeatableTrait"
+xptraitLabel = Res $ makeSN  "XPTrait"
+accelleratedtraitLabel = Res $ makeSN  "AccelleratedTrait"
+addXPLabel = Res $ makeSN  "addedXP"
+totalXPLabel = Res $ makeSN "hasTotalXP" 
+scoreLabel = Res $ makeSN "hasScore" 
+hasXPLabel = Res $ makeSN "hasXP" 
+springLabel = Res $ makeSN "Spring" 
+summerLabel = Res $ makeSN "Summer" 
+autumnLabel = Res $ makeSN "Autumn" 
+winterLabel = Res $ makeSN "Winter" 

@@ -22,8 +22,8 @@ import Data.Maybe
 import Data.List (sort)
 import ArM.Resources
 
-type Triple = (RDFLabel, String, String)
-type Quad = (RDFLabel,RDFLabel, String, String)
+type Triple = (RDFLabel, String, RDFLabel)
+type Quad = (RDFLabel,RDFLabel, String, RDFLabel)
 
 -- | Return the first element of a Quad
 qfst :: (a,b,c,d) -> a
@@ -75,7 +75,7 @@ metadataFromBinding vb = (vbMap vb (G.Var "property"),
 metadataFromLabels :: (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
                   -> Triple
 metadataFromLabels (p,label,value) =
-            (fromJust p, labelToString label, labelToString value) 
+            (fromJust p, labelToString label, fromJust value) 
 
 -- | Step 2a.  Map RDFLabel to URI
 labelToURI :: Maybe RDFLabel -> URI
@@ -108,4 +108,4 @@ quadFromLabels ::
     (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
     -> Quad
 quadFromLabels (id,p,label,value) =
-    (fromJust id,fromJust p, labelToString label, labelToString value) 
+    (fromJust id,fromJust p, labelToString label, fromJust value) 
