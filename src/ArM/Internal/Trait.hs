@@ -25,9 +25,17 @@ import ArM.Query
 import ArM.Metadata
 
 -- | apply a given Trait Advancement to a given Trait
+-- 1.  apply addedXP
+-- 2.  recalculate Score
+-- 3.  take other properties from the second Trait if available
+-- 4.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = trait
 
+-- | Make a new trait (for a CharacterSheet) from a Trait Advancement.
+--  - replace addedXP with totalXP 
+--  - add Score
+--  - add implied traits
 makeNewTrait :: Trait -> Trait
 makeNewTrait x = x
 
