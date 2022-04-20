@@ -31,6 +31,10 @@ readGraph fn = do
            (Right g ) -> return g
 
 -- | Load the different graph and make initial inferences
+-- Three graphs are returned:
+-- 1. The resource graph (defining traits with descriptions etc.)
+-- 2. The schema graph (defining the ontology and vocabulary)
+-- 3. The character graph extended with the schema and initial inference
 getGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
 getGraph characterFile armFile resourceFile = do
         character <- readGraph characterFile 

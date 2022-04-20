@@ -67,12 +67,11 @@ advtypeRule = makeRule "advtypeRule"
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementType> ?c .  ?c rdfs:label ?l ."
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementTypeString> ?l . "
 -- | Infer a string representation of the Trait Class of each Trait Advancement
+-- TODO: Review the use of arm:traitClass
 traitclassRule = makeRule "traitclassRule" 
     ( "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c . "
     ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
-    ( "?s <https://hg.schaathun.net/armchar/schema#traitClassString> ?l . "
-    ++ "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c . "
-    ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
+    "?s <https://hg.schaathun.net/armchar/schema#traitClassString> ?l . "
 
 -- | Infer subclasses from transitivity
 subclassRule = makeRule "subclassRule" 

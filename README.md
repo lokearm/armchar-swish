@@ -38,6 +38,7 @@ As far as I can tell:
 ## TODO
 
 1. get traits for (initial) character sheet
+    - fix use of arm:traitClass so that traits are identified
 2. Implement advanceCharacter
     - should resulting sheets be pushed into the graph?
 3. Make JSON

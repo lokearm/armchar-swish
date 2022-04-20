@@ -37,6 +37,12 @@ main = do
         let sheet0 = show $ fromJust $ getInitialSheet g testCharacter
         print sheet0
 
+        print "Pregame Advancement"
+        print $ getPregameAdvancements g testCharacter
+
+        print "Ingame Advancement"
+        print $ getIngameAdvancements g testCharacter
+
         let x = getInitialCS g testCharacter 
         print "Initial Sheet"
         print x
