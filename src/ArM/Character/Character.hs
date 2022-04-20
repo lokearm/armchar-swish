@@ -6,7 +6,7 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Auxiliary Functions to handle queries
+-- Character data type.  This is deprecated.
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Character where

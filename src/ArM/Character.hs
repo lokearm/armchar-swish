@@ -6,7 +6,7 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Auxiliary Functions to handle queries
+-- The CharacterSheet data type and corresponding functions
 --
 -----------------------------------------------------------------------------
 module ArM.Character where
