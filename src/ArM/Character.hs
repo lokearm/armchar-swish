@@ -113,6 +113,6 @@ fixCS g a = a { csTraits = sort $ getTraits q g }
 -- | Query Graph to get traits for CharacterSheet
 cqt :: String -> RDFGraph
 cqt s = qparse $ prefixes 
-      ++ s ++ " <https://hg.schaathun.net/armchar/schema#Trait> ?id . " 
+      ++ s ++ " <https://hg.schaathun.net/armchar/schema#hasTrait> ?id . " 
       ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "

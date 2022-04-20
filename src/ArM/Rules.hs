@@ -46,11 +46,9 @@ fwdApplyMerge r c = addGraphs c $ fwdApplySimple r c
 fwdApplyList rs g =
      foldl addGraphs g $ map (`fwdApplySimple` g) rs
 
-fwdApplyListR rs g = 
-    if (inf == emptyRDFGraph) then g'
-    else fwdApplyListR rs g'
-    where inf = foldGraphs $ map (`fwdApplySimple` g) rs
-          g' = addGraphs inf g
+fwdApplyListR rs g = if (g' == g) then g'
+                     else fwdApplyListR rs g'
+                     where g' = fwdApplyList rs g
 
 -- | Define a local name from a String
 newLName s = case (QN.newLName $ T.pack s) of
@@ -72,25 +70,35 @@ advtypeRule = makeRule "advtypeRule"
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementType> ?c .  ?c rdfs:label ?l ."
     "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementTypeString> ?l . "
 -- | Infer a string representation of the Trait Class of each Trait Advancement
--- TODO: Review the use of arm:traitClass
 traitclassRule = makeRule "traitclassRule" 
     ( "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?c . "
     ++ "?c <https://hg.schaathun.net/armchar/schema#hasLabel> ?l ." )
     "?s <https://hg.schaathun.net/armchar/schema#traitClassString> ?l . "
-
--- | traitClass also defines rdf:type
 traitclasstypeRule = makeRule "traitclasstypeRule" 
-    "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?t . "
-    "?s rdf:type ?t . "
+       "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?t . "
+       "?s rdf:type ?t . "
 
--- | Infer subclasses from transitivity
-subclassRule = makeRule "subclassRule" 
-    "?s rdfs:subClasOf ?t . ?t rdfs:subClassOf ?c ."
-                  "?s rdfs:subClasOf ?c ."
--- | Infer additional types from subclass relationships 
-subclasstypeRule = makeRule "subclasstypeRule" 
-    "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
-                  "?s rdf:type ?c ."
+-- | RDFS Rules
+rdfsRules = [
+    makeRule "subclassRule" 
+       "?s rdfs:subClassOf ?t . ?t rdfs:subClassOf ?c ."
+       "?s rdfs:subClassOf ?c ."
+    , makeRule "subpropRule" 
+       "?s rdfs:subPropertyOf ?t . ?t rdfs:subPropertyOf ?c ."
+       "?s rdfs:subPropertyOf ?c ."
+       ]
+
+rdfstypeRules = [
+    makeRule "subclasstypeRule"
+       "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
+       "?s rdf:type ?c ."
+    , makeRule "subpropinstanceRule" 
+       "?s ?p ?o . ?p rdfs:subPropertyOf ?p2 ."
+       "?s ?p2 ?o ."
+       ]
+
+
+
 -- | Add indices used for sorting advancements
 advancementindexRule = makeRule "advancementindexRule" 
     ( "?s rdf:type ?t . "
@@ -107,11 +115,15 @@ initialsheetRule = makeRule "initialsheetRule"
 -- Make all necessary inferences before retrieving character data
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
-   fwdApplyList [ csRule, subclasstypeRule, advtypeRule, traitclassRule, advancementindexRule ]
+   fwdApplyList (
+      csRule:advtypeRule:traitclassRule:advancementindexRule:rdfstypeRules )
 
+-- | Apply standard RDFS rules to elaborate the schema
 prepareSchema :: RDFGraph -> RDFGraph
-prepareSchema = 
-   fwdApplyListR [ subclassRule ]
+prepareSchema = fwdApplyListR rdfsRules
+
+-- | Initial inferences on the character data, to be applied without
+-- the schema
 prepareCS :: RDFGraph -> RDFGraph
 prepareCS = 
    fwdApplyList [ initialsheetRule, traitclasstypeRule ]
