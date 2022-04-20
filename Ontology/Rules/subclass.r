@@ -9,7 +9,3 @@
 [ hastrait:
   ( ?p rdfs:subPropertyOf arm:hasTrait ) 
   -> ( ?p rdf:type owl:ObjectProperty ) ]
-### [ formclass:
-###   ( ?s rdf:type arm:FormClass ) -> ( ?s rdfs:subClassOf arm:Form ) ]
-### [ techclass:
-###   ( ?s rdf:type arm:TechClass ) -> ( ?s rdfs:subClassOf arm:Tech ) ]

@@ -28,50 +28,9 @@
   ( ?s arm:hasScore ?size ) 
   -> ( ?c arm:hasSize ?size ) ]
 
-# Character sheet inherits from the base character
-[ charsheet1: ( ?c rdf:type arm:CharacterSheet )
-             ( ?c arm:isCharacter ?b ) ( ?b ?p ?o )
-	     ( ?p rdfs:domain arm:GeneralCharacter )
-	     -> ( ?c ?p ?o ) ]
-[ charsheet2: ( ?c rdf:type arm:CharacterSheet )
-             ( ?c arm:isCharacter ?b ) ( ?b ?p ?o )
-	     ( ?p rdfs:domain arm:Character )
-	     -> ( ?c ?p ?o ) ]
 
 ### TRAITS
 
-
-# Abilities and Arts (XP)
-
-[ artscore:
-  ( ?s rdf:type arm:AccelleratedTrait )
-  -> [ ( ?s arm:hasScore ?score ) <-
-    ( ?s arm:hasTotalXP ?xp )
-    ( ?e armpyramid:xp ?xp )
-    ( ?e armpyramid:artScore ?score )
-    ( ?e rdf:type armpyramid:xpTableEntry )
-  ]
-  [ ( ?s arm:hasXP ?rem ) <-
-    ( ?s arm:hasTotalXP ?xp )
-    ( ?e armpyramid:xp ?xp )
-    ( ?e armpyramid:artRemainder ?rem )
-    ( ?e rdf:type armpyramid:xpTableEntry )
- ]
- ]
-[ abscore:
-  ( ?s rdf:type arm:XPTrait )
-  -> [ ( ?s arm:hasScore ?score ) <-
-  ( ?s arm:hasTotalXP ?xp )
-  ( ?e rdf:type armpyramid:xpTableEntry )
-  ( ?e armpyramid:xp ?xp )
-  ( ?e armpyramid:abScore ?score )
-  ] [ ( ?s arm:hasXP ?rem ) <-
-  ( ?s arm:hasTotalXP ?xp )
-  ( ?e rdf:type armpyramid:xpTableEntry )
-  ( ?e armpyramid:xp ?xp )
-  ( ?e armpyramid:abRemainder ?rem )
-	]
- ]
 
 # Virtues and Flaws
 [ majorvirtuescore:

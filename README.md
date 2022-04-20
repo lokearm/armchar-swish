@@ -54,7 +54,7 @@ raw resources                            Character Graph
                      v
              initial character sheet
                      |
-                     | [advance character]
+                     | advanceCharacter
                      v
              character sheet per season
 ```
@@ -67,19 +67,12 @@ The «raw» data objects correspond to files.
 
 ## TODO
 
-1. Distinguish between different kinds of traits
-    - Three classes defined
-        - Repeatable traits (i.e. certain virtues)
-        - XP Traits
-        - Accellerated XP Traits
-    - Implement easy attributes on the Trait type
-1. Complete the advancement functions based on the above
-    1. advanceTrait
-    1. Fix makeNewTrait 
-    3. should resulting sheets be pushed into the graph?
-3. Generate documentation
-3. Make JSON
-4. Web Server - get character sheet
+1. ? Test advancement code
+2. Generate Graph from Trait and CharacterSheet
+3. Should derived character sheets be pushed back into a graph?
+4. Generate documentation
+5. Make JSON
+6. Web Server - get character sheet
 5. Web Server - put advancement resource
 6. Hand-code XP/score calculation rules.
 7. Make both hasTrait and subproperties

@@ -60,14 +60,17 @@ defaultXPType = XP { addXP = 0, totalXP = 0, score = 0, hasXP = 0 }
 
 -- ** Advancement **
 
+-- | Given one list of Traits and one of Trait advancements,
+-- apply each advancement to the corresponding Trait.
+-- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] = xs
-advanceTraitList [] (y:ys) = makeNewTrait y:advanceTraitList [] ys
+advanceTraitList [] (y:ys) = recalculateXP y:advanceTraitList [] ys
 advanceTraitList (x:xs) (y:ys) 
      | xc < yc  = x:advanceTraitList xs (y:ys)
-     | xc > yc  = makeNewTrait y:advanceTraitList (x:xs) ys
+     | xc > yc  = recalculateXP y:advanceTraitList (x:xs) ys
      | isRepeatableTrait x && x < y = x:advanceTraitList xs (y:ys)
-     | isRepeatableTrait y = makeNewTrait y:advanceTraitList (x:xs) ys
+     | isRepeatableTrait y = recalculateXP y:advanceTraitList (x:xs) ys
      | otherwise = advanceTraitList ( advanceTrait x y:xs ) ys
      where xc = traitClass x
            yc = traitClass y
@@ -78,28 +81,64 @@ advanceTraitList (x:xs) (y:ys)
 -- 3.  take other properties from the second Trait if available
 -- 4.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = trait { traitID = Nothing }
+advanceTrait trait adv = recalculateXP  $
+           trait { traitID = Nothing,
+              traitContents = advanceTraitTriples 
+                 ( traitContents trait ) 
+                 ( traitContents adv ) 
+           }
+
+
+advanceTraitTriples :: [Triple] -> [Triple] -> [Triple]
+advanceTraitTriples (x:xs) (y:ys) 
+    | fst' x == fst' y   = y:advanceTraitTriples xs ys 
+    | x < y   = x:advanceTraitTriples (xs) (y:ys) 
+    | x > y   = y:advanceTraitTriples (x:xs) (ys) 
+    where fst' (a,b,c) = a
+
 
 -- | Make a new trait (for a CharacterSheet) from a Trait Advancement.
---  - replace addedXP with totalXP 
+--  - add addedXP to totalXP (defaulting to 0)
 --  - add Score
 --  - add implied traits
-makeNewTrait :: Trait -> Trait
-makeNewTrait x = x { traitID = Nothing,
-        traitContents = makeNewTraitTriples $ traitContents x }
+recalculateXP :: Trait -> Trait
+recalculateXP x 
+   | isXPTrait x  = x { traitID = Nothing,
+        traitContents = makeNewTraitTriples 1 $ traitContents x }
+   | isAccelleratedTrait x  = x { traitID = Nothing,
+        traitContents = makeNewTraitTriples 5 $ traitContents x }
+   | otherwise  = x
 
-makeNewTraitTriples :: [Triple] -> [Triple]
-makeNewTraitTriples ts = x:y:z:ys
+-- | Parse through the Triples of a Trait and recalculate score
+-- based on XP
+makeNewTraitTriples :: Int -> [Triple] -> [Triple]
+makeNewTraitTriples n ts = sort $ x:y:z:ys
     where (xp,ys) = makeNewTraitTriples' (defaultXPType,[]) ts
-          (x,y,z) = processXP xp
+          (x,y,z) = processXP n xp
 
-processXP :: XPType -> (Triple,Triple,Triple)
-processXP xp = ( (totalXPLabel,"Total XP",show t),
+-- | Parse through the Triples of a Trait and remove XP related traits
+makeNewTraitTriples' :: (XPType,[Triple]) -> [Triple] -> (XPType,[Triple]) 
+makeNewTraitTriples' xt [] = xt
+makeNewTraitTriples' (xp,ys) ((a,b,c):zs) 
+    | a == addXPLabel = makeNewTraitTriples' (xp { addXP = read c },ys) zs
+    | a == totalXPLabel = makeNewTraitTriples' (xp { totalXP = read c },ys) zs
+    | a == scoreLabel = makeNewTraitTriples' (xp { score = read c },ys) zs
+    | a == hasXPLabel = makeNewTraitTriples' (xp { hasXP = read c },ys) zs
+    | otherwise       = makeNewTraitTriples' (xp, (a,b,c):ys) zs
+
+
+-- | Calculate the triples for total XP, score, and remaining XP,
+-- given an XPType object.
+processXP :: Int -> XPType -> (Triple,Triple,Triple)
+processXP n xp = ( (totalXPLabel,"Total XP",show t),
                  (scoreLabel,"Score",show s),
                  (hasXPLabel,"XP towards next level",show r) ) 
    where t = totalXP xp + addXP xp
-         s = scoreFromXP t
-         r = t - (s*(s+1) `div` 2)
+         s = scoreFromXP (t `div` n)
+         r = t - n*(s*(s+1) `div` 2)
+
+-- | Calculate score from total XP, using the arts scale.
+-- For abilities, the argument should be divided by 5 beforehand.
 scoreFromXP :: Int -> Int
 scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
     where x = fromIntegral y  :: Double
@@ -110,15 +149,6 @@ scoreLabel = Res $ makeSN "hasScore"
 hasXPLabel = Res $ makeSN "hasXP" 
 
 -- ** Parsing Trait from RDF **
-
-makeNewTraitTriples' :: (XPType,[Triple]) -> [Triple] -> (XPType,[Triple]) 
-makeNewTraitTriples' xt [] = xt
-makeNewTraitTriples' (xp,ys) ((a,b,c):zs) 
-    | a == addXPLabel = makeNewTraitTriples' (xp { addXP = read c },ys) zs
-    | a == totalXPLabel = makeNewTraitTriples' (xp { totalXP = read c },ys) zs
-    | a == scoreLabel = makeNewTraitTriples' (xp { score = read c },ys) zs
-    | a == hasXPLabel = makeNewTraitTriples' (xp { hasXP = read c },ys) zs
-    | otherwise       = makeNewTraitTriples' (xp, (a,b,c):ys) zs
 
 -- | Make a Trait object from a list of Quads
 toTrait :: [Quad] -> Trait

@@ -20,6 +20,8 @@ extra-source-files:  CHANGELOG.md, README.md
 executable armchar-swish
   main-is:             Main.hs
   other-modules:       ArM.Rules
+                       , ArM.Rules.Aux
+                       , ArM.Rules.Resource
                        , ArM.Resources
                        , ArM.Advancement 
                        , ArM.Query 
