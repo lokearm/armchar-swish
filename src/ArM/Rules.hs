@@ -46,6 +46,11 @@ fwdApplyMerge r c = addGraphs c $ fwdApplySimple r c
 fwdApplyList rs g =
      foldl addGraphs g $ map (`fwdApplySimple` g) rs
 
+fwdApplyListR rs g = 
+    if (inf == emptyRDFGraph) then g'
+    else fwdApplyListR rs g'
+    where inf = foldGraphs $ map (`fwdApplySimple` g) rs
+          g' = addGraphs inf g
 
 -- | Define a local name from a String
 newLName s = case (QN.newLName $ T.pack s) of
@@ -101,7 +106,7 @@ prepareInitialCharacter =
 
 prepareSchema :: RDFGraph -> RDFGraph
 prepareSchema = 
-   fwdApplyList [ subclassRule ]
+   fwdApplyListR [ subclassRule ]
 prepareCS :: RDFGraph -> RDFGraph
 prepareCS = 
    fwdApplyList [ initialsheetRule ]
