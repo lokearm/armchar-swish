@@ -56,7 +56,12 @@ advanceCharacter cs adv = cs {
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] = xs
 advanceTraitList [] (y:ys) = makeNewTrait y:advanceTraitList [] ys
-advanceTraitList (x:xs) (y:ys) = x:xs
+advanceTraitList (x:xs) (y:ys) 
+     | xc < yc  = x:advanceTraitList xs (y:ys)
+     | xc > yc  = makeNewTrait y:advanceTraitList (x:xs) ys
+     | otherwise = advanceTraitList ( advanceTrait x y:xs ) ys
+     where xc = traitClass x
+           yc = traitClass y
 
 makeNewTrait :: Trait -> Trait
 makeNewTrait x = x
