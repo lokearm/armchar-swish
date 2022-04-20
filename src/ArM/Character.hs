@@ -50,6 +50,8 @@ defaultCS = CharacterSheet {
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = cs
 
+-- | Type ot collect all relevant data about a character.
+-- This may be redundant.  CharacterSheet may suffice.
 data Character = Character {
          characterID :: String,
          initialSheetID :: String,
