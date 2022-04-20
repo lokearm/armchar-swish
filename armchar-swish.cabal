@@ -26,6 +26,7 @@ executable armchar-swish
                        , ArM.Metadata
                        , ArM.Character
                        , ArM.Load
+                       , ArM.Internal.Trait
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14

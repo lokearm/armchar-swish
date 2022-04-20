@@ -25,6 +25,18 @@ import ArM.Resources
 type Triple = (URI, String, String)
 type Quad = (RDFLabel,URI, String, String)
 
+-- | Return the first element of a Quad
+qfst :: (a,b,c,d) -> a
+qfst (a,b,c,d) = a
+
+-- | Remove the first element of a Quad
+toTriple :: Quad -> Triple
+toTriple (a,b,c,d) = (b,c,d)
+
+-- | Remove the first element from each Quad in a list
+toTripleList :: [Quad] -> [Triple]
+toTripleList = map toTriple
+
 sameID :: Quad -> Quad -> Bool
 sameID (x,_,_,_) (y,_,_,_) = x == y
 

@@ -167,17 +167,8 @@ toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
          where ys = toTripleList xs 
 
 
--- | Return the first element of a Quad
-qfst :: (a,b,c,d) -> a
-qfst (a,b,c,d) = a
 
--- | Remove the first element of a Quad
-toTriple :: Quad -> Triple
-toTriple (a,b,c,d) = (b,c,d)
 
--- | Remove the first element from each Quad in a list
-toTripleList :: [Quad] -> [Triple]
-toTripleList = map toTriple
 
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear [] = Nothing
