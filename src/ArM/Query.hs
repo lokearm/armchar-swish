@@ -37,6 +37,7 @@ toTriple (a,b,c,d) = (b,c,d)
 toTripleList :: [Quad] -> [Triple]
 toTripleList = map toTriple
 
+-- | Check if two Quads match in the first element.
 sameID :: Quad -> Quad -> Bool
 sameID (x,_,_,_) (y,_,_,_) = x == y
 
