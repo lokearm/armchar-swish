@@ -68,9 +68,11 @@ The «raw» data objects correspond to files.
 ## TODO
 
 1. Distinguish between different kinds of traits
-    - Repeatable traits (i.e. certain virtues)
-    - XP Traits
-    - Accellerated XP Traits
+    - Three classes defined
+        - Repeatable traits (i.e. certain virtues)
+        - XP Traits
+        - Accellerated XP Traits
+    - Implement easy attributes on the Trait type
 1. Complete the advancement functions based on the above
     1. advanceTrait
     1. Fix makeNewTrait 
