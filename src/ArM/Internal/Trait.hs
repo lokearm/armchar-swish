@@ -141,8 +141,9 @@ toTrait xs = Trait {
 -- | Remove the first element from each Quad in a list
 traitTripleList :: [Quad] -> (Bool,Bool,Bool,[Triple])
 traitTripleList xs = traitTripleList' (False,False,False,[]) xs
-traitTripleList' :: (Bool,Bool,Bool,[Triple]) -> [Quad] -> (Bool,Bool,Bool,[Triple])
-traitTripleList' (a,b,c,[]) ys = (a,b,c,[]) 
+traitTripleList' :: (Bool,Bool,Bool,[Triple]) -> [Quad]  
+                 -> (Bool,Bool,Bool,[Triple])
+traitTripleList' (a,b,c,xs) [] = (a,b,c,xs)
 traitTripleList' (a,b,c,xs) (y:ys) =
          traitTripleList' (a',b',c',(y2,y3,y4):xs) ys
          where  a' = a || y4 == "arm:RepeatableTrait"

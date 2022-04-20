@@ -125,5 +125,11 @@ prepareCS :: RDFGraph -> RDFGraph
 prepareCS = 
    fwdApplyList [ initialsheetRule, traitclasstypeRule ]
 
+spectraitRule = 
+    makeRule "spectraitRule"
+       "?s rdf:type ?t . ?t rdf:type <https://hg.schaathun.net/armchar/schema#SpecialTraitClass>  ."
+       "?s <https://hg.schaathun.net/armchar/schema#isSpecialTrait> ?t  ."
+
 -- | Make inferences on the joint graph including resources
-prepareGraph = id
+prepareGraph = 
+   fwdApplyListR ( spectraitRule:rdfstypeRules ++ rdfsRules ) 

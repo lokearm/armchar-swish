@@ -64,11 +64,11 @@ armchar:elksrun  a arm:Covenant ;
     [ arm:traitClass armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ] .
 :zero arm:hasFlaw
-    [ arm:traitClass armr:meddler, armr:majorFlaw ],
+    [ arm:traitClass armr:meddler ; a armr:majorFlaw ],
     [ arm:traitClass armr:shortRangedMagic ],
     [ arm:traitClass armr:weakSpontaneousMagic ; arm:hasScore 0 ],
     [ arm:traitClass armr:mistakenIdentity ],
-    [ arm:traitClass armr:carefree, armr:minorFlaw ] .
+    [ arm:traitClass armr:carefree ; a armr:minorFlaw ] .
 
 :zero arm:hasCharacteristic
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore -1 ],
