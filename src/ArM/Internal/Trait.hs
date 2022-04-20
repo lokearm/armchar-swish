@@ -28,6 +28,9 @@ import ArM.Metadata
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = trait
 
+makeNewTrait :: Trait -> Trait
+makeNewTrait x = x
+
 -- | Trait Resource
 data Trait = Trait {
     traitID :: Maybe RDFLabel,

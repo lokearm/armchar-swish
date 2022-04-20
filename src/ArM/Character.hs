@@ -63,9 +63,6 @@ advanceTraitList (x:xs) (y:ys)
      where xc = traitClass x
            yc = traitClass y
 
-makeNewTrait :: Trait -> Trait
-makeNewTrait x = x
-
 -- | Type ot collect all relevant data about a character.
 -- This may be redundant.  CharacterSheet may suffice.
 data Character = Character {
