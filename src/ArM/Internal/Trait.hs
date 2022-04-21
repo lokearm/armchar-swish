@@ -11,6 +11,8 @@
 -----------------------------------------------------------------------------
 module ArM.Internal.Trait where
 
+import Data.Set (fromList)
+
 import Swish.RDF.Parser.N3 (parseN3fromText)
 import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
@@ -184,4 +186,16 @@ getTraitClass [] = Nothing
 getTraitClass ((x,y,z):xs) 
    | y == "Trait ID"  = Just z
    | otherwise      = getTraitClass xs
+
+traitToArcSet :: Trait -> RDFArcSet
+traitToArcSet = fromList . traitToArcList
+traitToArcList :: Trait -> [RDFTriple]
+-- traitToArcList t | x == Nothing = triplesToArcList y ts
+traitToArcList t | otherwise    = triplesToArcList (fromJust x) ts
+                 where y = Blank "foobar"
+                       x = traitID t
+                       ts = traitContents t
+triplesToArcList :: RDFLabel -> [Triple] -> [RDFTriple]
+triplesToArcList x [] = []
+triplesToArcList x ((a,b,c):ys) = arc x a c:triplesToArcList x ys
 
