@@ -11,12 +11,13 @@
 -----------------------------------------------------------------------------
 module ArM.Character where
 
+import Data.Set (fromList)
 import Swish.RDF.Parser.N3 (parseN3fromText)
 import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
 import qualified Data.Text.Lazy as T
 import Swish.RDF.VarBinding as VB 
-import Network.URI (URI)
+import Network.URI (URI,parseURI)
 import Swish.VarBinding  (vbMap)
 import Data.Maybe
 import Data.List (sort)
@@ -28,13 +29,13 @@ import ArM.Metadata
 
 data CharacterSheet = CharacterSheet {
          csID :: String,
-         sheetID :: Maybe String,
+         sheetID :: Maybe RDFLabel,
          csTraits :: [Trait],
          csMetadata :: [Triple]
        }  deriving (Eq)
 instance Show CharacterSheet where
     show cs = "**" ++ csID cs ++ "**\n" 
-           ++ "-- " ++ fromJust ( sheetID cs ) ++ "\n"
+           ++ "-- " ++ ( show . fromJust . sheetID ) cs ++ "\n"
            ++ "Traits:\n" ++ showw ( csTraits cs )
            ++ "Metadata Triples:\n" ++ showw ( csMetadata cs )
         where showw [] = ""
@@ -61,11 +62,12 @@ getInitialCS g = fixCS g . getInitialCS' g
 getInitialCS' :: RDFGraph -> String -> CharacterSheet
 getInitialCS' g c = defaultCS {
             csID = c,
-            sheetID = Just cs, 
+            sheetID = x,
             csTraits = [],
             csMetadata = getCharacterMetadata g cs
          }
-         where cs = show $ fromJust $ getInitialSheet g c
+         where cs = show $ fromJust $ x
+               x = getInitialSheet g c
      
 
 -- | Given an identifier for the character, find the identifier for
@@ -86,7 +88,7 @@ fixCS g a = a { csTraits = sort $ getTraits a g }
 getTraits :: CharacterSheet -> RDFGraph -> [Trait]
 getTraits a g = map toTrait 
                $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
-    where q = cqt $ fromJust $ sheetID a
+    where q = cqt $ show $ fromJust $ sheetID a
 
 -- | Query Graph to get traits for CharacterSheet
 cqt :: String -> RDFGraph
@@ -94,3 +96,32 @@ cqt s = qparse $ prefixes
       ++ s ++ " <https://hg.schaathun.net/armchar/schema#hasTrait> ?id . " 
       ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "
+
+         -- csID :: String,
+         -- sheetID :: Maybe String,
+         -- csTraits :: [Trait],
+         -- csMetadata :: [Triple]
+         --
+
+csToRDFGraph :: CharacterSheet -> RDFGraph
+csToRDFGraph = toRDFGraph . csToArcSet
+csToArcSet :: CharacterSheet -> RDFArcSet
+csToArcSet = fromList . csToArcList
+csToArcList :: CharacterSheet -> [RDFTriple]
+csToArcList cs = ct:foldl (++) ms ts
+    where ts = map traitToArcList (csTraits cs)
+          ms = triplesToArcList x (csMetadata cs)
+          x = getSheetID cs $ sheetID cs
+          ct = arc charlabel isCharacterLabel x
+          charlabel = getCSID cs
+getCSID :: CharacterSheet -> RDFLabel
+getCSID = toRDFLabel . fromJust . parseURI . csID 
+
+getLabel :: Show a => Maybe a -> String
+getLabel Nothing = "nn"
+getLabel (Just x) = show x
+
+getSheetID cs Nothing = Blank "TODO"
+   -- where  cid = fromRDFLabel $ fromJust $ csID cid
+getSheetID _ (Just x) = x
+

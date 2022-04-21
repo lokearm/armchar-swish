@@ -67,9 +67,9 @@ The «raw» data objects correspond to files.
 
 ## TODO
 
+1. Find a mechanism to generate new RDFLabel for blank nodes
+   - complete graph generation from Trait and CharacterSheet
 1. ? Test advancement code
-2. Generate Graph from Trait and CharacterSheet
-3. Should derived character sheets be pushed back into a graph?
 4. Generate documentation
 5. Make JSON
 6. Web Server - get character sheet

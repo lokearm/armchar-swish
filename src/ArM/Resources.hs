@@ -45,6 +45,7 @@ newLName s = case (QN.newLName $ T.pack s) of
 
 makeSN s = makeScopedName (Just $ T.pack "arm:") armURI (newLName s)
 
+isCharacterLabel = Res $ makeSN  "isCharacter"
 repeatableLabel = Res $ makeSN  "RepeatableTrait"
 xptraitLabel = Res $ makeSN  "XPTrait"
 accelleratedtraitLabel = Res $ makeSN  "AccelleratedTrait"
