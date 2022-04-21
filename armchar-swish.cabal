@@ -40,6 +40,7 @@ executable armchar-swish
                        , scotty >= 0.12
                        , containers >= 0.6
                        , aeson >= 2.0.3
+                       , aeson-pretty >= 0.8
                        , mtl >= 2.2
                        , bytestring >= 0.10.10
   hs-source-dirs:      . , ./src

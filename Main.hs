@@ -23,8 +23,8 @@ import ArM.Load
 import ArM.Resources
 import ArM.Character
 import ArM.JSON
-import Data.Aeson
-import Data.Aeson.Key
+import Data.Aeson.Encode.Pretty
+-- import Data.Aeson.Key
 import qualified Data.ByteString.Lazy.Char8 as B
 
 
@@ -57,4 +57,4 @@ main = do
         print "Initial Sheet"
         print x
 
-        B.putStrLn $ encode x
+        B.putStrLn $ encodePretty x
