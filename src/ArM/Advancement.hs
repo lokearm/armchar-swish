@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module ArM.Advancement where
 
 import Swish.RDF.Graph 

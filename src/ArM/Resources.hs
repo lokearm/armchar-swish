@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module ArM.Resources where
 
 import Swish.Namespace

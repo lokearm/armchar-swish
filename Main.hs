@@ -1,7 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
+-- (C) 2022: Hans Georg Schaathun <hg+gamer@schaathun.net>
+
 module Main where
 
 import System.IO as IO
-import Data.Text.IO as DTIO
+import qualified Data.Text.IO as DTIO
 -- import Data.Text.Lazy.IO as DTLIO
 import Control.Monad
 import Swish.RDF.Formatter.Turtle
@@ -10,6 +13,7 @@ import qualified Data.Text.Lazy as  T
 import Swish.RDF.Graph
 import Data.List
 import Data.Maybe
+import Data.Text (Text)
 
 
 import ArM.Query
@@ -18,6 +22,12 @@ import ArM.Advancement
 import ArM.Load
 import ArM.Resources
 import ArM.Character
+import ArM.JSON
+import Data.Aeson
+import Data.Aeson.Key
+import qualified Data.ByteString.Lazy.Char8 as B
+
+
 
 import Swish.RDF.Ruleset
 
@@ -46,3 +56,5 @@ main = do
         let x = getInitialCS g testCharacter 
         print "Initial Sheet"
         print x
+
+        B.putStrLn $ encode x
