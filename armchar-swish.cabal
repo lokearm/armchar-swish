@@ -30,6 +30,7 @@ executable armchar-swish
                        , ArM.Load
                        , ArM.BlankNode
                        , ArM.Internal.Trait
+                       , ArM.JSON
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
