@@ -26,6 +26,7 @@ import ArM.Internal.Trait
 import ArM.Advancement
 import ArM.Query
 import ArM.Metadata
+import ArM.BlankNode
 
 data CharacterSheet = CharacterSheet {
          csID :: String,
@@ -104,9 +105,10 @@ cqt s = qparse $ prefixes
          --
 
 csToRDFGraph :: CharacterSheet -> RDFGraph
-csToRDFGraph = toRDFGraph . csToArcSet
-csToArcSet :: CharacterSheet -> RDFArcSet
-csToArcSet = fromList . csToArcList
+csToRDFGraph cs =
+         ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
+         ("charsheet",1)
+
 csToArcList :: CharacterSheet -> [RDFTriple]
 csToArcList cs = ct:foldl (++) ms ts
     where ts = map traitToArcList (csTraits cs)
@@ -114,14 +116,24 @@ csToArcList cs = ct:foldl (++) ms ts
           x = getSheetID cs $ sheetID cs
           ct = arc charlabel isCharacterLabel x
           charlabel = getCSID cs
+
+csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
+csToArcListM cs = do
+          ts <- mapM traitToArcListM (csTraits cs)
+          x <- getSheetIDM cs $ sheetID cs
+          let ms = triplesToArcList x (csMetadata cs)
+          let ct = arc charlabel isCharacterLabel x
+          return $ ct:foldl (++) ms ts
+    where 
+          charlabel = getCSID cs
+
 getCSID :: CharacterSheet -> RDFLabel
 getCSID = toRDFLabel . fromJust . parseURI . csID 
 
-getLabel :: Show a => Maybe a -> String
-getLabel Nothing = "nn"
-getLabel (Just x) = show x
-
+getSheetID :: CharacterSheet -> Maybe RDFLabel -> RDFLabel
 getSheetID cs Nothing = Blank "TODO"
-   -- where  cid = fromRDFLabel $ fromJust $ csID cid
 getSheetID _ (Just x) = x
 
+getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
+getSheetIDM _ Nothing = getBlank
+getSheetIDM _ (Just x) = return x
