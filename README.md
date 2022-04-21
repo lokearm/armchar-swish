@@ -67,11 +67,11 @@ The «raw» data objects correspond to files.
 
 ## TODO
 
-1. Find a mechanism to generate new RDFLabel for blank nodes
-   - complete graph generation from Trait and CharacterSheet
-1. ? Test advancement code
+1. Test
+    - graph generator
+    - advancement code
+2. Make JSON
 4. Generate documentation
-5. Make JSON
 6. Web Server - get character sheet
 5. Web Server - put advancement resource
 6. Hand-code XP/score calculation rules.
