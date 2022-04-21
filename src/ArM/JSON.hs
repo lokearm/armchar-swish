@@ -38,7 +38,8 @@ instance ToJSON Trait where
     toJSON t = object $ map tripleToJSON (traitContents t) 
 
 instance ToJSON CharacterSheet where 
-    toJSON cs = object (x:xs)
+    toJSON cs = object (c:x:xs)
        where x = (read "arm:hasTrait") .= (toJSON (csTraits cs))
              xs = map tripleToJSON (csMetadata cs)
+             c = (read "arm:isCharacter") .= (csID cs)
     
