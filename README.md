@@ -2,6 +2,34 @@
 
 ArM character server implementation using Haskell and Swish.
 
+The program, `armchar-swish`, is currently only for testing.
+It has no real features.
+
+## Testing
+
+The easiest way to run the program is via cabal:
+```
+cabal run
+```
+
+It starts a web server on port 3000.  
+The most convenient way to test it is probably the
+[HTTPie](https://httpie.io/) tool.
+```
+% http get :3000/
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Date: Thu, 21 Apr 2022 20:51:46 GMT
+Server: Warp/3.3.20
+Transfer-Encoding: chunked
+
+Test a get call - available paths for get:
+  /    (this page)
+  /graph
+  /initial
+```
+
+
 ## Problems
 
 There are several limitations in Swish compared to Jena
@@ -67,15 +95,15 @@ The «raw» data objects correspond to files.
 
 ## TODO
 
-1. Test
+1. Test and review
     - graph generator
     - advancement code
-2. Make JSON
-4. Generate documentation
-6. Web Server - get character sheet
+1. JSON from advancements
+6. Web Server - authentication
 5. Web Server - put advancement resource
 6. Hand-code XP/score calculation rules.
 7. Make both hasTrait and subproperties
+4. Generate documentation
 8. Make LaTeX
     1.  Pull metadata
     2.  Pull Characteristics

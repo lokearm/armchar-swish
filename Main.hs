@@ -7,24 +7,22 @@ import System.IO as IO
 import qualified Data.Text.IO as DTIO
 -- import Data.Text.Lazy.IO as DTLIO
 import Control.Monad
-import Swish.RDF.Formatter.Turtle
 import qualified Data.Text.Lazy as  T
--- import Swish.Rule
+import Swish.RDF.Formatter.Turtle
 import Swish.RDF.Graph
-import Data.List
 import Data.Maybe
 import Data.Text (Text)
 
+-- Web service
+import Web.Scotty  as S
+import Network.HTTP.Types
 
 import ArM.Query
-import ArM.Metadata
-import ArM.Advancement
 import ArM.Load
 import ArM.Resources
 import ArM.Character
 import ArM.JSON
 import Data.Aeson.Encode.Pretty
--- import Data.Aeson.Key
 import qualified Data.ByteString.Lazy.Char8 as B
 
 
@@ -35,26 +33,22 @@ import Swish.RDF.Ruleset
 
 testCharacter = "armchar:cieran"
 
-main :: IO ()
-main = do
-        g <- getGraph characterFile armFile resourceFile
+-- main :: IO ()
+main = do 
+     g <- getGraph characterFile armFile resourceFile
 
+     print "Starting"
 
-        DTIO.putStrLn $ formatGraphAsText $ g
-        let vb = getCharacterMetadata g testCharacter 
-        print vb
-
-        let sheet0 = show $ fromJust $ getInitialSheet g testCharacter
-        print sheet0
-
-        print "Pregame Advancement"
-        print $ getPregameAdvancements g testCharacter
-
-        print "Ingame Advancement"
-        print $ getIngameAdvancements g testCharacter
-
-        let x = getInitialCS g testCharacter 
-        print "Initial Sheet"
-        print x
-
-        B.putStrLn $ encodePretty x
+     scotty 3000 $ do
+        get "/" $ do     
+          text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n"
+        get "/graph" $ do     
+          text $ T.fromStrict $ formatGraphAsText $ g
+        get "/initial" $ do     
+          json $ getInitialCS g testCharacter 
+        S.delete "/" $ do
+          html "This was a DELETE request!"  -- send 'text/html' response
+        post "/" $ do
+          text "This was a POST request!"
+        put "/" $ do
+          text "This was a PUT request!"
