@@ -28,6 +28,7 @@ executable armchar-swish
                        , ArM.Metadata
                        , ArM.Character
                        , ArM.Load
+                       , ArM.BlankNode
                        , ArM.Internal.Trait
   -- other-extensions:
   build-depends:       base >=4.13 
@@ -38,5 +39,6 @@ executable armchar-swish
                        , scotty >= 0.12
                        , containers >= 0.6
                        , aeson >= 2.0.3
+                       , mtl >= 2.2
   hs-source-dirs:      . , ./src
   default-language:    Haskell2010

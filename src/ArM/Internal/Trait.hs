@@ -25,6 +25,7 @@ import Data.List (sort)
 import ArM.Resources
 import ArM.Query
 import ArM.Metadata
+import ArM.BlankNode
 import Swish.Namespace
 
 -- ** The Data Type ** 
@@ -190,12 +191,21 @@ getTraitClass ((x,y,z):xs)
 traitToArcSet :: Trait -> RDFArcSet
 traitToArcSet = fromList . traitToArcList
 traitToArcList :: Trait -> [RDFTriple]
--- traitToArcList t | x == Nothing = triplesToArcList y ts
-traitToArcList t | otherwise    = triplesToArcList (fromJust x) ts
-                 where y = Blank "foobar"
+traitToArcList t | x == Nothing = triplesToArcList y ts
+                 | otherwise    = triplesToArcList (fromJust x) ts
+                 where y = Blank "TODO"
                        x = traitID t
                        ts = traitContents t
 triplesToArcList :: RDFLabel -> [Triple] -> [RDFTriple]
 triplesToArcList x [] = []
 triplesToArcList x ((a,b,c):ys) = arc x a c:triplesToArcList x ys
+
+traitToArcListM :: Trait -> BlankState [RDFTriple]
+traitToArcListM t 
+     | x == Nothing = do
+                      y <- getBlank 
+                      return $ triplesToArcList y ts
+     | otherwise    = return $ triplesToArcList (fromJust x) ts
+                 where x = traitID t
+                       ts = traitContents t
 
