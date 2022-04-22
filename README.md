@@ -97,22 +97,21 @@ the main principles have been demonstrated.
 ## TODO
 
 1. Make character for given season
-1. Fix the isSpecialTrait property which comes out as URL
-1. Discuss Web API 
-1. Test and review
+2. Fix the isSpecialTrait property which comes out as URL
+3. Discuss Web API 
+4. Test and review
     - graph generator
     - advancement code
-1. JSON from advancements
+5. JSON from advancements
 6. Web Server - authentication
-5. Introduce FRP
+7. Introduce FRP
      - Web Server - put advancement resource
-6. Hand-code XP/score calculation rules.
-7. Make both hasTrait and subproperties
-4. Generate documentation
-8. Make LaTeX
+8. Make both hasTrait and subproperties
+9. Generate documentation
+10. Make LaTeX
     1.  Pull metadata
     2.  Pull Characteristics
-9. Spell String Rules
+11. Spell String Rules
 
 ## Data Management Proposal
 
