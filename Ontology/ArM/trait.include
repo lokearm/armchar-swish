@@ -1,5 +1,6 @@
 arm:Trait a owl:Class .
-arm:TraitProperty a owl:Property .
+arm:TraitProperty a owl:Property,
+   rdfs:comment "These properties should be passed to the client for display."  .
 
 arm:isSpecialTrait a owl:ObjectProperty ;
     rdfs:label  "Special Trait Type" .
@@ -39,16 +40,19 @@ arm:hasPoints a owl:DatatypeProperty ;
         rdfs:domain arm:Confidence ;
         rdfs:range   xsd:int .
 arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty ;
+        rdfs:label  "Label" ;
         rdfs:domain arm:SuperTrait ;
         rdfs:range   xsd:string .
 arm:SuperTrait a owl:Class ; owl:unionOf ( arm:Trait owl:Class ) .
     
 
-arm:hasDescription a owl:DatatypeProperty ;
+arm:hasDescription a owl:DatatypeProperty, arm:TraitProperty ;
+        rdfs:label  "Description" ;
 	rdfs:comment "Description of the trait." ;
         rdfs:domain arm:SuperTrait ;
         rdfs:range   xsd:string .
-arm:hasReference a owl:DatatypeProperty ;
+arm:hasReference a owl:DatatypeProperty, arm:TraitProperty ;
+        rdfs:label  "Reference" ;
 	rdfs:comment "Source book reference defining the trait" ;
         rdfs:domain  owl:Class ;
         rdfs:range   xsd:string .
@@ -62,28 +66,29 @@ arm:AcademicAbility rdfs:subClassOf arm:Ability .
 arm:MartialAbility rdfs:subClassOf arm:Ability .
 arm:SupernaturalAbility rdfs:subClassOf arm:Ability .
 
-arm:hasScore  a   owl:DatatypeProperty ;
+arm:hasScore  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
-arm:hasTotalXP  a   owl:DatatypeProperty ;
+arm:hasTotalXP  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label   "Total XP" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
-arm:hasXP  a   owl:DatatypeProperty ;
+arm:hasXP  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label   "XP towards next level" ;
 	rdfs:comment "XP towards next level" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
-arm:hasDetail  a   owl:DatatypeProperty ;
+arm:hasDetail  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label   "Detail" ;
         rdfs:domain  [ owl:unionOf ( arm:Virtue arm:Flaw arm:Spell ) ] ;
         rdfs:range   xsd:string .
-arm:hasSpeciality  a   owl:DatatypeProperty ;
+arm:hasSpeciality  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:domain  [ owl:unionOf ( arm:Ability arm:Characteristic ) ] ;
         rdfs:range   xsd:string ;
         rdfs:label   "Speciality" .
-arm:hasType  a   owl:ObjectProperty ;
+arm:hasType  a   owl:ObjectProperty, arm:TraitProperty ;
+        rdfs:label  "Reputation Type" ;
         rdfs:domain  arm:Reputation ;
         rdfs:range   arm:ReputationType .
 arm:ReputationType a owl:class ;
@@ -123,6 +128,7 @@ arm:hasSpell  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:Character ;
         rdfs:range   arm:Spell .
 arm:hasOrder  a   owl:DatatypeProperty, arm:TraitProperty ;
+        rdfs:label  "Sort order" ;
         rdfs:comment  "This is used to sort traits for display purposes" ;
         rdfs:domain  [ owl:unionOf ( arm:Trait arm:LeafTraitClass ) ] ;
         rdfs:range   xsd:float .
