@@ -22,6 +22,7 @@ executable armchar-swish
   other-modules:       ArM.Rules
                        , ArM.Rules.Aux
                        , ArM.Rules.Resource
+                       , ArM.Rules.RDFS
                        , ArM.Resources
                        , ArM.Advancement 
                        , ArM.Query 

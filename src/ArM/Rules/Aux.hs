@@ -13,10 +13,13 @@
 module ArM.Rules.Aux where
 
 import Swish.RDF.Ruleset
+import Swish.Rule
+import Swish.RDF.Graph
+import Swish.RDF.Vocabulary.RDF
+
+import Data.Set (fromList)
 import qualified Data.Text as T
 import Data.Text.Lazy.Builder (fromString)
-import Swish.Rule
-import Swish.RDF.Graph (RDFGraph, emptyRDFGraph, addGraphs)
 import ArM.Resources
 import Swish.VarBinding (varBindingId) 
 
@@ -56,3 +59,18 @@ makeRule ln s1 s2 = makeN3ClosureSimpleRule
 makeRule' ln s1 s2 = makeRDFClosureRule (makeSN ln) [g1] g2 varBindingId
    where g1 = makeRDFGraphFromN3Builder $ fromString $ prefixes ++ s1
          g2 = makeRDFGraphFromN3Builder $ fromString $ prefixes ++ s2
+
+typeRes = Res rdfType 
+tArc = arc sVar (Res rdfType) tVar 
+sVar = (Var "s")
+tVar = (Var "t")
+oVar = (Var "o")
+pVar = (Var "p")
+
+listToRDFGraph :: [RDFTriple] -> RDFGraph
+listToRDFGraph = toRDFGraph .  fromList 
+
+makeCRule s l1 l2 = makeRDFClosureRule ( makeSN s )
+            [listToRDFGraph  l1]
+            (listToRDFGraph  l2)
+            varBindingId

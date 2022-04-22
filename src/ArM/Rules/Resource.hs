@@ -23,30 +23,23 @@ import Swish.VarBinding (varBindingId)
 import Data.Set
 
 -- | Infere resource properties from class
-prepareGraph = fwdApplyList [ rRule ]
+prepareGraph = fwdApplyList [ spectraitRule, rRule ]
 
--- | Deprecated.  This is a version of 'rRule' using N3 notation
--- and full URIs
-rRule' = makeRule' "rRule" 
-  ( prefixes 
-  ++ "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?t . "
-  ++ "?t ?p ?o . "
-  ++ "?p rdf:type <https://hg.schaathun.net/armchar/schema#TraitProperty> ."
-  )
-  "?s ?p ?o ."
-
-rRule = makeRDFClosureRule ( makeSN "rRule" )
-            [listToRDFGraph  l1]
-            (listToRDFGraph  l2)
-            varBindingId
-    where s = (Var "s")
-          t = (Var "t")
-          o = (Var "o")
-          p = (Var "p")
-          l1 = [ arc s ( Res $ makeSN "traitClass" ) t,
-               arc t p o,
-               arc p ( Res rdfType ) ( Res $ makeSN "TraitProperty" )  ]
-          l2 = [arc s p o]
+rRule = makeCRule "rRule" l1 l2
+    where l1 = [ arc sVar ( Res $ makeSN "traitClass" ) tVar,
+               arc tVar pVar oVar,
+               arc pVar typeRes ( Res $ makeSN "TraitProperty" )  ]
+          l2 = [arc sVar pVar oVar]
 
 listToRDFGraph :: [RDFTriple] -> RDFGraph
 listToRDFGraph = toRDFGraph .  fromList 
+
+stcRes = Res $ makeSN "SpecialTraitClass" 
+stcArc = arc tVar typeRes stcRes
+isSTRes = Res $ makeSN "isSpecialTrait" 
+isSTArc = arc sVar isSTRes tVar
+
+spectraitRule = makeCRule  "spectraitRule" 
+           [ tArc, stcArc ] [ isSTArc ]
+-- "?s rdf:type ?t . ?t rdf:type <https://hg.schaathun.net/armchar/schema#SpecialTraitClass>  ."
+-- "?s <https://hg.schaathun.net/armchar/schema#isSpecialTrait> ?t  ."

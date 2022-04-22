@@ -17,16 +17,13 @@ module ArM.Rules
 
 import Swish.RDF.Ruleset
 import qualified Data.Text as T
--- import Data.Text.Lazy.Builder
 import Swish.Rule
 import Swish.RDF.Graph
 import ArM.Resources
 import ArM.Rules.Aux
+import ArM.Rules.RDFS
 
 import qualified ArM.Rules.Resource as RR
-
-
-
 
 -- Initial Character Rules
 
@@ -46,28 +43,6 @@ traitclassRule = makeRule "traitclassRule"
 traitclasstypeRule = makeRule "traitclasstypeRule" 
        "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?t . "
        "?s rdf:type ?t . "
-
--- | RDFS Rules
-rdfsRules = [
-    makeRule "subclassRule" 
-       "?s rdfs:subClassOf ?t . ?t rdfs:subClassOf ?c ."
-       "?s rdfs:subClassOf ?c ."
-    , makeRule "subpropRule" 
-       "?s rdfs:subPropertyOf ?t . ?t rdfs:subPropertyOf ?c ."
-       "?s rdfs:subPropertyOf ?c ."
-       ]
-
--- | Rules to infer additional types and properties from subclass 
--- and subproperty relations (using RDFS vocabulary).
-rdfstypeRules = [
-    makeRule "subclasstypeRule"
-       "?s rdf:type ?t . ?t rdfs:subClassOf ?c ."
-       "?s rdf:type ?c ."
-    , makeRule "subpropinstanceRule" 
-       "?s ?p ?o . ?p rdfs:subPropertyOf ?p2 ."
-       "?s ?p2 ?o ."
-       ]
-
 
 
 -- | Add indices used for sorting advancements
@@ -96,16 +71,7 @@ prepareSchema = fwdApplyListR rdfsRules
 -- | Initial inferences on the character data, to be applied without
 -- the schema
 prepareCS :: RDFGraph -> RDFGraph
-prepareCS = 
-   fwdApplyList [ initialsheetRule, traitclasstypeRule ]
+prepareCS = fwdApplyList [ initialsheetRule, traitclasstypeRule ]
 
-spectraitRule = 
-    makeRule "spectraitRule"
-       "?s rdf:type ?t . ?t rdf:type <https://hg.schaathun.net/armchar/schema#SpecialTraitClass>  ."
-       "?s <https://hg.schaathun.net/armchar/schema#isSpecialTrait> ?t  ."
 
--- | Make inferences on the joint graph including resources
-prepareGraph' = 
-   fwdApplyListR ( spectraitRule:rdfstypeRules ++ rdfsRules ) 
-
-prepareGraph = RR.prepareGraph . prepareGraph'
+prepareGraph = RR.prepareGraph . applyRDFS
