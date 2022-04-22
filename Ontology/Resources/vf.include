@@ -5,7 +5,7 @@ arm:Flaw rdfs:subClassOf arm:Trait .
 armr:theGift rdfs:subClassOf armr:freeVirtue ; arm:hasLabel "The Gift" .
 
 arm:Virtue owl:disjointUnionOf ( armr:majorVirtue armr:minorVirtue armr:freeVirtue ) .
-arm:Flaw owl:disjointUnionOf ( armr:majorFlaw armr:minorFlaw ) .
+arm:Flaw owl:disjointUnionOf ( arm:majorFlaw arm:minorFlaw ) .
 
 arm:grantsTrait a owl:ObjectProperty ;
   rdfs:label   "Grants Trait" ;
@@ -451,7 +451,7 @@ armr:wanderer      rdfs:subClassOf   armr:freeSocialStatusVirtue ; arm:hasRefere
                          a arm:LeafTraitClass ;
                 arm:hasLabel "Wanderer" .
 
-armr:majorHermeticFlaw  rdfs:subClassOf   armr:majorFlaw ;
+armr:majorHermeticFlaw  rdfs:subClassOf   arm:majorFlaw ;
                         arm:hasLabel "Major Hermetic Flaw" .
 armr:blatantGift    rdfs:subClassOf armr:majorHermeticFlaw ;
                     arm:hasReference   "[ArM5]" ;
@@ -508,19 +508,19 @@ armr:weakSpontaneousMagic    rdfs:subClassOf armr:majorHermeticFlaw ; arm:hasRef
 
 armr:majorPersonalityFlaw  rdfs:subClassOf arm:Flaw ;
                        arm:hasLabel "Major or Minor Personality Flaw" .
-armr:minorPersonalityFlaw  rdfs:subClassOf armr:minorFlaw ;
+armr:minorPersonalityFlaw  rdfs:subClassOf arm:minorFlaw ;
                        arm:hasLabel "Minor Personality Flaw" .
-armr:majorSupernaturalFlaw  rdfs:subClassOf  armr:majorFlaw ;
+armr:majorSupernaturalFlaw  rdfs:subClassOf  arm:majorFlaw ;
                         arm:hasLabel "Major Supernatural Flaw" .
-armr:minorSupernaturalFlaw  rdfs:subClassOf  armr:minorFlaw ;
+armr:minorSupernaturalFlaw  rdfs:subClassOf  arm:minorFlaw ;
                         arm:hasLabel "Minor Supernatural Flaw" .
-armr:majorStoryFlaw  rdfs:subClassOf  armr:majorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Major Story Flaw" .
-armr:minorStoryFlaw  rdfs:subClassOf  armr:minorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Minor Story Flaw" .
-armr:minorsocialStatusFlaw rdfs:subClassOf  armr:minorFlaw ;
+armr:majorStoryFlaw  rdfs:subClassOf  arm:majorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Major Story Flaw" .
+armr:minorStoryFlaw  rdfs:subClassOf  arm:minorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Minor Story Flaw" .
+armr:minorsocialStatusFlaw rdfs:subClassOf  arm:minorFlaw ;
                        arm:hasLabel "Minor Social Status Flaw" .
-armr:majorGeneralFlaw rdfs:subClassOf  armr:majorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Major General Flaw" .
-armr:minorGeneralFlaw rdfs:subClassOf  armr:minorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Minor General Flaw" .
-armr:minorHermeticFlaw  rdfs:subClassOf   armr:minorFlaw ;
+armr:majorGeneralFlaw rdfs:subClassOf  arm:majorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Major General Flaw" .
+armr:minorGeneralFlaw rdfs:subClassOf  arm:minorFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Minor General Flaw" .
+armr:minorHermeticFlaw  rdfs:subClassOf   arm:minorFlaw ;
                     arm:hasLabel "Minor Hermetic Flaw" .
 
 

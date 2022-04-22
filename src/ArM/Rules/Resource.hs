@@ -10,7 +10,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules.Resource where
+module ArM.Rules.Resource (prepareResources) where
 
 import Swish.RDF.Ruleset
 import qualified Data.Text as T
@@ -22,26 +22,32 @@ import ArM.Resources
 import ArM.Rules.Aux
 import Swish.VarBinding (varBindingId) 
 
-prepareResources = fwdApplyList 
-  [ vfpRule, vfpMajorRule, vfabRule, vfvRule, vffRule ]
+prepareResources = fwdApplyList [ vfpRule, vfpMajorRule, vfabRule ] 
+                 . fwdApplyListR [ vfvRule, vffRule ]
 
-vfpRule = makeCRule "vfpRule" [vfp1, vfp2, vfp3] [vfpT]
-vfpMajorRule = makeCRule "vfpMajorRule" [vfp1, vfp2bis, vfp3] [vfpTbis]
-vfp1 = arc sVar gtRes tVar
-vfp2 = arc sVar subclassRes (Res $ makeSN "minorPersonalityFlaw")
-vfp2bis = arc sVar subclassRes (Res $ makeSN "majorPersonalityFlaw")
-vfp3 = arc tVar typeRes (Res $ makeSN "PersonalityTrait" )
-vfpT = arc tVar (Res $ makeSN "hasScore") (litInt 3)
-vfpTbis = arc tVar (Res $ makeSN "hasScore") (litInt 6)
+traitclass = Var "traitclass"
+grants = gtRes
+trait = Var "trait"
+score = Res $ makeSN "hasScore"
 
-litInt i = TypedLit (T.pack $ show i) xsdInt
+grantarc = arc traitclass grants trait
 
-vfabRule = makeCRule "vfabRule" [vfp1, vfab3] [vfabT]
-vfab3 = arc tVar typeRes (Res $ makeSN "Ability" )
-vfabT = arc tVar (Res $ makeSN "hasTotalXP") (litInt 5)
+vfpRule = makeCRule "vfpRule" [grantarc, vfp2, vfp3] [vfpT]
+vfpMajorRule = makeCRule "vfpMajorRule" [grantarc, vfp2bis, vfp3] [vfpTbis]
+vfp2 = arc traitclass subclassRes (Res $ makeSN "minorFlaw")
+vfp2bis = arc traitclass subclassRes (Res $ makeSN "majorFlaw")
+vfp3 = arc trait typeRes (Res $ makeSN "PersonalityTrait" )
+vfpT = arc trait score (litInt 3)
+vfpTbis = arc trait score (litInt 6)
 
-vfvRule = makeCRule "vfvRule" [vfp1, vfv3] [vfT]
-vffRule = makeCRule "vffRule" [vfp1, vff3] [vfT]
-vfv3 = arc tVar typeRes (Res $ makeSN "Virtue" )
-vff3 = arc tVar typeRes (Res $ makeSN "Flaw" )
-vfT = arc tVar (Res $ makeSN "hasScore") (litInt 0)
+litInt i = TypedLit (T.pack $ show i) xsdInteger
+
+vfabRule = makeCRule "vfabRule" [grantarc, vfab3] [vfabT]
+vfab3 = arc trait typeRes (Res $ makeSN "Ability" )
+vfabT = arc trait (Res $ makeSN "hasTotalXP") (litInt 5)
+
+vfvRule = makeCRule "vfvRule" [grantarc, vfv3] [vfT]
+vffRule = makeCRule "vffRule" [grantarc, vff3] [vfT]
+vfv3 = arc trait typeRes (Res $ makeSN "Virtue" )
+vff3 = arc trait typeRes (Res $ makeSN "Flaw" )
+vfT = arc trait score (litInt 0)

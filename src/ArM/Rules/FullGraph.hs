@@ -23,7 +23,7 @@ import ArM.Rules.Aux
 import Swish.VarBinding (varBindingId) 
 
 -- | Infere resource properties from class
-prepareGraph = fwdApplyList [ advancevfgrantRule, grantRule, spectraitRule, rRule ]
+prepareGraph = fwdApplyListR [ advancevfgrantRule, grantRule, spectraitRule, rRule ]
 
 rRule = makeCRule "rRule" l1 l2
     where l1 = [ arc sVar ( Res $ makeSN "traitClass" ) tVar,
