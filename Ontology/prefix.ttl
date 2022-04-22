@@ -6,6 +6,5 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix arm: <https://hg.schaathun.net/armchar/schema#> .
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
-@prefix armab: <https://hg.schaathun.net/armchar/resources/abilities#> .
 @prefix armchar: <https://hg.schaathun.net/armchar/character/> .
 @prefix armpyramid: <https://hg.schaathun.net/armchar/pyramid#> .

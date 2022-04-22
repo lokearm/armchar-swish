@@ -20,7 +20,6 @@ prefixes = "@prefix owl: <http://www.w3.org/2002/07/owl#> . "
    ++ "@prefix dc: <http://purl.org/dc/elements/1.1/> . "
    ++ "@prefix arm: <https://hg.schaathun.net/armchar/schema#> . "
    ++ "@prefix armr: <https://hg.schaathun.net/armchar/resources#> . "
-   ++ "@prefix armab: <https://hg.schaathun.net/armchar/resources/abilities#> . "
    ++ "@prefix armchar: <https://hg.schaathun.net/armchar/character/> . "
 
     

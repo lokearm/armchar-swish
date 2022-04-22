@@ -1,120 +1,120 @@
 # Canon abilities
 
 # General Abilities
-armab:arealore  rdfs:subClassOf arm:GeneralAbility ;
+armr:arealore  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasDescription  "Knowledge of one particular region, covenant, or even a village. It includes knowing where things are in the immediate area, local history and legends, and the centers of power in the region. The smaller the region, the more detailed your knowledge. Specialties: geography, history, legends, politics, personalities." ;
    arm:hasLabel "(Area) Lore" .
-armab:arealore-ireland  rdfs:subClassOf armab:arealore ;
+armr:arealore-ireland  rdfs:subClassOf armr:arealore ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Area Lore: Ireland" .
-armab:arealore-munster  rdfs:subClassOf armab:arealore ;
+armr:arealore-munster  rdfs:subClassOf armr:arealore ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Area Lore: Munster" .
-armab:organisationlore  rdfs:subClassOf arm:GeneralAbility ;
+armr:organisationlore  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "(Organisation) Lore" .
-armab:hermeslore  rdfs:subClassOf armab:organisationlore ;
+armr:hermeslore  rdfs:subClassOf armr:organisationlore ;
                    a arm:LeafTraitClass ;
    arm:hasLabel "Order of Hermes Lore" .
-armab:socplore  rdfs:subClassOf armab:organisationlore ;
+armr:socplore  rdfs:subClassOf armr:organisationlore ;
                    a arm:LeafTraitClass ;
    arm:hasLabel "Servants of the Common People Lore" .
-armab:livinglanguage  rdfs:subClassOf arm:GeneralAbility ;
+armr:livinglanguage  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Living Language" .
-armab:english  rdfs:subClassOf armab:livinglanguage ;
+armr:english  rdfs:subClassOf armr:livinglanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Living Language: English" .
-armab:irish  rdfs:subClassOf armab:livinglanguage ;
+armr:irish  rdfs:subClassOf armr:livinglanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Living Language: Irish" .
-armab:gaelic  rdfs:subClassOf armab:livinglanguage ;
+armr:gaelic  rdfs:subClassOf armr:livinglanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Living Language: Gaelic" .
-armab:profession  rdfs:subClassOf arm:GeneralAbility ;
+armr:profession  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Profession" .
-armab:craft  rdfs:subClassOf arm:GeneralAbility ;
+armr:craft  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Craft" .
-armab:craft-cooking  rdfs:subClassOf armab:craft ;
+armr:craft-cooking  rdfs:subClassOf armr:craft ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Craft: Cooking" .
-armab:craft-fletching  rdfs:subClassOf armab:craft ;
+armr:craft-fletching  rdfs:subClassOf armr:craft ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Craft: Fletching" .
-armab:awareness  rdfs:subClassOf arm:GeneralAbility ;
+armr:awareness  rdfs:subClassOf arm:GeneralAbility ;
                        a arm:LeafTraitClass ;
                        arm:hasLabel "Awareness" .
-armab:bargain  rdfs:subClassOf arm:GeneralAbility ;
+armr:bargain  rdfs:subClassOf arm:GeneralAbility ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Bargain" .
-armab:brawl  rdfs:subClassOf arm:GeneralAbility ;
+armr:brawl  rdfs:subClassOf arm:GeneralAbility ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Brawl" .
-armab:carouse  rdfs:subClassOf arm:GeneralAbility ;
+armr:carouse  rdfs:subClassOf arm:GeneralAbility ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Carouse" .
-armab:empathy  rdfs:subClassOf arm:GeneralAbility ;
+armr:empathy  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Empathy" .
-armab:folkken  rdfs:subClassOf arm:GeneralAbility ;
+armr:folkken  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Folk Ken" .
-armab:stealth  rdfs:subClassOf arm:GeneralAbility ;
+armr:stealth  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Stealth" .
-armab:conc  rdfs:subClassOf arm:GeneralAbility ;
+armr:conc  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Concentration" .
 
 # Arcane Abilities
-armab:parmamagica  rdfs:subClassOf arm:ArcaneAbility ;
+armr:parmamagica  rdfs:subClassOf arm:ArcaneAbility ;
    arm:hasDescription   "Protection from magic. This is a special ritual (not a ritual spell) that takes about two minutes to perform. It lets you add 5 times your Parma Magica score to your magic resistance until the next sunrise or sunset, whichever comes first. You may suppress your Parma Magica temporarily by concentrating; this is equivalent to sustaining a Concentration duration spell. (See page 82). Parma Magica does not require concentration while it is active.  You may also protect one other person for each point in Parma Magica, with their consent. You must touch each person to start the protection, and it lasts as long as at least one character can see the other. The magus may cancel the protection at will, at any distance.  While a magus is protecting others, his effective Parma Magica score is reduced by 3 points, both for himself and for the other people he is protecting. If the magus has a Parma Magica score of 3 or lower, his Parma Magica provides each character, including himself, with a Magic Resistance of 0. In the magus’s case, this is added to his Form resistance, and a magus protected by another magus’s Parma Magica may also add his Form resistance.  Parma Magica can only be learned by Gifted characters, although they learn it as a normal Arcane Ability, not a Supernatural Ability. It is only known by Hermetic magi, as the Order enforces the “Join or Die” choice rigorously on anyone who knows it, as well as declaring a Wizard’s March on the magus who taught it. Parma Magica is the last thing an apprentice learns, being taught the final key to the Ability after he swears the Oath. Specialties: protection from any specific Form. " ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Parma Magica" .
-armab:magictheory  rdfs:subClassOf arm:ArcaneAbility ;
+armr:magictheory  rdfs:subClassOf arm:ArcaneAbility ;
     arm:hasDescription   "Knowledge of what magic is and how it works, used primarily in the laboratory. Magic Theory deals with the technical details of Hermetic magic; Magic Lore covers knowledge of magical things in general. Anyone can learn Magic Theory, if they have access to a teacher or book (normally represented by a Virtue), but it is little use to those without The Gift.  Specialties: inventing spells, enchanting items, a single Art. (Arcane) " ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Magic Theory" .
-armab:finesse  rdfs:subClassOf arm:ArcaneAbility ;
+armr:finesse  rdfs:subClassOf arm:ArcaneAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Finesse" .
-armab:penetration  rdfs:subClassOf arm:ArcaneAbility ;
+armr:penetration  rdfs:subClassOf arm:ArcaneAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Penetration" .
-armab:hermescode  rdfs:subClassOf arm:ArcaneAbility ;
+armr:hermescode  rdfs:subClassOf arm:ArcaneAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Code of Hermes" .
-armab:infernallore  rdfs:subClassOf arm:ArcaneAbility ;
+armr:infernallore  rdfs:subClassOf arm:ArcaneAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Infernal Lore" .
 
 # Academic Abilities
-armab:artlib  rdfs:subClassOf owl:AcademicAbility ;
+armr:artlib  rdfs:subClassOf owl:AcademicAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Artes Liberales" .
-armab:philosophiae  rdfs:subClassOf owl:AcademicAbility ;
+armr:philosophiae  rdfs:subClassOf owl:AcademicAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Philosophiae" .
-armab:deadlanguage  rdfs:subClassOf arm:AcademicAbility ;
+armr:deadlanguage  rdfs:subClassOf arm:AcademicAbility ;
    arm:hasLabel "Dead Language" .
-armab:latin  rdfs:subClassOf armab:deadlanguage ;
+armr:latin  rdfs:subClassOf armr:deadlanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Dead Language: Latin" .
-armab:classicgreek  rdfs:subClassOf armab:deadlanguage ;
+armr:classicgreek  rdfs:subClassOf armr:deadlanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Dead Language: Classic Greek" .
 
 # Martial Abilities
-armab:bows  rdfs:subClassOf arm:MartialAbility ;
+armr:bows  rdfs:subClassOf arm:MartialAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Bows" .
-armab:thrown  rdfs:subClassOf arm:MartialAbility ;
+armr:thrown  rdfs:subClassOf arm:MartialAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Thrown Weapon" .
 # Supernatural Abilities
-armab:secondsight  rdfs:subClassOf arm:SupernaturalAbility ;
+armr:secondsightAb  rdfs:subClassOf arm:SupernaturalAbility ;
      arm:hasDescription "You are able to see through illusionary concealment and disguise, including invisibility, and can also see naturally invisible things such as spirits and the boundaries between regio levels. The Ease Factor to see through illusionary concealment is normally equal to 6 + the magnitude of the might of the creature responsible for the effect, or 6 + the magnitude of a Hermetic spell. In general, this Virtue allows you to see through Hermetic Imaginem concealment, but not other kinds. The Magic Ars Magica Fifth Edition Resistance, if any, of the concealed creature does not interfere with your Second Sight. If something is actually transformed, for example by a MuCo spell, you cannot determine the genuine form. The Ease Factor to see a naturally invisible thing is normally 9, and the Ease Factor for seeing regio levels is specified on page 189. All Second Sight rolls are Perception + Second Sight. Specialties: regiones, invisible things, illusory disguises, faeries, ghosts.  " ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Second Sight" .
-armab:senseholiness  rdfs:subClassOf arm:SupernaturalAbility ;
+armr:senseholinessAb  rdfs:subClassOf arm:SupernaturalAbility ;
       arm:hasDescription    "You are able to feel the presence of good and evil. A Perception + Sense Holiness and Unholiness roll against an Ease Factor of 9 lets you sense holiness or unholiness in a general area; against an Ease Factor of 15, in a person or object. As demons normally try to hide their nature, you must generally beat their Magic Resistance with your roll. However, you only need to beat it by 1 point, as demons are extremely evil. Emissaries of heaven rarely try to hide their nature, but if they do, you must actually penetrate their Magic Resistance (see page 184). In auras of particularly strong divine or infernal influence, your sensitivity may overwhelm you. This Ability is granted by the Divine realm, not the Magic or Faerie realms, and thus uses the Divine column of the Realm Interaction chart (page 183). Specialties: good or evil. " ; 
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Sense Holiness and Unholiness" .

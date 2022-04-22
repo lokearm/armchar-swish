@@ -22,7 +22,6 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix arm: <https://hg.schaathun.net/armchar/schema#> .
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
-@prefix armab: <https://hg.schaathun.net/armchar/resources/abilities#> .
 @prefix armchar: <https://hg.schaathun.net/armchar/character/> .
 @prefix armpyramid: <https://hg.schaathun.net/armchar/pyramid#> .
 @prefix : <https://hg.schaathun.net/armchar/character/cieran#> .
@@ -78,19 +77,19 @@ armchar:elksrun  a arm:Covenant ;
 
 # General Abilities
 :zero arm:hasAbility
-   [ arm:traitClass armab:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
+   [ arm:traitClass armr:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:cieran ;
    a arm:EarlyChildhoodAdvancement ; 
    arm:advanceTrait 
-   [ arm:traitClass armab:secondsight ; arm:hasSpeciality "Faerie Illusions" ],
-   [ arm:traitClass armab:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
-   [ arm:traitClass armab:brawl ; arm:hasSpeciality "Dodge" ;  arm:addedXP 15  ],
-   [ arm:traitClass armab:arealore-munster ; arm:hasSpeciality "Hiding places" ;
+   [ arm:traitClass armr:secondsightAb ; arm:hasSpeciality "Faerie Illusions" ],
+   [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
+   [ arm:traitClass armr:brawl ; arm:hasSpeciality "Dodge" ;  arm:addedXP 15  ],
+   [ arm:traitClass armr:arealore-munster ; arm:hasSpeciality "Hiding places" ;
      arm:addedXP 5  ],
-   [ arm:traitClass armab:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ],
-   [ arm:traitClass armab:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ;
+   [ arm:traitClass armr:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ],
+   [ arm:traitClass armr:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ;
   arm:advanceFromCharacterSheet :zero ;
   arm:advanceToCharacterSheet :early  .
 :lateradv arm:advanceCharacter armchar:cieran ;
@@ -98,12 +97,12 @@ armchar:elksrun  a arm:Covenant ;
   arm:advanceFromCharacterSheet :early ;
   arm:advanceToCharacterSheet :laterlife ;
   arm:advanceTrait 
-      [ arm:traitClass armab:bargain ;  arm:addedXP 5  ],
-      [ arm:traitClass armab:conc ; arm:hasSpeciality "Spell Concentration" ;
+      [ arm:traitClass armr:bargain ;  arm:addedXP 5  ],
+      [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
         arm:addedXP 5  ],
-      [ arm:traitClass armab:craft-cooking ; arm:addedXP 30  ],
-      [ arm:traitClass armab:craft-fletching ; arm:addedXP 30  ],
-      [ arm:traitClass armab:hermeslore ; arm:hasSpeciality "Hibernia" ;
+      [ arm:traitClass armr:craft-cooking ; arm:addedXP 30  ],
+      [ arm:traitClass armr:craft-fletching ; arm:addedXP 30  ],
+      [ arm:traitClass armr:hermeslore ; arm:hasSpeciality "Hibernia" ;
         arm:addedXP 5  ] .
 :apprenticeadv arm:advanceCharacter armchar:cieran ;
   a arm:ApprenticeshipAdvancement ; 
@@ -125,14 +124,14 @@ armchar:elksrun  a arm:Covenant ;
       [ arm:traitClass armr:mentem ; arm:addedXP 1 ],
       [ arm:traitClass armr:terram ; arm:addedXP 15 ],
       [ arm:traitClass armr:vim ; arm:addedXP 3 ],
-    [ arm:traitClass armab:artlib ; arm:addedXP 5 ; arm:hasSpeciality "rituals" ],
-    [ arm:traitClass armab:philosophiae ; arm:addedXP 0 ; arm:hasSpeciality "rituals" ],
-    [ arm:traitClass armab:latin ; arm:addedXP 30 ; arm:hasSpeciality "Hermetic Usage" ],
-   [ arm:traitClass armab:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
-   [ arm:traitClass armab:hermescode ; arm:addedXP 5 ; arm:hasSpeciality "Stonehenge" ],
-   [ arm:traitClass armab:infernallore ; arm:addedXP 0 ; arm:hasSpeciality "Undead" ],
-   [ arm:traitClass armab:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ],
-   [ arm:traitClass armab:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Rego" ],
+    [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "rituals" ],
+    [ arm:traitClass armr:philosophiae ; arm:addedXP 0 ; arm:hasSpeciality "rituals" ],
+    [ arm:traitClass armr:latin ; arm:addedXP 30 ; arm:hasSpeciality "Hermetic Usage" ],
+   [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
+   [ arm:traitClass armr:hermescode ; arm:addedXP 5 ; arm:hasSpeciality "Stonehenge" ],
+   [ arm:traitClass armr:infernallore ; arm:addedXP 0 ; arm:hasSpeciality "Undead" ],
+   [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ],
+   [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Rego" ],
    [ arm:traitClass armr:PeCo20Wound ; arm:hasTotalXP 5 ],
    [ arm:traitClass armr:ReCo5Spasms ; arm:hasTotalXP 5 ],
    [ arm:traitClass armr:CrIg15Lamp ; arm:hasTotalXP 5 ],
@@ -144,9 +143,9 @@ armchar:elksrun  a arm:Covenant ;
    [ arm:traitClass armr:ReMe5Touch ; arm:hasTotalXP 5 ],
    [ arm:traitClass armr:PeTe20Obliteration  ; arm:hasTotalXP 5 ],
    [ arm:traitClass armr:PeTe20End  ; arm:hasTotalXP 5 ] ,
-   [ arm:traitClass armab:bows ; arm:addedXP 30 ; arm:hasSpeciality "Longbow" ],
-   [ arm:traitClass armab:thrown ; arm:addedXP 5 ; arm:hasSpeciality "Dart" ],
-   [ arm:traitClass armab:arealore-ireland ; arm:hasSpeciality "Legends" ;
+   [ arm:traitClass armr:bows ; arm:addedXP 30 ; arm:hasSpeciality "Longbow" ],
+   [ arm:traitClass armr:thrown ; arm:addedXP 5 ; arm:hasSpeciality "Dart" ],
+   [ arm:traitClass armr:arealore-ireland ; arm:hasSpeciality "Legends" ;
      arm:addedXP 5  ] .
 
 # Date the game entry sheet
