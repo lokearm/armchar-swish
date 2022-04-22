@@ -44,4 +44,4 @@ vfvRule = makeCRule "vfvRule" [vfp1, vfv3] [vfT]
 vffRule = makeCRule "vffRule" [vfp1, vff3] [vfT]
 vfv3 = arc tVar typeRes (Res $ makeSN "Virtue" )
 vff3 = arc tVar typeRes (Res $ makeSN "Flaw" )
-vfT = arc tVar (Res $ makeSN "hasTotalXP") (litInt 0)
+vfT = arc tVar (Res $ makeSN "hasScore") (litInt 0)
