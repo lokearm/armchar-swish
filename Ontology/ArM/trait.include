@@ -58,7 +58,7 @@ arm:LeafTraitClass rdfs:subClassOf owl:Class ;
 
 arm:GeneralAbility rdfs:subClassOf arm:Ability .
 arm:ArcaneAbility rdfs:subClassOf arm:Ability .
-arm:AcademicKnowledge rdfs:subClassOf arm:Ability .
+arm:AcademicAbility rdfs:subClassOf arm:Ability .
 arm:MartialAbility rdfs:subClassOf arm:Ability .
 arm:SupernaturalAbility rdfs:subClassOf arm:Ability .
 
