@@ -44,7 +44,6 @@ traitclasstypeRule = makeRule "traitclasstypeRule"
        "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?t . "
        "?s rdf:type ?t . "
 
-
 -- | Add indices used for sorting advancements
 advancementindexRule = makeRule "advancementindexRule" 
     ( "?s rdf:type ?t . "
@@ -74,4 +73,5 @@ prepareCS :: RDFGraph -> RDFGraph
 prepareCS = fwdApplyList [ initialsheetRule, traitclasstypeRule ]
 
 
+-- | Final inference to be done after merging with the resource graph
 prepareGraph = RR.prepareGraph . applyRDFS
