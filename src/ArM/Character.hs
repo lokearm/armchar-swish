@@ -49,6 +49,13 @@ defaultCS = CharacterSheet {
          csMetadata = []
        }  
 
+getGameStartCharacter :: RDFGraph -> String -> CharacterSheet
+getGameStartCharacter g = getGameStartCS g . getInitialCS g
+
+getGameStartCS :: RDFGraph -> CharacterSheet -> CharacterSheet
+getGameStartCS g cs = foldl advanceCharacter cs as
+    where as = sort $ getPregameAdvancements g $ csID cs
+
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = cs { 

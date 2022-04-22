@@ -44,6 +44,8 @@ main = do
           text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n"
         get "/graph" $ do     
           text $ T.fromStrict $ formatGraphAsText $ g
+        get "/gamestart" $ do     
+          json $ getGameStartCharacter g testCharacter 
         get "/initial" $ do     
           json $ getInitialCS g testCharacter 
         S.delete "/" $ do
