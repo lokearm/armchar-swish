@@ -72,16 +72,16 @@ raw schema ------------> schema graph ------| merge
                     prepareInitialCharacter |
                                             v
 raw resources                            Character Graph
-    |              merge                    |
+    |                  merge                |
     -----------------------------------------
-                     |
-                     | prepareGraph
-                     v
-             initial character sheet
-                     |
-                     | advanceCharacter
-                     v
-             character sheet per season
+    prepareResources     |
+                         | prepareGraph
+                         v
+                 initial character sheet
+                         |
+                         | advanceCharacter
+                         v
+                 character sheet per season
 ```
 
 + `prepareCS` makes only a few inferences to simplify future queries
