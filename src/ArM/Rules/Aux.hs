@@ -66,6 +66,7 @@ sVar = (Var "s")
 tVar = (Var "t")
 oVar = (Var "o")
 pVar = (Var "p")
+cVar = (Var "c")
 
 listToRDFGraph :: [RDFTriple] -> RDFGraph
 listToRDFGraph = toRDFGraph .  fromList 

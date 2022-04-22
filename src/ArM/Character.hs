@@ -56,6 +56,21 @@ getGameStartCS :: RDFGraph -> CharacterSheet -> CharacterSheet
 getGameStartCS g cs = foldl advanceCharacter cs as
     where as = sort $ getPregameAdvancements g $ csID cs
 
+-- | Given a graph and a string identifying a character
+-- make a list of all ingame character sheets for the 
+-- character by applying all available advancements.
+getAllCS :: RDFGraph -> String -> [CharacterSheet]
+getAllCS g c = cs:advanceList cs as
+    where cs = getGameStartCharacter g c
+          as = sort $ getIngameAdvancements g c
+
+-- | Given a character sheet and a sorted list of advancements,
+-- apply all the advancements in order and produce a list
+-- of character sheets for every step
+advanceList :: CharacterSheet -> [Advancement] -> [CharacterSheet]
+advanceList _ [] = []
+advanceList cs (x:xs) = advanceCharacter cs x : advanceList cs xs
+
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = cs { 
