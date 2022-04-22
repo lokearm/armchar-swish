@@ -25,10 +25,13 @@ import ArM.JSON
 import Data.Aeson.Encode.Pretty
 import qualified Data.ByteString.Lazy.Char8 as B
 
+-- Auth
+import Network.Wai.Middleware.HttpAuth
+import Data.SecureMem -- for constant-time comparison
 
-
-import Swish.RDF.Ruleset
-
+authf u p = return $ u == "user" && secureMemFromByteString p == password
+password :: SecureMem
+password = secureMemFromByteString "ElksRun" 
 
 
 testCharacter = "armchar:cieran"
@@ -41,6 +44,8 @@ main = do
      -- print $ getGameStartCharacter g testCharacter 
 
      scotty 3000 $ do
+        -- middleware $ basicAuth authf "armchar"
+
         get "/" $ do     
           text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n"
         get "/graph" $ do     

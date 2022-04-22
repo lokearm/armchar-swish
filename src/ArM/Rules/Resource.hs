@@ -20,7 +20,6 @@ import Swish.RDF.Vocabulary.RDF
 import ArM.Resources
 import ArM.Rules.Aux
 import Swish.VarBinding (varBindingId) 
-import Data.Set
 
 -- | Infere resource properties from class
 prepareGraph = fwdApplyList [ spectraitRule, rRule ]
@@ -31,8 +30,6 @@ rRule = makeCRule "rRule" l1 l2
                arc pVar typeRes ( Res $ makeSN "TraitProperty" )  ]
           l2 = [arc sVar pVar oVar]
 
-listToRDFGraph :: [RDFTriple] -> RDFGraph
-listToRDFGraph = toRDFGraph .  fromList 
 
 stcRes = Res $ makeSN "SpecialTraitClass" 
 stcArc = arc tVar typeRes stcRes
