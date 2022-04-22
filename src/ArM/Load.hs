@@ -37,7 +37,8 @@ getGraph :: String -> String -> String -> IO RDFGraph
 getGraph characterFile armFile resourceFile = do
         character <- readGraph characterFile 
         schemaGraph' <- readGraph armFile 
-        resourceGraph <- readGraph resourceFile 
+        resourceGraph' <- readGraph resourceFile 
+        let resourceGraph = prepareResources resourceGraph'
         let schemaGraph = prepareSchema schemaGraph'
         let characterGraph' = prepareCS character
         let characterGraph =

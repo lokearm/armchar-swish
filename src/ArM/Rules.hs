@@ -80,3 +80,5 @@ prepareSchema = fwdApplyListR rdfsRules
 -- It will be applied every time the graph changes, and the graph
 -- is large
 prepareGraph = RR.prepareGraph . applyRDFS
+
+prepareResources = RR.prepareResources . applyRDFS

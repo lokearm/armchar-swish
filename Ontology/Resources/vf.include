@@ -8,43 +8,9 @@ arm:Virtue owl:disjointUnionOf ( armr:majorVirtue armr:minorVirtue armr:freeVirt
 arm:Flaw owl:disjointUnionOf ( armr:majorFlaw armr:minorFlaw ) .
 
 arm:grantsTrait a owl:ObjectProperty ;
+  rdfs:label   "Grants Trait" ;
   rdfs:domain   arm:Virtue ;
   rdfs:range   arm:Trait .
-arm:grantsFlaw a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTrait ;
-  rdfs:domain   arm:Flaw ;
-  rdfs:range   arm:Virtue .
-arm:grantsVirtue a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTrait ;
-  rdfs:domain   arm:Virtue ;
-  rdfs:range   arm:Virtue .
-arm:grantsAbility a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTrait ;
-  rdfs:domain   arm:Virtue ;
-  rdfs:range   arm:Ability .
-arm:grantsPTrait a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTrait ;
-  rdfs:domain   arm:Virtue ;
-  rdfs:range   arm:PersonalityTrait .
-arm:grantsTraitClass a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTraitClass ;
-  rdfs:domain   owl:Class ;
-  rdfs:range   owl:Class .
-arm:grantsPTraitClass a owl:ObjectProperty ;
-  rdfs:domain   owl:Class ;
-  rdfs:range   owl:Class .
-arm:grantsAbilityClass a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTraitClass ;
-  rdfs:domain   owl:Class ;
-  rdfs:range   owl:Class .
-arm:grantsFlawClass a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTraitClass ;
-  rdfs:domain   owl:Class ;
-  rdfs:range   owl:Class .
-arm:grantsVirtueClass a owl:ObjectProperty ;
-  rdfs:subPropertyOf arm:grantsTraitClass ;
-  rdfs:domain   owl:Class ;
-  rdfs:range   owl:Class .
 
 armr:majorHermeticVirtue rdfs:subClassOf armr:majorVirtue ;
                          arm:hasLabel "Hermetic, Major" .
@@ -105,7 +71,7 @@ armr:shapeshifter           rdfs:subClassOf  armr:majorSupernaturalVirtue ; arm:
                         arm:hasLabel "Shapeshifter" .
 armr:strongFaerieBlood      rdfs:subClassOf  armr:majorSupernaturalVirtue ; arm:hasReference   "[ArM5]" ;
                          a arm:LeafTraitClass ;
-                         arm:grantsVirtueClass armr:secondSight ;
+                         arm:grantsTrait [ arm:traitClass armr:secondSight ] ;
                         arm:hasLabel "Strong Faerie Blood" ;
 			arm:hasDescription "<p>The blood of the fay is strong in you.  Perhaps one of your parents was actually a faerie, or maybe you were conceived or born in a place of great faerie power. This ancestry grants you several abilities. </p><p>First, you have natural longevity. You start making aging rolls at the age of fifty, rather than the normal 35, and get –3 to Aging Rolls, cumulative with any other bonuses.  </p><p>Second, you have faerie eyes. This gives you the Virtue Second Sight (see page 48) at no cost, and you can see normally in darkness or semi-darkness, such as in deep woods or at night. Your eyes look mostly normal, but are an unusual and vivid color. </p><p> Third, you may learn Faerie Lore during character generation. </p><p> Finally, you get the benefits of a particular type of fay heritage, as given in the Virtue Faerie Blood (page 42). Your specific fay her- itage is clearly visible. Choose one physical quirk, such as small horns, literally blue blood, or eyes without irises and pupils, appropriate to the faeries from which you are descended. </p><p> You may not have both Faerie Blood and Strong Faerie Blood. </p><p> This is a Supernatural Virtue, and you cannot lose it when being trained as a magus (see page 106). If your master cannot preserve the ability, you cannot be trained. </p> ".
 
@@ -265,11 +231,11 @@ armr:premonitions     rdfs:subClassOf armr:minorSupernaturalVirtue ; arm:hasRefe
                arm:hasLabel "Premonitions" .
 armr:secondSight     rdfs:subClassOf armr:minorSupernaturalVirtue ; arm:hasReference   "[ArM5]" ;
       arm:hasDescription  "You are able to see through illusionary concealment and disguise, including invisibility, and can also see naturally invisible things such as spirits and the boundaries between regio levels (see page 189). Choosing this Virtue confers the Ability Second Sight 1 (page 67). " ;
-             arm:grantsAbilityClass  armr:secondsightAb ;
+             arm:grantsTrait  [ arm:traitClass armr:secondsightAb ] ;
              a arm:LeafTraitClass ;
                arm:hasLabel "Second Sight" .
 armr:senseHolinessAndUnholiness     rdfs:subClassOf armr:minorSupernaturalVirtue ; arm:hasReference   "[ArM5]" ;
-             arm:grantsAbilityClass  armr:senseholinessAb ;
+             arm:grantsTrait  [ arm:traitClass armr:senseholinessAb ] ;
                               a arm:LeafTraitClass ;
                arm:hasLabel "Sense Holiness and Unholiness" .
 armr:skinchanger     rdfs:subClassOf armr:minorSupernaturalVirtue ; arm:hasReference   "[ArM5]" ;
@@ -600,7 +566,7 @@ armr:generous    rdfs:subClassOf  armr:majorPersonalityFlaw ;
                  arm:hasLabel "Generous" .
 armr:meddler rdfs:subClassOf  armr:majorPersonalityFlaw ;
     arm:hasDescription   "You want to fix other peoples' lives: arrange matches, teach children to sew `properly', or tend the sick. You waste a lot of time and energy on such endeavors, and people usually resent it. " ;
-                 arm:grantsPTraitClass armr:personality-meddler ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-meddler ] ;
 		 arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Meddler" .
@@ -611,7 +577,7 @@ armr:greaterMalediction  rdfs:subClassOf  armr:majorSupernaturalFlaw ;
                  arm:hasLabel "Greater Malediction" .
 
 armr:carefree  rdfs:subClassOf  armr:minorPersonalityFlaw ;
-                 arm:grantsPTraitClass armr:personality-carefree ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-carefree ] ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Carefree" .
