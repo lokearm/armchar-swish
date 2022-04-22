@@ -78,7 +78,7 @@ raw resources                            Character Graph
     |              merge                    |
     -----------------------------------------
                      |
-                     | [implied traits and trait descriptions]
+                     | prepareGraph
                      v
              initial character sheet
                      |
@@ -87,10 +87,11 @@ raw resources                            Character Graph
              character sheet per season
 ```
 
-In the figure, brackets `[]` indicate description of 
-funcions not yet implemented.
-Other arrow labels are function names.
+This diagram shows the preparation of the graph in the `Load` module.
+The arrow labels are function names.
 The «raw» data objects correspond to files.
+Many of the transformations are not fully implemented yet, but
+the main principles have been demonstrated.
 
 
 ## TODO
