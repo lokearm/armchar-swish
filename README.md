@@ -113,14 +113,11 @@ raw resources                            Character Graph
 
 ## TODO
 
-1. Make character for given season
-2. Fix the isSpecialTrait property which comes out as URL
-3. Discuss Web API 
+1. Discuss Web API 
 4. Test and review
     - graph generator
     - advancement code
 5. JSON from advancements
-6. Web Server - authentication
 7. Introduce FRP
      - Web Server - put advancement resource
 8. Make both hasTrait and subproperties
