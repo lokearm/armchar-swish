@@ -108,9 +108,9 @@ advanceTraitTriples (x:xs) (y:ys)
 recalculateXP :: Trait -> Trait
 recalculateXP x 
    | isXPTrait x  = x { traitID = Nothing,
-        traitContents = makeNewTraitTriples 1 $ traitContents x }
-   | isAccelleratedTrait x  = x { traitID = Nothing,
         traitContents = makeNewTraitTriples 5 $ traitContents x }
+   | isAccelleratedTrait x  = x { traitID = Nothing,
+        traitContents = makeNewTraitTriples 1 $ traitContents x }
    | otherwise  = x
 
 -- | Parse through the Triples of a Trait and recalculate score
