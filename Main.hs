@@ -41,7 +41,7 @@ main = do
 
      scotty 3000 $ do
         get "/" $ do     
-          text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n"
+          text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n"
         get "/graph" $ do     
           text $ T.fromStrict $ formatGraphAsText $ g
         get "/gamestart" $ do     
