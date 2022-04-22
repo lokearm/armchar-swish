@@ -19,3 +19,9 @@ import Swish.RDF.Graph
 import ArM.Resources
 import ArM.Rules.Aux
 
+-- | Infere resource properties from class
+prepareGraph = fwdApplyList [ rRule ]
+
+rRule = makeRule "rRule" 
+       "?s rdf:type ?t . ?t ?p ?o . ?p rdf:type <https://hg.schaathun.net/armchar/schema#TraitProperty> ."
+       "?s ?p ?o ."

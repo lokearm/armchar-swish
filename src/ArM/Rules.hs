@@ -23,6 +23,8 @@ import Swish.RDF.Graph
 import ArM.Resources
 import ArM.Rules.Aux
 
+import qualified ArM.Rules.Resource as RR
+
 
 
 
@@ -103,5 +105,7 @@ spectraitRule =
        "?s <https://hg.schaathun.net/armchar/schema#isSpecialTrait> ?t  ."
 
 -- | Make inferences on the joint graph including resources
-prepareGraph = 
+prepareGraph' = 
    fwdApplyListR ( spectraitRule:rdfstypeRules ++ rdfsRules ) 
+
+prepareGraph = RR.prepareGraph . prepareGraph'

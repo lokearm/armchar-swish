@@ -38,6 +38,7 @@ main = do
      g <- getGraph characterFile armFile resourceFile
 
      print "Starting"
+     -- print $ getGameStartCharacter g testCharacter 
 
      scotty 3000 $ do
         get "/" $ do     
