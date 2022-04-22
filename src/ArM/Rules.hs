@@ -24,6 +24,7 @@ import ArM.Rules.Aux
 import ArM.Rules.RDFS
 
 import qualified ArM.Rules.Resource as RR
+import qualified ArM.Rules.FullGraph as RG
 
 -- Initial Character Rules
 
@@ -79,6 +80,6 @@ prepareSchema = fwdApplyListR rdfsRules
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph
 -- is large
-prepareGraph = RR.prepareGraph . applyRDFS
+prepareGraph = RG.prepareGraph . applyRDFS
 
 prepareResources = RR.prepareResources . applyRDFS

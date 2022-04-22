@@ -68,6 +68,12 @@ oVar = (Var "o")
 pVar = (Var "p")
 cVar = (Var "c")
 
+atRes = Res $ makeSN "advanceTrait" 
+gtRes = Res $ makeSN "grantsTrait" 
+htRes = Res $ makeSN "hasTrait" 
+csRes = Res $ makeSN "CharacterSheet" 
+caRes = Res $ makeSN "CharacterAdvancement" 
+
 listToRDFGraph :: [RDFTriple] -> RDFGraph
 listToRDFGraph = toRDFGraph .  fromList 
 
