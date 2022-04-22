@@ -33,37 +33,34 @@ Test a get call - available paths for get:
 ## Problems
 
 There are several limitations in Swish compared to Jena
-As far as I can tell:
+as far as I can tell:
 
 + No prebuilt OWL and RDFS reasoners.  
+    - However, reasoning is expensive and only a fraction of the OWL
+      and RDFS inferences are actually useful for us.
 + No ready to use function to apply rulesets.
+    - However, such generic functions could be expensive.
+    - A recursive function 'fwdApplyListR' has been implemented
+      to solve this problem and it seems to work well.
 + Rules cannot easily be defined in a separate file in a separate
   rules language.  The focus of Swish has been the script language.
+    - Hence, the 'ArM.Rules' module is clunky
 + No JSON-LD support
+    - However, not using JSON-LD may make the client a lot easier
+      to implement
 + No noValue clause
+    - However, the noValue clause make the reasoner expensive.
+    - Coding the inference without noValue is more efficient.
 
-## Needs for Reasoning
 
-+ Implied Traits defined in Ontology.
-  (E.g. Virtues granting abilities or other virtues.)
-+ Copy data from other resources
-    - abilities inherit description from class
-    - character inherit data from covenant or saga
-+ Filter on classes.
-+ Query
+## Graph Processing
 
-## Graphs
-
-1.  Character as Loaded from File
-    - Base Character
-    - Initial Character Sheet
-    - Advancement per Season
-2.  Resources
-3.  ArM Schema (mainly for use with OWL/RDFS reasoners)
-5.  Derived Character Sheet with implied traits
-4.  Derived Character Sheet per Season
-    - this must be generated after the implied traits
-    - implied trais may be advanced later
+The following diagram shows the preparation of the graph in 
+the `Load` module.
+The arrow labels are function names.
+The «raw» data objects correspond to files.
+Many of the transformations are not fully implemented yet, but
+the main principles have been demonstrated.
 
 ```
                prepareCS
@@ -87,12 +84,32 @@ raw resources                            Character Graph
              character sheet per season
 ```
 
-This diagram shows the preparation of the graph in the `Load` module.
-The arrow labels are function names.
-The «raw» data objects correspond to files.
-Many of the transformations are not fully implemented yet, but
-the main principles have been demonstrated.
++ `prepareCS` makes only a few inferences to simplify future queries
++ `prepareSchema` does subclass inference and similar rules
++ `prepareInitialCharacter` makes the CharacterSheet from the Character
+    - character inherit data from covenant or saga
++ `prepareGraph` copies data from the resource graph to make generic
+  descriptions available directly in the character sheet
+    - trait inherit description from class
+    - **TODO** implied traits
+      (E.g. Virtues granting abilities or other virtues.)
++ `advanceCharacter` does not currently use `RDFGraph`.
+    - The character sheets are generated an internal Haskell type
+    - We consider putting the character sheet back into the graph. 
+    - Doing the reasoning on the graph is too costly in this case
 
+### Graphs in use
+
+1.  Character as Loaded from File
+    - Base Character
+    - Initial Character Sheet
+    - Advancement per Season
+2.  Resources
+3.  ArM Schema (mainly for use with OWL/RDFS reasoners)
+5.  Derived Character Sheet with implied traits
+4.  Derived Character Sheet per Season
+    - this must be generated after the implied traits
+    - implied trais may be advanced later
 
 ## TODO
 
