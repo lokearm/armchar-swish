@@ -95,7 +95,7 @@ The «raw» data objects correspond to files.
 
 ## TODO
 
-1. Make game start character (via advancement)
+1. Make character for given season
 1. Fix the isSpecialTrait property which comes out as URL
 1. Discuss Web API 
 1. Test and review
