@@ -32,6 +32,8 @@ import ArM.BlankNode
 data CharacterSheet = CharacterSheet {
          csID :: String,
          sheetID :: Maybe RDFLabel,
+         csYear :: Maybe Int,
+         csSeason :: Maybe RDFLabel,
          csTraits :: [Trait],
          csMetadata :: [Triple]
        }  deriving (Eq)
@@ -45,6 +47,8 @@ instance Show CharacterSheet where
 defaultCS = CharacterSheet {
          csID = "",
          sheetID = Nothing,
+         csYear = Nothing,
+         csSeason = Nothing,
          csTraits = [],
          csMetadata = []
        }  
@@ -75,6 +79,8 @@ advanceList cs (x:xs) = advanceCharacter cs x : advanceList cs xs
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = cs { 
      sheetID = Nothing,
+     csYear = year adv,
+     csSeason = season adv,
      csTraits = advanceTraitList (csTraits cs) (traits adv)
      }
 
