@@ -132,13 +132,6 @@ csToRDFGraph cs =
          ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
          ("charsheet",1)
 
-csToArcList :: CharacterSheet -> [RDFTriple]
-csToArcList cs = ct:foldl (++) ms ts
-    where ts = map traitToArcList (csTraits cs)
-          ms = triplesToArcList x (csMetadata cs)
-          x = getSheetID cs $ sheetID cs
-          ct = arc charlabel isCharacterLabel x
-          charlabel = getCSID cs
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
@@ -152,10 +145,6 @@ csToArcListM cs = do
 
 getCSID :: CharacterSheet -> RDFLabel
 getCSID = toRDFLabel . fromJust . parseURI . csID 
-
-getSheetID :: CharacterSheet -> Maybe RDFLabel -> RDFLabel
-getSheetID cs Nothing = Blank "TODO"
-getSheetID _ (Just x) = x
 
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank
