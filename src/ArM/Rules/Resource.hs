@@ -45,10 +45,10 @@ csRes = Res $ makeSN "CharacterSheet"
 caRes = Res $ makeSN "CharacterAdvancement" 
 
 grantRule = makeCRule  "grantRule" 
-     [ arc sVar hfRes oVar,
+     [ arc sVar htRes oVar,
        arc sVar typeRes csRes,
        arc oVar gtRes cVar ]
-     [ arc sVar hfRes cVar ]
+     [ arc sVar htRes cVar ]
 advancevfgrantRule = makeCRule  "advancevfgrantRule" 
      [ arc cVar gtRes oVar,
        arc sVar typeRes caRes,
