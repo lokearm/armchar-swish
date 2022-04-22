@@ -22,7 +22,7 @@ import ArM.Rules.Aux
 import Swish.VarBinding (varBindingId) 
 
 -- | Infere resource properties from class
-prepareGraph = fwdApplyList [ spectraitRule, rRule ]
+prepareGraph = fwdApplyList [ advancevfgrantRule, grantRule, spectraitRule, rRule ]
 
 rRule = makeCRule "rRule" l1 l2
     where l1 = [ arc sVar ( Res $ makeSN "traitClass" ) tVar,
@@ -36,7 +36,21 @@ stcArc = arc tVar typeRes stcRes
 isSTRes = Res $ makeSN "isSpecialTrait" 
 isSTArc = arc sVar isSTRes tVar
 
-spectraitRule = makeCRule  "spectraitRule" 
-           [ tArc, stcArc ] [ isSTArc ]
--- "?s rdf:type ?t . ?t rdf:type <https://hg.schaathun.net/armchar/schema#SpecialTraitClass>  ."
--- "?s <https://hg.schaathun.net/armchar/schema#isSpecialTrait> ?t  ."
+spectraitRule = makeCRule  "spectraitRule" [ tArc, stcArc ] [ isSTArc ]
+
+atRes = Res $ makeSN "advanceTrait" 
+gtRes = Res $ makeSN "grantsTrait" 
+htRes = Res $ makeSN "hasTrait" 
+csRes = Res $ makeSN "CharacterSheet" 
+caRes = Res $ makeSN "CharacterAdvancement" 
+
+grantRule = makeCRule  "grantRule" 
+     [ arc sVar hfRes oVar,
+       arc sVar typeRes csRes,
+       arc oVar gtRes cVar ]
+     [ arc sVar hfRes cVar ]
+advancevfgrantRule = makeCRule  "advancevfgrantRule" 
+     [ arc cVar gtRes oVar,
+       arc sVar typeRes caRes,
+       arc sVar atRes cVar ]
+     [ arc sVar atRes oVar ]
