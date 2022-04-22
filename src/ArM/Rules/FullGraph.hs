@@ -42,14 +42,16 @@ spectraitRule = makeCRule  "spectraitRule" [ tArc, stcArc ] [ isSTArc ]
 
 -- | apply grantsTrait to a CharacterSheet
 grantRule = makeCRule  "grantRule" 
-     [ arc sVar htRes oVar,
-       arc sVar typeRes csRes,
-       arc oVar gtRes cVar ]
-     [ arc sVar htRes cVar ]
+     [ arc sVar htRes oVar,     -- s hasTrait o
+       arc oVar typeRes tVar,   -- o a t
+       arc sVar typeRes csRes,  -- s a CharacterSheet
+       arc tVar gtRes cVar ]    -- o grantsTrait c
+     [ arc sVar htRes cVar ]    -- s
 
 -- | apply grantsTrait to an Advancement
 advancevfgrantRule = makeCRule  "advancevfgrantRule" 
-     [ arc cVar gtRes oVar,
+     [ arc sVar atRes oVar,
+       arc oVar typeRes tVar,   -- o a t
        arc sVar typeRes caRes,
-       arc sVar atRes cVar ]
+       arc tVar gtRes cVar ]
      [ arc sVar atRes oVar ]

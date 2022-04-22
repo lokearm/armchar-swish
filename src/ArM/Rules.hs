@@ -83,3 +83,4 @@ prepareSchema = fwdApplyListR rdfsRules
 prepareGraph = RG.prepareGraph . applyRDFS
 
 prepareResources = RR.prepareResources . applyRDFS
+                 . fwdApplyList [ traitclasstypeRule ]

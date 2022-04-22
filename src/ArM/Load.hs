@@ -33,7 +33,7 @@ readGraph fn = do
 
 -- | Load the different graph and make initial inferences
 -- See diagram in README.
-getGraph :: String -> String -> String -> IO RDFGraph
+getGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
 getGraph characterFile armFile resourceFile = do
         character <- readGraph characterFile 
         schemaGraph' <- readGraph armFile 
@@ -43,5 +43,6 @@ getGraph characterFile armFile resourceFile = do
         let characterGraph' = prepareCS character
         let characterGraph =
               prepareInitialCharacter $ merge schemaGraph characterGraph'
-        return $ prepareGraph $ merge resourceGraph characterGraph 
+        return ( prepareGraph $ merge resourceGraph characterGraph ,
+                 schemaGraph, resourceGraph )
 

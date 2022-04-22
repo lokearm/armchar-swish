@@ -38,7 +38,7 @@ testCharacter = "armchar:cieran"
 
 -- main :: IO ()
 main = do 
-     g <- getGraph characterFile armFile resourceFile
+     (g,schema,res) <- getGraph characterFile armFile resourceFile
 
      print "Starting"
      -- print $ getGameStartCharacter g testCharacter 
@@ -47,7 +47,11 @@ main = do
         -- middleware $ basicAuth authf "armchar"
 
         get "/" $ do     
-          text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n"
+          text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n  /res\n  /schema\n"
+        get "/schema" $ do     
+          text $ T.fromStrict $ formatGraphAsText $ schema
+        get "/res" $ do     
+          text $ T.fromStrict $ formatGraphAsText $ res
         get "/graph" $ do     
           text $ T.fromStrict $ formatGraphAsText $ g
         get "/gamestart" $ do     

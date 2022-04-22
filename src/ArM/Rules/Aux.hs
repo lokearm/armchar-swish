@@ -61,6 +61,7 @@ makeRule' ln s1 s2 = makeRDFClosureRule (makeSN ln) [g1] g2 varBindingId
          g2 = makeRDFGraphFromN3Builder $ fromString $ prefixes ++ s2
 
 typeRes = Res rdfType 
+subclassRes = Res rdfsSubClassOf 
 tArc = arc sVar (Res rdfType) tVar 
 sVar = (Var "s")
 tVar = (Var "t")

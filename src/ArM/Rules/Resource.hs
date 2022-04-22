@@ -26,10 +26,10 @@ prepareResources = fwdApplyList
   [ vfpRule, vfpMajorRule, vfabRule, vfvRule, vffRule ]
 
 vfpRule = makeCRule "vfpRule" [vfp1, vfp2, vfp3] [vfpT]
-vfpMajorRule = makeCRule "vfpmajorRule" [vfp1, vfp2bis, vfp3] [vfpTbis]
+vfpMajorRule = makeCRule "vfpMajorRule" [vfp1, vfp2bis, vfp3] [vfpTbis]
 vfp1 = arc sVar gtRes tVar
-vfp2 = arc sVar typeRes (Res $ makeSN "minorFlaw")
-vfp2bis = arc sVar typeRes (Res $ makeSN "majorFlaw")
+vfp2 = arc sVar subclassRes (Res $ makeSN "minorPersonalityFlaw")
+vfp2bis = arc sVar subclassRes (Res $ makeSN "majorPersonalityFlaw")
 vfp3 = arc tVar typeRes (Res $ makeSN "PersonalityTrait" )
 vfpT = arc tVar (Res $ makeSN "hasScore") (litInt 3)
 vfpTbis = arc tVar (Res $ makeSN "hasScore") (litInt 6)
