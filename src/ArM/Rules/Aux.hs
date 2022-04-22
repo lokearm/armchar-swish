@@ -18,6 +18,7 @@ import Data.Text.Lazy.Builder (fromString)
 import Swish.Rule
 import Swish.RDF.Graph (RDFGraph, emptyRDFGraph, addGraphs)
 import ArM.Resources
+import Swish.VarBinding (varBindingId) 
 
 -- | Simple forward application of a rule
 -- When this results in multiple graphs, this are added together
@@ -51,3 +52,7 @@ fwdApplyListR rs g = if (g' == g) then g'
 -- | Convenience function to make a Rule from Strings of Notation3 data.
 makeRule ln s1 s2 = makeN3ClosureSimpleRule 
     rulesNS ( newLName ln ) ( fromString s1 ) ( fromString s2 )
+
+makeRule' ln s1 s2 = makeRDFClosureRule (makeSN ln) [g1] g2 varBindingId
+   where g1 = makeRDFGraphFromN3Builder $ fromString $ prefixes ++ s1
+         g2 = makeRDFGraphFromN3Builder $ fromString $ prefixes ++ s2
