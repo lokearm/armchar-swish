@@ -104,7 +104,8 @@ the main principles have been demonstrated.
     - advancement code
 1. JSON from advancements
 6. Web Server - authentication
-5. Web Server - put advancement resource
+5. Introduce FRP
+     - Web Server - put advancement resource
 6. Hand-code XP/score calculation rules.
 7. Make both hasTrait and subproperties
 4. Generate documentation

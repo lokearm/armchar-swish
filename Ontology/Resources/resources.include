@@ -7,7 +7,7 @@ armr:int a arm:LeafTraitClass ;  arm:hasLabel "Intelligence" ; arm:hasOrder 1 .
 armr:per a arm:LeafTraitClass ;  arm:hasLabel "Perception" ; arm:hasOrder 2 .
 armr:com a arm:LeafTraitClass ;  arm:hasLabel "Communication" ; arm:hasOrder 3 .
 armr:pre a arm:LeafTraitClass ;  arm:hasLabel "Presence" ; arm:hasOrder 4 .
-armr:str a arm:LeafTraitClass ;  arm:hasLabel "Strenghth" ; arm:hasOrder 5 .
+armr:str a arm:LeafTraitClass ;  arm:hasLabel "Strength" ; arm:hasOrder 5 .
 armr:sta a arm:LeafTraitClass ;  arm:hasLabel "Stamina" ; arm:hasOrder 6 .
 armr:dex a arm:LeafTraitClass ;  arm:hasLabel "Dexterity" ; arm:hasOrder 7 .
 armr:qik a arm:LeafTraitClass ;  arm:hasLabel "Quickness" ; arm:hasOrder 8 .
