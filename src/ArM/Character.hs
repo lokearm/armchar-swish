@@ -28,6 +28,7 @@ import ArM.Advancement
 import ArM.Query
 import qualified ArM.Internal.Metadata as CM
 import ArM.BlankNode
+import ArM.Rules.Aux
 
 getCharacterMetadata = CM.getCharacterMetadata
 
@@ -140,7 +141,8 @@ csToArcListM cs = do
           ts <- mapM (traitToArcListM x) (csTraits cs)
           let ms = triplesToArcList x (csMetadata cs)
           let ct = arc x isCharacterLabel charlabel
-          return $ ct:foldl (++) ms ts
+          let ct1 = arc x typeRes csRes 
+          return $ ct1:ct:foldl (++) ms ts
     where 
           charlabel = getCSID cs
 

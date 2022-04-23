@@ -37,12 +37,11 @@ idVar = (G.Var "id")
 propertyVar = (G.Var "property")
 valueVar = (G.Var "value")
 labelVar = (G.Var "label")
-labelRes = (G.Res rdfsLabel)
 arcs :: G.RDFLabel -> G.RDFGraph
 arcs prop = G.toRDFGraph . fromList $ [ G.arc sVar typeRes csRes
            , G.arc sVar prop idVar 
-           , G.arc idVar labelRes valueVar 
-           , G.arc propertyVar propertyVar labelVar  ]
+           , G.arc idVar propertyVar valueVar 
+           , G.arc propertyVar labelRes labelVar  ]
 
 
 getTraitList :: G.RDFLabel -> G.RDFGraph -> [IT.Trait]

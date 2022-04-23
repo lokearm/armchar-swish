@@ -123,15 +123,14 @@ raw resources                            Character Graph
 ### Project 1.  Managing a single character
 
 1. Discuss Web API 
-2. Bug: add subproperties of arm:hasTrait
 4. Test and review
 5. JSON from advancements
+6. Profiling
+    - speed up reasoner
 7. Introduce [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.) 
      - Web Server - put advancement resource
      - **important** current implementation will suffer from racing conditions
        if multiple clients connect
-6. Profiling
-    - speed up reasoner
 9. Generate documentation
 10. Make LaTeX
     1.  Pull metadata

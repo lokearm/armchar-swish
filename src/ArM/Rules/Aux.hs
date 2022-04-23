@@ -73,6 +73,7 @@ gtRes = Res $ makeSN "grantsTrait"
 htRes = Res $ makeSN "hasTrait" 
 csRes = Res $ makeSN "CharacterSheet" 
 caRes = Res $ makeSN "CharacterAdvancement" 
+labelRes = (Res rdfsLabel)
 
 listToRDFGraph :: [RDFTriple] -> RDFGraph
 listToRDFGraph = toRDFGraph .  fromList 
