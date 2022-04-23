@@ -20,6 +20,7 @@ import System.IO ( IO, readFile )
 import Swish.RDF.Graph (emptyGraph,RDFGraph,merge)
 import qualified Data.Text.Lazy.IO as DTLIO
 import Swish.RDF.Parser.Turtle (parseTurtle)
+import Control.Parallel
 
 -- | Read an RDFGraph, ignoring errors.
 readGraph :: String -> IO RDFGraph
@@ -43,6 +44,6 @@ getGraph characterFile armFile resourceFile = do
         let characterGraph' = prepareCS character
         let characterGraph =
               prepareInitialCharacter $ merge schemaGraph characterGraph'
-        return ( prepareGraph $ merge resourceGraph characterGraph ,
-                 schemaGraph, resourceGraph )
+        let charGraph = prepareGraph $ merge resourceGraph characterGraph 
+        return ( charGraph, schemaGraph, resourceGraph )
 

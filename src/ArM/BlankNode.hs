@@ -2,7 +2,7 @@
 
 module ArM.BlankNode where
 
-import Swish.RDF.Graph
+import Swish.RDF.Graph (RDFLabel(..))
 import Control.Monad.State.Lazy
 
 type BlankState = State (String,Int) 

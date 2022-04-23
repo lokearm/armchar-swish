@@ -47,7 +47,13 @@ main = do
 
      let cl =  C.getAllCS g testCharacter
      let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
-     liftIO $ putStrLn $ join st
+     putStrLn $ join st
+
+     print $ formatGraphAsText $ schema
+     print $ formatGraphAsText $ res
+
+     print $ formatGraphAsText $ g
+
      let s = merge schema res
      let cmap = CM.insertListS s CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
