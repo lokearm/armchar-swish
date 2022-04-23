@@ -48,7 +48,7 @@ fwdApplyMerge r c = addGraphs c $ fwdApplySimple r c
 
 -- | Apply a list of rules to a graph
 fwdApplyList rs g =
-     foldl addGraphs g $ parMap rseq (`fwdApplySimple` g) rs
+     foldl addGraphs g $ parMap rpar (`fwdApplySimple` g) rs
 
 fwdApplyListR rs g = if (g' == g) then g'
                      else fwdApplyListR rs g'
