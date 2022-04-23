@@ -41,22 +41,19 @@ prepareCS schema = fwdApplyListS schema traitRules
                  . fwdApplyListS schema rdfstypeRules
                  . fwdApplyListSR schema rdfsRules
 
-traitRules = [ mkr "abRule" (Res $ makeSN "Ability") (Res $ makeSN "hasAbiity")
-             , mkr "vRule" (Res $ makeSN "Virtue") (Res $ makeSN "hasVirtue")
-             , mkr "fRule" (Res $ makeSN "Flaw") (Res $ makeSN "hasFlaw")
-             , mkr "ptRule" (Res $ makeSN "PersonalityTrait")
-                            (Res $ makeSN "hasPersonalityTrait")
-             , mkr "ptRule" (Res $ makeSN "Reputation") 
-                            (Res $ makeSN "hasReputation")
-             , mkr "spRule" (Res $ makeSN "Spell") (Res $ makeSN "hasSpell")
-             , mkr "artRule" (Res $ makeSN "Art") (Res $ makeSN "hasArt")
-             , mkr "otRule" (Res $ makeSN "OtherTrait")
-                            (Res $ makeSN "hasOtherTrait")
-             , mkr "chRule" (Res $ makeSN "Characteristic")
-                            (Res $ makeSN "hasCharacteristic")
-             ]
-mkr s t p = makeCRule s g1 g2
-   where (g1,g2) = arcs t p
+traitRules = map mkr [ "Ability"
+                     , "Virtue"
+                     , "Flaw"
+                     , "PersonalityTrait"
+                     , "Reputation"
+                     , "Spell"
+                     , "Art"
+                     , "OtherTrait"
+                     , "Characteristic" ]
+    where mkr s = mkr' ("has" ++ s ++ "Rule")
+                       (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
+          mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs t p
+
 arcs t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
              [ arc cVar p tVar ] ) 
 
