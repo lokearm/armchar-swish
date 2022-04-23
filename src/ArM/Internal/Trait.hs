@@ -94,6 +94,8 @@ advanceTrait trait adv = recalculateXP  $
 
 
 advanceTraitTriples :: [Triple] -> [Triple] -> [Triple]
+advanceTraitTriples xs [] = xs
+advanceTraitTriples [] ys = ys
 advanceTraitTriples (x:xs) (y:ys) 
     | fst' x == fst' y   = y:advanceTraitTriples xs ys 
     | x < y   = x:advanceTraitTriples (xs) (y:ys) 

@@ -121,10 +121,9 @@ raw resources                            Character Graph
     - graph generator
     - advancement code
 5. JSON from advancements
-4. Use Map to keep track of individual resources
-7. Introduce FRP
-     - [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.) is an alternative
+7. Introduce [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.) 
      - Web Server - put advancement resource
+6. Profiling
 8. Make both hasTrait and subproperties
 9. Generate documentation
 10. Make LaTeX

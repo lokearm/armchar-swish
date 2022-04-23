@@ -44,7 +44,10 @@ testCharacter = "armchar:cieran"
 main = do 
      (g,schema,res) <- getGraph characterFile armFile resourceFile
 
-     let cmap = CM.insertList CM.empty $ C.getAllCS g testCharacter
+     let cl =  C.getAllCS g testCharacter
+     let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
+     liftIO $ putStrLn $ join st
+     let cmap = CM.insertList CM.empty $ cl
 
      print "Starting"
      -- print $ getGameStartCharacter g testCharacter 
@@ -66,7 +69,8 @@ main = do
           json $ getInitialCS g testCharacter 
         get "/cs/:char/:year/:season" $ do     
           liftIO $ print "foobar"
-          char <- param "char"
+          char' <- param "char"
+          let char = "armchar:" ++ char'
           liftIO $ print $ "char: " ++ char
           year <- param "year"
           liftIO $ print $ "year: " ++ year

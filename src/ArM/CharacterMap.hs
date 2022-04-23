@@ -34,7 +34,9 @@ getKey :: C.CharacterSheet -> CharacterKey
 getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
                                 Nothing -> 0
                                 (Just y) -> y,
-                           keySeason = show $ C.csSeason cs,
+                           keySeason = case (C.csSeason cs) of
+                                Nothing -> ""
+                                (Just s) -> fromJust $ G.fromRDFLabel s,
                            keyChar = C.csID cs }
 
 insertList :: CharacterMap -> [C.CharacterSheet] -> CharacterMap
