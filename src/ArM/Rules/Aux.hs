@@ -23,6 +23,10 @@ import Data.Text.Lazy.Builder (fromString)
 import ArM.Resources
 import Swish.VarBinding (varBindingId) 
 
+import Control.Parallel.Strategies
+
+
+
 -- | Simple forward application of a rule
 -- When this results in multiple graphs, this are added together
 -- usign 'addGraphs' (via 'foldGraphs')
@@ -44,7 +48,7 @@ fwdApplyMerge r c = addGraphs c $ fwdApplySimple r c
 
 -- | Apply a list of rules to a graph
 fwdApplyList rs g =
-     foldl addGraphs g $ map (`fwdApplySimple` g) rs
+     foldl addGraphs g $ parMap rseq (`fwdApplySimple` g) rs
 
 fwdApplyListR rs g = if (g' == g) then g'
                      else fwdApplyListR rs g'
