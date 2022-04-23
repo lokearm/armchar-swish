@@ -28,7 +28,6 @@ import Swish.VarBinding (varBindingId)
 -- usign 'addGraphs' (via 'foldGraphs')
 fwdApplySimple :: RDFRule ->  RDFGraph -> RDFGraph
 fwdApplySimple r c = foldGraphs $ fwdApply r [c]
-    where 
 
 -- | Add together a list of graphs.
 -- This is a fold with 'addGraphs' and hence it assumes that

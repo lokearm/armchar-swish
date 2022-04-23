@@ -24,6 +24,7 @@ executable armchar-swish
                        , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
+                       , ArM.Rules.Schema
                        , ArM.Resources
                        , ArM.Advancement 
                        , ArM.Query 
