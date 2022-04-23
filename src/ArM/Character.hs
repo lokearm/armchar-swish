@@ -138,13 +138,12 @@ csToRDFGraph cs =
          ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
          ("charsheet",1)
 
-
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
-          ts <- mapM traitToArcListM (csTraits cs)
+          ts <- mapM (traitToArcListM charlabel) (csTraits cs)
           x <- getSheetIDM cs $ sheetID cs
           let ms = triplesToArcList x (csMetadata cs)
-          let ct = arc charlabel isCharacterLabel x
+          let ct = arc x isCharacterLabel charlabel
           return $ ct:foldl (++) ms ts
     where 
           charlabel = getCSID cs
