@@ -30,6 +30,9 @@ import ArM.JSON
 import Data.Aeson.Encode.Pretty
 import qualified Data.ByteString.Lazy.Char8 as B
 
+import qualified Control.Concurrent.STM as STM
+
+
 -- Auth
 import Network.Wai.Middleware.HttpAuth
 import Data.SecureMem -- for constant-time comparison
@@ -38,6 +41,7 @@ authf u p = return $ u == "user" && secureMemFromByteString p == password
 password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
 
+data MapState = MapState { stMap :: CM.CharacterMap }
 
 testCharacter = "armchar:cieran"
 
@@ -65,9 +69,16 @@ main = do
      let g = f $ fromJust r
      print $ CQ.getAbilities g
 
+     stateVar <- STM.newTVarIO MapState { stMap = cmap }
+
+
      print "Starting Scotty"
-     scotty 3000 $ do
+     scotty 3000 $ stateScotty g schema res stateVar
+
         -- middleware $ basicAuth authf "armchar"
+
+stateScotty ::  RDFGraph -> RDFGraph -> RDFGraph -> STM.TVar MapState -> S.ScottyM ()
+stateScotty g schema res stateVar = do
 
         get "/" $ do     
           text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n  /res\n  /schema\n"
@@ -83,6 +94,7 @@ main = do
           json $ getInitialCS g testCharacter 
         get "/cs/:char/:year/:season" $ do     
           (char, year, season) <- getParam
+          cmap <- liftIO $ stMap <$> STM.readTVarIO stateVar
           let r = CM.lookup cmap char season (read year)
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
@@ -92,6 +104,7 @@ main = do
                 text "404 Not Found."
         get "/virtue/:char/:year/:season" $ do     
           (char, year, season) <- getParam
+          cmap <- liftIO $ stMap <$> STM.readTVarIO stateVar
           let r = CM.lookup cmap char season (read year)
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
@@ -101,6 +114,7 @@ main = do
                 text "404 Not Found."
         get "/flaw/:char/:year/:season" $ do     
           (char, year, season) <- getParam
+          cmap <- liftIO $ stMap <$> STM.readTVarIO stateVar
           let r = CM.lookup cmap char season (read year)
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
@@ -110,6 +124,7 @@ main = do
                 text "404 Not Found."
         get "/pt/:char/:year/:season" $ do     
           (char, year, season) <- getParam
+          cmap <- liftIO $ stMap <$> STM.readTVarIO stateVar
           let r = CM.lookup cmap char season (read year)
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
@@ -119,6 +134,7 @@ main = do
                 text "404 Not Found."
         get "/ability/:char/:year/:season" $ do     
           (char, year, season) <- getParam
+          cmap <- liftIO $ stMap <$> STM.readTVarIO stateVar
           let r = CM.lookup cmap char season (read year)
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
@@ -128,6 +144,7 @@ main = do
                 text "404 Not Found."
         get "/characteristic/:char/:year/:season" $ do     
           (char, year, season) <- getParam
+          cmap <- liftIO $ stMap <$> STM.readTVarIO stateVar
           let r = CM.lookup cmap char season (read year)
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
@@ -142,6 +159,8 @@ main = do
           text "This was a POST request!"
         put "/" $ do
           text "This was a PUT request!"
+
+
 
 getParam = do
           liftIO $ print "foobar"
