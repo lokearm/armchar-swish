@@ -52,9 +52,14 @@ main = do
      let cmap = CM.insertListS s CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
 
-     print "Starting"
      -- print $ getGameStartCharacter g testCharacter 
 
+     let r = CM.lookup cmap "armchar:cieran" "Summer" 1217
+     let f (CM.CharacterRecord x) = x
+     let g = f $ fromJust r
+     print $ CQ.getAbilities g
+
+     print "Starting Scotty"
      scotty 3000 $ do
         -- middleware $ basicAuth authf "armchar"
 
