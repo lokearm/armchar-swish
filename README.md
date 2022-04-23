@@ -88,11 +88,6 @@ raw resources                            Character Graph
                  character sheet for client queries
 ```
 
-The `schemaReasoner` has not been implemented.  It has to close
-the graph under RDFS subClassOf and subPropertyOf relations.
-It also has to deduce subproperties of hasTrait, by using the
-class of the object.
-
 + `prepareCS` makes only a few inferences to simplify future queries
 + `prepareSchema` does subclass inference and similar rules
 + `prepareInitialCharacter` makes the CharacterSheet from the Character
@@ -106,6 +101,9 @@ class of the object.
     - The character sheets are generated an internal Haskell type
     - We consider putting the character sheet back into the graph. 
     - Doing the reasoning on the graph is too costly in this case
++ `schemaReasoner` closes the graph under RDFS subClassOf and
+  subPropertyOf relations.  It also deduces subproperties of hasTrait,
+  by using the class of the object.  **not tested**
 
 ### Graphs in use
 

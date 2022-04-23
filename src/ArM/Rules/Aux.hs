@@ -77,6 +77,7 @@ caRes = Res $ makeSN "CharacterAdvancement"
 listToRDFGraph :: [RDFTriple] -> RDFGraph
 listToRDFGraph = toRDFGraph .  fromList 
 
+makeCRule :: String -> [RDFTriple] -> [RDFTriple] -> RDFRule
 makeCRule s l1 l2 = makeRDFClosureRule ( makeSN s )
             [listToRDFGraph  l1]
             (listToRDFGraph  l2)
