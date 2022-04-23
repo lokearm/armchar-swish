@@ -77,7 +77,7 @@ raw resources                            Character Graph
     prepareResources     |
                          | prepareGraph
                          v
-                 initial character sheet
+               initial graph from ArM.Load.getGraph
                          |
                          | advanceCharacter
                          v

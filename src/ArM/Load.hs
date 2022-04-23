@@ -37,13 +37,15 @@ readGraph fn = do
 getGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
 getGraph characterFile armFile resourceFile = do
         character <- readGraph characterFile 
+        let characterGraph' = prepareCS character
         schemaGraph' <- readGraph armFile 
+        let schemaGraph = prepareSchema schemaGraph'
         resourceGraph' <- readGraph resourceFile 
         let resourceGraph = prepareResources resourceGraph'
-        let schemaGraph = prepareSchema schemaGraph'
-        let characterGraph' = prepareCS character
         let characterGraph =
               prepareInitialCharacter $ merge schemaGraph characterGraph'
         let charGraph = prepareGraph $ merge resourceGraph characterGraph 
-        return ( charGraph, schemaGraph, resourceGraph )
+        return $ schemaGraph `par` resourceGraph `par`
+               characterGraph `pseq`
+               ( charGraph, schemaGraph, resourceGraph )
 
