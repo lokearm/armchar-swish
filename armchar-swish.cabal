@@ -33,6 +33,7 @@ executable armchar-swish
                        , ArM.BlankNode
                        , ArM.Internal.Trait
                        , ArM.JSON
+                       , ArM.CharacterMap
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14

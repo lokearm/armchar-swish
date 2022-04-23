@@ -116,6 +116,7 @@ raw resources                            Character Graph
 ### Project 1.  Managing a single character
 
 1. Discuss Web API 
+2. Extract JSON for specific parts of character sheets
 4. Test and review
     - graph generator
     - advancement code
