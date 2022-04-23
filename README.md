@@ -113,12 +113,16 @@ raw resources                            Character Graph
 
 ## TODO
 
+### Project 1.  Managing a single character
+
 1. Discuss Web API 
 4. Test and review
     - graph generator
     - advancement code
 5. JSON from advancements
+4. Use Map to keep track of individual resources
 7. Introduce FRP
+     - [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.) is an alternative
      - Web Server - put advancement resource
 8. Make both hasTrait and subproperties
 9. Generate documentation
@@ -126,6 +130,17 @@ raw resources                            Character Graph
     1.  Pull metadata
     2.  Pull Characteristics
 11. Spell String Rules
+
+### Project 2.  Managing a covenant/saga
+
+1.  Library resources
+    - link books to advancements
+    - check for conflicts
+2.  Joint advancement log (view)
+3.  Other shared resources
+4.  Finances
+    - low maintenance covenfolk
+
 
 ## Data Management Proposal
 
