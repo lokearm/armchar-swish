@@ -16,7 +16,7 @@ module ArM.CharacterMap where
 import qualified Data.Map as M
 import qualified Swish.RDF.Graph as G
 import qualified ArM.Character as C
-import qualified ArM.Rules.Schema as RS
+import qualified ArM.Rules as R
 import           Data.Maybe (fromJust)
 
 type CharacterMap = M.Map CharacterKey CharacterRecord
@@ -28,7 +28,7 @@ data CharacterRecord = CharacterRecord G.RDFGraph
 
 insertS :: G.RDFGraph -> CharacterMap -> C.CharacterSheet -> CharacterMap
 insertS schema cmap cs = M.insert (getKey cs) cr cmap
-    where cr = CharacterRecord $ RS.prepareCS schema $ C.csToRDFGraph cs
+    where cr = CharacterRecord $ R.prepareRecord schema $ C.csToRDFGraph cs
 
 insert :: CharacterMap -> C.CharacterSheet -> CharacterMap
 insert cmap cs = M.insert (getKey cs) cr cmap

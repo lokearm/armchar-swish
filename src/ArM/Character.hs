@@ -127,12 +127,6 @@ cqt s = qparse $ prefixes
       ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
-         -- csID :: String,
-         -- sheetID :: Maybe String,
-         -- csTraits :: [Trait],
-         -- csMetadata :: [Triple]
-         --
-
 csToRDFGraph :: CharacterSheet -> RDFGraph
 csToRDFGraph cs =
          ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
@@ -140,8 +134,8 @@ csToRDFGraph cs =
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
-          ts <- mapM (traitToArcListM charlabel) (csTraits cs)
           x <- getSheetIDM cs $ sheetID cs
+          ts <- mapM (traitToArcListM x) (csTraits cs)
           let ms = triplesToArcList x (csMetadata cs)
           let ct = arc x isCharacterLabel charlabel
           return $ ct:foldl (++) ms ts

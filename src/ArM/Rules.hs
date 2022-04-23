@@ -22,6 +22,7 @@ import Swish.RDF.Graph
 import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.RDFS
+import qualified ArM.Rules.Schema as RS
 
 import qualified ArM.Rules.Resource as RR
 import qualified ArM.Rules.FullGraph as RG
@@ -83,4 +84,7 @@ prepareSchema = fwdApplyListR rdfsRules
 prepareGraph = RG.prepareGraph . applyRDFS
 
 prepareResources = RR.prepareResources . applyRDFS
+                 . fwdApplyList [ traitclasstypeRule ]
+
+prepareRecord schema = RS.prepareCS schema 
                  . fwdApplyList [ traitclasstypeRule ]

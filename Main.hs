@@ -48,7 +48,8 @@ main = do
      let cl =  C.getAllCS g testCharacter
      let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
      liftIO $ putStrLn $ join st
-     let cmap = CM.insertListS schema CM.empty $ cl
+     let s = merge schema res
+     let cmap = CM.insertListS s CM.empty $ cl
 
      print "Starting"
      -- print $ getGameStartCharacter g testCharacter 

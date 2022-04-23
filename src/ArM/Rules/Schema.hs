@@ -22,7 +22,7 @@ import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.RDFS
 import Swish.VarBinding (varBindingId) 
---
+
 -- | Simple forward application of a rule
 -- When this results in multiple graphs, this are added together
 -- usign 'addGraphs' (via 'foldGraphs')
@@ -58,6 +58,6 @@ traitRules = [ mkr "abRule" (Res $ makeSN "Ability") (Res $ makeSN "hasAbiity")
 mkr s t p = makeCRule s g1 g2
    where (g1,g2) = arcs t p
 arcs t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
-             [ arc tVar p tVar ] ) 
+             [ arc cVar p tVar ] ) 
 
 
