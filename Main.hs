@@ -24,6 +24,7 @@ import ArM.Query
 import ArM.Load
 import ArM.Resources
 import ArM.Character as C
+import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import ArM.JSON
 import Data.Aeson.Encode.Pretty
@@ -47,7 +48,7 @@ main = do
      let cl =  C.getAllCS g testCharacter
      let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
      liftIO $ putStrLn $ join st
-     let cmap = CM.insertList CM.empty $ cl
+     let cmap = CM.insertListS schema CM.empty $ cl
 
      print "Starting"
      -- print $ getGameStartCharacter g testCharacter 
@@ -68,18 +69,47 @@ main = do
         get "/initial" $ do     
           json $ getInitialCS g testCharacter 
         get "/cs/:char/:year/:season" $ do     
-          liftIO $ print "foobar"
-          char' <- param "char"
-          let char = "armchar:" ++ char'
-          liftIO $ print $ "char: " ++ char
-          year <- param "year"
-          liftIO $ print $ "year: " ++ year
-          season <- param "season"
-          liftIO $ print $ "season: " ++ season
+          (char, year, season) <- getParam
           let r = CM.lookup cmap char season (read year)
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 text $ T.fromStrict $ formatGraphAsText $ cgraph
+             Nothing -> do
+                status notFound404
+                text "404 Not Found."
+        get "/virtue/:char/:year/:season" $ do     
+          (char, year, season) <- getParam
+          let r = CM.lookup cmap char season (read year)
+          case (r) of
+             Just (CM.CharacterRecord cgraph) -> do
+                json $ CQ.getVirtues cgraph
+             Nothing -> do
+                status notFound404
+                text "404 Not Found."
+        get "/flaw/:char/:year/:season" $ do     
+          (char, year, season) <- getParam
+          let r = CM.lookup cmap char season (read year)
+          case (r) of
+             Just (CM.CharacterRecord cgraph) -> do
+                json $ CQ.getFlaws cgraph
+             Nothing -> do
+                status notFound404
+                text "404 Not Found."
+        get "/pt/:char/:year/:season" $ do     
+          (char, year, season) <- getParam
+          let r = CM.lookup cmap char season (read year)
+          case (r) of
+             Just (CM.CharacterRecord cgraph) -> do
+                json $ CQ.getPTs cgraph
+             Nothing -> do
+                status notFound404
+                text "404 Not Found."
+        get "/ability/:char/:year/:season" $ do     
+          (char, year, season) <- getParam
+          let r = CM.lookup cmap char season (read year)
+          case (r) of
+             Just (CM.CharacterRecord cgraph) -> do
+                json $ CQ.getAbilities cgraph
              Nothing -> do
                 status notFound404
                 text "404 Not Found."
@@ -90,3 +120,14 @@ main = do
           text "This was a POST request!"
         put "/" $ do
           text "This was a PUT request!"
+
+getParam = do
+          liftIO $ print "foobar"
+          char' <- param "char"
+          let char = "armchar:" ++ char'
+          liftIO $ print $ "char: " ++ char
+          year <- param "year"
+          liftIO $ print $ "year: " ++ year
+          season <- param "season"
+          liftIO $ print $ "season: " ++ season
+          return (char, year, season)
