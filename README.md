@@ -82,7 +82,16 @@ raw resources                            Character Graph
                          | advanceCharacter
                          v
                  character sheet per season
+                         |
+                         | schemaReasoner
+                         v
+                 character sheet for client queries
 ```
+
+The `schemaReasoner` has not been implemented.  It has to close
+the graph under RDFS subClassOf and subPropertyOf relations.
+It also has to deduce subproperties of hasTrait, by using the
+class of the object.
 
 + `prepareCS` makes only a few inferences to simplify future queries
 + `prepareSchema` does subclass inference and similar rules
@@ -117,6 +126,7 @@ raw resources                            Character Graph
 
 1. Discuss Web API 
 2. Extract JSON for specific parts of character sheets
+    - draft made - have to apply reasoner before extraction
 4. Test and review
     - graph generator
     - advancement code
