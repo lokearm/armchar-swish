@@ -50,6 +50,7 @@ main = do
      liftIO $ putStrLn $ join st
      let s = merge schema res
      let cmap = CM.insertListS s CM.empty $ cl
+     -- let cmap = CM.insertList CM.empty $ cl
 
      print "Starting"
      -- print $ getGameStartCharacter g testCharacter 
