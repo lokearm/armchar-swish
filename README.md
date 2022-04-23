@@ -128,6 +128,8 @@ raw resources                            Character Graph
 5. JSON from advancements
 7. Introduce [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.) 
      - Web Server - put advancement resource
+     - **important** current implementation will suffer from racing conditions
+       if multiple clients connect
 6. Profiling
     - speed up reasoner
 9. Generate documentation
