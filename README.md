@@ -166,3 +166,29 @@ raw resources                            Character Graph
 5.  On PUT the resource is replaced
     - LDGraph delete to remove the old resource
     - LDGraph merge to insert the new graph
+
+## Overview
+
++ Advancement.hs
++ BlankNode  OK  This is a simple monad to produce unique
+  blank nodes based on a serial number
++ Character.hs
++ CharacterMap.hs
++ CharacterQuery OK  This is a very simple set of functions
+  to get data from a graph containing a single character sheet.
+  It uses the trait data structure form Internal.Trait.
++ Internal.Trait  NB  This should be refactored.  Several
+  modules depend on it.
++ JSON OK This module contains all the code to create JSON
+  from the objects defined in other modules.
++ Load OK Loads the graph and applies initial reasoners
++ Query  OKish  This module collects semi-flexible functions
+  to query graphs.  These are used in other modules
++ Resources.hs This names resources used in the project.
+  This is not used consistently
++ Rules  The reasoner(s) is a bit of a mess
+    + Rules.Aux
+    + Rules.FullGraph
+    + Rules.RDFS
+    + Rules.Resource
+    + Rules.Schema
