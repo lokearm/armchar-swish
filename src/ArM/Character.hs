@@ -26,8 +26,10 @@ import ArM.Resources
 import ArM.Internal.Trait
 import ArM.Advancement
 import ArM.Query
-import ArM.Metadata
+import qualified ArM.Internal.Metadata as CM
 import ArM.BlankNode
+
+getCharacterMetadata = CM.getCharacterMetadata
 
 data CharacterSheet = CharacterSheet {
          csID :: String,

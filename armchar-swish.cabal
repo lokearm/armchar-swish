@@ -28,7 +28,7 @@ executable armchar-swish
                        , ArM.Resources
                        , ArM.Advancement 
                        , ArM.Query 
-                       , ArM.Metadata
+                       , ArM.Internal.Metadata
                        , ArM.Character
                        , ArM.Load
                        , ArM.BlankNode

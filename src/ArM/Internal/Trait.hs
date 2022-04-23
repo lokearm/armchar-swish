@@ -26,7 +26,6 @@ import Data.Maybe
 import Data.List (sort)
 import ArM.Resources
 import ArM.Query
-import ArM.Metadata
 import ArM.BlankNode
 import Swish.Namespace
 
