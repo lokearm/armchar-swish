@@ -1,0 +1,19 @@
+# This file includes statements which are not used by the Haskell
+# implementation.
+
+arm:Characteristic owl:disjointUnionOf ( 
+   armr:int armr:per armr:str armr:sta
+   armr:com armr:pre armr:dex armr:qik
+) .
+
+arm:Virtue owl:disjointUnionOf ( armr:majorVirtue armr:minorVirtue armr:freeVirtue ) .
+arm:Flaw owl:disjointUnionOf ( arm:majorFlaw arm:minorFlaw ) .
+
+arm:Tech owl:disjointUnionOf ( 
+   armr:creo armr:intellego armr:muto armr:perdo armr:rego
+) .
+arm:Form owl:disjointUnionOf ( 
+   armr:animal armr:aquam armr:auram armr:corpus armr:herbam
+   armr:ignem armr:imaginem armr:mentem armr:terram armr:vim  
+
+) .

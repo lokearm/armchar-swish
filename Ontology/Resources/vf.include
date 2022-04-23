@@ -4,8 +4,11 @@ arm:Flaw rdfs:subClassOf arm:Trait .
 
 armr:theGift rdfs:subClassOf armr:freeVirtue ; arm:hasLabel "The Gift" .
 
-arm:Virtue owl:disjointUnionOf ( armr:majorVirtue armr:minorVirtue armr:freeVirtue ) .
-arm:Flaw owl:disjointUnionOf ( arm:majorFlaw arm:minorFlaw ) .
+arm:majorVirtue rdfs:subClassOf arm:Virtue .
+arm:minorVirtue rdfs:subClassOf arm:Virtue .
+arm:freeVirtue rdfs:subClassOf arm:Virtue .
+arm:majorFlaw rdfs:subClassOf arm:Flaw .
+arm:minorFlaw rdfs:subClassOf arm:Flaw .
 
 arm:grantsTrait a owl:ObjectProperty ;
   rdfs:label   "Grants Trait" ;

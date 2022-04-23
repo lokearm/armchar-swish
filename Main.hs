@@ -126,6 +126,15 @@ main = do
              Nothing -> do
                 status notFound404
                 text "404 Not Found."
+        get "/characteristic/:char/:year/:season" $ do     
+          (char, year, season) <- getParam
+          let r = CM.lookup cmap char season (read year)
+          case (r) of
+             Just (CM.CharacterRecord cgraph) -> do
+                json $ CQ.getCharacteristics cgraph
+             Nothing -> do
+                status notFound404
+                text "404 Not Found."
 
         S.delete "/" $ do
           html "This was a DELETE request!"  -- send 'text/html' response
