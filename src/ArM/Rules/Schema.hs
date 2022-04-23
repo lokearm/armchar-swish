@@ -31,17 +31,17 @@ fwdApplySimpleS schema r cg = foldGraphs $ fwdApply r [schema,cg]
 
 fwdApplyListS :: RDFGraph -> [RDFRule] ->  RDFGraph -> RDFGraph
 fwdApplyListS schema rs g = foldl addGraphs g $ map (`f` g) rs
--- fwdApplyListS schema rs g = addGraphs schema $ foldl addGraphs g $ map (`f` g) rs
      where f = fwdApplySimpleS schema
 fwdApplyListSR :: RDFGraph -> [RDFRule] ->  RDFGraph -> RDFGraph
 fwdApplyListSR schema rs g = if (g' == g) then g'
                      else fwdApplyListSR schema rs g'
                      where g' = fwdApplyListS schema rs g
 
-prepareCS schema = fwdApplyListS schema copyRules 
-                 . fwdApplyListS schema traitRules 
-                 . fwdApplyListS schema rdfstypeRules
-                 . fwdApplyListSR schema rdfsRules
+prepareCS schema = fwdApplyList copyRules 
+                 . fwdApplyList traitRules 
+                 . fwdApplyList rdfstypeRules
+                 . fwdApplyListR rdfsRules
+                 . merge schema
 
 copyRules = [ makeCRule "cp1" [arc pVar labelRes oVar]
                                [arc pVar labelRes oVar]
