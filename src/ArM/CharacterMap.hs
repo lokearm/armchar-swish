@@ -31,9 +31,17 @@ insert cmap cs = M.insert (getKey cs) cr cmap
     where cr = CharacterRecord $ C.csToRDFGraph cs
 
 getKey :: C.CharacterSheet -> CharacterKey
-getKey cs = CharacterKey { keyYear = fromJust $ C.csYear cs,
+getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
+                                Nothing -> 0
+                                (Just y) -> y,
                            keySeason = show $ C.csSeason cs,
                            keyChar = C.csID cs }
 
 insertList :: CharacterMap -> [C.CharacterSheet] -> CharacterMap
 insertList cmap cs = foldl insert cmap cs
+
+empty :: CharacterMap
+empty = M.empty
+lookup :: CharacterMap -> String -> String -> Int -> Maybe CharacterRecord
+lookup cmap c s y = M.lookup ck cmap
+   where ck = CharacterKey { keyYear = y, keySeason = s, keyChar = c }

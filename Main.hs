@@ -12,15 +12,19 @@ import Swish.RDF.Formatter.Turtle
 import Swish.RDF.Graph
 import Data.Maybe
 import Data.Text (Text)
+import Control.Monad.IO.Class (liftIO)
+
 
 -- Web service
 import Web.Scotty  as S
 import Network.HTTP.Types
 
+
 import ArM.Query
 import ArM.Load
 import ArM.Resources
-import ArM.Character
+import ArM.Character as C
+import qualified ArM.CharacterMap as CM
 import ArM.JSON
 import Data.Aeson.Encode.Pretty
 import qualified Data.ByteString.Lazy.Char8 as B
@@ -40,6 +44,8 @@ testCharacter = "armchar:cieran"
 main = do 
      (g,schema,res) <- getGraph characterFile armFile resourceFile
 
+     let cmap = CM.insertList CM.empty $ C.getAllCS g testCharacter
+
      print "Starting"
      -- print $ getGameStartCharacter g testCharacter 
 
@@ -58,6 +64,22 @@ main = do
           json $ getGameStartCharacter g testCharacter 
         get "/initial" $ do     
           json $ getInitialCS g testCharacter 
+        get "/cs/:char/:year/:season" $ do     
+          liftIO $ print "foobar"
+          char <- param "char"
+          liftIO $ print $ "char: " ++ char
+          year <- param "year"
+          liftIO $ print $ "year: " ++ year
+          season <- param "season"
+          liftIO $ print $ "season: " ++ season
+          let r = CM.lookup cmap char season (read year)
+          case (r) of
+             Just (CM.CharacterRecord cgraph) -> do
+                text $ T.fromStrict $ formatGraphAsText $ cgraph
+             Nothing -> do
+                status notFound404
+                text "404 Not Found."
+
         S.delete "/" $ do
           html "This was a DELETE request!"  -- send 'text/html' response
         post "/" $ do
