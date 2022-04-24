@@ -34,6 +34,9 @@ import qualified Data.Text as T
 -- We may want to make an algebraic datatype to replace Triple
 -- See here for decoding tips
 -- https://stackoverflow.com/questions/53478455/aeson-parse-json-object-to-list
+--
+-- Another comprehensive tutorial:
+-- https://williamyaoh.com/posts/2019-10-19-a-cheatsheet-to-json-handling.html
 
 tripleToJSON (a,_,b) = tripleToJSON' (fromJust $ fromRDFLabel a) (labelToData b)
 tripleToJSON' a (Left b) = (getKey a, Number $ fromIntegral b) 
