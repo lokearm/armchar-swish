@@ -23,6 +23,13 @@ import Data.Maybe
 import Data.List (sort)
 import ArM.Resources
 
+
+data KeyValuePair = KeyValuePair RDFLabel RDFLabel
+data ObjectKeyValue = ObjectKeyValue RDFLabel RDFLabel RDFLabel
+
+data KeyValuePairString = KeyValuePair RDFLabel RDFLabel
+data ObjectKeyValueString = ObjectKeyValue RDFLabel RDFLabel RDFLabel
+
 type Triple = (RDFLabel, String, RDFLabel)
 type Quad = (RDFLabel,RDFLabel, String, RDFLabel)
 
