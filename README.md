@@ -123,19 +123,13 @@ raw resources                            Character Graph
 ### Project 1.  Managing a single character
 
 1. Discuss Web API 
-4. Test and review
-5. JSON from advancements
-6. Profiling
-    - speed up reasoner
-7. Introduce [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.) 
-     - Web Server - put advancement resource
-     - **important** current implementation will suffer from racing conditions
-       if multiple clients connect
-9. Generate documentation
-10. Make LaTeX
+2. Test and review
+3. Web Server - put advancement resource
+4. Generate documentation
+5. Spell String Rules
+6. Make LaTeX
     1.  Pull metadata
     2.  Pull Characteristics
-11. Spell String Rules
 
 ### Project 2.  Managing a covenant/saga
 
@@ -192,3 +186,7 @@ raw resources                            Character Graph
     + Rules.RDFS
     + Rules.Resource
     + Rules.Schema
+
+## References
+
++ [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.)  tutorial

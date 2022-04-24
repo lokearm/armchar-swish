@@ -24,7 +24,7 @@ import ArM.Character as C
 import qualified ArM.Advancement as A
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
-import Data.Aeson.Encode.Pretty
+import Data.Aeson.Encode.Pretty (encodePretty)
 import qualified Data.ByteString.Lazy.Char8 as B
 
 import qualified Control.Concurrent.STM as STM
@@ -60,13 +60,14 @@ main = do
 
      -- print $ getGameStartCharacter g testCharacter 
 
-     let r = CM.lookup cmap "armchar:cieran" "Summer" 1217
-     let f (CM.CharacterRecord x) = x
-     let g = f $ fromJust r
-     print $ CQ.getAbilities g
+     -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
+
+     -- let r = CM.lookup cmap "armchar:cieran" "Summer" 1217
+     -- let f (CM.CharacterRecord x) = x
+     -- let g = f $ fromJust r
+     -- print $ CQ.getAbilities g
 
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
-
 
      print "Starting Scotty"
      S.scotty 3000 $ stateScotty g schema res stateVar

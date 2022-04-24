@@ -110,8 +110,6 @@ stateScotty g schema res stateVar = do
         put "/" $ do
           text "This was a PUT request!"
 
-
-
 getCSGraph stateVar = do
           (char, year, season) <- getParam
           cmap <- liftIO $ CM.stMap <$> STM.readTVarIO stateVar
