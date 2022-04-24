@@ -53,3 +53,5 @@ empty = M.empty
 lookup :: CharacterMap -> String -> String -> Int -> Maybe CharacterRecord
 lookup cmap c s y = M.lookup ck cmap
    where ck = CharacterKey { keyYear = y, keySeason = s, keyChar = c }
+
+data MapState = MapState { stMap :: CharacterMap }

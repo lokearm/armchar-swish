@@ -68,6 +68,7 @@ fixAdv g a = a { traits = sort $ getTraits q g }
           getTraits q g = map toTrait
                $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
 
+advancementIDstring = show . fromJust . rdfid 
 
 -- | CharacterAdvancement Resource
 -- Key computational features are extracted in separate constructors.

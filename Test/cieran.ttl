@@ -23,7 +23,6 @@
 @prefix arm: <https://hg.schaathun.net/armchar/schema#> .
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
 @prefix armchar: <https://hg.schaathun.net/armchar/character/> .
-@prefix armpyramid: <https://hg.schaathun.net/armchar/pyramid#> .
 @prefix : <https://hg.schaathun.net/armchar/character/cieran#> .
 
 # Identifier for the sheet (graph) itself.
@@ -47,12 +46,18 @@ armchar:cieran a arm:Magus ;
                arm:hasSaga armchar:contestedlands ;
                arm:hasInitialSheet :zero .
 
+# Saga and Covenant are reasonable entities to define
+# in their own right, but this is not fully implemented
+# at the moment. TODO
+
 armchar:elksrun  a arm:Covenant ; 
                arm:hasName "Elk's Run" ;
 	       arm:hasSetting "Hibernia" ;
                arm:hasSaga armchar:contestedlands .
 
 # Initial character sheet.
+# The initial sheet defines the pre-game traits which are not governed
+# by specific age brackets, that is virtues and flaws.
 :zero arm:hasVirtue
     [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
     [ arm:traitClass armr:craftmagic ; arm:hasScore 0 ],
@@ -68,12 +73,15 @@ armchar:elksrun  a arm:Covenant ;
     [ arm:traitClass armr:weakSpontaneousMagic ; arm:hasScore 0 ],
     [ arm:traitClass armr:mistakenIdentity ],
     [ arm:traitClass armr:carefree ; a armr:minorFlaw ] .
+# TODO.  There is a problem with major/minor personality traits.
 
 :zero arm:hasCharacteristic
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore -1 ],
     [ arm:traitClass armr:com ; arm:hasScore -1 ], [ arm:traitClass armr:pre ; arm:hasScore 0 ],
     [ arm:traitClass armr:str ; arm:hasScore 2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
     [ arm:traitClass armr:dex ; arm:hasScore 2 ], [ arm:traitClass armr:qik ; arm:hasScore -3 ] . 
+
+# Note.  The only Personality Traits defined are those implied by flaws
 
 # General Abilities
 :zero arm:hasAbility

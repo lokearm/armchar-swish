@@ -20,6 +20,7 @@ import Data.Aeson.Key
 import Swish.RDF.Graph
 import Swish.Namespace
 import ArM.Query
+import ArM.Advancement (Advancement(..),advancementIDstring)
 import ArM.Character
 import ArM.Internal.Trait
 import Data.Maybe
@@ -52,3 +53,8 @@ instance ToJSON CharacterSheet where
              xs = map tripleToJSON (csMetadata cs)
              c = (fromString "arm:isCharacter") .= (csID cs)
     
+instance ToJSON Advancement where 
+    toJSON cs = object (c:x:xs)
+       where x = (fromString "arm:hasTrait") .= (toJSON (traits cs))
+             xs = map tripleToJSON (contents cs)
+             c = (fromString "id") .= (advancementIDstring cs)

@@ -36,6 +36,7 @@ executable armchar-swish
                        , ArM.JSON
                        , ArM.CharacterMap
                        , ArM.CharacterQuery
+                       , ArM.WebService
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
