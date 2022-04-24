@@ -100,8 +100,6 @@ raw resources                            Character Graph
 + `prepareGraph` copies data from the resource graph to make generic
   descriptions available directly in the character sheet
     - trait inherit description from class
-    - **TODO** implied traits
-      (E.g. Virtues granting abilities or other virtues.)
 + `advanceCharacter` does not currently use `RDFGraph`.
     - The character sheets are generated an internal Haskell type
     - We consider putting the character sheet back into the graph. 
