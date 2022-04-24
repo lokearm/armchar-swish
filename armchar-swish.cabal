@@ -37,6 +37,7 @@ executable armchar-swish
                        , ArM.CharacterMap
                        , ArM.CharacterQuery
                        , ArM.WebService
+                       , ArM.KeyPair
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
