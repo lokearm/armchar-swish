@@ -51,12 +51,12 @@ main = do
 
      print $ formatGraphAsText $ schema
      print $ formatGraphAsText $ res
-
      print $ formatGraphAsText $ g
 
      let s = merge schema res
      let cmap = CM.insertListS s CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
+     stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
 
      -- print $ getGameStartCharacter g testCharacter 
 
@@ -67,7 +67,6 @@ main = do
      -- let g = f $ fromJust r
      -- print $ CQ.getAbilities g
 
-     stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
 
      print "Starting Scotty"
      S.scotty 3000 $ stateScotty g schema res stateVar
