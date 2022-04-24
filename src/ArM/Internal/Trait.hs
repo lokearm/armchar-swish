@@ -30,8 +30,12 @@ import ArM.BlankNode
 import Swish.Namespace
 
 -- ** The Data Type ** 
---
+
 -- | Trait Resource
+-- `traitID` and `traitContents` are sufficient to describe the trait.
+-- The other fields duplicate information to facilitate searching and
+-- sorting.
+-- Is it possible that `traitID` is nothing?
 data Trait = Trait {
     traitID :: Maybe RDFLabel,
     traitClass :: Maybe RDFLabel,
@@ -131,7 +135,9 @@ makeNewTraitTriples' (xp,ys) ((a,b,c):zs)
     | a == scoreLabel = makeNewTraitTriples' (xp { score = read c },ys) zs
     | a == hasXPLabel = makeNewTraitTriples' (xp { hasXP = read c },ys) zs
     | otherwise       = makeNewTraitTriples' (xp, (a,b,c):ys) zs
-    where read = fromJust . fromRDFLabel
+    where read = f . fromRDFLabel
+          f Nothing = 0
+          f (Just x) = x
 
 
 -- | Calculate the triples for total XP, score, and remaining XP,
@@ -191,15 +197,6 @@ getTraitClass ((x,y,z):xs)
    | y == "Trait ID"  = Just z
    | otherwise      = getTraitClass xs
 
-traitToArcSet :: Trait -> RDFArcSet
-traitToArcSet = fromList . traitToArcList
-
-traitToArcList :: Trait -> [RDFTriple]
-traitToArcList t | x == Nothing = triplesToArcList y ts
-                 | otherwise    = triplesToArcList (fromJust x) ts
-                 where y = Blank "TODO"
-                       x = traitID t
-                       ts = traitContents t
 
 triplesToArcList :: RDFLabel -> [Triple] -> [RDFTriple]
 triplesToArcList x [] = []
