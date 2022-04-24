@@ -5,6 +5,10 @@ ArM character server implementation using Haskell and Swish.
 The program, `armchar-swish`, is currently only for testing.
 It has no real features.
 
+## Design notes
+
++ [Update](Design/Update)
+
 ## Testing
 
 The easiest way to run the program is via cabal:
@@ -159,24 +163,6 @@ raw resources                            Character Graph
     - low maintenance covenfolk
 
 
-## Data Management Proposal
-
-1.  Divide the data into editable chunks, e.g.
-    - Each character advancement is one chunk
-        - pregame advancements may possibly be split later
-    - Metadata is one chunk (possibly divided later)
-    - Initial character sheet is one or more chunks
-        - e.g. characteristics; virtues and flaws; native language; personality traits
-2.  Each chunk has 
-    1. associated Haskell Datatype
-    2. a well-defined query producing a resource graph
-    3. one-to-one mapping between the query result graph and the Haskell datatype
-    3. one-to-one mapping between the query result graph and JSON
-3.  The editor client can do HTTP GET and PUSH on the chunk
-4.  On GET the JSON is returned
-5.  On PUT the resource is replaced
-    - LDGraph delete to remove the old resource
-    - LDGraph merge to insert the new graph
 
 ## Overview
 
