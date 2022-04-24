@@ -77,11 +77,12 @@ raw resources                            Character Graph
     prepareResources     |
                          | prepareGraph
                          v
-               initial graph from ArM.Load.getGraph
+          cgraph (initial graph from ArM.Load.getGraph)
                          |
                          | advanceCharacter
                          v
                  character sheet per season
+  (separate graph - not merged in with the schema and resources)
                          |
                          | schemaReasoner
                          v
@@ -105,18 +106,34 @@ raw resources                            Character Graph
   subPropertyOf relations.  It also deduces subproperties of hasTrait,
   by using the class of the object.  **not tested**
 
-### Graphs in use
+### Graphs and Data Types in use
 
 1.  Character as Loaded from File
     - Base Character
     - Initial Character Sheet
     - Advancement per Season
-2.  Resources
-3.  ArM Schema (mainly for use with OWL/RDFS reasoners)
-5.  Derived Character Sheet with implied traits
-4.  Derived Character Sheet per Season
-    - this must be generated after the implied traits
-    - implied trais may be advanced later
+2.  Supporting Ontologies (separate files)
+    -  Resources
+    -  ArM Schema (mainly for use with OWL/RDFS reasoners)
+4.  `cgraph` : Derived Character Sheet with implied traits
+    - this is created by `prepareGraph` and then loaded
+      into a CharacterSheet type
+5.  Internal Data Types are loaded from `cgraph` 
+    - CharacterSheet
+    - Advancement
+    - Trait (only as subsidiaries to CharacterSheet and Advancement)
+6.  `CharacterRecord` Derived Character Sheet per Season
+    - map `CharacterSheet -> Advancement -> CharacterSheet`
+    - this is easily applied with `foldl`
+    - The resulting CharacterSheet is converted to RDFGraph
+      and wrapped as `CharacterRecord`
+    - Stored in a `CharacterMap`
+    - schema and resources are not included in this graph
+7.  Complete CharacterSheet for Display
+    - Before display, a reasoner is needed to add properties
+      used by the query.
+    - An RDF reasoner uses type relations to sort different
+      types of traits to make display processing simple
 
 ## TODO
 
@@ -163,29 +180,33 @@ raw resources                            Character Graph
 
 ## Overview
 
-+ Advancement.hs
-+ BlankNode  OK  This is a simple monad to produce unique
++ Main  - the current version includes a lot of debug displays,
+  in addition to the main feature from ArM.WebServices
++ ArM.Advancement.hs
++ ArM.BlankNode  OK  This is a simple monad to produce unique
   blank nodes based on a serial number
-+ Character.hs
-+ CharacterMap.hs
-+ CharacterQuery OK  This is a very simple set of functions
++ ArM.Character.hs
++ ArM.CharacterMap.hs
++ ArM.CharacterQuery OK  This is a very simple set of functions
   to get data from a graph containing a single character sheet.
   It uses the trait data structure form Internal.Trait.
-+ Internal.Trait  NB  This should be refactored.  Several
++ ArM.Internal.Trait  NB  This should be refactored.  Several
   modules depend on it.
-+ JSON OK This module contains all the code to create JSON
++ ArM.JSON OK This module contains all the code to create JSON
   from the objects defined in other modules.
-+ Load OK Loads the graph and applies initial reasoners
-+ Query  OKish  This module collects semi-flexible functions
++ ArM.Load OK Loads the graph and applies initial reasoners
++ ArM.Query  OKish  This module collects semi-flexible functions
   to query graphs.  These are used in other modules
-+ Resources.hs This names resources used in the project.
++ ArM.Resources.hs This names resources used in the project.
   This is not used consistently
-+ Rules  The reasoner(s) is a bit of a mess
-    + Rules.Aux
-    + Rules.FullGraph
-    + Rules.RDFS
-    + Rules.Resource
-    + Rules.Schema
++ ArM.WebServices OK defines the scotty action which is used in
+  Main.
++ ArM.Rules  The reasoner(s) is a bit of a mess
+    + ArM.Rules.Aux
+    + ArM.Rules.FullGraph
+    + ArM.Rules.RDFS
+    + ArM.Rules.Resource
+    + ArM.Rules.Schema
 
 ## References
 
