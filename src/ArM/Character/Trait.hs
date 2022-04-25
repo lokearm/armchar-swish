@@ -207,10 +207,10 @@ triplesToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 triplesToArcList x [] = []
 triplesToArcList x (KeyValuePair a c:ys) = arc x a c:triplesToArcList x ys
 
-traitToArcListM :: RDFLabel -> Trait -> BlindState [RDFTriple]
+traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
 traitToArcListM cs t 
      | x' == Nothing = do
-                      y <- getBlind 
+                      y <- getBlank 
                       return $ arc cs htRes y:triplesToArcList y ts
      | otherwise    = return $ arc cs htRes x:triplesToArcList x ts
                  where x' = traitID t

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Character
+-- Module      :  ArM.Character.Character
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -10,7 +10,7 @@
 -- The CharacterSheet data type and corresponding functions
 --
 -----------------------------------------------------------------------------
-module ArM.Character where
+module ArM.Character.Character where
 
 import Data.Set (fromList)
 import Swish.RDF.Parser.N3 (parseN3fromText)
@@ -27,7 +27,7 @@ import ArM.Internal.Trait
 import ArM.Advancement
 import ArM.Query
 import qualified ArM.Internal.Metadata as CM
-import ArM.BlindNode
+import ArM.BlankNode
 import ArM.Rules.Aux
 
 getCharacterMetadata = CM.getCharacterMetadata
@@ -132,10 +132,10 @@ cqt s = qparse $ prefixes
 
 csToRDFGraph :: CharacterSheet -> RDFGraph
 csToRDFGraph cs =
-         ( toRDFGraph .  fromList . fst . runBlind ( csToArcListM cs ) )
+         ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
          ("charsheet",1)
 
-csToArcListM :: CharacterSheet -> BlindState [RDFTriple]
+csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           ts <- mapM (traitToArcListM x) (csTraits cs)
@@ -149,6 +149,6 @@ csToArcListM cs = do
 getCSID :: CharacterSheet -> RDFLabel
 getCSID = toRDFLabel . fromJust . parseURI . csID 
 
-getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlindState RDFLabel
-getSheetIDM _ Nothing = getBlind
+getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
+getSheetIDM _ Nothing = getBlank
 getSheetIDM _ (Just x) = return x
