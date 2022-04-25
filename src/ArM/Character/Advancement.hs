@@ -4,7 +4,6 @@ module ArM.Character.Advancement ( Advancement(..)
                                  , getPregameAdvancements
                                  , getIngameAdvancements
                                  , advancementIDstring
-				 , q1, q2
                                  ) where
 
 import Swish.RDF.Graph 

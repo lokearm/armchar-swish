@@ -50,12 +50,10 @@ stateScotty g schema res stateVar = do
         get "/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-	  liftIO $ print $ A.q1 char
           json $ A.getIngameAdvancements g char
         get "/pregameadvancement/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-	  liftIO $ print $ A.q2 char
           json $ A.getPregameAdvancements g char
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
