@@ -27,7 +27,7 @@ import ArM.Internal.Trait
 import ArM.Advancement
 import ArM.Query
 import qualified ArM.Internal.Metadata as CM
-import ArM.BlankNode
+import ArM.BlindNode
 import ArM.Rules.Aux
 
 getCharacterMetadata = CM.getCharacterMetadata
@@ -132,10 +132,10 @@ cqt s = qparse $ prefixes
 
 csToRDFGraph :: CharacterSheet -> RDFGraph
 csToRDFGraph cs =
-         ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
+         ( toRDFGraph .  fromList . fst . runBlind ( csToArcListM cs ) )
          ("charsheet",1)
 
-csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
+csToArcListM :: CharacterSheet -> BlindState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           ts <- mapM (traitToArcListM x) (csTraits cs)
@@ -149,6 +149,6 @@ csToArcListM cs = do
 getCSID :: CharacterSheet -> RDFLabel
 getCSID = toRDFLabel . fromJust . parseURI . csID 
 
-getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
-getSheetIDM _ Nothing = getBlank
+getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlindState RDFLabel
+getSheetIDM _ Nothing = getBlind
 getSheetIDM _ (Just x) = return x

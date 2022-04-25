@@ -26,7 +26,7 @@ import Data.Maybe
 import Data.List (sort)
 import ArM.Resources
 import ArM.Query
-import ArM.BlankNode
+import ArM.BlindNode
 import Swish.Namespace
 
 -- ** The Data Type ** 
@@ -202,10 +202,10 @@ triplesToArcList :: RDFLabel -> [Triple] -> [RDFTriple]
 triplesToArcList x [] = []
 triplesToArcList x ((a,b,c):ys) = arc x a c:triplesToArcList x ys
 
-traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
+traitToArcListM :: RDFLabel -> Trait -> BlindState [RDFTriple]
 traitToArcListM cs t 
      | x' == Nothing = do
-                      y <- getBlank 
+                      y <- getBlind 
                       return $ arc cs htRes y:triplesToArcList y ts
      | otherwise    = return $ arc cs htRes x:triplesToArcList x ts
                  where x' = traitID t
