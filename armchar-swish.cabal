@@ -31,7 +31,7 @@ executable armchar-swish
                        , ArM.Internal.Metadata
                        , ArM.Character
                        , ArM.Load
-                       , ArM.BlankNode
+                       , ArM.BlindNode
                        , ArM.Internal.Trait
                        , ArM.JSON
                        , ArM.CharacterMap
@@ -80,7 +80,7 @@ executable prof
                        , ArM.Internal.Metadata
                        , ArM.Character
                        , ArM.Load
-                       , ArM.BlankNode
+                       , ArM.BlindNode
                        , ArM.Internal.Trait
                        , ArM.JSON
                        , ArM.CharacterMap

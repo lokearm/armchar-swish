@@ -11,6 +11,6 @@ getBlind :: BlindState RDFLabel
 getBlind = do
     (s,x) <- get
     put (s,x+1)
-    return $ Blind $ s ++ show x
+    return $ Blank $ s ++ show x
 
 runBlind = runState
