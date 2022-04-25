@@ -166,25 +166,34 @@ raw resources                            Character Graph
 
 + Main  - the current version includes a lot of debug displays,
   in addition to the main feature from ArM.WebServices
-+ ArM.Advancement.hs
-+ ArM.BlankNode  OK  This is a simple monad to produce unique
-  blank nodes based on a serial number
-+ ArM.Character.hs
-+ ArM.CharacterMap.hs
++ ArM.WebServices OK defines the scotty action which is used in Main.
++ ArM.Load (OK) loads the graph and applies initial reasoners from 
+  ArM.Rules and ArM.Rules.*
+    - this results in three graphs (g,schema,res), where g contains the 
+      character data
++ ArM.Character 
+    - This contains the data types and functions to 
+        1. load character data from the graph g (above)
+	2. advance the characters and produce new graph for each
+	   advancement period, containing the character sheet at that time.
+    - internal implementation is in ArM.Character.*
++ ArM.CharacterMap is the data store for character sheets.
+    - `Main` uses `ArM.Character.getAllCS` to create all the character sheets.
+    - These character sheets are stored using `ArM.CharacterMap.insertListS`
+    - Before storage, a reasoner is applied to the character sheet
+      to add inferred information to make queries easier. 
 + ArM.CharacterQuery OK  This is a very simple set of functions
-  to get data from a graph containing a single character sheet.
-  It uses the trait data structure form Internal.Trait.
-+ ArM.Internal.Trait  NB  This should be refactored.  Several
-  modules depend on it.
-+ ArM.JSON OK This module contains all the code to create JSON
+  to get data a graph from the data store (above).
++ ArM.JSON This module contains all the code to create JSON
   from the objects defined in other modules.
-+ ArM.Load OK Loads the graph and applies initial reasoners
-+ ArM.Query  OKish  This module collects semi-flexible functions
-  to query graphs.  These are used in other modules
-+ ArM.Resources.hs This names resources used in the project.
+    - **TODO** implement `FromJSON`
++ Auxiliary modules
+    + ArM.BlankNode  OK  This is a simple monad to produce unique
+      blank nodes based on a serial number.  This is used in ArM.Character
+    + ArM.KeyPair  OK  This module collects semi-flexible functions
+      to query graphs.  These are used in ArM.Character
++ ArM.Resources This names resources used in the project.
   This is not used consistently
-+ ArM.WebServices OK defines the scotty action which is used in
-  Main.
 + ArM.Rules  The reasoner(s) is a bit of a mess
     + ArM.Rules.Aux
     + ArM.Rules.FullGraph
