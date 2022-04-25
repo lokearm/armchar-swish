@@ -46,7 +46,8 @@ prepareCS schema = fwdApplyList copyRules
 copyRules = [ makeCRule "cp1" [arc pVar labelRes oVar]
                                [arc pVar labelRes oVar]
              ]
-traitRules = map mkr [ "Ability"
+traitRules = traitRules1 ++ traitRules2
+traitRules1 = map mkr [ "Ability"
                      , "Virtue"
                      , "Flaw"
                      , "PersonalityTrait"
@@ -57,7 +58,21 @@ traitRules = map mkr [ "Ability"
                      , "Characteristic" ]
     where mkr s = mkr' ("has" ++ s ++ "Rule")
                        (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
-          mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs t p
+          mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs1 t p
+traitRules2 = map mkr [ "Ability"
+                     , "Virtue"
+                     , "Flaw"
+                     , "PersonalityTrait"
+                     , "Reputation"
+                     , "Spell"
+                     , "Art"
+                     , "OtherTrait"
+                     , "Characteristic" ]
+    where mkr s = mkr' ("has" ++ s ++ "IRule")
+                       (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
+          mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs2 t p
 
-arcs t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
+arcs1 t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
              [ arc cVar p tVar ] ) 
+arcs2 t p = ( [ arc cVar p tVar, arc tVar typeRes t ],
+             [ arc cVar htRes tVar ] ) 
