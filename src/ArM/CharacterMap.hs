@@ -40,7 +40,7 @@ getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
                                 Nothing -> 0
                                 (Just y) -> y,
                            keySeason = (C.csSeason cs),
-                           keyChar = C.csID cs }
+                           keyChar = show $ C.csID cs }
 
 seasonString Nothing = ""
 seasonString (Just x ) | x == springLabel = "Spring"

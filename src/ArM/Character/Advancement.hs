@@ -12,7 +12,9 @@ import ArM.Resources
 import ArM.KeyPair 
 import Data.Maybe 
 import Data.List
+import Data.Set (fromList)
 import ArM.Character.Trait
+import ArM.Rules.Aux
 
 -- Class:
 --    a arm:CharacterAdvancement ;
@@ -35,21 +37,21 @@ qt s = qparse $ prefixes
 
 
 -- | Get a list of all Pregame Advancements of a character.
-getPregameAdvancements :: RDFGraph -> String -> [Advancement]
-getPregameAdvancements g c = getAdvancements g $ qparse $ prefixes 
-       ++ " ?id rdf:type <https://hg.schaathun.net/armchar/schema#PregameAdvancement> ;"
-       ++ " ?property ?value ; "
-       ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> "
-       ++ c ++ " . "
-       ++ "?property rdfs:label ?label . "
+getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
+getPregameAdvancements g c = getAdvancements g $ queryGraph preGameAdv c
+   where preGameAdv = Res $ makeSN "PregameAdvancement"
+
 -- | Get a list of all Ingame Advancements of a character.
-getIngameAdvancements :: RDFGraph -> String -> [Advancement]
-getIngameAdvancements g c = getAdvancements g $ qparse $ prefixes 
-       ++ " ?id rdf:type arm:IngameAdvancement ; "
-       ++ " ?property ?value ; "
-       ++ " <https://hg.schaathun.net/armchar/schema#advanceCharacter> "
-       ++ c ++ " . "
-       ++ "?property rdfs:label ?label . "
+getIngameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
+getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
+   where inGameAdv = Res $ makeSN "IngameAdvancement"
+
+queryGraph :: RDFLabel -> RDFLabel -> RDFGraph
+queryGraph c1 = toRDFGraph . fromList . f c1
+   where f c1 c2 = [ arc (Var "id") typeRes c2,
+            arc (Var "id") (Var "property") (Var "value"),
+            arc (Var "id") (Res $ makeSN "advanceCharacter") c1,
+            arc (Var "property") labelRes (Var "label") ]
 
 -- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
 getAdvancements :: RDFGraph -> RDFGraph -> [Advancement]

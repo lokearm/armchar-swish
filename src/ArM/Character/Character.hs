@@ -38,7 +38,7 @@ import ArM.Rules.Aux
 getCharacterMetadata = CM.getCharacterMetadata
 
 data CharacterSheet = CharacterSheet {
-         csID :: String,
+         csID :: RDFLabel,
          sheetID :: Maybe RDFLabel,
          csYear :: Maybe Int,
          csSeason :: String,
@@ -47,14 +47,14 @@ data CharacterSheet = CharacterSheet {
          csMetadata :: [KeyValuePair]
        }  deriving (Eq)
 instance Show CharacterSheet where
-    show cs = "**" ++ csID cs ++ "**\n" 
+    show cs = "**" ++ show (csID cs) ++ "**\n" 
            ++ "-- " ++ ( showSheetID ) cs ++ "\n"
            ++ "Traits:\n" ++ showw ( csTraits cs )
            ++ "Metadata Triples:\n" ++ showw ( csMetadata cs )
         where showw [] = ""
               showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
 defaultCS = CharacterSheet {
-         csID = "",
+         csID = noSuchCharacter,
          sheetID = Nothing,
          csYear = Nothing,
          csSeason = "",
@@ -67,7 +67,7 @@ showSheetID = f . sheetID
     where f Nothing = "no sheet ID"
           f (Just x) = show x
 
-getGameStartCharacter :: RDFGraph -> String -> CharacterSheet
+getGameStartCharacter :: RDFGraph -> RDFLabel -> CharacterSheet
 getGameStartCharacter g = getGameStartCS g . getInitialCS g
 
 getGameStartCS :: RDFGraph -> CharacterSheet -> CharacterSheet
@@ -77,7 +77,7 @@ getGameStartCS g cs = foldl advanceCharacter cs as
 -- | Given a graph and a string identifying a character
 -- make a list of all ingame character sheets for the 
 -- character by applying all available advancements.
-getAllCS :: RDFGraph -> String -> [CharacterSheet]
+getAllCS :: RDFGraph -> RDFLabel -> [CharacterSheet]
 getAllCS g c = cs:advanceList cs as
     where cs = getGameStartCharacter g c
           as = sort $ getIngameAdvancements g c
@@ -100,10 +100,10 @@ advanceCharacter cs adv = cs {
 
 
 -- | get initial CharacterSheet from an RDFGraph
-getInitialCS :: RDFGraph -> String -> CharacterSheet
+getInitialCS :: RDFGraph -> RDFLabel -> CharacterSheet
 getInitialCS g = fixCS g . getInitialCS' g
 
-getInitialCS' :: RDFGraph -> String -> CharacterSheet
+getInitialCS' :: RDFGraph -> RDFLabel -> CharacterSheet
 getInitialCS' g c = defaultCS {
             csID = c,
             sheetID = x,
@@ -115,12 +115,11 @@ getInitialCS' g c = defaultCS {
 
 -- | Given an identifier for the character, find the identifier for
 -- the initial character sheet
-getInitialSheet :: RDFGraph -> String -> Maybe RDFLabel
+getInitialSheet :: RDFGraph -> RDFLabel -> Maybe RDFLabel
 getInitialSheet g c = vbMap vb (G.Var "s")
     where 
       vb = head $ rdfQueryFind q g
-      q = qparse $ prefixes ++ c
-        ++ " <https://hg.schaathun.net/armchar/schema#hasInitialSheet> ?s . " 
+      q = toRDFGraph $ fromList $ [ arc c (Res $ makeSN "hasInitialSheet") sVar ]
 
 
 -- | Auxiliary for 'getInitialSheet'
@@ -156,10 +155,10 @@ csToArcListM cs = do
           let ct1 = arc x typeRes csRes 
           return $ ct1:ct:foldl (++) ms ts
     where 
-          charlabel = getCSID cs
+          charlabel = csID cs
 
-getCSID :: CharacterSheet -> RDFLabel
-getCSID = toRDFLabel . fromJust . parseURI . csID 
+-- getCSID :: CharacterSheet -> RDFLabel
+-- getCSID = toRDFLabel . fromJust . parseURI . csID 
 
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank

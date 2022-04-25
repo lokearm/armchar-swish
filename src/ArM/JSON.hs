@@ -64,7 +64,7 @@ instance ToJSON CharacterSheet where
     toJSON cs = object (c:x:xs)
        where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
              xs = map tripleToJSON (csMetadata cs)
-             c = (fromString "arm:isCharacter") .= (csID cs)
+             c = (fromString "arm:isCharacter") .= (show $ csID cs)
     
 instance ToJSON Advancement where 
     toJSON cs = object (c:x:xs)

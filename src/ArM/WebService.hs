@@ -22,6 +22,7 @@ import Data.Aeson.Encode.Pretty
 import qualified Data.ByteString.Lazy.Char8 as B
 
 import qualified Control.Concurrent.STM as STM
+import qualified ArM.Resources as AR
 
 stateScotty ::  RDFGraph -> RDFGraph -> RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
@@ -36,23 +37,23 @@ stateScotty g schema res stateVar = do
           text $ T.fromStrict $ formatGraphAsText $ g
         get "/gamestart/:char" $ do     
           char' <- param "char"
-          let char = "armchar:" ++ char'
+          let char = AR.armcharRes char'
           json $ C.getGameStartCharacter g char 
         get "/initial/:char" $ do     
           char' <- param "char"
-          let char = "armchar:" ++ char'
+          let char = AR.armcharRes char'
           json $ C.getInitialCS g char 
         get "/test/adv/:char" $ do     
           char' <- param "char"
-          let char = "armchar:" ++ char'
+          let char = AR.armcharRes char'
           text $ T.pack $ show $ A.getIngameAdvancements g char
         get "/adv/:char" $ do     
           char' <- param "char"
-          let char = "armchar:" ++ char'
+          let char = AR.armcharRes char'
           json $ A.getIngameAdvancements g char
         get "/pregameadvancement/:char" $ do     
           char' <- param "char"
-          let char = "armchar:" ++ char'
+          let char = AR.armcharRes char'
           json $ A.getPregameAdvancements g char
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
