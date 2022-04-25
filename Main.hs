@@ -21,7 +21,7 @@ import ArM.Query
 import ArM.Load
 import ArM.Resources
 import ArM.Character.Character as C
-import qualified ArM.Advancement as A
+-- import qualified ArM.Character.Advancement as A
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import Data.Aeson.Encode.Pretty (encodePretty)
