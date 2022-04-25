@@ -56,7 +56,7 @@ instance Show Trait where
          s Nothing = ""
          s (Just x) = x
          sc [] = ""
-         sc ((_,x,y):xs) = "  " ++ x ++ ": " ++ show y ++ "\n" ++ sc xs
+         sc (KeyValuePair x y:xs) = "  " ++ show x ++ ": " ++ show y ++ "\n" ++ sc xs
 instance Ord Trait where
    compare x y | traitClass x < traitClass y = LT
                | traitClass x > traitClass y = GT
@@ -105,7 +105,7 @@ advanceTraitTriples (x:xs) (y:ys)
     | fst' x == fst' y   = y:advanceTraitTriples xs ys 
     | x < y   = x:advanceTraitTriples (xs) (y:ys) 
     | x > y   = y:advanceTraitTriples (x:xs) (ys) 
-    where fst' (a,b,c) = a
+    where fst' (KeyValuePair a _) = a
 
 
 -- | Make a new trait (for a CharacterSheet) from a Trait Advancement.
@@ -130,12 +130,12 @@ makeNewTraitTriples n ts = sort $ x:y:z:ys
 -- | Parse through the Triples of a Trait and remove XP related traits
 makeNewTraitTriples' :: (XPType,[KeyValuePair]) -> [KeyValuePair] -> (XPType,[KeyValuePair]) 
 makeNewTraitTriples' xt [] = xt
-makeNewTraitTriples' (xp,ys) ((a,b,c):zs) 
+makeNewTraitTriples' (xp,ys) (KeyValuePair a c:zs) 
     | a == addXPLabel = makeNewTraitTriples' (xp { addXP = read c },ys) zs
     | a == totalXPLabel = makeNewTraitTriples' (xp { totalXP = read c },ys) zs
     | a == scoreLabel = makeNewTraitTriples' (xp { score = read c },ys) zs
     | a == hasXPLabel = makeNewTraitTriples' (xp { hasXP = read c },ys) zs
-    | otherwise       = makeNewTraitTriples' (xp, (a,b,c):ys) zs
+    | otherwise       = makeNewTraitTriples' (xp, KeyValuePair a c:ys) zs
     where read = f . fromRDFLabel
           f Nothing = 0
           f (Just x) = x
@@ -161,7 +161,7 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 -- ** Parsing Trait from RDF **
 
 -- | Make a Trait object from a list of Quads
-toTrait :: [Quad] -> Trait
+toTrait :: [RDFTriple] -> Trait
 toTrait [] = Trait {
          traitID = Nothing,
          traitClass = Nothing,
@@ -170,7 +170,7 @@ toTrait [] = Trait {
          isAccelleratedTrait = False,
          traitContents = [] }
 toTrait xs = Trait { 
-         traitID = Just $ qfst $ head xs,
+         traitID = Just $ arcSubj $ head xs,
          traitClass = getTraitClass ys,
          isRepeatableTrait = a,
          isXPTrait = b,
@@ -179,29 +179,31 @@ toTrait xs = Trait {
          where (a,b,c,ys) = traitTripleList xs 
 
 -- | Remove the first element from each Quad in a list
-traitTripleList :: [Quad] -> (Bool,Bool,Bool,[KeyValuePair])
+traitTripleList :: [RDFTriple] -> (Bool,Bool,Bool,[KeyValuePair])
 traitTripleList xs = traitTripleList' (False,False,False,[]) xs
-traitTripleList' :: (Bool,Bool,Bool,[KeyValuePair]) -> [Quad]  
+traitTripleList' :: (Bool,Bool,Bool,[KeyValuePair]) -> [RDFTriple]  
                  -> (Bool,Bool,Bool,[KeyValuePair])
 traitTripleList' (a,b,c,xs) [] = (a,b,c,xs)
 traitTripleList' (a,b,c,xs) (y:ys) =
-         traitTripleList' (a',b',c',(y2,y3,y4):xs) ys
+         traitTripleList' (a',b',c',KeyValuePair y2 y4:xs) ys
          where  a' = a || y4 == repeatableLabel
                 b' = b || y4 == xptraitLabel
                 c' = c || y4 == accelleratedtraitLabel
-                (_,y2,y3,y4) = y
+                y2 = arcPred y
+                y4 = arcObj y
 
 -- | Get the Trait Class from a list of Triples belonging to
 -- an Trait Advancement
 getTraitClass [] = Nothing
-getTraitClass ((x,y,z):xs) 
+getTraitClass (KeyValuePair y z:xs) 
    | y == "Trait ID"  = Just z
    | otherwise      = getTraitClass xs
+-- TODO  The check needs to use RDFLabel .
 
 
 triplesToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 triplesToArcList x [] = []
-triplesToArcList x ((a,b,c):ys) = arc x a c:triplesToArcList x ys
+triplesToArcList x (KeyValuePair a c:ys) = arc x a c:triplesToArcList x ys
 
 traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
 traitToArcListM cs t 
