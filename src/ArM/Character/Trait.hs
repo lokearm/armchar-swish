@@ -165,7 +165,7 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 -- ** Parsing Trait from RDF **
 
 -- | Make a Trait object from a list of Quads
-toTrait :: [RDFTriple] -> Maybe Trait
+toTrait :: [ObjectKeyValue] -> Maybe Trait
 toTrait [] = Nothing
 toTrait xs = f cls' xs 
     where f Nothing _ = Nothing
@@ -180,9 +180,9 @@ toTrait xs = f cls' xs
           cls' = getTraitClass ys
 
 -- | Remove the first element from each Quad in a list
-traitTripleList :: [RDFTriple] -> (Bool,Bool,Bool,[KeyValuePair])
+traitTripleList :: [ObjectKeyValue] -> (Bool,Bool,Bool,[KeyValuePair])
 traitTripleList xs = traitTripleList' (False,False,False,[]) xs
-traitTripleList' :: (Bool,Bool,Bool,[KeyValuePair]) -> [RDFTriple]  
+traitTripleList' :: (Bool,Bool,Bool,[KeyValuePair]) -> [ObjectKeyValue]  
                  -> (Bool,Bool,Bool,[KeyValuePair])
 traitTripleList' (a,b,c,xs) [] = (a,b,c,xs)
 traitTripleList' (a,b,c,xs) (y:ys) =
@@ -198,11 +198,11 @@ traitTripleList' (a,b,c,xs) (y:ys) =
 getTraitClass :: [KeyValuePair] -> Maybe RDFLabel
 getTraitClass = getProperty $ Res $ makeSN "traitClass"
 
-triplesToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
+triplesToArcList :: RDFLabel -> [KeyValuePair] -> [ObjectKeyValue]
 triplesToArcList x [] = []
 triplesToArcList x (KeyValuePair a c:ys) = arc x a c:triplesToArcList x ys
 
-traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
+traitToArcListM :: RDFLabel -> Trait -> BlankState [ObjectKeyValue]
 traitToArcListM cs t 
      | x' == Nothing = do
                       y <- getBlank 

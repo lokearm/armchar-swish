@@ -31,8 +31,10 @@ data KeyValuePair = KeyValuePair RDFLabel RDFLabel
 
 -- | `ObjectKeyValue` represents an RDF triple.  It is used
 -- as an intermediate container before converting into a format
--- using `KeyValuePair`.  It may be redundant.  We should be able
--- to use RDFTriple instead.
+-- using `KeyValuePair`.  
+-- It may be redundant, as it is functionally equivalent to `RDFTriple`.
+-- It is retained in case we want to add additional redundant information
+-- such as the contents of rdfs:label-s in the future.
 data ObjectKeyValue = ObjectKeyValue RDFLabel RDFLabel RDFLabel
      deriving (Show,Eq,Ord)
 
