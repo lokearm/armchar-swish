@@ -20,7 +20,7 @@ import ArM.WebService
 -- import ArM.Query
 import ArM.Load
 import ArM.Resources
-import ArM.Character as C
+import ArM.Character.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import Data.Aeson.Encode.Pretty (encodePretty)
@@ -38,7 +38,7 @@ password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
 
 
-testCharacter = "armchar:cieran"
+testCharacter = armcharRes "cieran"
 
 -- main :: IO ()
 main = do 
@@ -55,7 +55,7 @@ main = do
      -- let cmap = CM.insertList CM.empty $ cl
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
 
-     -- print $ getGameStartCharacter g testCharacter 
+     print $ getGameStartCharacter g $ armcharRes "cieran" 
 
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
 
