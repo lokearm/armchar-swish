@@ -135,21 +135,20 @@ toAdvancement xs = defaultAdvancement { rdfid = Just $ okvSubj $ head xs,
          where ys = toKeyPairList xs 
 
 -- | Get the year from a list of Triples belonging to an Advancement
-getYear [] = Nothing
-getYear ((x,y,z):xs) 
-   | y == "Year"  = fromRDFLabel z
-   | otherwise    = getYear xs
+getYear :: [KeyValuePair] -> Maybe Int
+getYear xs = f1 x
+     where  x = getProperty inYear xs
+            f1 Nothing = Nothing
+            f1 (Just year) = fromRDFLabel year
 
 -- | Get the season from a list of Triples belonging to an Advancement
-getSeason [] = Nothing
-getSeason ((x,y,z):xs) 
-   | y == "Season"  = Just z
-   | otherwise      = getSeason xs
+getSeason = getProperty inSeason
 
 -- | Get sort index from a list of Triples belonging to an Advancement
 getSortIndex :: [KeyValuePair] -> Int
-getSortIndex [] = 2^30
-getSortIndex ((x,y,z):xs) 
-   | y == "Sort index"  = fromJust $ fromRDFLabel z
-   | otherwise      = getSortIndex xs
-
+getSortIndex xs = f1 x
+     where  x = getProperty hasAdvancementIndex xs
+            f1 Nothing = 2^30
+            f1 (Just idx) = f2 $ fromRDFLabel idx
+            f2 Nothing = 2^30
+            f2 (Just idx) = idx
