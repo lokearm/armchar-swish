@@ -45,15 +45,13 @@ testCharacter = "armchar:cieran"
 main = do 
      (g,schema,res) <- getGraph characterFile armFile resourceFile
 
-     let cl =  C.getAllCS g testCharacter
-     let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
-     putStrLn $ join st
 
      print $ formatGraphAsText $ schema
      print $ formatGraphAsText $ res
      print $ formatGraphAsText $ g
 
      let s = merge schema res
+     let cl =  C.getAllCS g testCharacter
      let cmap = CM.insertListS s CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
@@ -67,6 +65,8 @@ main = do
      -- let g = f $ fromJust r
      -- print $ CQ.getAbilities g
 
+     let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
+     putStrLn $ join st
 
      print "Starting Scotty"
      S.scotty 3000 $ stateScotty g schema res stateVar

@@ -18,6 +18,7 @@ import qualified Swish.RDF.Graph as G
 import qualified ArM.Character.Character as C
 import qualified ArM.Rules as R
 import           Data.Maybe (fromJust)
+import ArM.Resources 
 
 type CharacterMap = M.Map CharacterKey CharacterRecord
 data CharacterKey = CharacterKey {
@@ -38,10 +39,15 @@ getKey :: C.CharacterSheet -> CharacterKey
 getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
                                 Nothing -> 0
                                 (Just y) -> y,
-                           keySeason = case (C.csSeason cs) of
-                                Nothing -> ""
-                                (Just s) -> fromJust $ G.fromRDFLabel s,
+                           keySeason = seasonString (C.csSeason cs),
                            keyChar = C.csID cs }
+
+seasonString Nothing = ""
+seasonString (Just x ) | x == springLabel = "Spring"
+                   | x == summerLabel = "Summer"
+                   | x == autumnLabel = "Autumn"
+                   | x == winterLabel = "Winter"
+                   | otherwise  = "NoSeason"
 
 insertList :: CharacterMap -> [C.CharacterSheet] -> CharacterMap
 insertList cmap cs = foldl insert cmap cs

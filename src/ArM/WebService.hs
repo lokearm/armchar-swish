@@ -34,7 +34,7 @@ stateScotty g schema res stateVar = do
           text $ T.fromStrict $ formatGraphAsText $ res
         get "/graph" $ do     
           text $ T.fromStrict $ formatGraphAsText $ g
-        get "/gamestart" $ do     
+        get "/gamestart/:char" $ do     
           char' <- param "char"
           let char = "armchar:" ++ char'
           json $ C.getGameStartCharacter g char 
