@@ -23,10 +23,11 @@ import Swish.VarBinding  (vbMap)
 import Data.Maybe
 import Data.List (sort)
 import ArM.Resources
-import ArM.Internal.Trait
-import ArM.Advancement
-import ArM.Query
-import qualified ArM.Internal.Metadata as CM
+import ArM.Character.Trait
+import ArM.Character.Advancement
+import ArM.Query (qparse)
+import ArM.KeyPair
+import qualified ArM.Character.Metadata as CM
 import ArM.BlankNode
 import ArM.Rules.Aux
 
@@ -38,7 +39,7 @@ data CharacterSheet = CharacterSheet {
          csYear :: Maybe Int,
          csSeason :: Maybe RDFLabel,
          csTraits :: [Trait],
-         csMetadata :: [Triple]
+         csMetadata :: [KeyValuePair]
        }  deriving (Eq)
 instance Show CharacterSheet where
     show cs = "**" ++ csID cs ++ "**\n" 
@@ -120,7 +121,7 @@ fixCS g a = a { csTraits = sort $ getTraits a g }
 -- | Get a list of traits. Auxiliary function for 'fixCS'.
 getTraits :: CharacterSheet -> RDFGraph -> [Trait]
 getTraits a g = map toTrait 
-               $ quadSplit $ map quadFromBinding $ rdfQueryFind q g 
+               $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
     where q = cqt $ show $ fromJust $ sheetID a
 
 -- | Query Graph to get traits for CharacterSheet
