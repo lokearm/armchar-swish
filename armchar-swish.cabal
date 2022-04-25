@@ -38,6 +38,7 @@ executable armchar-swish
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
+                       , ArM.Character.Character
                        , ArM.Character.Advancement
                        , ArM.Character.Metadata
                        , ArM.Character.Trait

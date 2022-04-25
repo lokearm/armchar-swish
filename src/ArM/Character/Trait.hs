@@ -28,7 +28,7 @@ import Data.Maybe (fromJust)
 import Data.List (sort)
 import ArM.Resources
 import ArM.KeyPair
-import ArM.BlindNode
+import ArM.BlankNode
 import Swish.Namespace
 
 -- ** The Data Type ** 

@@ -1,16 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module ArM.BlindNode where
+module ArM.BlankNode where
 
 import Swish.RDF.Graph (RDFLabel(..))
 import Control.Monad.State.Lazy
 
-type BlindState = State (String,Int) 
+type BlankState = State (String,Int) 
 
-getBlind :: BlindState RDFLabel
-getBlind = do
+getBlank :: BlankState RDFLabel
+getBlank = do
     (s,x) <- get
     put (s,x+1)
     return $ Blank $ s ++ show x
 
-runBlind = runState
+runBlank = runState
