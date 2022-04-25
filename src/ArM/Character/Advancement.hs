@@ -4,6 +4,7 @@ module ArM.Character.Advancement ( Advancement(..)
                                  , getPregameAdvancements
                                  , getIngameAdvancements
                                  , advancementIDstring
+				 , q1, q2
                                  ) where
 
 import Swish.RDF.Graph 
@@ -45,12 +46,16 @@ getPregameAdvancements g c = getAdvancements g $ queryGraph preGameAdv c
 getIngameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
    where inGameAdv = Res $ makeSN "IngameAdvancement"
+q1 = queryGraph r
+   where r = Res $ makeSN "IngameAdvancement"
+q2 = queryGraph r
+   where r = Res $ makeSN "PregameAdvancement"
 
 queryGraph :: RDFLabel -> RDFLabel -> RDFGraph
 queryGraph c1 = toRDFGraph . fromList . f c1
-   where f c1 c2 = [ arc (Var "id") typeRes c2,
+   where f c1 c2 = [ arc (Var "id") typeRes c1,
             arc (Var "id") (Var "property") (Var "value"),
-            arc (Var "id") (Res $ makeSN "advanceCharacter") c1,
+            arc (Var "id") (Res $ makeSN "advanceCharacter") c2,
             arc (Var "property") labelRes (Var "label") ]
 
 -- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
