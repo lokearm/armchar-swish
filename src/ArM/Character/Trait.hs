@@ -10,8 +10,6 @@
 -- Auxiliary Functions to handle queries.
 -- When parsing a trait without an arm:traitClass property, Nothing
 -- is returned.  Thus such traits will be discarded.  
--- TODO  Consider introducing an RDFLabel to indicated no class, to
--- allow incomplete traits to be processed.
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Trait where
@@ -49,6 +47,14 @@ data Trait = Trait {
     isAccelleratedTrait :: Bool,
     traitContents :: [KeyValuePair]
    } deriving (Eq)
+defaultTrait = Trait {
+    traitID = Nothing,
+    traitClass = noSuchTrait,
+    isRepeatableTrait = False,
+    isXPTrait = False,
+    isAccelleratedTrait = False,
+    traitContents = []
+   } 
 
 instance Show Trait where
    show a = "**" ++ y (traitID a) ++ " " ++ show (traitClass a) ++ "**\n" 
@@ -165,19 +171,16 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 -- ** Parsing Trait from RDF **
 
 -- | Make a Trait object from a list of Quads
-toTrait :: [ObjectKeyValue] -> Maybe Trait
-toTrait [] = Nothing
-toTrait xs = f cls' xs 
-    where f Nothing _ = Nothing
-          f (Just cls) xs = Just Trait { 
+toTrait :: [ObjectKeyValue] -> Trait
+toTrait [] = defaultTrait
+toTrait xs = Trait { 
              traitID = Just $ okvSubj $ head xs,
-             traitClass = cls,
+             traitClass = getTraitClass ys,
              isRepeatableTrait = a,
              isXPTrait = b,
              isAccelleratedTrait = c,
              traitContents = ys }
-          (a,b,c,ys) = traitTripleList xs 
-          cls' = getTraitClass ys
+          where (a,b,c,ys) = traitTripleList xs 
 
 -- | Remove the first element from each Quad in a list
 traitTripleList :: [ObjectKeyValue] -> (Bool,Bool,Bool,[KeyValuePair])
@@ -195,8 +198,10 @@ traitTripleList' (a,b,c,xs) (y:ys) =
 
 -- | Get the Trait Class from a list of Triples belonging to
 -- an Trait Advancement
-getTraitClass :: [KeyValuePair] -> Maybe RDFLabel
-getTraitClass = getProperty $ Res $ makeSN "traitClass"
+getTraitClass :: [KeyValuePair] -> RDFLabel
+getTraitClass = f . getProperty ( Res $ makeSN "traitClass" )
+     where f Nothing = noSuchTrait
+           f (Just x) = x
 
 triplesToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 triplesToArcList x [] = []

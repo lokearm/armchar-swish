@@ -99,7 +99,7 @@ instance Show Advancement where
          y Nothing = ""
          y (Just x) = show x
          sc [] = ""
-         sc ((_,x,y):xs) = x ++ ": " ++ show y ++ "\n" ++ sc xs
+         sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
          st [] = ""
          st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
                                   ++  "\n" ++ st xs
@@ -127,16 +127,12 @@ seasonNo (Just x ) | x == springLabel = 1
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [ObjectKeyValue] -> Advancement
 toAdvancement [] = defaultAdvancement 
-toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
+toAdvancement xs = defaultAdvancement { rdfid = Just $ okvSubj $ head xs,
          year = getYear ys,
          season = getSeason ys,
          advSortIndex = getSortIndex ys,
          contents = ys }
-         where ys = toTripleList xs 
-
-
-
-
+         where ys = toKeyPairList xs 
 
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear [] = Nothing
