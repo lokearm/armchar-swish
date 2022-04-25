@@ -36,7 +36,8 @@ data CharacterSheet = CharacterSheet {
          csID :: String,
          sheetID :: Maybe RDFLabel,
          csYear :: Maybe Int,
-         csSeason :: Maybe RDFLabel,
+         csSeason :: String,
+         -- csSeason :: Maybe RDFLabel,
          csTraits :: [Trait],
          csMetadata :: [KeyValuePair]
        }  deriving (Eq)
@@ -51,7 +52,7 @@ defaultCS = CharacterSheet {
          csID = "",
          sheetID = Nothing,
          csYear = Nothing,
-         csSeason = Nothing,
+         csSeason = "",
          csTraits = [],
          csMetadata = []
        }  

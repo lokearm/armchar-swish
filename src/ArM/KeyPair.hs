@@ -102,6 +102,14 @@ quadVB vb = (vbMap vb (G.Var "id"),
              vbMap vb (G.Var "label"),
              vbMap vb (G.Var "value"))
 
+getStringProperty :: RDFLabel -> [KeyValuePair] -> String
+getStringProperty _ [] = ""
+getStringProperty k' (KeyValuePair k v:xs) 
+   | k' == k  = f (fromRDFLabel v)
+   | otherwise      = getStringProperty k' xs
+   where f Nothing = ""
+         f (Just v) = v
+
 getProperty :: RDFLabel -> [KeyValuePair] -> Maybe RDFLabel
 getProperty _ [] = Nothing
 getProperty k' (KeyValuePair k v:xs) 

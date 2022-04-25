@@ -39,7 +39,7 @@ getKey :: C.CharacterSheet -> CharacterKey
 getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
                                 Nothing -> 0
                                 (Just y) -> y,
-                           keySeason = seasonString (C.csSeason cs),
+                           keySeason = (C.csSeason cs),
                            keyChar = C.csID cs }
 
 seasonString Nothing = ""

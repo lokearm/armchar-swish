@@ -78,7 +78,8 @@ advancementIDstring = show . fromJust . rdfid
 -- Other properties are listed as 'contents'.
 data Advancement = Advancement {
     year :: Maybe Int,
-    season :: Maybe RDFLabel,
+    season :: String,
+    -- season :: Maybe RDFLabel,
     rdfid :: Maybe RDFLabel,
     contents :: [KeyValuePair],
     advSortIndex :: Int,
@@ -86,11 +87,11 @@ data Advancement = Advancement {
    } deriving Eq
 
 defaultAdvancement = Advancement { year = Nothing,
-                season = Nothing, rdfid = Nothing, 
+                season = "", rdfid = Nothing, 
                 advSortIndex = 0,
                 contents = [], traits = [] }
 instance Show Advancement where
-   show a = "**" ++ y (season a) ++ " " ++ y (year a) ++ "**\n" 
+   show a = "**" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
                  ++ "\n"
@@ -116,12 +117,17 @@ instance Ord Advancement where
                | otherwise = EQ
                where sno = seasonNo . season
 
-seasonNo Nothing = 0
-seasonNo (Just x ) | x == springLabel = 1
-                   | x == summerLabel = 2
-                   | x == autumnLabel = 3
-                   | x == winterLabel = 4
-                   | otherwise  = 10
+seasonNo "Spring" = 1
+seasonNo "Summer" = 2
+seasonNo "Autumn" = 3
+seasonNo "Winter" = 4
+seasonNo _ = 0
+-- seasonNo Nothing = 0
+-- seasonNo (Just x ) | x == springLabel = 1
+--                    | x == summerLabel = 2
+--                    | x == autumnLabel = 3
+--                    | x == winterLabel = 4
+--                    | otherwise  = 10
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [ObjectKeyValue] -> Advancement
@@ -141,7 +147,7 @@ getYear xs = f1 x
             f1 (Just year) = fromRDFLabel year
 
 -- | Get the season from a list of Triples belonging to an Advancement
-getSeason = getProperty inSeason
+getSeason = getStringProperty atSeason
 
 -- | Get sort index from a list of Triples belonging to an Advancement
 getSortIndex :: [KeyValuePair] -> Int
