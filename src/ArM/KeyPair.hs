@@ -72,7 +72,7 @@ keypairFromBinding = f . AQ.metadataFromBinding
 
 -- | Map variable bindings to quads of (id,property,label,value)
 -- Three variables should be bound, id, property, label, and value.
-quadFromBinding :: VB.RDFVarBinding -> ObjectKeyValue
-quadFromBinding = f . AQ.quadVB 
+objectFromBinding :: VB.RDFVarBinding -> ObjectKeyValue
+objectFromBinding = f . AQ.quadVB 
      where f (id,p,_,value) = ObjectKeyValue 
               (fromJust id) (fromJust p) (fromJust value) 

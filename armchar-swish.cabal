@@ -38,6 +38,8 @@ executable armchar-swish
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
+                       , ArM.Character.Metadata
+                       , ArM.Character.Trait
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
