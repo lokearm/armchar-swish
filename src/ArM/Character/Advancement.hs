@@ -51,7 +51,7 @@ getIngameAdvancements g c = getAdvancements g $ qparse $ prefixes
 -- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
 getAdvancements :: RDFGraph -> RDFGraph -> [Advancement]
 getAdvancements g = fixAdvancements g . 
-               map toAdvancement . quadSplit . getGenQuads g 
+               map toAdvancement . keypairSplit . getGenQuads g 
 
 -- | Auxiliary for 'getAdvancements'
 getGenQuads :: RDFGraph -> RDFGraph -> [ObjectKeyValue]
@@ -67,7 +67,7 @@ fixAdv g a = a { traits = sort $ getTraits q g }
     where qt' = qt . show . fromJust . rdfid 
           q = qt' a
           getTraits q g = map toTrait
-               $ quadSplit $ map objectFromBinding $ rdfQueryFind q g 
+               $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
 
 advancementIDstring = show . fromJust . rdfid 
 
@@ -125,7 +125,7 @@ seasonNo (Just x ) | x == springLabel = 1
                    | otherwise  = 10
 
 -- | Make an Advancement object from a list of Quads
-toAdvancement :: [Quad] -> Advancement
+toAdvancement :: [ObjectKeyValue] -> Advancement
 toAdvancement [] = defaultAdvancement 
 toAdvancement xs = defaultAdvancement { rdfid = Just $ qfst $ head xs,
          year = getYear ys,

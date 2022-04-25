@@ -198,11 +198,11 @@ traitTripleList' (a,b,c,xs) (y:ys) =
 getTraitClass :: [KeyValuePair] -> Maybe RDFLabel
 getTraitClass = getProperty $ Res $ makeSN "traitClass"
 
-triplesToArcList :: RDFLabel -> [KeyValuePair] -> [ObjectKeyValue]
+triplesToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 triplesToArcList x [] = []
 triplesToArcList x (KeyValuePair a c:ys) = arc x a c:triplesToArcList x ys
 
-traitToArcListM :: RDFLabel -> Trait -> BlankState [ObjectKeyValue]
+traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
 traitToArcListM cs t 
      | x' == Nothing = do
                       y <- getBlank 
