@@ -38,6 +38,10 @@ data KeyValuePair = KeyValuePair RDFLabel RDFLabel
 data ObjectKeyValue = ObjectKeyValue RDFLabel RDFLabel RDFLabel
      deriving (Show,Eq,Ord)
 
+okvSubj (ObjectKeyValue a _ _) = a
+okvPred (ObjectKeyValue _ a _) = a
+okvObj (ObjectKeyValue _ _ a) = a
+
 sameKey :: ObjectKeyValue -> ObjectKeyValue -> Bool
 sameKey (ObjectKeyValue a _ _) (ObjectKeyValue b _ _) = a == b
 

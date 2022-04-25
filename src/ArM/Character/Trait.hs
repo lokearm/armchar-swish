@@ -170,7 +170,7 @@ toTrait [] = Nothing
 toTrait xs = f cls' xs 
     where f Nothing _ = Nothing
           f (Just cls) xs = Just Trait { 
-             traitID = Just $ arcSubj $ head xs,
+             traitID = Just $ okvSubj $ head xs,
              traitClass = cls,
              isRepeatableTrait = a,
              isXPTrait = b,
@@ -190,8 +190,8 @@ traitTripleList' (a,b,c,xs) (y:ys) =
          where  a' = a || y4 == repeatableLabel
                 b' = b || y4 == xptraitLabel
                 c' = c || y4 == accelleratedtraitLabel
-                y2 = arcPred y
-                y4 = arcObj y
+                y2 = okvPred y
+                y4 = okvObj y
 
 -- | Get the Trait Class from a list of Triples belonging to
 -- an Trait Advancement
