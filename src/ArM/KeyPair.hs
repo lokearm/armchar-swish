@@ -76,3 +76,9 @@ objectFromBinding :: VB.RDFVarBinding -> ObjectKeyValue
 objectFromBinding = f . AQ.quadVB 
      where f (id,p,_,value) = ObjectKeyValue 
               (fromJust id) (fromJust p) (fromJust value) 
+
+getProperty :: RDFLabel -> [KeyValuePair] -> Maybe RDFLabel
+getProperty _ [] = Nothing
+getProperty k' (KeyValuePair k v:xs) 
+   | k' == k  = Just v
+   | otherwise      = getProperty k' xs

@@ -7,7 +7,11 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Auxiliary Functions to handle queries
+-- Auxiliary Functions to handle queries.
+-- When parsing a trait without an arm:traitClass property, Nothing
+-- is returned.  Thus such traits will be discarded.  
+-- TODO  Consider introducing an RDFLabel to indicated no class, to
+-- allow incomplete traits to be processed.
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Trait where
@@ -39,7 +43,7 @@ import Swish.Namespace
 -- A blank node is only created when it is written into an RDFGraph.
 data Trait = Trait {
     traitID :: Maybe RDFLabel,
-    traitClass :: Maybe RDFLabel,
+    traitClass :: RDFLabel,
     isRepeatableTrait :: Bool,
     isXPTrait :: Bool,
     isAccelleratedTrait :: Bool,
@@ -47,7 +51,7 @@ data Trait = Trait {
    } deriving (Eq)
 
 instance Show Trait where
-   show a = "**" ++ y (traitID a) ++ " " ++ y (traitClass a) ++ "**\n" 
+   show a = "**" ++ y (traitID a) ++ " " ++ show (traitClass a) ++ "**\n" 
                  ++ sc (traitContents a) 
                  ++ "\n"
       where 
@@ -161,22 +165,19 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 -- ** Parsing Trait from RDF **
 
 -- | Make a Trait object from a list of Quads
-toTrait :: [RDFTriple] -> Trait
-toTrait [] = Trait {
-         traitID = Nothing,
-         traitClass = Nothing,
-         isRepeatableTrait = False,
-         isXPTrait = False,
-         isAccelleratedTrait = False,
-         traitContents = [] }
-toTrait xs = Trait { 
-         traitID = Just $ arcSubj $ head xs,
-         traitClass = getTraitClass ys,
-         isRepeatableTrait = a,
-         isXPTrait = b,
-         isAccelleratedTrait = c,
-         traitContents = ys }
-         where (a,b,c,ys) = traitTripleList xs 
+toTrait :: [RDFTriple] -> Maybe Trait
+toTrait [] = Nothing
+toTrait xs = f cls' xs 
+    where f Nothing _ = Nothing
+          f (Just cls) xs = Just Trait { 
+             traitID = Just $ arcSubj $ head xs,
+             traitClass = cls,
+             isRepeatableTrait = a,
+             isXPTrait = b,
+             isAccelleratedTrait = c,
+             traitContents = ys }
+          (a,b,c,ys) = traitTripleList xs 
+          cls' = getTraitClass ys
 
 -- | Remove the first element from each Quad in a list
 traitTripleList :: [RDFTriple] -> (Bool,Bool,Bool,[KeyValuePair])
@@ -194,12 +195,8 @@ traitTripleList' (a,b,c,xs) (y:ys) =
 
 -- | Get the Trait Class from a list of Triples belonging to
 -- an Trait Advancement
-getTraitClass [] = Nothing
-getTraitClass (KeyValuePair y z:xs) 
-   | y == "Trait ID"  = Just z
-   | otherwise      = getTraitClass xs
--- TODO  The check needs to use RDFLabel .
-
+getTraitClass :: [KeyValuePair] -> Maybe RDFLabel
+getTraitClass = getProperty $ Res $ makeSN "traitClass"
 
 triplesToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 triplesToArcList x [] = []
