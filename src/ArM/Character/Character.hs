@@ -48,7 +48,7 @@ data CharacterSheet = CharacterSheet {
        }  deriving (Eq)
 instance Show CharacterSheet where
     show cs = "**" ++ csID cs ++ "**\n" 
-           ++ "-- " ++ ( show . fromJust . sheetID ) cs ++ "\n"
+           ++ "-- " ++ ( showSheetID ) cs ++ "\n"
            ++ "Traits:\n" ++ showw ( csTraits cs )
            ++ "Metadata Triples:\n" ++ showw ( csMetadata cs )
         where showw [] = ""
@@ -61,6 +61,11 @@ defaultCS = CharacterSheet {
          csTraits = [],
          csMetadata = []
        }  
+
+showSheetID :: CharacterSheet -> String
+showSheetID = f . sheetID
+    where f Nothing = "no sheet ID"
+          f (Just x) = show x
 
 getGameStartCharacter :: RDFGraph -> String -> CharacterSheet
 getGameStartCharacter g = getGameStartCS g . getInitialCS g
@@ -107,7 +112,6 @@ getInitialCS' g c = defaultCS {
          }
          where cs = show $ fromJust $ x
                x = getInitialSheet g c
-     
 
 -- | Given an identifier for the character, find the identifier for
 -- the initial character sheet
@@ -125,9 +129,11 @@ fixCS g a = a { csTraits = sort $ getTraits a g }
 
 -- | Get a list of traits. Auxiliary function for 'fixCS'.
 getTraits :: CharacterSheet -> RDFGraph -> [Trait]
-getTraits a g = map toTrait 
+getTraits a g | x == Nothing = []
+              | otherwise    = map toTrait 
                $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
-    where q = cqt $ show $ fromJust $ sheetID a
+    where q = cqt $ show $ fromJust $ x
+          x = sheetID a
 
 -- | Query Graph to get traits for CharacterSheet
 cqt :: String -> RDFGraph

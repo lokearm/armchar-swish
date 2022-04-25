@@ -36,10 +36,9 @@ csRule = makeRule "csRule"
 
 -- | Infer a string representation of the Advancement Type
 -- (Reading, Practice, Exposure, etc.)
-advtypeRule = makeRule "advtypeRule" 
-    ( "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementType> ?c ."
-    ++ " ?c rdfs:label ?l ." )
-    "?s <https://hg.schaathun.net/armchar/schema#hasAdvancementTypeString> ?l . "
+advtypeRule = makeCRule "advtypeRule" 
+    [ arc sVar hasAdvancementType cVar, arc cVar labelRes lVar ]
+    [ arc sVar hasAdvancementTypeString lVar ]
 
 -- | Infer a string representation of the Trait Class of each Trait Advancement
 traitclassRule = makeCRule "traitclassRule" 

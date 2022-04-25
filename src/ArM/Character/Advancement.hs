@@ -72,7 +72,7 @@ fixAdv g a = a { traits = sort $ getTraits q g }
           getTraits q g = map toTrait
                $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
 
-advancementIDstring = show . fromJust . rdfid 
+advancementIDstring = show . rdfid 
 
 -- | CharacterAdvancement Resource
 -- Essential information is in `rdfid`, `contents`, and `traits.
@@ -84,14 +84,14 @@ data Advancement = Advancement {
     year :: Maybe Int,
     season :: String,
     -- season :: Maybe RDFLabel,
-    rdfid :: Maybe RDFLabel,
+    rdfid :: RDFLabel,
     contents :: [KeyValuePair],
     advSortIndex :: Int,
     traits :: [Trait]
    } deriving Eq
 
 defaultAdvancement = Advancement { year = Nothing,
-                season = "", rdfid = Nothing, 
+                season = "", rdfid = noSuchAdvancement, 
                 advSortIndex = 0,
                 contents = [], traits = [] }
 instance Show Advancement where
@@ -136,7 +136,7 @@ seasonNo _ = 0
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [ObjectKeyValue] -> Advancement
 toAdvancement [] = defaultAdvancement 
-toAdvancement xs = defaultAdvancement { rdfid = Just $ okvSubj $ head xs,
+toAdvancement xs = defaultAdvancement { rdfid = okvSubj $ head xs,
          year = getYear ys,
          season = getSeason ys,
          advSortIndex = getSortIndex ys,
