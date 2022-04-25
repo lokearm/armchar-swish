@@ -12,7 +12,13 @@
 -- is returned.  Thus such traits will be discarded.  
 --
 -----------------------------------------------------------------------------
-module ArM.Character.Trait where
+module ArM.Character.Trait ( Trait(..)
+                           , defaultTrait
+                           , toTrait
+                           , advanceTraitList
+                           , traitToArcListM
+                           , keyvalueToArcList
+                           ) where
 
 import Data.Set (fromList)
 
@@ -203,16 +209,16 @@ getTraitClass = f . getProperty ( Res $ makeSN "traitClass" )
      where f Nothing = noSuchTrait
            f (Just x) = x
 
-triplesToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
-triplesToArcList x [] = []
-triplesToArcList x (KeyValuePair a c:ys) = arc x a c:triplesToArcList x ys
+keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
+keyvalueToArcList x [] = []
+keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
 
 traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
 traitToArcListM cs t 
      | x' == Nothing = do
                       y <- getBlank 
-                      return $ arc cs htRes y:triplesToArcList y ts
-     | otherwise    = return $ arc cs htRes x:triplesToArcList x ts
+                      return $ arc cs htRes y:keyvalueToArcList y ts
+     | otherwise    = return $ arc cs htRes x:keyvalueToArcList x ts
                  where x' = traitID t
                        x = fromJust x'
                        ts = traitContents t

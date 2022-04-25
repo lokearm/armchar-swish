@@ -20,8 +20,7 @@ import ArM.WebService
 -- import ArM.Query
 import ArM.Load
 import ArM.Resources
-import ArM.Character.Character as C
--- import qualified ArM.Character.Advancement as A
+import ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import Data.Aeson.Encode.Pretty (encodePretty)

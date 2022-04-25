@@ -10,7 +10,12 @@
 -- The CharacterSheet data type and corresponding functions
 --
 -----------------------------------------------------------------------------
-module ArM.Character.Character where
+module ArM.Character.Character ( CharacterSheet(..)
+                               , csToRDFGraph
+                               , getGameStartCharacter
+                               , getInitialCS
+                               , getAllCS
+                               ) where
 
 import Data.Set (fromList)
 import Swish.RDF.Parser.N3 (parseN3fromText)
@@ -140,7 +145,7 @@ csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           ts <- mapM (traitToArcListM x) (csTraits cs)
-          let ms = triplesToArcList x (csMetadata cs)
+          let ms = keyvalueToArcList x (csMetadata cs)
           let ct = arc x isCharacterLabel charlabel
           let ct1 = arc x typeRes csRes 
           return $ ct1:ct:foldl (++) ms ts

@@ -20,9 +20,7 @@ import Data.Aeson.Key
 import Swish.RDF.Graph
 import Swish.Namespace
 -- import ArM.Query
-import ArM.Character.Advancement (Advancement(..),advancementIDstring)
-import ArM.Character.Character
-import ArM.Character.Trait
+import ArM.Character
 import ArM.KeyPair
 import Data.Maybe
 import Network.URI (URI)

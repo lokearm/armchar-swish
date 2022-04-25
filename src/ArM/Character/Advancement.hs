@@ -1,6 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module ArM.Character.Advancement where
+module ArM.Character.Advancement ( Advancement(..)
+                                 , getPregameAdvancements
+                                 , getIngameAdvancements
+                                 , advancementIDstring
+                                 ) where
 
 import Swish.RDF.Graph 
 import Swish.RDF.Query as Q
@@ -63,7 +67,7 @@ fixAdvancements g adv = map (fixAdv g) adv
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
 fixAdv g a = a { traits = sort $ getTraits q g }
-    where qt' = qt . show . fromJust . rdfid 
+    where qt' = qt . advancementIDstring
           q = qt' a
           getTraits q g = map toTrait
                $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
