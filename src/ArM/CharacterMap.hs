@@ -15,7 +15,7 @@ module ArM.CharacterMap where
 
 import qualified Data.Map as M
 import qualified Swish.RDF.Graph as G
-import qualified ArM.Character as C
+import qualified ArM.Character.Character as C
 import qualified ArM.Rules as R
 import           Data.Maybe (fromJust)
 

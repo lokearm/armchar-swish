@@ -19,10 +19,11 @@ import Data.Aeson
 import Data.Aeson.Key
 import Swish.RDF.Graph
 import Swish.Namespace
-import ArM.Query
-import ArM.Advancement (Advancement(..),advancementIDstring)
-import ArM.Character
-import ArM.Internal.Trait
+-- import ArM.Query
+import ArM.Character.Advancement (Advancement(..),advancementIDstring)
+import ArM.Character.Character
+import ArM.Character.Trait
+import ArM.KeyPair
 import Data.Maybe
 import Network.URI (URI)
 import qualified Data.Text as T
@@ -38,7 +39,7 @@ import qualified Data.Text as T
 -- Another comprehensive tutorial:
 -- https://williamyaoh.com/posts/2019-10-19-a-cheatsheet-to-json-handling.html
 
-tripleToJSON (a,_,b) = tripleToJSON' (fromJust $ fromRDFLabel a) (labelToData b)
+tripleToJSON (KeyValuePair a b) = tripleToJSON' (fromJust $ fromRDFLabel a) (labelToData b)
 tripleToJSON' a (Left b) = (getKey a, Number $ fromIntegral b) 
 tripleToJSON' a (Right b) = (getKey a, String $ T.pack b) 
 

@@ -13,8 +13,8 @@ import Swish.RDF.Graph
 import Data.Text (Text)
 import Control.Monad.IO.Class (liftIO)
 
-import qualified ArM.Advancement as A
-import qualified ArM.Character as C
+import qualified ArM.Character.Advancement as A
+import qualified ArM.Character.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import ArM.JSON

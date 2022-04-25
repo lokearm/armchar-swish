@@ -17,10 +17,11 @@ module ArM.CharacterQuery where
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import qualified ArM.Character as C
+import qualified ArM.Character.Character as C
 import           ArM.Resources 
-import           ArM.Query 
-import qualified ArM.Internal.Trait as IT
+import           ArM.Query  (qparse)
+import           ArM.KeyPair
+import qualified ArM.Character.Trait as CT
 import Data.Maybe (fromJust)
 import Data.Set (fromList)
 import ArM.Rules.Aux
@@ -44,9 +45,9 @@ arcs prop = G.toRDFGraph . fromList $ [ G.arc sVar typeRes csRes
            , G.arc propertyVar labelRes labelVar  ]
 
 
-getTraitList :: G.RDFLabel -> G.RDFGraph -> [IT.Trait]
-getTraitList prop = map IT.toTrait 
-               . quadSplit . map quadFromBinding . Q.rdfQueryFind q
+getTraitList :: G.RDFLabel -> G.RDFGraph -> [CT.Trait]
+getTraitList prop = map CT.toTrait 
+               . keypairSplit . map objectFromBinding . Q.rdfQueryFind q
     where q = arcs prop
 
 getVirtues = getTraitList $ G.Res $ makeSN "hasVirtue"

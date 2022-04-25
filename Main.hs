@@ -20,7 +20,7 @@ import ArM.WebService
 import ArM.Query
 import ArM.Load
 import ArM.Resources
-import ArM.Character as C
+import ArM.Character.Character as C
 import qualified ArM.Advancement as A
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM

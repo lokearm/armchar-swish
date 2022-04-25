@@ -87,6 +87,11 @@ executable prof
                        , ArM.CharacterMap
                        , ArM.CharacterQuery
                        , ArM.WebService
+                       , ArM.KeyPair
+                       , ArM.Character.Character
+                       , ArM.Character.Advancement
+                       , ArM.Character.Metadata
+                       , ArM.Character.Trait
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
