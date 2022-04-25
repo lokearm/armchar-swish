@@ -67,8 +67,10 @@ showSheetID = f . sheetID
     where f Nothing = "no sheet ID"
           f (Just x) = show x
 
-getGameStartCharacter :: RDFGraph -> RDFLabel -> CharacterSheet
-getGameStartCharacter g = getGameStartCS g . getInitialCS g
+getGameStartCharacter :: RDFGraph -> RDFLabel -> Maybe CharacterSheet
+getGameStartCharacter g label | x == Nothing = Nothing
+                              | otherwise    = Just $ getGameStartCS g $ fromJust x
+     where x = getInitialCS g label
 
 getGameStartCS :: RDFGraph -> CharacterSheet -> CharacterSheet
 getGameStartCS g cs = foldl advanceCharacter cs as
@@ -77,9 +79,11 @@ getGameStartCS g cs = foldl advanceCharacter cs as
 -- | Given a graph and a string identifying a character
 -- make a list of all ingame character sheets for the 
 -- character by applying all available advancements.
-getAllCS :: RDFGraph -> RDFLabel -> [CharacterSheet]
-getAllCS g c = cs:advanceList cs as
+getAllCS :: RDFGraph -> RDFLabel -> Maybe [CharacterSheet]
+getAllCS g c | cs == Nothing = Nothing
+             | otherwise     = Just $ cs':advanceList cs' as
     where cs = getGameStartCharacter g c
+          cs' = fromJust cs
           as = sort $ getIngameAdvancements g c
 
 -- | Given a character sheet and a sorted list of advancements,
@@ -100,11 +104,14 @@ advanceCharacter cs adv = cs {
 
 
 -- | get initial CharacterSheet from an RDFGraph
-getInitialCS :: RDFGraph -> RDFLabel -> CharacterSheet
-getInitialCS g = fixCS g . getInitialCS' g
+getInitialCS :: RDFGraph -> RDFLabel -> Maybe CharacterSheet
+getInitialCS g label | x == Nothing = Nothing 
+                     | otherwise    = Just $ fixCS g $ fromJust x
+                           where x = getInitialCS' g label
 
-getInitialCS' :: RDFGraph -> RDFLabel -> CharacterSheet
-getInitialCS' g c = defaultCS {
+getInitialCS' :: RDFGraph -> RDFLabel -> Maybe CharacterSheet
+getInitialCS' g c | x == Nothing = Nothing
+                  | otherwise = Just defaultCS {
             csID = c,
             sheetID = x,
             csTraits = [],
@@ -156,9 +163,6 @@ csToArcListM cs = do
           return $ ct1:ct:foldl (++) ms ts
     where 
           charlabel = csID cs
-
--- getCSID :: CharacterSheet -> RDFLabel
--- getCSID = toRDFLabel . fromJust . parseURI . csID 
 
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank

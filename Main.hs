@@ -49,7 +49,7 @@ main = do
      print $ formatGraphAsText $ g
 
      let s = merge schema res
-     let cl =  C.getAllCS g testCharacter
+     let cl =  fromJust $ C.getAllCS g testCharacter
      let cmap = CM.insertListS s CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }

@@ -24,6 +24,10 @@ import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
 
+jsonif Nothing = notfound404
+jsonif (Just x) = json x
+
+
 stateScotty ::  RDFGraph -> RDFGraph -> RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
 
@@ -38,11 +42,11 @@ stateScotty g schema res stateVar = do
         get "/gamestart/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ C.getGameStartCharacter g char 
+          jsonif $ C.getGameStartCharacter g char 
         get "/initial/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ C.getInitialCS g char 
+          jsonif $ C.getInitialCS g char 
         get "/test/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
@@ -60,49 +64,37 @@ stateScotty g schema res stateVar = do
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 text $ T.fromStrict $ formatGraphAsText $ cgraph
-             Nothing -> do
-                status notFound404
-                text "404 Not Found."
+             Nothing -> notfound404 
         get "/virtue/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 json $ CQ.getVirtues cgraph
-             Nothing -> do
-                status notFound404
-                text "404 Not Found."
+             Nothing -> notfound404 
         get "/flaw/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 json $ CQ.getFlaws cgraph
-             Nothing -> do
-                status notFound404
-                text "404 Not Found."
+             Nothing -> notfound404 
         get "/pt/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 json $ CQ.getPTs cgraph
-             Nothing -> do
-                status notFound404
-                text "404 Not Found."
+             Nothing -> notfound404 
         get "/ability/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 json $ CQ.getAbilities cgraph
-             Nothing -> do
-                status notFound404
-                text "404 Not Found."
+             Nothing -> notfound404 
         get "/characteristic/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 json $ CQ.getCharacteristics cgraph
-             Nothing -> do
-                status notFound404
-                text "404 Not Found."
+             Nothing -> notfound404 
 
         S.delete "/" $ do
           html "This was a DELETE request!"  -- send 'text/html' response
@@ -110,6 +102,9 @@ stateScotty g schema res stateVar = do
           text "This was a POST request!"
         put "/" $ do
           text "This was a PUT request!"
+
+notfound404 = do status notFound404
+                 text "404 Not Found."
 
 getCSGraph stateVar = do
           (char, year, season) <- getParam
