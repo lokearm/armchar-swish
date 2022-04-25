@@ -15,7 +15,6 @@ module ArM.Character.Metadata ( getCharacterMetadata ) where
 
 import ArM.Resources
 import ArM.KeyPair
-import ArM.Query (qparse)
 
 import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q

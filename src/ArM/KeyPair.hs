@@ -20,8 +20,13 @@ import Swish.VarBinding  (vbMap)
 import Data.Maybe  (fromJust)
 import Data.List (sort)
 import ArM.Resources
-import qualified ArM.Query as AQ
 
+import Swish.RDF.Graph as G
+import qualified Data.Text.Lazy as T
+
+-- | Create a query graph from an N3 string.
+qparse :: String -> RDFGraph
+qparse = either error id . parseN3fromText . T.pack
 
 -- | `KeyValuePair` represents a key/value pair in JSON jargon
 -- or a property/object pair in RDF.  It is designed to hold
@@ -72,16 +77,30 @@ keypairSplit' ((x:xs):xss,y:ys)
 -- | Map variable bindings to triples of (property,label,value)
 -- Three variables should be bound, property, label, and value.
 keypairFromBinding :: VB.RDFVarBinding -> KeyValuePair
-keypairFromBinding = f . AQ.metadataFromBinding 
+keypairFromBinding = f . metadataFromBinding 
      where 
        f (p,label,value) = KeyValuePair (fromJust p) (fromJust value) 
+
+-- | Step 1. Map the variable bindings to Maybe RDFLabel
+metadataFromBinding :: VB.RDFVarBinding 
+                 -> (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
+metadataFromBinding vb = (vbMap vb (G.Var "property"),
+                          vbMap vb (G.Var "label"),
+                          vbMap vb (G.Var "value"))
 
 -- | Map variable bindings to quads of (id,property,label,value)
 -- Three variables should be bound, id, property, label, and value.
 objectFromBinding :: VB.RDFVarBinding -> ObjectKeyValue
-objectFromBinding = f . AQ.quadVB 
+objectFromBinding = f . quadVB 
      where f (id,p,_,value) = ObjectKeyValue 
               (fromJust id) (fromJust p) (fromJust value) 
+
+quadVB :: VB.RDFVarBinding 
+        -> (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
+quadVB vb = (vbMap vb (G.Var "id"),
+             vbMap vb (G.Var "property"),
+             vbMap vb (G.Var "label"),
+             vbMap vb (G.Var "value"))
 
 getProperty :: RDFLabel -> [KeyValuePair] -> Maybe RDFLabel
 getProperty _ [] = Nothing

@@ -5,7 +5,6 @@ module ArM.Character.Advancement where
 import Swish.RDF.Graph 
 import Swish.RDF.Query as Q
 import ArM.Resources 
-import ArM.Query (qparse) 
 import ArM.KeyPair 
 import Data.Maybe 
 import Data.List

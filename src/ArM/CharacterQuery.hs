@@ -19,7 +19,6 @@ import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import qualified ArM.Character.Character as C
 import           ArM.Resources 
-import           ArM.Query  (qparse)
 import           ArM.KeyPair
 import qualified ArM.Character.Trait as CT
 import Data.Maybe (fromJust)

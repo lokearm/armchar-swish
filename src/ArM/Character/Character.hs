@@ -25,7 +25,6 @@ import Data.List (sort)
 import ArM.Resources
 import ArM.Character.Trait
 import ArM.Character.Advancement
-import ArM.Query (qparse)
 import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
 import ArM.BlankNode

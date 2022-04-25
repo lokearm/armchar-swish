@@ -17,7 +17,7 @@ import Control.Monad.IO.Class (liftIO)
 import qualified Web.Scotty  as S
 import ArM.WebService
 
-import ArM.Query
+-- import ArM.Query
 import ArM.Load
 import ArM.Resources
 import ArM.Character.Character as C
