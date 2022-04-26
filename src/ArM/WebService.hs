@@ -49,6 +49,7 @@ stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar CM.MapState -
 stateScotty g schema res stateVar = do
         middleware logStdoutDev
 
+	-- GET
         get "/" $ do     
           text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n  /res\n  /schema\n"
         get "/schema" $ do     
@@ -100,10 +101,13 @@ stateScotty g schema res stateVar = do
           r <- getCSGraph stateVar
           jsonif' r CQ.getCharacteristics 
 
+	-- Test
         S.delete "/" $ do
           html "This was a DELETE request!"  -- send 'text/html' response
         post "/" $ do
           text "This was a POST request!"
+
+	-- PUT
         put "/" $ do
           text "This was a PUT request!"
         put "/adv" $ do
