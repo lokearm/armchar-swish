@@ -97,13 +97,19 @@ instance FromJSON RDFLabel where
     -- return $ KeyValuePair k v
     -- where k = Blank $ toString x
 
+instance ToJSON KeyPairList where 
+    toJSON (KeyPairList t) = object $ map tripleToJSON t
+
 instance ToJSON Trait where 
-    toJSON t = object $ map tripleToJSON (traitContents t) 
+    toJSON t = toJSON $ KeyPairList $ f (traitID t)
+        where f Nothing = t'
+              f (Just x) = KeyValuePair prefixedidRes x:t'
+              t' = traitContents t 
+
 
 -- instance FromJSON Trait where 
-    -- parseJSON cs = object (c:x:xs)
-    -- parseJSON val = withObject "Test"
-                               -- (\o -> Test <$> mapM parseJSON (elems o))
+    -- parseJSON val = withObject "Trait"
+                               -- (\o -> toTrait <$> mapM parseJSON (elems o))
                                -- val
 
 

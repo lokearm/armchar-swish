@@ -43,6 +43,8 @@ password = secureMemFromByteString "ElksRun"
 
 testCharacter = AR.armcharRes "cieran"
 
+
+
 -- main :: IO ()
 main = do 
      (g,schema,res) <- getGraph AR.characterFile AR.armFile AR.resourceFile

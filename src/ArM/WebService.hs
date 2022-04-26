@@ -26,9 +26,8 @@ import System.CPUTime
 import ArM.Time
 
 
-jsonif' r f = case (r) of
-              Nothing -> notfound404
-              (Just x) -> jsonif'' x f
+jsonif' Nothing _  = notfound404
+jsonif' (Just x) f =  jsonif'' x f
 
 jsonif'' (CM.CharacterRecord x) f = do
             t1 <- liftIO $ getCPUTime
