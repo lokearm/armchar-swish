@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module ArM.WebService where
+module ArM.WebService (stateScotty) where
 
 import Web.Scotty  as S
 import Network.HTTP.Types
@@ -24,6 +24,8 @@ import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
 
+import System.CPUTime
+
 jsonif Nothing = notfound404
 jsonif (Just x) = json x
 
@@ -37,6 +39,7 @@ stateScotty g schema res stateVar = do
           text $ T.fromStrict $ formatGraphAsText $ schema
         get "/res" $ do     
           text $ T.fromStrict $ formatGraphAsText $ res
+          liftIO $ print "FOOBAR"
         get "/graph" $ do     
           text $ T.fromStrict $ formatGraphAsText $ g
         get "/gamestart/:char" $ do     
