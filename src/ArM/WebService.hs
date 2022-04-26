@@ -29,6 +29,19 @@ import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 
 import Numeric
 
+jsonif' r f = case (r) of
+              Nothing -> notfound404
+              (Just x) -> jsonif'' x f
+
+jsonif'' (CM.CharacterRecord x) f = do
+            t1' <- liftIO $ getCPUTime
+            let t1 = fromIntegral ( t1' `div` 10^9 ) * 10**(-3)
+            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
+            json $ f x
+            t2' <- liftIO $ getCPUTime
+            let t2 = fromIntegral ( t2' `div` 10^9 ) * 10**(-3)
+            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
+
 jsonif Nothing = notfound404
 jsonif (Just x) = do
             t1' <- liftIO $ getCPUTime
@@ -69,11 +82,11 @@ stateScotty g schema res stateVar = do
         get "/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ A.getIngameAdvancements g char
+          jsonif $ Just $ A.getIngameAdvancements g char
         get "/pregameadvancement/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ A.getPregameAdvancements g char
+          jsonif $ Just $ A.getPregameAdvancements g char
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
@@ -82,34 +95,19 @@ stateScotty g schema res stateVar = do
              Nothing -> notfound404 
         get "/virtue/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getVirtues cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getVirtues 
         get "/flaw/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getFlaws cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getFlaws 
         get "/pt/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getPTs cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getPTs 
         get "/ability/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getAbilities cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getAbilities 
         get "/characteristic/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getCharacteristics cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getCharacteristics 
 
         S.delete "/" $ do
           html "This was a DELETE request!"  -- send 'text/html' response
