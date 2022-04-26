@@ -17,17 +17,16 @@ module ArM.JSON where
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Key
-import Swish.RDF.Graph
-import Swish.Namespace
--- import ArM.Query
+import Swish.RDF.Graph (RDFLabel(..), fromRDFLabel)
+import Swish.Namespace (ScopedName)
 import ArM.Character
 import ArM.KeyPair
 import ArM.Resources
-import Data.Maybe
+import Data.Maybe  (fromJust)
 import Network.URI (URI)
 import qualified Data.Text as T
-import Swish.RDF.Vocabulary.XSD
-import Data.List (intercalate)
+import Swish.RDF.Vocabulary.XSD (xsdInteger)
+import Data.List       (intercalate)
 import Data.List.Split (splitOn)
 
 
