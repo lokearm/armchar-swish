@@ -22,10 +22,13 @@ import Swish.Namespace
 -- import ArM.Query
 import ArM.Character
 import ArM.KeyPair
+import ArM.Resources
 import Data.Maybe
 import Network.URI (URI)
 import qualified Data.Text as T
 import Swish.RDF.Vocabulary.XSD
+import Data.List (intercalate)
+import Data.List.Split (splitOn)
 
 
 import qualified Data.Aeson.KeyMap as KM
@@ -61,9 +64,17 @@ labelToData l | i /= Nothing = Left (fromJust i)
 
 data KeyPairList  = KeyPairList [KeyValuePair]
 
+data KVP = KVP { prefixedid :: String }
+kvpToRDFLabel k = f x $ intercalate "" xs
+    where (x:xs) = splitOn ":" $ prefixedid k
+          f "arm" = Res . makeSN 
+          f "armchar" = armcharRes
+          f "armr" = armrRes
+
 instance FromJSON RDFLabel where
    parseJSON (Number x) = return $ TypedLit (T.pack $ show  x) xsdInteger
    parseJSON (String x) = return $ Lit x
+   parseJSON (Object x) = fmap kvpToRDFLabel $ KVP <$> x .: "prefixedid"
 
 -- instance FromJSON KeyPairList  where
   -- parseJSON = withObject "KeyPairList" $ \obj ->

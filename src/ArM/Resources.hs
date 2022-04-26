@@ -30,6 +30,11 @@ armURI = URI { uriScheme = "https:",
            uriPath = "/armchar/schema",
            uriQuery = "",
            uriFragment = "#" }
+armrURI = URI { uriScheme = "https:",
+           uriAuthority = Just auth,
+           uriPath = "/armchar/resources",
+           uriQuery = "",
+           uriFragment = "#" }
 rulesURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/rules",
@@ -53,6 +58,8 @@ makeSN s = makeScopedName (Just $ T.pack "arm") armURI (newLName s)
 
 armcharRes :: String -> RDFLabel
 armcharRes s = Res $ makeScopedName (Just $ T.pack "armchar") armcharURI (newLName s)
+armrRes :: String -> RDFLabel
+armrRes s = Res $ makeScopedName (Just $ T.pack "armr") armrURI (newLName s)
 
 isCharacterLabel = Res $ makeSN  "isCharacter"
 repeatableLabel = Res $ makeSN  "RepeatableTrait"

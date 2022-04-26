@@ -57,6 +57,7 @@ executable armchar-swish
                        , parallel >= 3.2
                        , stm >= 2.5
                        , unordered-containers >= 0.2.18
+                       , split >= 0.2.3
   hs-source-dirs:      . , ./src
   default-language:    Haskell2010
   ghc-options:
@@ -105,6 +106,7 @@ executable prof
                        , parallel >= 3.2
                        , stm >= 2.5
                        , unordered-containers >= 0.2.18
+                       , split >= 0.2.3
   hs-source-dirs:      . , ./src
   default-language:    Haskell2010
   ghc-options:
