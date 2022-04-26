@@ -26,6 +26,9 @@ import Data.Maybe
 import Network.URI (URI)
 import qualified Data.Text as T
 
+import qualified Data.Aeson.KeyMap as KM
+
+
 -- We need to rethink the use of triples here, as it is not
 -- one-to-one and contains redundant data.
 -- Do we need the label from the (property,label,value) triple?
@@ -54,11 +57,29 @@ labelToData l | i /= Nothing = Left (fromJust i)
            uri = fromRDFLabel l :: Maybe ScopedName
 
 
+data KeyPairList  = KeyPairList [KeyValuePair]
+
+-- instance FromJSON RDFLabel where
+
+-- instance FromJSON KeyPairList  where
+  -- parseJSON = withObject "KeyPairList" $ \obj ->
+    -- let kvs = KM.toList obj
+        -- parsed = mapM pairToKeyValue kvs
+    -- in fmap KeyPairList parsed
+
+-- pairToKeyValue (x,y) = do
+    -- v <- parseJSON y
+    -- return $ KeyValuePair k v
+    -- where k = Blank $ toString x
+
 instance ToJSON Trait where 
     toJSON t = object $ map tripleToJSON (traitContents t) 
 
 -- instance FromJSON Trait where 
     -- parseJSON cs = object (c:x:xs)
+    -- parseJSON val = withObject "Test"
+                               -- (\o -> Test <$> mapM parseJSON (elems o))
+                               -- val
 
 instance ToJSON CharacterSheet where 
     toJSON cs = object (c:x:xs)
