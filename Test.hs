@@ -16,39 +16,25 @@ import Control.Monad.IO.Class (liftIO)
 
 
 
-import ArM.Query
-import ArM.Load
-import ArM.Resources
-import ArM.Character as C
-import qualified ArM.CharacterQuery as CQ
-import qualified ArM.CharacterMap as CM
+import ArM.Character.Trait
 import ArM.JSON
 import Data.Aeson.Encode.Pretty
-import qualified Data.ByteString.Lazy.Char8 as B
+import Data.Aeson
 
 testCharacter = "armchar:cieran"
 
+s = "{\n     \"arm:hasDescription\": \"<p>You automatically master every spell that you learn. All your spells start with a score of 1 in the corresponding Ability. You may choose a different special ability for every spell you have. Further, all experience points you put into Spell Mastery Abilities are doubled.</p>  \",\n     \"arm:hasLabel\": \"Flawless Magic\",\n     \"arm:hasReference\": \"[ArM5:42]\",\n        \"arm:prefixedid\": \"_:118\", \n      \"arm:traitClass\": { \n     \"prefixedid\": \"armr:flawlessMagic\" \n   } \n } \n"
+
 -- main :: IO ()
 main = do 
-     (g,schema,res) <- getGraph characterFile armFile resourceFile
 
-     let cl =  C.getAllCS g testCharacter
-     let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
-     putStrLn $ join st
-
-     print $ formatGraphAsText $ schema
-     print $ formatGraphAsText $ res
-
-     print $ formatGraphAsText $ g
-
-     let s = merge schema res
-     let cmap = CM.insertListS s CM.empty $ cl
-     -- let cmap = CM.insertList CM.empty $ cl
-
-     -- print $ getGameStartCharacter g testCharacter 
-
-     let r = CM.lookup cmap "armchar:cieran" "Summer" 1217
-     let f (CM.CharacterRecord x) = x
-     let g = f $ fromJust r
-     print $ CQ.getAbilities g
-
+     print "JSON Source"
+     print s
+     print "Decoded"
+     let dec = (decode s :: Maybe Trait)
+     print dec 
+     print "Reencoded"
+     let enc = encode dec
+     print enc
+     print "Redecoded"
+     print $ (decode enc :: Maybe Trait)

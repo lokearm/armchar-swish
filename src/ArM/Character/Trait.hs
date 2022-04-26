@@ -15,6 +15,7 @@
 module ArM.Character.Trait ( Trait(..)
                            , defaultTrait
                            , toTrait
+                           , kpToTrait
                            , advanceTraitList
                            , traitToArcListM
                            , keyvalueToArcList
@@ -187,6 +188,31 @@ toTrait xs = Trait {
              isAccelleratedTrait = c,
              traitContents = ys }
           where (a,b,c,ys) = traitTripleList xs 
+
+kpToTrait :: [KeyValuePair] -> Trait
+kpToTrait [] = defaultTrait
+kpToTrait xs = Trait { 
+             traitID = k,
+             traitClass = getTraitClass ys,
+             isRepeatableTrait = a,
+             isXPTrait = b,
+             isAccelleratedTrait = c,
+             traitContents = ys }
+          where (k,a,b,c,ys) = traitKVList xs 
+
+traitKVList :: [KeyValuePair] -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
+traitKVList xs = traitKVList' (Nothing,False,False,False,[]) xs
+traitKVList' :: (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair]) 
+                 -> [KeyValuePair]  
+                 -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
+traitKVList' (k,a,b,c,xs) [] = (k,a,b,c,xs)
+traitKVList' (k,a,b,c,xs) (KeyValuePair y2 y4:ys) =
+         traitKVList' (f y2 y4 ,a',b',c',KeyValuePair y2 y4:xs) ys
+         where  a' = a || y4 == repeatableLabel
+                b' = b || y4 == xptraitLabel
+                c' = c || y4 == accelleratedtraitLabel
+                f x y | x ==  prefixedidRes = Just y
+                      | otherwise           = k
 
 -- | Remove the first element from each Quad in a list
 traitTripleList :: [ObjectKeyValue] -> (Bool,Bool,Bool,[KeyValuePair])

@@ -33,6 +33,40 @@ Test a get call - available paths for get:
   /initial
 ```
 
+Testing PUT calls is a bit tricky, as `http` does not read from the terminal,
+but the following does work (as an example):
+```
+cat | http put :3000/adv
+{
+        "advancementcontents": {
+            "arm:atSeason": "Autumn",
+            "arm:awardsXP": 16,
+            "arm:hasAdvancementDescription": "Studies Mentem L16 Q13 +3",
+            "arm:hasAdvancementIndex": 100,
+            "arm:hasAdvancementType": {
+                "prefixedid": "arm:Reading"
+            },
+            "arm:hasAdvancementTypeString": "Reading",
+            "arm:inYear": 1217
+        },
+        "advancementid": "<https://hg.schaathun.net/armchar/character/cieran#autumn1217adv>",
+        "advancementtraits": [
+            {
+                "arm:addedXP": 16,
+                "arm:hasLabel": "Mentem",
+                "arm:isSpecialTrait": {
+                    "prefixedid": "arm:AccelleratedTrait"
+                },
+                "arm:prefixedid": "_:73",
+                "arm:traitClass": {
+                    "prefixedid": "armr:mentem"
+                }
+            }
+        ]
+    }
+```
+Obviously, if you have a JSON test file, you can redirect from file instead.
+
 
 ## Problems
 

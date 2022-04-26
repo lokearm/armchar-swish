@@ -5,33 +5,47 @@ module ArM.WebService (stateScotty) where
 import Web.Scotty  as S
 import Network.HTTP.Types
 
-import System.IO as IO
 import Control.Monad
 import qualified Data.Text.Lazy as  T
-import Swish.RDF.Formatter.Turtle
-import Swish.RDF.Graph
-import Data.Text (Text)
+import Swish.RDF.Formatter.Turtle (formatGraphAsText)
+import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
 
 import qualified ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import ArM.JSON
-import Data.Aeson.Encode.Pretty
-import qualified Data.ByteString.Lazy.Char8 as B
 
 import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
 import ArM.JSON 
 
+import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
+
 import System.CPUTime
-import Network.Wai.Middleware.RequestLogger
+import ArM.Time
+
+
+jsonif' Nothing _  = notfound404
+jsonif' (Just x) f =  jsonif'' x f
+
+jsonif'' (CM.CharacterRecord x) f = do
+            t1 <- liftIO $ getCPUTime
+            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
+            json $ f x
+            t2 <- liftIO $ getCPUTime
+            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
 jsonif Nothing = notfound404
-jsonif (Just x) = json x
+jsonif (Just x) = do
+            t1 <- liftIO $ getCPUTime
+            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
+            json x
+            t2 <- liftIO $ getCPUTime
+            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
 
-stateScotty ::  RDFGraph -> RDFGraph -> RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
+stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
         middleware logStdoutDev
 
@@ -59,11 +73,11 @@ stateScotty g schema res stateVar = do
         get "/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ C.getIngameAdvancements g char
+          jsonif $ Just $ C.getIngameAdvancements g char
         get "/pregameadvancement/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ C.getPregameAdvancements g char
+          jsonif $ Just $ C.getPregameAdvancements g char
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
@@ -72,34 +86,19 @@ stateScotty g schema res stateVar = do
              Nothing -> notfound404 
         get "/virtue/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getVirtues cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getVirtues 
         get "/flaw/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getFlaws cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getFlaws 
         get "/pt/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getPTs cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getPTs 
         get "/ability/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getAbilities cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getAbilities 
         get "/characteristic/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
-          case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
-                json $ CQ.getCharacteristics cgraph
-             Nothing -> notfound404 
+          jsonif' r CQ.getCharacteristics 
 
         S.delete "/" $ do
           html "This was a DELETE request!"  -- send 'text/html' response
@@ -108,7 +107,8 @@ stateScotty g schema res stateVar = do
         put "/" $ do
           text "This was a PUT request!"
         put "/adv" $ do
-	  adv <- jsonData :: ActionM C.Advancement 
+          adv <- jsonData :: ActionM C.Advancement 
+          liftIO $ print adv
           text "This was a PUT request!"
 
 notfound404 = do status notFound404
