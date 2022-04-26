@@ -106,13 +106,11 @@ instance ToJSON Trait where
         where f Nothing = t'
               f (Just x) = KeyValuePair prefixedidRes x:t'
               t' = traitContents t 
-
-
-kpToTrait' (KeyPairList x ) = kpToTrait x
 instance FromJSON Trait where 
     parseJSON val = do 
                      v <- parseJSON val
                      return $ kpToTrait' v
+       where kpToTrait' (KeyPairList x ) = kpToTrait x
 
 
 instance ToJSON CharacterSheet where 
@@ -120,10 +118,36 @@ instance ToJSON CharacterSheet where
        where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
              xs = map tripleToJSON (csMetadata cs)
              c = (fromString "arm:isCharacter") .= (show $ csID cs)
-    
-instance ToJSON Advancement where 
-    toJSON cs = object (c:x:xs)
-       where x = (fromString "arm:hasTrait") .= (toJSON (traits cs))
-             xs = map tripleToJSON (contents cs)
-             c = (fromString "id") .= (advancementIDstring cs)
 
+-- TODO  
+-- instance FromJSON CharacterSheet where 
+
+data ProtoAdvancement = ProtoAdvancement {
+    advancementid :: RDFLabel,
+    advancementcontents :: KeyPairList,
+    advancementtraits :: [Trait]
+   } 
+
+instance ToJSON Advancement where 
+    toJSON cs = object (c:x:y:[])
+       where x = (fromString "advancementtraits") .= (toJSON (traits cs))
+             y = (fromString "advancementcontents") .= KeyPairList (contents cs)
+             c = (fromString "advancementid") .= (advancementIDstring cs)
+
+-- TODO  
+instance FromJSON Advancement where 
+   parseJSON = fmap fromProtoAdvancement . parseJSON
+instance FromJSON ProtoAdvancement where 
+   parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementid"
+                                           <*> v .: "advancementtraits"
+                                           <*> v .: "advancementcontents"
+fromKPL (KeyPairList x ) = x
+fromProtoAdvancement :: ProtoAdvancement -> Advancement
+fromProtoAdvancement adv = defaultAdvancement {
+                     rdfid = advancementid adv,
+                     traits = advancementtraits adv,
+                     year = getYear ys,
+                     season = getSeason ys,
+                     advSortIndex = getSortIndex ys,
+                     contents = ys
+                 } where ys = fromKPL $ advancementcontents adv

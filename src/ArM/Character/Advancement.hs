@@ -4,6 +4,10 @@ module ArM.Character.Advancement ( Advancement(..)
                                  , getPregameAdvancements
                                  , getIngameAdvancements
                                  , advancementIDstring
+                                 , defaultAdvancement
+                                 , getSeason
+                                 , getYear
+                                 , getSortIndex
                                  ) where
 
 import Swish.RDF.Graph 
