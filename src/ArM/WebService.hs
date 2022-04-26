@@ -25,7 +25,7 @@ import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
 
 import System.CPUTime
-import Network.Wai.Middleware.RequestLogger
+import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 
 jsonif Nothing = notfound404
 jsonif (Just x) = json x
