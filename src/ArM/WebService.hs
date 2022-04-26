@@ -25,6 +25,7 @@ import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
 
 import System.CPUTime
+import Network.Wai.Middleware.RequestLogger
 
 jsonif Nothing = notfound404
 jsonif (Just x) = json x
@@ -32,6 +33,7 @@ jsonif (Just x) = json x
 
 stateScotty ::  RDFGraph -> RDFGraph -> RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
+        middleware logStdoutDev
 
         get "/" $ do     
           text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n  /res\n  /schema\n"
@@ -116,7 +118,6 @@ getCSGraph stateVar = do
           return r
 
 getParam = do
-          liftIO $ print "foobar"
           char' <- param  "char"
           let char = "armchar:" ++ char'
           liftIO $ print $ "char: " ++ char
