@@ -96,6 +96,9 @@ instance ToJSON Trait where
                                -- (\o -> Test <$> mapM parseJSON (elems o))
                                -- val
 
+instance ToJSON KVP where 
+    toJSON k = object [ fromString "prefixedid" .= toJSON ( prefixedid k ) ]
+
 instance ToJSON CharacterSheet where 
     toJSON cs = object (c:x:xs)
        where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
