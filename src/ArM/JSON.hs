@@ -139,8 +139,8 @@ instance FromJSON Advancement where
    parseJSON = fmap fromProtoAdvancement . parseJSON
 instance FromJSON ProtoAdvancement where 
    parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementid"
-                                           <*> v .: "advancementtraits"
                                            <*> v .: "advancementcontents"
+                                           <*> v .: "advancementtraits"
 fromKPL (KeyPairList x ) = x
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement {
