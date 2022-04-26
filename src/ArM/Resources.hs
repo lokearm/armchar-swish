@@ -35,6 +35,11 @@ rulesURI = URI { uriScheme = "https:",
            uriPath = "/armchar/rules",
            uriQuery = "",
            uriFragment = "#" }
+armcharURI = URI { uriScheme = "https:",
+           uriAuthority = Just auth,
+           uriPath = "/armchar/character/",
+           uriQuery = "",
+           uriFragment = "" }
 armNS = makeNamespace (Just $ T.pack "arm") armURI
 rulesNS = makeNamespace (Just $ T.pack "armrules") armURI
 
@@ -44,6 +49,10 @@ newLName s = case (QN.newLName $ T.pack s) of
    (Just ln) -> ln
 
 makeSN s = makeScopedName (Just $ T.pack "arm") armURI (newLName s)
+
+
+armcharRes :: String -> RDFLabel
+armcharRes s = Res $ makeScopedName (Just $ T.pack "armchar") armcharURI (newLName s)
 
 isCharacterLabel = Res $ makeSN  "isCharacter"
 repeatableLabel = Res $ makeSN  "RepeatableTrait"
@@ -59,6 +68,7 @@ autumnLabel = Res $ makeSN "Autumn"
 winterLabel = Res $ makeSN "Winter" 
 noSuchTrait = Res $ makeSN "noSuchTrait" 
 noSuchAdvancement = Res $ makeSN "noSuchAdvancement" 
+noSuchCharacter = Res $ makeSN "noSuchCharacter" 
 inSeason = Res $ makeSN "inSeason" 
 atSeason = Res $ makeSN "atSeason" 
 inYear = Res $ makeSN "inYear" 

@@ -2,7 +2,7 @@
 arm:Virtue rdfs:subClassOf arm:Trait .
 arm:Flaw rdfs:subClassOf arm:Trait .
 
-armr:theGift rdfs:subClassOf armr:freeVirtue ; arm:hasLabel "The Gift" .
+armr:theGift rdfs:subClassOf arm:freeVirtue ; arm:hasLabel "The Gift" .
 
 arm:majorVirtue rdfs:subClassOf arm:Virtue .
 arm:minorVirtue rdfs:subClassOf arm:Virtue .
@@ -15,7 +15,7 @@ arm:grantsTrait a owl:ObjectProperty ;
   rdfs:domain   arm:Virtue ;
   rdfs:range   arm:Trait .
 
-armr:majorHermeticVirtue rdfs:subClassOf armr:majorVirtue ;
+armr:majorHermeticVirtue rdfs:subClassOf arm:majorVirtue ;
                          arm:hasLabel "Hermetic, Major" .
 armr:diedneMagic         rdfs:subClassOf armr:majorHermeticVirtue ;
                          a arm:LeafTraitClass ;
@@ -57,7 +57,7 @@ armr:secondaryInsight           rdfs:subClassOf armr:majorHermeticVirtue ; arm:h
                          a arm:LeafTraitClass ;
                             arm:hasLabel "Secondary Insight" .
 
-armr:majorSupernaturalVirtue rdfs:subClassOf armr:majorVirtue ;
+armr:majorSupernaturalVirtue rdfs:subClassOf arm:majorVirtue ;
              arm:hasLabel "Supernatural, Major" .
 
 armr:entrancement           rdfs:subClassOf  armr:majorSupernaturalVirtue ; arm:hasReference   "[ArM5]" ;
@@ -78,7 +78,7 @@ armr:strongFaerieBlood      rdfs:subClassOf  armr:majorSupernaturalVirtue ; arm:
                         arm:hasLabel "Strong Faerie Blood" ;
 			arm:hasDescription "<p>The blood of the fay is strong in you.  Perhaps one of your parents was actually a faerie, or maybe you were conceived or born in a place of great faerie power. This ancestry grants you several abilities. </p><p>First, you have natural longevity. You start making aging rolls at the age of fifty, rather than the normal 35, and get –3 to Aging Rolls, cumulative with any other bonuses.  </p><p>Second, you have faerie eyes. This gives you the Virtue Second Sight (see page 48) at no cost, and you can see normally in darkness or semi-darkness, such as in deep woods or at night. Your eyes look mostly normal, but are an unusual and vivid color. </p><p> Third, you may learn Faerie Lore during character generation. </p><p> Finally, you get the benefits of a particular type of fay heritage, as given in the Virtue Faerie Blood (page 42). Your specific fay her- itage is clearly visible. Choose one physical quirk, such as small horns, literally blue blood, or eyes without irises and pupils, appropriate to the faeries from which you are descended. </p><p> You may not have both Faerie Blood and Strong Faerie Blood. </p><p> This is a Supernatural Virtue, and you cannot lose it when being trained as a magus (see page 106). If your master cannot preserve the ability, you cannot be trained. </p> ".
 
-armr:majorSocialStatusVirtue rdfs:subClassOf armr:majorVirtue ;
+armr:majorSocialStatusVirtue rdfs:subClassOf arm:majorVirtue ;
                          arm:hasLabel "SOCIAL STATUS, MAJOR" .
 armr:landedNoble       rdfs:subClassOf armr:majorSocialStatusVirtue ; arm:hasReference   "[ArM5]" ;
                          a arm:LeafTraitClass ;
@@ -90,7 +90,7 @@ armr:redcap            rdfs:subClassOf armr:majorSocialStatusVirtue ; arm:hasRef
                          a arm:LeafTraitClass ;
                    arm:hasLabel "Redcap" .
 
-armr:majorGeneralVirtue rdfs:subClassOf  armr:majorVirtue ;
+armr:majorGeneralVirtue rdfs:subClassOf  arm:majorVirtue ;
                         arm:hasLabel "GENERAL, MAJOR" .
 
 armr:deathProphecy    rdfs:subClassOf   armr:majorGeneralVirtue ; arm:hasReference   "[ArM5]" ;
@@ -115,7 +115,7 @@ armr:wealthy          rdfs:subClassOf   armr:majorGeneralVirtue ; arm:hasReferen
                          a arm:LeafTraitClass ;
                   arm:hasLabel "Wealthy" .
 
-armr:minorHermeticVirtue rdfs:subClassOf armr:minorVirtue ;
+armr:minorHermeticVirtue rdfs:subClassOf arm:minorVirtue ;
                          arm:hasLabel "Hermetic, Minor" .
 armr:adeptLaboratoryStudent   rdfs:subClassOf armr:minorHermeticVirtue ;
                               arm:hasReference   "[ArM5]" ;
@@ -209,7 +209,7 @@ armr:verditiusMagic   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReferenc
                               a arm:LeafTraitClass ;
                           arm:hasLabel "Verditius Magic" .
 
-armr:minorSupernaturalVirtue rdfs:subClassOf armr:minorVirtue ;
+armr:minorSupernaturalVirtue rdfs:subClassOf arm:minorVirtue ;
                          arm:hasLabel "SUPERNATURAL, MINOR" .
 armr:animalKen     rdfs:subClassOf armr:minorSupernaturalVirtue ; arm:hasReference   "[ArM5]" ;
                               a arm:LeafTraitClass ;
@@ -248,7 +248,7 @@ armr:wildernessSense     rdfs:subClassOf armr:minorSupernaturalVirtue ; arm:hasR
                               a arm:LeafTraitClass ;
                arm:hasLabel "Wilderness Sense" .
 
-armr:minorSocialStatusVirtue rdfs:subClassOf armr:minorVirtue ;
+armr:minorSocialStatusVirtue rdfs:subClassOf arm:minorVirtue ;
                          arm:hasLabel "SOCIAL STATUS, MINOR" .
 armr:clerk       rdfs:subClassOf  armr:minorSocialStatusVirtue ;
                  arm:hasReference   "[ArM5]" ;
@@ -281,7 +281,7 @@ armr:wiseOne       rdfs:subClassOf  armr:minorSocialStatusVirtue ; arm:hasRefere
                             a arm:LeafTraitClass ;
              arm:hasLabel "Wise One" .
 
-armr:minorGeneralVirtue rdfs:subClassOf armr:minorVirtue ;
+armr:minorGeneralVirtue rdfs:subClassOf arm:minorVirtue ;
                     arm:hasLabel "Minor General Virtue" .
 armr:affinityWithAbility    rdfs:subClassOf armr:minorGeneralVirtue ; arm:hasReference   "[ArM5]" ;
                             a arm:LeafTraitClass ;

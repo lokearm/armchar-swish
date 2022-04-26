@@ -12,33 +12,32 @@ import Data.Maybe
 import Data.Text (Text)
 import Control.Monad.IO.Class (liftIO)
 
-
--- Web service
-import qualified Web.Scotty  as S
-import ArM.WebService
-
--- import ArM.Query
-import ArM.Load
-import ArM.Resources
-import ArM.Character as C
-import qualified ArM.CharacterQuery as CQ
-import qualified ArM.CharacterMap as CM
 import Data.Aeson.Encode.Pretty (encodePretty)
 import qualified Data.ByteString.Lazy.Char8 as B
 
 import qualified Control.Concurrent.STM as STM
 
+-- Web service
+import qualified Web.Scotty  as S
+import ArM.WebService
 
 -- Auth
 import Network.Wai.Middleware.HttpAuth
 import Data.SecureMem -- for constant-time comparison
+
+import ArM.Load
+import ArM.Resources
+import ArM.Character.Character as C
+import qualified ArM.CharacterQuery as CQ
+import qualified ArM.CharacterMap as CM
+
 
 authf u p = return $ u == "user" && secureMemFromByteString p == password
 password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
 
 
-testCharacter = "armchar:cieran"
+testCharacter = armcharRes "cieran"
 
 -- main :: IO ()
 main = do 
@@ -50,12 +49,12 @@ main = do
      print $ formatGraphAsText $ g
 
      let s = merge schema res
-     let cl =  C.getAllCS g testCharacter
+     let cl =  fromJust $ C.getAllCS g testCharacter
      let cmap = CM.insertListS s CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
 
-     -- print $ getGameStartCharacter g testCharacter 
+     print $ getGameStartCharacter g $ armcharRes "cieran" 
 
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
 
