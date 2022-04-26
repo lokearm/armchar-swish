@@ -65,16 +65,21 @@ labelToData l | i /= Nothing = Left (fromJust i)
 data KeyPairList  = KeyPairList [KeyValuePair]
 
 data KVP = KVP { prefixedid :: String }
-kvpToRDFLabel k = f x $ intercalate "" xs
-    where (x:xs) = splitOn ":" $ prefixedid k
-          f "arm" = Res . makeSN 
-          f "armchar" = armcharRes
-          f "armr" = armrRes
+   deriving (Show,Eq)
+instance ToJSON KVP where 
+    toJSON k = object [ fromString "prefixedid" .= toJSON ( prefixedid k ) ]
+instance FromJSON KVP where 
+    parseJSON (Object x) = KVP <$> x .: "prefixedid"
 
 instance FromJSON RDFLabel where
    parseJSON (Number x) = return $ TypedLit (T.pack $ show  x) xsdInteger
    parseJSON (String x) = return $ Lit x
-   parseJSON (Object x) = fmap kvpToRDFLabel $ KVP <$> x .: "prefixedid"
+   parseJSON x = fmap kvpToRDFLabel $ parseJSON x
+      where kvpToRDFLabel k = f x $ intercalate "" xs
+                where (x:xs) = splitOn ":" $ prefixedid k
+            f "arm" = Res . makeSN 
+            f "armchar" = armcharRes
+            f "armr" = armrRes
 
 -- instance FromJSON KeyPairList  where
   -- parseJSON = withObject "KeyPairList" $ \obj ->
@@ -96,8 +101,6 @@ instance ToJSON Trait where
                                -- (\o -> Test <$> mapM parseJSON (elems o))
                                -- val
 
-instance ToJSON KVP where 
-    toJSON k = object [ fromString "prefixedid" .= toJSON ( prefixedid k ) ]
 
 instance ToJSON CharacterSheet where 
     toJSON cs = object (c:x:xs)
