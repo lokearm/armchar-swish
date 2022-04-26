@@ -15,6 +15,7 @@
 module ArM.Character.Trait ( Trait(..)
                            , defaultTrait
                            , toTrait
+                           , kpToTrait
                            , advanceTraitList
                            , traitToArcListM
                            , keyvalueToArcList

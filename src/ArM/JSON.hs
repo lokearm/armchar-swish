@@ -79,26 +79,27 @@ instance ToJSON RDFLabel where
 instance FromJSON RDFLabel where
    parseJSON (Number x) = return $ TypedLit (T.pack $ show  x) xsdInteger
    parseJSON (String x) = return $ Lit x
-   parseJSON x = fmap kvpToRDFLabel $ parseJSON x
-      where kvpToRDFLabel k = f x $ intercalate "" xs
-                where (x:xs) = splitOn ":" $ prefixedid k
-            f "arm" = Res . makeSN 
-            f "armchar" = armcharRes
-            f "armr" = armrRes
+   parseJSON x = fmap (stringToRDFLabel . prefixedid) $ parseJSON x
 
--- instance FromJSON KeyPairList  where
-  -- parseJSON = withObject "KeyPairList" $ \obj ->
-    -- let kvs = KM.toList obj
-        -- parsed = mapM pairToKeyValue kvs
-    -- in fmap KeyPairList parsed
+stringToRDFLabel k = f x $ intercalate "" xs
+     where (x:xs) = splitOn ":" $ k
+           f "arm" = Res . makeSN 
+           f "armchar" = armcharRes
+           f "armr" = armrRes
 
--- pairToKeyValue (x,y) = do
-    -- v <- parseJSON y
-    -- return $ KeyValuePair k v
-    -- where k = Blank $ toString x
-
+instance FromJSON KeyPairList  where
+  parseJSON = withObject "KeyPairList" $ \obj ->
+    let kvs = KM.toList obj
+        parsed = mapM pairToKeyValue kvs
+    in fmap KeyPairList parsed
 instance ToJSON KeyPairList where 
     toJSON (KeyPairList t) = object $ map tripleToJSON t
+
+pairToKeyValue (x,y) = do
+    v <- parseJSON y
+    return $ KeyValuePair k v
+    where k = stringToRDFLabel $ toString x
+
 
 instance ToJSON Trait where 
     toJSON t = toJSON $ KeyPairList $ f (traitID t)
@@ -107,10 +108,11 @@ instance ToJSON Trait where
               t' = traitContents t 
 
 
--- instance FromJSON Trait where 
-    -- parseJSON val = withObject "Trait"
-                               -- (\o -> toTrait <$> mapM parseJSON (elems o))
-                               -- val
+kpToTrait' (KeyPairList x ) = kpToTrait x
+instance FromJSON Trait where 
+    parseJSON val = do 
+                     v <- parseJSON val
+                     return $ kpToTrait' v
 
 
 instance ToJSON CharacterSheet where 
