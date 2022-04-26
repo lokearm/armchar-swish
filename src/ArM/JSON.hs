@@ -25,6 +25,8 @@ import ArM.KeyPair
 import Data.Maybe
 import Network.URI (URI)
 import qualified Data.Text as T
+import Swish.RDF.Vocabulary.XSD
+
 
 import qualified Data.Aeson.KeyMap as KM
 
@@ -59,7 +61,9 @@ labelToData l | i /= Nothing = Left (fromJust i)
 
 data KeyPairList  = KeyPairList [KeyValuePair]
 
--- instance FromJSON RDFLabel where
+instance FromJSON RDFLabel where
+   parseJSON (Number x) = return $ TypedLit (T.pack $ show  x) xsdInteger
+   parseJSON (String x) = return $ Lit x
 
 -- instance FromJSON KeyPairList  where
   -- parseJSON = withObject "KeyPairList" $ \obj ->
