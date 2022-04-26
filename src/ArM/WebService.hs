@@ -5,12 +5,10 @@ module ArM.WebService (stateScotty) where
 import Web.Scotty  as S
 import Network.HTTP.Types
 
-import System.IO as IO
 import Control.Monad
 import qualified Data.Text.Lazy as  T
-import Swish.RDF.Formatter.Turtle
-import Swish.RDF.Graph
-import Data.Text (Text)
+import Swish.RDF.Formatter.Turtle (formatGraphAsText)
+import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
 
 import qualified ArM.Character.Advancement as A
@@ -18,8 +16,6 @@ import qualified ArM.Character.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import ArM.JSON
-import Data.Aeson.Encode.Pretty
-import qualified Data.ByteString.Lazy.Char8 as B
 
 import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
@@ -50,7 +46,7 @@ jsonif (Just x) = do
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
 
-stateScotty ::  RDFGraph -> RDFGraph -> RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
+stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
         middleware logStdoutDev
 
