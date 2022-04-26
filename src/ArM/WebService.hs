@@ -13,8 +13,7 @@ import Swish.RDF.Graph
 import Data.Text (Text)
 import Control.Monad.IO.Class (liftIO)
 
-import qualified ArM.Character.Advancement as A
-import qualified ArM.Character.Character as C
+import qualified ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import ArM.JSON
@@ -23,6 +22,7 @@ import qualified Data.ByteString.Lazy.Char8 as B
 
 import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
+import ArM.JSON 
 
 import System.CPUTime
 import Network.Wai.Middleware.RequestLogger
@@ -55,15 +55,15 @@ stateScotty g schema res stateVar = do
         get "/test/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          text $ T.pack $ show $ A.getIngameAdvancements g char
+          text $ T.pack $ show $ C.getIngameAdvancements g char
         get "/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ A.getIngameAdvancements g char
+          json $ C.getIngameAdvancements g char
         get "/pregameadvancement/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
-          json $ A.getPregameAdvancements g char
+          json $ C.getPregameAdvancements g char
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
@@ -106,6 +106,9 @@ stateScotty g schema res stateVar = do
         post "/" $ do
           text "This was a POST request!"
         put "/" $ do
+          text "This was a PUT request!"
+        put "/adv" $ do
+	  adv <- jsonData :: ActionM C.Advancement 
           text "This was a PUT request!"
 
 notfound404 = do status notFound404
