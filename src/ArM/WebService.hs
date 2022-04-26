@@ -24,35 +24,31 @@ import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
 
-import System.CPUTime
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 
-import Numeric
+import System.CPUTime
+import ArM.Time
+
 
 jsonif' r f = case (r) of
               Nothing -> notfound404
               (Just x) -> jsonif'' x f
 
 jsonif'' (CM.CharacterRecord x) f = do
-            t1' <- liftIO $ getCPUTime
-            let t1 = fromIntegral ( t1' `div` 10^9 ) * 10**(-3)
+            t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             json $ f x
-            t2' <- liftIO $ getCPUTime
-            let t2 = fromIntegral ( t2' `div` 10^9 ) * 10**(-3)
+            t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
 jsonif Nothing = notfound404
 jsonif (Just x) = do
-            t1' <- liftIO $ getCPUTime
-            let t1 = fromIntegral ( t1' `div` 10^9 ) * 10**(-3)
+            t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             json x
-            t2' <- liftIO $ getCPUTime
-            let t2 = fromIntegral ( t2' `div` 10^9 ) * 10**(-3)
+            t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
-showf f = showFFloat (Just 3) f "" 
 
 stateScotty ::  RDFGraph -> RDFGraph -> RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do

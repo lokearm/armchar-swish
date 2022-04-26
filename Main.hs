@@ -25,6 +25,10 @@ import ArM.WebService
 import Network.Wai.Middleware.HttpAuth
 import Data.SecureMem -- for constant-time comparison
 
+-- Timer
+import System.CPUTime
+import ArM.Time
+
 import ArM.Load
 import ArM.Resources
 import ArM.Character.Character as C
@@ -55,6 +59,7 @@ main = do
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
 
      print $ getGameStartCharacter g $ armcharRes "cieran" 
+     printTime
 
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
 
@@ -65,6 +70,7 @@ main = do
 
      let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
      putStrLn $ join st
+     printTime
 
      print "Starting Scotty"
      S.scotty 3000 $ stateScotty g schema res stateVar

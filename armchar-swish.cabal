@@ -34,6 +34,7 @@ executable armchar-swish
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
+                       , ArM.Time
                        , ArM.Character.Character
                        , ArM.Character.Advancement
                        , ArM.Character.Metadata
@@ -81,6 +82,7 @@ executable prof
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
+                       , ArM.Time
                        , ArM.Character.Character
                        , ArM.Character.Advancement
                        , ArM.Character.Metadata
