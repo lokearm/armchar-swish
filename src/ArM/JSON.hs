@@ -131,7 +131,7 @@ instance ToJSON Advancement where
     toJSON cs = object (c:x:y:[])
        where x = (fromString "advancementtraits") .= (toJSON (traits cs))
              y = (fromString "advancementcontents") .= KeyPairList (contents cs)
-             c = (fromString "advancementid") .= (advancementIDstring cs)
+             c = (fromString "advancementid") .= toJSON (rdfid cs)
 
 -- TODO  
 instance FromJSON Advancement where 

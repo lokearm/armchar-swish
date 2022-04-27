@@ -105,7 +105,7 @@ stateScotty g schema res stateVar = do
         put "/adv" $ do
           adv <- jsonData :: ActionM C.Advancement 
           liftIO $ print adv
-          text $ T.pack $ show adv
+          json adv
 
 notfound404 = do status notFound404
                  text "404 Not Found."
