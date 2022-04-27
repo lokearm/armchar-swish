@@ -37,15 +37,12 @@ fwdApplyListSR schema rs g = if (g' == g) then g'
                      else fwdApplyListSR schema rs g'
                      where g' = fwdApplyListS schema rs g
 
-prepareCS schema = fwdApplyList copyRules 
-                 . fwdApplyList traitRules 
-                 . fwdApplyList rdfstypeRules
-                 . merge ( fwdApplyListR rdfsRules schema )
--- prepareCS schema = fwdApplyList copyRules 
-                 -- . fwdApplyList traitRules 
-                 -- . fwdApplyList rdfstypeRules
-                 -- . fwdApplyListR rdfsRules
-                 -- . merge schema
+-- prepareCS schema g = foldl addGraphs g $ fwdApplyMap rs gg
+                 -- where gg = merge schema g
+                       -- rs = copyRules  ++ traitRules  ++ rdfstypeRules
+prepareCS schema = fwdApplyListS schema copyRules 
+                 . fwdApplyListS schema traitRules 
+                 . fwdApplyListS schema rdfstypeRules
 
 copyRules = [ makeCRule "cp1" [arc pVar labelRes oVar]
                                [arc pVar labelRes oVar]

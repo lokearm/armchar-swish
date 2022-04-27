@@ -50,6 +50,8 @@ fwdApplyMerge r c = addGraphs c $ fwdApplySimple r c
 fwdApplyList rs g =
      foldl addGraphs g $ parMap rpar (`fwdApplySimple` g) rs
 
+fwdApplyMap rs g = parMap rpar (`fwdApplySimple` g) rs
+
 fwdApplyListR rs g = if (g' == g) then g'
                      else fwdApplyListR rs g'
                      where g' = fwdApplyList rs g

@@ -54,9 +54,8 @@ main = do
      --print $ TTL.formatGraphAsText $ res
      --print $ TTL.formatGraphAsText $ g
 
-     let s = merge schema res
      let cl =  fromJust $ C.getAllCS g testCharacter
-     let cmap = CM.insertListS s CM.empty $ cl
+     let cmap = CM.insertListS res CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
 
