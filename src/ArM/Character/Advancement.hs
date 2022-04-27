@@ -146,12 +146,14 @@ seasonNo _ = 0
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [ObjectKeyValue] -> Advancement
 toAdvancement [] = defaultAdvancement 
-toAdvancement xs = defaultAdvancement { rdfid = okvSubj $ head xs,
+toAdvancement xs = defaultAdvancement { rdfid = getkey xs,
          year = getYear ys,
          season = getSeason ys,
          advSortIndex = getSortIndex ys,
          contents = ys }
          where ys = toKeyPairList xs 
+               getkey [] = noSuchAdvancement
+               getkey (x:xs) = okvSubj x
 
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear :: [KeyValuePair] -> Maybe Int

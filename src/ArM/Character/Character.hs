@@ -123,9 +123,11 @@ getInitialCS' g c | x == Nothing = Nothing
 -- | Given an identifier for the character, find the identifier for
 -- the initial character sheet
 getInitialSheet :: RDFGraph -> RDFLabel -> Maybe RDFLabel
-getInitialSheet g c = vbMap vb (G.Var "s")
+getInitialSheet g c = f vb'
     where 
-      vb = head $ rdfQueryFind q g
+      vb' = rdfQueryFind q g
+      f [] = Nothing
+      f (x:xs) = vbMap x (G.Var "s")
       q = toRDFGraph $ fromList $ [ arc c (Res $ makeSN "hasInitialSheet") sVar ]
 
 

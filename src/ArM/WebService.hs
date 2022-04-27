@@ -128,8 +128,7 @@ getCSGraph stateVar = do
           return r
 
 getParam = do
-          char' <- param  "char"
-          let char = "armchar:" ++ char'
+          char <- param  "char"
           liftIO $ print $ "char: " ++ char
           year <- param  "year"
           liftIO $ print $ "year: " ++ year

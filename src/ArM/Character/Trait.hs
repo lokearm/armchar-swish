@@ -181,13 +181,15 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 toTrait :: [ObjectKeyValue] -> Trait
 toTrait [] = defaultTrait
 toTrait xs = Trait { 
-             traitID = Just $ okvSubj $ head xs,
+             traitID = getkey xs,
              traitClass = getTraitClass ys,
              isRepeatableTrait = a,
              isXPTrait = b,
              isAccelleratedTrait = c,
              traitContents = ys }
           where (a,b,c,ys) = traitTripleList xs 
+                getkey [] = Nothing
+                getkey (x:xs) = Just $ okvSubj x
 
 kpToTrait :: [KeyValuePair] -> Trait
 kpToTrait [] = defaultTrait
