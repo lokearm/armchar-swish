@@ -10,12 +10,14 @@ import qualified Data.Text.Lazy as  T
 import Swish.RDF.Formatter.Turtle (formatGraphAsText)
 import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
+import Data.Maybe (fromJust)
 
 import qualified ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 import ArM.JSON
 
+import           ArM.STM 
 import qualified Control.Concurrent.STM as STM
 import qualified ArM.Resources as AR
 import ArM.JSON 
@@ -46,7 +48,7 @@ jsonif (Just x) = do
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
 
-stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
+stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
         middleware logStdoutDev
         middleware simpleCors
@@ -122,8 +124,7 @@ notfound404 = do status notFound404
 
 getCSGraph stateVar = do
           (char, year, season) <- getParam
-          cmap <- liftIO $ CM.stMap <$> STM.readTVarIO stateVar
-          let r = CM.lookup cmap char season (read year)
+          r <- liftIO $ ArM.STM.lookup stateVar char season (read year)
           return r
 
 getParam = do

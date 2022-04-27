@@ -39,6 +39,7 @@ executable armchar-swish
                        , ArM.Character.Advancement
                        , ArM.Character.Metadata
                        , ArM.Character.Trait
+                       , ArM.STM
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
@@ -89,6 +90,7 @@ executable prof
                        , ArM.Character.Advancement
                        , ArM.Character.Metadata
                        , ArM.Character.Trait
+                       , ArM.STM
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
@@ -142,6 +144,7 @@ executable tst
                        , ArM.Character.Advancement
                        , ArM.Character.Metadata
                        , ArM.Character.Trait
+                       , ArM.STM
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14

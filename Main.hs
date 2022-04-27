@@ -16,7 +16,8 @@ import Control.Monad.IO.Class (liftIO)
 import Data.Aeson.Encode.Pretty (encodePretty)
 import qualified Data.ByteString.Lazy.Char8 as B
 
-import qualified Control.Concurrent.STM as STM
+-- import qualified Control.Concurrent.STM as STM
+import ArM.STM
 
 -- Web service
 import qualified Web.Scotty  as S
@@ -54,23 +55,15 @@ main = do
      --print $ TTL.formatGraphAsText $ res
      --print $ TTL.formatGraphAsText $ g
 
-     let cl =  fromJust $ C.getAllCS g testCharacter
-     let cmap = CM.insertListS res CM.empty $ cl
+     -- let cl =  fromJust $ C.getAllCS g testCharacter
+     -- let cmap = CM.insertListS res CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
-     stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
+     stateVar <- getSTM res g testCharacter
 
-     --print $ C.getGameStartCharacter g $ testCharacter
-     --printTime
-
+     -- print $ C.getGameStartCharacter g $ testCharacter
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
 
-     -- let r = CM.lookup cmap "armchar:cieran" "Summer" 1217
-     -- let f (CM.CharacterRecord x) = x
-     -- let g = f $ fromJust r
-     -- print $ CQ.getAbilities g
-
-     let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
-     putStrLn $ join st
+     -- let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
      printTime
 
      print "Starting Scotty"
