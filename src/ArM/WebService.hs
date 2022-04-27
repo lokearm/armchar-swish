@@ -21,7 +21,7 @@ import qualified ArM.Resources as AR
 import ArM.JSON 
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
--- import Network.Wai.Middleware.Cors
+import Network.Wai.Middleware.Cors
 
 import System.CPUTime
 import ArM.Time
@@ -49,7 +49,7 @@ jsonif (Just x) = do
 stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
         middleware logStdoutDev
-        -- middleware simpleCors
+        middleware simpleCors
 
   -- GET
         get "/" $ do     
