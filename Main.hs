@@ -50,9 +50,9 @@ main = do
      (g,schema,res) <- getGraph AR.characterFile AR.armFile AR.resourceFile
 
 
-     print $ TTL.formatGraphAsText $ schema
-     print $ TTL.formatGraphAsText $ res
-     print $ TTL.formatGraphAsText $ g
+     --print $ TTL.formatGraphAsText $ schema
+     --print $ TTL.formatGraphAsText $ res
+     --print $ TTL.formatGraphAsText $ g
 
      let s = merge schema res
      let cl =  fromJust $ C.getAllCS g testCharacter
@@ -60,8 +60,8 @@ main = do
      -- let cmap = CM.insertList CM.empty $ cl
      stateVar <- STM.newTVarIO CM.MapState { CM.stMap = cmap }
 
-     print $ C.getGameStartCharacter g $ testCharacter
-     printTime
+     --print $ C.getGameStartCharacter g $ testCharacter
+     --printTime
 
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
 

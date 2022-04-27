@@ -21,6 +21,7 @@ import qualified ArM.Resources as AR
 import ArM.JSON 
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
+-- import Network.Wai.Middleware.Cors
 
 import System.CPUTime
 import ArM.Time
@@ -48,8 +49,9 @@ jsonif (Just x) = do
 stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar CM.MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
         middleware logStdoutDev
+        -- middleware simpleCors
 
-	-- GET
+  -- GET
         get "/" $ do     
           text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n  /res\n  /schema\n"
         get "/schema" $ do     
@@ -101,13 +103,13 @@ stateScotty g schema res stateVar = do
           r <- getCSGraph stateVar
           jsonif' r CQ.getCharacteristics 
 
-	-- Test
+  -- Test
         S.delete "/" $ do
           html "This was a DELETE request!"  -- send 'text/html' response
         post "/" $ do
           text "This was a POST request!"
 
-	-- PUT
+  -- PUT
         put "/" $ do
           text "This was a PUT request!"
         put "/adv" $ do

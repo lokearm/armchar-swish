@@ -154,6 +154,7 @@ executable tst
                        , bytestring >= 0.10.10
                        , http-types >= 0.12
                        , wai-extra >= 3.1
+                       -- , wai-cors >= 0.2.7
                        , securemem >= 0.1.10
                        , parallel >= 3.2
                        , stm >= 2.5
