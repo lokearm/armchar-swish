@@ -23,30 +23,10 @@ import qualified ArM.Resources as AR
 import ArM.JSON 
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
-import Network.Wai.Middleware.Cors
+import Network.Wai.Middleware.Cors (simpleCors)
 
 import System.CPUTime
 import ArM.Time
-
-
-jsonif' Nothing _  = notfound404
-jsonif' (Just x) f =  jsonif'' x f
-
-jsonif'' (CM.CharacterRecord x) f = do
-            t1 <- liftIO $ getCPUTime
-            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
-            json $ f x
-            t2 <- liftIO $ getCPUTime
-            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
-
-jsonif Nothing = notfound404
-jsonif (Just x) = do
-            t1 <- liftIO $ getCPUTime
-            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
-            json x
-            t2 <- liftIO $ getCPUTime
-            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
-
 
 stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
@@ -54,15 +34,17 @@ stateScotty g schema res stateVar = do
         middleware simpleCors
 
   -- GET
+        -- Top level graphs
         get "/" $ do     
-          text "Test a get call - available paths for get:\n  /    (this page)\n  /graph\n  /initial\n  /gamestart\n  /res\n  /schema\n"
+          text $ "Test a get call\n"
         get "/schema" $ do     
           text $ T.fromStrict $ formatGraphAsText $ schema
         get "/res" $ do     
           text $ T.fromStrict $ formatGraphAsText $ res
-          liftIO $ print "FOOBAR"
         get "/graph" $ do     
           text $ T.fromStrict $ formatGraphAsText $ g
+
+        -- Pre-defined character sheets
         get "/gamestart/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
@@ -71,6 +53,8 @@ stateScotty g schema res stateVar = do
           char' <- param "char"
           let char = AR.armcharRes char'
           jsonif $ C.getInitialCS g char 
+
+        -- Advancement lists
         get "/test/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
@@ -83,12 +67,16 @@ stateScotty g schema res stateVar = do
           char' <- param "char"
           let char = AR.armcharRes char'
           jsonif $ Just $ C.getPregameAdvancements g char
+
+        -- Character Sheet
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
              Just (CM.CharacterRecord cgraph) -> do
                 text $ T.fromStrict $ formatGraphAsText $ cgraph
              Nothing -> notfound404 
+
+        -- Traits
         get "/virtue/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getVirtues 
@@ -135,3 +123,21 @@ getParam = do
           season <- param  "season"
           liftIO $ print $ "season: " ++ season
           return (char, year, season)
+
+jsonif' Nothing _  = notfound404
+jsonif' (Just x) f =  jsonif'' x f
+
+jsonif'' (CM.CharacterRecord x) f = do
+            t1 <- liftIO $ getCPUTime
+            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
+            json $ f x
+            t2 <- liftIO $ getCPUTime
+            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
+
+jsonif Nothing = notfound404
+jsonif (Just x) = do
+            t1 <- liftIO $ getCPUTime
+            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
+            json x
+            t2 <- liftIO $ getCPUTime
+            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
