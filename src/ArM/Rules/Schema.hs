@@ -40,8 +40,12 @@ fwdApplyListSR schema rs g = if (g' == g) then g'
 prepareCS schema = fwdApplyList copyRules 
                  . fwdApplyList traitRules 
                  . fwdApplyList rdfstypeRules
-                 . fwdApplyListR rdfsRules
-                 . merge schema
+                 . merge ( fwdApplyListR rdfsRules schema )
+-- prepareCS schema = fwdApplyList copyRules 
+                 -- . fwdApplyList traitRules 
+                 -- . fwdApplyList rdfstypeRules
+                 -- . fwdApplyListR rdfsRules
+                 -- . merge schema
 
 copyRules = [ makeCRule "cp1" [arc pVar labelRes oVar]
                                [arc pVar labelRes oVar]
