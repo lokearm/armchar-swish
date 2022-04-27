@@ -1,4 +1,4 @@
-{
+ {
         "advancementcontents": {
             "arm:atSeason": "Autumn",
             "arm:awardsXP": 16,
@@ -10,7 +10,9 @@
             "arm:hasAdvancementTypeString": "Reading",
             "arm:inYear": 1217
         },
-        "advancementid": "<https://hg.schaathun.net/armchar/character/cieran#autumn1217adv>",
+        "advancementid": {
+            "prefixedid": "<https://hg.schaathun.net/armchar/character/cieran#autumn1217adv>"
+        },
         "advancementtraits": [
             {
                 "arm:addedXP": 16,
@@ -24,5 +26,5 @@
                 }
             }
         ]
-}
+    }
 
