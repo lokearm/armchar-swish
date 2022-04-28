@@ -2,8 +2,9 @@ module ArM.STM where
 
 import qualified Control.Concurrent.STM as STM
 import Control.Monad.IO.Class (liftIO)
-import Swish.RDF.Graph (RDFGraph)
+import qualified Swish.RDF.Graph as G
 import Data.Maybe (fromJust)
+import Network.URI (URI)
 
 import qualified ArM.CharacterMap as CM
 import qualified ArM.Character as C
@@ -11,7 +12,7 @@ import qualified ArM.Resources as AR
 
 
 
-data MapState = MapState { graph :: RDFGraph, resourceGraph :: RDFGraph }
+data MapState = MapState { graph :: G.RDFGraph, resourceGraph :: G.RDFGraph }
 
 getSTM res g char = STM.newTVarIO MapState { graph = g, resourceGraph = res  }
 
@@ -30,16 +31,34 @@ lookup stateVar char season year = do
              (Just x) -> return $ CM.lookup cmap charstring season year
                 where  cmap = CM.insertListS res CM.empty $ x
 
-update :: STM.TVar MapState -> RDFLabel -> RDFGraph-> IO (Maybe URI)
-update g = Nothung
+getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
+getResource g label = Nothing
+
+updateResource :: G.RDFGraph -> G.RDFLabel -> G.RDFGraph -> Maybe G.RDFGraph
+updateResource g label g1 
+          | Nothing == oldres = Nothing
+          | otherwise  = Just $ G.merge ( G.delete g $ fromJust oldres ) g1
+          where oldres =  getResource g label
+
+putResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph-> IO (Maybe G.RDFGraph)
+putResource stateVar label newres =  do
+      STM.atomically $ do
+          st <- STM.readTVar stateVar
+          let g = graph st
+          case (updateResource g label newres) of
+             Nothing -> return Nothing
+             (Just gg) -> do
+                          STM.writeTVar stateVar $ st { graph = gg }
+                          return $ Just gg
+
 -- NB.  URI must be validated before calling this
 -- - Atomically
 --     1. Get old resource.
 --     2. Remove old resource
 --     3. Add new resource
 
-post :: STM.TVar MapState -> RDFLabel -> RDFGraph-> IO (Maybe URI)
-post g = Nothung
+postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph-> IO (Maybe URI)
+postResource stateVar label g = return Nothing
 -- NB.  URI must be validated before calling this
 -- - Atomically
 --     1. Check that URI does not exist
