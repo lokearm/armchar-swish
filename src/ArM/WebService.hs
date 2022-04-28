@@ -139,11 +139,14 @@ stateScotty g schema res stateVar = do
           let label = C.rdfid adv
           newg <- liftIO $ putResource stateVar label ng
           liftIO $ print adv
-          json adv
+          printGraph $ fromJust newg
         put "/adv" $ do
           adv <- jsonData :: ActionM C.Advancement 
+          let ng = C.makeRDFGraph adv
+          let label = C.rdfid adv
+          newg <- liftIO $ putResource stateVar label ng
           liftIO $ print adv
-          json adv
+          printGraph $ fromJust newg
 
 notfound404 = do status notFound404
                  text "404 Not Found."
