@@ -141,7 +141,7 @@ defaultAdvancement = Advancement { year = Nothing,
                 advSortIndex = 0,
                 contents = [], traits = [] }
 instance Show Advancement where
-   show a = "**" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
+   show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
                  ++ "\n"
