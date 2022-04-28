@@ -89,18 +89,33 @@ stateScotty g schema res stateVar = do
         get "/virtue/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getVirtues 
+        get "/test/virtue/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          textif' r CQ.getVirtues 
         get "/flaw/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getFlaws 
+        get "/test/flaw/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          textif' r CQ.getFlaws 
         get "/pt/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getPTs 
+        get "/test/pt/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          textif' r CQ.getPTs 
         get "/ability/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getAbilities 
+        get "/test/ability/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          textif' r CQ.getAbilities 
         get "/characteristic/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getCharacteristics 
+        get "/test/characteristic/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          textif' r CQ.getCharacteristics 
 
   -- Test
         S.delete "/" $ do
@@ -111,6 +126,11 @@ stateScotty g schema res stateVar = do
   -- PUT
         put "/" $ do
           text "This was a PUT request!"
+        put "/adv/:char/:year/:season" $ do
+          (char,year,season) <- getParam
+          adv <- jsonData :: ActionM C.Advancement 
+          liftIO $ print adv
+          json adv
         put "/adv" $ do
           adv <- jsonData :: ActionM C.Advancement 
           liftIO $ print adv
@@ -140,6 +160,15 @@ jsonif'' (CM.CharacterRecord x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             json $ f x
+            t2 <- liftIO $ getCPUTime
+            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
+
+textif' Nothing _  = notfound404
+textif' (Just x) f =  textif'' x f
+textif'' (CM.CharacterRecord x) f = do
+            t1 <- liftIO $ getCPUTime
+            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
+            text $ T.pack $ show $ f x
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 

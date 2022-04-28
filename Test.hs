@@ -14,6 +14,8 @@ import Data.Maybe
 import Data.Text (Text)
 import Control.Monad.IO.Class (liftIO)
 
+import Network.URI
+import ArM.Resources
 
 
 import ArM.Character.Trait
@@ -28,13 +30,20 @@ s = "{\n     \"arm:hasDescription\": \"<p>You automatically master every spell t
 -- main :: IO ()
 main = do 
 
-     print "JSON Source"
-     print s
-     print "Decoded"
-     let dec = (decode s :: Maybe Trait)
-     print dec 
-     print "Reencoded"
-     let enc = encode dec
-     print enc
-     print "Redecoded"
-     print $ (decode enc :: Maybe Trait)
+     -- print "JSON Source"
+     -- print s
+     -- print "Decoded"
+     -- let dec = (decode s :: Maybe Trait)
+     -- print dec 
+     -- print "Reencoded"
+     -- let enc = encode dec
+     -- print enc
+     -- print "Redecoded"
+     -- print $ (decode enc :: Maybe Trait)
+
+     let l1 = toRDFLabel $ fromJust $ parseURI "https://hg.schaathun.net/armchar/character/cieran"
+     let l2 = armcharRes "cieran"
+
+     print l1
+     print l2
+     print $ l1 == l2

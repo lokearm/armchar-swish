@@ -17,13 +17,13 @@ module ArM.JSON where
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Key
-import Swish.RDF.Graph (RDFLabel(..), fromRDFLabel)
+import Swish.RDF.Graph (RDFLabel(..), fromRDFLabel, toRDFLabel)
 import Swish.Namespace (ScopedName)
 import ArM.Character
 import ArM.KeyPair
 import ArM.Resources
 import Data.Maybe  (fromJust)
-import Network.URI (URI)
+import Network.URI (URI,parseURI)
 import qualified Data.Text as T
 import Swish.RDF.Vocabulary.XSD (xsdInteger)
 import Data.List       (intercalate)
@@ -80,11 +80,14 @@ instance FromJSON RDFLabel where
    parseJSON (String x) = return $ Lit x
    parseJSON x = fmap (stringToRDFLabel . prefixedid) $ parseJSON x
 
-stringToRDFLabel k = f x $ intercalate "" xs
-     where (x:xs) = splitOn ":" $ k
+stringToRDFLabel (k:ks) | k == '<'  = toRDFLabel $ fromJust $ parseURI $ rdfuri ks
+                        | otherwise = f x $ intercalate ":" xs
+     where (x:xs) = splitOn ":" $ (k:ks)
            f "arm" = Res . makeSN 
            f "armchar" = armcharRes
            f "armr" = armrRes
+           rdfuri (x:[]) = []
+           rdfuri (x:xs) = x:rdfuri xs
 
 instance FromJSON KeyPairList  where
   parseJSON = withObject "KeyPairList" $ \obj ->
