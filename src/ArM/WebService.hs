@@ -110,6 +110,12 @@ stateScotty g schema res stateVar = do
         get "/test/ability/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           textif' r CQ.getAbilities 
+        get "/art/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          jsonif' r CQ.getArts 
+        get "/test/art/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          textif' r CQ.getArts 
         get "/characteristic/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getCharacteristics 
@@ -129,6 +135,9 @@ stateScotty g schema res stateVar = do
         put "/adv/:char/:year/:season" $ do
           (char,year,season) <- getParam
           adv <- jsonData :: ActionM C.Advancement 
+          let ng = C.makeRDFGraph adv
+          let label = C.rdfid adv
+          newg <- liftIO $ putResource stateVar label ng
           liftIO $ print adv
           json adv
         put "/adv" $ do

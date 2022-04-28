@@ -1,6 +1,6 @@
  {
         "advancementcontents": {
-            "arm:atSeason": "Autumn",
+            "arm:atSeason": "Summer",
             "arm:awardsXP": 16,
             "arm:hasAdvancementDescription": "Studies Mentem L16 Q13 +3",
             "arm:hasAdvancementIndex": 100,
@@ -11,18 +11,18 @@
             "arm:inYear": 1217
         },
         "advancementid": {
-            "prefixedid": "<https://hg.schaathun.net/armchar/character/cieran#autumn1217adv>"
+            "prefixedid": "<https://hg.schaathun.net/armchar/character/cieran#sumer1217adv>"
         },
         "advancementtraits": [
             {
                 "arm:addedXP": 16,
-                "arm:hasLabel": "Mentem",
+                "arm:hasLabel": "Auram",
                 "arm:isSpecialTrait": {
                     "prefixedid": "arm:AccelleratedTrait"
                 },
                 "arm:prefixedid": "_:73",
                 "arm:traitClass": {
-                    "prefixedid": "armr:mentem"
+                    "prefixedid": "armr:auram"
                 }
             }
         ]
