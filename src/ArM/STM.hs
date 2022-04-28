@@ -32,6 +32,17 @@ lookup stateVar char season year = do
 
 update :: STM.TVar MapState -> RDFGraph-> IO (Maybe URI)
 update g = Nothung
+-- 1. Check validity
+--     - does URI match data
+-- 2. Atomically
+--     1. Get old resource.
+--     2. Remove old resource
+--     3. Add new resource
 
 post :: STM.TVar MapState -> RDFGraph-> IO (Maybe URI)
 post g = Nothung
+-- 1. Check validity
+--     - does URI match data
+-- 2. Atomically
+--     1. Check that URI does not exist
+--     2. Add new resource
