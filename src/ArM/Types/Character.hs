@@ -2,6 +2,7 @@ module ArM.Types.Character where
 
 import Data.Set (fromList)
 import Swish.RDF.Graph as G
+import qualified Swish.RDF.Query as Q
 import Data.Maybe
 import ArM.KeyPair
 import ArM.Resources
@@ -97,6 +98,8 @@ showSheetID = f . sheetID
     where f Nothing = "no sheet ID"
           f (Just x) = show x
 
+class FromRDFGraph a where
+    fromRDFGraph :: RDFGraph -> RDFLabel -> a 
 class ToRDFGraph a where
     makeRDFGraph :: a -> RDFGraph
 instance ToRDFGraph CharacterSheet where
@@ -183,6 +186,7 @@ instance ToRDFGraph Advancement where
    makeRDFGraph cs =
          ( toRDFGraph .  fromList . fst . runBlank ( advToArcListM cs ) )
          ("charsheet",1)
+
 advToArcListM :: Advancement -> BlankState [RDFTriple]
 advToArcListM adv = mapM (traitToArcListM x) (traits adv) 
                 >>= return . foldl (++) ms 

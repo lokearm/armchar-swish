@@ -8,6 +8,7 @@ module ArM.Character.Advancement ( Advancement(..)
                                  , getSeason
                                  , getYear
                                  , getSortIndex
+                                 , toAdvancement
                                  ) where
 
 import Swish.RDF.Graph 
@@ -116,3 +117,17 @@ getSortIndex xs = f1 x
             f1 (Just idx) = f2 $ fromRDFLabel idx
             f2 Nothing = 2^30
             f2 (Just idx) = idx
+
+instance FromRDFGraph Advancement where
+   fromRDFGraph g label = fixAdv g $ defaultAdvancement {
+                 rdfid = label,
+                 year = getYear ys,
+                 season = getSeason ys,
+                 advSortIndex = getSortIndex ys,
+                 contents = ys }
+        where q = toRDFGraph . fromList $
+                  [ arc label typeRes advancementType,
+                    arc label (Var "property") (Var "value"),
+                    arc (Var "property") labelRes (Var "label") ]
+              vb = Q.rdfQueryFind g q
+              ys = map keypairFromBinding vb
