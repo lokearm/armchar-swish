@@ -18,6 +18,7 @@ import Data.Maybe
 import Data.List
 import Data.Set (fromList)
 import ArM.Character.Trait
+import ArM.Types.Character
 import ArM.Rules.Aux
 
 -- Class:
@@ -84,64 +85,6 @@ fixAdv g a = a { traits = sort $ getTraits q g }
 
 advancementIDstring = show . rdfid 
 
--- | CharacterAdvancement Resource
--- Essential information is in `rdfid`, `contents`, and `traits.
--- The other properties are redundant, merely giving access to
--- critical information without having to search the lists.
--- TraitAdvancements are represented as a list of `Trait`s.
--- Other properties are listed as 'contents'.
-data Advancement = Advancement {
-    year :: Maybe Int,
-    season :: String,
-    -- season :: Maybe RDFLabel,
-    rdfid :: RDFLabel,
-    contents :: [KeyValuePair],
-    advSortIndex :: Int,
-    traits :: [Trait]
-   } deriving Eq
-
-defaultAdvancement = Advancement { year = Nothing,
-                season = "", rdfid = noSuchAdvancement, 
-                advSortIndex = 0,
-                contents = [], traits = [] }
-instance Show Advancement where
-   show a = "**" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
-                 ++ sc (contents a) 
-                 ++ show (traits a) 
-                 ++ "\n"
-      where 
-         y Nothing = ""
-         y (Just x) = show x
-         sc [] = ""
-         sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
-         st [] = ""
-         st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
-                                  ++  "\n" ++ st xs
-instance Ord Advancement where
-   compare x y | advSortIndex x < advSortIndex y = LT
-               | advSortIndex x > advSortIndex y = GT
-               | year x < year y = LT
-               | year x > year y = GT
-               | sno x < sno y = LT
-               | sno x > sno y = GT
-               | rdfid x < rdfid y = LT
-               | rdfid x > rdfid y = GT
-               | contents x < contents y = LT
-               | contents x > contents y = GT
-               | otherwise = EQ
-               where sno = seasonNo . season
-
-seasonNo "Spring" = 1
-seasonNo "Summer" = 2
-seasonNo "Autumn" = 3
-seasonNo "Winter" = 4
-seasonNo _ = 0
--- seasonNo Nothing = 0
--- seasonNo (Just x ) | x == springLabel = 1
---                    | x == summerLabel = 2
---                    | x == autumnLabel = 3
---                    | x == winterLabel = 4
---                    | otherwise  = 10
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [ObjectKeyValue] -> Advancement

@@ -18,7 +18,6 @@ module ArM.Character.Trait ( Trait(..)
                            , kpToTrait
                            , advanceTraitList
                            , traitToArcListM
-                           , keyvalueToArcList
                            ) where
 
 import Data.Set (fromList)
@@ -37,49 +36,7 @@ import ArM.Resources
 import ArM.KeyPair
 import ArM.BlankNode
 import Swish.Namespace
-
--- ** The Data Type ** 
-
--- | Trait Resource
--- `traitID` and `traitContents` are sufficient to describe the trait.
--- The other fields duplicate information to facilitate searching and
--- sorting.
--- When new traits are created, `traitID` is set to nothing?
--- A blank node is only created when it is written into an RDFGraph.
-data Trait = Trait {
-    traitID :: Maybe RDFLabel,
-    traitClass :: RDFLabel,
-    isRepeatableTrait :: Bool,
-    isXPTrait :: Bool,
-    isAccelleratedTrait :: Bool,
-    traitContents :: [KeyValuePair]
-   } deriving (Eq)
-defaultTrait = Trait {
-    traitID = Nothing,
-    traitClass = noSuchTrait,
-    isRepeatableTrait = False,
-    isXPTrait = False,
-    isAccelleratedTrait = False,
-    traitContents = []
-   } 
-
-instance Show Trait where
-   show a = "**" ++ y (traitID a) ++ " " ++ show (traitClass a) ++ "**\n" 
-                 ++ sc (traitContents a) 
-                 ++ "\n"
-      where 
-         y Nothing = ""
-         y (Just x) = show x
-         s Nothing = ""
-         s (Just x) = x
-         sc [] = ""
-         sc (KeyValuePair x y:xs) = "  " ++ show x ++ ": " ++ show y ++ "\n" ++ sc xs
-instance Ord Trait where
-   compare x y | traitClass x < traitClass y = LT
-               | traitClass x > traitClass y = GT
-               | traitID x < traitID y = LT
-               | traitID x > traitID y = GT
-               | otherwise = EQ
+import ArM.Types.Character
 
 data XPType = XP { addXP :: Int, totalXP :: Int, score :: Int, hasXP :: Int }
 defaultXPType = XP { addXP = 0, totalXP = 0, score = 0, hasXP = 0 }
@@ -236,18 +193,3 @@ getTraitClass :: [KeyValuePair] -> RDFLabel
 getTraitClass = f . getProperty ( Res $ makeSN "traitClass" )
      where f Nothing = noSuchTrait
            f (Just x) = x
-
-keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
-keyvalueToArcList x [] = []
-keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
-
-traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
-traitToArcListM cs t 
-     | x' == Nothing = do
-                      y <- getBlank 
-                      return $ arc cs htRes y:keyvalueToArcList y ts
-     | otherwise    = return $ arc cs htRes x:keyvalueToArcList x ts
-                 where x' = traitID t
-                       x = fromJust x'
-                       ts = traitContents t
-

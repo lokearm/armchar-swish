@@ -35,38 +35,11 @@ import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
 import ArM.BlankNode
 import ArM.Rules.Aux
+import ArM.Types.Character
 
 getCharacterMetadata = CM.getCharacterMetadata
 
-data CharacterSheet = CharacterSheet {
-         csID :: RDFLabel,
-         sheetID :: Maybe RDFLabel,
-         csYear :: Maybe Int,
-         csSeason :: String,
-         -- csSeason :: Maybe RDFLabel,
-         csTraits :: [Trait],
-         csMetadata :: [KeyValuePair]
-       }  deriving (Eq)
-instance Show CharacterSheet where
-    show cs = "**" ++ show (csID cs) ++ "**\n" 
-           ++ "-- " ++ ( showSheetID ) cs ++ "\n"
-           ++ "Traits:\n" ++ showw ( csTraits cs )
-           ++ "Metadata Triples:\n" ++ showw ( csMetadata cs )
-        where showw [] = ""
-              showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
-defaultCS = CharacterSheet {
-         csID = noSuchCharacter,
-         sheetID = Nothing,
-         csYear = Nothing,
-         csSeason = "",
-         csTraits = [],
-         csMetadata = []
-       }  
 
-showSheetID :: CharacterSheet -> String
-showSheetID = f . sheetID
-    where f Nothing = "no sheet ID"
-          f (Just x) = show x
 
 getGameStartCharacter :: RDFGraph -> RDFLabel -> Maybe CharacterSheet
 getGameStartCharacter g label | x == Nothing = Nothing
@@ -151,28 +124,3 @@ cqt s = qparse $ prefixes
       ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
-class ToRDFGraph a where
-    makeRDFGraph :: a -> RDFGraph
-instance ToRDFGraph CharacterSheet where
-   makeRDFGraph cs =
-         ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
-         ("charsheet",1)
-
-
-csToRDFGraph :: CharacterSheet -> RDFGraph
-csToRDFGraph = makeRDFGraph
-
-csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
-csToArcListM cs = do
-          x <- getSheetIDM cs $ sheetID cs
-          ts <- mapM (traitToArcListM x) (csTraits cs)
-          let ms = keyvalueToArcList x (csMetadata cs)
-          let ct = arc x isCharacterLabel charlabel
-          let ct1 = arc x typeRes csRes 
-          return $ ct1:ct:foldl (++) ms ts
-    where 
-          charlabel = csID cs
-
-getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
-getSheetIDM _ Nothing = getBlank
-getSheetIDM _ (Just x) = return x
