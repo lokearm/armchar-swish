@@ -40,7 +40,14 @@ updateResource g label g1
           | otherwise  = Just $ G.merge ( G.delete g $ fromJust oldres ) g1
           where oldres =  getResource g label
 
-putResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph-> IO (Maybe G.RDFGraph)
+putGraph :: G.RDFGraph -> G.RDFLabel -> G.RDFGraph -> Maybe G.RDFGraph
+putGraph g label g1 
+          | Nothing == oldres = Just $ G.merge g g1
+          | otherwise  = Nothing
+          where oldres =  getResource g label
+
+putResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
+             -> IO (Maybe G.RDFGraph)
 putResource stateVar label newres =  do
       STM.atomically $ do
           st <- STM.readTVar stateVar
@@ -51,15 +58,15 @@ putResource stateVar label newres =  do
                           STM.writeTVar stateVar $ st { graph = gg }
                           return $ Just gg
 
--- NB.  URI must be validated before calling this
--- - Atomically
---     1. Get old resource.
---     2. Remove old resource
---     3. Add new resource
 
-postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph-> IO (Maybe URI)
-postResource stateVar label g = return Nothing
--- NB.  URI must be validated before calling this
--- - Atomically
---     1. Check that URI does not exist
---     2. Add new resource
+postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
+             -> IO (Maybe G.RDFGraph)
+postResource stateVar label newres = do 
+      STM.atomically $ do
+          st <- STM.readTVar stateVar
+          let g = graph st
+          case (putGraph g label newres) of
+             Nothing -> return Nothing
+             (Just gg) -> do
+                          STM.writeTVar stateVar $ st { graph = gg }
+                          return $ Just gg
