@@ -11,7 +11,6 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Character ( CharacterSheet(..)
-                               , csToRDFGraph
                                , getGameStartCharacter
                                , getInitialCS
                                , getAllCS

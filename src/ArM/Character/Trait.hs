@@ -17,7 +17,6 @@ module ArM.Character.Trait ( Trait(..)
                            , toTrait
                            , kpToTrait
                            , advanceTraitList
-                           , traitToArcListM
                            ) where
 
 import Data.Set (fromList)

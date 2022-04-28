@@ -29,11 +29,11 @@ data CharacterRecord = CharacterRecord G.RDFGraph
 
 insertS :: G.RDFGraph -> CharacterMap -> C.CharacterSheet -> CharacterMap
 insertS schema cmap cs = M.insert (getKey cs) cr cmap
-    where cr = CharacterRecord $ R.prepareRecord schema $ C.csToRDFGraph cs
+    where cr = CharacterRecord $ R.prepareRecord schema $ C.makeRDFGraph cs
 
 insert :: CharacterMap -> C.CharacterSheet -> CharacterMap
 insert cmap cs = M.insert (getKey cs) cr cmap
-    where cr = CharacterRecord $ C.csToRDFGraph cs
+    where cr = CharacterRecord $ C.makeRDFGraph cs
 
 getKey :: C.CharacterSheet -> CharacterKey
 getKey cs = CharacterKey { keyYear = case (C.csYear cs) of

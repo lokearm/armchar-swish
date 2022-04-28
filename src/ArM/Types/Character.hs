@@ -8,7 +8,7 @@ import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
 
--- ** The Data Type ** 
+-- ** Trait ** 
 
 -- | Trait Resource
 -- `traitID` and `traitContents` are sufficient to describe the trait.
@@ -105,9 +105,6 @@ instance ToRDFGraph CharacterSheet where
          ("charsheet",1)
 
 
-csToRDFGraph :: CharacterSheet -> RDFGraph
-csToRDFGraph = makeRDFGraph
-
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
@@ -181,3 +178,15 @@ seasonNo _ = 10
 --                    | x == autumnLabel = 3
 --                    | x == winterLabel = 4
 --                    | otherwise  = 10
+
+instance ToRDFGraph Advancement where
+   makeRDFGraph cs =
+         ( toRDFGraph .  fromList . fst . runBlank ( advToArcListM cs ) )
+         ("charsheet",1)
+advToArcListM :: Advancement -> BlankState [RDFTriple]
+advToArcListM adv = do
+          ts <- mapM (traitToArcListM x) (traits adv)
+          let ms = keyvalueToArcList x (contents adv)
+          return $ foldl (++) ms ts
+    where 
+          x = rdfid adv
