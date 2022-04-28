@@ -15,6 +15,7 @@ module ArM.Character.Character ( CharacterSheet(..)
                                , getGameStartCharacter
                                , getInitialCS
                                , getAllCS
+                               , ToRDFGraph(..)
                                ) where
 
 import Data.Set (fromList)
@@ -150,10 +151,16 @@ cqt s = qparse $ prefixes
       ++ "?id ?property ?value . "
       ++ "?property rdfs:label ?label . "
 
-csToRDFGraph :: CharacterSheet -> RDFGraph
-csToRDFGraph cs =
+class ToRDFGraph a where
+    makeRDFGraph :: a -> RDFGraph
+instance ToRDFGraph CharacterSheet where
+   makeRDFGraph cs =
          ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
          ("charsheet",1)
+
+
+csToRDFGraph :: CharacterSheet -> RDFGraph
+csToRDFGraph = makeRDFGraph
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
