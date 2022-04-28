@@ -15,12 +15,11 @@ import Data.Maybe (fromJust)
 import qualified ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
+import qualified ArM.Resources as AR
 import ArM.JSON
 
 import           ArM.STM 
 import qualified Control.Concurrent.STM as STM
-import qualified ArM.Resources as AR
-import ArM.JSON 
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 import Network.Wai.Middleware.Cors (simpleCors)
