@@ -30,19 +30,17 @@ lookup stateVar char season year = do
              (Just x) -> return $ CM.lookup cmap charstring season year
                 where  cmap = CM.insertListS res CM.empty $ x
 
-update :: STM.TVar MapState -> RDFGraph-> IO (Maybe URI)
+update :: STM.TVar MapState -> RDFLabel -> RDFGraph-> IO (Maybe URI)
 update g = Nothung
--- 1. Check validity
---     - does URI match data
--- 2. Atomically
+-- NB.  URI must be validated before calling this
+-- - Atomically
 --     1. Get old resource.
 --     2. Remove old resource
 --     3. Add new resource
 
-post :: STM.TVar MapState -> RDFGraph-> IO (Maybe URI)
+post :: STM.TVar MapState -> RDFLabel -> RDFGraph-> IO (Maybe URI)
 post g = Nothung
--- 1. Check validity
---     - does URI match data
--- 2. Atomically
+-- NB.  URI must be validated before calling this
+-- - Atomically
 --     1. Check that URI does not exist
 --     2. Add new resource
