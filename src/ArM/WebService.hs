@@ -28,6 +28,7 @@ import Network.Wai.Middleware.Cors (simpleCors)
 import System.CPUTime
 import ArM.Time
 
+
 stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar MapState -> S.ScottyM ()
 stateScotty g schema res stateVar = do
         middleware logStdoutDev
@@ -38,24 +39,32 @@ stateScotty g schema res stateVar = do
         get "/" $ do     
           text $ "Test a get call\n"
         get "/schema" $ do     
-          text $ T.fromStrict $ formatGraphAsText $ schema
+          printGraph schema
         get "/res" $ do     
-          text $ T.fromStrict $ formatGraphAsText $ res
+          printGraph res
         get "/graph" $ do     
-          text $ T.fromStrict $ formatGraphAsText $ g
+          printGraph  g
 
         -- Pre-defined character sheets
+        get "/graph/gamestart/:char" $ do     
+          char' <- param "char"
+          let char = AR.armcharRes char'
+          graphif $ C.getGameStartCharacter g char 
         get "/gamestart/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
           jsonif $ C.getGameStartCharacter g char 
+        get "/graph/initial/:char" $ do     
+          char' <- param "char"
+          let char = AR.armcharRes char'
+          graphif $ C.getInitialCS g char 
         get "/initial/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
           jsonif $ C.getInitialCS g char 
 
         -- Advancement lists
-        get "/test/adv/:char" $ do     
+        get "/show/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
           text $ T.pack $ show $ C.getIngameAdvancements g char
@@ -141,3 +150,13 @@ jsonif (Just x) = do
             json x
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
+
+graphif Nothing = notfound404
+graphif (Just x) = do
+            t1 <- liftIO $ getCPUTime
+            liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
+            printGraph $ C.makeRDFGraph x
+            t2 <- liftIO $ getCPUTime
+            liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
+
+printGraph = text . T.fromStrict . formatGraphAsText  

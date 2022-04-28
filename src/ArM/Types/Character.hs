@@ -184,9 +184,7 @@ instance ToRDFGraph Advancement where
          ( toRDFGraph .  fromList . fst . runBlank ( advToArcListM cs ) )
          ("charsheet",1)
 advToArcListM :: Advancement -> BlankState [RDFTriple]
-advToArcListM adv = do
-          ts <- mapM (traitToArcListM x) (traits adv)
-          let ms = keyvalueToArcList x (contents adv)
-          return $ foldl (++) ms ts
-    where 
+advToArcListM adv = mapM (traitToArcListM x) (traits adv) 
+                >>= return . foldl (++) ms 
+    where ms = keyvalueToArcList x (contents adv)
           x = rdfid adv
