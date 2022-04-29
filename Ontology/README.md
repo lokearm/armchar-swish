@@ -33,3 +33,22 @@ to transfer to and from the client.
 Some properties are tricky to manage.  For instance, `arm:hasScore` is
 derived for XP based traits, editable for personality traits, and
 immutable for virtues and flaws.
+
+## Possession Advancement
+
++ Alternatives
+    1.  Chain modifications explicitely
+    2.  Create classes even for unique possessions
+    3.  Link to prototype
++ Requirements
+    1.  Modify description
+    2.  Change quantity
+    3.  Add/Remove
++ Variations
+    1.  Unique Items
+    2.  Classed Items with Unique Description
+    3.  Standard Items 
++ A.  Countable versus singleton
++ B.  Expendable versus durable
+
+**NOTE.**  Some items are entities in their own right.

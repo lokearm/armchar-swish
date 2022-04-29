@@ -27,9 +27,6 @@ arm:hasAdvancement a owl:ObjectProperty ;
 arm:advanceFromCharacterSheet a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:CharacterSheet .
-arm:advanceToCharacterSheet a owl:ObjectProperty ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:CharacterSheet .
 arm:hasAdvancementTypeString   a owl:DatatypeProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:string ;
@@ -38,18 +35,6 @@ arm:hasAdvancementType   a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:AdvancementType ;
         rdfs:label   "Study Mode" .
-arm:hasAdvancementTypeString   a owl:DatatypeProperty ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   xsd:string .
-arm:atSeasonTime a   owl:ObjectProperty ;
-        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
-                                             arm:CharacterAdvancement ) ] ;
-        rdfs:range   arm:SeasonTime .
-arm:atSeason a   owl:DatatypeProperty ;
-        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
-                                             arm:CharacterAdvancement ) ] ;
-        rdfs:range   xsd:string ;
-        rdfs:label   "Season" .
 arm:inSeason a   owl:ObjectProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
@@ -69,42 +54,29 @@ arm:awardsXP a owl:DatatypeProperty ;
         rdfs:range   xsd:int ;
         rdfs:label   "XP awarded" .
 
-arm:hasNextCharacterSheet a owl:ObjectProperty ;
-        rdfs:domain  arm:CharacterSheet ;
-        rdfs:range   arm:CharacterSheet .
-arm:hasPrevCharacterSheet a owl:ObjectProperty ;
-        owl:inverseOf  arm:hasNextCharacterSheet .
 
-arm:AdvancementType a owl:Class ;
-     owl:oneOf ( arm:Exposure arm:Practice arm:Adventure arm:Training
-        arm:Teaching arm:Reading ) .
-arm:Exposure  rdfs:label  "Exposure" .
-arm:Practice  rdfs:label  "Practice" .
-arm:Adventure  rdfs:label  "Adventure" .
-arm:Training  rdfs:label  "Training" .
-arm:Teaching  rdfs:label  "Teaching" .
-arm:Reading  rdfs:label  "Reading" .
+arm:AdvancementType a owl:Class .
+arm:Exposure  rdfs:label  "Exposure" ; a arm:AdvancementType .
+arm:Practice  rdfs:label  "Practice" ; a arm:AdvancementType .
+arm:Adventure  rdfs:label  "Adventure" ; a arm:AdvancementType .
+arm:Training  rdfs:label  "Training" ; a arm:AdvancementType .
+arm:Teaching  rdfs:label  "Teaching" ; a arm:AdvancementType .
+arm:Reading  rdfs:label  "Reading" ; a arm:AdvancementType .
 
 # Trait Advancement
-# arm:TraitAdvancement a arm:LeafTraitClass .
+
 arm:advanceTrait a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:TraitAdvancement .
+        rdfs:range   arm:Trait .
 arm:traitClass a owl:ObjectProperty ;
-        rdfs:domain  arm:TraitAdvancement ;
+        rdfs:domain  arm:Trait ;
         rdfs:range   owl:Class ;
         rdfs:label   "Trait ID" .
 arm:traitClassString a owl:DatatypeProperty ;
-        rdfs:domain  arm:TraitAdvancement ;
+        rdfs:domain  arm:Trait ;
         rdfs:range   xsd:string ;
         rdfs:label   "Trait to Advance" .
-arm:advanceTrait a owl:ObjectProperty ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:Trait .
-arm:advancedFromTrait a owl:ObjectProperty ;
-        rdfs:comment "Reference to a previous trait instance from which this trait instance has been advanced." ;
-        rdfs:domain  arm:Trait ;
-        rdfs:range   arm:Trait .
+
 arm:addedXP a   owl:DatatypeProperty ;
         rdfs:comment  "XP added in the last advancement of the trait.  This is a bit of a hack, allowing the trait defined as an advancement to be reused as a trait in future character sheets.  Thus we do not depend on creating new nodes in the reasoner." ;
         rdfs:domain  arm:Trait ;
@@ -115,20 +87,3 @@ arm:hasSpentXP  a owl:DatatypeProperty ;
     rdfs:domain   arm:Advancement ;
     rdfs:range   xsd:int .
 
-# Possession Advancement
-## Alternatives
-## 1.  Chain modifications explicitely
-## 2.  Create classes even for unique possessions
-## 3.  Link to prototype
-## Requirements
-## 1.  Modify description
-## 2.  Change quantity
-## 3.  Add/Remove
-## Variations
-## 1.  Unique Items
-## 2.  Classed Items with Unique Description
-## 3.  Standard Items 
-## A.  Countable versus singleton
-## B.  Expendable versus durable
-#
-## NOTE.  Some items are entities in their own right.

@@ -1,0 +1,21 @@
+
+arm:advanceToCharacterSheet a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:CharacterSheet .
+arm:atSeasonTime a   owl:ObjectProperty ;
+        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
+                                             arm:CharacterAdvancement ) ] ;
+        rdfs:range   arm:SeasonTime .
+arm:atSeason a   owl:DatatypeProperty ;
+        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
+                                             arm:CharacterAdvancement ) ] ;
+        rdfs:range   xsd:string ;
+        rdfs:label   "Season" .
+arm:hasNextCharacterSheet a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterSheet ;
+        rdfs:range   arm:CharacterSheet .
+arm:hasPrevCharacterSheet a owl:ObjectProperty ;
+        owl:inverseOf  arm:hasNextCharacterSheet .
+arm:AdvancementType a owl:Class ;
+     owl:oneOf ( arm:Exposure arm:Practice arm:Adventure arm:Training
+        arm:Teaching arm:Reading ) .
