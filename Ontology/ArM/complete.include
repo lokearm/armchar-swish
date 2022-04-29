@@ -1,4 +1,7 @@
 
+arm:advanceFromCharacterSheet a owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:CharacterSheet .
 arm:advanceToCharacterSheet a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:CharacterSheet .

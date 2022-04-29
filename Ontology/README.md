@@ -34,6 +34,14 @@ Some properties are tricky to manage.  For instance, `arm:hasScore` is
 derived for XP based traits, editable for personality traits, and
 immutable for virtues and flaws.
 
+## Key Classes
+
+1.  Character (Metadata) - read/write
+2.  Character Sheet - read only
+    - with Trait including data inherited from class
+3.  Advancement - read/write
+    - with Trait with editable fields
+
 ## Possession Advancement
 
 + Alternatives

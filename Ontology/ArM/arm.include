@@ -141,3 +141,8 @@ arm:isCharacter a   owl:ObjectProperty ;
 arm:hasInitialSheet  a   owl:ObjectProperty ;
         rdfs:range    arm:CharacterSheet ;
         rdfs:domain   arm:BaseCharacter .
+
+arm:ViewProperty a rdf:Property .
+arm:EditableProperty rdfs:subClassOf arm:ViewProperty ;
+arm:ImmutableProperty a rdf:Property ;
+        rdfs:subClassOf arm:ViewProperty .

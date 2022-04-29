@@ -19,37 +19,34 @@ arm:hasAdvancementIndex  a owl:DatatypeProperty ;
         rdfs:label   "Sort index" ;
         rdfs:comment "The sort index is used to sort the different pre-game advancement stages in correct order.  Where several advancement periods exist with the same class and thus the same index, they need to have year and season to be sorted uniquely."  .
  
-arm:advanceCharacter a owl:ObjectProperty ;
+arm:advanceCharacter a owl:ObjectProperty, arm:ImmutableProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Character .
-arm:hasAdvancement a owl:ObjectProperty ;
+arm:hasAdvancement a owl:ObjectProperty, arm:ImmutableProperty ;
 	owl:inverseOf  arm:advanceCharacter  .
-arm:advanceFromCharacterSheet a owl:ObjectProperty ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:CharacterSheet .
-arm:hasAdvancementTypeString   a owl:DatatypeProperty ;
+arm:hasAdvancementTypeString   a owl:DatatypeProperty, arm:ViewProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:string ;
         rdfs:label   "Mode of Study" .
-arm:hasAdvancementType   a owl:ObjectProperty ;
+arm:hasAdvancementType   a owl:ObjectProperty, arm:EditableProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:AdvancementType ;
         rdfs:label   "Study Mode" .
-arm:inSeason a   owl:ObjectProperty ;
+arm:inSeason a   owl:ObjectProperty, arm:EditableProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
         rdfs:range   arm:Season .
-arm:inYear a   owl:DatatypeProperty ;
+arm:inYear a   owl:DatatypeProperty, arm:EditableProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
         rdfs:range   xsd:int ;
         rdfs:label   "Year" .
 
-arm:hasAdvancementDescription a owl:DatatypeProperty ;
+arm:hasAdvancementDescription a owl:DatatypeProperty, arm:EditableProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:string ;
         rdfs:label   "Description" .
-arm:awardsXP a owl:DatatypeProperty ;
+arm:awardsXP a owl:DatatypeProperty, arm:EditableProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:int ;
         rdfs:label   "XP awarded" .
@@ -65,25 +62,25 @@ arm:Reading  rdfs:label  "Reading" ; a arm:AdvancementType .
 
 # Trait Advancement
 
-arm:advanceTrait a owl:ObjectProperty ;
+arm:advanceTrait a owl:ObjectProperty, arm:EditableProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Trait .
-arm:traitClass a owl:ObjectProperty ;
+arm:traitClass a owl:ObjectProperty, arm:EditableProperty ;
         rdfs:domain  arm:Trait ;
         rdfs:range   owl:Class ;
         rdfs:label   "Trait ID" .
-arm:traitClassString a owl:DatatypeProperty ;
+arm:traitClassString a owl:DatatypeProperty, arm:ViewProperty ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:string ;
         rdfs:label   "Trait to Advance" .
 
-arm:addedXP a   owl:DatatypeProperty ;
+arm:addedXP a   owl:DatatypeProperty, arm:EditableProperty ;
         rdfs:comment  "XP added in the last advancement of the trait.  This is a bit of a hack, allowing the trait defined as an advancement to be reused as a trait in future character sheets.  Thus we do not depend on creating new nodes in the reasoner." ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int ;
         rdfs:label   "Added XP" .
 
-arm:hasSpentXP  a owl:DatatypeProperty ;
+arm:hasSpentXP  a owl:DatatypeProperty, arm:ViewProperty ;
     rdfs:domain   arm:Advancement ;
     rdfs:range   xsd:int .
 
