@@ -14,8 +14,10 @@ arm:IngameAdvancement  rdfs:subClassOf arm:CharacterAdvancement ;
    arm:hasAdvancementIndex  100 .
 
 arm:hasAdvancementIndex  a owl:DatatypeProperty ;
+        rdfs:domain   owl:Class ;
         rdfs:range   xsd:int ;
-        rdfs:label   "Sort index" .
+        rdfs:label   "Sort index" ;
+        rdfs:comment "The sort index is used to sort the different pre-game advancement stages in correct order.  Where several advancement periods exist with the same class and thus the same index, they need to have year and season to be sorted uniquely."  .
  
 arm:advanceCharacter a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
