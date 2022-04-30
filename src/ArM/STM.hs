@@ -8,6 +8,7 @@ import Network.URI (URI)
 
 import qualified ArM.CharacterMap as CM
 import qualified ArM.Character as C
+import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
 
 
@@ -34,39 +35,42 @@ lookup stateVar char season year = do
 getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 getResource g label = Nothing
 
-updateResource :: G.RDFGraph -> G.RDFLabel -> G.RDFGraph -> Maybe G.RDFGraph
-updateResource g label g1 
-          | Nothing == oldres = Nothing
-          | otherwise  = Just $ G.merge ( G.delete g $ fromJust oldres ) g1
-          where oldres =  getResource g label
 
-putGraph :: G.RDFGraph -> G.RDFLabel -> G.RDFGraph -> Maybe G.RDFGraph
-putGraph g label g1 
-          | Nothing == oldres = Just $ G.merge g g1
-          | otherwise  = Nothing
-          where oldres =  getResource g label
+putGraph :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> G.RDFGraph
+putGraph g g0 g1 = G.merge (G.delete g g0) g1
 
-putResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
-             -> IO (Maybe G.RDFGraph)
-putResource stateVar label newres =  do
+-- | Update the state graph with the given Advancement object.
+putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO G.RDFGraph
+putAdvancement stateVar adv = do 
+         STM.atomically $ do
+             st <- STM.readTVar stateVar
+             let g = graph st
+             let adv0 = TC.fromRDFGraph g label :: TC.Advancement
+             let g0 = TC.makeRDFGraph adv0
+             let gg = putGraph g g0 g1
+             STM.writeTVar stateVar $ st { graph = gg }
+             return gg
+          where g1 = TC.makeRDFGraph adv  -- Turn the new object into a graph
+                label = TC.rdfid adv
+
+putResource :: STM.TVar MapState -> G.RDFGraph -> G.RDFGraph
+             -> IO G.RDFGraph
+putResource stateVar oldres newres =  do
       STM.atomically $ do
           st <- STM.readTVar stateVar
           let g = graph st
-          case (updateResource g label newres) of
-             Nothing -> return Nothing
-             (Just gg) -> do
-                          STM.writeTVar stateVar $ st { graph = gg }
-                          return $ Just gg
+          STM.writeTVar stateVar $ st { graph = newres }
+          return $ newres
 
 
-postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
-             -> IO (Maybe G.RDFGraph)
-postResource stateVar label newres = do 
-      STM.atomically $ do
-          st <- STM.readTVar stateVar
-          let g = graph st
-          case (putGraph g label newres) of
-             Nothing -> return Nothing
-             (Just gg) -> do
-                          STM.writeTVar stateVar $ st { graph = gg }
-                          return $ Just gg
+-- postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
+             -- -> IO (Maybe G.RDFGraph)
+-- postResource stateVar label newres = do 
+      -- STM.atomically $ do
+          -- st <- STM.readTVar stateVar
+          -- let g = graph st
+          -- case (putGraph g label newres) of
+             -- Nothing -> return Nothing
+             -- (Just gg) -> do
+                          -- STM.writeTVar stateVar $ st { graph = gg }
+                          -- return $ Just gg

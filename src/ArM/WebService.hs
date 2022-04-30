@@ -134,18 +134,17 @@ stateScotty g schema res stateVar = do
         put "/adv/:char/:year/:season" $ do
           (char,year,season) <- getParam
           adv <- jsonData :: ActionM C.Advancement 
-          let ng = C.makeRDFGraph adv
-          let label = C.rdfid adv
-          newg <- liftIO $ putResource stateVar label ng
+          -- let ng = C.makeRDFGraph adv
+          -- let label = C.rdfid adv
+          -- newg <- liftIO $ putAdvancement stateVar label ng
           liftIO $ print adv
-          printGraph $ fromJust newg
+          -- printGraph $ fromJust newg
         put "/adv" $ do
           adv <- jsonData :: ActionM C.Advancement 
-          let ng = C.makeRDFGraph adv
           let label = C.rdfid adv
-          newg <- liftIO $ putResource stateVar label ng
+          newg <- liftIO $ putAdvancement stateVar adv
           liftIO $ print adv
-          printGraph $ fromJust newg
+          printGraph newg
 
 notfound404 = do status notFound404
                  text "404 Not Found."

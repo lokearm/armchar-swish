@@ -128,6 +128,7 @@ instance FromRDFGraph Advancement where
         where q = toRDFGraph . fromList $
                   [ arc label typeRes advancementType,
                     arc label (Var "property") (Var "value"),
+                    arc (Var "property") typeRes armViewProperty,
                     arc (Var "property") labelRes (Var "label") ]
               vb = Q.rdfQueryFind g q
               ys = map keypairFromBinding vb
