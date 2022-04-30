@@ -54,8 +54,8 @@ lookup stateVar char season year = do
              (Just x) -> return $ CM.lookup cmap charstring season year
                 where  cmap = CM.insertListS res CM.empty $ x
 
-getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
-getResource g label = Nothing
+-- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
+-- getResource g label = Nothing
 
 
 putGraph :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> G.RDFGraph
