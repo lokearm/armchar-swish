@@ -37,7 +37,8 @@ arm:hasAdvancementType   a owl:ObjectProperty, arm:PersistentProperty ;
 arm:inSeason a   owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
-        rdfs:range   arm:Season .
+        rdfs:range   arm:Season ;
+        rdfs:label   "Season" .
 arm:inYear a   owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
