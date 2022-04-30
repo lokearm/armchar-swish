@@ -56,7 +56,7 @@ getResource g label = Nothing
 
 
 putGraph :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> G.RDFGraph
-putGraph g g0 g1 = G.merge (G.delete g g0) g1
+putGraph g g0 g1 = G.merge (G.delete g0 g) g1
 
 -- | Update the state graph with the given Advancement object.
 putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO G.RDFGraph

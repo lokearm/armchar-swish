@@ -3,7 +3,7 @@
             "arm:advanceCharacter": {
                 "prefixedid": "armchar:cieran"
             },
-            "arm:awardsXP": 16,
+            "arm:awardsXP": 19,
             "arm:hasAdvancementDescription": "Studies Mentem L16 Q13 +3",
             "arm:hasAdvancementIndex": 100,
             "arm:hasAdvancementType": {
