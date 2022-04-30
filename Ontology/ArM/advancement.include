@@ -30,25 +30,25 @@ arm:hasAdvancementTypeString   a owl:DatatypeProperty, arm:ViewProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:string ;
         rdfs:label   "Mode of Study" .
-arm:hasAdvancementType   a owl:ObjectProperty, arm:EditableProperty ;
+arm:hasAdvancementType   a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:AdvancementType ;
         rdfs:label   "Study Mode" .
-arm:inSeason a   owl:ObjectProperty, arm:EditableProperty ;
+arm:inSeason a   owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
         rdfs:range   arm:Season .
-arm:inYear a   owl:DatatypeProperty, arm:EditableProperty ;
+arm:inYear a   owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
         rdfs:range   xsd:int ;
         rdfs:label   "Year" .
 
-arm:hasAdvancementDescription a owl:DatatypeProperty, arm:EditableProperty ;
+arm:hasAdvancementDescription a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:string ;
         rdfs:label   "Description" .
-arm:awardsXP a owl:DatatypeProperty, arm:EditableProperty ;
+arm:awardsXP a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:int ;
         rdfs:label   "XP awarded" .
@@ -64,10 +64,10 @@ arm:Reading  rdfs:label  "Reading" ; a arm:AdvancementType .
 
 # Trait Advancement
 
-arm:advanceTrait a owl:ObjectProperty, arm:EditableProperty ;
+arm:advanceTrait a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Trait .
-arm:traitClass a owl:ObjectProperty, arm:EditableProperty ;
+arm:traitClass a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  arm:Trait ;
         rdfs:range   owl:Class ;
         rdfs:label   "Trait ID" .
@@ -76,7 +76,7 @@ arm:traitClassString a owl:DatatypeProperty, arm:ViewProperty ;
         rdfs:range   xsd:string ;
         rdfs:label   "Trait to Advance" .
 
-arm:addedXP a   owl:DatatypeProperty, arm:EditableProperty ;
+arm:addedXP a   owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:comment  "XP added in the last advancement of the trait.  This is a bit of a hack, allowing the trait defined as an advancement to be reused as a trait in future character sheets.  Thus we do not depend on creating new nodes in the reasoner." ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int ;

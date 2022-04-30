@@ -35,7 +35,7 @@ arm:Confidence a arm:LeafTraitClass ; rdfs:label "Confidence" .
 arm:hasEffect a owl:DatatypeProperty ;
         rdfs:domain  [ owl:unionOf ( arm:warping arm:decrepitude ) ] ;
         rdfs:range   xsd:string .
-arm:hasPoints a owl:DatatypeProperty, arm:EditableProperty ;
+arm:hasPoints a owl:DatatypeProperty, arm:PeristentProperty ;
         rdfs:subPropertyOf arm:hasXP ;
         rdfs:domain arm:Confidence ;
         rdfs:range   xsd:int .
@@ -67,7 +67,7 @@ arm:MartialAbility rdfs:subClassOf arm:Ability .
 arm:SupernaturalAbility rdfs:subClassOf arm:Ability .
 
 arm:hasFixedScore  a   owl:DatatypeProperty, arm:TraitProperty,
-             arm:EditableProperty ;
+             arm:PeristentProperty ;
         rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int ;
@@ -85,15 +85,15 @@ arm:hasXP  a   owl:DatatypeProperty, arm:TraitProperty ;
 	rdfs:comment "XP towards next level" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
-arm:hasDetail  a   owl:DatatypeProperty, arm:TraitProperty, arm:EditableProperty ;
+arm:hasDetail  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:label   "Detail" ;
         rdfs:domain  [ owl:unionOf ( arm:Virtue arm:Flaw arm:Spell ) ] ;
         rdfs:range   xsd:string .
-arm:hasSpeciality  a   owl:DatatypeProperty, arm:TraitProperty, arm:EditableProperty ;
+arm:hasSpeciality  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:domain  [ owl:unionOf ( arm:Ability arm:Characteristic ) ] ;
         rdfs:range   xsd:string ;
         rdfs:label   "Speciality" .
-arm:hasType  a   owl:ObjectProperty, arm:TraitProperty, arm:EditableProperty ;
+arm:hasType  a   owl:ObjectProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:label  "Reputation Type" ;
         rdfs:domain  arm:Reputation ;
         rdfs:range   arm:ReputationType .
@@ -133,7 +133,7 @@ arm:hasReputation  rdfs:subPropertyOf   arm:hasTrait ;
 arm:hasSpell  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:Character ;
         rdfs:range   arm:Spell .
-arm:hasOrder  a   owl:DatatypeProperty, arm:TraitProperty, arm:EditableProperty ;
+arm:hasOrder  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:label  "Sort order" ;
         rdfs:comment  "This is used to sort traits for display purposes" ;
         rdfs:domain  [ owl:unionOf ( arm:Trait arm:LeafTraitClass ) ] ;

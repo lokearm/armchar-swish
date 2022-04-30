@@ -11,6 +11,10 @@ import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
 
+import ArM.Rules.Aux
+import ArM.Resources
+import Swish.RDF.Graph
+
 
 
 data MapState = MapState { graph :: G.RDFGraph,
@@ -25,7 +29,12 @@ getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
 getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
 getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
 getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
+
         
+persistRule = makeCRule "persistRule" 
+    [ arc sVar pVar cVar,
+      arc pVar typeRes armPersistentProperty ]
+    [ arc sVar pVar cVar ]
 
 lookup :: STM.TVar MapState -> String -> String -> Int 
        -> IO (Maybe CM.CharacterRecord)
@@ -60,9 +69,9 @@ putAdvancement stateVar adv = do
              let gg = putGraph g g0 g1
              STM.writeTVar stateVar $ st { graph = gg }
              return gg
-          where g1 = TC.makeRDFGraph adv  -- Turn the new object into a graph
+          where g1 = fwdApplySimple persistRule $ TC.makeRDFGraph adv
+                   -- Turn the new object into a graph
                 label = TC.rdfid adv
--- TODO
 -- g1 has to be pruned for derived properties
 -- Check that arm:advanceCharacter is retained in output
 -- Check for conflicting advancements 

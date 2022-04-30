@@ -143,6 +143,6 @@ arm:hasInitialSheet  a   owl:ObjectProperty ;
         rdfs:domain   arm:BaseCharacter .
 
 arm:ViewProperty a rdf:Property .
-arm:EditableProperty rdfs:subPropertyOf arm:ViewProperty .
+arm:PersistentProperty rdfs:subPropertyOf arm:ViewProperty .
 arm:ImmutableProperty a rdf:Property ;
-        rdfs:subPropertyOf arm:ViewProperty .
+        rdfs:subPropertyOf arm:PersistentProperty .
