@@ -97,13 +97,9 @@ armchar:elksrun  a arm:Covenant ;
    [ arm:traitClass armr:arealore-munster ; arm:hasSpeciality "Hiding places" ;
      arm:addedXP 5  ],
    [ arm:traitClass armr:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ],
-   [ arm:traitClass armr:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ;
-  arm:advanceFromCharacterSheet :zero ;
-  arm:advanceToCharacterSheet :early  .
+   [ arm:traitClass armr:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] .
 :lateradv arm:advanceCharacter armchar:cieran ;
   a arm:LaterLifeAdvancement ; 
-  arm:advanceFromCharacterSheet :early ;
-  arm:advanceToCharacterSheet :laterlife ;
   arm:advanceTrait 
       [ arm:traitClass armr:bargain ;  arm:addedXP 5  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
@@ -114,8 +110,6 @@ armchar:elksrun  a arm:Covenant ;
         arm:addedXP 5  ] .
 :apprenticeadv arm:advanceCharacter armchar:cieran ;
   a arm:ApprenticeshipAdvancement ; 
-  arm:advanceFromCharacterSheet :laterlife ;
-  arm:advanceToCharacterSheet :summer1217 ;
   arm:advanceTrait 
       [ arm:traitClass armr:creo ; arm:addedXP 21 ],
       [ arm:traitClass armr:intellego ; arm:addedXP 0 ],
@@ -162,22 +156,18 @@ armchar:elksrun  a arm:Covenant ;
 # In-game advancement
 :summer1217adv arm:advanceCharacter armchar:cieran ;
   a arm:IngameAdvancement ; 
-  arm:inSeason arm:Summer ;
   arm:atSeason "Summer" ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
   arm:advanceTrait [ arm:traitClass armr:herbam ; arm:addedXP 21 ]  ;
   arm:awardsXP 21 ;
-  arm:hasAdvancementType arm:Reading ;
-  arm:advanceToCharacterSheet :autumn1217 .
+  arm:hasAdvancementType arm:Reading .
 
 :autumn1217adv arm:advanceCharacter armchar:cieran ;
   a arm:IngameAdvancement ;
-  arm:inSeason arm:Autumn ;
   arm:atSeason "Autumn" ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
   arm:advanceTrait [ arm:traitClass armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
-  arm:hasAdvancementType arm:Reading ;
-  arm:advanceToCharacterSheet :winter1218 .
+  arm:hasAdvancementType arm:Reading .
