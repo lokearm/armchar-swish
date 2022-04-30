@@ -27,9 +27,8 @@ import Network.Wai.Middleware.Cors (simpleCors)
 import System.CPUTime
 import ArM.Time
 
-
-stateScotty ::  G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> STM.TVar MapState -> S.ScottyM ()
-stateScotty g schema res stateVar = do
+stateScotty ::  STM.TVar MapState -> S.ScottyM ()
+stateScotty stateVar = do
         middleware logStdoutDev
         middleware simpleCors
 
@@ -38,42 +37,52 @@ stateScotty g schema res stateVar = do
         get "/" $ do     
           text $ "Test a get call\n"
         get "/schema" $ do     
+          schema <- liftIO $ getSchemaGraph stateVar
           printGraph schema
         get "/res" $ do     
+          res <- liftIO $ getResourceGraph stateVar
           printGraph res
         get "/graph" $ do     
+          g <- liftIO $ getStateGraph stateVar
           printGraph  g
 
         -- Pre-defined character sheets
         get "/graph/gamestart/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
+          g <- liftIO $ getStateGraph stateVar
           graphif $ C.getGameStartCharacter g char 
         get "/gamestart/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
+          g <- liftIO $ getStateGraph stateVar
           jsonif $ C.getGameStartCharacter g char 
         get "/graph/initial/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
+          g <- liftIO $ getStateGraph stateVar
           graphif $ C.getInitialCS g char 
         get "/initial/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
+          g <- liftIO $ getStateGraph stateVar
           jsonif $ C.getInitialCS g char 
 
         -- Advancement lists
         get "/show/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
+          g <- liftIO $ getStateGraph stateVar
           text $ T.pack $ show $ C.getIngameAdvancements g char
         get "/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
+          g <- liftIO $ getStateGraph stateVar
           jsonif $ Just $ C.getIngameAdvancements g char
         get "/pregameadvancement/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
+          g <- liftIO $ getStateGraph stateVar
           jsonif $ Just $ C.getPregameAdvancements g char
 
         -- Character Sheet

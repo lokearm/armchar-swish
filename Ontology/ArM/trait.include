@@ -1,5 +1,5 @@
 arm:Trait a owl:Class .
-arm:TraitProperty a owl:Property ;
+arm:TraitProperty a owl:Property ; rdfs:subPropertyOf arm:ViewProperty ;
    rdfs:comment "These properties should be passed to the client for display."  .
 
 arm:isSpecialTrait a owl:ObjectProperty ;

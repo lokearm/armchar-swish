@@ -13,9 +13,19 @@ import qualified ArM.Resources as AR
 
 
 
-data MapState = MapState { graph :: G.RDFGraph, resourceGraph :: G.RDFGraph }
+data MapState = MapState { graph :: G.RDFGraph,
+                           schemaGraph :: G.RDFGraph,
+                           resourceGraph :: G.RDFGraph }
 
-getSTM res g char = STM.newTVarIO MapState { graph = g, resourceGraph = res  }
+getSTM res schema g char = STM.newTVarIO MapState { graph = g, schemaGraph = schema, resourceGraph = res  }
+
+getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
+getStateGraph st = fmap graph $ STM.readTVarIO st
+getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
+getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
+getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
+getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
+        
 
 lookup :: STM.TVar MapState -> String -> String -> Int 
        -> IO (Maybe CM.CharacterRecord)
@@ -52,6 +62,10 @@ putAdvancement stateVar adv = do
              return gg
           where g1 = TC.makeRDFGraph adv  -- Turn the new object into a graph
                 label = TC.rdfid adv
+-- TODO
+-- g1 has to be pruned for derived properties
+-- Check that arm:advanceCharacter is retained in output
+-- Check for conflicting advancements 
 
 putResource :: STM.TVar MapState -> G.RDFGraph -> G.RDFGraph
              -> IO G.RDFGraph

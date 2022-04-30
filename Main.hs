@@ -58,7 +58,7 @@ main = do
      -- let cl =  fromJust $ C.getAllCS g testCharacter
      -- let cmap = CM.insertListS res CM.empty $ cl
      -- let cmap = CM.insertList CM.empty $ cl
-     stateVar <- getSTM res g testCharacter
+     stateVar <- getSTM res schema (merge g schema) testCharacter
 
      -- print $ C.getGameStartCharacter g $ testCharacter
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
@@ -67,6 +67,6 @@ main = do
      printTime
 
      print "Starting Scotty"
-     S.scotty 3000 $ stateScotty g schema res stateVar
+     S.scotty 3000 $ stateScotty stateVar
 
         -- HA.middleware $ basicAuth authf "armchar"
