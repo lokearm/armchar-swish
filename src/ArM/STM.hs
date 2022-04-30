@@ -77,15 +77,6 @@ putAdvancement stateVar adv = do
           
 -- TODO: Check for conflicting advancements 
 
-putResource :: STM.TVar MapState -> G.RDFGraph -> G.RDFGraph
-             -> IO G.RDFGraph
-putResource stateVar oldres newres =  do
-      STM.atomically $ do
-          st <- STM.readTVar stateVar
-          let g = graph st
-          STM.writeTVar stateVar $ st { graph = newres }
-          return $ newres
-
 
 -- postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
              -- -> IO (Maybe G.RDFGraph)
