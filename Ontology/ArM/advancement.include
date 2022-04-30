@@ -21,7 +21,9 @@ arm:hasAdvancementIndex  a owl:DatatypeProperty ;
  
 arm:advanceCharacter a owl:ObjectProperty, arm:ImmutableProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:Character .
+        rdfs:range   arm:Character ;
+        rdfs:label   "Character to Advance" .
+
 arm:hasAdvancement a owl:ObjectProperty, arm:ImmutableProperty ;
 	owl:inverseOf  arm:advanceCharacter  .
 arm:hasAdvancementTypeString   a owl:DatatypeProperty, arm:ViewProperty ;
