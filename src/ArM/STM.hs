@@ -69,12 +69,12 @@ putAdvancement stateVar adv = do
              let g = graph st
              let schema = schemaGraph st
              let g1 = persistGraph $ merge schema $ TC.makeRDFGraph adv
-             let adv0 = TC.fromRDFGraph g label :: TC.Advancement
+             let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
              let g0 = TC.makeRDFGraph adv0
              let gg = putGraph g g0 g1
              STM.writeTVar stateVar $ st { graph = gg }
              return g1
-          where label = TC.rdfid adv
+          
 -- TODO: Check for conflicting advancements 
 
 putResource :: STM.TVar MapState -> G.RDFGraph -> G.RDFGraph

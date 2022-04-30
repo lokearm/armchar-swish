@@ -150,7 +150,6 @@ stateScotty stateVar = do
           -- printGraph $ fromJust newg
         put "/adv" $ do
           adv <- jsonData :: ActionM C.Advancement 
-          let label = C.rdfid adv
           newg <- liftIO $ putAdvancement stateVar adv
           liftIO $ print adv
           printGraph newg
