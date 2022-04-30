@@ -64,17 +64,15 @@ putAdvancement stateVar adv = do
          STM.atomically $ do
              st <- STM.readTVar stateVar
              let g = graph st
+             let schema = schemaGraph st
+             let g1 = fwdApplySimpleS schema persistRule $ TC.makeRDFGraph adv
              let adv0 = TC.fromRDFGraph g label :: TC.Advancement
              let g0 = TC.makeRDFGraph adv0
              let gg = putGraph g g0 g1
              STM.writeTVar stateVar $ st { graph = gg }
-             return gg
-          where g1 = fwdApplySimple persistRule $ TC.makeRDFGraph adv
-                   -- Turn the new object into a graph
-                label = TC.rdfid adv
--- g1 has to be pruned for derived properties
--- Check that arm:advanceCharacter is retained in output
--- Check for conflicting advancements 
+             return g1
+          where label = TC.rdfid adv
+-- TODO: Check for conflicting advancements 
 
 putResource :: STM.TVar MapState -> G.RDFGraph -> G.RDFGraph
              -> IO G.RDFGraph

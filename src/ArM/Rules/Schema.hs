@@ -25,19 +25,6 @@ import Swish.VarBinding (varBindingId)
 
 import Control.Parallel.Strategies
 
--- | Simple forward application of a rule
--- When this results in multiple graphs, this are added together
--- using 'addGraphs' (via 'foldGraphs')
-fwdApplySimpleS :: RDFGraph -> RDFRule ->  RDFGraph -> RDFGraph
-fwdApplySimpleS schema r cg = foldGraphs $ fwdApply r [schema,cg]
-
-fwdApplyListS :: RDFGraph -> [RDFRule] ->  RDFGraph -> RDFGraph
-fwdApplyListS schema rs g = foldl addGraphs g $ parMap rpar (`f` g) rs
-     where f = fwdApplySimpleS schema
-fwdApplyListSR :: RDFGraph -> [RDFRule] ->  RDFGraph -> RDFGraph
-fwdApplyListSR schema rs g = if (g' == g) then g'
-                     else fwdApplyListSR schema rs g'
-                     where g' = fwdApplyListS schema rs g
 
 -- prepareCS schema g = foldl addGraphs g $ fwdApplyMap rs gg
                  -- where gg = merge schema g
