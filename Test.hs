@@ -41,8 +41,11 @@ main = do
      let  adv :: Maybe Advancement
           adv = decode contents
      print adv
-     DTIO.putStrLn $ formatGraphAsText $ makeRDFGraph $ fromJust adv
+     let  advg = merge schema $ makeRDFGraph $ fromJust adv
+     DTIO.putStrLn $ formatGraphAsText $ advg
      print "persistGraph"
-     DTIO.putStrLn $ formatGraphAsText $ persistGraph $ makeRDFGraph $ fromJust adv
+     DTIO.putStrLn $ formatGraphAsText $ persistGraph $ advg
+     print "persistGraph'"
+     DTIO.putStrLn $ formatGraphAsText $ persistGraph' $ advg
      print "end"
 

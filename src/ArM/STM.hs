@@ -39,6 +39,12 @@ persistGraph g = foldGraphs $ Q.rdfQuerySubs vb tg
                        arc pVar typeRes armPersistentProperty ]
           tg = G.toRDFGraph $ fromList [ arc sVar pVar cVar ]
 
+persistRule = makeCRule "persistRule" 
+    [ arc sVar pVar cVar,
+      arc pVar typeRes armPersistentProperty ]
+    [ arc sVar pVar cVar ]
+persistGraph' g = fwdApplySimple persistRule g
+
 lookup :: STM.TVar MapState -> String -> String -> Int 
        -> IO (Maybe CM.CharacterRecord)
 lookup stateVar char season year = do
