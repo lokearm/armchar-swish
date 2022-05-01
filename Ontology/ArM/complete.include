@@ -5,14 +5,15 @@ arm:advanceFromCharacterSheet a owl:ObjectProperty ;
 arm:advanceToCharacterSheet a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:CharacterSheet .
+arm:inSeason a   owl:ObjectProperty, arm:PersistentProperty ;
+        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
+                                             arm:CharacterAdvancement ) ] ;
+        rdfs:range   arm:Season ;
+        rdfs:label   "Season" .
 arm:atSeasonTime a   owl:ObjectProperty ;
         rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
                                              arm:CharacterAdvancement ) ] ;
-        rdfs:range   arm:SeasonTime .
-arm:atSeason a   owl:DatatypeProperty ;
-        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
-                                             arm:CharacterAdvancement ) ] ;
-        rdfs:range   xsd:string ;
+        rdfs:range   arm:SeasonTime ;
         rdfs:label   "Season" .
 arm:hasNextCharacterSheet a owl:ObjectProperty ;
         rdfs:domain  arm:CharacterSheet ;
