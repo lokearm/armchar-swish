@@ -23,7 +23,7 @@ import qualified Data.ByteString.Lazy as BS
 import ArM.Load
 import ArM.Resources as AR
 import ArM.Character
-import ArM.Types.Character
+import ArM.Types.Character as TC
 import ArM.STM
 import ArM.JSON
 import Data.Aeson.Encode.Pretty
@@ -38,14 +38,31 @@ main = do
 
      (g,schema,res) <- getGraph AR.characterFile AR.armFile AR.resourceFile
      contents <- BS.readFile "Test/adv.json"
-     let  adv :: Maybe Advancement
-          adv = decode contents
-     print adv
-     let  advg = merge schema $ makeRDFGraph $ fromJust adv
+     let  adv' :: Maybe Advancement
+          adv' = decode contents
+     print adv'
+     let adv = fromJust adv'
+     let  advg0 = makeRDFGraph $ adv
+     let  advg = merge schema $ makeRDFGraph $ adv
+     DTIO.putStrLn $ formatGraphAsText $ advg0
+     print "New adventure as submitted"
      DTIO.putStrLn $ formatGraphAsText $ advg
      print "persistGraph"
      DTIO.putStrLn $ formatGraphAsText $ persistGraph $ advg
      print "persistGraph'"
      DTIO.putStrLn $ formatGraphAsText $ persistGraph' $ advg
      print "end"
+     let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
+     print adv0
+     let g0 = TC.makeRDFGraph adv0
+     print "Advancement graph extracted"
+     DTIO.putStrLn $ formatGraphAsText $ g0
+     let gg0 = delete g0 g
+     print "Graph after delete"
+     DTIO.putStrLn $ formatGraphAsText $ gg0
+     let gg1 = merge gg0 advg
+     print "New Graph"
+     DTIO.putStrLn $ formatGraphAsText $ gg1
+
+
 
