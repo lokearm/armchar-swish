@@ -5,7 +5,7 @@ module Main where
 
 import System.IO as IO
 import qualified Data.Text.IO as DTIO
--- import Data.Text.Lazy.IO as DTLIO
+import qualified Data.Text.Lazy.IO as DTLIO
 import Control.Monad
 import qualified Data.Text.Lazy as  T
 import Swish.RDF.Formatter.Turtle
@@ -14,11 +14,17 @@ import Data.Maybe
 import Data.Text (Text)
 import Control.Monad.IO.Class (liftIO)
 
+import Data.Text.Encoding
 import Network.URI
 import ArM.Resources
 
 
-import ArM.Character.Trait
+import qualified Data.ByteString.Lazy as BS
+import ArM.Load
+import ArM.Resources as AR
+import ArM.Character
+import ArM.Types.Character
+import ArM.STM
 import ArM.JSON
 import Data.Aeson.Encode.Pretty
 import Data.Aeson
@@ -30,20 +36,13 @@ s = "{\n     \"arm:hasDescription\": \"<p>You automatically master every spell t
 -- main :: IO ()
 main = do 
 
-     -- print "JSON Source"
-     -- print s
-     -- print "Decoded"
-     -- let dec = (decode s :: Maybe Trait)
-     -- print dec 
-     -- print "Reencoded"
-     -- let enc = encode dec
-     -- print enc
-     -- print "Redecoded"
-     -- print $ (decode enc :: Maybe Trait)
+     (g,schema,res) <- getGraph AR.characterFile AR.armFile AR.resourceFile
+     contents <- BS.readFile "Test/adv.json"
+     let  adv :: Maybe Advancement
+          adv = decode contents
+     print adv
+     DTIO.putStrLn $ formatGraphAsText $ makeRDFGraph $ fromJust adv
+     print "persistGraph"
+     DTIO.putStrLn $ formatGraphAsText $ persistGraph $ makeRDFGraph $ fromJust adv
+     print "end"
 
-     let l1 = toRDFLabel $ fromJust $ parseURI "https://hg.schaathun.net/armchar/character/cieran"
-     let l2 = armcharRes "cieran"
-
-     print l1
-     print l2
-     print $ l1 == l2
