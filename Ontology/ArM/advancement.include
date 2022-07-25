@@ -1,14 +1,16 @@
 
 # Character Advancement
 arm:CharacterAdvancement a owl:Class .
-arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:PregameAdvancement ;
+arm:BaseAdvancement rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasAdvancementIndex  10 .
-arm:LaterLifeAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasAdvancementIndex  20 .
-arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+arm:LaterLifeAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasAdvancementIndex  30 .
-arm:PGAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasAdvancementIndex  40 .
+arm:PGAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:hasAdvancementIndex  50 .
 arm:PregameAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
 arm:IngameAdvancement  rdfs:subClassOf arm:CharacterAdvancement ;
    arm:hasAdvancementIndex  100 .
@@ -35,13 +37,9 @@ arm:hasAdvancementType   a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:range   arm:AdvancementType ;
         rdfs:label   "Study Mode" .
 arm:atSeason a   owl:DatatypeProperty, arm:PersistentProperty ;
-        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
-                                             arm:CharacterAdvancement ) ] ;
         rdfs:range   xsd:string ;
         rdfs:label   "Season" .
 arm:inYear a   owl:DatatypeProperty, arm:PersistentProperty ;
-        rdfs:domain  [ owl:disjointUnionOf ( arm:CharacterSheet
-                                             arm:CharacterAdvancement ) ] ;
         rdfs:range   xsd:int ;
         rdfs:label   "Year" .
 
