@@ -24,7 +24,7 @@ data MapState = MapState { graph :: G.RDFGraph,
                            schemaGraph :: G.RDFGraph,
                            resourceGraph :: G.RDFGraph }
 
-getSTM res schema g char = STM.newTVarIO MapState { graph = g, schemaGraph = schema, resourceGraph = res  }
+getSTM res schema g = STM.newTVarIO MapState { graph = g, schemaGraph = schema, resourceGraph = res  }
 
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
 getStateGraph st = fmap graph $ STM.readTVarIO st

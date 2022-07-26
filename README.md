@@ -10,6 +10,7 @@ It has no real features.
 + [Update](Design/Update)
 + [Ontology](Ontology/README.md)
 + [Tests](Tests.md) showing current features of the web API
++ [Data Structure](DataStructure.md) 
 
 ## Testing
 
