@@ -23,7 +23,7 @@ armr:Shortbow a arm:WeaponClass ;
      arm:hasWeaponClassCost "Std." .
 
 armr:Dagger a arm:WeaponClass ;
-     rdfs:subClassOf arm:MeleeeWeapon ;
+     rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Dagger" ;
      arm:hasWeaponClassInit 0 ;
      arm:hasWeaponClassAtk +2 ;
@@ -33,7 +33,7 @@ armr:Dagger a arm:WeaponClass ;
      arm:hasWeaponClassLoad 0 ;
      arm:hasWeaponClassCost "Inexp." .
 armr:Knife a arm:WeaponClass ;
-     rdfs:subClassOf arm:MeleeeWeapon ;
+     rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Knife" ;
      arm:hasWeaponClassInit 0 ;
      arm:hasWeaponClassAtk +1 ;
@@ -44,7 +44,7 @@ armr:Knife a arm:WeaponClass ;
      arm:hasWeaponClassCost "Inexp." .
 
 armr:Clib a arm:WeaponClass ;
-     rdfs:subClassOf arm:MeleeeWeapon ;
+     rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Clib" ;
      arm:hasWeaponClassInit 1 ;
      arm:hasWeaponClassAtk +2 ;
@@ -54,7 +54,7 @@ armr:Clib a arm:WeaponClass ;
      arm:hasWeaponClassLoad 1 ;
      arm:hasWeaponClassCost "Inexp." .
 armr:Hatchet a arm:WeaponClass ;
-     rdfs:subClassOf arm:MeleeeWeapon ;
+     rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Hatchet" ;
      arm:hasWeaponClassInit 0 ;
      arm:hasWeaponClassAtk +3 ;
@@ -66,7 +66,7 @@ armr:Hatchet a arm:WeaponClass ;
 
 
 armr:Axe a arm:WeaponClass ;
-     rdfs:subClassOf arm:MeleeeWeapon ;
+     rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Axe" ;
      arm:hasWeaponClassInit 1 ;
      arm:hasWeaponClassAtk +4 ;
