@@ -39,6 +39,9 @@ raw resources ---------> res1 ------->merge -------> resourceGraph ->|
                                                graph <----------------
 ```
 
+**Error** It is `res`` and not `resourceGraph` which is merged into 
+the character graph.
+
 ### Notes
 
 + `prepareCS` makes only a few inferences to simplify future queries

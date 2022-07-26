@@ -7,4 +7,3 @@
 @prefix arm: <https://hg.schaathun.net/armchar/schema#> .
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
 @prefix armchar: <https://hg.schaathun.net/armchar/character/> .
-@prefix armpyramid: <https://hg.schaathun.net/armchar/pyramid#> .
