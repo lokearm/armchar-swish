@@ -13,6 +13,7 @@ import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
 
 import ArM.Rules.Aux
+import ArM.Rules (makeGraphs)
 import ArM.Resources
 import Swish.RDF.Graph
 
@@ -26,12 +27,26 @@ data MapState = MapState { graph :: G.RDFGraph,
 
 getSTM res schema g = STM.newTVarIO MapState { graph = g, schemaGraph = schema, resourceGraph = res  }
 
+rawTriple st = (graph st, schemaGraph st, resourceGraph st)
+graphTriple = makeGraphs . rawTriple 
+t1 (a,b,c) = a
+t2 (a,b,c) = b
+t3 (a,b,c) = c
+
+-- getGraph st = t1 . graphTriple
+
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
 getStateGraph st = fmap graph $ STM.readTVarIO st
 getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
 getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
 getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
 getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
+-- getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
+-- getStateGraph st = fmap ( t1 . graphTriple ) $ STM.readTVarIO st
+-- getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
+-- getSchemaGraph st = fmap ( t2 . graphTriple ) $ STM.readTVarIO st
+-- getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
+-- getResourceGraph st = fmap ( t3 . graphTriple ) $ STM.readTVarIO st
 
 persistGraph g = foldGraphs $ Q.rdfQuerySubs vb tg
     where vb = Q.rdfQueryFind qg g

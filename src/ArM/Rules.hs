@@ -24,6 +24,8 @@ import ArM.Rules.Aux
 import ArM.Rules.RDFS
 import qualified ArM.Rules.Schema as RS
 
+import Control.Parallel
+
 import qualified ArM.Rules.Resource as RR
 import qualified ArM.Rules.FullGraph as RG
 
@@ -89,3 +91,11 @@ prepareResources = RR.prepareResources . applyRDFS
 -- | Prepare a character sheet. 
 prepareRecord schema = RS.prepareCS schema 
                  . fwdApplyList [ traitclasstypeRule ]
+
+makeGraphs (c0,s0,res0) = s1 `par` res1 `par` res2 `par` c2 `pseq` ( c3, s1, res2 )
+    where c1 = prepareCharGraph c0
+          s1 = prepareSchema s0
+          res1 = prepareResources res0
+          c2 = prepareInitialCharacter $ merge s1 c1
+          c3 = prepareGraph $ merge res1 c2 
+          res2 = applyRDFS $ merge s1 res1
