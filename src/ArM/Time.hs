@@ -1,3 +1,17 @@
+{-# LANGUAGE OverloadedStrings #-}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Time
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- These auxiliary functions were made to log CPU usage, but it does
+-- not work very well due to Haskell's laziness.
+--
+-----------------------------------------------------------------------------
+
 module ArM.Time where
 import Numeric
 import System.CPUTime

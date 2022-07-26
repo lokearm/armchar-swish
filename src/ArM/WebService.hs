@@ -1,4 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.WebService
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- This defines the Web API using `Scotty`.  Every URL pattern has 
+-- to be defined in this file.
+--
+-----------------------------------------------------------------------------
 
 module ArM.WebService (stateScotty) where
 
