@@ -19,7 +19,8 @@ import Network.HTTP.Types
 
 import Control.Monad
 import qualified Data.Text.Lazy as  T
-import Swish.RDF.Formatter.Turtle (formatGraphAsText)
+import Data.Text.Lazy.Builder (toLazyText)
+import Swish.RDF.Formatter.Turtle (formatGraphAsText,formatGraphIndent)
 import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
 import Data.Maybe (fromJust)
@@ -218,4 +219,5 @@ graphif (Just x) = do
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
-printGraph = text . T.fromStrict . formatGraphAsText  
+-- printGraph = text . T.fromStrict . formatGraphAsText  
+printGraph = text . toLazyText .  formatGraphIndent "\n" True
