@@ -142,14 +142,14 @@ stateScotty stateVar = do
           text "This was a PUT request!"
         put "/adv/:char/:year/:season" $ do
           (char,year,season) <- getParam
-          adv <- jsonData :: ActionM C.Advancement 
+          adv <- jsonData :: S.ActionM C.Advancement 
           -- let ng = C.makeRDFGraph adv
           -- let label = C.rdfid adv
           -- newg <- liftIO $ putAdvancement stateVar label ng
           liftIO $ print adv
           -- printGraph $ fromJust newg
         put "/adv" $ do
-          adv <- jsonData :: ActionM C.Advancement 
+          adv <- jsonData :: S.ActionM C.Advancement 
           newg <- liftIO $ putAdvancement stateVar adv
           liftIO $ print adv
           printGraph newg

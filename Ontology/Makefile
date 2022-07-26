@@ -1,4 +1,4 @@
-TTL=arm.ttl resources.ttl contested.ttl cieran.ttl 
+TTL=arm.ttl resources.ttl contested.ttl 
 all: $(TTL)
 install: $(TTL)
 	cp $(TTL) ../serverdata/
@@ -9,11 +9,6 @@ L=Rules/logic.r Rules/advancement.r Rules/age.r Rules/castingscore.r Rules/trait
 arm.ttl: prefix.ttl $A
 	cat $^ > $@
 resources.ttl: prefix.ttl $R
-	cat $^ > $@
-
-cieran.ttl: prefix.ttl Character/cieran.include Character/advcieran.include 
-	cat $^ > $@
-logic.rules: prefix.ttl $L 
 	cat $^ > $@
 
 %.ttl: prefix.ttl %.include

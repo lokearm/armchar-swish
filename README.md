@@ -131,6 +131,29 @@ as far as I can tell:
     + ArM.Rules.Resource
     + ArM.Rules.Schema
 
+## TODO
+
+### Project 1.  Managing a single character
+
+1. Discuss Web API 
+2. Test and review
+3. Web Server - put advancement resource
+4. Generate documentation
+5. Spell String Rules
+6. Make LaTeX
+    1.  Pull metadata
+    2.  Pull Characteristics
+
+### Project 2.  Managing a covenant/saga
+
+1.  Library resources
+    - link books to advancements
+    - check for conflicts
+2.  Joint advancement log (view)
+3.  Other shared resources
+4.  Finances
+    - low maintenance covenfolk
+
 ## References
 
 + [STM](https://gilmi.me/blog/post/2020/12/05/scotty-bulletin-board#logging-sessions-cookies-authentication-etc.)  tutorial

@@ -63,8 +63,8 @@ initialsheetRule = makeCRule "initialsheetRule"
 
 -- | Initial inferences on the character data, to be applied without
 -- the schema
-prepareCS :: RDFGraph -> RDFGraph
-prepareCS = fwdApplyList [ initialsheetRule, traitclasstypeRule ]
+prepareCharGraph :: RDFGraph -> RDFGraph
+prepareCharGraph = fwdApplyList [ initialsheetRule, traitclasstypeRule ]
 
 -- | Make all necessary inferences before retrieving character data
 prepareInitialCharacter :: RDFGraph -> RDFGraph
