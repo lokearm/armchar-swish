@@ -21,4 +21,11 @@ title: Data Structure
 + `prepareRecord` when the CharacterMap is created
 + graphs as augmented and merged when loaded in `ArM.Load.getGraph`
 
+== Derivation of the CharacterSheet
 
++ `getAllCS`
+    + using `graph` from STM
+    + `getGameStartCharacter`
+    + `getIngameAdvancements`
+        + requires type derivation
+    + `advanceCharacter`
