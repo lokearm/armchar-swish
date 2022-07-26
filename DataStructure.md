@@ -28,7 +28,7 @@ title: Data Structure
     - `prepareInitialCharacter $ merge schemaGraph characterGraph'`
 
 
-== Derivation of the CharacterSheet
+## Derivation of the CharacterSheet
 
 + `getAllCS`
     + using `graph` from STM

@@ -46,9 +46,9 @@ traitclassRule = makeCRule "traitclassRule"
     [ arc sVar (Res $ makeSN "traitClass") cVar,
       arc cVar (Res $ makeSN "hasLabel") oVar ]
     [ arc sVar (Res $ makeSN "traitClassString") oVar ]
-traitclasstypeRule = makeRule "traitclasstypeRule" 
-       "?s <https://hg.schaathun.net/armchar/schema#traitClass> ?t . "
-       "?s rdf:type ?t . "
+traitclasstypeRule = makeCRule "traitclasstypeRule" 
+       [ arc sVar ( Res $ makeSN "traitClass" ) tVar ]
+       [ arc sVar typeRes tVar ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule = makeCRule "advancementindexRule" 
@@ -86,5 +86,6 @@ prepareGraph = RG.prepareGraph . applyRDFS
 prepareResources = RR.prepareResources . applyRDFS
                  . fwdApplyList [ traitclasstypeRule ]
 
+-- | Prepare a character sheet. 
 prepareRecord schema = RS.prepareCS schema 
                  . fwdApplyList [ traitclasstypeRule ]
