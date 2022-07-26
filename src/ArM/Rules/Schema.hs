@@ -37,6 +37,7 @@ copyRules = [ makeCRule "cp1" [arc pVar labelRes oVar]
                                [arc pVar labelRes oVar]
              ]
 traitRules = traitRules1 ++ traitRules2
+-- | Rules to infer subproperties of arm:hasTrait
 traitRules1 = map mkr [ "Ability"
                      , "Virtue"
                      , "Flaw"
@@ -49,6 +50,7 @@ traitRules1 = map mkr [ "Ability"
     where mkr s = mkr' ("has" ++ s ++ "Rule")
                        (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
           mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs1 t p
+-- | Rules to infer arm:hasTrait from subproperties
 traitRules2 = map mkr [ "Ability"
                      , "Virtue"
                      , "Flaw"
