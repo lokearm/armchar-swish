@@ -30,9 +30,10 @@ import qualified ArM.Rules.FullGraph as RG
 -- Initial Character Rules
 
 -- | Infer character sheet properties from character properties
-csRule = makeRule "csRule" 
-    "?cs <https://hg.schaathun.net/armchar/schema#isCharacter> ?c . ?c ?p ?o ."
-    "?cs ?p ?o ."
+csRule = makeCRule "csRule" 
+    [ arc csVar isCharacterLabel cVar,
+      arc cVar pVar oVar ]
+    [ arc csVar pVar oVar ]
 
 -- | Infer a string representation of the Advancement Type
 -- (Reading, Practice, Exposure, etc.)
@@ -57,7 +58,7 @@ advancementindexRule = makeCRule "advancementindexRule"
 -- | Add indices used for sorting advancements
 initialsheetRule = makeCRule "initialsheetRule" 
     [ arc cVar  (Res $ makeSN "hasInitialSheet") sVar ]
-    [ arc sVar (Res $ makeSN "isCharacter") cVar,
+    [ arc sVar isCharacterLabel cVar,
       arc sVar typeRes (Res $ makeSN "CharacterSheet") ]
 
 -- | Initial inferences on the character data, to be applied without

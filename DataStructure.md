@@ -20,6 +20,13 @@ title: Data Structure
 
 + `prepareRecord` when the CharacterMap is created
 + graphs as augmented and merged when loaded in `ArM.Load.getGraph`
+    - `prepareSchema` on schemaGraph
+    - `prepareResources` on resourceGraph
+    - reseources is merged from resourceGraph and schemaGraph
+    - `applyRDFS` on resources
+    - `prepareCS` on character
+    - `prepareInitialCharacter $ merge schemaGraph characterGraph'`
+
 
 == Derivation of the CharacterSheet
 

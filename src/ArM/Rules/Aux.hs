@@ -74,6 +74,7 @@ tVar = (Var "t")
 oVar = (Var "o")
 pVar = (Var "p")
 cVar = (Var "c")
+csVar = (Var "cs")
 
 atRes = Res $ makeSN "advanceTrait" 
 gtRes = Res $ makeSN "grantsTrait" 
