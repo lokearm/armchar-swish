@@ -12,9 +12,9 @@
 
 module ArM.Rules.Aux where
 
-import Swish.RDF.Ruleset
-import Swish.Rule
-import Swish.RDF.Graph
+import Swish.RDF.Ruleset as SRR
+import Swish.Rule as SR
+import Swish.RDF.Graph as SRG
 import Swish.RDF.Vocabulary.RDF
 
 import Data.Set (fromList)
@@ -28,14 +28,14 @@ import Control.Parallel.Strategies
 
 
 -- | Simple forward application of a rule
--- When this results in multiple graphs, this are added together
+-- When this results in multiple graphs, these are added together
 -- usign 'addGraphs' (via 'foldGraphs')
 fwdApplySimple :: RDFRule ->  RDFGraph -> RDFGraph
-fwdApplySimple r c = foldGraphs $ fwdApply r [c]
+fwdApplySimple r c = foldGraphs $ SR.fwdApply r [c]
 
 -- | Add together a list of graphs.
 -- This is a fold with 'addGraphs' and hence it assumes that
--- blind nodes are shared between the graphs.  This is the case
+-- blank nodes are shared between the graphs.  This is the case
 -- when the graphs are the result of rule applications to the same
 -- base graph.
 foldGraphs :: [RDFGraph] -> RDFGraph
@@ -91,17 +91,3 @@ makeCRule s l1 l2 = makeRDFClosureRule ( makeSN s )
             [listToRDFGraph  l1]
             (listToRDFGraph  l2)
             varBindingId
-
--- | Simple forward application of a rule
--- When this results in multiple graphs, this are added together
--- using 'addGraphs' (via 'foldGraphs')
-fwdApplySimpleS :: RDFGraph -> RDFRule ->  RDFGraph -> RDFGraph
-fwdApplySimpleS schema r cg = foldGraphs $ fwdApply r [schema,cg]
-
-fwdApplyListS :: RDFGraph -> [RDFRule] ->  RDFGraph -> RDFGraph
-fwdApplyListS schema rs g = foldl addGraphs g $ parMap rpar (`f` g) rs
-     where f = fwdApplySimpleS schema
-fwdApplyListSR :: RDFGraph -> [RDFRule] ->  RDFGraph -> RDFGraph
-fwdApplyListSR schema rs g = if (g' == g) then g'
-                     else fwdApplyListSR schema rs g'
-                     where g' = fwdApplyListS schema rs g

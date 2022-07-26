@@ -29,13 +29,10 @@ import Control.Parallel.Strategies
 -- prepareCS schema g = foldl addGraphs g $ fwdApplyMap rs gg
                  -- where gg = merge schema g
                        -- rs = copyRules  ++ traitRules  ++ rdfstypeRules
-prepareCS schema = fwdApplyListS schema copyRules 
-                 . fwdApplyListS schema traitRules 
-                 . fwdApplyListS schema rdfstypeRules
+prepareCS schema = fwdApplyList traitRules 
+                 . fwdApplyList rdfstypeRules
+                 . merge schema
 
-copyRules = [ makeCRule "cp1" [arc pVar labelRes oVar]
-                               [arc pVar labelRes oVar]
-             ]
 traitRules = traitRules1 ++ traitRules2
 -- | Rules to infer subproperties of arm:hasTrait
 traitRules1 = map mkr [ "Ability"

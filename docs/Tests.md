@@ -24,7 +24,13 @@ http get :3000/characteristic/cieran/1217/Summer
 
 # GET graph calls
 
-To view the complete graph: `http get :3000/graph`
+To view the graphs as stored in STM 
+
+```sh
+http get :3000/graph
+http get :3000/schema
+http get :3000/res
+```
 
 To get an individual character before in-game advancement.
 
