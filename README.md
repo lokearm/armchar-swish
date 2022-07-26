@@ -7,10 +7,10 @@ It has no real features.
 
 ## Design notes
 
-+ [Update](Design/Update)
++ [Design Notes](docs/DesignNotes)
 + [Ontology](Ontology/README.md)
-+ [Tests](Tests.md) showing current features of the web API
-+ [Data Structure](DataStructure.md) 
++ [Tests](docs/Tests.md) showing current features of the web API
++ [Data Structure](docs/DataStructure.md) 
 
 ## Testing
 
@@ -91,112 +91,6 @@ as far as I can tell:
 + No noValue clause
     - However, the noValue clause makes the reasoner expensive.
     - Coding the inference without noValue is more efficient.
-
-
-## Graph Processing
-
-The following diagram shows the preparation of the graph in 
-the `Load` module.
-The arrow labels are function names.
-The «raw» data objects correspond to files.
-Many of the transformations are not fully implemented yet, but
-the main principles have been demonstrated.
-
-```
-               prepareCS
-raw character  --------> preliminary graph --
-                                            |
-           prepareSchema                    |
-raw schema ------------> schema graph ------| merge
-                                            |
-                    prepareInitialCharacter |
-                                            v
-raw resources                            Character Graph
-    |                  merge                |
-    -----------------------------------------
-    prepareResources     |
-                         | prepareGraph
-                         v
-          cgraph (initial graph from ArM.Load.getGraph)
-                         |
-                         | advanceCharacter
-                         v
-                 character sheet per season
-  (separate graph - not merged in with the schema and resources)
-                         |
-                         | schemaReasoner
-                         v
-                 character sheet for client queries
-```
-
-+ `prepareCS` makes only a few inferences to simplify future queries
-+ `prepareSchema` does subclass inference and similar rules
-+ `prepareInitialCharacter` makes the CharacterSheet from the Character
-    - character inherit data from covenant or saga
-+ `prepareGraph` copies data from the resource graph to make generic
-  descriptions available directly in the character sheet
-    - trait inherit description from class
-+ `advanceCharacter` does not currently use `RDFGraph`.
-    - The character sheets are generated an internal Haskell type
-    - We consider putting the character sheet back into the graph. 
-    - Doing the reasoning on the graph is too costly in this case
-+ `schemaReasoner` closes the graph under RDFS subClassOf and
-  subPropertyOf relations.  It also deduces subproperties of hasTrait,
-  by using the class of the object.  **not tested**
-
-### Graphs and Data Types in use
-
-1.  Character as Loaded from File
-    - Base Character
-    - Initial Character Sheet
-    - Advancement per Season
-2.  Supporting Ontologies (separate files)
-    -  Resources
-    -  ArM Schema (mainly for use with OWL/RDFS reasoners)
-4.  `cgraph` : Derived Character Sheet with implied traits
-    - this is created by `prepareGraph` and then loaded
-      into a CharacterSheet type
-5.  Internal Data Types are loaded from `cgraph` 
-    - CharacterSheet
-    - Advancement
-    - Trait (only as subsidiaries to CharacterSheet and Advancement)
-6.  `CharacterRecord` Derived Character Sheet per Season
-    - map `CharacterSheet -> Advancement -> CharacterSheet`
-    - this is easily applied with `foldl`
-    - The resulting CharacterSheet is converted to RDFGraph
-      and wrapped as `CharacterRecord`
-    - Stored in a `CharacterMap`
-    - schema and resources are not included in this graph
-7.  Complete CharacterSheet for Display
-    - Before display, a reasoner is needed to add properties
-      used by the query.
-    - An RDF reasoner uses type relations to sort different
-      types of traits to make display processing simple
-
-## TODO
-
-### Project 1.  Managing a single character
-
-1. Discuss Web API 
-2. Test and review
-3. Web Server - put advancement resource
-4. Generate documentation
-5. Spell String Rules
-6. Make LaTeX
-    1.  Pull metadata
-    2.  Pull Characteristics
-
-### Project 2.  Managing a covenant/saga
-
-1.  Library resources
-    - link books to advancements
-    - check for conflicts
-2.  Joint advancement log (view)
-3.  Other shared resources
-4.  Finances
-    - low maintenance covenfolk
-
-
 
 ## Overview
 
