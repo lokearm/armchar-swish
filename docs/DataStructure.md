@@ -44,7 +44,7 @@ the character graph.
 
 ### Notes
 
-+ `prepareCS` makes only a few inferences to simplify future queries
++ `prepareCharGraph` makes only a few inferences to simplify future queries
 + `prepareSchema` does subclass inference and similar rules
 + `prepareInitialCharacter` makes the CharacterSheet from the Character
     - character inherit data from covenant or saga
