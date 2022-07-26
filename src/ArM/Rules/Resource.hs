@@ -26,11 +26,10 @@ prepareResources = fwdApplyList [ vfpRule, vfpMajorRule, vfabRule ]
                  . fwdApplyListR [ vfvRule, vffRule ]
 
 traitclass = Var "traitclass"
-grants = gtRes
 trait = Var "trait"
 score = Res $ makeSN "hasScore"
 
-grantarc = arc traitclass grants trait
+grantarc = arc traitclass gtRes trait
 
 vfpRule = makeCRule "vfpRule" [grantarc, vfp2, vfp3] [vfpT]
 vfpMajorRule = makeCRule "vfpMajorRule" [grantarc, vfp2bis, vfp3] [vfpTbis]

@@ -38,15 +38,19 @@ readGraph fn = do
 -- Note: the third graph `res` has merged the schema and the resource
 -- graph.  This is not reflected in the diagram.
 getGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
-getGraph characterFile armFile resourceFile = do
+getGraph f1 f2 f3 = fmap makeGraph $ getRawGraph f1 f2 f3
+getRawGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
+getRawGraph characterFile armFile resourceFile = do
         c0 <- readGraph characterFile 
-        let c1 = prepareCharGraph c0
         s0 <- readGraph armFile 
-        let s1 = prepareSchema s0
         res0 <- readGraph resourceFile 
-        let res1 = prepareResources res0
-        let c2 = prepareInitialCharacter $ merge s1 c1
-        let c3 = prepareGraph $ merge res1 c2 
-        let res2 = applyRDFS $ merge s1 res1
-        return $ s1 `par` res1 `par` res2 `par` c2 `pseq` ( c3, s1, res2 )
+        return (c0,s0,res0)
+
+makeGraph (c0,s0,res0) = s1 `par` res1 `par` res2 `par` c2 `pseq` ( c3, s1, res2 )
+    where c1 = prepareCharGraph c0
+          s1 = prepareSchema s0
+          res1 = prepareResources res0
+          c2 = prepareInitialCharacter $ merge s1 c1
+          c3 = prepareGraph $ merge res1 c2 
+          res2 = applyRDFS $ merge s1 res1
 
