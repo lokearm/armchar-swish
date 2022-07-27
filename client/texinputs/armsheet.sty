@@ -1,0 +1,199 @@
+% armsheet.sty
+% (C) 1998: Hans Georg Schaathun <georg@ii.uib.no>
+% Style file for the armsheet document class.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{armsheet}[1998/04/21 v$Revision$ ArM Character Sheet]
+\RequirePackage{graphicx} %epsfig}
+
+\newif\ifroman\romanfalse
+\DeclareOption{roman}{\romantrue}
+\DeclareOption{dvips}{\PassOptionsToPackage{dvips}{color}}
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{color}}
+\ProcessOptions
+
+\RequirePackage{color}
+
+\definecolor{gray}{gray}{0.6}
+\definecolor{ltgray}{gray}{0.7}
+\definecolor{dkgray}{gray}{0.4}
+
+\newsavebox{\hgcsavebox}
+\newenvironment{graybox}{%
+  \begin{cbox}{gray}
+}{%
+  \end{cbox}
+}
+\newenvironment{mcbox}[3]{%
+  \begin{lrbox}{\hgcsavebox}
+  \gdef\HGB@saveboxcolor{#1}
+  \gdef\HGB@saveboxfcolor{#2}
+  \color{#3}
+  \begin{minipage}%
+}{%
+  \end{minipage}
+  \end{lrbox}
+  \noindent
+  \fcolorbox{\HGB@saveboxfcolor}{\HGB@saveboxcolor}{\usebox{\hgcsavebox}}
+}
+\newenvironment{cbox}[1]{%
+  \begin{mcbox}{#1}{black}{black}
+}{%
+  \end{mcbox}
+}
+
+%
+% Lines, boxes and tables
+%
+
+\newcommand{\snumbox}[1][]{\framebox[18pt]{\rule[0ex]{0pt}{1.5ex}#1}}
+\newcommand{\numbox}[1][]{\framebox[32pt]{\rule[-0.5ex]{0pt}{2.5ex}#1}}
+\newcommand{\NumBox}[1][]{\framebox[4.5pc]{\rule[-1ex]{0pt}{4ex}#1}}
+\newcommand{\square}[1][]{\framebox[24pt]{\rule{0pt}{24pt}#1}}
+%%% \newcommand{\xpbox}[1][]{\framebox[32pt]{\rule{-0.25pt}{1.75ex}#1}}
+\let\xpbox=\numbox
+\let\visbox=\numbox
+\def\artboxes#1{
+  \smallbox[\csname art#1\endcsname]\
+  \xpbox[\csname xp#1\endcsname]\
+  \numbox[\csname vis#1\endcsname]
+}
+
+\def\smallbox{\numbox}
+\def\hugebox{\NumBox}
+\def\HugeBox{\framebox[4.5pc]{\rule{0pt}{2pc}}}
+\DeclareRobustCommand{\Line}[1][100pt]{\rule[-2pt]{#1}{1pt}}
+\def\fillRule{\leaders\hrule depth1.5pt height-0.5pt\hfill}
+
+%
+% Words and Titles for Ars Magica
+%
+
+\def\arm{Ar\s\ Magica}
+\def\ConfType{Confidence}
+
+%
+% Layout definitions
+%
+
+\pagestyle{empty}
+\parindent 0pt
+\parsep 0pt
+\arrayrulewidth 1pt
+\fboxrule 1pt
+
+%
+% Page Format
+%
+
+\topmargin -0.5in
+\headheight 0pt
+\headsep 0pt
+\topskip 0pt
+\footskip 0pt
+\evensidemargin -0.5in
+\oddsidemargin -0.5in
+\textwidth 7.5in
+\textheight 10.6in
+
+%
+% More characters for gothic fonts
+%
+
+\def\e{{\fontfamily{cmr}\fontseries{m}\selectfont =}}
+\def\p{{\fontfamily{cmr}\fontseries{m}\selectfont +}}
+\def\m{{\fontfamily{cmr}\fontseries{m}\selectfont -}}
+\def\lb{{\fontfamily{cmr}\fontseries{m}\selectfont [}}
+\def\rb{{\fontfamily{cmr}\fontseries{m}\selectfont ]}}
+\def\a{{\fontfamily{cmr}\fontseries{m}\fontshape{it}\selectfont \&}}
+
+%
+% Font Definitions
+%
+
+\def\minorheading{\fontsize{17}{20.736pt}\selectfont}
+\def\bigger{\fontsize{14}{16pt}\selectfont}
+\def\usual{\fontsize{12}{16pt}\selectfont}
+\def\smaller{\fontsize{10}{12pt}\selectfont}
+\def\smalltight{\fontsize{10}{11pt}\selectfont}
+\def\realsmall{\fontsize{10}{10pt}\selectfont}
+
+\def\FrakChar{%
+  \def\ae{ae}%
+  \def\o{\symbol{154}}%
+  \def\aa{\symbol{137}}%
+  \def\AE{Ae}%
+  \def\O{O}%
+  \def\AA{Aa}%
+  % Accents
+  \def\'##1{{\accent"27 ##1}}
+  % These should be replaced by proper ligatures.
+  \def\s{s:\kern 0pt}%
+  \def\ss{s\kern 0pt\s}
+}
+\def\GothChar{%
+  \def\ae{\symbol{26}}%
+  \def\o{\symbol{28}}%
+  % \def\aa{aa}%
+  \def\aa{\accent"27 a}%
+  \def\AE{Ae}%
+  \def\O{\accent"27 O}%
+  \def\AA{Aa}%
+  % Accents
+  \def\'##1{{\accent"27 ##1}}
+  % These should be replaced by proper ligatures.
+  \def\s{s:\kern 0pt}%
+  \def\ss{s\kern 0pt\s}
+}
+  \def\s{s}%
+  \def\ss{ss}
+
+\RequirePackage{oldgerm}
+\ifroman
+  \def\hand#1{\textit{\footnotesize #1}}
+  \def\handfamily{\itshape\footnotesize}
+  \let\print\textrm
+  \let\printfamily\rmfamily
+\else
+  \newcommand{\hand}[1]{\textfrak{\FrakChar #1}}
+  \def\handfamily{\frakfamily\FrakChar}
+  \def\print{\textgoth}
+  \def\printfamily{\gothfamily\GothChar}
+\fi
+%%\fontshape{n}\fontfamily{cmr}\fontseries{m} % Roman ignore overfull hbox's
+%%\fontshape{n}\fontfamily{cmss}\fontseries{sbc} % Sans serif bold(sc)
+
+\def\pageheader#1{\begin{center}\fontsize{25}{30pt}\selectfont #1\end{center}}
+\def\frontheader#1{{\fontsize{25}{30pt}\selectfont #1}}
+
+%
+% Boxes et al
+%
+
+\def\secsep{
+  \vspace{6pt}
+  \hrule height1pt
+  \vspace{6pt}
+}
+
+%
+% Miscellaneous defaults
+%
+
+\thicklines
+\ifroman\else
+   \printfamily\GothChar\usual
+\fi
+
+%
+% Accents 
+%
+% Choose the appropriate definition of \' depending on your font
+% choice.  Computer Modern fonts don't require \' to be redefined, but
+% the Gothic fonts require a new defintion.  Those of you who don't
+% want accents can redefine it to eliminate the accents.
+%
+\def\'#1{{\accent"27 #1}} %% required change for gothic font
+% \def\'#1{#1} %% use this if you don't want any accents
+
+\endinput

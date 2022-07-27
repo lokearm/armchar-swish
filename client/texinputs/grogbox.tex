@@ -1,0 +1,183 @@
+\input{boxdef}
+
+% Personality traits
+
+\newsavebox{\grogpbox}
+\begin{boxpage}{\grogpbox}{18pc}
+  Personality Trait\s\\[6pt]
+  \begin{minipage}{0.47\textwidth}
+    \hbox to\hsize{\Ptable(1)} \vspace{2pt}
+    \hbox to\hsize{\Ptable(3)} \vspace{2pt}
+    \hbox to\hsize{\Ptable(5)}
+  \end{minipage}
+  \enspace
+  \begin{minipage}{0.47\textwidth}
+    \hbox to\hsize{\Ptable(2)} \vspace{2pt}
+    \hbox to\hsize{\Ptable(4)} \vspace{2pt}
+    \hbox to\hsize{\Ptable(6)}
+  \end{minipage}
+\end{boxpage}
+
+% Statbox
+
+\newsavebox{\grogstatbox}
+\begin{lrbox}{\grogstatbox}
+\begin{minipage}{18pc}
+\begin{center}
+  \vspace{6pt}
+  \begin{tabular}{rcl}
+    Intelligence&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\
+    Perception&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\[1ex]
+    Strength&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\
+    Stamina&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\[1ex]
+    Presence&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\
+    Communication&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\[1ex]
+    Dexterity&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\
+    Quickne\s \s&\lb\rule{64pt}{1pt}\rb&\rule{30pt}{1pt}\\
+    &\smaller Specialty&\\
+  \end{tabular}
+\end{center}
+\end{minipage}
+\end{lrbox}
+
+\newsavebox{\sstatbox}
+\begin{lrbox}{\sstatbox}
+\iffourth
+\begin{minipage}{\linewidth}
+\begin{center}
+\vspace{6pt}
+  \begin{tabular}{%
+    >{\printfamily}r>{\handfamily}l>{\printfamily}r>{\handfamily}l%
+    >{\printfamily}r>{\handfamily}l>{\printfamily}r>{\handfamily}l%
+    >{\printfamily}r>{\handfamily}l}
+    Intelligence & \intscore &
+    Stamina      & \stascore &
+    Presence     & \prescore &
+    Dexterity    & \dexscore &
+    Confidence   & \Theconf \\
+
+    Perception   & \perscore &
+    Strength     & \strscore &
+    Communication& \comscore &
+    Quickne\s \s & \quiscore &
+    Confidence   & \Thecconf 
+  \end{tabular}
+\end{center}
+\end{minipage}
+\else
+\begin{minipage}{0.5\linewidth}
+\begin{center}
+\vspace{6pt}
+  \begin{tabular}{%
+    >{\printfamily}r>{\handfamily}l>{\printfamily}r>{\handfamily}l%
+     >{\printfamily}r>{\handfamily}l>{\printfamily}r>{\handfamily}l}
+    Int & \intscore &
+    Sta      & \stascore &
+    Pre     & \prescore &
+    Dex    & \dexscore \\
+
+    Per   & \perscore &
+    Str     & \strscore &
+    Com & \comscore &
+    Qik & \quiscore 
+  \end{tabular}
+\end{center}
+\end{minipage}
+\fi
+\end{lrbox}
+
+% Combatbox
+
+\begin{lrbox}{\combatbox}
+\begin{minipage}{\linewidth}
+\begin{center}
+\usebox{\ctstats}
+%%% \begin{minipage}{0.55\linewidth}
+%%% \begin{tabular}{l|c|c|c|c|c|c|c|}
+%%%   Weapon&Init&Atk&Def&Dam&Rng&Spc&Str\\ \hline
+%%%   \hand{Brawl} &&&&&&&\\ \hline
+%%%   \hbox{\hspace{70pt}}&&&&&&&\\ \hline
+%%%   &&&&&&&\\ \hline
+%%%   &&&&&&&\\ \hline
+%%%   &&&&&&&\\ \hline
+%%%   &&&&&&&\\ \hline
+%%% \end{tabular}
+%%% \end{minipage}
+\begin{minipage}{0.4\linewidth}
+  \begin{center}
+  \ifnum\Valsize=0
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+      & OK & 0 & \m 1 & \m 3 & \m 5 & Inc.  \\\hline
+      Body level & $\times$ &&&&&    \\\hline
+      Fatigue level & $\times$ &&&&& \\\hline
+    \end{tabular}
+  \else
+    \ifnum\Valsize=-1
+      \begin{tabular}{|l|c|c|c|c|c|}
+        & OK &  \m 1 & \m 3 & \m 5 & Inc.  \\\hline
+        Body level & $\times$ &&&&    \\\hline
+        Fatigue level & $\times$ &&&& \\\hline
+      \end{tabular}
+    \else
+      \ifnum\Valsize=+1
+        \begin{tabular}{|l|c|c|c|c|c|c|c|}
+          & OK & 0 & 0 & \m 1 & \m 3 & \m 5 & Inc.  \\\hline
+          Body level & $\times$ &&&&&&    \\\hline
+          Fatigue level & $\times$ &&&&&& \\\hline
+        \end{tabular}
+      \fi
+    \fi
+  \fi
+  \begin{tabular}{rp{24pt}p{24pt}l}
+
+    Soak Total&\parbox[b]{24pt}{\hbox to\hsize{\soaktotal\fillRule}}&%
+    \parbox[b]{24pt}{\hbox to\hsize{\fillRule\fatiguetotal}}&Fatigue Total\\%
+
+    \multicolumn{4}{l}{
+      \parbox[b]{3in}{
+      \hbox to\hsize{Armour type: \handfamily\ArmourType\fillRule}}}\\%
+
+    Protection & 
+      \parbox[b]{24pt}{\hbox to\hsize{\handfamily\Protection\fillRule}} &
+      \parbox[b]{24pt}{\hbox to\hsize{\fillRule\handfamily\ArmourLoad}} & Load
+
+  \end{tabular}
+  \end{center}
+\end{minipage}
+\end{center}
+\end{minipage}
+\end{lrbox}
+
+% Equipmentbox
+
+\begin{lrbox}{\equipmentbox}
+\begin{minipage}{21pc}
+\begin{center}
+  \begin{tabular}{c|c}
+    \multicolumn{1}{c|}{Equipment}&\multicolumn{1}{c}{Load}
+    \setcounter{equipcount}{0}
+    \whiledo{\value{equipcount} < \stdEqCount}{%
+      \\\hline\addtocounter{equipcount}{1}\eqTable(\value{equipcount})}
+      \\\hline
+%%%     \hbox{\strut\hspace{68mm}}&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+%%%     \strut&\\\hline
+  \end{tabular}\\[6pt]
+  \begin{tabular}{rl}
+    Total Load
+      \parbox[b]{24pt}{\hbox to\hsize{\loadtotal\fillRule}}&%
+      \parbox[b]{24pt}{\hbox to\hsize{\enctotal\fillRule}}%
+%%%     \rule{24pt}{1pt} & \rule{24pt}{1pt} 
+    Encumbrance \\
+  \end{tabular}
+\end{center}
+\end{minipage}
+\end{lrbox}
+

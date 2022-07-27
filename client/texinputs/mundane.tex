@@ -1,0 +1,82 @@
+% (C) 1998: Hans Georg Schaathun <georg@ii.uib.no>
+% Page setup for mundane character sheets, 
+% using boxes as defined in boxdef.tex and moreboxdef.tex.
+
+% Mundane characters, page 1
+
+\usebox{\topbox}
+
+\vspace{6pt}
+\hrule height1pt
+\begin{minipage}[t]{21pc}
+\vspace*{6pt}
+\begin{minipage}[t]{21pc}
+  \vspace*{6pt}
+  \begin{center}
+    \usebox{\statbox}
+    \usebox{\personalitybox}
+    \usebox{\reputationbox}
+  \end{center}
+  \hfill
+\end{minipage}
+
+  \hrule height1pt
+  \vspace{6pt}
+
+\begin{minipage}[t]{21pc}
+  \begin{center}
+    \usebox{\vfbox}
+  \end{center}
+  \hfill
+\end{minipage}
+\end{minipage}
+\vrule width 1pt\hfill
+\begin{minipage}[t]{21pc}
+\vspace*{6pt}\hfill
+\begin{center}\usebox{\abilitybox}\end{center}\vfill
+
+\vspace*{6pt}
+\end{minipage}
+\hrule height1pt
+\flushright\CopyRight
+
+\newpage
+
+% Mundane characters, page 2
+
+\hrule height1pt
+\vspace{6pt}
+  \usebox{\equipmentbox}
+\vspace{6pt}
+\hrule height1pt
+\vspace{6pt}
+  \usebox{\combatbox}
+\vspace{6pt}
+\hrule height1pt
+  \begin{minipage}[t]{21pc}
+    \begin{center}
+      \vspace{6pt}
+      \usebox{\armourbox}\\
+      \vspace{6pt}
+      \usebox{\bodybox}
+      \begin{minipage}[b]{\textwidth}\centering
+        \vspace{6pt}
+        \centerline{\minorheading\strut \ConfType}
+        \iffourth Permanent\else Score\fi\ \smallbox[\Theconf]\enspace\smallbox[\Thecconf]\ \iffourth Current\else Points:\fi
+      \end{minipage}
+    \end{center}
+    \hfill
+  \end{minipage}
+  \vrule width 1pt
+  \begin{minipage}[t]{21pc}
+    \vspace{6pt}
+    \begin{center}
+    {\minorheading\strut Note\s}\\
+    \usebox{\notebox}
+    \end{center}
+  \end{minipage}
+\hrule height1pt
+%%% \vspace{6pt}
+%%%   \begin{center}\usebox{\troupebox}\end{center}
+%%% \vspace{6pt}
+%%% \hrule height1pt
