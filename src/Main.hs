@@ -25,6 +25,10 @@ import ArM.STM
 import qualified Web.Scotty  as S
 import ArM.WebService (stateScotty)
 
+import Swish.Namespace (ScopedName,getScopeLocal)
+
+
+
 -- Auth
 -- import qualified Network.Wai.Middleware.HttpAuth as HA
 import Data.SecureMem -- for constant-time comparison
@@ -48,6 +52,8 @@ password = secureMemFromByteString "ElksRun"
 testCharacter = AR.armcharRes "cieran"
 
 
+local Nothing = "Nothing"
+local (Just x) = getScopeLocal x
 
 -- main :: IO ()
 main = do 
@@ -57,6 +63,8 @@ main = do
      print charlabel
      let u = map fromRDFLabel charlabel :: [Maybe URI.URI]
      print u 
+     let v = map fromRDFLabel charlabel :: [Maybe ScopedName]
+     print $ map local v
 
      -- print $ C.getGameStartCharacter g $ testCharacter
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
