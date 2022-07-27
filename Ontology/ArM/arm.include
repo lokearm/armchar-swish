@@ -64,31 +64,31 @@ arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty ;
 
 # Character Properties
 arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Player" .
 arm:hasGender a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Gender" .
 arm:hasProfession a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Profession" .
 arm:hasNationality a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Nationality" .
 arm:hasAlmaMater a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Alma Mater" .
 arm:hasBirthYear a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:int ;
         rdfs:label    "Birth Year" .
 arm:hasAge a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   xsd:int ;
         rdfs:label    "Age" .
 
@@ -102,17 +102,15 @@ arm:Autumn   rdfs:label   "Autumn" .
 
 
 # Character Sheet and Base Character
-arm:CharacterSheet a owl:Class ; rdfs:subClassOf arm:Character ;
+arm:CharacterSheet a owl:Class ; rdfs:subClassOf arm:GeneralCharacter ;
     rdfs:comment "A CharacterSheet represents the character at a particular point in time, is contains the character's dynamic properties and a reference to the base character." .
-arm:BaseCharacter a owl:Class ; rdfs:subClassOf arm:Character ;
-    rdfs:comment "The BaseCharacter represents the character itself, and contains the character's static properties." .
 
 arm:isCharacter a   owl:ObjectProperty ;
         rdfs:domain  arm:CharacterSheet ;
-        rdfs:range   arm:BaseCharacter .
+        rdfs:range   arm:Character .
 arm:hasInitialSheet  a   owl:ObjectProperty ;
         rdfs:range    arm:CharacterSheet ;
-        rdfs:domain   arm:BaseCharacter .
+        rdfs:domain   arm:Character .
 
 arm:ViewProperty rdfs:subClassOf rdf:Property .
 arm:PersistentProperty rdfs:subClassOf arm:ViewProperty .
