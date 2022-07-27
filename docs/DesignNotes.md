@@ -4,6 +4,21 @@ title: Design Notes for armchar-swish
 
 # Design Notes for armchar-swish
 
+1.  The data model is formulated in RDF.
+    + Small subset of OWL and RDFS to make the reasoner fast
+2.  Each character is stored in a separate file.
+    + thus the user can refer to the character as a file, with no need
+      to remember a URI
+3.  Data files should be stored in a git repo for version control
+    + this is not yet implemented
+    + could be based on examples from gitit
+4.  A complete data model needs to manage
+    + one (possibly more) covenants
+    + multiple characters
+    + possibly a saga
+        + the saga can contain a list of the covenants included
+
+
 ## Data Management Proposal
 
 1.  Divide the data into editable chunks, e.g.
