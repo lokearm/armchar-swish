@@ -22,10 +22,11 @@ import qualified Swish.RDF.Formatter.Turtle as TTL
 import Swish.RDF.Graph (merge,fromRDFLabel)
 import Data.Maybe (fromJust)
 import Control.Monad.IO.Class (liftIO)
---
+import qualified Control.Concurrent.STM as STM
+
 -- import qualified Data.Text.Lazy as  T
 -- import Data.Text (Text)
---
+
 import ArM.Character.Metadata (characterFromGraph)
 
 import Data.Aeson.Encode.Pretty (encodePretty)
@@ -66,22 +67,21 @@ local (Just x) = getScopeLocal x
 
 -- main :: IO ()
 main = do 
-     (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
-     stateVar <- getSTM res schema  g 
-     let charlabel = characterFromGraph g
-     print charlabel
-     let u = map fromRDFLabel charlabel :: [Maybe URI.URI]
-     print u 
-     let v = map fromRDFLabel charlabel :: [Maybe ScopedName]
-     print $ map local v
-
-     -- print $ C.getGameStartCharacter g $ testCharacter
-     -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
-
-     -- let st = map (\ x -> show (CM.getKey x) ++ "\n" ) cl
+     print "Starting: armchar-swish  ..."
      printTime
+     (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
+     let st = getState res schema  g 
+     case (st) of
+        Right x -> 
+           do print $ "Error: " ++ x
+        Left x -> do
+           stateVar <- STM.newTVarIO x
+           let charlabel = characterFromGraph g
+           print $ "Loaded character: " ++ show (characterLabel x)
+           print $ "Character ID: " ++ (characterID x)
 
-     print "Starting Scotty"
-     S.scotty 3000 $ stateScotty stateVar
+           printTime
 
-        -- HA.middleware $ basicAuth authf "armchar"
+           print "Starting Scotty"
+           S.scotty 3000 $ stateScotty stateVar
+              -- HA.middleware $ basicAuth authf "armchar"

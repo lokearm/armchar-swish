@@ -23,6 +23,8 @@ import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import Data.Maybe (fromJust)
 import Network.URI (URI)
+import Swish.QName (getLName)
+import Data.Text (unpack)
 
 import qualified ArM.CharacterMap as CM
 import qualified ArM.Character as C
@@ -51,21 +53,33 @@ data MapState = MapState { charGraph :: G.RDFGraph,
                            characterMap :: CM.CharacterMap
                            }
 
-getSTM res schema g = STM.newTVarIO MapState { charGraph = g1,
-                                               schemaGraph = s1,
-                                               resourceGraph = res1,
-                                               charRawGraph = g,
-                                               schemaRawGraph = schema,
-                                               resourceRawGraph = res,
-                           characterLabel = clab,
-                           characterID  = cid,
-                           characterMap = CM.insertListS res1 CM.empty cl
-                                               }
+-- getSTM res schema g = STM.newTVarIO $ fromJust $ getState res schema g 
+getState :: RDFGraph -> RDFGraph -> RDFGraph -> Either MapState String
+getState res schema g 
+    | cl == Nothing = Right "Failed to make character sheets"
+    | cid == Nothing = Right "Could not parse character ID"
+    | ll == [] = Right "No character found"
+    | tail ll /= [] = Right $ "Multiple characters found\n" ++ show ll
+    | otherwise = Left MapState {
+                    charGraph = g1,
+                    schemaGraph = s1,
+                    resourceGraph = res1,
+                    charRawGraph = g,
+                    schemaRawGraph = schema,
+                    resourceRawGraph = res,
+                    characterLabel = clab,
+                    characterID  = fromJust cid,
+                    characterMap = CM.insertListS res1 CM.empty $ fromJust cl
+                  }
    where (g1,s1,res1) = makeGraphs (g,schema,res)
-         clab = head $ characterFromGraph g1
-         cid = f clab
-         f = show . getScopeLocal . fromJust . fromRDFLabel 
-         cl =  fromJust $ C.getAllCS g1 clab
+         ll = characterFromGraph g
+         clab = head ll
+         cid = getLocalID clab
+         cl = C.getAllCS g1 clab
+getLocalID :: RDFLabel -> Maybe String
+getLocalID lab = f $ fromRDFLabel lab 
+      where f Nothing = Nothing
+            f (Just x) = Just $ unpack $ getLName $ getScopeLocal x
 
 rawTriple st = (charRawGraph st, schemaRawGraph st, resourceRawGraph st)
 graphTriple st = (charGraph st, schemaGraph st, resourceGraph st)
