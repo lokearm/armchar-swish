@@ -21,32 +21,36 @@ import Data.Set (fromList)
 
 
 
-data MapState = MapState { graph :: G.RDFGraph,
+data MapState = MapState { charGraph :: G.RDFGraph,
                            schemaGraph :: G.RDFGraph,
                            resourceGraph :: G.RDFGraph }
 
-getSTM res schema g = STM.newTVarIO MapState { graph = g, schemaGraph = schema, resourceGraph = res  }
+getSTM res schema g = STM.newTVarIO MapState { charGraph = g,
+                                               schemaGraph = schema,
+                                               resourceGraph = res  }
 
-rawTriple st = (graph st, schemaGraph st, resourceGraph st)
+rawTriple st = (charGraph st, schemaGraph st, resourceGraph st)
 graphTriple = makeGraphs . rawTriple 
+
+deriveState st = MapState { charGraph = t1 s,
+                           schemaGraph = t2 s,
+                           resourceGraph = t3 s  }
+    where s = graphTriple st
 t1 (a,b,c) = a
 t2 (a,b,c) = b
 t3 (a,b,c) = c
 
+getRawState st = STM.readTVarIO st
+getState st = fmap deriveState $ STM.readTVarIO st
+
 -- getGraph st = t1 . graphTriple
 
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
-getStateGraph st = fmap graph $ STM.readTVarIO st
+getStateGraph st = fmap charGraph $ getState st
 getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
-getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
+getSchemaGraph st = fmap schemaGraph $ getState st
 getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
-getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
--- getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
--- getStateGraph st = fmap ( t1 . graphTriple ) $ STM.readTVarIO st
--- getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
--- getSchemaGraph st = fmap ( t2 . graphTriple ) $ STM.readTVarIO st
--- getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
--- getResourceGraph st = fmap ( t3 . graphTriple ) $ STM.readTVarIO st
+getResourceGraph st = fmap resourceGraph $ getState st
 
 persistGraph g = foldGraphs $ Q.rdfQuerySubs vb tg
     where vb = Q.rdfQueryFind qg g
@@ -63,8 +67,8 @@ persistGraph' g = fwdApplySimple persistRule g
 lookup :: STM.TVar MapState -> String -> String -> Int 
        -> IO (Maybe CM.CharacterRecord)
 lookup stateVar char season year = do
-          st <- STM.readTVarIO stateVar
-          let g = graph st
+          st <- getState stateVar
+          let g = charGraph st
           let res = resourceGraph st
           print $ char ++ " - " ++ season ++ " - " ++ show year
           let cl =  C.getAllCS g $ AR.armcharRes char
@@ -86,14 +90,15 @@ putGraph g g0 g1 = G.merge (G.delete g0 g) g1
 putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO G.RDFGraph
 putAdvancement stateVar adv = do 
          STM.atomically $ do
-             st <- STM.readTVar stateVar
-             let g = graph st
+             st' <- STM.readTVar stateVar
+             let st = deriveState st'
+             let g = charGraph st
              let schema = schemaGraph st
              let g1 = persistGraph $ merge schema $ TC.makeRDFGraph adv
              let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
              let g0 = TC.makeRDFGraph adv0
              let gg = putGraph g g0 g1
-             STM.writeTVar stateVar $ st { graph = gg }
+             STM.writeTVar stateVar $ st { charGraph = gg }
              return g1
           
 -- TODO: Check for conflicting advancements 
@@ -103,10 +108,10 @@ putAdvancement stateVar adv = do
              -- -> IO (Maybe G.RDFGraph)
 -- postResource stateVar label newres = do 
       -- STM.atomically $ do
-          -- st <- STM.readTVar stateVar
-          -- let g = graph st
+          -- st <- getState stateVar
+          -- let g = charGraph st
           -- case (putGraph g label newres) of
              -- Nothing -> return Nothing
              -- (Just gg) -> do
-                          -- STM.writeTVar stateVar $ st { graph = gg }
+                          -- STM.writeTVar stateVar $ st { charGraph = gg }
                           -- return $ Just gg
