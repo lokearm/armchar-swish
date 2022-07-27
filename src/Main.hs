@@ -12,6 +12,8 @@ import Control.Monad.IO.Class (liftIO)
 --
 -- import qualified Data.Text.Lazy as  T
 -- import Data.Text (Text)
+--
+import ArM.Character.Metadata (characterFromGraph)
 
 import Data.Aeson.Encode.Pretty (encodePretty)
 import qualified Data.ByteString.Lazy.Char8 as B
@@ -50,6 +52,8 @@ testCharacter = AR.armcharRes "cieran"
 main = do 
      (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
      stateVar <- getSTM res schema  g 
+     let charlabel = characterFromGraph g
+     print charlabel
 
      -- print $ C.getGameStartCharacter g $ testCharacter
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter

@@ -26,13 +26,6 @@ import Data.Set (fromList)
 import ArM.Rules.Aux
 import Swish.RDF.Vocabulary.RDF
 
-cqt :: G.RDFLabel -> G.RDFGraph
-cqt s = qparse $ prefixes 
-   ++ "?s rdf:type <https://hg.schaathun.net/armchar/schema#CharacterSheet> . "
-   ++ "?s <https://hg.schaathun.net/armchar/schema#hasTrait> ?id . " 
-   ++ "?id ?property ?value . "
-   ++ "?property rdfs:label ?label . "
-
 idVar = (G.Var "id")
 propertyVar = (G.Var "property")
 valueVar = (G.Var "value")

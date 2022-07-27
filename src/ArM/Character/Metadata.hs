@@ -11,8 +11,10 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Character.Metadata ( getCharacterMetadata ) where
+module ArM.Character.Metadata ( getCharacterMetadata, characterFromGraph ) where
+ 
 
+import ArM.Rules.Aux
 import ArM.Resources
 import ArM.KeyPair
 
@@ -20,6 +22,10 @@ import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
 import Swish.RDF.VarBinding as VB 
 import Swish.VarBinding 
+import qualified Data.Set as DS
+import Data.List (sort)
+
+
 
 
 -- | Construct the query for a given character 'c', for use
@@ -28,6 +34,24 @@ query c = qparse $  prefixes
      ++ " " ++ c ++ " ?property ?value . "
      ++ " ?property rdf:type  arm:CharacterProperty . "
      ++ " ?property rdfs:label ?label . "
+
+
+characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
+characterFromGraph' = Q.rdfQueryFind
+             $ toRDFGraph $ DS.fromList [ arc cVar typeRes armCharacter ]
+characterFromGraph :: RDFGraph -> [RDFLabel]
+characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph' 
+    where f [] = []
+          f (Nothing:xs) = f xs
+          f (Just x:xs) = x:f xs
+uniqueSort = f . sort
+    where f [] = []
+          f (x:[]) = x:[]
+          f (x:y:ys) | x == y = f (y:ys)
+          f (x:y:ys) | x /= y = x:f (y:ys)
+-- [ arc c (G.Var "property") (G.Var "value"),
+-- , arc (G.Var "property") typeRes armCharacterProperty,
+-- , arc (G.Var "property") labelRes  (G.Var "label") ]
 
 -- | Make a list of metadata, where each data item is
 -- a triple consisting of URI, Label, and Value.
