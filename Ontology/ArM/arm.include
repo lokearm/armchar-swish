@@ -31,11 +31,9 @@ arm:Character a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
 arm:Magus a owl:Class ;
     rdfs:subClassOf arm:Character .
 arm:Companion a owl:Class ;
-    rdfs:subClassOf arm:Character ;
-    owl:disjointWith arm:Magus .
+    rdfs:subClassOf arm:Character .
 arm:Grog a owl:Class ;
-    rdfs:subClassOf arm:Character ;
-    owl:disjointWith arm:Companion, arm:Magus .
+    rdfs:subClassOf arm:Character .
 
 # Covenant and Character - Shared Properties
 arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty ;
@@ -105,7 +103,8 @@ arm:Autumn   rdfs:label   "Autumn" .
 
 
 # Character Sheet and Base Character
-arm:CharacterSheet a owl:Class ; rdfs:subClassOf arm:GeneralCharacter ;
+arm:CharacterSheet a owl:Class ;
+    rdfs:subClassOf arm:GeneralCharacter ;
     rdfs:comment "A CharacterSheet represents the character at a particular point in time, is contains the character's dynamic properties and a reference to the base character." .
 
 arm:isCharacter a   owl:ObjectProperty ;

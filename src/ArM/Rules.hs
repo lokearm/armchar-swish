@@ -34,6 +34,7 @@ import qualified ArM.Rules.FullGraph as RG
 -- | Infer character sheet properties from character properties
 csRule = makeCRule "csRule" 
     [ arc csVar isCharacterLabel cVar,
+      arc pVar typeRes armCharacterProperty,
       arc cVar pVar oVar ]
     [ arc csVar pVar oVar ]
 

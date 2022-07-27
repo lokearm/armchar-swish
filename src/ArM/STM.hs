@@ -54,6 +54,8 @@ data MapState = MapState { charGraph :: G.RDFGraph,
                            }
 
 -- getSTM res schema g = STM.newTVarIO $ fromJust $ getState res schema g 
+-- | Make the State object to be stored in STM.
+-- The return value is Either a MapState object or an error message.
 getState :: RDFGraph -> RDFGraph -> RDFGraph -> Either MapState String
 getState res schema g 
     | cl == Nothing = Right "Failed to make character sheets"
@@ -72,7 +74,7 @@ getState res schema g
                     characterMap = CM.insertListS res1 CM.empty $ fromJust cl
                   }
    where (g1,s1,res1) = makeGraphs (g,schema,res)
-         ll = characterFromGraph g
+         ll = characterFromGraph g1
          clab = head ll
          cid = getLocalID clab
          cl = C.getAllCS g1 clab

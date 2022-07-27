@@ -7,26 +7,17 @@ arm:isSpecialTrait a owl:ObjectProperty ;
 arm:XPTrait rdfs:subClassOf arm:Trait ;
     a arm:SpecialTraitClass .
 arm:AccelleratedTrait rdfs:subClassOf arm:Trait ;
-    a arm:SpecialTraitClass ;
-    owl:disjointWith arm:XPTrait .
+    a arm:SpecialTraitClass .
 arm:RepeatableTrait rdfs:subClassOf arm:Trait ;
     a arm:SpecialTraitClass ;
     rdfs:label "Repeatable trait" ;
-    rdfs:comment "This class f traits can be taken more than once." ;
-    owl:disjointWith arm:AccelleratedTrait, arm:XPTrait .
+    rdfs:comment "This class f traits can be taken more than once." .
 arm:Ability rdfs:subClassOf arm:XPTrait .
-arm:PersonalityTrait rdfs:subClassOf arm:Trait ;
-    owl:disjointWith arm:Ability .
-arm:Characteristic rdfs:subClassOf arm:Trait ;
-    owl:disjointWith arm:Ability, arm:PersonalityTrait .
-arm:Art rdfs:subClassOf arm:AccelleratedTrait ;
-    owl:disjointWith arm:Ability, arm:PersonalityTrait, arm:Characteristic .
-arm:Reputation rdfs:subClassOf arm:XPTrait ;
-    owl:disjointWith arm:Ability, arm:PersonalityTrait, arm:Characteristic,
-                     arm:Art .
-arm:OtherTrait rdfs:subClassOf arm:Trait ;
-    owl:disjointWith arm:Ability, arm:PersonalityTrait, arm:Characteristic,
-                     arm:Art, arm:Reputation  .
+arm:PersonalityTrait rdfs:subClassOf arm:Trait .
+arm:Characteristic rdfs:subClassOf arm:Trait .
+arm:Art rdfs:subClassOf arm:AccelleratedTrait .
+arm:Reputation rdfs:subClassOf arm:XPTrait .
+arm:OtherTrait rdfs:subClassOf arm:Trait .
 
 arm:Size a arm:LeafTraitClass ; rdfs:label "Size" .
 arm:Warping a arm:LeafTraitClass ; rdfs:label "Warping" .
@@ -100,20 +91,20 @@ arm:ecclesiastical rdfs:label "Ecclesiastical " .
 arm:hermetic rdfs:label "Hermetic" .
 arm:local rdfs:label "Local" .
 arm:hasTrait  a   owl:ObjectProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Trait .
 arm:hasOtherTrait  rdfs:subPropertyOf   arm:hasTrait ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:OtherTrait .
 arm:hasPersonalityTrait  rdfs:subPropertyOf   arm:hasTrait ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:PersonalityTrait .
 arm:hasAbility  rdfs:subPropertyOf   arm:hasTrait ;
  a   owl:ObjectProperty ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Ability .
 arm:hasCharacteristic  rdfs:subPropertyOf   arm:hasTrait ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Characteristic .
 arm:hasVirtue  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:CharacterSheet ;
@@ -122,13 +113,13 @@ arm:hasFlaw  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Flaw .
 arm:hasArt  rdfs:subPropertyOf   arm:hasTrait ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Art .
 arm:hasReputation  rdfs:subPropertyOf   arm:hasTrait ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Reputation .
 arm:hasSpell  rdfs:subPropertyOf   arm:hasTrait ;
-        rdfs:domain  arm:Character ;
+        rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Spell .
 arm:hasOrder  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:label  "Sort order" ;
