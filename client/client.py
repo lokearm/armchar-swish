@@ -43,10 +43,13 @@ y = get(conn,"/characteristic/cieran/1217/Autumn" )
 for i in y:
     output.append( f'\Characteristic{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasAbbreviation","?").lower()}}}' )
 
+y = get(conn,"/art/cieran/1217/Autumn" )
+
+for i in y:
+    output.append( f'\AnArt{{{i.get("arm:hasLabel","?").lower()}}}{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasXP","?")}}}{{{i.get("arm:hasVis","-")}}}' )
+
 output.append(  "\\end{magus}" )
 f = open("magus.tex", "w")
 for line in output:
     f.write(line+"\n")
 f.close()
-
-# http get :3000/art/cieran/1217/Summer

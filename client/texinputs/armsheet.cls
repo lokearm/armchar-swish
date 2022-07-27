@@ -322,6 +322,11 @@
   \def\artrego{#5}%
 }
 
+\def\AnArt#1#2#3#4{
+   \expandafter\def\csname art#1\endcsname{#2}
+   \expandafter\def\csname xp#1\endcsname{#3}
+   \expandafter\def\csname vis#1\endcsname{#4}
+}
 \def\forms#1,#2,#3,#4,#5,#6,#7,#8,#9.{%
   \def\artanimal{#1}%
   \def\artaquam{#2}%
