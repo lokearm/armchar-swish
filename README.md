@@ -7,7 +7,7 @@ It has no real features.
 
 ## Design notes
 
-+ [Design Notes](docs/DesignNotes)
++ [Design Notes](docs/DesignNotes.md)
 + [Ontology](Ontology/README.md)
 + [Tests](docs/Tests.md) showing current features of the web API
 + [Data Structure](docs/DataStructure.md) 
