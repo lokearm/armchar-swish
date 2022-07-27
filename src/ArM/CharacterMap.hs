@@ -24,6 +24,7 @@ import qualified ArM.Character as C
 import qualified ArM.Rules as R
 import           Data.Maybe (fromJust)
 import ArM.Resources 
+import Control.Parallel.Strategies (parMap,rpar)
 
 type CharacterMap = M.Map CharacterKey CharacterRecord
 data CharacterKey = CharacterKey {
@@ -32,16 +33,6 @@ data CharacterKey = CharacterKey {
             keyChar :: String } deriving (Ord,Eq,Show)
 data CharacterRecord = CharacterRecord G.RDFGraph
     deriving Show
-
--- | Prepare character sheet with a given schema and insert into the map 
-insertS :: G.RDFGraph -> CharacterMap -> C.CharacterSheet -> CharacterMap
-insertS schema cmap cs = M.insert (getKey cs) cr cmap
-    where cr = CharacterRecord $ R.prepareRecord schema $ C.makeRDFGraph cs
-
--- | Add a character sheet into the map (not used).
-insert :: CharacterMap -> C.CharacterSheet -> CharacterMap
-insert cmap cs = M.insert (getKey cs) cr cmap
-    where cr = CharacterRecord $ C.makeRDFGraph cs
 
 getKey :: C.CharacterSheet -> CharacterKey
 getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
@@ -57,13 +48,13 @@ seasonString (Just x ) | x == springLabel = "Spring"
                    | x == winterLabel = "Winter"
                    | otherwise  = "NoSeason"
 
--- | Add a list of character sheets into the map (not used).
-insertList :: CharacterMap -> [C.CharacterSheet] -> CharacterMap
-insertList cmap cs = foldl insert cmap cs
 
 -- | Prepare a list of character sheets with a given schema and insert into the map 
 insertListS :: G.RDFGraph -> CharacterMap -> [C.CharacterSheet] -> CharacterMap
-insertListS schema cmap cs = foldl (insertS schema) cmap cs
+insertListS schema cmap cs = foldl ins cmap $ parMap rpar ff cs
+   where f = (CharacterRecord . R.prepareRecord schema . C.makeRDFGraph)
+         ff x = (f x, getKey x)
+         ins cmap x = M.insert (snd x) (fst x) cmap
 
 empty :: CharacterMap
 empty = M.empty
