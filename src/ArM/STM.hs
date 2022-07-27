@@ -1,3 +1,20 @@
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.STM
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- This defines the data model as managed in memory, using
+-- Software Transactional Memory (STM).
+-- The `getSTM` functions gives a simple call to set up the data model
+-- using three RDF graphs which can be read from file (`ArM.Load` module).
+-- A lot of inferred graphs and other objects are set up as part of
+-- the data models, including the Character Map which supports the 
+-- `lookup` function.
+--
+-----------------------------------------------------------------------------
 module ArM.STM where
 
 import qualified Control.Concurrent.STM as STM

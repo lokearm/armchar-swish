@@ -1,5 +1,18 @@
 {-# LANGUAGE OverloadedStrings #-}
--- (C) 2022: Hans Georg Schaathun <hg+gamer@schaathun.net>
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Main
+-- Copyright   :  (c) 2022: Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- This is the main module for the armchar web server.
+-- This includes some wiring to reduce inter-dependencies between
+-- other modules, and some configuration options which may later be
+-- moved to data files or command line parameters.
+--
+-----------------------------------------------------------------------------
 
 module Main where
 
@@ -27,8 +40,6 @@ import ArM.WebService (stateScotty)
 
 import Swish.Namespace (ScopedName,getScopeLocal)
 
-
-
 -- Auth
 -- import qualified Network.Wai.Middleware.HttpAuth as HA
 import Data.SecureMem -- for constant-time comparison
@@ -43,11 +54,9 @@ import qualified ArM.Character.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.CharacterMap as CM
 
-
 authf u p = return $ u == "user" && secureMemFromByteString p == password
 password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
-
 
 testCharacter = AR.armcharRes "cieran"
 
