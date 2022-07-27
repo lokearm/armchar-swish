@@ -23,34 +23,35 @@ import Data.Set (fromList)
 
 data MapState = MapState { charGraph :: G.RDFGraph,
                            schemaGraph :: G.RDFGraph,
-                           resourceGraph :: G.RDFGraph }
+                           resourceGraph :: G.RDFGraph,
+                           charRawGraph :: G.RDFGraph,
+                           schemaRawGraph :: G.RDFGraph,
+                           resourceRawGraph :: G.RDFGraph }
 
-getSTM res schema g = STM.newTVarIO MapState { charGraph = g,
-                                               schemaGraph = schema,
-                                               resourceGraph = res  }
+getSTM res schema g = STM.newTVarIO MapState { charGraph = g1,
+                                               schemaGraph = s1,
+                                               resourceGraph = res1,
+                                               charRawGraph = g,
+                                               schemaRawGraph = schema,
+                                               resourceRawGraph = res
+                                               }
+   where (g1,s1,res1) = makeGraphs (g,schema,res)
 
-rawTriple st = (charGraph st, schemaGraph st, resourceGraph st)
-graphTriple = makeGraphs . rawTriple 
+rawTriple st = (charRawGraph st, schemaRawGraph st, resourceRawGraph st)
+graphTriple st = (charGraph st, schemaGraph st, resourceGraph st)
 
-deriveState st = MapState { charGraph = t1 s,
-                           schemaGraph = t2 s,
-                           resourceGraph = t3 s  }
-    where s = graphTriple st
 t1 (a,b,c) = a
 t2 (a,b,c) = b
 t3 (a,b,c) = c
 
-getRawState st = STM.readTVarIO st
-getState st = fmap deriveState $ STM.readTVarIO st
-
 -- getGraph st = t1 . graphTriple
 
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
-getStateGraph st = fmap charGraph $ getState st
+getStateGraph st = fmap charGraph $ STM.readTVarIO st
 getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
-getSchemaGraph st = fmap schemaGraph $ getState st
+getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
 getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
-getResourceGraph st = fmap resourceGraph $ getState st
+getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
 
 persistGraph g = foldGraphs $ Q.rdfQuerySubs vb tg
     where vb = Q.rdfQueryFind qg g
@@ -67,7 +68,7 @@ persistGraph' g = fwdApplySimple persistRule g
 lookup :: STM.TVar MapState -> String -> String -> Int 
        -> IO (Maybe CM.CharacterRecord)
 lookup stateVar char season year = do
-          st <- getState stateVar
+          st <- STM.readTVarIO stateVar
           let g = charGraph st
           let res = resourceGraph st
           print $ char ++ " - " ++ season ++ " - " ++ show year
@@ -78,6 +79,7 @@ lookup stateVar char season year = do
              Nothing -> return Nothing
              (Just x) -> return $ CM.lookup cmap charstring season year
                 where  cmap = CM.insertListS res CM.empty $ x
+
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
@@ -90,8 +92,7 @@ putGraph g g0 g1 = G.merge (G.delete g0 g) g1
 putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO G.RDFGraph
 putAdvancement stateVar adv = do 
          STM.atomically $ do
-             st' <- STM.readTVar stateVar
-             let st = deriveState st'
+             st <- STM.readTVar stateVar
              let g = charGraph st
              let schema = schemaGraph st
              let g1 = persistGraph $ merge schema $ TC.makeRDFGraph adv
@@ -108,7 +109,7 @@ putAdvancement stateVar adv = do
              -- -> IO (Maybe G.RDFGraph)
 -- postResource stateVar label newres = do 
       -- STM.atomically $ do
-          -- st <- getState stateVar
+          -- st <- STM.readTVarIO stateVar
           -- let g = charGraph st
           -- case (putGraph g label newres) of
              -- Nothing -> return Nothing
