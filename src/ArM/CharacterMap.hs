@@ -12,6 +12,7 @@
 --
 -----------------------------------------------------------------------------
 module ArM.CharacterMap ( CharacterRecord(..)
+                        , CharacterMap
                         , insertListS
                         , empty 
                         , ArM.CharacterMap.lookup 
@@ -30,6 +31,7 @@ data CharacterKey = CharacterKey {
             keySeason :: String,
             keyChar :: String } deriving (Ord,Eq,Show)
 data CharacterRecord = CharacterRecord G.RDFGraph
+    deriving Show
 
 -- | Prepare character sheet with a given schema and insert into the map 
 insertS :: G.RDFGraph -> CharacterMap -> C.CharacterSheet -> CharacterMap

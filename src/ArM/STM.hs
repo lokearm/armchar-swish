@@ -12,12 +12,14 @@ import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
 
+import ArM.Character.Metadata (characterFromGraph)
 import ArM.Rules.Aux
 import ArM.Rules (makeGraphs)
 import ArM.Resources
 import Swish.RDF.Graph
 
 import Data.Set (fromList)
+import Swish.Namespace (ScopedName,getScopeLocal)
 
 
 
@@ -26,16 +28,27 @@ data MapState = MapState { charGraph :: G.RDFGraph,
                            resourceGraph :: G.RDFGraph,
                            charRawGraph :: G.RDFGraph,
                            schemaRawGraph :: G.RDFGraph,
-                           resourceRawGraph :: G.RDFGraph }
+                           resourceRawGraph :: G.RDFGraph,
+                           characterLabel :: RDFLabel,
+                           characterID :: String,
+                           characterMap :: CM.CharacterMap
+                           }
 
 getSTM res schema g = STM.newTVarIO MapState { charGraph = g1,
                                                schemaGraph = s1,
                                                resourceGraph = res1,
                                                charRawGraph = g,
                                                schemaRawGraph = schema,
-                                               resourceRawGraph = res
+                                               resourceRawGraph = res,
+                           characterLabel = clab,
+                           characterID  = cid,
+                           characterMap = CM.insertListS res1 CM.empty cl
                                                }
    where (g1,s1,res1) = makeGraphs (g,schema,res)
+         clab = head $ characterFromGraph g1
+         cid = f clab
+         f = show . getScopeLocal . fromJust . fromRDFLabel 
+         cl =  fromJust $ C.getAllCS g1 clab
 
 rawTriple st = (charRawGraph st, schemaRawGraph st, resourceRawGraph st)
 graphTriple st = (charGraph st, schemaGraph st, resourceGraph st)
@@ -72,13 +85,10 @@ lookup stateVar char season year = do
           let g = charGraph st
           let res = resourceGraph st
           print $ char ++ " - " ++ season ++ " - " ++ show year
-          let cl =  C.getAllCS g $ AR.armcharRes char
+          let cmap =  characterMap st
           print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
-          case (cl) of
-             Nothing -> return Nothing
-             (Just x) -> return $ CM.lookup cmap charstring season year
-                where  cmap = CM.insertListS res CM.empty $ x
+          return $ CM.lookup cmap charstring season year
 
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
