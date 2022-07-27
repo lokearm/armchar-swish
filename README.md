@@ -5,6 +5,8 @@ ArM character server implementation using Haskell and Swish.
 The program, `armchar-swish`, is currently only for testing.
 It has no real features.
 
+There is a very crude client included, intended mainly for testing.
+
 ## Design notes
 
 + [Design Notes](docs/DesignNotes.md)
