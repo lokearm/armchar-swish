@@ -29,6 +29,10 @@ arm:hasPoints a owl:DatatypeProperty, arm:PeristentProperty ;
         rdfs:subPropertyOf arm:hasXP ;
         rdfs:domain arm:Confidence ;
         rdfs:range   xsd:int .
+arm:hasAbbreviation a owl:DatatypeProperty, arm:TraitProperty ;
+        rdfs:label  "Abbreviation" ;
+        rdfs:domain arm:SuperTrait ;
+        rdfs:range   xsd:string .
 arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label  "Label" ;
         rdfs:domain arm:SuperTrait ;

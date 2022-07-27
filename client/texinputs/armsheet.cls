@@ -421,7 +421,7 @@
 \Characteristic{\rule{30pt}{1pt}}{sta}
 \Characteristic{\rule{30pt}{1pt}}{com}
 \Characteristic{\rule{30pt}{1pt}}{pre}
-\Characteristic{\rule{30pt}{1pt}}{qui}
+\Characteristic{\rule{30pt}{1pt}}{qik}
 \Characteristic{\rule{30pt}{1pt}}{dex}
 
 %

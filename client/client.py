@@ -39,6 +39,10 @@ for i in y:
     output.append( f"  \\aPtrait{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasScore','?')}}}" )
 output.append( "\\end{personality}" )
 
+y = get(conn,"/characteristic/cieran/1217/Autumn" )
+for i in y:
+    output.append( f'\Characteristic{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasAbbreviation","?").lower()}}}' )
+
 output.append(  "\\end{magus}" )
 f = open("magus.tex", "w")
 for line in output:
@@ -46,4 +50,3 @@ for line in output:
 f.close()
 
 # http get :3000/art/cieran/1217/Summer
-# http get :3000/characteristic/cieran/1217/Summer
