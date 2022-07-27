@@ -6,7 +6,7 @@ module Main where
 import System.IO as IO
 import Control.Monad (join)
 import qualified Swish.RDF.Formatter.Turtle as TTL
-import Swish.RDF.Graph (merge)
+import Swish.RDF.Graph (merge,fromRDFLabel)
 import Data.Maybe (fromJust)
 import Control.Monad.IO.Class (liftIO)
 --
@@ -28,6 +28,7 @@ import ArM.WebService (stateScotty)
 -- Auth
 -- import qualified Network.Wai.Middleware.HttpAuth as HA
 import Data.SecureMem -- for constant-time comparison
+import qualified Network.URI as URI
 
 -- Timer
 import ArM.Time
@@ -54,6 +55,8 @@ main = do
      stateVar <- getSTM res schema  g 
      let charlabel = characterFromGraph g
      print charlabel
+     let u = map fromRDFLabel charlabel :: [Maybe URI.URI]
+     print u 
 
      -- print $ C.getGameStartCharacter g $ testCharacter
      -- print $ encodePretty $ A.getIngameAdvancements g testCharacter
