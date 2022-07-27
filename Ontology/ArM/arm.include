@@ -22,9 +22,12 @@ arm:hasSeasonTime a   owl:ObjectProperty ;
         rdfs:range   arm:SeasonTime .
 
 # Covenant and Character
-arm:GeneralCharacter a owl:Class .
-arm:Covenant a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter .
-arm:Character a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter .
+arm:GeneralCharacter a owl:Class ;
+    rdfs:comment "A GeneralCharacter is an umbrella concept for all resources representing characters.  This is crude, and most references to a GeneralCharacter are probably concerned with only a subset." .
+arm:Covenant a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
+    rdfs:comment "A Covenant represents a covenant independently of its statistics (sheet) at a given point in time." .
+arm:Character a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
+    rdfs:comment "A Character represents a player character or NPC independently of its statistics (sheet) at a given point in time." .
 arm:Magus a owl:Class ;
     rdfs:subClassOf arm:Character .
 arm:Companion a owl:Class ;
