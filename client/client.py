@@ -17,7 +17,7 @@ y = get(conn,"/ability/cieran/1217/Autumn" )
 ab = [ (i.get("arm:hasLabel","???"),i.get("arm:hasSpeciality","-"),i.get("arm:hasScore","-"),i.get("arm:hasXP","-")) for i in y ]
 ab.sort()
 
-output = [ "\documentclass{armsheet}", "\\begin{magus}" ]
+output = [ "\\documentclass{armsheet}", "\\begin{magus}" ]
 
 output.append( "\\begin{abilities}" )
 for i in ab:
