@@ -22,14 +22,12 @@ import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
 import Swish.RDF.VarBinding as VB 
 import Swish.VarBinding 
-import qualified Data.Set as DS
 import Data.List (sort)
-import Data.Set (fromList)
 
 
 -- | Construct the query for a given character 'c', for use
 -- with the following functions .
-query c = G.toRDFGraph $ fromList
+query c = listToRDFGraph 
    [ arc c (G.Var "property") (G.Var "value")
    , arc (G.Var "property") typeRes armCharacterProperty
    , arc (G.Var "property") labelRes  (G.Var "label") ]
@@ -37,7 +35,7 @@ query c = G.toRDFGraph $ fromList
 -- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
 characterFromGraph' = Q.rdfQueryFind
-             $ toRDFGraph $ DS.fromList [ arc cVar typeRes armCharacter ]
+             $ listToRDFGraph  [ arc cVar typeRes armCharacter ]
 -- | Get the labels of all characters in a given graph.
 characterFromGraph :: RDFGraph -> [RDFLabel]
 characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph' 

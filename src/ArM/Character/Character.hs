@@ -17,7 +17,6 @@ module ArM.Character.Character ( CharacterSheet(..)
                                , ToRDFGraph(..)
                                ) where
 
-import           Data.Set (fromList)
 import           Swish.RDF.Parser.N3 (parseN3fromText)
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -32,7 +31,7 @@ import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
-import           ArM.Rules.Aux (sVar,labelRes)
+import           ArM.Rules.Aux (sVar,labelRes,listToRDFGraph)
 import ArM.Types.Character
 
 getCharacterMetadata = CM.getCharacterMetadata
@@ -100,7 +99,7 @@ getInitialSheet g c = f vb'
       vb' = Q.rdfQueryFind q g
       f [] = Nothing
       f (x:xs) = vbMap x (G.Var "s")
-      q = G.toRDFGraph $ fromList $ [ G.arc c (G.Res $ makeSN "hasInitialSheet") sVar ]
+      q = listToRDFGraph  $ [ G.arc c (G.Res $ makeSN "hasInitialSheet") sVar ]
 
 
 -- | Auxiliary for 'getInitialSheet'
@@ -117,7 +116,7 @@ getTraits a g | x == Nothing = []
 
 -- | Query Graph to get traits for CharacterSheet
 cqt :: G.RDFLabel -> G.RDFGraph
-cqt s = G.toRDFGraph $ fromList
+cqt s = listToRDFGraph 
       [ G.arc s (armRes "hasTrait") (G.Var "id")
       , G.arc (G.Var "id") (G.Var "property") (G.Var "value")
       , G.arc (G.Var "property") labelRes (G.Var "label") ]

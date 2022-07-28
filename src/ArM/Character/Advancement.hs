@@ -16,7 +16,6 @@ import ArM.Resources
 import ArM.KeyPair 
 import Data.Maybe 
 import Data.List
-import Data.Set (fromList)
 import ArM.Character.Trait
 import ArM.Types.Character
 import ArM.Rules.Aux
@@ -35,7 +34,7 @@ import ArM.Rules.Aux
 --    arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ] ;
 
 qt :: RDFLabel -> RDFGraph
-qt s = toRDFGraph $ fromList
+qt s = listToRDFGraph 
       [ arc s (armRes "advanceTrait") (Var "id")
       , arc (Var "id") (Var "property") (Var "value")
       , arc (Var "property") labelRes (Var "label") ]
@@ -55,7 +54,7 @@ q2 = queryGraph r
    where r = Res $ makeSN "PregameAdvancement"
 
 queryGraph :: RDFLabel -> RDFLabel -> RDFGraph
-queryGraph c1 = toRDFGraph . fromList . f c1
+queryGraph c1 = listToRDFGraph  . f c1
    where f c1 c2 = [ arc (Var "id") typeRes c1,
             arc (Var "id") (Var "property") (Var "value"),
             arc (Var "id") (Res $ makeSN "advanceCharacter") c2,
@@ -121,7 +120,7 @@ instance FromRDFGraph Advancement where
                  season = getSeason ys,
                  advSortIndex = getSortIndex ys,
                  contents = ys }
-        where q = toRDFGraph . fromList $
+        where q = listToRDFGraph  $
                   [ arc label typeRes advancementType,
                     arc label (Var "property") (Var "value"),
                     arc (Var "property") typeRes armViewProperty,

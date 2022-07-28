@@ -38,7 +38,6 @@ import ArM.Rules (makeGraphs)
 import ArM.Resources
 import Swish.RDF.Graph
 
-import Data.Set (fromList)
 import Swish.Namespace (ScopedName,getScopeLocal)
 
 
@@ -100,9 +99,9 @@ getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
 
 persistGraph g = foldGraphs $ Q.rdfQuerySubs vb tg
     where vb = Q.rdfQueryFind qg g
-          qg = G.toRDFGraph $ fromList [ arc sVar pVar cVar,
+          qg = listToRDFGraph  [ arc sVar pVar cVar,
                        arc pVar typeRes armPersistentProperty ]
-          tg = G.toRDFGraph $ fromList [ arc sVar pVar cVar ]
+          tg = listToRDFGraph  [ arc sVar pVar cVar ]
 
 persistRule = makeCRule "persistRule" 
     [ arc sVar pVar cVar,

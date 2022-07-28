@@ -1,6 +1,5 @@
 module ArM.Types.Character where
 
-import Data.Set (fromList)
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import Data.Maybe
@@ -104,7 +103,7 @@ class ToRDFGraph a where
     makeRDFGraph :: a -> RDFGraph
 instance ToRDFGraph CharacterSheet where
    makeRDFGraph cs =
-         ( toRDFGraph .  fromList . fst . runBlank ( csToArcListM cs ) )
+         ( listToRDFGraph  . fst . runBlank ( csToArcListM cs ) )
          ("charsheet",1)
 
 
@@ -184,7 +183,7 @@ seasonNo _ = 10
 
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =
-         ( toRDFGraph .  fromList . fst . runBlank ( advToArcListM cs ) )
+         ( listToRDFGraph  . fst . runBlank ( advToArcListM cs ) )
          ("charsheet",1)
 
 advToArcListM :: Advancement -> BlankState [RDFTriple]
