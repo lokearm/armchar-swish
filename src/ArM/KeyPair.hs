@@ -12,7 +12,6 @@
 -----------------------------------------------------------------------------
 module ArM.KeyPair where
 
-import Swish.RDF.Parser.N3 (parseN3fromText)
 import Swish.RDF.Graph (RDFLabel)
 import qualified Swish.RDF.VarBinding as VB 
 import Network.URI (URI)
@@ -24,9 +23,6 @@ import ArM.Resources
 import Swish.RDF.Graph as G
 import qualified Data.Text.Lazy as T
 
--- | Create a query graph from an N3 string.
-qparse :: String -> RDFGraph
-qparse = either error id . parseN3fromText . T.pack
 
 -- | `KeyValuePair` represents a key/value pair in JSON jargon
 -- or a property/object pair in RDF.  It is designed to hold

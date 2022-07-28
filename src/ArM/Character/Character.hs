@@ -32,7 +32,7 @@ import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
-import           ArM.Rules.Aux (sVar)
+import           ArM.Rules.Aux (sVar,labelRes)
 import ArM.Types.Character
 
 getCharacterMetadata = CM.getCharacterMetadata
@@ -112,13 +112,13 @@ getTraits :: CharacterSheet -> G.RDFGraph -> [Trait]
 getTraits a g | x == Nothing = []
               | otherwise    = map toTrait 
                $ keypairSplit $ map objectFromBinding $ Q.rdfQueryFind q g 
-    where q = cqt $ show $ fromJust $ x
+    where q = cqt $ fromJust $ x
           x = sheetID a
 
 -- | Query Graph to get traits for CharacterSheet
-cqt :: String -> G.RDFGraph
-cqt s = qparse $ prefixes 
-      ++ s ++ " <https://hg.schaathun.net/armchar/schema#hasTrait> ?id . " 
-      ++ "?id ?property ?value . "
-      ++ "?property rdfs:label ?label . "
+cqt :: G.RDFLabel -> G.RDFGraph
+cqt s = G.toRDFGraph $ fromList
+      [ G.arc s (armRes "hasTrait") (G.Var "id")
+      , G.arc (G.Var "id") (G.Var "property") (G.Var "value")
+      , G.arc (G.Var "property") labelRes (G.Var "label") ]
 
