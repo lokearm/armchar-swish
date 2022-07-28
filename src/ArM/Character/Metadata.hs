@@ -33,10 +33,6 @@ query c = G.toRDFGraph $ fromList
    [ arc c (G.Var "property") (G.Var "value")
    , arc (G.Var "property") typeRes armCharacterProperty
    , arc (G.Var "property") labelRes  (G.Var "label") ]
-queryOld c = qparse $  prefixes
-     ++ " " ++ c ++ " ?property ?value . "
-     ++ " ?property rdf:type  arm:CharacterProperty . "
-     ++ " ?property rdfs:label ?label . "
 
 -- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
