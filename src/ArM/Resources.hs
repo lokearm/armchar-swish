@@ -1,4 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Resources
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- This module defines namespaces, URIs, and filenames used in the project.
+-- It also defines utility functions to create RDFLabel-s from strings.
+--
+-----------------------------------------------------------------------------
 module ArM.Resources where
 
 import Swish.Namespace
