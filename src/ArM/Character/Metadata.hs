@@ -24,17 +24,15 @@ import Swish.RDF.VarBinding as VB
 import Swish.VarBinding 
 import qualified Data.Set as DS
 import Data.List (sort)
-
-
+import Data.Set (fromList)
 
 
 -- | Construct the query for a given character 'c', for use
 -- with the following functions .
-query c = qparse $  prefixes
-     ++ " " ++ c ++ " ?property ?value . "
-     ++ " ?property rdf:type  arm:CharacterProperty . "
-     ++ " ?property rdfs:label ?label . "
-
+query c = G.toRDFGraph $ fromList
+   [ arc (armcharRes c) (G.Var "property") (G.Var "value")
+   , arc (G.Var "property") typeRes armCharacterProperty
+   , arc (G.Var "property") labelRes  (G.Var "label") ]
 
 -- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
@@ -52,9 +50,6 @@ uniqueSort = f . sort
           f (x:[]) = x:[]
           f (x:y:ys) | x == y = f (y:ys)
           f (x:y:ys) | x /= y = x:f (y:ys)
--- [ arc c (G.Var "property") (G.Var "value"),
--- , arc (G.Var "property") typeRes armCharacterProperty,
--- , arc (G.Var "property") labelRes  (G.Var "label") ]
 
 -- | Make a list of metadata, where each data item is
 -- a triple consisting of URI, Label, and Value.
