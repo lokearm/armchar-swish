@@ -54,37 +54,37 @@ newLName s = case (QN.newLName $ T.pack s) of
    (Just ln) -> ln
 
 makeSN s = makeScopedName (Just $ T.pack "arm") armURI (newLName s)
-
-
+armRes :: String -> RDFLabel
+armRes = Res . makeSN
 armcharRes :: String -> RDFLabel
 armcharRes s = Res $ makeScopedName (Just $ T.pack "armchar") armcharURI (newLName s)
 armrRes :: String -> RDFLabel
 armrRes s = Res $ makeScopedName (Just $ T.pack "armr") armrURI (newLName s)
 
-isCharacterLabel = Res $ makeSN  "isCharacter"
-repeatableLabel = Res $ makeSN  "RepeatableTrait"
-xptraitLabel = Res $ makeSN  "XPTrait"
-accelleratedtraitLabel = Res $ makeSN  "AccelleratedTrait"
-addXPLabel = Res $ makeSN  "addedXP"
-totalXPLabel = Res $ makeSN "hasTotalXP" 
-scoreLabel = Res $ makeSN "hasScore" 
-hasXPLabel = Res $ makeSN "hasXP" 
-springLabel = Res $ makeSN "Spring" 
-summerLabel = Res $ makeSN "Summer" 
-autumnLabel = Res $ makeSN "Autumn" 
-winterLabel = Res $ makeSN "Winter" 
-noSuchTrait = Res $ makeSN "noSuchTrait" 
-noSuchAdvancement = Res $ makeSN "noSuchAdvancement" 
-noSuchCharacter = Res $ makeSN "noSuchCharacter" 
-inSeason = Res $ makeSN "inSeason" 
-atSeason = Res $ makeSN "atSeason" 
-inYear = Res $ makeSN "inYear" 
-advancementType = Res $ makeSN "Advancement" 
-hasAdvancementIndex = Res $ makeSN "hasAdvancementIndex" 
-hasAdvancementType = Res $ makeSN "hasAdvancementType" 
-hasAdvancementTypeString = Res $ makeSN "hasAdvancementTypeString" 
-prefixedidRes = Res $ makeSN "prefixedid" 
-armViewProperty = Res $ makeSN "ViewProperty" 
-armPersistentProperty = Res $ makeSN "PersistentProperty" 
-armCharacterProperty = Res $ makeSN "CharacterProperty" 
-armCharacter = Res $ makeSN "Character" 
+isCharacterLabel = armRes  "isCharacter"
+repeatableLabel = armRes  "RepeatableTrait"
+xptraitLabel = armRes  "XPTrait"
+accelleratedtraitLabel = armRes  "AccelleratedTrait"
+addXPLabel = armRes  "addedXP"
+totalXPLabel = armRes "hasTotalXP" 
+scoreLabel = armRes "hasScore" 
+hasXPLabel = armRes "hasXP" 
+springLabel = armRes "Spring" 
+summerLabel = armRes "Summer" 
+autumnLabel = armRes "Autumn" 
+winterLabel = armRes "Winter" 
+noSuchTrait = armRes "noSuchTrait" 
+noSuchAdvancement = armRes "noSuchAdvancement" 
+noSuchCharacter = armRes "noSuchCharacter" 
+inSeason = armRes "inSeason" 
+atSeason = armRes "atSeason" 
+inYear = armRes "inYear" 
+advancementType = armRes "Advancement" 
+hasAdvancementIndex = armRes "hasAdvancementIndex" 
+hasAdvancementType = armRes "hasAdvancementType" 
+hasAdvancementTypeString = armRes "hasAdvancementTypeString" 
+prefixedidRes = armRes "prefixedid" 
+armViewProperty = armRes "ViewProperty" 
+armPersistentProperty = armRes "PersistentProperty" 
+armCharacterProperty = armRes "CharacterProperty" 
+armCharacter = armRes "Character" 

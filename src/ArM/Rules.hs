@@ -46,23 +46,23 @@ advtypeRule = makeCRule "advtypeRule"
 
 -- | Infer a string representation of the Trait Class of each Trait Advancement
 traitclassRule = makeCRule "traitclassRule" 
-    [ arc sVar (Res $ makeSN "traitClass") cVar,
-      arc cVar (Res $ makeSN "hasLabel") oVar ]
-    [ arc sVar (Res $ makeSN "traitClassString") oVar ]
+    [ arc sVar (armRes "traitClass") cVar,
+      arc cVar (armRes "hasLabel") oVar ]
+    [ arc sVar (armRes "traitClassString") oVar ]
 traitclasstypeRule = makeCRule "traitclasstypeRule" 
-       [ arc sVar ( Res $ makeSN "traitClass" ) tVar ]
+       [ arc sVar ( armRes "traitClass" ) tVar ]
        [ arc sVar typeRes tVar ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule = makeCRule "advancementindexRule" 
-    [ tArc, arc tVar (Res $ makeSN "hasAdvancementIndex") cVar ]
-    [ arc sVar (Res $ makeSN "hasAdvancementIndex") cVar ]
+    [ tArc, arc tVar (armRes "hasAdvancementIndex") cVar ]
+    [ arc sVar (armRes "hasAdvancementIndex") cVar ]
 
 -- | Add indices used for sorting advancements
 initialsheetRule = makeCRule "initialsheetRule" 
-    [ arc cVar  (Res $ makeSN "hasInitialSheet") sVar ]
+    [ arc cVar  (armRes "hasInitialSheet") sVar ]
     [ arc sVar isCharacterLabel cVar,
-      arc sVar typeRes (Res $ makeSN "CharacterSheet") ]
+      arc sVar typeRes (armRes "CharacterSheet") ]
 
 -- | Initial inferences on the character data, to be applied without
 -- the schema

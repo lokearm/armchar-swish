@@ -27,26 +27,26 @@ prepareResources = fwdApplyList [ vfpRule, vfpMajorRule, vfabRule ]
 
 traitclass = Var "traitclass"
 trait = Var "trait"
-score = Res $ makeSN "hasScore"
+score = armRes "hasScore"
 
 grantarc = arc traitclass gtRes trait
 
 vfpRule = makeCRule "vfpRule" [grantarc, vfp2, vfp3] [vfpT]
 vfpMajorRule = makeCRule "vfpMajorRule" [grantarc, vfp2bis, vfp3] [vfpTbis]
-vfp2 = arc traitclass subclassRes (Res $ makeSN "minorFlaw")
-vfp2bis = arc traitclass subclassRes (Res $ makeSN "majorFlaw")
-vfp3 = arc trait typeRes (Res $ makeSN "PersonalityTrait" )
+vfp2 = arc traitclass subclassRes (armRes "minorFlaw")
+vfp2bis = arc traitclass subclassRes (armRes "majorFlaw")
+vfp3 = arc trait typeRes (armRes "PersonalityTrait" )
 vfpT = arc trait score (litInt 3)
 vfpTbis = arc trait score (litInt 6)
 
 litInt i = TypedLit (T.pack $ show i) xsdInteger
 
 vfabRule = makeCRule "vfabRule" [grantarc, vfab3] [vfabT]
-vfab3 = arc trait typeRes (Res $ makeSN "Ability" )
-vfabT = arc trait (Res $ makeSN "hasTotalXP") (litInt 5)
+vfab3 = arc trait typeRes (armRes "Ability" )
+vfabT = arc trait (armRes "hasTotalXP") (litInt 5)
 
 vfvRule = makeCRule "vfvRule" [grantarc, vfv3] [vfT]
 vffRule = makeCRule "vffRule" [grantarc, vff3] [vfT]
-vfv3 = arc trait typeRes (Res $ makeSN "Virtue" )
-vff3 = arc trait typeRes (Res $ makeSN "Flaw" )
+vfv3 = arc trait typeRes (armRes "Virtue" )
+vff3 = arc trait typeRes (armRes "Flaw" )
 vfT = arc trait score (litInt 0)

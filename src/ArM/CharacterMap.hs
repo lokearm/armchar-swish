@@ -8,7 +8,8 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -- A Map to store character sheets.
--- Each character sheet is stored as one RDFGraph.
+-- Each character sheet is stored as one RDFGraph (embedded in the
+-- `CharacterRecord` type).
 --
 -----------------------------------------------------------------------------
 module ArM.CharacterMap ( CharacterRecord(..)
