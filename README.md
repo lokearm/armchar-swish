@@ -10,6 +10,7 @@ There is a very crude client included, intended mainly for testing.
 ## Design notes
 
 + [Design Notes](docs/DesignNotes.md)
++ [Data Types](docs/DataTypes.md)
 + [Ontology](Ontology/README.md)
 + [Tests](docs/Tests.md) showing current features of the web API
 + [Data Structure](docs/DataStructure.md) 
