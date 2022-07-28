@@ -41,7 +41,10 @@ import Data.Set (fromList)
 import Swish.Namespace (ScopedName,getScopeLocal)
 
 
-
+-- | The `MapState` object defines the state of the server.
+-- The server process maintains a single `MapState` object in
+-- software transactional memory (STM), recording all the data
+-- which may potentially change during operation.
 data MapState = MapState { charGraph :: G.RDFGraph,
                            schemaGraph :: G.RDFGraph,
                            resourceGraph :: G.RDFGraph,
@@ -78,24 +81,19 @@ getState res schema g
          clab = head ll
          cid = getLocalID clab
          cl = C.getAllCS g1 clab
+-- | Extract the local name (as String) from an RDFLabel.
 getLocalID :: RDFLabel -> Maybe String
 getLocalID lab = f $ fromRDFLabel lab 
       where f Nothing = Nothing
             f (Just x) = Just $ unpack $ getLName $ getScopeLocal x
 
-rawTriple st = (charRawGraph st, schemaRawGraph st, resourceRawGraph st)
-graphTriple st = (charGraph st, schemaGraph st, resourceGraph st)
-
-t1 (a,b,c) = a
-t2 (a,b,c) = b
-t3 (a,b,c) = c
-
--- getGraph st = t1 . graphTriple
-
+-- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
 getStateGraph st = fmap charGraph $ STM.readTVarIO st
+-- | Return the schema from STM as an RDF Graph.
 getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
 getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
+-- | Return the resource graph from STM as an RDF Graph.
 getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
 getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
 
@@ -111,6 +109,7 @@ persistRule = makeCRule "persistRule"
     [ arc sVar pVar cVar ]
 persistGraph' g = fwdApplySimple persistRule g
 
+-- | Return the sheet for a given character, season, and year (as RDFGraph).
 lookup :: STM.TVar MapState -> String -> String -> Int 
        -> IO (Maybe CM.CharacterRecord)
 lookup stateVar char season year = do
@@ -146,7 +145,6 @@ putAdvancement stateVar adv = do
              return g1
           
 -- TODO: Check for conflicting advancements 
-
 
 -- postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
              -- -> IO (Maybe G.RDFGraph)
