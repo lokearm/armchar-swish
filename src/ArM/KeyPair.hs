@@ -34,6 +34,16 @@ qparse = either error id . parseN3fromText . T.pack
 data KeyValuePair = KeyValuePair RDFLabel RDFLabel
      deriving (Show,Eq,Ord)
 
+-- | A list of KeyPair objects, typically used for property/object pairs.
+-- This is made an algebraic data type to allow class instantiation
+-- for JSON and Show compatibility, but it is internally stored as a list.
+data KeyPairList  = KeyPairList [KeyValuePair]
+    deriving Eq
+instance Show KeyPairList where
+        show (KeyPairList []) = ""
+        show (KeyPairList (x:xs)) = "  " ++ show x ++ "\n" 
+fromKeyPairList (KeyPairList xs) = xs
+
 -- | `ObjectKeyValue` represents an RDF triple.  It is used
 -- as an intermediate container before converting into a format
 -- using `KeyValuePair`.  

@@ -103,7 +103,7 @@ stateScotty stateVar = do
           char' <- param "char"
           let char = "armchar:" ++ char'
           g <- liftIO $ getStateGraph stateVar
-          jsonif $ Just $ KeyPairList $ C.getCharacterMetadata g char
+          jsonif $ Just $ C.getCharacterMetadata g char
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of

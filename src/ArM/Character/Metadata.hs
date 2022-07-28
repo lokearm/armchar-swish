@@ -60,9 +60,9 @@ uniqueSort = f . sort
 -- a triple consisting of URI, Label, and Value.
 -- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
 -- either as a prefixed name or as a full URI in angled brackets (<uri>).
-getCharacterMetadata :: G.RDFGraph -> String -> [KeyValuePair]
-getCharacterMetadata g = (map keypairFromBinding) 
-                       . ( getCharacterMetadataVB g )
+getCharacterMetadata :: G.RDFGraph -> String -> KeyPairList
+getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
+                          $  getCharacterMetadataVB g s
 
 -- | Get the variable bindings from the graph.
 getCharacterMetadataVB :: G.RDFGraph -> String -> [VB.RDFVarBinding]

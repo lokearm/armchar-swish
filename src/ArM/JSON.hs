@@ -1,6 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-
-
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  ArM.JSON
@@ -60,7 +58,6 @@ labelToData l | i /= Nothing = Right $ Left (fromJust i)
            uri = fromRDFLabel l :: Maybe ScopedName
 
 
-data KeyPairList  = KeyPairList [KeyValuePair]
 
 data KVP = KVP { prefixedid :: String }
    deriving (Show,Eq)
@@ -118,7 +115,7 @@ instance FromJSON Trait where
 instance ToJSON CharacterSheet where 
     toJSON cs = object (c:x:xs)
        where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
-             xs = map tripleToJSON (csMetadata cs)
+             xs = map tripleToJSON (fromKeyPairList $ csMetadata cs)
              c = (fromString "arm:isCharacter") .= (show $ csID cs)
 
 -- TODO  

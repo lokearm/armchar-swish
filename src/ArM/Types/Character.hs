@@ -75,13 +75,13 @@ data CharacterSheet = CharacterSheet {
          csSeason :: String,
          -- csSeason :: Maybe RDFLabel,
          csTraits :: [Trait],
-         csMetadata :: [KeyValuePair]
+         csMetadata :: KeyPairList
        }  deriving (Eq)
 instance Show CharacterSheet where
     show cs = "**" ++ show (csID cs) ++ "**\n" 
            ++ "-- " ++ ( showSheetID ) cs ++ "\n"
            ++ "Traits:\n" ++ showw ( csTraits cs )
-           ++ "Metadata Triples:\n" ++ showw ( csMetadata cs )
+           ++ "Metadata Triples:\n" ++ show ( csMetadata cs )
         where showw [] = ""
               showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
 defaultCS = CharacterSheet {
@@ -90,7 +90,7 @@ defaultCS = CharacterSheet {
          csYear = Nothing,
          csSeason = "",
          csTraits = [],
-         csMetadata = []
+         csMetadata = KeyPairList []
        }  
 
 showSheetID :: CharacterSheet -> String
@@ -112,7 +112,7 @@ csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           ts <- mapM (traitToArcListM x) (csTraits cs)
-          let ms = keyvalueToArcList x (csMetadata cs)
+          let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ct = arc x isCharacterLabel charlabel
           let ct1 = arc x typeRes csRes 
           return $ ct1:ct:foldl (++) ms ts

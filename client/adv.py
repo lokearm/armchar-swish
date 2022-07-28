@@ -16,7 +16,7 @@ output = [ "\\documentclass{scrartcl}",
            "\\title{Advancement Log}",
            "\\author{armchar example}",
            "\\begin{document}",
-           "\\titlepage" ]
+           "\\maketitle" ]
 
 y = get(conn,"/adv/cieran" )
 
