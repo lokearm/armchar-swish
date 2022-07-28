@@ -8,7 +8,7 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -- Queries to build JSON files describing separate blocks of the
--- Character Sheet.  The input for all the functions is a CharacterRecord
+-- Character Sheet.  The input for all the functions is a Character Record
 -- as stored in `CharacterMap`.  
 -- 
 --

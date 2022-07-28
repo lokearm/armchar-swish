@@ -26,6 +26,7 @@ import Network.URI (URI)
 import Swish.QName (getLName)
 import Data.Text (unpack)
 
+
 import qualified ArM.CharacterMap as CM
 import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
