@@ -99,6 +99,11 @@ stateScotty stateVar = do
           jsonif $ Just $ C.getPregameAdvancements g char
 
         -- Character Sheet
+        get "/char/:char" $ do     
+          char' <- param "char"
+          let char = "armchar:" ++ char'
+          g <- liftIO $ getStateGraph stateVar
+          jsonif $ Just $ KeyPairList $ C.getCharacterMetadata g char
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of

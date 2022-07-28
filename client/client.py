@@ -12,12 +12,33 @@ def get(conn,path):
 
 conn = http.client.HTTPConnection("localhost:3000")
 
+output = [ "\\documentclass{armsheet}", "\\begin{magus}" ]
+
+y = get(conn,"/char/cieran" )
+
+if y.__contains__( "arm:hasPlayer" ): 
+       output.append( f"\\player{{{y['arm:hasPlayer']}}}" )
+if y.__contains__( "arm:hasSaga" ): 
+       output.append( f"\\saga{{{y['arm:hasSaga']}}}" )
+if y.__contains__( "arm:hasBirthYear" ): 
+       output.append( f"\\born{{{y['arm:hasBirthYear']}}}" )
+if y.__contains__( "arm:hasGender" ): 
+       output.append( f"\\gender{{{y['arm:hasGender']}}}" )
+if y.__contains__( "arm:hasName" ): 
+       output.append( f"\\name{{{y['arm:hasName']}}}" )
+if y.__contains__( "arm:hasNationality" ): 
+       output.append( f"\\nationality{{{y['arm:hasNationality']}}}" )
+if y.__contains__( "arm:hasProfession" ): 
+       output.append( f"\\concept{{{y['arm:hasProfession']}}}" )
+
+#   "arm:hasAlmaMater": "Stonehenge",
+
+
 y = get(conn,"/ability/cieran/1217/Autumn" )
 
 ab = [ (i.get("arm:hasLabel","???"),i.get("arm:hasSpeciality","-"),i.get("arm:hasScore","-"),i.get("arm:hasXP","-")) for i in y ]
 ab.sort()
 
-output = [ "\\documentclass{armsheet}", "\\begin{magus}" ]
 
 output.append( "\\begin{abilities}" )
 for i in ab:
@@ -47,6 +68,7 @@ y = get(conn,"/art/cieran/1217/Autumn" )
 
 for i in y:
     output.append( f'\AnArt{{{i.get("arm:hasLabel","?").lower()}}}{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasXP","?")}}}{{{i.get("arm:hasVis","-")}}}' )
+
 
 output.append(  "\\end{magus}" )
 f = open("magus.tex", "w")

@@ -36,14 +36,17 @@ query c = qparse $  prefixes
      ++ " ?property rdfs:label ?label . "
 
 
+-- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
 characterFromGraph' = Q.rdfQueryFind
              $ toRDFGraph $ DS.fromList [ arc cVar typeRes armCharacter ]
+-- | Get the labels of all characters in a given graph.
 characterFromGraph :: RDFGraph -> [RDFLabel]
 characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph' 
     where f [] = []
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
+-- | Sort the list and remove duplicates.
 uniqueSort = f . sort
     where f [] = []
           f (x:[]) = x:[]
