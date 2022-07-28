@@ -100,8 +100,7 @@ stateScotty stateVar = do
 
         -- Character Sheet
         get "/char/:char" $ do     
-          char' <- param "char"
-          let char = "armchar:" ++ char'
+          char <- fmap AR.armcharRes $ param "char"
           g <- liftIO $ getStateGraph stateVar
           jsonif $ Just $ C.getCharacterMetadata g char
         get "/cs/:char/:year/:season" $ do     

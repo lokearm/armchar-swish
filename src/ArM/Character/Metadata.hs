@@ -30,9 +30,13 @@ import Data.Set (fromList)
 -- | Construct the query for a given character 'c', for use
 -- with the following functions .
 query c = G.toRDFGraph $ fromList
-   [ arc (armcharRes c) (G.Var "property") (G.Var "value")
+   [ arc c (G.Var "property") (G.Var "value")
    , arc (G.Var "property") typeRes armCharacterProperty
    , arc (G.Var "property") labelRes  (G.Var "label") ]
+queryOld c = qparse $  prefixes
+     ++ " " ++ c ++ " ?property ?value . "
+     ++ " ?property rdf:type  arm:CharacterProperty . "
+     ++ " ?property rdfs:label ?label . "
 
 -- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
@@ -55,11 +59,11 @@ uniqueSort = f . sort
 -- a triple consisting of URI, Label, and Value.
 -- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
 -- either as a prefixed name or as a full URI in angled brackets (<uri>).
-getCharacterMetadata :: G.RDFGraph -> String -> KeyPairList
+getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
 getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
                           $  getCharacterMetadataVB g s
 
 -- | Get the variable bindings from the graph.
-getCharacterMetadataVB :: G.RDFGraph -> String -> [VB.RDFVarBinding]
+getCharacterMetadataVB :: G.RDFGraph -> RDFLabel -> [VB.RDFVarBinding]
 getCharacterMetadataVB g c = Q.rdfQueryFind (query c) g
 

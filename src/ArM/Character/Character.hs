@@ -89,7 +89,7 @@ getInitialCS' g c | x == Nothing = Nothing
             csTraits = [],
             csMetadata = getCharacterMetadata g cs
          }
-         where cs = show $ fromJust $ x
+         where cs = fromJust $ x
                x = getInitialSheet g c
 
 -- | Given an identifier for the character, find the identifier for
