@@ -3,7 +3,6 @@
 module ArM.Character.Advancement ( Advancement(..)
                                  , getPregameAdvancements
                                  , getIngameAdvancements
-                                 , advancementIDstring
                                  , defaultAdvancement
                                  , getSeason
                                  , getYear
@@ -35,12 +34,11 @@ import ArM.Rules.Aux
 -- Traits (multiple)
 --    arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ] ;
 
-qt :: String -> RDFGraph
-qt s = qparse $ prefixes 
-      ++ s ++ " <https://hg.schaathun.net/armchar/schema#advanceTrait> ?id . " 
-      ++ "?id ?property ?value . "
-      ++ "?property rdfs:label ?label . "
-
+qt :: RDFLabel -> RDFGraph
+qt s = toRDFGraph $ fromList
+      [ arc s (armRes "advanceTrait") (Var "id")
+      , arc (Var "id") (Var "property") (Var "value")
+      , arc (Var "property") labelRes (Var "label") ]
 
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
@@ -79,12 +77,10 @@ fixAdvancements g adv = map (fixAdv g) adv
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
 fixAdv g a = a { traits = sort $ getTraits q g }
-    where qt' = qt . advancementIDstring
-          q = qt' a
+    where q = qt $ rdfid a
           getTraits q g = map toTrait
                $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
 
-advancementIDstring = show . rdfid 
 
 
 -- | Make an Advancement object from a list of Quads
