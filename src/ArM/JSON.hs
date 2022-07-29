@@ -42,12 +42,25 @@ import qualified Data.Aeson.KeyMap as KM
 -- Another comprehensive tutorial:
 -- https://williamyaoh.com/posts/2019-10-19-a-cheatsheet-to-json-handling.html
 
+-- | Convert a `KeyValuePair` to JSON
 tripleToJSON (KeyValuePair a b) = 
     ((getKey $ fromJust $ fromRDFLabel a), (toJSON b))
 
+-- | Convert a string to an RDFLabel, parsing URIs
+stringToRDFLabel (k:ks) | k == '<'  = toRDFLabel $ fromJust $ parseURI $ rdfuri ks
+                        | otherwise = f x $ intercalate ":" xs
+     where (x:xs) = splitOn ":" $ (k:ks)
+           f "arm" = armRes
+           f "armchar" = armcharRes
+           f "armr" = armrRes
+           rdfuri (x:[]) = []
+           rdfuri (x:xs) = x:rdfuri xs
+
+-- | Convert an RDFLabel to an Aeson Key for JSON serialisation
 getKey :: RDFLabel -> Key
 getKey = fromString  . show
 
+-- | Convert an RDFLabel to String/Int/URI for serialisation purposes.
 labelToData :: RDFLabel -> Either KVP (Either Int String)
 labelToData l | i /= Nothing = Right $ Left (fromJust i)
               | s /= Nothing = Right $ Right (fromJust s)
@@ -57,8 +70,8 @@ labelToData l | i /= Nothing = Right $ Left (fromJust i)
            i = fromRDFLabel l :: Maybe Int
            uri = fromRDFLabel l :: Maybe ScopedName
 
-
-
+-- | A `KVP` holds a prefixed ID for RDF serialisation.
+-- In JSON this appears as an object with only the `prefixedid` attribute.
 data KVP = KVP { prefixedid :: String }
    deriving (Show,Eq)
 instance ToJSON KVP where 
@@ -66,25 +79,19 @@ instance ToJSON KVP where
 instance FromJSON KVP where 
     parseJSON (Object x) = KVP <$> x .: "prefixedid"
 
+-- ** RDFLabel
+
 instance ToJSON RDFLabel where
     toJSON  = f . labelToData
         where f (Left x) = toJSON x
               f (Right (Left x)) = toJSON x
               f (Right (Right x)) = toJSON x
-
 instance FromJSON RDFLabel where
    parseJSON (Number x) = return $ TypedLit (T.pack $ show  x) xsdInteger
    parseJSON (String x) = return $ Lit x
    parseJSON x = fmap (stringToRDFLabel . prefixedid) $ parseJSON x
 
-stringToRDFLabel (k:ks) | k == '<'  = toRDFLabel $ fromJust $ parseURI $ rdfuri ks
-                        | otherwise = f x $ intercalate ":" xs
-     where (x:xs) = splitOn ":" $ (k:ks)
-           f "arm" = Res . makeSN 
-           f "armchar" = armcharRes
-           f "armr" = armrRes
-           rdfuri (x:[]) = []
-           rdfuri (x:xs) = x:rdfuri xs
+-- ** KeyPairList
 
 instance FromJSON KeyPairList  where
   parseJSON = withObject "KeyPairList" $ \obj ->
@@ -94,11 +101,15 @@ instance FromJSON KeyPairList  where
 instance ToJSON KeyPairList where 
     toJSON (KeyPairList t) = object $ map tripleToJSON t
 
+-- | Parse a JSON attribute/value pair and return a KeyValuePair 
+-- (property/object in RDF terms)
+-- This is a an axiliary for `parseJSON` for `KeyPairList`
 pairToKeyValue (x,y) = do
     v <- parseJSON y
     return $ KeyValuePair k v
     where k = stringToRDFLabel $ toString x
 
+-- ** Trait
 
 instance ToJSON Trait where 
     toJSON t = toJSON $ KeyPairList $ f (traitID t)
@@ -111,6 +122,7 @@ instance FromJSON Trait where
                      return $ kpToTrait' v
        where kpToTrait' (KeyPairList x ) = kpToTrait x
 
+-- ** CharacterSheet
 
 instance ToJSON CharacterSheet where 
     toJSON cs = object (c:x:xs)
@@ -118,8 +130,7 @@ instance ToJSON CharacterSheet where
              xs = map tripleToJSON (fromKeyPairList $ csMetadata cs)
              c = (fromString "arm:isCharacter") .= (show $ csID cs)
 
--- TODO  
--- instance FromJSON CharacterSheet where 
+-- ** Advancement
 
 data ProtoAdvancement = ProtoAdvancement {
     advancementid :: RDFLabel,
@@ -133,14 +144,12 @@ instance ToJSON Advancement where
              y = (fromString "advancementcontents") .= KeyPairList (contents cs)
              c = (fromString "advancementid") .= toJSON (rdfid cs)
 
--- TODO  
 instance FromJSON Advancement where 
    parseJSON = fmap fromProtoAdvancement . parseJSON
 instance FromJSON ProtoAdvancement where 
    parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementid"
                                            <*> v .: "advancementcontents"
                                            <*> v .: "advancementtraits"
-fromKPL (KeyPairList x ) = x
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement {
                      rdfid = advancementid adv,
@@ -150,3 +159,4 @@ fromProtoAdvancement adv = defaultAdvancement {
                      advSortIndex = getSortIndex ys,
                      contents = ys
                  } where ys = fromKPL $ advancementcontents adv
+                         fromKPL (KeyPairList x ) = x
