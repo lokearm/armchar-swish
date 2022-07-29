@@ -69,11 +69,9 @@ pVar = (Var "p")
 cVar = (Var "c")
 csVar = (Var "cs")
 
-atRes = armRes "advanceTrait" 
 gtRes = armRes "grantsTrait" 
 htRes = armRes "hasTrait" 
 csRes = armRes "CharacterSheet" 
-caRes = armRes "CharacterAdvancement" 
 labelRes = (Res rdfsLabel)
 
 listToRDFGraph :: [RDFTriple] -> RDFGraph

@@ -41,8 +41,8 @@ grantRule = makeCRule  "grantRule"
 
 -- | apply grantsTrait to an Advancement
 advancevfgrantRule = makeCRule  "advancevfgrantRule" 
-     [ arc sVar atRes oVar,
+     [ arc sVar (armRes "advanceTrait") oVar,
        arc oVar typeRes tVar,   -- o a t
-       arc sVar typeRes caRes,
+       arc sVar typeRes ( armRes "CharacterAdvancement" ),
        arc tVar gtRes cVar ]
-     [ arc sVar atRes oVar ]
+     [ arc sVar (armRes "advanceTrait") oVar ]
