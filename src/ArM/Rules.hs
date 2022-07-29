@@ -58,16 +58,10 @@ advancementindexRule = makeCRule "advancementindexRule"
     [ tArc, arc tVar (armRes "hasAdvancementIndex") cVar ]
     [ arc sVar (armRes "hasAdvancementIndex") cVar ]
 
--- | Add indices used for sorting advancements
-initialsheetRule = makeCRule "initialsheetRule" 
-    [ arc cVar  (armRes "hasInitialSheet") sVar ]
-    [ arc sVar isCharacterLabel cVar,
-      arc sVar typeRes (armRes "CharacterSheet") ]
-
 -- | Initial inferences on the character data, to be applied without
 -- the schema
 prepareCharGraph :: RDFGraph -> RDFGraph
-prepareCharGraph = fwdApplyList [ initialsheetRule, traitclasstypeRule ]
+prepareCharGraph = fwdApplyList [ traitclasstypeRule ]
 
 -- | Make all necessary inferences before retrieving character data
 prepareInitialCharacter :: RDFGraph -> RDFGraph
