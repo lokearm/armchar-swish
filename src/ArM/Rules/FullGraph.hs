@@ -17,7 +17,7 @@ import ArM.Resources
 import ArM.Rules.Aux
 
 -- | Infere resource properties from class
-prepareGraph = fwdApplyListR [ advancevfgrantRule, grantRule, spectraitRule, rRule ]
+prepareGraph = fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
 
 rRule = makeCRule "rRule" l1 l2
     where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
@@ -31,13 +31,6 @@ spectraitRule = makeCRule  "spectraitRule"
       , arc tVar typeRes ( armRes  "SpecialTraitClass" ) ] 
       [ arc sVar ( armRes  "isSpecialTrait" ) tVar ]
 
--- | apply grantsTrait to a CharacterSheet
-grantRule = makeCRule  "grantRule" 
-     [ arc sVar htRes oVar,     -- s hasTrait o
-       arc oVar typeRes tVar,   -- o a t
-       arc sVar typeRes csRes,  -- s a CharacterSheet
-       arc tVar gtRes cVar ]    -- o grantsTrait c
-     [ arc sVar htRes cVar ]    -- s
 
 -- | apply grantsTrait to an Advancement
 advancevfgrantRule = makeCRule  "advancevfgrantRule" 
