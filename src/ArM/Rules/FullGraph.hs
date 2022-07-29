@@ -45,4 +45,4 @@ advancevfgrantRule = makeCRule  "advancevfgrantRule"
        arc oVar typeRes tVar,   -- o a t
        arc sVar typeRes ( armRes "CharacterAdvancement" ),
        arc tVar gtRes cVar ]
-     [ arc sVar (armRes "advanceTrait") oVar ]
+     [ arc sVar (armRes "advanceTrait") cVar ]
