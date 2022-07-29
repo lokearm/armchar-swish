@@ -70,16 +70,6 @@ stateScotty stateVar = do
           let char = AR.armcharRes char'
           g <- liftIO $ getStateGraph stateVar
           jsonif $ C.getGameStartCharacter g char 
-        get "/graph/initial/:char" $ do     
-          char' <- param "char"
-          let char = AR.armcharRes char'
-          g <- liftIO $ getStateGraph stateVar
-          graphif $ C.getInitialCS g char 
-        get "/initial/:char" $ do     
-          char' <- param "char"
-          let char = AR.armcharRes char'
-          g <- liftIO $ getStateGraph stateVar
-          jsonif $ C.getInitialCS g char 
 
         -- Advancement lists
         get "/show/adv/:char" $ do     

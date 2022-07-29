@@ -43,8 +43,7 @@ armchar:cieran a arm:Magus, arm:Character ;
 	       arm:hasProfession "Rusticus (magus ex Miscellanea)" ;
 	       arm:hasNationality "Irish" ;
                arm:hasAlmaMater "Stonehenge" ;
-               arm:hasSaga armchar:contestedlands ;
-               arm:hasInitialSheet :zero .
+               arm:hasSaga armchar:contestedlands .
 
 # Saga and Covenant are reasonable entities to define
 # in their own right, but this is not fully implemented
@@ -55,10 +54,9 @@ armchar:elksrun  a arm:Covenant ;
 	       arm:hasSetting "Hibernia" ;
                arm:hasSaga armchar:contestedlands .
 
-# Initial character sheet.
-# The initial sheet defines the pre-game traits which are not governed
-# by specific age brackets, that is virtues and flaws.
-:zero arm:hasVirtue
+:zeroadv arm:advanceCharacter armchar:cieran ;
+   a arm:BaseAdvancement ; 
+   arm:advanceTrait 
     [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
     [ arm:traitClass armr:craftmagic ; arm:hasScore 0 ],
     [ arm:traitClass armr:spellfoci ; arm:hasScore 0 ],
@@ -66,25 +64,16 @@ armchar:elksrun  a arm:Covenant ;
     [ arm:traitClass armr:skilledParens ],
     [ arm:traitClass armr:bookLearner ],
     [ arm:traitClass armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
-    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ] .
-:zero arm:hasFlaw
+    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ],
     [ arm:traitClass armr:meddler ; a armr:majorFlaw ],
     [ arm:traitClass armr:shortRangedMagic ],
     [ arm:traitClass armr:weakSpontaneousMagic ; arm:hasScore 0 ],
     [ arm:traitClass armr:mistakenIdentity ],
-    [ arm:traitClass armr:carefree ; a armr:minorFlaw ] .
-# TODO.  There is a problem with major/minor personality traits.
-
-:zero arm:hasCharacteristic
+    [ arm:traitClass armr:carefree ; a armr:minorFlaw ],
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore -1 ],
     [ arm:traitClass armr:com ; arm:hasScore -1 ], [ arm:traitClass armr:pre ; arm:hasScore 0 ],
     [ arm:traitClass armr:str ; arm:hasScore 2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
-    [ arm:traitClass armr:dex ; arm:hasScore 2 ], [ arm:traitClass armr:qik ; arm:hasScore -3 ] . 
-
-# Note.  The only Personality Traits defined are those implied by flaws
-
-# General Abilities
-:zero arm:hasAbility
+    [ arm:traitClass armr:dex ; arm:hasScore 2 ], [ arm:traitClass armr:qik ; arm:hasScore -3 ],
    [ arm:traitClass armr:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
 
 # Pre-game Advancement

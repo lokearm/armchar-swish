@@ -12,7 +12,6 @@
 -----------------------------------------------------------------------------
 module ArM.Character.Character ( CharacterSheet(..)
                                , getGameStartCharacter
-                               , getInitialCS
                                , getAllCS
                                , ToRDFGraph(..)
                                ) where
@@ -36,11 +35,17 @@ import ArM.Types.Character
 getCharacterMetadata = CM.getCharacterMetadata
 
 
-
 getGameStartCharacter :: G.RDFGraph -> G.RDFLabel -> Maybe CharacterSheet
-getGameStartCharacter g label | x == Nothing = Nothing
-                              | otherwise    = Just $ getGameStartCS g $ fromJust x
-     where x = getInitialCS g label
+getGameStartCharacter g label = Just $ getGameStartCS g y
+     where x = CM.fromRDFGraph g label :: Character
+           y = getInitialCharacter x
+--
+-- | get initial CharacterSheet from an RDFGraph
+getInitialCharacter :: Character -> CharacterSheet
+getInitialCharacter c = defaultCS {
+            csID = characterID c,
+            csMetadata = characterData  c
+         }
 
 getGameStartCS :: G.RDFGraph -> CharacterSheet -> CharacterSheet
 getGameStartCS g cs = foldl advanceCharacter cs as
@@ -71,46 +76,4 @@ advanceCharacter cs adv = cs {
      csSeason = season adv,
      csTraits = advanceTraitList (csTraits cs) (traits adv)
      }
-
-
--- | get initial CharacterSheet from an RDFGraph
-getInitialCS :: G.RDFGraph -> G.RDFLabel -> Maybe CharacterSheet
-getInitialCS g label | x == Nothing = Nothing 
-                     | otherwise    = Just $ fixCS g $ fromJust x
-                           where x = getInitialCS' g label
-
-getInitialCS' :: G.RDFGraph -> G.RDFLabel -> Maybe CharacterSheet
-getInitialCS' g c | x == Nothing = Nothing
-                  | otherwise = Just defaultCS {
-            csID = c,
-            sheetID = x,
-            csTraits = [],
-            csMetadata = getCharacterMetadata g cs
-         }
-         where cs = fromJust $ x
-               x = getInitialSheet g c
-
--- | Given an identifier for the character, find the identifier for
--- the initial character sheet
-getInitialSheet :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFLabel
-getInitialSheet g c = f vb'
-    where 
-      vb' = Q.rdfQueryFind q g
-      f [] = Nothing
-      f (x:xs) = vbMap x (G.Var "s")
-      q = listToRDFGraph  $ [ G.arc c (armRes  "hasInitialSheet") sVar ]
-
-
--- | Auxiliary for 'getInitialSheet'
-fixCS :: G.RDFGraph -> CharacterSheet -> CharacterSheet
-fixCS g a = a { csTraits = sort $ getTraits a g }
-
--- | Get a list of traits. Auxiliary function for 'fixCS'.
-getTraits :: CharacterSheet -> G.RDFGraph -> [Trait]
-getTraits a g | x == Nothing = []
-              | otherwise    = map toTrait 
-               $ keypairSplit $ map objectFromBinding $ Q.rdfQueryFind q g 
-    where q = qgraph (armRes "hasTrait")  (fromJust x)
-          x = sheetID a
-
 

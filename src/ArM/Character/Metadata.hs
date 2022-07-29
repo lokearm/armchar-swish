@@ -16,7 +16,9 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Character.Metadata ( getCharacterMetadata, characterFromGraph ) where
+module ArM.Character.Metadata ( getCharacterMetadata
+                              , characterFromGraph
+                              , fromRDFGraph ) where
  
 
 import ArM.Rules.Aux
