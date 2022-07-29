@@ -53,7 +53,6 @@ import ArM.Load (getRawGraph)
 import qualified ArM.Resources as AR
 import qualified ArM.Character.Character as C
 import qualified ArM.CharacterQuery as CQ
-import qualified ArM.CharacterMap as CM
 
 authf u p = return $ u == "user" && secureMemFromByteString p == password
 password :: SecureMem

@@ -13,7 +13,16 @@
 -- 
 --
 -----------------------------------------------------------------------------
-module ArM.CharacterQuery where
+module ArM.CharacterQuery ( getTraitList
+                          , getVirtues
+                          , getFlaws
+                          , getPTs
+                          , getAbilities
+                          , getArts
+                          , getReputations
+                          , getSpells
+                          , getCharacteristics
+                          ) where
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -21,8 +30,6 @@ import qualified ArM.Character.Character as C
 import           ArM.Resources 
 import           ArM.KeyPair
 import qualified ArM.Character.Trait as CT
-import Data.Maybe (fromJust)
-import Data.Set (fromList)
 import ArM.Rules.Aux
 import Swish.RDF.Vocabulary.RDF
 
@@ -30,8 +37,9 @@ idVar = (G.Var "id")
 propertyVar = (G.Var "property")
 valueVar = (G.Var "value")
 labelVar = (G.Var "label")
+
 arcs :: G.RDFLabel -> G.RDFGraph
-arcs prop = G.toRDFGraph . fromList $ [ G.arc sVar typeRes csRes
+arcs prop = listToRDFGraph [ G.arc sVar typeRes csRes
            , G.arc sVar prop idVar 
            , G.arc idVar propertyVar valueVar 
            , G.arc propertyVar labelRes labelVar  ]
@@ -42,11 +50,11 @@ getTraitList prop = map CT.toTrait
                . keypairSplit . map objectFromBinding . Q.rdfQueryFind q
     where q = arcs prop
 
-getVirtues = getTraitList $ G.Res $ makeSN "hasVirtue"
-getFlaws = getTraitList $ G.Res $ makeSN "hasFlaw"
-getPTs = getTraitList $ G.Res $ makeSN "hasPersonalityTrait"
-getAbilities = getTraitList $ G.Res $ makeSN "hasAbility"
-getArts = getTraitList $ G.Res $ makeSN "hasArt"
-getReputations = getTraitList $ G.Res $ makeSN "hasReputation"
-getSpells = getTraitList $ G.Res $ makeSN "hasSpell"
-getCharacteristics = getTraitList $ G.Res $ makeSN "hasCharacteristic"
+getVirtues = getTraitList $ armRes "hasVirtue"
+getFlaws = getTraitList $ armRes "hasFlaw"
+getPTs = getTraitList $ armRes "hasPersonalityTrait"
+getAbilities = getTraitList $ armRes "hasAbility"
+getArts = getTraitList $ armRes "hasArt"
+getReputations = getTraitList $ armRes "hasReputation"
+getSpells = getTraitList $ armRes "hasSpell"
+getCharacteristics = getTraitList $ armRes "hasCharacteristic"

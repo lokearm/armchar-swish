@@ -27,7 +27,6 @@ import Data.Maybe (fromJust)
 
 import qualified ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
-import qualified ArM.CharacterMap as CM
 import qualified ArM.Resources as AR
 import ArM.JSON
 
@@ -106,7 +105,7 @@ stateScotty stateVar = do
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
-             Just (CM.CharacterRecord cgraph) -> do
+             Just (CharacterRecord cgraph) -> do
                 text $ T.fromStrict $ formatGraphAsText $ cgraph
              Nothing -> notfound404 
 
@@ -191,7 +190,7 @@ getParam = do
 jsonif' Nothing _  = notfound404
 jsonif' (Just x) f =  jsonif'' x f
 
-jsonif'' (CM.CharacterRecord x) f = do
+jsonif'' (CharacterRecord x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             json $ f x
@@ -200,7 +199,7 @@ jsonif'' (CM.CharacterRecord x) f = do
 
 textif' Nothing _  = notfound404
 textif' (Just x) f =  textif'' x f
-textif'' (CM.CharacterRecord x) f = do
+textif'' (CharacterRecord x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             text $ T.pack $ show $ f x

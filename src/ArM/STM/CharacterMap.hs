@@ -10,14 +10,15 @@
 -- A Map to store character sheets.
 -- Each character sheet is stored as one RDFGraph (embedded in the
 -- `CharacterRecord` type).
+-- This is an auxiliary for STM and should normally not be imported elsewhere
 --
 -----------------------------------------------------------------------------
-module ArM.CharacterMap ( CharacterRecord(..)
-                        , CharacterMap
-                        , insertListS
-                        , empty 
-                        , ArM.CharacterMap.lookup 
-                        ) where
+module ArM.STM.CharacterMap ( CharacterRecord(..)
+                            , CharacterMap
+                            , insertListS
+                            , empty 
+                            , ArM.STM.CharacterMap.lookup 
+                            ) where
 
 import qualified Data.Map as M
 import qualified Swish.RDF.Graph as G

@@ -15,7 +15,15 @@
 -- `lookup` function.
 --
 -----------------------------------------------------------------------------
-module ArM.STM where
+module ArM.STM ( ArM.STM.lookup
+               , CM.CharacterRecord(..)
+               , getState
+               , getStateGraph
+               , getSchemaGraph
+               , getResourceGraph
+               , putAdvancement
+               , MapState(..)
+               ) where
 
 import qualified Control.Concurrent.STM as STM
 import           Control.Monad.IO.Class (liftIO)
@@ -24,7 +32,7 @@ import qualified Swish.RDF.Query as Q
 import           Data.Maybe (fromJust)
 import           Network.URI (URI)
 
-import qualified ArM.CharacterMap as CM
+import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
