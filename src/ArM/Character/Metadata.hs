@@ -7,7 +7,12 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Handling character metadata
+-- Handling character metadata.
+-- Metadata can be extracted for either a Character or a CharacterSheet
+-- by giving just the ID.  Metadata can also be extracted as part of
+-- a Character object using `fromRDFGraph`.
+-- There is also a function, `characterFromGraph` to get the IDs of
+-- all Character objects in a graph.
 --
 -----------------------------------------------------------------------------
 
@@ -19,11 +24,11 @@ import ArM.Resources
 import ArM.KeyPair
 import ArM.Types.Character
 
-import Swish.RDF.Graph as G
-import Swish.RDF.Query as Q
-import Swish.RDF.VarBinding as VB 
-import Swish.VarBinding 
-import Data.List (sort)
+import           Swish.RDF.Graph as G
+import qualified Swish.RDF.Query as Q
+import qualified Swish.RDF.VarBinding as VB 
+import           Swish.VarBinding (vbMap)
+import           Data.List (sort)
 
 
 -- | Construct a query to get all
