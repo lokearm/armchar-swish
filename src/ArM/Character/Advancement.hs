@@ -32,11 +32,6 @@ import ArM.Rules.Aux
 -- Traits (multiple)
 --    arm:advanceTrait [ a armr:herbam ; arm:addedXP 21 ] ;
 
-qt :: RDFLabel -> RDFGraph
-qt s = listToRDFGraph 
-      [ arc s (armRes "advanceTrait") (Var "id")
-      , arc (Var "id") (Var "property") (Var "value")
-      , arc (Var "property") labelRes (Var "label") ]
 
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
@@ -56,7 +51,7 @@ queryGraph :: RDFLabel -> RDFLabel -> RDFGraph
 queryGraph c1 = listToRDFGraph  . f c1
    where f c1 c2 = [ arc (Var "id") typeRes c1,
             arc (Var "id") (Var "property") (Var "value"),
-            arc (Var "id") (Res $ makeSN "advanceCharacter") c2,
+            arc (Var "id") (armRes  "advanceCharacter") c2,
             arc (Var "property") labelRes (Var "label") ]
 
 -- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
@@ -75,7 +70,7 @@ fixAdvancements g adv = map (fixAdv g) adv
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
 fixAdv g a = a { traits = sort $ getTraits q g }
-    where q = qt $ rdfid a
+    where q = qgraph (armRes "advanceTrait") (rdfid a)
           getTraits q g = map toTrait
                $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
 

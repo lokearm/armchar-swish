@@ -67,6 +67,20 @@ traitToArcListM cs t
                        ts = traitContents t
 
 
+data Character = Character {
+         characterID :: RDFLabel,
+         characterData :: KeyPairList
+       }  deriving (Eq)
+instance Show Character where
+    show cs = "**" ++ show (characterID cs) ++ "**\n" 
+           ++ "Metadata Triples:\n" ++ show ( characterData cs )
+        where showw [] = ""
+              showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
+defaultCharacter = Character {
+         characterID = noSuchCharacter,
+         characterData = KeyPairList []
+       }  
+
 data CharacterSheet = CharacterSheet {
          csID :: RDFLabel,
          sheetID :: Maybe RDFLabel,

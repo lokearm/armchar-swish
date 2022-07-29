@@ -30,7 +30,7 @@ import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
-import           ArM.Rules.Aux (sVar,labelRes,listToRDFGraph)
+import           ArM.Rules.Aux (sVar,labelRes,listToRDFGraph,qgraph)
 import ArM.Types.Character
 
 getCharacterMetadata = CM.getCharacterMetadata
@@ -98,7 +98,7 @@ getInitialSheet g c = f vb'
       vb' = Q.rdfQueryFind q g
       f [] = Nothing
       f (x:xs) = vbMap x (G.Var "s")
-      q = listToRDFGraph  $ [ G.arc c (G.Res $ makeSN "hasInitialSheet") sVar ]
+      q = listToRDFGraph  $ [ G.arc c (armRes  "hasInitialSheet") sVar ]
 
 
 -- | Auxiliary for 'getInitialSheet'
@@ -110,13 +110,7 @@ getTraits :: CharacterSheet -> G.RDFGraph -> [Trait]
 getTraits a g | x == Nothing = []
               | otherwise    = map toTrait 
                $ keypairSplit $ map objectFromBinding $ Q.rdfQueryFind q g 
-    where q = cqt $ fromJust $ x
+    where q = qgraph (armRes "hasTrait")  (fromJust x)
           x = sheetID a
 
--- | Query Graph to get traits for CharacterSheet
-cqt :: G.RDFLabel -> G.RDFGraph
-cqt s = listToRDFGraph 
-      [ G.arc s (armRes "hasTrait") (G.Var "id")
-      , G.arc (G.Var "id") (G.Var "property") (G.Var "value")
-      , G.arc (G.Var "property") labelRes (G.Var "label") ]
 

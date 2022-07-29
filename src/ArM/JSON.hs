@@ -17,6 +17,7 @@ import Data.Aeson
 import Data.Aeson.Key
 import Swish.RDF.Graph (RDFLabel(..), fromRDFLabel, toRDFLabel)
 import Swish.Namespace (ScopedName)
+import ArM.Types.Character
 import ArM.Character
 import ArM.KeyPair
 import ArM.Resources
@@ -129,6 +130,13 @@ instance ToJSON CharacterSheet where
        where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
              xs = map tripleToJSON (fromKeyPairList $ csMetadata cs)
              c = (fromString "arm:isCharacter") .= (show $ csID cs)
+
+instance ToJSON Character where 
+    toJSON c = toJSON $ p x xs
+        where x = KeyValuePair prefixedidRes $ characterID c
+              xs = characterData c 
+              p x (KeyPairList xs) = KeyPairList (x:xs) 
+
 
 -- ** Advancement
 

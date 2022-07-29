@@ -17,6 +17,7 @@ module ArM.Character.Metadata ( getCharacterMetadata, characterFromGraph ) where
 import ArM.Rules.Aux
 import ArM.Resources
 import ArM.KeyPair
+import ArM.Types.Character
 
 import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
@@ -62,3 +63,9 @@ getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
 getCharacterMetadataVB :: G.RDFGraph -> RDFLabel -> [VB.RDFVarBinding]
 getCharacterMetadataVB g c = Q.rdfQueryFind (query c) g
 
+
+instance FromRDFGraph Character where
+   fromRDFGraph g label = defaultCharacter {
+                 characterID = label,
+                 characterData = getCharacterMetadata g label
+                 }

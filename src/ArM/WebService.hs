@@ -25,6 +25,7 @@ import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
 import Data.Maybe (fromJust)
 
+import qualified ArM.Types.Character as TC
 import qualified ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.Resources as AR
@@ -101,7 +102,8 @@ stateScotty stateVar = do
         get "/char/:char" $ do     
           char <- fmap AR.armcharRes $ param "char"
           g <- liftIO $ getStateGraph stateVar
-          jsonif $ Just $ C.getCharacterMetadata g char
+          let c =  TC.fromRDFGraph g char :: TC.Character
+          json c
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
