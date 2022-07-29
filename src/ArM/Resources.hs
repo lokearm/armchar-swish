@@ -18,24 +18,17 @@ import Swish.RDF.Graph
 import Network.URI
 import qualified Data.Text as T
 import qualified Swish.QName as QN
+import           Data.Text (unpack)
+
+-- * Ontology Files
 
 armFile = "Ontology/arm.ttl"
 resourceFile = "Ontology/resources.ttl"
 characterFile = "Test/cieran.ttl"
 baseURI = Nothing
-
-prefixes = "@prefix owl: <http://www.w3.org/2002/07/owl#> . "
-   ++ "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . "
-   ++ "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . "
-   ++ "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . "
-   ++ "@prefix foaf: <http://xmlns.com/foaf/0.1/>. "
-   ++ "@prefix dc: <http://purl.org/dc/elements/1.1/> . "
-   ++ "@prefix arm: <https://hg.schaathun.net/armchar/schema#> . "
-   ++ "@prefix armr: <https://hg.schaathun.net/armchar/resources#> . "
-   ++ "@prefix armchar: <https://hg.schaathun.net/armchar/character/> . "
-
     
--- URIs
+-- * URIs and NameSpaces
+
 auth = URIAuth "" "hg.schaathun.net" ""
 armURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
@@ -60,10 +53,20 @@ armcharURI = URI { uriScheme = "https:",
 armNS = makeNamespace (Just $ T.pack "arm") armURI
 rulesNS = makeNamespace (Just $ T.pack "armrules") armURI
 
+-- * Utility functions to manage local names
+
 -- | Define a local name from a String
 newLName s = case (QN.newLName $ T.pack s) of
    (Nothing) -> QN.emptyLName
    (Just ln) -> ln
+
+-- | Extract the local name (as String) from an RDFLabel.
+getLocalID :: RDFLabel -> Maybe String
+getLocalID lab = f $ fromRDFLabel lab 
+      where f Nothing = Nothing
+            f (Just x) = Just $ unpack $ QN.getLName $ getScopeLocal x
+
+-- * Convenience functions to make ontology labels
 
 makeSN s = makeScopedName (Just $ T.pack "arm") armURI (newLName s)
 armRes :: String -> RDFLabel
@@ -72,6 +75,8 @@ armcharRes :: String -> RDFLabel
 armcharRes s = Res $ makeScopedName (Just $ T.pack "armchar") armcharURI (newLName s)
 armrRes :: String -> RDFLabel
 armrRes s = Res $ makeScopedName (Just $ T.pack "armr") armrURI (newLName s)
+
+-- * Ontology Labels
 
 isCharacterLabel = armRes  "isCharacter"
 repeatableLabel = armRes  "RepeatableTrait"

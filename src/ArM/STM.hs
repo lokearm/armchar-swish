@@ -18,28 +18,19 @@
 module ArM.STM where
 
 import qualified Control.Concurrent.STM as STM
-import Control.Monad.IO.Class (liftIO)
+import           Control.Monad.IO.Class (liftIO)
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import Data.Maybe (fromJust)
-import Network.URI (URI)
-import Swish.QName (getLName)
-import Data.Text (unpack)
-
+import           Data.Maybe (fromJust)
+import           Network.URI (URI)
 
 import qualified ArM.CharacterMap as CM
 import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
-
-import ArM.Character.Metadata (characterFromGraph)
-import ArM.Rules.Aux
-import ArM.Rules (makeGraphs)
-import ArM.Resources
-import Swish.RDF.Graph
-
-import Swish.Namespace (ScopedName,getScopeLocal)
-
+import           ArM.Rules.Aux
+import           ArM.Rules (makeGraphs)
+import           ArM.Resources
 
 -- | The `MapState` object defines the state of the server.
 -- The server process maintains a single `MapState` object in
@@ -51,7 +42,7 @@ data MapState = MapState { charGraph :: G.RDFGraph,
                            charRawGraph :: G.RDFGraph,
                            schemaRawGraph :: G.RDFGraph,
                            resourceRawGraph :: G.RDFGraph,
-                           characterLabel :: RDFLabel,
+                           characterLabel :: G.RDFLabel,
                            characterID :: String,
                            characterMap :: CM.CharacterMap
                            }
@@ -59,7 +50,7 @@ data MapState = MapState { charGraph :: G.RDFGraph,
 -- getSTM res schema g = STM.newTVarIO $ fromJust $ getState res schema g 
 -- | Make the State object to be stored in STM.
 -- The return value is Either a MapState object or an error message.
-getState :: RDFGraph -> RDFGraph -> RDFGraph -> Either MapState String
+getState :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> Either MapState String
 getState res schema g 
     | cl == Nothing = Right "Failed to make character sheets"
     | cid == Nothing = Right "Could not parse character ID"
@@ -77,15 +68,10 @@ getState res schema g
                     characterMap = CM.insertListS res1 CM.empty $ fromJust cl
                   }
    where (g1,s1,res1) = makeGraphs (g,schema,res)
-         ll = characterFromGraph g1
+         ll = C.characterFromGraph g1
          clab = head ll
          cid = getLocalID clab
          cl = C.getAllCS g1 clab
--- | Extract the local name (as String) from an RDFLabel.
-getLocalID :: RDFLabel -> Maybe String
-getLocalID lab = f $ fromRDFLabel lab 
-      where f Nothing = Nothing
-            f (Just x) = Just $ unpack $ getLName $ getScopeLocal x
 
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
@@ -99,14 +85,14 @@ getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
 
 persistGraph g = foldGraphs $ Q.rdfQuerySubs vb tg
     where vb = Q.rdfQueryFind qg g
-          qg = listToRDFGraph  [ arc sVar pVar cVar,
-                       arc pVar typeRes armPersistentProperty ]
-          tg = listToRDFGraph  [ arc sVar pVar cVar ]
+          qg = listToRDFGraph  [ G.arc sVar pVar cVar,
+                       G.arc pVar typeRes armPersistentProperty ]
+          tg = listToRDFGraph  [ G.arc sVar pVar cVar ]
 
 persistRule = makeCRule "persistRule" 
-    [ arc sVar pVar cVar,
-      arc pVar typeRes armPersistentProperty ]
-    [ arc sVar pVar cVar ]
+    [ G.arc sVar pVar cVar,
+      G.arc pVar typeRes armPersistentProperty ]
+    [ G.arc sVar pVar cVar ]
 persistGraph' g = fwdApplySimple persistRule g
 
 -- | Return the sheet for a given character, season, and year (as RDFGraph).
@@ -137,7 +123,7 @@ putAdvancement stateVar adv = do
              st <- STM.readTVar stateVar
              let g = charGraph st
              let schema = schemaGraph st
-             let g1 = persistGraph $ merge schema $ TC.makeRDFGraph adv
+             let g1 = persistGraph $ G.merge schema $ TC.makeRDFGraph adv
              let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
              let g0 = TC.makeRDFGraph adv0
              let gg = putGraph g g0 g1
