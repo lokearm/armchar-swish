@@ -8,3 +8,10 @@ grantRule = makeCRule  "grantRule"
        arc sVar typeRes csRes,  -- s a CharacterSheet
        arc tVar gtRes cVar ]    -- o grantsTrait c
      [ arc sVar htRes cVar ]    -- s
+
+-- | Infer character sheet properties from character properties
+csRule = makeCRule "csRule" 
+    [ arc csVar isCharacterLabel cVar,
+      arc pVar typeRes armCharacterProperty,
+      arc cVar pVar oVar ]
+    [ arc csVar pVar oVar ]

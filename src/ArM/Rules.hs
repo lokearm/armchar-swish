@@ -31,12 +31,6 @@ import qualified ArM.Rules.FullGraph as RG
 
 -- Initial Character Rules
 
--- | Infer character sheet properties from character properties
-csRule = makeCRule "csRule" 
-    [ arc csVar isCharacterLabel cVar,
-      arc pVar typeRes armCharacterProperty,
-      arc cVar pVar oVar ]
-    [ arc csVar pVar oVar ]
 
 -- | Infer a string representation of the Advancement Type
 -- (Reading, Practice, Exposure, etc.)
@@ -67,7 +61,7 @@ prepareCharGraph = fwdApplyList [ traitclasstypeRule ]
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
    fwdApplyList (
-      csRule:advtypeRule:traitclassRule:advancementindexRule:rdfstypeRules )
+      advtypeRule:traitclassRule:advancementindexRule:rdfstypeRules )
 
 -- | Apply standard RDFS rules to elaborate the schema
 -- This is used only once, so it may be allowed to be costly.
