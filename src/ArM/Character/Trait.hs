@@ -21,19 +21,13 @@ module ArM.Character.Trait ( Trait(..)
 
 import Data.Set (fromList)
 
-import ArM.Rules.Aux
-import Swish.RDF.Graph as G
-import Swish.RDF.Query as Q
-import qualified Data.Text.Lazy as T
-import Swish.RDF.VarBinding as VB 
-import Network.URI (URI)
-import Swish.VarBinding  (vbMap)
-import Data.Maybe (fromJust)
-import Data.List (sort)
+import           Swish.RDF.Graph as G
+import           Network.URI (URI)
+import           Swish.VarBinding  (vbMap)
+import           Data.List (sort)
 import ArM.Resources
 import ArM.KeyPair
 import ArM.BlankNode
-import Swish.Namespace
 import ArM.Types.Character
 
 data XPType = XP { addXP :: Int, totalXP :: Int, score :: Int, hasXP :: Int }

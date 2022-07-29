@@ -137,7 +137,7 @@ executable tst
                        , ArM.Load
                        , ArM.BlankNode
                        , ArM.JSON
-                       , ArM.CharacterMap
+                       , ArM.STM.CharacterMap
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair

@@ -48,9 +48,9 @@ main = do
      print "New adventure as submitted"
      DTIO.putStrLn $ formatGraphAsText $ advg
      print "persistGraph"
-     DTIO.putStrLn $ formatGraphAsText $ persistGraph $ advg
+     -- DTIO.putStrLn $ formatGraphAsText $ persistGraph $ advg
      print "persistGraph'"
-     DTIO.putStrLn $ formatGraphAsText $ persistGraph' $ advg
+     -- DTIO.putStrLn $ formatGraphAsText $ persistGraph' $ advg
      print "end"
      let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
      print adv0

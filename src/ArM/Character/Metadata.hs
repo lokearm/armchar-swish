@@ -25,8 +25,8 @@ import Swish.VarBinding
 import Data.List (sort)
 
 
--- | Construct the query for a given character 'c', for use
--- with the following functions .
+-- | Construct a query to get all
+-- arm:CharacterProperty triples for a given subject.
 query c = listToRDFGraph 
    [ arc c (G.Var "property") (G.Var "value")
    , arc (G.Var "property") typeRes armCharacterProperty
@@ -43,6 +43,7 @@ characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph'
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
 -- | Sort the list and remove duplicates.
+uniqueSort :: (Ord a,Eq a) => [a] -> [a]
 uniqueSort = f . sort
     where f [] = []
           f (x:[]) = x:[]
