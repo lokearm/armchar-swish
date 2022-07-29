@@ -50,23 +50,26 @@ fromKeyPairList (KeyPairList xs) = xs
 data ObjectKeyValue = ObjectKeyValue RDFLabel RDFLabel RDFLabel
      deriving (Show,Eq,Ord)
 
+-- | Get the subject from a triple
 okvSubj (ObjectKeyValue a _ _) = a
+-- | Get the predicate (property) from a triple
 okvPred (ObjectKeyValue _ a _) = a
+-- | Get the object from a triple
 okvObj (ObjectKeyValue _ _ a) = a
 
+-- | Check if two triples have the same key
 sameKey :: ObjectKeyValue -> ObjectKeyValue -> Bool
 sameKey (ObjectKeyValue a _ _) (ObjectKeyValue b _ _) = a == b
 
-data KeyValuePairString = KeyValuePairString RDFLabel String
-data ObjectKeyValueString = ObjectKeyValueString RDFLabel RDFLabel String
-
+-- | Convert a triple to a pair by removing the subject (first term)
 toKeyPair :: ObjectKeyValue -> KeyValuePair 
 toKeyPair (ObjectKeyValue a b c) = (KeyValuePair b c)
+-- | Convert a list of triples to a pairs (using `toKeyPair`)
 toKeyPairList :: [ObjectKeyValue] -> [KeyValuePair]
 toKeyPairList = map toKeyPair
 
 
--- | Split a list of ObjectKeyValue-s so that pairs belonging
+-- | Split a list of `ObjectKeyValue` triples so that pairs belonging
 -- to the same resource, -- as defined by the first element,
 -- are place in the same constituent list.
 keypairSplit :: [ObjectKeyValue] -> [[ObjectKeyValue]]

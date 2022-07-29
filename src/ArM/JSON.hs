@@ -158,5 +158,4 @@ fromProtoAdvancement adv = defaultAdvancement {
                      season = getSeason ys,
                      advSortIndex = getSortIndex ys,
                      contents = ys
-                 } where ys = fromKPL $ advancementcontents adv
-                         fromKPL (KeyPairList x ) = x
+                 } where ys = fromKeyPairList $ advancementcontents adv

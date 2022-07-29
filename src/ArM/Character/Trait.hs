@@ -188,6 +188,6 @@ traitTripleList' (a,b,c,xs) (y:ys) =
 -- | Get the Trait Class from a list of Triples belonging to
 -- an Trait Advancement
 getTraitClass :: [KeyValuePair] -> RDFLabel
-getTraitClass = f . getProperty ( Res $ makeSN "traitClass" )
+getTraitClass = f . getProperty ( armRes "traitClass" )
      where f Nothing = noSuchTrait
            f (Just x) = x
