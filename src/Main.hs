@@ -49,7 +49,7 @@ import qualified Network.URI as URI
 -- Timer
 import ArM.Time
 
-import ArM.Load (getGraph,getRawGraph)
+import ArM.Load (getRawGraph)
 import qualified ArM.Resources as AR
 import qualified ArM.Character.Character as C
 import qualified ArM.CharacterQuery as CQ

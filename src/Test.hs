@@ -36,7 +36,7 @@ s = "{\n     \"arm:hasDescription\": \"<p>You automatically master every spell t
 -- main :: IO ()
 main = do 
 
-     (g,schema,res) <- getGraph AR.characterFile AR.armFile AR.resourceFile
+     (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
      contents <- BS.readFile "Test/adv.json"
      let  adv' :: Maybe Advancement
           adv' = decode contents

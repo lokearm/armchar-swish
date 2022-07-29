@@ -13,15 +13,11 @@
 
 module ArM.Load where
 
-import ArM.Resources
-import ArM.Rules
-import ArM.Rules.RDFS
-
-import System.IO ( IO, readFile )
-import Swish.RDF.Graph (emptyGraph,RDFGraph,merge)
+import           ArM.Resources (baseURI)
+import           System.IO ( IO )
+import           Swish.RDF.Graph (emptyGraph,RDFGraph)
 import qualified Data.Text.Lazy.IO as DTLIO
-import Swish.RDF.Parser.Turtle (parseTurtle)
-import Control.Parallel
+import           Swish.RDF.Parser.Turtle (parseTurtle)
 
 -- | Read an RDFGraph, ignoring errors.
 readGraph :: String -> IO RDFGraph
@@ -33,12 +29,7 @@ readGraph fn = do
                return emptyGraph
            (Right g ) -> return g
 
--- | Load the different graph and make initial inferences
--- See diagram in README.
--- Note: the third graph `res` has merged the schema and the resource
--- graph.  This is not reflected in the diagram.
-getGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
-getGraph f1 f2 f3 = fmap makeGraphs $ getRawGraph f1 f2 f3
+-- | Load the different graph.
 getRawGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
 getRawGraph characterFile armFile resourceFile = do
         c0 <- readGraph characterFile 
