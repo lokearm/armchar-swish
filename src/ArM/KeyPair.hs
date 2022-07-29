@@ -23,7 +23,6 @@ import ArM.Resources
 import Swish.RDF.Graph as G
 import qualified Data.Text.Lazy as T
 
-
 -- | `KeyValuePair` represents a key/value pair in JSON jargon
 -- or a property/object pair in RDF.  It is designed to hold
 -- arbitrary data read from the source format.
@@ -38,6 +37,8 @@ data KeyPairList  = KeyPairList [KeyValuePair]
 instance Show KeyPairList where
         show (KeyPairList []) = ""
         show (KeyPairList (x:xs)) = "  " ++ show x ++ "\n" 
+
+-- | Get the `KeyPairList` as a list of `KeyValuePair` objects.
 fromKeyPairList (KeyPairList xs) = xs
 
 -- | `ObjectKeyValue` represents an RDF triple.  It is used

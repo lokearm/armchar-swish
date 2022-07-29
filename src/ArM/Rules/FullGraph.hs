@@ -10,35 +10,26 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules.FullGraph where
+module ArM.Rules.FullGraph (prepareGraph) where
 
-import Swish.RDF.Ruleset
-import qualified Data.Text as T
-import Swish.Rule
 import Swish.RDF.Graph
-import Swish.RDF.Vocabulary.RDF
-import Swish.RDF.Vocabulary.XSD
 import ArM.Resources
 import ArM.Rules.Aux
-import Swish.VarBinding (varBindingId) 
 
 -- | Infere resource properties from class
 prepareGraph = fwdApplyListR [ advancevfgrantRule, grantRule, spectraitRule, rRule ]
 
 rRule = makeCRule "rRule" l1 l2
-    where l1 = [ arc sVar ( Res $ makeSN "traitClass" ) tVar,
+    where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
                arc tVar pVar oVar,
-               arc pVar typeRes ( Res $ makeSN "TraitProperty" )  ]
+               arc pVar typeRes ( armRes  "TraitProperty" )  ]
           l2 = [arc sVar pVar oVar]
 
 
-stcRes = Res $ makeSN "SpecialTraitClass" 
-stcArc = arc tVar typeRes stcRes
-isSTRes = Res $ makeSN "isSpecialTrait" 
-isSTArc = arc sVar isSTRes tVar
-
-spectraitRule = makeCRule  "spectraitRule" [ tArc, stcArc ] [ isSTArc ]
-
+spectraitRule = makeCRule  "spectraitRule" 
+      [ tArc
+      , arc tVar typeRes ( armRes  "SpecialTraitClass" ) ] 
+      [ arc sVar ( armRes  "isSpecialTrait" ) tVar ]
 
 -- | apply grantsTrait to a CharacterSheet
 grantRule = makeCRule  "grantRule" 
