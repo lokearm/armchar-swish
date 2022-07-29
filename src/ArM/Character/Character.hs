@@ -17,7 +17,6 @@ module ArM.Character.Character ( CharacterSheet(..)
                                , ToRDFGraph(..)
                                ) where
 
-import           Swish.RDF.Parser.N3 (parseN3fromText)
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import qualified Data.Text.Lazy as T

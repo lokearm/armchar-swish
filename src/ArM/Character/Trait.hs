@@ -22,7 +22,6 @@ module ArM.Character.Trait ( Trait(..)
 import Data.Set (fromList)
 
 import ArM.Rules.Aux
-import Swish.RDF.Parser.N3 (parseN3fromText)
 import Swish.RDF.Graph as G
 import Swish.RDF.Query as Q
 import qualified Data.Text.Lazy as T
