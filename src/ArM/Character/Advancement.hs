@@ -7,7 +7,6 @@ module ArM.Character.Advancement ( Advancement(..)
                                  , getSeason
                                  , getYear
                                  , getSortIndex
-                                 , toAdvancement
                                  ) where
 
 import Swish.RDF.Graph 
@@ -42,16 +41,16 @@ qt s = listToRDFGraph
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getPregameAdvancements g c = getAdvancements g $ queryGraph preGameAdv c
-   where preGameAdv = Res $ makeSN "PregameAdvancement"
+   where preGameAdv = armRes  "PregameAdvancement"
 
 -- | Get a list of all Ingame Advancements of a character.
 getIngameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
-   where inGameAdv = Res $ makeSN "IngameAdvancement"
+   where inGameAdv = armRes  "IngameAdvancement"
 q1 = queryGraph r
-   where r = Res $ makeSN "IngameAdvancement"
+   where r = armRes  "IngameAdvancement"
 q2 = queryGraph r
-   where r = Res $ makeSN "PregameAdvancement"
+   where r = armRes  "PregameAdvancement"
 
 queryGraph :: RDFLabel -> RDFLabel -> RDFGraph
 queryGraph c1 = listToRDFGraph  . f c1
@@ -79,8 +78,6 @@ fixAdv g a = a { traits = sort $ getTraits q g }
     where q = qt $ rdfid a
           getTraits q g = map toTrait
                $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
-
-
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [ObjectKeyValue] -> Advancement
