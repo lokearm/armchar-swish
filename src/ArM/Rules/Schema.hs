@@ -10,7 +10,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules.Schema where
+module ArM.Rules.Schema (prepareCS) where
 
 import Swish.RDF.Ruleset
 import qualified Data.Text as T
