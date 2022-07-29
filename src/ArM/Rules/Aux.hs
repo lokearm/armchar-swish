@@ -57,13 +57,6 @@ fwdApplyListR rs g = if (g' == g) then g'
                      where g' = fwdApplyList rs g
 
 
--- | Convenience function to make a Rule from Strings of Notation3 data.
-makeRule ln s1 s2 = makeN3ClosureSimpleRule 
-    rulesNS ( newLName ln ) ( fromString s1 ) ( fromString s2 )
-
-makeRule' ln s1 s2 = makeRDFClosureRule (makeSN ln) [g1] g2 varBindingId
-   where g1 = makeRDFGraphFromN3Builder $ fromString $ prefixes ++ s1
-         g2 = makeRDFGraphFromN3Builder $ fromString $ prefixes ++ s2
 
 typeRes = Res rdfType 
 subclassRes = Res rdfsSubClassOf 
@@ -91,13 +84,3 @@ makeCRule s l1 l2 = makeRDFClosureRule ( makeSN s )
             [listToRDFGraph  l1]
             (listToRDFGraph  l2)
             varBindingId
-
-prefixes = "@prefix owl: <http://www.w3.org/2002/07/owl#> . "
-   ++ "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . "
-   ++ "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . "
-   ++ "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . "
-   ++ "@prefix foaf: <http://xmlns.com/foaf/0.1/>. "
-   ++ "@prefix dc: <http://purl.org/dc/elements/1.1/> . "
-   ++ "@prefix arm: <https://hg.schaathun.net/armchar/schema#> . "
-   ++ "@prefix armr: <https://hg.schaathun.net/armchar/resources#> . "
-   ++ "@prefix armchar: <https://hg.schaathun.net/armchar/character/> . "
