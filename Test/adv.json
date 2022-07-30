@@ -3,13 +3,12 @@
             "arm:advanceCharacter": {
                 "prefixedid": "armchar:cieran"
             },
-            "arm:awardsXP": 19,
-            "arm:hasAdvancementDescription": "Studies Mentem L16 Q13 +3",
+            "arm:awardsXP": 5,
+            "arm:hasAdvancementDescription": "Story",
             "arm:hasAdvancementIndex": 100,
             "arm:hasAdvancementType": {
-                "prefixedid": "arm:Reading"
+                "prefixedid": "arm:Adventure"
             },
-            "arm:hasAdvancementTypeString": "Reading",
             "arm:inYear": 1217,
             "arm:atSeason": "Autumn"
         },
@@ -18,7 +17,7 @@
         },
         "advancementtraits": [
             {
-                "arm:addedXP": 18,
+                "arm:addedXP": 5,
                 "arm:hasLabel": "Herbam",
                 "arm:isSpecialTrait": {
                     "prefixedid": "arm:AccelleratedTrait"

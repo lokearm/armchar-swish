@@ -11,7 +11,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules ( makeGraphs ) where
+module ArM.Rules ( makeGraph, makeGraphs ) where
 
 import qualified Data.Text as T
 import Swish.RDF.Graph

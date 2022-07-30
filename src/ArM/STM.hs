@@ -37,7 +37,8 @@ import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
 import           ArM.Rules.Aux
-import           ArM.Rules (makeGraphs)
+import qualified ArM.Rules.Persistence as RP
+import           ArM.Rules (makeGraph, makeGraphs)
 import           ArM.Resources
 
 -- | The `MapState` object defines the state of the server.
@@ -91,8 +92,6 @@ updateGraph st g
     | tail ll /= [] = Right $ "Multiple characters found\n" ++ show ll
     | otherwise = Left st {
                     charGraph = g1,
-                    schemaGraph = s1,
-                    resourceGraph = res1,
                     charRawGraph = g,
                     characterLabel = clab,
                     characterID  = fromJust cid,
@@ -100,6 +99,7 @@ updateGraph st g
                   }
    where g1 = makeGraph  g (schemaGraph st) (resourceGraph st)
          ll = C.characterFromGraph g1
+         res1 = resourceGraph st
          clab = head ll
          cid = getLocalID clab
          cl = C.getAllCS g1 clab
@@ -114,17 +114,6 @@ getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
 getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
 getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
 
-persistGraph g = foldGraphs $ Q.rdfQuerySubs vb tg
-    where vb = Q.rdfQueryFind qg g
-          qg = listToRDFGraph  [ G.arc sVar pVar cVar,
-                       G.arc pVar typeRes armPersistentProperty ]
-          tg = listToRDFGraph  [ G.arc sVar pVar cVar ]
-
-persistRule = makeCRule "persistRule" 
-    [ G.arc sVar pVar cVar,
-      G.arc pVar typeRes armPersistentProperty ]
-    [ G.arc sVar pVar cVar ]
-persistGraph' g = fwdApplySimple persistRule g
 
 -- | Return the sheet for a given character, season, and year (as RDFGraph).
 lookup :: STM.TVar MapState -> String -> String -> Int 
@@ -154,7 +143,7 @@ putAdvancement stateVar adv = do
              st <- STM.readTVar stateVar
              let g = charRawGraph st
              let schema = schemaGraph st
-             let g1 = persistGraph $ G.merge schema $ TC.makeRDFGraph adv
+             let g1 = RP.persistGraph schema $ TC.makeRDFGraph adv
              let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
              let g0 = TC.makeRDFGraph adv0
              let gg = putGraph g g0 g1

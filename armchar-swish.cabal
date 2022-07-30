@@ -22,6 +22,7 @@ executable armchar-swish
   other-modules:       ArM.Rules
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
+                       , ArM.Rules.Persistence
                        , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
@@ -75,6 +76,7 @@ executable prof
   other-modules:       ArM.Rules
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
+                       , ArM.Rules.Persistence
                        , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
@@ -131,6 +133,7 @@ executable tst
   other-modules:       ArM.Rules
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
+                       , ArM.Rules.Persistence
                        , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
