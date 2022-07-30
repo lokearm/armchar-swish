@@ -160,7 +160,9 @@ stateScotty stateVar = do
           adv <- jsonData :: S.ActionM C.Advancement 
           newg <- liftIO $ putAdvancement stateVar adv
           liftIO $ print adv
-          printGraph newg
+          case (newg) of
+             Left g -> printGraph g
+             Right x -> liftIO $ print x
 
 notfound404 = do status notFound404
                  text "404 Not Found."

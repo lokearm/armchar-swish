@@ -81,6 +81,29 @@ getState res schema g
          cid = getLocalID clab
          cl = C.getAllCS g1 clab
 
+-- | Replace the raw character graph in the MapState.
+-- All other elements are recalculated.
+updateGraph :: MapState -> G.RDFGraph -> Either MapState String
+updateGraph st g 
+    | cl == Nothing = Right "Failed to make character sheets"
+    | cid == Nothing = Right "Could not parse character ID"
+    | ll == [] = Right "No character found"
+    | tail ll /= [] = Right $ "Multiple characters found\n" ++ show ll
+    | otherwise = Left st {
+                    charGraph = g1,
+                    schemaGraph = s1,
+                    resourceGraph = res1,
+                    charRawGraph = g,
+                    characterLabel = clab,
+                    characterID  = fromJust cid,
+                    characterMap = CM.insertListS res1 CM.empty $ fromJust cl
+                  }
+   where (g1,s1,res1) = makeGraphs (g,schemaRawGraph st,resourceRawGraph st)
+         ll = C.characterFromGraph g1
+         clab = head ll
+         cid = getLocalID clab
+         cl = C.getAllCS g1 clab
+
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
 getStateGraph st = fmap charGraph $ STM.readTVarIO st
@@ -125,18 +148,22 @@ putGraph :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> G.RDFGraph
 putGraph g g0 g1 = G.merge (G.delete g0 g) g1
 
 -- | Update the state graph with the given Advancement object.
-putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO G.RDFGraph
+putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO (Either G.RDFGraph String)
 putAdvancement stateVar adv = do 
          STM.atomically $ do
              st <- STM.readTVar stateVar
-             let g = charGraph st
+             let g = charRawGraph st
              let schema = schemaGraph st
              let g1 = persistGraph $ G.merge schema $ TC.makeRDFGraph adv
              let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
              let g0 = TC.makeRDFGraph adv0
              let gg = putGraph g g0 g1
-             STM.writeTVar stateVar $ st { charGraph = gg }
-             return g1
+             let newst = st `updateGraph` gg
+             case (newst) of
+                Left s -> do
+                   STM.writeTVar stateVar s 
+                   return $ Left gg
+                Right x -> return $ Right x
           
 -- TODO: Check for conflicting advancements 
 
