@@ -60,6 +60,8 @@ prepareInitialCharacter =
 prepareSchema :: RDFGraph -> RDFGraph
 prepareSchema = fwdApplyListR rdfsRules
 
+makeGraph c0 s1 res1 = ( prepareGraph . merge res1 
+    . prepareInitialCharacter . merge s1 . prepareCharGraph ) c0
 makeGraphs (c0,s0,res0) =
       s1 `par` res1 `par` res2 `par` c2 `pseq` ( c3, s1, res2 )
     where c1 = prepareCharGraph c0

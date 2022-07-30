@@ -98,7 +98,7 @@ updateGraph st g
                     characterID  = fromJust cid,
                     characterMap = CM.insertListS res1 CM.empty $ fromJust cl
                   }
-   where (g1,s1,res1) = makeGraphs (g,schemaRawGraph st,resourceRawGraph st)
+   where g1 = makeGraph  g (schemaGraph st) (resourceGraph st)
          ll = C.characterFromGraph g1
          clab = head ll
          cid = getLocalID clab
