@@ -15,9 +15,13 @@ module ArM.Rules.FullGraph (prepareGraph) where
 import Swish.RDF.Graph
 import ArM.Resources
 import ArM.Rules.Aux
+import ArM.Rules.RDFS
 
--- | Infere resource properties from class
+-- | Final inference to be done after merging character data and resources
+-- This is expensive, and may need caution.
+-- It will be applied every time the graph changes, and the graph is large
 prepareGraph = fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
+             . applyRDFS
 
 rRule = makeCRule "rRule" l1 l2
     where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,

@@ -6,25 +6,27 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Reasoning rules using the resource ontology.
+-- Rules to prepare the resource graph.
 --
 -----------------------------------------------------------------------------
 
 module ArM.Rules.Resource (prepareResources) where
 
-import Swish.RDF.Ruleset
 import qualified Data.Text as T
-import Swish.Rule
 import Swish.RDF.Graph
 import Swish.RDF.Vocabulary.RDF
 import Swish.RDF.Vocabulary.XSD
 import ArM.Resources
 import ArM.Rules.Aux
-import Swish.VarBinding (varBindingId) 
+import ArM.Rules.Common
+import ArM.Rules.RDFS
 
+-- | Prepare the resource graph.
+-- This is applied without any schema or other data but the resources.
 prepareResources = fwdApplyList [ vfpRule, vfpMajorRule, vfabRule ] 
                  . fwdApplyListR [ vfvRule, vffRule ]
-
+                 . applyRDFS
+                 . fwdApplyList [ traitclasstypeRule ]
 traitclass = Var "traitclass"
 trait = Var "trait"
 score = armRes "hasScore"

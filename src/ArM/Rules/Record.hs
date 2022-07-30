@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Rules.Schema
+-- Module      :  ArM.Rules.Record
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -10,28 +10,24 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules.Schema (prepareCS) where
+module ArM.Rules.Record (prepareRecord) where
 
-import Swish.RDF.Ruleset
-import qualified Data.Text as T
-import Swish.Rule
 import Swish.RDF.Graph
 import Swish.RDF.Vocabulary.RDF
 import Swish.RDF.Vocabulary.XSD
 import ArM.Resources
 import ArM.Rules.Aux
+import ArM.Rules.Common
 import ArM.Rules.RDFS
-import Swish.VarBinding (varBindingId) 
 
 import Control.Parallel.Strategies
 
-
--- prepareCS schema g = foldl addGraphs g $ fwdApplyMap rs gg
-                 -- where gg = merge schema g
-                       -- rs = copyRules  ++ traitRules  ++ rdfstypeRules
-prepareCS schema = fwdApplyList traitRules 
+-- | Prepare a character record graph.
+-- This includes merging in the given schema
+prepareRecord schema = fwdApplyList traitRules 
                  . fwdApplyList rdfstypeRules
                  . merge schema
+                 . fwdApplyList [ traitclasstypeRule ]
 
 traitRules = traitRules1 ++ traitRules2
 -- | Rules to infer subproperties of arm:hasTrait

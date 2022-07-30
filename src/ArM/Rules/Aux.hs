@@ -6,7 +6,7 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Generic and auxiliary functions for reasoning
+-- Generic and auxiliary functions for reasoning.
 --
 -----------------------------------------------------------------------------
 
@@ -55,8 +55,6 @@ fwdApplyMap rs g = parMap rpar (`fwdApplySimple` g) rs
 fwdApplyListR rs g = if (g' == g) then g'
                      else fwdApplyListR rs g'
                      where g' = fwdApplyList rs g
-
-
 
 typeRes = Res rdfType 
 subclassRes = Res rdfsSubClassOf 

@@ -120,7 +120,7 @@ lookup stateVar char season year = do
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
 
-
+-- | Delete `g` and merge `g1` into `g0`.
 putGraph :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> G.RDFGraph
 putGraph g g0 g1 = G.merge (G.delete g0 g) g1
 

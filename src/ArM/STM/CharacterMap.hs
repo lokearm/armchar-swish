@@ -23,7 +23,7 @@ module ArM.STM.CharacterMap ( CharacterRecord(..)
 import qualified Data.Map as M
 import qualified Swish.RDF.Graph as G
 import qualified ArM.Character as C
-import qualified ArM.Rules as R
+import qualified ArM.Rules.Record as R
 import           Data.Maybe (fromJust)
 import ArM.Resources 
 import Control.Parallel.Strategies (parMap,rpar)

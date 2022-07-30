@@ -21,10 +21,11 @@ executable armchar-swish
   main-is:             Main.hs
   other-modules:       ArM.Rules
                        , ArM.Rules.Aux
+                       , ArM.Rules.Common
                        , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
-                       , ArM.Rules.Schema
+                       , ArM.Rules.Record
                        , ArM.Resources
                        , ArM.Character
                        , ArM.Load
@@ -73,10 +74,11 @@ executable prof
   main-is:             Main.hs
   other-modules:       ArM.Rules
                        , ArM.Rules.Aux
+                       , ArM.Rules.Common
                        , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
-                       , ArM.Rules.Schema
+                       , ArM.Rules.Record
                        , ArM.Resources
                        , ArM.Character
                        , ArM.Load
@@ -128,10 +130,11 @@ executable tst
   main-is:             Test.hs
   other-modules:       ArM.Rules
                        , ArM.Rules.Aux
+                       , ArM.Rules.Common
                        , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
-                       , ArM.Rules.Schema
+                       , ArM.Rules.Record
                        , ArM.Resources
                        , ArM.Character
                        , ArM.Load
