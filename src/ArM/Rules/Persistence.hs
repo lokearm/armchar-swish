@@ -56,3 +56,8 @@ persistGraph s g = fwdApplyRules [ persistRule, persistTraitRule ]
                  $ applyRDFS
                  $ G.merge s g
 
+persistedChar g s = fwdApplyRules [ persistedRule s ] g
+persistChar s g = fwdApplyRules [ persistRule ] 
+                 $ applyRDFS
+                 $ G.merge s g
+

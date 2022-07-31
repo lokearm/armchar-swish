@@ -22,6 +22,7 @@ module ArM.STM ( ArM.STM.lookup
                , getSchemaGraph
                , getResourceGraph
                , putAdvancement
+               , putCharacter
                , updateGraph -- TEST
                , MapState(..)
                ) where
@@ -155,8 +156,25 @@ putAdvancement stateVar adv = do
                    STM.writeTVar stateVar s 
                    return $ Left gg
                 Right x -> return $ Right x
-
 -- TODO: Check for conflicting advancements 
+--
+putCharacter :: STM.TVar MapState -> TC.Character -> IO (Either G.RDFGraph String)
+putCharacter stateVar char = do 
+         STM.atomically $ do
+             st <- STM.readTVar stateVar
+             let g = charRawGraph st
+             let schema = schemaGraph st
+             let charg = TC.makeRDFGraph char
+             let g1 = RP.persistChar schema charg
+             let g0 = RP.persistedChar (charGraph st) (TC.characterID char) 
+             let gg = (g0 `G.delete` g) `G.addGraphs` g1
+
+             let newst = st `updateGraph` gg
+             case (newst) of
+                Left s -> do
+                   STM.writeTVar stateVar s 
+                   return $ Left gg
+                Right x -> return $ Right x
 
 -- postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
              -- -> IO (Maybe G.RDFGraph)
