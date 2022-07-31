@@ -46,6 +46,7 @@ executable armchar-swish
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
+		       , scientific >= 0.3.7
                        , swish >=0.10.1.0
                        , text >= 1.2.4.0
                        , network-uri >= 2.6.3.0
@@ -100,6 +101,7 @@ executable prof
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
+		       , scientific >= 0.3.7
                        , swish >=0.10.1.0
                        , text >= 1.2.4.0
                        , network-uri >= 2.6.3.0
@@ -157,6 +159,7 @@ executable tst
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
+		       , scientific >= 0.3.7
                        , swish >=0.10.1.0
                        , text >= 1.2.4.0
                        , network-uri >= 2.6.3.0
