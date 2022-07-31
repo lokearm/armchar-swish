@@ -13,6 +13,7 @@
 module ArM.JSON where
 
 import Data.Scientific
+import Control.Monad.Fail
 
 import Control.Applicative
 import Data.Aeson
@@ -50,22 +51,26 @@ tripleToJSON (KeyValuePair a b) =
     ((getKey $ fromJust $ fromRDFLabel a), (toJSON b))
 
 -- | Convert a string to an RDFLabel, parsing URIs
-stringToRDFLabel :: String -> RDFLabel
+stringToRDFLabel :: String -> Either RDFLabel String
 stringToRDFLabel (k:ks) 
-        | k == '<'  = toRDFLabel $ fromJust $ parseURI $ rdfuri ks
-        | otherwise = f x $ intercalate ":" xs
-     where (x:xs) = splitOn ":" $ (k:ks)
-           f "arm" = armRes
-           f "armchar" = armcharRes
-           f "armr" = armrRes
+        | k == '<'  = tl $ parseURI $ rdfuri ks
+        | splits == [] = Right "Parser error: empty string."
+        | splits' == [] = Right "Parser error: neither prefixed ID nor full URI."
+        | px == Nothing = Right "Parse error: Prefix not recognised"
+        | otherwise = Left $ fromJust px
+     where splits = splitOn ":" $ (k:ks)
+           splits' = tail splits
+           (x:xs) = splits
+           f "arm" = Just . armRes
+           f "armchar" = Just . armcharRes
+           f "armr" = Just . armrRes
+           f _ = \ _ -> Nothing
+           px =  f x $ intercalate ":" xs
            rdfuri ('>':[]) = []
-           rdfuri (x:xs) = x:rdfuri xs
            rdfuri (_:[]) = error "Malformed URL in RDF.  No closing >."
--- There are three possible exceptions here:
--- 1.  parseURI fails
--- 2.  splitOn returns a singleton list
--- 3.  the prefix is not recognised.
--- 4.  opening < is not closed (rdfuri has not recognised pattern)
+           rdfuri (x:xs) = x:rdfuri xs
+           tl Nothing = Right "Parser error: Could not parse URI."
+           tl (Just x) = Left $ toRDFLabel x
 
 -- | Convert an RDFLabel to an Aeson Key for JSON serialisation
 getKey :: RDFLabel -> Key
@@ -100,7 +105,13 @@ instance ToJSON RDFLabel where
 instance FromJSON RDFLabel where
    parseJSON (Number x) = return $ TypedLit (T.pack $ show  (truncate x::Int)) xsdInteger
    parseJSON (String x) = return $ Lit x
-   parseJSON x = fmap (stringToRDFLabel . prefixedid) $ parseJSON x
+   parseJSON x = do
+       s <- fmap prefixedid $ parseJSON x
+       case stringToRDFLabel s of
+          Left x -> return x
+          Right x -> fail x
+
+
 
 -- ** KeyPairList
 
@@ -117,7 +128,9 @@ instance ToJSON KeyPairList where
 -- This is a an axiliary for `parseJSON` for `KeyPairList`
 pairToKeyValue (x,y) = do
     v <- parseJSON y
-    return $ KeyValuePair k v
+    case k of
+        Left k' -> return $ KeyValuePair k' v
+        Right s -> fail s
     where k = stringToRDFLabel $ toString x
 
 -- ** Trait
