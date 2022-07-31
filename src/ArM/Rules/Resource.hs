@@ -41,7 +41,6 @@ vfp3 = arc trait typeRes (armRes "PersonalityTrait" )
 vfpT = arc trait score (litInt 3)
 vfpTbis = arc trait score (litInt 6)
 
-litInt i = TypedLit (T.pack $ show i) xsdInteger
 
 vfabRule = makeCRule "vfabRule" [grantarc, vfab3] [vfabT]
 vfab3 = arc trait typeRes (armRes "Ability" )

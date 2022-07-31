@@ -56,10 +56,12 @@ armchar:elksrun  a arm:Covenant ;
 
 :zeroadv arm:advanceCharacter armchar:cieran ;
    a arm:BaseAdvancement ; 
-   arm:advanceTrait 
+   arm:hasHouseVirtue 
+    [ arm:traitClass armr:craftmagic  ],
+    [ arm:traitClass armr:spellfoci  ],
+    [ arm:traitClass armr:weakSpontaneousMagic  ] ;
+   arm:buyVirtueFlaw
     [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
-    [ arm:traitClass armr:craftmagic ; arm:hasScore 0 ],
-    [ arm:traitClass armr:spellfoci ; arm:hasScore 0 ],
     [ arm:traitClass armr:flawlessMagic ],
     [ arm:traitClass armr:skilledParens ],
     [ arm:traitClass armr:bookLearner ],
@@ -67,9 +69,9 @@ armchar:elksrun  a arm:Covenant ;
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ],
     [ arm:traitClass armr:meddler ; a armr:majorFlaw ],
     [ arm:traitClass armr:shortRangedMagic ],
-    [ arm:traitClass armr:weakSpontaneousMagic ; arm:hasScore 0 ],
     [ arm:traitClass armr:mistakenIdentity ],
-    [ arm:traitClass armr:carefree ; a armr:minorFlaw ],
+    [ arm:traitClass armr:carefree ; a armr:minorFlaw ] ;
+   arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore -1 ],
     [ arm:traitClass armr:com ; arm:hasScore -1 ], [ arm:traitClass armr:pre ; arm:hasScore 0 ],
     [ arm:traitClass armr:str ; arm:hasScore 2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],

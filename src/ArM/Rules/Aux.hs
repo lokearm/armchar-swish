@@ -16,6 +16,7 @@ import Swish.RDF.Ruleset as SRR
 import Swish.Rule as SR
 import Swish.RDF.Graph as SRG
 import Swish.RDF.Vocabulary.RDF
+import Swish.RDF.Vocabulary.XSD
 
 import Data.Set (fromList)
 import qualified Data.Text as T
@@ -93,3 +94,4 @@ qgraph p s = listToRDFGraph
       , arc (Var "property") labelRes (Var "label") ]
 
 fwdApplyRules rs g = foldGraphs $ parMap rpar (`fwdApplySimple` g) rs
+litInt i = TypedLit (T.pack $ show i) xsdInteger

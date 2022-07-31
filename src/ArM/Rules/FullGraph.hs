@@ -20,7 +20,8 @@ import ArM.Rules.RDFS
 -- | Final inference to be done after merging character data and resources
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
-prepareGraph = fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
+prepareGraph = fwdApplyList vfScoreRules
+             . fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
              . applyRDFS
 
 rRule = makeCRule "rRule" l1 l2
@@ -29,6 +30,27 @@ rRule = makeCRule "rRule" l1 l2
                arc pVar typeRes ( armRes  "TraitProperty" )  ]
           l2 = [arc sVar pVar oVar]
 
+vfScoreRules = 
+   [ makeCRule "flawScoreRule"
+       [ arc cVar (armRes "buyVirtueFlaw") sVar
+       , arc sVar typeRes (armRes "majorFlaw") ]
+       [ arc sVar (armRes "hasScore") (litInt (-3)) ]
+   , makeCRule "minorFlawScoreRule"
+       [ arc cVar (armRes "buyVirtueFlaw") sVar
+       , arc sVar typeRes (armRes "minorFlaw") ]
+       [ arc sVar (armRes "hasScore") (litInt (-1)) ]
+   , makeCRule "virtueScoreRule"
+       [ arc cVar (armRes "buyVirtueFlaw") sVar
+       , arc sVar typeRes (armRes "majorVirtue") ]
+       [ arc sVar (armRes "hasScore") (litInt (3)) ]
+   , makeCRule "minorVirtueScoreRule"
+       [ arc cVar (armRes "buyVirtueFlaw") sVar
+       , arc sVar typeRes (armRes "minorVirtue") ]
+       [ arc sVar (armRes "hasScore") (litInt (1)) ]
+   , makeCRule "houseVirtueRule"
+       [ arc cVar (armRes "hasHouseVirtue") sVar ]
+       [ arc sVar (armRes "hasScore") (litInt (0)) ]
+   ]
 
 spectraitRule = makeCRule  "spectraitRule" 
       [ tArc

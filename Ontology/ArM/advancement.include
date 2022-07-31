@@ -74,6 +74,8 @@ arm:traitClassString a owl:DatatypeProperty, arm:ViewProperty ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:string ;
         rdfs:label   "Trait to Advance" .
+arm:hasHouseVirtue rdfs:subPropertyOf arm:advanceTrait .
+arm:buyVirtueFlaw rdfs:subPropertyOf arm:advanceTrait .
 
 arm:addedXP a   owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:comment  "XP added in the last advancement of the trait.  This is a bit of a hack, allowing the trait defined as an advancement to be reused as a trait in future character sheets.  Thus we do not depend on creating new nodes in the reasoner." ;

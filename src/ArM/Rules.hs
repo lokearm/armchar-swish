@@ -44,6 +44,7 @@ advancementindexRule = makeCRule "advancementindexRule"
     [ tArc, arc tVar (armRes "hasAdvancementIndex") cVar ]
     [ arc sVar (armRes "hasAdvancementIndex") cVar ]
 
+
 -- | Initial inferences on the character data, to be applied without
 -- the schema
 prepareCharGraph :: RDFGraph -> RDFGraph
