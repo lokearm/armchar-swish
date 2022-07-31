@@ -159,10 +159,13 @@ stateScotty stateVar = do
           st <- liftIO $ STM.readTVarIO stateVar
           let g = charRawGraph st
           let schema = schemaGraph st
-          let g1 = RP.persistGraph schema $ TC.makeRDFGraph adv
+          let advg = TC.makeRDFGraph adv
+          let g1 = RP.persistGraph schema advg
           let g0 = RP.persistedGraph (charGraph st) (TC.rdfid adv) 
           let gg = (g0 `G.delete` g) `G.addGraphs` g1
-          -- printGraph g0
+          liftIO $ print $ formatGraphIndent "\n" True advg
+          liftIO $ print $ formatGraphIndent "\n" True g1
+          liftIO $ print $ formatGraphIndent "\n" True g0
           let newst = st `updateGraph` gg
           case (newst) of
                 Left s -> do
