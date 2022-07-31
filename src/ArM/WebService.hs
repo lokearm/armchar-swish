@@ -154,7 +154,7 @@ stateScotty stateVar = do
         put "/adv/test" $ do
           adv <- jsonData :: S.ActionM C.Advancement 
           liftIO $ print adv
-        put "/adv" $ do
+        put "/debug/adv" $ do
           adv <- jsonData :: S.ActionM C.Advancement 
           st <- liftIO $ STM.readTVarIO stateVar
           let g = charRawGraph st
@@ -173,7 +173,7 @@ stateScotty stateVar = do
                    printGraph gg
                 Right x -> text $ T.pack x
 
-        put "/adv0" $ do
+        put "/adv" $ do
           adv <- jsonData :: S.ActionM C.Advancement 
           newg <- liftIO $ putAdvancement stateVar adv
           liftIO $ print adv

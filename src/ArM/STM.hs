@@ -144,17 +144,18 @@ putAdvancement stateVar adv = do
              st <- STM.readTVar stateVar
              let g = charRawGraph st
              let schema = schemaGraph st
-             let g1 = RP.persistGraph schema $ TC.makeRDFGraph adv
-             let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
-             let g0 = TC.makeRDFGraph adv0
-             let gg = g0 `G.delete` g `G.addGraphs` g1
+             let advg = TC.makeRDFGraph adv
+             let g1 = RP.persistGraph schema advg
+             let g0 = RP.persistedGraph (charGraph st) (TC.rdfid adv) 
+             let gg = (g0 `G.delete` g) `G.addGraphs` g1
+
              let newst = st `updateGraph` gg
              case (newst) of
                 Left s -> do
                    STM.writeTVar stateVar s 
                    return $ Left gg
                 Right x -> return $ Right x
-          
+
 -- TODO: Check for conflicting advancements 
 
 -- postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
