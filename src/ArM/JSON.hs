@@ -53,7 +53,7 @@ tripleToJSON (KeyValuePair a b) =
 -- | Convert a string to an RDFLabel, parsing URIs
 stringToRDFLabel :: String -> Either RDFLabel String
 stringToRDFLabel (k:ks) 
-        | k == '<'  = tl $ parseURI $ rdfuri ks
+        | k == '<'  = tl $ parseURI uri 
         | splits == [] = Right "Parser error: empty string."
         | splits' == [] = Right "Parser error: neither prefixed ID nor full URI."
         | px == Nothing = Right "Parse error: Prefix not recognised"
@@ -69,6 +69,7 @@ stringToRDFLabel (k:ks)
            rdfuri ('>':[]) = []
            rdfuri (_:[]) = error "Malformed URL in RDF.  No closing >."
            rdfuri (x:xs) = x:rdfuri xs
+           uri = rdfuri ks
            tl Nothing = Right "Parser error: Could not parse URI."
            tl (Just x) = Left $ toRDFLabel x
 
