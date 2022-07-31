@@ -12,6 +12,8 @@
 -----------------------------------------------------------------------------
 module ArM.JSON where
 
+import Data.Scientific
+
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Key
@@ -88,7 +90,7 @@ instance ToJSON RDFLabel where
               f (Right (Left x)) = toJSON x
               f (Right (Right x)) = toJSON x
 instance FromJSON RDFLabel where
-   parseJSON (Number x) = return $ TypedLit (T.pack $ show  x) xsdInteger
+   parseJSON (Number x) = return $ TypedLit (T.pack $ show  (truncate x::Int)) xsdInteger
    parseJSON (String x) = return $ Lit x
    parseJSON x = fmap (stringToRDFLabel . prefixedid) $ parseJSON x
 

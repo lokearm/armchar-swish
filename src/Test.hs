@@ -35,34 +35,14 @@ s = "{\n     \"arm:hasDescription\": \"<p>You automatically master every spell t
 
 -- main :: IO ()
 main = do 
-
-     (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
-     contents <- BS.readFile "Test/adv.json"
-     let  adv' :: Maybe Advancement
-          adv' = decode contents
-     print adv'
-     let adv = fromJust adv'
-     let  advg0 = makeRDFGraph $ adv
-     let  advg = merge schema $ makeRDFGraph $ adv
-     DTIO.putStrLn $ formatGraphAsText $ advg0
-     print "New adventure as submitted"
-     DTIO.putStrLn $ formatGraphAsText $ advg
-     print "persistGraph"
-     -- DTIO.putStrLn $ formatGraphAsText $ persistGraph $ advg
-     print "persistGraph'"
-     -- DTIO.putStrLn $ formatGraphAsText $ persistGraph' $ advg
-     print "end"
-     let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
-     print adv0
-     let g0 = TC.makeRDFGraph adv0
-     print "Advancement graph extracted"
-     DTIO.putStrLn $ formatGraphAsText $ g0
-     let gg0 = delete g0 g
-     print "Graph after delete"
-     DTIO.putStrLn $ formatGraphAsText $ gg0
-     let gg1 = merge gg0 advg
-     print "New Graph"
-     DTIO.putStrLn $ formatGraphAsText $ gg1
+   test "5"
+   test "<http://example.org/foobar>"
+   test "string"
 
 
+fromResult (Success x) = x
 
+test s = do
+   let i = fromJSON s :: Result RDFLabel 
+   print $ show i 
+   print $ toJSON $ fromResult i 
