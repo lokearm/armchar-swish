@@ -36,7 +36,7 @@ arm:Grog a owl:Class ;
     rdfs:subClassOf arm:Character .
 
 # Covenant and Character - Shared Properties
-arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Name" .
@@ -47,7 +47,7 @@ arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Saga Title" .
-arm:hasTribunal a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasTribunal a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty  ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Tribunal" .
@@ -64,27 +64,27 @@ arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:label    "Covenant"  .
 
 # Character Properties
-arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Player" .
-arm:hasGender a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasGender a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Gender" .
-arm:hasProfession a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasProfession a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Profession" .
-arm:hasNationality a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasNationality a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Nationality" .
-arm:hasAlmaMater a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasAlmaMater a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Alma Mater" .
-arm:hasBirthYear a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasBirthYear a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:int ;
         rdfs:label    "Birth Year" .

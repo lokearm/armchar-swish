@@ -151,9 +151,6 @@ stateScotty stateVar = do
   -- PUT
         put "/" $ do
           text "This was a PUT request!"
-        put "/adv/test" $ do
-          adv <- jsonData :: S.ActionM C.Advancement 
-          liftIO $ print adv
         put "/debug/adv" $ do
           adv <- jsonData :: S.ActionM C.Advancement 
           st <- liftIO $ STM.readTVarIO stateVar
@@ -180,6 +177,9 @@ stateScotty stateVar = do
           case (newg) of
              Left g -> printGraph g
              Right x -> text $ T.pack x
+        put "/char" $ do
+          char <- jsonData :: S.ActionM TC.Character 
+          liftIO $ print char
 
 notfound404 = do status notFound404
                  text "404 Not Found."

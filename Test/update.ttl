@@ -1,0 +1,9 @@
+{ "arm:hasAlmaMater": "Stonehenge",
+  "arm:hasBirthYear": 1192,
+  "arm:hasGender": "Male",
+  "arm:hasName": "Cieran the Fletcher",
+  "arm:hasNationality": "English",
+  "arm:hasPlayer": "Loke",
+  "arm:hasProfession":"Rusticani (magus ex Miscellanea)",
+  "arm:prefixedid":{"prefixedid":"armchar:cieran"}
+}
