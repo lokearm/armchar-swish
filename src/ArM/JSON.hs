@@ -50,14 +50,22 @@ tripleToJSON (KeyValuePair a b) =
     ((getKey $ fromJust $ fromRDFLabel a), (toJSON b))
 
 -- | Convert a string to an RDFLabel, parsing URIs
-stringToRDFLabel (k:ks) | k == '<'  = toRDFLabel $ fromJust $ parseURI $ rdfuri ks
-                        | otherwise = f x $ intercalate ":" xs
+stringToRDFLabel :: String -> RDFLabel
+stringToRDFLabel (k:ks) 
+        | k == '<'  = toRDFLabel $ fromJust $ parseURI $ rdfuri ks
+        | otherwise = f x $ intercalate ":" xs
      where (x:xs) = splitOn ":" $ (k:ks)
            f "arm" = armRes
            f "armchar" = armcharRes
            f "armr" = armrRes
-           rdfuri (x:[]) = []
+           rdfuri ('>':[]) = []
            rdfuri (x:xs) = x:rdfuri xs
+           rdfuri (_:[]) = error "Malformed URL in RDF.  No closing >."
+-- There are three possible exceptions here:
+-- 1.  parseURI fails
+-- 2.  splitOn returns a singleton list
+-- 3.  the prefix is not recognised.
+-- 4.  opening < is not closed (rdfuri has not recognised pattern)
 
 -- | Convert an RDFLabel to an Aeson Key for JSON serialisation
 getKey :: RDFLabel -> Key
