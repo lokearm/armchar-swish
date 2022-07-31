@@ -2,6 +2,13 @@
 
 import http.client, urllib.parse
 import json
+import sys
+
+fn = "adv.tex"
+print (sys.argv)
+if ( len(sys.argv) > 1 ):
+    fn = sys.argv[1]
+print ( "Filename: " + fn )
 
 def get(conn,path):
    conn.request("GET", path)
@@ -39,7 +46,7 @@ for i in y:
 output.append( "\\end{description}" )
 
 output.append(  "\\end{document}" )
-f = open("adv.tex", "w")
+f = open( fn, "w" )
 for line in output:
     f.write(line+"\n")
 f.close()

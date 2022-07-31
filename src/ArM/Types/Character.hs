@@ -56,12 +56,12 @@ keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 keyvalueToArcList x [] = []
 keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
 
-traitToArcListM :: RDFLabel -> Trait -> BlankState [RDFTriple]
-traitToArcListM cs t 
+traitToArcListM :: RDFLabel -> RDFLabel -> Trait -> BlankState [RDFTriple]
+traitToArcListM hasTraitRes cs t 
      | x' == Nothing = do
                       y <- getBlank 
-                      return $ arc cs htRes y:keyvalueToArcList y ts
-     | otherwise    = return $ arc cs htRes x:keyvalueToArcList x ts
+                      return $ arc cs hasTraitRes y:keyvalueToArcList y ts
+     | otherwise    = return $ arc cs hasTraitRes x:keyvalueToArcList x ts
                  where x' = traitID t
                        x = fromJust x'
                        ts = traitContents t
@@ -124,7 +124,7 @@ instance ToRDFGraph CharacterSheet where
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
-          ts <- mapM (traitToArcListM x) (csTraits cs)
+          ts <- mapM (traitToArcListM htRes x) (csTraits cs)
           let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ct = arc x isCharacterLabel charlabel
           let ct1 = arc x typeRes csRes 
@@ -188,12 +188,6 @@ seasonNo "Summer" = 2
 seasonNo "Autumn" = 3
 seasonNo "Winter" = 4
 seasonNo _ = 10
--- seasonNo Nothing = 0
--- seasonNo (Just x ) | x == springLabel = 1
---                    | x == summerLabel = 2
---                    | x == autumnLabel = 3
---                    | x == winterLabel = 4
---                    | otherwise  = 10
 
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =
@@ -201,7 +195,8 @@ instance ToRDFGraph Advancement where
          ("charsheet",1)
 
 advToArcListM :: Advancement -> BlankState [RDFTriple]
-advToArcListM adv = mapM (traitToArcListM x) (traits adv) 
+advToArcListM adv = mapM (traitToArcListM atRes x) (traits adv) 
                 >>= return . foldl (++) ms 
     where ms = keyvalueToArcList x (contents adv)
           x = rdfid adv
+          atRes = armRes "advanceTrait"
