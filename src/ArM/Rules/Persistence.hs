@@ -13,6 +13,7 @@
 module ArM.Rules.Persistence where
 
 import           ArM.Rules.Aux
+import           ArM.Rules.RDFS
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import           Swish.RDF.Vocabulary.RDF
@@ -38,4 +39,20 @@ persistTraitRule = makeCRule "persistTraitRule"
     [ G.arc sVar (armRes "advanceTrait") tVar
     , G.arc tVar pVar oVar
     ]
-persistGraph s g = fwdApplyList [ persistRule, persistTraitRule ] $ G.merge s g
+persistedRule id = makeCRule "persistedRule" 
+    [ G.arc id pVar cVar,
+      G.arc pVar typeRes armPersistentProperty ]
+    [ G.arc id pVar cVar ]
+persistedTraitRule id = makeCRule "persistedTraitRule" 
+    [ G.arc id (armRes "advanceTrait") tVar
+    , G.arc tVar pVar oVar
+    , G.arc pVar typeRes armPersistentProperty 
+    ]
+    [ G.arc id (armRes "advanceTrait") tVar
+    , G.arc tVar pVar oVar
+    ]
+persistedGraph g s = fwdApplyRules [ persistedRule s, persistedTraitRule s ] g
+persistGraph s g = fwdApplyRules [ persistRule, persistTraitRule ] 
+                 $ applyRDFS
+                 $ G.merge s g
+

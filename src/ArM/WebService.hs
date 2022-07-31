@@ -40,6 +40,9 @@ import Network.Wai.Middleware.Cors (simpleCors)
 import System.CPUTime
 import ArM.Time
 
+-- TEST
+import qualified ArM.Rules.Persistence as RP
+
 stateScotty ::  STM.TVar MapState -> S.ScottyM ()
 stateScotty stateVar = do
         middleware logStdoutDev
@@ -153,11 +156,27 @@ stateScotty stateVar = do
           liftIO $ print adv
         put "/adv" $ do
           adv <- jsonData :: S.ActionM C.Advancement 
+          st <- liftIO $ STM.readTVarIO stateVar
+          let g = charRawGraph st
+          let schema = schemaGraph st
+          let g1 = RP.persistGraph schema $ TC.makeRDFGraph adv
+          let g0 = RP.persistedGraph g (TC.rdfid adv) 
+          let gg = (g0 `G.delete` g) `G.addGraphs` g1
+          -- printGraph g0
+          let newst = st `updateGraph` gg
+          case (newst) of
+                Left s -> do
+                   liftIO $ STM.atomically $ STM.writeTVar stateVar s 
+                   printGraph gg
+                Right x -> text $ T.pack x
+
+        put "/adv0" $ do
+          adv <- jsonData :: S.ActionM C.Advancement 
           newg <- liftIO $ putAdvancement stateVar adv
           liftIO $ print adv
           case (newg) of
              Left g -> printGraph g
-             Right x -> liftIO $ print x
+             Right x -> text $ T.pack x
 
 notfound404 = do status notFound404
                  text "404 Not Found."

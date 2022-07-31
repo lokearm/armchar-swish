@@ -91,3 +91,5 @@ qgraph p s = listToRDFGraph
       [ arc s p (Var "id")
       , arc (Var "id") (Var "property") (Var "value")
       , arc (Var "property") labelRes (Var "label") ]
+
+fwdApplyRules rs g = foldGraphs $ parMap rpar (`fwdApplySimple` g) rs

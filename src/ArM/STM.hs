@@ -22,6 +22,7 @@ module ArM.STM ( ArM.STM.lookup
                , getSchemaGraph
                , getResourceGraph
                , putAdvancement
+               , updateGraph -- TEST
                , MapState(..)
                ) where
 
@@ -146,7 +147,7 @@ putAdvancement stateVar adv = do
              let g1 = RP.persistGraph schema $ TC.makeRDFGraph adv
              let adv0 = TC.fromRDFGraph g (TC.rdfid adv) :: TC.Advancement
              let g0 = TC.makeRDFGraph adv0
-             let gg = putGraph g g0 g1
+             let gg = g0 `G.delete` g `G.addGraphs` g1
              let newst = st `updateGraph` gg
              case (newst) of
                 Left s -> do
