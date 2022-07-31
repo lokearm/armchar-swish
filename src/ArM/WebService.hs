@@ -160,7 +160,7 @@ stateScotty stateVar = do
           let g = charRawGraph st
           let schema = schemaGraph st
           let g1 = RP.persistGraph schema $ TC.makeRDFGraph adv
-          let g0 = RP.persistedGraph g (TC.rdfid adv) 
+          let g0 = RP.persistedGraph (charGraph st) (TC.rdfid adv) 
           let gg = (g0 `G.delete` g) `G.addGraphs` g1
           -- printGraph g0
           let newst = st `updateGraph` gg
