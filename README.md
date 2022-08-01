@@ -9,6 +9,7 @@ There is a very crude client included, intended mainly for testing.
 
 ## Design notes
 
++ Busines [Logic](docs/Logic.md)
 + [Design Notes](docs/DesignNotes.md)
 + [Data Types](docs/DataTypes.md)
 + [Ontology](Ontology/README.md)
