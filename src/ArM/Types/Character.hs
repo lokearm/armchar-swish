@@ -119,8 +119,11 @@ instance ToRDFGraph CharacterSheet where
    makeRDFGraph cs =
          ( listToRDFGraph  . fst . runBlank ( csToArcListM cs ) )
          ("charsheet",1)
-
-
+instance ToRDFGraph Character where
+   makeRDFGraph cs = listToRDFGraph  ( ct:ms )
+       where x = characterID cs
+             ms = keyvalueToArcList x (fromKeyPairList $ characterData cs)
+             ct = arc x typeRes (armRes  "Character")
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs

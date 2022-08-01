@@ -180,6 +180,10 @@ stateScotty stateVar = do
         put "/char" $ do
           char <- jsonData :: S.ActionM TC.Character 
           liftIO $ print char
+          newg <- liftIO $ putCharacter stateVar char
+          case (newg) of
+             Left g -> printGraph g
+             Right x -> text $ T.pack x
 
 notfound404 = do status notFound404
                  text "404 Not Found."
