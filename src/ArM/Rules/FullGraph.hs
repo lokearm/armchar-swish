@@ -20,7 +20,7 @@ import ArM.Rules.RDFS
 -- | Final inference to be done after merging character data and resources
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
-prepareGraph = fwdApplyList vfScoreRules
+prepareGraph = fwdApplyList (stringRules ++ vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
              . applyRDFS
 
@@ -29,6 +29,14 @@ rRule = makeCRule "rRule" l1 l2
                arc tVar pVar oVar,
                arc pVar typeRes ( armRes  "TraitProperty" )  ]
           l2 = [arc sVar pVar oVar]
+
+stringRules = 
+   [ makeCRule "stringRule1"
+       [ arc cVar pVar oVar
+       , arc pVar (armRes "hasStringProperty") ( Var "p2" )
+       , arc oVar (armRes "hasLabel") sVar ]
+       [ arc sVar (Var "p2") sVar ]
+   ]
 
 vfScoreRules = 
    [ makeCRule "flawScoreRule"
