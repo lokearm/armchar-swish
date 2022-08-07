@@ -31,9 +31,11 @@ arm:hasMagnitudeCost a owl:DatatypeProperty, arm:TraitProperty ;
            rdfs:range xsd:int .
 
 arm:hasLevel a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:label "Level" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:int .
 arm:hasCastingScore a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:label "Casting Score" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:int .
 arm:hasTechnique a owl:ObjectProperty, arm:TraitProperty ;
@@ -41,6 +43,7 @@ arm:hasTechnique a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:range arm:TechClass ;
 	     arm:hasStringProperty arm:hasTechniqueString .
 arm:hasTechniqueString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Technique" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
 
@@ -49,6 +52,7 @@ arm:hasForm a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:range arm:FormClass ;
 	     arm:hasStringProperty arm:hasFormString .
 arm:hasFormString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Form" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
 
@@ -57,7 +61,13 @@ arm:hasRequisite a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:range arm:ArtClass .
 arm:hasRange a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
-             rdfs:range arm:Range .
+             rdfs:range arm:Range ;
+	     arm:hasStringProperty arm:hasRangeString .
+arm:hasRangeString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Range" ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+
 arm:hasDuration a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range arm:Duration .
