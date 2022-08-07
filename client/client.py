@@ -77,6 +77,11 @@ y = get(conn,"/art/cieran/1217/Autumn" )
 for i in y:
     output.append( f'\AnArt{{{i.get("arm:hasLabel","?").lower()}}}{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasXP","?")}}}{{{i.get("arm:hasVis","-")}}}' )
 
+y = get(conn,"/spell/cieran/1217/Autumn" )
+output.append( "\\begin{grimoire}" )
+for i in y:
+    output.append( f"  \\Aspell{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasTeFo','???')}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{i.get('arm:hasScore','?')}}}{{{i.get('arm:hasXP','?')}}}" )
+output.append( "\\end{grimoire}" )
 
 output.append(  "\\end{magus}" )
 f = open( fn, "w" )

@@ -129,6 +129,12 @@ stateScotty stateVar = do
         get "/test/ability/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           textif' r CQ.getAbilities 
+        get "/spell/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          jsonif' r CQ.getSpells 
+        get "/test/spell/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          textif' r CQ.getSpells 
         get "/art/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getArts 
