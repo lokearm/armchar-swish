@@ -34,15 +34,10 @@ advtypeRule = makeCRule "advtypeRule"
     [ arc sVar hasAdvancementTypeString lVar ]
 
 -- | Infer a string representation of the Trait Class of each Trait Advancement
-traitclassRule = makeCRule "traitclassRule" 
-    [ arc sVar (armRes "traitClass") cVar,
-      arc cVar (armRes "hasLabel") oVar ]
-    [ arc sVar (armRes "traitClassString") oVar ]
-stringPropertyRule = makeCRule "stringRule1"
-       [ arc cVar pVar oVar
-       , arc pVar (armRes "hasStringProperty") ( Var "p2" )
-       , arc oVar (armRes "hasLabel") sVar ]
-       [ arc sVar (Var "p2") sVar ]
+-- traitclassRule = makeCRule "traitclassRule" 
+--     [ arc sVar (armRes "traitClass") cVar,
+--       arc cVar (armRes "hasLabel") oVar ]
+--     [ arc sVar (armRes "traitClassString") oVar ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule = makeCRule "advancementindexRule" 
@@ -59,7 +54,7 @@ prepareCharGraph = fwdApplyList [ traitclasstypeRule ]
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
    fwdApplyList (
-      advtypeRule:stringPropertyRule:advancementindexRule:rdfstypeRules )
+      advtypeRule:advancementindexRule:rdfstypeRules )
 
 -- | Apply standard RDFS rules to elaborate the schema
 -- This is used only once, so it may be allowed to be costly.

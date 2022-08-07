@@ -39,6 +39,7 @@ arm:hasCastingScore a owl:DatatypeProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:int .
 arm:hasTechnique a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:label "Technique" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range arm:TechClass ;
 	     arm:hasStringProperty arm:hasTechniqueString .
@@ -48,6 +49,7 @@ arm:hasTechniqueString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProper
              rdfs:range xsd:string .
 
 arm:hasForm a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:label "Form" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range arm:FormClass ;
 	     arm:hasStringProperty arm:hasFormString .
