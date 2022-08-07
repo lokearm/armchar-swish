@@ -1,8 +1,6 @@
 
 arm:SpellClass rdfs:subClassOf arm:LeafTraitClass .
-arm:Spell rdfs:subClassOf arm:Trait ;
-    owl:disjointWith arm:Ability, arm:PersonalityTrait, arm:Characteristic,
-                     arm:Art, arm:Reputation .
+arm:Spell rdfs:subClassOf arm:Trait .
 
 arm:Range a owl:Class .
 arm:Duration a owl:Class .
@@ -55,19 +53,28 @@ arm:hasTarget a owl:ObjectProperty, arm:TraitProperty ;
 arm:hasSize a owl:DatatypeProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:int .
+arm:hasMasteryOption a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:MasteryOption .
+arm:hasMasteryOptionString a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
 
-arm:hasTechniqueString a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasTeFo a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
-arm:hasFormString a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasTechniqueString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
-arm:hasRangeString a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasFormString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
-arm:hasDurationString a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasRangeString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
-arm:hasTargetString a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasDurationString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+arm:hasTargetString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
