@@ -1,6 +1,6 @@
 
 arm:SpellClass rdfs:subClassOf arm:LeafTraitClass .
-arm:Spell rdfs:subClassOf arm:Trait .
+arm:Spell rdfs:subClassOf arm:XPTrait .
 
 arm:Range a owl:Class .
 arm:Duration a owl:Class .
