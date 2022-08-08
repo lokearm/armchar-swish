@@ -81,7 +81,15 @@ y = get(conn,"/spell/cieran/1217/Autumn" )
 output.append( "\\begin{grimoire}" )
 for i in y:
     f = i.get('arm:hasFormString')
+    f2 = i.get('arm:hasFormRequisiteString',"")
+    if not isinstance(f2,str):
+        f2 = "".join( [ s[:2] for s in f2 ] )
+    if f2 != "": f = f + "("+f2+")"
     t = i.get('arm:hasTechniqueString')
+    t2 = i.get('arm:hasTechniqueRequisiteString',"")
+    if not isinstance(t2,str):
+        t2 = "".join( [ s[:2] for s in t2 ] )
+    if t2 != "": t = t + "("+t2+")"
     tefo = f[:2] + t[:2]
     output.append( f"  \\Aspell{{{i.get('arm:hasLabel','???')}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{i.get('arm:hasScore','?')}}}{{{i.get('arm:hasXP','?')}}}" )
 output.append( "\\end{grimoire}" )
