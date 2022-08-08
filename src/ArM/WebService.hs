@@ -24,6 +24,7 @@ import Swish.RDF.Formatter.Turtle (formatGraphAsText,formatGraphIndent)
 import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
 import Data.Maybe (fromJust)
+import Data.List (sort)
 
 import qualified ArM.Types.Character as TC
 import qualified ArM.Character as C
@@ -79,12 +80,12 @@ stateScotty stateVar = do
           char' <- param "char"
           let char = AR.armcharRes char'
           g <- liftIO $ getStateGraph stateVar
-          text $ T.pack $ show $ C.getIngameAdvancements g char
+          text $ T.pack $ show $ sort $ C.getIngameAdvancements g char
         get "/adv/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'
           g <- liftIO $ getStateGraph stateVar
-          jsonif $ Just $ C.getIngameAdvancements g char
+          jsonif $ Just $ sort $ C.getIngameAdvancements g char
         get "/pregameadvancement/:char" $ do     
           char' <- param "char"
           let char = AR.armcharRes char'

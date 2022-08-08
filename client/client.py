@@ -42,7 +42,7 @@ if y.__contains__( "arm:hasProfession" ):
 #   "arm:hasAlmaMater": "Stonehenge",
 
 
-y = get(conn,"/ability/cieran/1217/Autumn" )
+y = get(conn,"/ability/cieran/1217/Winter" )
 
 ab = [ (i.get("arm:hasLabel","???"),i.get("arm:hasSpeciality","-"),i.get("arm:hasScore","-"),i.get("arm:hasXP","-")) for i in y ]
 ab.sort()
@@ -54,30 +54,30 @@ for i in ab:
 output.append( "\\end{abilities}" )
 
 
-y = get(conn,"/virtue/cieran/1217/Autumn" )
-y += get(conn,"/flaw/cieran/1217/Autumn" )
+y = get(conn,"/virtue/cieran/1217/Winter" )
+y += get(conn,"/flaw/cieran/1217/Winter" )
 
 output.append( "\\begin{vf}" )
 for i in y:
     output.append( f"  \\vfLine{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasScore','?')}}}" )
 output.append( "\\end{vf}" )
 
-y = get(conn,"/pt/cieran/1217/Autumn" )
+y = get(conn,"/pt/cieran/1217/Winter" )
 output.append( "\\begin{personality}" )
 for i in y:
     output.append( f"  \\aPtrait{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasScore','?')}}}" )
 output.append( "\\end{personality}" )
 
-y = get(conn,"/characteristic/cieran/1217/Autumn" )
+y = get(conn,"/characteristic/cieran/1217/Winter" )
 for i in y:
     output.append( f'\Characteristic{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasAbbreviation","?").lower()}}}' )
 
-y = get(conn,"/art/cieran/1217/Autumn" )
+y = get(conn,"/art/cieran/1217/Winter" )
 
 for i in y:
     output.append( f'\AnArt{{{i.get("arm:hasLabel","?").lower()}}}{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasXP","?")}}}{{{i.get("arm:hasVis","-")}}}' )
 
-y = get(conn,"/spell/cieran/1217/Autumn" )
+y = get(conn,"/spell/cieran/1217/Winter" )
 output.append( "\\begin{grimoire}" )
 for i in y:
     f = i.get('arm:hasFormString')

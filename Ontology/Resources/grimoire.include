@@ -156,3 +156,16 @@ armr:InVi20PiercingMagical  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasForm      armr:vim ;
     arm:hasLevel     20 ;
     arm:hasLabel       "Piercing the Magical  Veil" .
+
+armr:MuCo25Shape a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasLabel "Shape of the Woodland Prowler" ;
+    arm:hasLevel 25 ;
+    arm:hasTechnique     armr:muto ;
+    arm:hasForm          armr:corpus ;
+    arm:hasFormRequisite armr:animal ;
+    arm:hasRange   arm:Rtouch ;
+    arm:hasDuration  arm:Dsun ;
+    arm:hasTarget    arm:Tind ;
+    arm:hasDescription "You place a wolf skin over yourself or another, and the target changes into a wolf.  The target may change back at will, ending the spell. Before casting this spell, you must first, of course, acquire the skin of a wolf." ;
+    rdfs:comment "(Base 10, +1 Touch, +2 Sun)" .
+

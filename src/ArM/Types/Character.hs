@@ -156,13 +156,16 @@ data Advancement = Advancement {
    } deriving Eq
 
 defaultAdvancement = Advancement { year = Nothing,
-                season = "", rdfid = noSuchAdvancement, 
+                season = "",
+                rdfid = noSuchAdvancement, 
                 advSortIndex = 0,
                 contents = [], traits = [] }
 instance Show Advancement where
    show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
+                 ++ "\nSort Index: " ++ show (advSortIndex a) 
+                 ++ "\nSeason No: " ++ show (sno a) 
                  ++ "\n"
       where 
          y Nothing = ""
@@ -184,7 +187,7 @@ instance Ord Advancement where
                | contents x < contents y = LT
                | contents x > contents y = GT
                | otherwise = EQ
-               where sno = seasonNo . season
+sno = seasonNo . season
 
 seasonNo "Spring" = 1
 seasonNo "Summer" = 2
