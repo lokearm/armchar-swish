@@ -72,17 +72,33 @@ arm:hasRangeString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
 
 arm:hasDuration a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
-             rdfs:range arm:Duration .
+             rdfs:range arm:Duration ;
+	     arm:hasStringProperty arm:hasDurationString .
+arm:hasDurationString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Duration" ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+
 arm:hasTarget a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
-             rdfs:range arm:Target .
-arm:hasSize a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:range arm:Target ;
+	     arm:hasStringProperty arm:hasTargetString .
+arm:hasTargetString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Target" ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+
+arm:hasSize a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Size" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:int .
+
 arm:hasMasteryOption a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
-             rdfs:range arm:MasteryOption .
-arm:hasMasteryOptionString a owl:DatatypeProperty, arm:TraitProperty ;
+             rdfs:range arm:MasteryOption ;
+	     arm:hasStringProperty arm:hasMasteryOptionString .
+arm:hasMasteryOptionString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Mastery Option" ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
 
