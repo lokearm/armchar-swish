@@ -80,7 +80,10 @@ for i in y:
 y = get(conn,"/spell/cieran/1217/Autumn" )
 output.append( "\\begin{grimoire}" )
 for i in y:
-    output.append( f"  \\Aspell{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasTeFo','???')}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{i.get('arm:hasScore','?')}}}{{{i.get('arm:hasXP','?')}}}" )
+    f = i.get('arm:hasFormString')
+    t = i.get('arm:hasTechniqueString')
+    tefo = f[:2] + t[:2]
+    output.append( f"  \\Aspell{{{i.get('arm:hasLabel','???')}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{i.get('arm:hasScore','?')}}}{{{i.get('arm:hasXP','?')}}}" )
 output.append( "\\end{grimoire}" )
 
 output.append(  "\\end{magus}" )
