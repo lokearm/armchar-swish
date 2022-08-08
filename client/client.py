@@ -82,17 +82,21 @@ for i in y:
 y = get(conn,"/spell/" + cstring )
 output.append( "\\begin{grimoire}" )
 for i in y:
-    f = i.get('arm:hasFormString')
+    f = i.get('arm:hasFormString')[:2]
     f2 = i.get('arm:hasFormRequisiteString',"")
-    if not isinstance(f2,str):
+    if isinstance(f2,str):
+        f2 = f2[:2]
+    else:
         f2 = "".join( [ s[:2] for s in f2 ] )
     if f2 != "": f = f + "("+f2+")"
-    t = i.get('arm:hasTechniqueString')
+    t = i.get('arm:hasTechniqueString')[:2]
     t2 = i.get('arm:hasTechniqueRequisiteString',"")
-    if not isinstance(t2,str):
+    if isinstance(t2,str):
+        t2 = t2[:2]
+    else:
         t2 = "".join( [ s[:2] for s in t2 ] )
     if t2 != "": t = t + "("+t2+")"
-    tefo = f[:2] + t[:2]
+    tefo = t + f
     output.append( f"  \\Aspell{{{i.get('arm:hasLabel','???')}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{i.get('arm:hasScore','?')}}}{{{i.get('arm:hasXP','?')}}}" )
 output.append( "\\end{grimoire}" )
 
