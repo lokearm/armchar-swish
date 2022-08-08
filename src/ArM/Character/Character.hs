@@ -66,7 +66,8 @@ getAllCS g c | cs == Nothing = Nothing
 -- of character sheets for every step
 advanceList :: CharacterSheet -> [Advancement] -> [CharacterSheet]
 advanceList _ [] = []
-advanceList cs (x:xs) = advanceCharacter cs x : advanceList cs xs
+advanceList cs (x:xs) = cs' : advanceList cs' xs
+            where cs' = advanceCharacter cs x 
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
