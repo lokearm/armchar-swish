@@ -58,9 +58,25 @@ arm:hasFormString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .
 
-arm:hasRequisite a owl:ObjectProperty, arm:TraitProperty ;
+arm:hasFormRequisite a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:subPropertyOf arm:hasRequisite ;
              rdfs:domain arm:SpellClass ;
-             rdfs:range arm:ArtClass .
+             rdfs:range arm:ArtClass ;
+	     arm:hasStringProperty arm:hasFormRequisiteString .
+arm:hasFormRequisiteString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:label "Form Requisite" ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+arm:hasTechRequisite a owl:ObjectProperty, arm:TraitProperty ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range arm:ArtClass ;
+	     arm:hasStringProperty arm:hasTechRequisiteString .
+arm:hasTechRequisiteString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+             rdfs:subPropertyOf arm:hasRequisite ;
+             rdfs:label "Tech Requisite" ;
+             rdfs:domain arm:SpellClass ;
+             rdfs:range xsd:string .
+
 arm:hasRange a owl:ObjectProperty, arm:TraitProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range arm:Range ;
