@@ -10,8 +10,8 @@ if ( len(sys.argv) > 1 ):
     fn = sys.argv[1]
 print ( "Filename: " + fn )
 
-cstring = "cieran/1217/Autumn"
-# cstring = "cieran/1217/Winter"
+# cstring = "cieran/1217/Autumn"
+cstring = "cieran/1217/Winter"
 
 def get(conn,path):
    conn.request("GET", path)
