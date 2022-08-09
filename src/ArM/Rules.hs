@@ -61,8 +61,23 @@ prepareInitialCharacter =
 prepareSchema :: RDFGraph -> RDFGraph
 prepareSchema = fwdApplyListR rdfsRules
 
+-- | Recompute the character graph to be kept in software transactional
+-- memory.  This is used when the raw character graph changes.
+-- For initial computation, `makeGraphs` should be used instead.
+makeGraph :: RDFGraph -- ^ The raw character graph
+             ->  RDFGraph -- ^ The pre-processed schema graph
+             ->  RDFGraph -- ^ The pre-processed resource graph
+             ->  RDFGraph -- ^ The derived character graph
 makeGraph c0 s1 res1 = ( prepareGraph . merge res1 
     . prepareInitialCharacter . merge s1 . prepareCharGraph ) c0
+
+-- | Compute the three graph to be kept in software transactional
+-- memory.
+makeGraphs :: 
+    (RDFGraph,RDFGraph,RDFGraph) 
+    -- ^ Raw graphs as read from file (character graph,schema,resources)
+    ->  (RDFGraph,RDFGraph,RDFGraph) 
+    -- ^ Graphs augmented by the reasoner (character graph,schema,resources)
 makeGraphs (c0,s0,res0) =
       s1 `par` res1 `par` res2 `par` c2 `pseq` ( c3, s1, res2 )
     where c1 = prepareCharGraph c0
