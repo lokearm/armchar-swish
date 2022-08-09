@@ -64,7 +64,7 @@ armchar:elksrun  a arm:Covenant ;
     [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
     [ arm:traitClass armr:flawlessMagic ],
     [ arm:traitClass armr:skilledParens ],
-    [ arm:traitClass armr:bookLearner ],
+    [ arm:traitClass armr:puissantability ; arm:grantsBonusTrait armr:magictheory ],
     [ arm:traitClass armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ],
     [ arm:traitClass armr:meddler ; a arm:majorFlaw ],
