@@ -141,3 +141,11 @@ arm:Tech rdfs:subClassOf arm:Art  .
 arm:Form rdfs:subClassOf arm:Art  .
 
 
+arm:hasMasteryOption a owl:ObjectProperty, arm:TraitProperty ;
+        arm:hasStringProperty arm:hasMasteryOptionString ;
+        rdfs:domain   arm:Spell ;
+        rdfs:range   arm:MasteryOption .
+arm:hasMasteryOptionString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+        rdfs:domain   arm:Spell ;
+        rdfs:range   xsd:string .
+arm:MasteryOption a owl:Class .

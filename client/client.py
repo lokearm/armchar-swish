@@ -86,6 +86,11 @@ for i in y:
     mxp = i.get('arm:hasXP','')
     if mxp != "": masteryscore = f"{masteryscore} ({mxp})"
     notes = f"{{{i.get('arm:hasRangeString','???')}/{i.get('arm:hasDurationString','???')}/{i.get('arm:hasTargetString','???')}}}"
+    masteryoption = i.get('arm:hasMasteryOptionString','')
+    if not isinstance(masteryoption,str):
+        masteryoption = "".join( masteryoption )
+    if masteryoption != "":
+       notes += "; " + masteryoption
     f = i.get('arm:hasFormString')[:2]
     f2 = i.get('arm:hasFormRequisiteString',"")
     if isinstance(f2,str):

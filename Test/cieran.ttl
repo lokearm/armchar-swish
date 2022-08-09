@@ -169,6 +169,7 @@ armchar:elksrun  a arm:Covenant ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Learn Spell" ;
   arm:advanceTrait [ arm:traitClass armr:magictheory ; arm:addedXP 2 ],
-                [ arm:traitClass armr:MuCo25Shape ; arm:hasTotalXP 5 ] ;
+                [ arm:traitClass armr:MuCo25Shape ; arm:hasTotalXP 5 ;
+	          arm:hasMasteryOption armr:quietcasting-mastery	] ;
   arm:awardsXP 2 ;
   arm:hasAdvancementType arm:Exposure .

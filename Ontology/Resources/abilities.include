@@ -119,3 +119,26 @@ armr:senseholinessAb  rdfs:subClassOf arm:SupernaturalAbility ;
       arm:hasDescription    "You are able to feel the presence of good and evil. A Perception + Sense Holiness and Unholiness roll against an Ease Factor of 9 lets you sense holiness or unholiness in a general area; against an Ease Factor of 15, in a person or object. As demons normally try to hide their nature, you must generally beat their Magic Resistance with your roll. However, you only need to beat it by 1 point, as demons are extremely evil. Emissaries of heaven rarely try to hide their nature, but if they do, you must actually penetrate their Magic Resistance (see page 184). In auras of particularly strong divine or infernal influence, your sensitivity may overwhelm you. This Ability is granted by the Divine realm, not the Magic or Faerie realms, and thus uses the Divine column of the Realm Interaction chart (page 183). Specialties: good or evil. " ; 
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Sense Holiness and Unholiness" .
+
+armr:fastcasting-mastery a arm:MasteryOption ;
+    arm:hasLabel "Fast Casting" ;
+    arm:hasDescription "The maga may Fast Cast the mastered spell according to the rules for Fast Casting Spontaneous spells, on page 83. The maga still takes the –10 penalty to Casting Score and risks the extra botch dice, although the botch dice will be partially offset by her Mastery Ability." .
+armr:mr-mastery a arm:MasteryOption ;
+    arm:hasLabel "Magic Resistance" ;
+    arm:hasDescription "Your Magic Resistance is doubled against the mastered spell, and against any spells or powers that count as similar. (See “Similar Spells,” page 101.)" .
+armr:multiplecasting-mastery a arm:MasteryOption ;
+    arm:hasLabel "Multiple Casting" ;
+    arm:hasDescription "<p>You can cast several copies of a single mastered spell so that it affects more people, objects, or areas (as applicable) than normal. A single target may also be affected more than once. You may cast a number of additional copies of the spell equal to or less than your Mastery Score.</p><p> Each spell must be rolled for separately. If any of the spells fail outright, you lose the fatigue and the spell fails, though others may still take effect successfully. If you lose consciousness, any spells that were successful still run their course. If you lose consciousness and accumulate additional fatigue loss, each additional Fatigue level causes an extra hour of unconsciousness.</p><p>Subtract the total number of discrete targets from any targeting rolls that are required.  Even if all spells are directed at the same target, a –1 applies. The storyguide can further penalize or prohibit multiple casting that is especially difficult, such as casting two spells in opposite directions.</p>" .
+armr:targeting-mastery a arm:MasteryOption ;
+    arm:hasLabel "Targeting" ;
+    arm:hasDescription "Penalty of one for every separate target, including the first Ars Magica Fifth Edition" .
+armr:penetration-mastery a arm:MasteryOption ;
+    arm:hasLabel "Penetration" ;
+    arm:hasDescription "The maga’s Mastery Score is added to her Penetration Ability score for determining her Penetration Bonus (see page 84)." .
+armr:quietcasting-mastery a arm:MasteryOption ;
+    arm:hasLabel "Quiet Casting" ;
+    arm:hasDescription "The penalty for casting a spell quietly is reduced by five. This cannot grant a bonus, although using a booming voice gives the nor- mal bonus. A maga may take this ability twice.  If she does so, she can cast the spell silently without penalty. The range of a Voice Range spell is still based on the actual loudness of the maga’s voice." .
+armr:stillcasting-mastery a arm:MasteryOption ;
+    arm:hasLabel "Still Casting" ;
+    arm:hasDescription "The maga can cast the spell without gestures, at no penalty. The normal bonus for using exaggerated gestures applies." .
+
