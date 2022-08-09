@@ -18,7 +18,6 @@ import Swish.RDF.Graph
 import ArM.Resources
 
 import ArM.Rules.Aux
-import ArM.Rules.Common
 import ArM.Rules.RDFS
 import ArM.Rules.Initial
 import ArM.Rules.FullGraph (prepareGraph)
