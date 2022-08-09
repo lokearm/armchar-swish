@@ -284,7 +284,7 @@
 \newcounter{spelline}
 \newcommand{\SpellLine}[6][\hbox{\hspace{28pc}}]%
            {#1 & #2 & #3 & #4 & #5 \\\hline              %
-            \multicolumn{5}{l}{Foci \a\ Note\s : {\handfamily #6} }\\\hline}
+            \multicolumn{5}{l}{Note\s : {\handfamily #6} }\\\hline}
 
 \def\Aspell#1#2#3#4#5#6{%
   \addtocounter{spelline}{-1}

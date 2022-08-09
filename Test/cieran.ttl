@@ -162,3 +162,13 @@ armchar:elksrun  a arm:Covenant ;
   arm:advanceTrait [ arm:traitClass armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
   arm:hasAdvancementType arm:Reading .
+
+:winter1217adv arm:advanceCharacter armchar:cieran ;
+  a arm:IngameAdvancement ;
+  arm:atSeason "Winter" ;
+  arm:inYear   1217 ;
+  arm:hasAdvancementDescription "Learn Spell" ;
+  arm:advanceTrait [ arm:traitClass armr:magictheory ; arm:addedXP 2 ],
+                [ arm:traitClass armr:MuCo25Shape ; arm:hasTotalXP 5 ] ;
+  arm:awardsXP 2 ;
+  arm:hasAdvancementType arm:Exposure .

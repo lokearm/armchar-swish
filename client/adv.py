@@ -40,7 +40,9 @@ for i in y:
     ts = i.get("advancementtraits",{})
     output.append( "    \\begin{itemize}" )
     for t in ts:
-        output.append( f'      \\item {t.get("arm:hasLabel","???")}: {t.get("arm:addedXP","?")}xp' )
+        nxp = t.get( "arm:addedXP", "")
+        if nxp != "": nxp = f": {nxp}xp"
+        output.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}' )
     output.append( "    \\end{itemize}" )
 
 output.append( "\\end{description}" )
