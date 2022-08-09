@@ -182,9 +182,11 @@ armr:methodCaster   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference 
 armr:personalVisSource   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
                               a arm:LeafTraitClass ;
                           arm:hasLabel "Personal Vis Source" .
-armr:puissantArt   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
-                              a arm:LeafTraitClass ;
-                          arm:hasLabel "Puissant Art" .
+armr:puissantArt rdfs:subClassOf armr:minorHermeticVirtue ;
+                   arm:hasReference   "[ArM5]" ;
+                   a arm:LeafTraitClass ;
+		   arm:grantsBonus 2 ;
+                   arm:hasLabel "Puissant (Art)" .
 armr:quietMagic   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
                               a arm:LeafTraitClass ;
                           arm:hasLabel "Quiet Magic" .
@@ -387,7 +389,8 @@ armr:protection    rdfs:subClassOf armr:minorGeneralVirtue ; arm:hasReference   
                         arm:hasLabel "Protection" .
 armr:puissantAbility    rdfs:subClassOf armr:minorGeneralVirtue ; arm:hasReference   "[ArM5]" ;
                             a arm:LeafTraitClass ;
-                        arm:hasLabel "Puissant Ability" .
+		        arm:grantsBonus 3 ;
+                        arm:hasLabel "Puissant (Ability)" .
 armr:relic    rdfs:subClassOf armr:minorGeneralVirtue ; arm:hasReference   "[ArM5]" ;
                             a arm:LeafTraitClass ;
                         arm:hasLabel "Relic" .

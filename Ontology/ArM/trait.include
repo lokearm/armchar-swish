@@ -149,3 +149,25 @@ arm:hasMasteryOptionString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewPr
         rdfs:domain   arm:Spell ;
         rdfs:range   xsd:string .
 arm:MasteryOption a owl:Class .
+
+arm:hasBonus  a   owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
+        rdfs:comment "A bonus which is added to the score of a trait." ;
+        rdfs:label   "Bonus" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   xsd:int .
+arm:grantsBonusTrait  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
+        rdfs:comment "A trait to which a bonus is granted." ;
+        rdfs:label   "Bonus Trait" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   arm:Trait .
+arm:grantsBonusScore  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
+        rdfs:comment "The bonus granted to a trait (e.g. by puissant virtues)." ;
+        rdfs:label   "Bonus Score" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   xsd:int .
+arm:grantsBonus  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
+        rdfs:label   "Bonus" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   arm:Bonus .
+arm:Bonus a owl:Class ;
+        rdfs:comment "A specification to a bonus which is appled to a trait, class of traits, or other total, for example as granted by Puissant ability." .
