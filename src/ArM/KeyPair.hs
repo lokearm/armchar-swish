@@ -119,6 +119,15 @@ getStringProperty k' (KeyValuePair k v:xs)
    | otherwise      = getStringProperty k' xs
    where f Nothing = ""
          f (Just v) = v
+getIntProperty :: RDFLabel -> KeyPairList -> Int
+getIntProperty x (KeyPairList xs) = getIntProperty' x xs
+getIntProperty' :: RDFLabel -> [KeyValuePair] -> Int
+getIntProperty' _ [] = 0
+getIntProperty' k' (KeyValuePair k v:xs) 
+   | k' == k  = f (fromRDFLabel v)
+   | otherwise      = getIntProperty' k' xs
+   where f Nothing = 0
+         f (Just v) = v
 
 getProperty :: RDFLabel -> [KeyValuePair] -> Maybe RDFLabel
 getProperty _ [] = Nothing

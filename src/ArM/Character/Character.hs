@@ -29,7 +29,7 @@ import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
-import           ArM.Rules.Aux (sVar,labelRes,listToRDFGraph,qgraph)
+import           ArM.Rules.Aux (sVar,labelRes,listToRDFGraph,qgraph,litInt)
 import ArM.Types.Character
 
 getCharacterMetadata = CM.getCharacterMetadata
@@ -39,11 +39,12 @@ getGameStartCharacter :: G.RDFGraph -> G.RDFLabel -> Maybe CharacterSheet
 getGameStartCharacter g label = Just $ getGameStartCS g y
      where x = CM.fromRDFGraph g label :: Character
            y = getInitialCharacter x
---
+
 -- | get initial CharacterSheet from an RDFGraph
 getInitialCharacter :: Character -> CharacterSheet
 getInitialCharacter c = defaultCS {
             csID = characterID c,
+            born = getIntProperty (armRes "hasBirthYear") $ characterData c,
             csMetadata = characterData  c
          }
 
@@ -75,9 +76,14 @@ advanceCharacter cs adv = cs {
      sheetID = Nothing,
      csYear = y,
      csSeason = s,
-     csTraits = advanceTraitList (csTraits cs) (traits adv)
+     csTraits = advanceTraitList (csTraits cs) (traits adv),
+     csMetadata = KeyPairList (xs $ born cs)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)
+           xs age | age == 0 = ys
+                  | otherwise = KeyValuePair (armRes "hasAge") (litInt age):ys
+           (KeyPairList ys) = csMetadata cs
+
 maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
 maybeNextSeason ("",Just y) = ("",Just (y+1)) 
 maybeNextSeason ("",Nothing) = ("",Nothing) 
