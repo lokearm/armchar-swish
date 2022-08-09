@@ -11,7 +11,7 @@ if ( len(sys.argv) > 1 ):
 print ( "Filename: " + fn )
 
 # cstring = "cieran/1217/Autumn"
-cstring = "cieran/1217/Winter"
+cstring = "cieran/1218/Spring"
 
 def get(conn,path):
    conn.request("GET", path)
@@ -91,14 +91,14 @@ for i in y:
         masteryoption = "".join( masteryoption )
     if masteryoption != "":
        notes += "; " + masteryoption
-    f = i.get('arm:hasFormString')[:2]
+    f = i.get('arm:hasFormString',"??")[:2]
     f2 = i.get('arm:hasFormRequisiteString',"")
     if isinstance(f2,str):
         f2 = f2[:2]
     else:
         f2 = "".join( [ s[:2] for s in f2 ] )
     if f2 != "": f = f + "("+f2+")"
-    t = i.get('arm:hasTechniqueString')[:2]
+    t = i.get('arm:hasTechniqueString',"??")[:2]
     t2 = i.get('arm:hasTechniqueRequisiteString',"")
     if isinstance(t2,str):
         t2 = t2[:2]

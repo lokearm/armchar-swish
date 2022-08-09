@@ -73,8 +73,13 @@ advanceList cs (x:xs) = cs' : advanceList cs' xs
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = cs { 
      sheetID = Nothing,
-     csYear = year adv,
-     csSeason = season adv,
+     csYear = y,
+     csSeason = s,
      csTraits = advanceTraitList (csTraits cs) (traits adv)
      }
-
+     where (s,y) = maybeNextSeason $ (season adv, year adv)
+maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
+maybeNextSeason ("",Just y) = ("",Just (y+1)) 
+maybeNextSeason ("",Nothing) = ("",Nothing) 
+maybeNextSeason (s,Just y) = (s',Just y') where (s',y') = nextSeason (s,y)
+maybeNextSeason (s,Nothing) = (s',Nothing) where (s',y') = nextSeason (s,0) 

@@ -10,11 +10,11 @@
 -- Rules and Rules Application to be applied on the initial character
 -- sheet without the resource ontology.
 --
--- Three rules are applied at this stage
--- 1.  String properties are added to avoid having to handle simple objects
---     at the client.
--- 2.  RDFS type inferences, expanding subclasses and subproperties.
--- 3.  Advancement indices are copied from classes to instances.
+-- Two rules are applied at this stage
+-- 1.  RDFS type inferences, expanding subclasses and subproperties.
+-- 2.  Advancement indices are copied from classes to instances.
+--
+-- Before the schema is added rdf types are derived from the traitClass property.
 --
 -----------------------------------------------------------------------------
 
@@ -46,4 +46,4 @@ prepareCharGraph = fwdApplyList [ traitclasstypeRule ]
 -- | Inference on the character data merged with the schema
 prepareInitialCharacter :: RDFGraph -> RDFGraph
 prepareInitialCharacter = 
-   fwdApplyList ( stringPropertyRule:advancementindexRule:rdfstypeRules )
+   fwdApplyList ( advancementindexRule:rdfstypeRules )

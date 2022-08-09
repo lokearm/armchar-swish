@@ -8,6 +8,10 @@
 --
 -- Reasoning rules on the full graph using the resource ontology.
 --
+-- Rules used include
+-- 1.  String properties are added to avoid having to handle simple objects
+--     at the client.
+--
 -----------------------------------------------------------------------------
 
 module ArM.Rules.FullGraph (prepareGraph) where
@@ -21,7 +25,7 @@ import ArM.Rules.RDFS
 -- | Final inference to be done after merging character data and resources
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
-prepareGraph = fwdApplyList (vfScoreRules)
+prepareGraph = fwdApplyList (stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
              . applyRDFS
 
