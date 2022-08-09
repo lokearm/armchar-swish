@@ -20,41 +20,12 @@ import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS
+import ArM.Rules.Initial
 import ArM.Rules.FullGraph (prepareGraph)
 import ArM.Rules.Resource (prepareResources)
 
 import Control.Parallel
 
--- ** Initial Character Rules
-
--- | Infer a string representation of the Advancement Type
--- (Reading, Practice, Exposure, etc.)
-advtypeRule = makeCRule "advtypeRule" 
-    [ arc sVar hasAdvancementType cVar, arc cVar labelRes lVar ]
-    [ arc sVar hasAdvancementTypeString lVar ]
-
--- | Infer a string representation of the Trait Class of each Trait Advancement
--- traitclassRule = makeCRule "traitclassRule" 
---     [ arc sVar (armRes "traitClass") cVar,
---       arc cVar (armRes "hasLabel") oVar ]
---     [ arc sVar (armRes "traitClassString") oVar ]
-
--- | Add indices used for sorting advancements
-advancementindexRule = makeCRule "advancementindexRule" 
-    [ tArc, arc tVar (armRes "hasAdvancementIndex") cVar ]
-    [ arc sVar (armRes "hasAdvancementIndex") cVar ]
-
-
--- | Initial inferences on the character data, to be applied without
--- the schema
-prepareCharGraph :: RDFGraph -> RDFGraph
-prepareCharGraph = fwdApplyList [ traitclasstypeRule ]
-
--- | Inference on the character data merged with the schema
-prepareInitialCharacter :: RDFGraph -> RDFGraph
-prepareInitialCharacter = 
-   fwdApplyList (
-      advtypeRule:advancementindexRule:rdfstypeRules )
 
 -- | Apply standard RDFS rules to elaborate the schema
 -- This is used only once, so it may be allowed to be costly.
