@@ -23,8 +23,14 @@ character sheet at any point in time.
 1.  Augmenting by schema.  Adding the schema to the character data makes it
     possible to derive additional type information (super types).  This is 
     important to make subsequent steps work.
+    + The reasoner for is defined in `ArM.Rules`.
+    + The schema is also preprocessed with the RDFS rules defined in
+      `ArM.Rules.RDFS`.
 2.  Augmenting by resources makes it possible to derive stats and implied
     traits.  It also add descriptions and human-readable labels to the traits.
+    + The reasoners for the first two steps are defined in `ArM.Rules`.
+    + Resources are preprocessed with rules defined in
+      `ArM.Rules.Resource`.
 3.  Advancement.  This is the most important step.  For each advancement, a
     character sheet is derived, accumulating every prior advancement to calculate
     the complete stats of the character at a given point in time.  Among other
@@ -33,12 +39,21 @@ character sheet at any point in time.
       trait without knowing its type.
     + The characters are converted to RDFGraphs and stored individually.
       This makes it possible to use the schema to sort traits into categories.
-4.  A reasoner is applied to each character sheet to add convenience properties
-    to make it easier to look up specific character data later.
-5.  Queries.  The rich ontology, with subclassing of properties and concepts make 
+    + The rules are defined in `ArM.Rules.FullGraph`
+r.  A reasoner is applied to each character sheet to add
+    convenience properties to make it easier to look up specific
+    character data later.
+    + The rules are defined in `ArM.Rules.Record`
+5.  Queries.
+    The rich ontology, with subclassing of properties and concepts make 
     it possible to tailor queries to get specific pieces of information.
     + The result is converted first to the Trait algebraic data type and then to
       JSON.
     + *Could it be sped up by converting directly from RDF triples to JSON?*
-6.  Updates.  The ontology defines what properties should be editable and persistable.
-    Queries are used to extract the triples that should be stored from any PUT request.
+    + This is handled by `ArM.CharacterQuery`
+6.  Updates.
+    + The ontology defines what properties should be editable and
+      persistable.
+    + Queries are used to extract the triples that should be stored 
+      from any PUT request.
+    + These rules are defined in `ArM.Rules.Persistence`.

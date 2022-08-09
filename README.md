@@ -9,12 +9,12 @@ There is a very crude client included, intended mainly for testing.
 
 ## Design notes
 
-+ Busines [Logic](docs/Logic.md)
 + [Design Notes](docs/DesignNotes.md)
++ Busines [Logic](docs/Logic.md)
 + [Data Types](docs/DataTypes.md)
-+ [Ontology](Ontology/README.md)
 + [Tests](docs/Tests.md) showing current features of the web API
 + [Data Structure](docs/DataStructure.md) 
++ [Ontology](Ontology/README.md)
 
 ## Testing
 
@@ -73,6 +73,12 @@ cat | http put :3000/adv
     }
 ```
 Obviously, if you have a JSON test file, you can redirect from file instead.
+
+## Test Scripts
+
+A couple of simple client scripts are provided in the `client` subdirectory.
+There are python scripts to generate off-line character sheets, and a
+simple `put.sh` script to test the update API.
 
 ## Problems
 
@@ -139,14 +145,7 @@ as far as I can tell:
 
 ### Project 1.  Managing a single character
 
-1. Discuss Web API 
-2. Test and review
-3. Web Server - put advancement resource
-4. Generate documentation
-5. Spell String Rules
-6. Make LaTeX
-    1.  Pull metadata
-    2.  Pull Characteristics
+See github issues tagged «First Prototype»
 
 ### Project 2.  Managing a covenant/saga
 
