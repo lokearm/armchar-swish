@@ -512,8 +512,8 @@ armr:weakSpontaneousMagic    rdfs:subClassOf armr:majorHermeticFlaw ; arm:hasRef
                  a arm:LeafTraitClass ;
                 arm:hasLabel "Weak Spontaneous Magic" .
 
-armr:majorPersonalityFlaw  rdfs:subClassOf arm:Flaw ;
-                       arm:hasLabel "Major or Minor Personality Flaw" .
+armr:majorPersonalityFlaw  rdfs:subClassOf arm:majorFlaw ;
+                       arm:hasLabel "Major Personality Flaw" .
 armr:minorPersonalityFlaw  rdfs:subClassOf arm:minorFlaw ;
                        arm:hasLabel "Minor Personality Flaw" .
 armr:majorSupernaturalFlaw  rdfs:subClassOf  arm:majorFlaw ;
@@ -549,28 +549,61 @@ armr:ageQuickly  rdfs:subClassOf   armr:majorSupernaturalFlaw ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Age Quickly" .
 
-armr:ambitious     rdfs:subClassOf  armr:majorPersonalityFlaw ; arm:hasReference   "[ArM5]" ;
+armr:ambitiousMajor  rdfs:subClassOf  armr:majorPersonalityFlaw ;
+                  arm:hasReference   "[ArM5]" ;
+                  a arm:LeafTraitClass ;
+                  arm:hasLabel "Ambitious (major)" .
+armr:ambitious     rdfs:subClassOf  armr:minorPersonalityFlaw ;
+                 arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                arm:hasLabel "Ambitious" .
-armr:avaricious    rdfs:subClassOf  armr:majorPersonalityFlaw ; arm:hasReference   "[ArM5]" ;
+armr:avariciousMajor rdfs:subClassOf  armr:majorPersonalityFlaw ;
+                  arm:hasReference   "[ArM5]" ;
+                  a arm:LeafTraitClass ;
+                  arm:hasLabel "Avaricious (major)" .
+armr:avaricious    rdfs:subClassOf  armr:minorPersonalityFlaw ;
+                 arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
-               arm:hasLabel "Avaricious" .
-armr:compassionate rdfs:subClassOf  armr:majorPersonalityFlaw ; arm:hasReference   "[ArM5]" ;
+                 arm:hasLabel "Avaricious" .
+armr:compassionateMajor rdfs:subClassOf  
+                 armr:majorPersonalityFlaw ; arm:hasReference   "[ArM5]" ;
+                 a arm:LeafTraitClass ;
+                 arm:hasLabel "Compassionate (major)" .
+armr:compassionate rdfs:subClassOf  
+                 armr:minorPersonalityFlaw ; arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Compassionate" .
-armr:driven      rdfs:subClassOf  armr:majorPersonalityFlaw ;
+armr:drivenMajor      rdfs:subClassOf  armr:majorPersonalityFlaw ;
+                 arm:hasReference   "[ArM5]" ;
+                 a arm:LeafTraitClass ;
+                 arm:hasLabel "Driven (major)" .
+armr:driven      rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Driven" .
-armr:envious     rdfs:subClassOf  armr:majorPersonalityFlaw ;
+armr:enviousMajor    rdfs:subClassOf  armr:majorPersonalityFlaw ;
+                 arm:hasReference   "[ArM5]" ;
+                 a arm:LeafTraitClass ;
+                 arm:hasLabel "Envious (major)" .
+armr:envious     rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Envious" .
-armr:generous    rdfs:subClassOf  armr:majorPersonalityFlaw ;
+armr:generousMajor    rdfs:subClassOf  armr:majorPersonalityFlaw ;
+                 arm:hasReference   "[ArM5]" ;
+                 a arm:LeafTraitClass ;
+                 arm:hasLabel "Generous (major)" .
+armr:generous    rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Generous" .
-armr:meddler rdfs:subClassOf  armr:majorPersonalityFlaw ;
+armr:meddlerMajor rdfs:subClassOf  armr:majorPersonalityFlaw ;
+    arm:hasDescription   "You want to fix other peoples' lives: arrange matches, teach children to sew `properly', or tend the sick. You waste a lot of time and energy on such endeavors, and people usually resent it. " ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-meddler ] ;
+		 arm:hasReference   "[ArM5]" ;
+                 a arm:LeafTraitClass ;
+                 arm:hasLabel "Meddler (major)" .
+armr:meddler rdfs:subClassOf  armr:minorPersonalityFlaw ;
     arm:hasDescription   "You want to fix other peoples' lives: arrange matches, teach children to sew `properly', or tend the sick. You waste a lot of time and energy on such endeavors, and people usually resent it. " ;
                  arm:grantsTrait [ arm:traitClass armr:personality-meddler ] ;
 		 arm:hasReference   "[ArM5]" ;
