@@ -189,6 +189,21 @@ instance Ord Advancement where
                | otherwise = EQ
 sno = seasonNo . season
 
+-- | The `SeasonYear` gives a season with year.
+type SeasonYear = (String,Int) 
+-- | Given a season/year, `nextSeason` returns the subsequent season.
+-- Winter is the last season of the year, and is followed by the Spring of
+-- the next year.
+nextSeason :: SeasonYear -> SeasonYear
+nextSeason ("Spring",y) = ("Summer",y)
+nextSeason ("Summer",y) = ("Autumn",y)
+nextSeason ("Autumn",y) = ("Winter",y)
+nextSeason ("Winter",y) = ("Spring",y+1)
+
+
+-- | Given a season as a String, `nextSeason` returns a number by which seasons
+-- can be ordered within a calendar year.  Winter is the last season in the year.
+seasonNo :: String -> Int
 seasonNo "Spring" = 1
 seasonNo "Summer" = 2
 seasonNo "Autumn" = 3
