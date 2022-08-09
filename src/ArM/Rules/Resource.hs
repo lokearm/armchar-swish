@@ -31,15 +31,18 @@ traitclass = Var "traitclass"
 trait = Var "trait"
 score = armRes "hasScore"
 
-grantarc = arc traitclass gtRes trait
 
-vfpRule = makeCRule "vfpRule" [grantarc, vfp2, vfp3] [vfpT]
-vfpMajorRule = makeCRule "vfpMajorRule" [grantarc, vfp2bis, vfp3] [vfpTbis]
-vfp2 = arc traitclass subclassRes (armRes "minorFlaw")
-vfp2bis = arc traitclass subclassRes (armRes "majorFlaw")
+vfpRule = makeCRule "vfpRule" [grantarc
+     , arc traitclass subclassRes (armRes "minorFlaw")
+     , vfp3
+     ] [ arc trait score (litInt 3) ]
+vfpMajorRule = makeCRule "vfpMajorRule" [grantarc
+     , arc traitclass subclassRes (armRes "majorFlaw")
+     , vfp3
+     ] [ arc trait score (litInt 6) ]
+grantarc = arc traitclass gtRes trait
 vfp3 = arc trait typeRes (armRes "PersonalityTrait" )
-vfpT = arc trait score (litInt 3)
-vfpTbis = arc trait score (litInt 6)
+
 
 
 vfabRule = makeCRule "vfabRule" [grantarc, vfab3] [vfabT]
