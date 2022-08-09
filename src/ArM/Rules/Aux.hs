@@ -14,13 +14,12 @@ module ArM.Rules.Aux where
 
 import Swish.RDF.Ruleset as SRR
 import Swish.Rule as SR
-import Swish.RDF.Graph as SRG
+import Swish.RDF.Graph 
 import Swish.RDF.Vocabulary.RDF
 import Swish.RDF.Vocabulary.XSD
 
 import Data.Set (fromList)
 import qualified Data.Text as T
-import Data.Text.Lazy.Builder (fromString)
 import ArM.Resources
 import Swish.VarBinding (varBindingId) 
 

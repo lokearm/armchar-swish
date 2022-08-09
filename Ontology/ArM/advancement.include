@@ -35,7 +35,8 @@ arm:hasAdvancementTypeString   a owl:DatatypeProperty, arm:ViewProperty ;
 arm:hasAdvancementType   a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:AdvancementType ;
-        rdfs:label   "Study Mode" .
+        rdfs:label   "Study Mode" ;
+        arm:hasStringProperty arm:hasAdvancementTypeString .
 arm:atSeason a   owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:range   xsd:string ;
         rdfs:label   "Season" .
@@ -54,12 +55,12 @@ arm:awardsXP a owl:DatatypeProperty, arm:PersistentProperty ;
 
 
 arm:AdvancementType a owl:Class .
-arm:Exposure  rdfs:label  "Exposure" ; a arm:AdvancementType .
-arm:Practice  rdfs:label  "Practice" ; a arm:AdvancementType .
-arm:Adventure  rdfs:label  "Adventure" ; a arm:AdvancementType .
-arm:Training  rdfs:label  "Training" ; a arm:AdvancementType .
-arm:Teaching  rdfs:label  "Teaching" ; a arm:AdvancementType .
-arm:Reading  rdfs:label  "Reading" ; a arm:AdvancementType .
+arm:Exposure  arm:hasLabel "Exposure" ; a arm:AdvancementType .
+arm:Practice  arm:hasLabel "Practice" ; a arm:AdvancementType .
+arm:Adventure  arm:hasLabel "Adventure" ; a arm:AdvancementType .
+arm:Training  arm:hasLabel "Training" ; a arm:AdvancementType .
+arm:Teaching  arm:hasLabel "Teaching" ; a arm:AdvancementType .
+arm:Reading  arm:hasLabel "Reading" ; a arm:AdvancementType .
 
 # Trait Advancement
 

@@ -13,6 +13,7 @@
 module ArM.Rules.FullGraph (prepareGraph) where
 
 import Swish.RDF.Graph
+import ArM.Rules.Common
 import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.RDFS
@@ -20,15 +21,10 @@ import ArM.Rules.RDFS
 -- | Final inference to be done after merging character data and resources
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
-prepareGraph = fwdApplyList (stringPropertyRule:vfScoreRules)
+prepareGraph = fwdApplyList (vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
              . applyRDFS
 
-stringPropertyRule = makeCRule "stringRule1"
-       [ arc cVar pVar oVar
-       , arc pVar (armRes "hasStringProperty") ( Var "p2" )
-       , arc oVar (armRes "hasLabel") sVar ]
-       [ arc cVar (Var "p2") sVar ]
 
 rRule = makeCRule "rRule" l1 l2
     where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
