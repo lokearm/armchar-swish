@@ -56,16 +56,57 @@ keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 keyvalueToArcList x [] = []
 keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
 
-traitToArcListM :: RDFLabel -> RDFLabel -> Trait -> BlankState [RDFTriple]
+traitToArcListM :: TraitLike a => RDFLabel -> RDFLabel -> a -> BlankState [RDFTriple]
 traitToArcListM hasTraitRes cs t 
      | x' == Nothing = do
                       y <- getBlank 
                       return $ arc cs hasTraitRes y:keyvalueToArcList y ts
      | otherwise    = return $ arc cs hasTraitRes x:keyvalueToArcList x ts
-                 where x' = traitID t
+                 where x' = traitlikeID t
                        x = fromJust x'
-                       ts = traitContents t
+                       ts = traitlikeContents t
 
+class TraitLike a where
+    traitlikeID :: a -> Maybe RDFLabel
+    traitlikeClass :: a -> RDFLabel
+    traitlikeContents :: a -> [KeyValuePair]
+instance TraitLike Trait where
+    traitlikeID = traitID
+    traitlikeClass = traitClass
+    traitlikeContents = traitContents
+instance TraitLike Item where
+    traitlikeID = itemID
+    traitlikeClass = itemClass
+    traitlikeContents = itemContents
+
+
+data Item = Item {
+    itemID :: Maybe RDFLabel,
+    itemClass :: RDFLabel,
+    itemContents :: [KeyValuePair]
+   } deriving (Eq)
+defaultItem = Item {
+    itemID = Nothing,
+    itemClass = noSuchTrait,
+    itemContents = []
+   } 
+instance Show Item where
+   show a = "**" ++ y (itemID a) ++ " " ++ show (itemClass a) ++ "**\n" 
+                 ++ sc (itemContents a) 
+                 ++ "\n"
+      where 
+         y Nothing = ""
+         y (Just x) = show x
+         s Nothing = ""
+         s (Just x) = x
+         sc [] = ""
+         sc (KeyValuePair x y:xs) = "  " ++ show x ++ ": " ++ show y ++ "\n" ++ sc xs
+instance Ord Item where
+   compare x y | itemClass x < itemClass y = LT
+               | itemClass x > itemClass y = GT
+               | itemID x < itemID y = LT
+               | itemID x > itemID y = GT
+               | otherwise = EQ
 
 data Character = Character {
          characterID :: RDFLabel,
@@ -86,8 +127,8 @@ data CharacterSheet = CharacterSheet {
          sheetID :: Maybe RDFLabel,
          csYear :: Maybe Int,
          csSeason :: String,
-         -- csSeason :: Maybe RDFLabel,
          born     :: Int,
+         csItems :: [Item],
          csTraits :: [Trait],
          csMetadata :: KeyPairList
        }  deriving (Eq)
@@ -104,6 +145,7 @@ defaultCS = CharacterSheet {
          csYear = Nothing,
          csSeason = "",
          born = 0,
+         csItems = [],
          csTraits = [],
          csMetadata = KeyPairList []
        }  
@@ -145,6 +187,7 @@ csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           ts <- mapM (traitToArcListM htRes x) (csTraits cs)
+          -- is <- mapM (traitToArcListM (armRes "hasItem") x) (csItems cs)
           let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ct = arc x isCharacterLabel charlabel
           let ct1 = arc x typeRes csRes 
@@ -165,7 +208,6 @@ getSheetIDM _ (Just x) = return x
 data Advancement = Advancement {
     year :: Maybe Int,
     season :: String,
-    -- season :: Maybe RDFLabel,
     rdfid :: RDFLabel,
     contents :: [KeyValuePair],
     advSortIndex :: Int,
