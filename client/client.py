@@ -85,7 +85,9 @@ output.append( "\\end{personality}" )
 y = get(conn,"/equipment/" + cstring )
 output.append( "\\begin{equipment}" )
 for i in y:
-    output.append( f"  \\eqPiece{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasQuantity','')}}}" )
+    q = i.get('arm:hasQuantity','')
+    if q != "": q = f" ({q})"
+    output.append( f"  \\eqPiece{{{i.get('arm:hasLabel','???')}{q}}}{{{i.get('arm:hasLoad','')}}}" )
 output.append( "\\end{equipment}" )
 
 y = get(conn,"/characteristic/" + cstring )

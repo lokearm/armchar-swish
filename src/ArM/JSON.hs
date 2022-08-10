@@ -197,12 +197,14 @@ f (x,(KeyValuePair k v):xs)
 data ProtoAdvancement = ProtoAdvancement {
     advancementid :: RDFLabel,
     advancementcontents :: KeyPairList,
-    advancementtraits :: [Trait]
+    advancementtraits :: [Trait],
+    advancementitems :: [Item]
    } 
 
 instance ToJSON Advancement where 
-    toJSON cs = object (c:x:y:[])
+    toJSON cs = object (c:x:z:y:[])
        where x = (fromString "advancementtraits") .= (toJSON (traits cs))
+             z = (fromString "advancementitems") .= (toJSON (items cs))
              y = (fromString "advancementcontents") .= KeyPairList (contents cs)
              c = (fromString "advancementid") .= toJSON (rdfid cs)
 
@@ -212,10 +214,12 @@ instance FromJSON ProtoAdvancement where
    parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementid"
                                            <*> v .: "advancementcontents"
                                            <*> v .: "advancementtraits"
+                                           <*> v .: "advancementitems"
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement {
                      rdfid = advancementid adv,
                      traits = advancementtraits adv,
+                     items = advancementitems adv,
                      year = getYear ys,
                      season = getSeason ys,
                      advSortIndex = getSortIndex ys,

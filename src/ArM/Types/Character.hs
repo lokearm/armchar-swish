@@ -83,15 +83,18 @@ instance TraitLike Item where
 data Item = Item {
     itemID :: Maybe RDFLabel,
     itemClass :: RDFLabel,
+    itemLabel :: String,
     itemContents :: [KeyValuePair]
    } deriving (Eq)
 defaultItem = Item {
     itemID = Nothing,
     itemClass = noSuchTrait,
+    itemLabel = "",
     itemContents = []
    } 
 instance Show Item where
-   show a = "**" ++ y (itemID a) ++ " " ++ show (itemClass a) ++ "**\n" 
+   show a = "**" ++ itemLabel a ++ "(" ++ y (itemID a) ++ ") "
+                 ++ show (itemClass a) ++ "**\n" 
                  ++ sc (itemContents a) 
                  ++ "\n"
       where 
@@ -104,6 +107,8 @@ instance Show Item where
 instance Ord Item where
    compare x y | itemClass x < itemClass y = LT
                | itemClass x > itemClass y = GT
+               | itemLabel x < itemLabel y = LT
+               | itemLabel x > itemLabel y = GT
                | itemID x < itemID y = LT
                | itemID x > itemID y = GT
                | otherwise = EQ

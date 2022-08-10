@@ -166,7 +166,12 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
   arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
   arm:advanceTrait [ arm:traitClass armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
-  arm:hasAdvancementType arm:Reading .
+  arm:hasAdvancementType arm:Reading ;
+  arm:changePossession
+     [ arm:traitClass arm:Equipment ; arm:hasQuantity 2 ;
+       arm:hasLabel "Initiation scripts" ;
+       arm:hasDescription "These initiation scripts came from Jerome's Tower, apparently belonging to some Cult of the Servants of the Common People." ;
+       ] .
 
 :winter1217adv arm:advanceCharacter armchar:cieran ;
   a arm:IngameAdvancement ;

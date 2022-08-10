@@ -28,13 +28,13 @@ arm:hasWeapon a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Weapon .
 
-arm:addQuantity a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:addQuantity a owl:DatatypeProperty, arm:PossessionProperty, arm:ViewProperty ;
     rdfs:domain arm:Possession  ;
     rdfs:range xsd:int .
-arm:hasOrigin a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasOrigin a owl:DatatypeProperty, arm:PossessionProperty, arm:ViewProperty ;
     rdfs:domain arm:Possession  ;
     rdfs:range xsd:string .
-arm:hasQuantity a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasQuantity a owl:DatatypeProperty, arm:PossessionProperty, arm:ViewProperty ;
     rdfs:domain arm:StockItem  ;
     rdfs:range xsd:int .
 

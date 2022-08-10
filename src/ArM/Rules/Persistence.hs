@@ -27,11 +27,13 @@ import ArM.Resources
 --                        G.arc pVar typeRes armPersistentProperty ]
 --           tg = listToRDFGraph  [ G.arc sVar pVar cVar ]
 
-persistRule = makeCRule "persistRule" 
+p1 =  makeCRule "persistRule" 
     [ G.arc sVar pVar cVar,
       G.arc pVar typeRes armPersistentProperty ]
     [ G.arc sVar pVar cVar ]
-persistTraitRule = makeCRule "persistTraitRule" 
+persistRules = 
+  [ p1
+  , makeCRule "persistTraitRule" 
     [ G.arc sVar (armRes "advanceTrait") tVar
     , G.arc tVar pVar oVar
     , G.arc pVar typeRes armPersistentProperty 
@@ -39,11 +41,22 @@ persistTraitRule = makeCRule "persistTraitRule"
     [ G.arc sVar (armRes "advanceTrait") tVar
     , G.arc tVar pVar oVar
     ]
-persistedRule id = makeCRule "persistedRule" 
+  , makeCRule "persistItemRule" 
+    [ G.arc sVar (armRes "changePossession") tVar
+    , G.arc tVar pVar oVar
+    , G.arc pVar typeRes armPersistentProperty 
+    ]
+    [ G.arc sVar (armRes "changePossession") tVar
+    , G.arc tVar pVar oVar
+    ]
+  ]
+p2 id = makeCRule "persistedRule" 
     [ G.arc id pVar cVar,
       G.arc pVar typeRes armPersistentProperty ]
     [ G.arc id pVar cVar ]
-persistedTraitRule id = makeCRule "persistedTraitRule" 
+persistedRules id =
+  [ p2 id
+  , makeCRule "persistedTraitRule" 
     [ G.arc id (armRes "advanceTrait") tVar
     , G.arc tVar pVar oVar
     , G.arc pVar typeRes armPersistentProperty 
@@ -51,13 +64,18 @@ persistedTraitRule id = makeCRule "persistedTraitRule"
     [ G.arc id (armRes "advanceTrait") tVar
     , G.arc tVar pVar oVar
     ]
-persistedGraph g s = fwdApplyRules [ persistedRule s, persistedTraitRule s ] g
-persistGraph s g = fwdApplyRules [ persistRule, persistTraitRule ] 
-                 $ applyRDFS
-                 $ G.merge s g
+  , makeCRule "persistedTraitRule" 
+    [ G.arc id (armRes "changePossession") tVar
+    , G.arc tVar pVar oVar
+    , G.arc pVar typeRes armPersistentProperty 
+    ]
+    [ G.arc id (armRes "changePossession") tVar
+    , G.arc tVar pVar oVar
+    ]
+  ]
+persistedGraph g s = fwdApplyRules (persistedRules s) g
+persistGraph s g = fwdApplyRules persistRules  $ applyRDFS $ G.merge s g
 
-persistedChar g s = fwdApplyRules [ persistedRule s ] g
-persistChar s g = fwdApplyRules [ persistRule ] 
-                 $ applyRDFS
-                 $ G.merge s g
+persistedChar g s = fwdApplyRules [ p2 s ] g
+persistChar s g = fwdApplyRules [ p1 ] $ applyRDFS $ G.merge s g
 

@@ -149,6 +149,7 @@ kpToItem (KeyPairList []) = defaultItem
 kpToItem (KeyPairList xs) = Item { 
              itemID = getProperty prefixedidRes xs,
              itemClass = getTraitClass xs,
+             itemLabel = getStringProperty (armRes "hasLabel") xs,
              itemContents = xs }
 
 traitKVList :: [KeyValuePair] -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
@@ -202,11 +203,9 @@ advanceItemList :: [Item] -> [Item] -> [Item]
 advanceItemList xs [] = xs
 advanceItemList [] ys = ys
 advanceItemList (x:xs) (y:ys) 
-     | xc < yc  = x:advanceItemList xs (y:ys)
-     | xc > yc  = y:advanceItemList (x:xs) ys
+     | x < y  = x:advanceItemList xs (y:ys)
+     | x > y  = y:advanceItemList (x:xs) ys
      | otherwise = advanceItemList ( advanceItem x y:xs ) ys
-     where xc = traitlikeClass x
-           yc = traitlikeClass y
 
 -- | apply a given Item Advancement to a given Item
 -- 3.  take other properties from the second Item if available
