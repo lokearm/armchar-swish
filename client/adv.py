@@ -44,6 +44,17 @@ for i in y:
         if nxp != "": nxp = f": {nxp}xp"
         output.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}' )
     output.append( "    \\end{itemize}" )
+    ts = i.get("advancementitems",{})
+    print(ts)
+    if ts:
+        output.append( "    Possesions:" )
+        output.append( "    \\begin{itemize}" )
+        for t in ts:
+           nxp = t.get( "arm:hasQuantity", "")
+           if nxp != "": nxp = f" ({nxp})"
+           output.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}' )
+           output.append( f'      \\item {t.get("arm:hasDescription","")}' )
+        output.append( "    \\end{itemize}" )
 
 output.append( "\\end{description}" )
 
