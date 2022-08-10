@@ -43,6 +43,7 @@ armchar:cieran a arm:Magus, arm:Character ;
 	       arm:hasProfession "Rusticus (magus ex Miscellanea)" ;
 	       arm:hasNationality "Irish" ;
                arm:hasAlmaMater "Stonehenge" ;
+               arm:hasCovenant armchar:elksrun ;
                arm:hasSaga armchar:contestedlands .
 
 # Saga and Covenant are reasonable entities to define
