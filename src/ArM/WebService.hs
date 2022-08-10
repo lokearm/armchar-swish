@@ -25,6 +25,7 @@ import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
 import Data.Maybe (fromJust)
 import Data.List (sort)
+import Data.String (fromString)
 
 import           ArM.Query.Metadata (getMetaData)
 import qualified ArM.Types.Character as TC
@@ -99,12 +100,6 @@ stateScotty stateVar = do
           g <- liftIO $ getStateGraph stateVar
           let c =  TC.fromRDFGraph g char :: TC.Character
           json c
-        get "/char/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          case (r) of
-             Just (CharacterRecord cgraph) -> do
-                json $ getMetaData cgraph
-             Nothing -> notfound404 
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
@@ -113,51 +108,16 @@ stateScotty stateVar = do
              Nothing -> notfound404 
 
         -- Traits
-        get "/equipment/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getItemList 
-        get "/virtue/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getVirtues 
-        get "/test/virtue/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          textif' r CQ.getVirtues 
-        get "/flaw/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getFlaws 
-        get "/test/flaw/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          textif' r CQ.getFlaws 
-        get "/pt/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getPTs 
-        get "/test/pt/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          textif' r CQ.getPTs 
-        get "/ability/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getAbilities 
-        get "/test/ability/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          textif' r CQ.getAbilities 
-        get "/spell/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getSpells 
-        get "/test/spell/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          textif' r CQ.getSpells 
-        get "/art/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getArts 
-        get "/test/art/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          textif' r CQ.getArts 
-        get "/characteristic/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          jsonif' r CQ.getCharacteristics 
-        get "/test/characteristic/:char/:year/:season" $ do     
-          r <- getCSGraph stateVar
-          textif' r CQ.getCharacteristics 
+        getAb stateVar "/equipment/:char/:year/:season"   CQ.getItemList 
+        getAb stateVar "/virtue/:char/:year/:season"      CQ.getVirtues 
+        getAb stateVar "/flaw/:char/:year/:season"        CQ.getFlaws 
+        getAb stateVar "/pt/:char/:year/:season"          CQ.getPTs 
+        getAb stateVar "/ability/:char/:year/:season"     CQ.getAbilities 
+        getAb stateVar "/spell/:char/:year/:season"       CQ.getSpells 
+        getAb stateVar "/art/:char/:year/:season"         CQ.getArts 
+        getAb stateVar "/char/:char/:year/:season"        getMetaData
+        getAb stateVar "/characteristic/:char/:year/:season" 
+                                                     CQ.getCharacteristics 
 
   -- Test
         S.delete "/" $ do
@@ -256,3 +216,11 @@ graphif (Just x) = do
 
 -- printGraph = text . T.fromStrict . formatGraphAsText  
 printGraph = text . toLazyText .  formatGraphIndent "\n" True
+
+textAb s p f = get (fromString p) $ do     
+                     r <- getCSGraph s
+                     textif' r f
+jsonAb s p f = get (fromString p) $ do     
+                     r <- getCSGraph s
+                     jsonif' r f
+getAb s p f = textAb s ("/show"++p) f >> jsonAb s p f
