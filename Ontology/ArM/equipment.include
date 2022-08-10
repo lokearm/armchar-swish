@@ -1,6 +1,5 @@
 
 arm:Possession a owl:Class .
-arm:PossessionProperty rdfs:subPropertyOf arm:TraitProperty .
 arm:UniqueItem rdfs:subClassOf arm:Possession ;
    rdfs:comment "A unique item can be a weapon or piece of equipment.  The notable feature is that it is one of a kind, and the item may have a reputation of its own." .
 arm:StockItem rdfs:subClassOf arm:Possession ;
@@ -29,15 +28,21 @@ arm:hasWeapon a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Weapon .
 
-arm:addQuantity a owl:DatatypeProperty, arm:PossessionProperty, arm:ViewProperty ;
+arm:addQuantity a owl:DatatypeProperty,
+                  arm:PossessionProperty,
+                  arm:PersistentProperty ;
     rdfs:label "Added Quantity" ;
     rdfs:domain arm:Possession  ;
     rdfs:range xsd:int .
-arm:hasOrigin a owl:DatatypeProperty, arm:PossessionProperty, arm:ViewProperty ;
+arm:hasOrigin a owl:DatatypeProperty,
+                arm:PossessionProperty, 
+                arm:PersistentProperty ;
     rdfs:label "Origin" ;
     rdfs:domain arm:Possession  ;
     rdfs:range xsd:string .
-arm:hasQuantity a owl:DatatypeProperty, arm:PossessionProperty, arm:ViewProperty ;
+arm:hasQuantity a owl:DatatypeProperty,
+                  arm:PossessionProperty,
+                  arm:PersistentProperty ;
     rdfs:label "Quantity" ;
     rdfs:domain arm:Possession  ;
     rdfs:range xsd:int .

@@ -1,32 +1,43 @@
- {
+{
         "advancementcontents": {
             "arm:advanceCharacter": {
                 "prefixedid": "armchar:cieran"
             },
-            "arm:awardsXP": 5,
-            "arm:hasAdvancementDescription": "Story",
+            "arm:atSeason": "Autumn",
+            "arm:awardsXP": 16,
+            "arm:hasAdvancementDescription": "Studies Mentem L16 Q13 +3",
             "arm:hasAdvancementIndex": 100,
             "arm:hasAdvancementType": {
-                "prefixedid": "arm:Adventure"
+                "prefixedid": "arm:Reading"
             },
-            "arm:inYear": 1217,
-            "arm:atSeason": "Autumn"
+            "arm:hasAdvancementTypeString": "Reading",
+            "arm:inYear": 1217
         },
         "advancementid": {
             "prefixedid": "<https://hg.schaathun.net/armchar/character/cieran#autumn1217adv>"
         },
+        "advancementitems": [
+            {
+                "arm:hasDescription": "A very simple handcart.",
+                "arm:hasLabel": "Cart",
+                "arm:hasQuantity": 1,
+                "arm:traitClass": {
+                    "prefixedid": "arm:Equipment"
+                }
+            }
+        ],
         "advancementtraits": [
             {
-                "arm:addedXP": 5,
-                "arm:hasLabel": "Herbam",
+                "arm:addedXP": 16,
+                "arm:hasLabel": "Mentem",
                 "arm:isSpecialTrait": {
                     "prefixedid": "arm:AccelleratedTrait"
                 },
-                "arm:prefixedid": "_:73",
                 "arm:traitClass": {
-                    "prefixedid": "armr:auram"
-                }
+                    "prefixedid": "armr:mentem"
+                },
+                "arm:traitClassString": "Mentem"
             }
         ]
-    }
+}
 
