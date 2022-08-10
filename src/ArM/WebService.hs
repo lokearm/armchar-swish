@@ -113,6 +113,9 @@ stateScotty stateVar = do
              Nothing -> notfound404 
 
         -- Traits
+        get "/equipment/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          jsonif' r CQ.getItemList 
         get "/virtue/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           jsonif' r CQ.getVirtues 

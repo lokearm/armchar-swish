@@ -82,6 +82,12 @@ for i in y:
     output.append( f"  \\aPtrait{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasScore','?')}}}" )
 output.append( "\\end{personality}" )
 
+y = get(conn,"/equipment/" + cstring )
+output.append( "\\begin{equipment}" )
+for i in y:
+    output.append( f"  \\eqPiece{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasQuantity','')}}}" )
+output.append( "\\end{equipment}" )
+
 y = get(conn,"/characteristic/" + cstring )
 for i in y:
     output.append( f'\Characteristic{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasAbbreviation","?").lower()}}}' )

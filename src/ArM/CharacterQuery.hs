@@ -22,6 +22,7 @@ module ArM.CharacterQuery ( getTraitList
                           , getReputations
                           , getSpells
                           , getCharacteristics
+                          , getItemList
                           ) where
 
 import qualified Swish.RDF.Graph as G
@@ -41,9 +42,10 @@ arcs prop = listToRDFGraph [ G.arc sVar typeRes csRes
 
 
 getTraitList :: G.RDFLabel -> G.RDFGraph -> [CT.Trait]
-getTraitList prop = map CT.toTrait 
+getTraitList prop = map toTrait 
                . keypairSplit . map objectFromBinding . Q.rdfQueryFind q
     where q = arcs prop
+          toTrait = CT.kpToTrait . toKeyPairList 
 
 getVirtues = getTraitList $ armRes "hasVirtue"
 getFlaws = getTraitList $ armRes "hasFlaw"
@@ -53,3 +55,9 @@ getArts = getTraitList $ armRes "hasArt"
 getReputations = getTraitList $ armRes "hasReputation"
 getSpells = getTraitList $ armRes "hasSpell"
 getCharacteristics = getTraitList $ armRes "hasCharacteristic"
+
+getItemList :: G.RDFGraph -> [CT.Item]
+getItemList = map toItem 
+               . keypairSplit . map objectFromBinding . Q.rdfQueryFind q
+    where q = arcs $ armRes "hasPossession"
+          toItem = CT.kpToItem . KeyPairList . toKeyPairList 

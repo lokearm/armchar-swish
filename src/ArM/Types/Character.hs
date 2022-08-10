@@ -190,7 +190,7 @@ csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           ts <- mapM (traitToArcListM htRes x) (csTraits cs)
-          is <- mapM (traitToArcListM (armRes "hasItem") x) (csItems cs)
+          is <- mapM (traitToArcListM (armRes "hasPossession") x) (csItems cs)
           let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ct = arc x isCharacterLabel (csID cs)
           let ct1 = arc x typeRes csRes 
@@ -222,9 +222,9 @@ defaultAdvancement = Advancement { year = Nothing,
                 rdfid = noSuchAdvancement, 
                 advSortIndex = 0,
                 contents = [],
-		traits = [],
-		items = []
-		}
+                traits = [],
+                items = []
+                }
 instance Show Advancement where
    show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) 

@@ -13,6 +13,7 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Trait ( Trait(..)
+                           , Item(..)
                            , defaultTrait
                            , toTrait
                            , kpToTrait
