@@ -3,60 +3,36 @@ arm:Possession a owl:Class .
 arm:UniqueItem rdfs:subClassOf arm:Possession ;
    rdfs:comment "A unique item can be a weapon or piece of equipment.  The notable feature is that it is one of a kind, and the item may have a reputation of its own." .
 arm:StockItem rdfs:subClassOf arm:Possession ;
-   rdfs:comment "A stock item can be a weapon, piece of equipment, or vis.  Typically a character has a stock of several items, which tend to be expendable." ;
-   owl:disjointFrom arm:UniqueItem .
+   rdfs:comment "A stock item can be a weapon, piece of equipment, or vis.  Typically a character has a stock of several items, which tend to be expendable, like ammunition." .
 arm:StandardItem rdfs:subClassOf arm:Possession ;
-   rdfs:comment "A stock item can be a weapon, piece of equipment, or vis.  Typically a character has a stock of several items, which tend to be expendable." ;
+   rdfs:comment "A standard item can be a weapon, piece of equipment, or vis.  It is not unique, but characters do not normally have them in large numbers." ;
    owl:disjointFrom arm:UniqueItem, arm:StockItem .
+
 arm:Equipment rdfs:subClassOf arm:Possession .
 arm:Weapon rdfs:subClassOf arm:Possession .
 arm:Vis rdfs:subClassOf arm:StockItem .
-arm:SuperPossession owl:unionOf ( arm:Possession owl:Class ) .
 
-arm:hasPossession a owl:ObjectProperty ;
+arm:hasPossession a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Possession .
-arm:hasEquipment a owl:ObjectProperty ;
+arm:hasEquipment a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:subPropertyOf arm:hasPossession ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Equipment .
-arm:hasVis a owl:ObjectProperty ;
+arm:hasVis a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:subPropertyOf arm:hasPossession ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Vis .
-arm:hasWeapon a owl:ObjectProperty ;
+arm:hasWeapon a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:subPropertyOf arm:hasPossession ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Weapon .
 
-arm:hasPossessionLabel a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperPossession  ;
-    rdfs:range xsd:string .
-arm:hasPossessionDescription a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperPossession  ;
-    rdfs:range xsd:string .
 arm:hasOrigin a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperPossession  ;
+    rdfs:domain arm:Possession  ;
     rdfs:range xsd:string .
-arm:hasPrice a owl:ObjectProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperPossession  ;
-    rdfs:range arm:Value .
 arm:hasQuantity a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:domain arm:StockItem  ;
-    rdfs:range xsd:int .
-
-arm:Value a owl:Class .
-arm:hasPounds a owl:DatatypeProperty ;
-    rdfs:domain arm:Value ;
-    rdfs:range xsd:int .
-arm:hasShillings a owl:DatatypeProperty ;
-    rdfs:domain arm:Value ;
-    rdfs:range xsd:int .
-arm:hasPence a owl:DatatypeProperty ;
-    rdfs:domain arm:Value ;
-    rdfs:range xsd:int .
-arm:hasPawns a owl:DatatypeProperty ;
-    rdfs:domain arm:Value ;
     rdfs:range xsd:int .
 
 # 1. Vis
@@ -66,40 +42,36 @@ arm:isVisOfArt a owl:ObjectProperty ;
     rdfs:range arm:ArtClass .
 
 # 2. Weapons
-arm:WeaponClass a owl:Class .
 arm:Weapon rdfs:subClassOf arm:Possession .
 arm:MeleeWeapon rdfs:subClassOf arm:Weapon .
 arm:MissileWeapon rdfs:subClassOf arm:Weapon .
-
-arm:SuperWeapon owl:unionOf ( arm:Weapon arm:WeaponClass ) .
+arm:ThrownWeapon rdfs:subClassOf arm:Weapon .
 
 arm:hasWeaponInit a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperWeapon ;
+    rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponAtk a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperWeapon ;
+    rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponDfn a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperWeapon ;
+    rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponDam a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperWeapon ;
+    rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponRange a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:domain arm:MissileWeapon ;
     rdfs:range xsd:int .
 arm:hasWeaponStr a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperWeapon ;
+    rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponLoad a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperWeapon ;
+    rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponCost a owl:DatatypeProperty, arm:PossessionProperty ;
-    rdfs:domain arm:SuperWeapon ;
+arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
+    arm:hasDescription  "The cost is a string, typically either inexpensive, standard, or expensive, as used in cannon weapons tables." ;
+    rdfs:domain arm:Possession ;
     rdfs:range xsd:string .
-
-# 3. Other Possessions
-arm:Euipment rdfs:subClassOf arm:Possession .
 
 # Advancement
 

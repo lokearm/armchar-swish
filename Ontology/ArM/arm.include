@@ -119,3 +119,13 @@ arm:hasInitialSheet  a   owl:ObjectProperty ;
 arm:ViewProperty rdfs:subClassOf rdf:Property .
 arm:PersistentProperty rdfs:subClassOf arm:ViewProperty .
 arm:ImmutableProperty rdfs:subClassOf arm:PersistentProperty .
+
+arm:hasDescription a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
+        rdfs:label  "Description" ;
+	rdfs:comment "Description of the trait." ;
+        rdfs:domain arm:Object ;
+        rdfs:range   xsd:string .
+arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
+        rdfs:label  "Label" ;
+        rdfs:domain arm:Object ;
+        rdfs:range   xsd:string .

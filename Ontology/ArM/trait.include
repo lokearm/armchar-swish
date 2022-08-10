@@ -33,23 +33,14 @@ arm:hasAbbreviation a owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label  "Abbreviation" ;
         rdfs:domain arm:SuperTrait ;
         rdfs:range   xsd:string .
-arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty ;
-        rdfs:label  "Label" ;
-        rdfs:domain arm:SuperTrait ;
-        rdfs:range   xsd:string .
 arm:SuperTrait a owl:Class ; owl:unionOf ( arm:Trait owl:Class ) .
     
-
-arm:hasDescription a owl:DatatypeProperty, arm:TraitProperty ;
-        rdfs:label  "Description" ;
-	rdfs:comment "Description of the trait." ;
-        rdfs:domain arm:SuperTrait ;
-        rdfs:range   xsd:string .
 arm:hasReference a owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label  "Reference" ;
 	rdfs:comment "Source book reference defining the trait" ;
         rdfs:domain  owl:Class ;
         rdfs:range   xsd:string .
+
 
 arm:LeafTraitClass rdfs:subClassOf owl:Class ;
     rdfs:comment  "Classes that are instances of the LeafTraitClass class are traits as they may appear on a character's sheet.  Other traits should be seen as categories of LeafTraits." .

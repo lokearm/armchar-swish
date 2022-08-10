@@ -1,78 +1,77 @@
 
-armr:Longbow a arm:WeaponClass ;
+armr:Longbow rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MissileWeapon ;
      arm:hasPossessionLabel  "Longbow" ;
-     arm:hasWeaponClassInit -2 ;
-     arm:hasWeaponClassAtk +4 ;
-     arm:hasWeaponClassDfn 0 ;
-     arm:hasWeaponClassDam +8 ;
-     arm:hasWeaponClassRange 30 ;
-     arm:hasWeaponClassStr +2 ;
-     arm:hasWeaponClassLoad 2 ;
-     arm:hasWeaponClassCost "Exp." .
-armr:Shortbow a arm:WeaponClass ;
+     arm:hasWeaponInit -2 ;
+     arm:hasWeaponAtk +4 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponDam +8 ;
+     arm:hasWeaponRange 30 ;
+     arm:hasWeaponStr +2 ;
+     arm:hasWeaponLoad 2 ;
+     arm:hasCost "Exp." .
+armr:Shortbow rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MissileWeapon ;
      arm:hasPossessionLabel  "Shortbow" ;
-     arm:hasWeaponClassInit -1 ;
-     arm:hasWeaponClassAtk +3 ;
-     arm:hasWeaponClassDfn 0 ;
-     arm:hasWeaponClassDam +6 ;
-     arm:hasWeaponClassRange 15 ;
-     arm:hasWeaponClassStr -1 ;
-     arm:hasWeaponClassLoad 2 ;
-     arm:hasWeaponClassCost "Std." .
+     arm:hasWeaponInit -1 ;
+     arm:hasWeaponAtk +3 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponDam +6 ;
+     arm:hasWeaponRange 15 ;
+     arm:hasWeaponStr -1 ;
+     arm:hasWeaponLoad 2 ;
+     arm:hasCost "Std." .
 
-armr:Dagger a arm:WeaponClass ;
+armr:Dagger rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Dagger" ;
-     arm:hasWeaponClassInit 0 ;
-     arm:hasWeaponClassAtk +2 ;
-     arm:hasWeaponClassDfn 0 ;
-     arm:hasWeaponClassDam +3 ;
-     arm:hasWeaponClassStr -3 ;
-     arm:hasWeaponClassLoad 0 ;
-     arm:hasWeaponClassCost "Inexp." .
-armr:Knife a arm:WeaponClass ;
+     arm:hasWeaponInit 0 ;
+     arm:hasWeaponAtk +2 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponDam +3 ;
+     arm:hasWeaponStr -3 ;
+     arm:hasWeaponLoad 0 ;
+     arm:hasCost "Inexp." .
+armr:Knife rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Knife" ;
-     arm:hasWeaponClassInit 0 ;
-     arm:hasWeaponClassAtk +1 ;
-     arm:hasWeaponClassDfn 0 ;
-     arm:hasWeaponClassDam +2 ;
-     arm:hasWeaponClassStr -6 ;
-     arm:hasWeaponClassLoad 0 ;
-     arm:hasWeaponClassCost "Inexp." .
+     arm:hasWeaponInit 0 ;
+     arm:hasWeaponAtk +1 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponDam +2 ;
+     arm:hasWeaponStr -6 ;
+     arm:hasWeaponLoad 0 ;
+     arm:hasCost "Inexp." .
 
-armr:Clib a arm:WeaponClass ;
+armr:Clib rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Clib" ;
-     arm:hasWeaponClassInit 1 ;
-     arm:hasWeaponClassAtk +2 ;
-     arm:hasWeaponClassDfn 1 ;
-     arm:hasWeaponClassDam +3 ;
-     arm:hasWeaponClassStr -2 ;
-     arm:hasWeaponClassLoad 1 ;
-     arm:hasWeaponClassCost "Inexp." .
-armr:Hatchet a arm:WeaponClass ;
+     arm:hasWeaponInit 1 ;
+     arm:hasWeaponAtk +2 ;
+     arm:hasWeaponDfn 1 ;
+     arm:hasWeaponDam +3 ;
+     arm:hasWeaponStr -2 ;
+     arm:hasWeaponLoad 1 ;
+     arm:hasCost "Inexp." .
+armr:Hatchet rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Hatchet" ;
-     arm:hasWeaponClassInit 0 ;
-     arm:hasWeaponClassAtk +3 ;
-     arm:hasWeaponClassDfn 0 ;
-     arm:hasWeaponClassDam +4 ;
-     arm:hasWeaponClassStr -2 ;
-     arm:hasWeaponClassLoad 1 ;
-     arm:hasWeaponClassCost "Inexp." .
+     arm:hasWeaponInit 0 ;
+     arm:hasWeaponAtk +3 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponDam +4 ;
+     arm:hasWeaponStr -2 ;
+     arm:hasWeaponLoad 1 ;
+     arm:hasCost "Inexp." .
 
-
-armr:Axe a arm:WeaponClass ;
+armr:Axe rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
      arm:hasPossessionLabel  "Axe" ;
-     arm:hasWeaponClassInit 1 ;
-     arm:hasWeaponClassAtk +4 ;
-     arm:hasWeaponClassDfn 0 ;
-     arm:hasWeaponClassDam +6 ;
-     arm:hasWeaponClassStr 0 ;
-     arm:hasWeaponClassLoad 1 ;
-     arm:hasWeaponClassCost "Std." .
+     arm:hasWeaponInit 1 ;
+     arm:hasWeaponAtk +4 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponDam +6 ;
+     arm:hasWeaponStr 0 ;
+     arm:hasWeaponLoad 1 ;
+     arm:hasCost "Std." .
 
