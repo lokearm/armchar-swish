@@ -36,6 +36,8 @@ if y.__contains__( "arm:hasGender" ):
        output.append( f"\\gender{{{y['arm:hasGender']}}}" )
 if y.__contains__( "arm:hasCovenantName" ): 
        output.append( f"\\covenant{{{y['arm:hasCovenantName']}}}" )
+if y.__contains__( "arm:hasSagaTitle" ): 
+       output.append( f"\\saga{{{y['arm:hasSagaTitle']}}}" )
 if y.__contains__( "arm:hasName" ): 
        output.append( f"\\name{{{y['arm:hasName']}}}" )
 if y.__contains__( "arm:hasNationality" ): 

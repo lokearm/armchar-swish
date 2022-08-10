@@ -42,8 +42,9 @@ arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentPrope
         rdfs:label    "Name" .
 arm:hasSaga a   owl:ObjectProperty ;
         rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   arm:Saga .
-arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:range   arm:Saga ;
+	arm:hasStringProperty arm:hasSagaTitle .
+arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Saga Title" .
