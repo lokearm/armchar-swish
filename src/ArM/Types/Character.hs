@@ -272,8 +272,9 @@ nextSeason ("Autumn",y) = ("Winter",y)
 nextSeason ("Winter",y) = ("Spring",y+1)
 
 
--- | Given a season as a String, `nextSeason` returns a number by which seasons
--- can be ordered within a calendar year.  Winter is the last season in the year.
+-- | Given a season as a String, `nextSeason` returns a number by which 
+-- seasons can be ordered within a calendar year.
+-- Winter is the last season in the year.
 seasonNo :: String -> Int
 seasonNo "Spring" = 1
 seasonNo "Summer" = 2
@@ -287,8 +288,13 @@ instance ToRDFGraph Advancement where
          ("charsheet",1)
 
 advToArcListM :: Advancement -> BlankState [RDFTriple]
-advToArcListM adv = mapM (traitToArcListM atRes x) (traits adv) 
-                >>= return . foldl (++) ms 
+advToArcListM adv = do
+        xs1 <- mapM (traitToArcListM atRes x) (traits adv) 
+        xs2 <- mapM (traitToArcListM cpRes x) (items adv) 
+        let ys1 = foldl (++) ms xs1
+        let ys2 = foldl (++) ys1 xs2
+        return ys2
     where ms = keyvalueToArcList x (contents adv)
           x = rdfid adv
           atRes = armRes "advanceTrait"
+          cpRes = armRes "changePossession"

@@ -93,6 +93,12 @@ qgraph p s = listToRDFGraph
       , arc (Var "property") labelRes (Var "label") ]
 
 fwdApplyRules rs g = foldGraphs $ parMap rpar (`fwdApplySimple` g) rs
+
+-- | Make an RDF label of type xsd:integer
 litInt i = TypedLit (T.pack $ show i) xsdInteger
--- litString i = TypedLit (T.pack i) xsdString
+
+
+-- | Make an RDF label to hold a string.  This is currently made untyped
+-- for the sake of simplicity.
 litString i = Lit (T.pack i) 
+-- litString i = TypedLit (T.pack i) xsdString
