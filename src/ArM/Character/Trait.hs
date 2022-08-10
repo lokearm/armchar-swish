@@ -130,17 +130,6 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 -- | Make a Trait object from a list of Quads
 toTrait :: [ObjectKeyValue] -> Trait
 toTrait = kpToTrait . toKeyPairList
-toTrait' [] = defaultTrait
-toTrait' xs = Trait { 
-             traitID = getkey xs,
-             traitClass = getTraitClass ys,
-             isRepeatableTrait = a,
-             isXPTrait = b,
-             isAccelleratedTrait = c,
-             traitContents = ys }
-          where (a,b,c,ys) = traitTripleList xs 
-                getkey [] = Nothing
-                getkey (x:xs) = Just $ okvSubj x
 
 kpToTrait :: [KeyValuePair] -> Trait
 kpToTrait [] = defaultTrait
