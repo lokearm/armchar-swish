@@ -26,6 +26,7 @@ import Control.Monad.IO.Class (liftIO)
 import Data.Maybe (fromJust)
 import Data.List (sort)
 
+import           ArM.Query.Metadata (getMetaData)
 import qualified ArM.Types.Character as TC
 import qualified ArM.Character as C
 import qualified ArM.CharacterQuery as CQ
@@ -98,6 +99,12 @@ stateScotty stateVar = do
           g <- liftIO $ getStateGraph stateVar
           let c =  TC.fromRDFGraph g char :: TC.Character
           json c
+        get "/char/:char/:year/:season" $ do     
+          r <- getCSGraph stateVar
+          case (r) of
+             Just (CharacterRecord cgraph) -> do
+                json $ getMetaData cgraph
+             Nothing -> notfound404 
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of

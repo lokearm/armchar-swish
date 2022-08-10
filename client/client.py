@@ -24,7 +24,7 @@ conn = http.client.HTTPConnection("localhost:3000")
 
 output = [ "\\documentclass{armsheet}", "\\begin{magus}" ]
 
-y = get(conn,"/char/cieran" )
+y = get(conn,"/char/" + cstring )
 
 if y.__contains__( "arm:hasPlayer" ): 
        output.append( f"\\player{{{y['arm:hasPlayer']}}}" )
@@ -40,6 +40,14 @@ if y.__contains__( "arm:hasNationality" ):
        output.append( f"\\nationality{{{y['arm:hasNationality']}}}" )
 if y.__contains__( "arm:hasProfession" ): 
        output.append( f"\\concept{{{y['arm:hasProfession']}}}" )
+if y.__contains__( "arm:hasAge" ): 
+       output.append( f"\\age{{{y['arm:hasAge']}}}" )
+if y.__contains__( "arm:inYear" ): 
+       s = y.get("arm:atSeason","")
+       if s == "":
+          output.append( f"\\year{{{y['arm:inYear']}}}" )
+       else:
+          output.append( f"\\year{{{s} {y['arm:inYear']}}}" )
 
 #   "arm:hasAlmaMater": "Stonehenge",
 

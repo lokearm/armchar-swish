@@ -119,8 +119,23 @@ class ToRDFGraph a where
     makeRDFGraph :: a -> RDFGraph
 instance ToRDFGraph CharacterSheet where
    makeRDFGraph cs =
-         ( listToRDFGraph  . fst . runBlank ( csToArcListM cs ) )
+         ( listToRDFGraph  . fst . runBlank ( csToArcListM cs' ) )
          ("charsheet",1)
+      where cs' = cs { csMetadata = KeyPairList $ a xs }
+            KeyPairList xs = csMetadata cs
+            aAge age ys  
+                   | age == 0 = ys
+                   | otherwise = KeyValuePair (armRes "hasAge") (litInt age):ys
+            aYear Nothing ys   = ys
+            aYear (Just x) ys  = KeyValuePair (armRes "inYear") (litInt x):ys
+            aSeason x ys  
+                   | x == "" = ys
+                   | otherwise = KeyValuePair (armRes "atSeason") (litString x):ys
+            age' Nothing _ = 0
+            age' (Just y) b | b == 0 = 0 
+                            | otherwise = y - b
+            age = age' (csYear cs) (born cs)
+            a = aAge age . aYear (csYear cs) . aSeason (csSeason cs)
 instance ToRDFGraph Character where
    makeRDFGraph cs = listToRDFGraph  ( ct:ms )
        where x = characterID cs

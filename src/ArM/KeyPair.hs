@@ -23,6 +23,11 @@ import ArM.Resources
 import Swish.RDF.Graph as G
 import qualified Data.Text.Lazy as T
 
+idVar = (G.Var "id")
+propertyVar = (G.Var "property")
+valueVar = (G.Var "value")
+labelVar = (G.Var "label")
+
 -- | `KeyValuePair` represents a key/value pair in JSON jargon
 -- or a property/object pair in RDF.  It is designed to hold
 -- arbitrary data read from the source format.

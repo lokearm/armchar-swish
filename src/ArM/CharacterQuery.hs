@@ -33,11 +33,6 @@ import qualified ArM.Character.Trait as CT
 import ArM.Rules.Aux
 import Swish.RDF.Vocabulary.RDF
 
-idVar = (G.Var "id")
-propertyVar = (G.Var "property")
-valueVar = (G.Var "value")
-labelVar = (G.Var "label")
-
 arcs :: G.RDFLabel -> G.RDFGraph
 arcs prop = listToRDFGraph [ G.arc sVar typeRes csRes
            , G.arc sVar prop idVar 

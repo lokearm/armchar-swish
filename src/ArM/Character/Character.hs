@@ -76,13 +76,9 @@ advanceCharacter cs adv = cs {
      sheetID = Nothing,
      csYear = y,
      csSeason = s,
-     csTraits = advanceTraitList (csTraits cs) (traits adv),
-     csMetadata = KeyPairList (xs $ born cs)
+     csTraits = advanceTraitList (csTraits cs) (traits adv)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)
-           xs age | age == 0 = ys
-                  | otherwise = KeyValuePair (armRes "hasAge") (litInt age):ys
-           (KeyPairList ys) = csMetadata cs
 
 maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
 maybeNextSeason ("",Just y) = ("",Just (y+1)) 

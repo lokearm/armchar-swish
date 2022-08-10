@@ -94,3 +94,5 @@ qgraph p s = listToRDFGraph
 
 fwdApplyRules rs g = foldGraphs $ parMap rpar (`fwdApplySimple` g) rs
 litInt i = TypedLit (T.pack $ show i) xsdInteger
+-- litString i = TypedLit (T.pack i) xsdString
+litString i = Lit (T.pack i) 
