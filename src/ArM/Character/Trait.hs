@@ -18,6 +18,7 @@ module ArM.Character.Trait ( Trait(..)
                            , kpToTrait
                            , kpToItem
                            , advanceTraitList
+                           , advanceItemList
                            ) where
 
 import Data.Set (fromList)
@@ -190,3 +191,30 @@ getItemClass :: [KeyValuePair] -> RDFLabel
 getItemClass = f . getProperty ( armRes "itemClass" )
      where f Nothing = noSuchTrait
            f (Just x) = x
+
+-- ** Item Advancement **
+
+-- | Given one list of Items and one of Item advancements,
+-- apply each advancement to the corresponding Item.
+-- The lists must be sorted by Item class name.
+advanceItemList :: [Item] -> [Item] -> [Item]
+advanceItemList xs [] = xs
+advanceItemList [] ys = ys
+advanceItemList (x:xs) (y:ys) 
+     | xc < yc  = x:advanceItemList xs (y:ys)
+     | xc > yc  = y:advanceItemList (x:xs) ys
+     | otherwise = advanceItemList ( advanceItem x y:xs ) ys
+     where xc = traitlikeClass x
+           yc = traitlikeClass y
+
+-- | apply a given Item Advancement to a given Item
+-- 3.  take other properties from the second Item if available
+-- 4.  default to properties from the first Item
+advanceItem :: Item -> Item -> Item 
+advanceItem trait adv = 
+           trait { itemID = Nothing,
+              itemContents = advanceTraitTriples 
+                 ( itemContents trait ) 
+                 ( itemContents adv ) 
+           }
+

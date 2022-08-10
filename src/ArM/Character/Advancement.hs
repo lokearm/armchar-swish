@@ -69,10 +69,13 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g a = a { traits = sort $ getTraits q g }
+fixAdv g a = a { traits = sort $ map toTrait $ getKP q,
+                 items = sort $ map toItem $ getKP q' }
     where q = qgraph (armRes "advanceTrait") (rdfid a)
-          getTraits q g = map toTrait
-               $ keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
+          q' = qgraph (armRes "changePossession") (rdfid a)
+          toTrait = kpToTrait . toKeyPairList 
+          toItem = kpToItem . KeyPairList . toKeyPairList 
+          getKP q =  keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [ObjectKeyValue] -> Advancement

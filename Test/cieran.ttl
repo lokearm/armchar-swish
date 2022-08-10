@@ -138,7 +138,13 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
    [ arm:traitClass armr:bows ; arm:addedXP 30 ; arm:hasSpeciality "Longbow" ],
    [ arm:traitClass armr:thrown ; arm:addedXP 5 ; arm:hasSpeciality "Dart" ],
    [ arm:traitClass armr:arealore-ireland ; arm:hasSpeciality "Legends" ;
-     arm:addedXP 5  ] .
+     arm:addedXP 5  ] ;
+  arm:changePossession
+     [ arm:traitClass armr:Longbow ; arm:hasQuantity 1 ],
+     [ arm:traitClass arm:Equipment ; arm:hasQuantity 1 ;
+       arm:hasLabel "Fletcher's toolbelt" ;
+       arm:hasDescription "All the tools he needs to make arrows, darts, and javelins." ;
+       ] .
 
 # Date the game entry sheet
 :summer1217   arm:atSeasonTime arm:summer1217 .

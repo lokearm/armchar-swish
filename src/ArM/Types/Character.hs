@@ -213,18 +213,23 @@ data Advancement = Advancement {
     rdfid :: RDFLabel,
     contents :: [KeyValuePair],
     advSortIndex :: Int,
-    traits :: [Trait]
+    traits :: [Trait],
+    items :: [Item]
    } deriving Eq
 
 defaultAdvancement = Advancement { year = Nothing,
                 season = "",
                 rdfid = noSuchAdvancement, 
                 advSortIndex = 0,
-                contents = [], traits = [] }
+                contents = [],
+		traits = [],
+		items = []
+		}
 instance Show Advancement where
    show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
+                 ++ show (items a) 
                  ++ "\nSort Index: " ++ show (advSortIndex a) 
                  ++ "\nSeason No: " ++ show (sno a) 
                  ++ "\n"

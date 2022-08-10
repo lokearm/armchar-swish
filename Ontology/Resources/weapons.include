@@ -1,7 +1,7 @@
 
 armr:Longbow rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MissileWeapon ;
-     arm:hasPossessionLabel  "Longbow" ;
+     arm:hasLabel  "Longbow" ;
      arm:hasWeaponInit -2 ;
      arm:hasWeaponAtk +4 ;
      arm:hasWeaponDfn 0 ;
@@ -12,7 +12,7 @@ armr:Longbow rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Exp." .
 armr:Shortbow rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MissileWeapon ;
-     arm:hasPossessionLabel  "Shortbow" ;
+     arm:hasLabel  "Shortbow" ;
      arm:hasWeaponInit -1 ;
      arm:hasWeaponAtk +3 ;
      arm:hasWeaponDfn 0 ;
@@ -24,7 +24,7 @@ armr:Shortbow rdfs:subClassOf arm:Weapon ;
 
 armr:Dagger rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
-     arm:hasPossessionLabel  "Dagger" ;
+     arm:hasLabel  "Dagger" ;
      arm:hasWeaponInit 0 ;
      arm:hasWeaponAtk +2 ;
      arm:hasWeaponDfn 0 ;
@@ -34,7 +34,7 @@ armr:Dagger rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Inexp." .
 armr:Knife rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
-     arm:hasPossessionLabel  "Knife" ;
+     arm:hasLabel  "Knife" ;
      arm:hasWeaponInit 0 ;
      arm:hasWeaponAtk +1 ;
      arm:hasWeaponDfn 0 ;
@@ -43,9 +43,9 @@ armr:Knife rdfs:subClassOf arm:Weapon ;
      arm:hasWeaponLoad 0 ;
      arm:hasCost "Inexp." .
 
-armr:Clib rdfs:subClassOf arm:Weapon ;
+armr:Club rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
-     arm:hasPossessionLabel  "Clib" ;
+     arm:hasLabel  "Club" ;
      arm:hasWeaponInit 1 ;
      arm:hasWeaponAtk +2 ;
      arm:hasWeaponDfn 1 ;
@@ -55,7 +55,7 @@ armr:Clib rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Inexp." .
 armr:Hatchet rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
-     arm:hasPossessionLabel  "Hatchet" ;
+     arm:hasLabel  "Hatchet" ;
      arm:hasWeaponInit 0 ;
      arm:hasWeaponAtk +3 ;
      arm:hasWeaponDfn 0 ;
@@ -66,7 +66,7 @@ armr:Hatchet rdfs:subClassOf arm:Weapon ;
 
 armr:Axe rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
-     arm:hasPossessionLabel  "Axe" ;
+     arm:hasLabel  "Axe" ;
      arm:hasWeaponInit 1 ;
      arm:hasWeaponAtk +4 ;
      arm:hasWeaponDfn 0 ;
