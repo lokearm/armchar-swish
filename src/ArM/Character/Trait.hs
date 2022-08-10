@@ -16,6 +16,7 @@ module ArM.Character.Trait ( Trait(..)
                            , defaultTrait
                            , toTrait
                            , kpToTrait
+                           , kpToItem
                            , advanceTraitList
                            ) where
 
@@ -128,8 +129,9 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 
 -- | Make a Trait object from a list of Quads
 toTrait :: [ObjectKeyValue] -> Trait
-toTrait [] = defaultTrait
-toTrait xs = Trait { 
+toTrait = kpToTrait . toKeyPairList
+toTrait' [] = defaultTrait
+toTrait' xs = Trait { 
              traitID = getkey xs,
              traitClass = getTraitClass ys,
              isRepeatableTrait = a,
@@ -150,6 +152,13 @@ kpToTrait xs = Trait {
              isAccelleratedTrait = c,
              traitContents = ys }
           where (k,a,b,c,ys) = traitKVList xs 
+
+kpToItem :: KeyPairList -> Item
+kpToItem (KeyPairList []) = defaultItem
+kpToItem (KeyPairList xs) = Item { 
+             itemID = getProperty prefixedidRes xs,
+             itemClass = getTraitClass xs,
+             itemContents = xs }
 
 traitKVList :: [KeyValuePair] -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
 traitKVList xs = traitKVList' (Nothing,False,False,False,[]) xs
@@ -183,5 +192,12 @@ traitTripleList' (a,b,c,xs) (y:ys) =
 -- an Trait Advancement
 getTraitClass :: [KeyValuePair] -> RDFLabel
 getTraitClass = f . getProperty ( armRes "traitClass" )
+     where f Nothing = noSuchTrait
+           f (Just x) = x
+
+-- | Get the Item Class from a list of Triples belonging to
+-- an Item Advancement
+getItemClass :: [KeyValuePair] -> RDFLabel
+getItemClass = f . getProperty ( armRes "itemClass" )
      where f Nothing = noSuchTrait
            f (Just x) = x

@@ -123,15 +123,18 @@ defaultCharacter = Character {
        }  
 
 data CharacterSheet = CharacterSheet {
-         csID :: RDFLabel,
-         sheetID :: Maybe RDFLabel,
-         csYear :: Maybe Int,
-         csSeason :: String,
-         born     :: Int,
-         csItems :: [Item],
-         csTraits :: [Trait],
-         csMetadata :: KeyPairList
-       }  deriving (Eq)
+      csID :: RDFLabel,
+      -- ^ Character ID (i.e. same ID for every season)
+      sheetID :: Maybe RDFLabel,  
+      -- ^ ID of the Character Sheet, usually Nothing suggesting a blank node
+      csYear :: Maybe Int,  -- ^ Current Year
+      csSeason :: String,   -- ^ Current Season
+      born     :: Int,      -- ^ Year of Birth
+      csItems :: [Item],    -- ^ List of possessions (weapons, equipment)
+      csTraits :: [Trait],  -- ^ List of traits (abilities, spells, etc.)
+      csMetadata :: KeyPairList
+      -- ^ Metadata, i.e. data which are not traits or items.
+      }  deriving (Eq)
 instance Show CharacterSheet where
     show cs = "**" ++ show (csID cs) ++ "**\n" 
            ++ "-- " ++ ( showSheetID ) cs ++ "\n"
@@ -187,13 +190,12 @@ csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           ts <- mapM (traitToArcListM htRes x) (csTraits cs)
-          -- is <- mapM (traitToArcListM (armRes "hasItem") x) (csItems cs)
+          is <- mapM (traitToArcListM (armRes "hasItem") x) (csItems cs)
           let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
-          let ct = arc x isCharacterLabel charlabel
+          let ct = arc x isCharacterLabel (csID cs)
           let ct1 = arc x typeRes csRes 
-          return $ ct1:ct:foldl (++) ms ts
-    where 
-          charlabel = csID cs
+          let ms1 = foldl (++) ms ts
+          return $ ct1:ct:foldl (++) ms1 is
 
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank
