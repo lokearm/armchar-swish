@@ -34,6 +34,8 @@ if y.__contains__( "arm:hasBirthYear" ):
        output.append( f"\\born{{{y['arm:hasBirthYear']}}}" )
 if y.__contains__( "arm:hasGender" ): 
        output.append( f"\\gender{{{y['arm:hasGender']}}}" )
+if y.__contains__( "arm:hasCovenantName" ): 
+       output.append( f"\\covenant{{{y['arm:hasCovenantName']}}}" )
 if y.__contains__( "arm:hasName" ): 
        output.append( f"\\name{{{y['arm:hasName']}}}" )
 if y.__contains__( "arm:hasNationality" ): 

@@ -58,8 +58,9 @@ arm:hasFoundingYear a   owl:DatatypeProperty, arm:CharacterProperty ;
 # Covenant Properties
 arm:hasCovenant a   owl:ObjectProperty ;
         rdfs:domain  arm:Saga ;
-        rdfs:range   arm:Covenant .
-arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:range   arm:Covenant ;
+	arm:hasStringProperty arm:hasCovenantName .
+arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:range   xsd:string ;
         rdfs:label    "Covenant"  .
 

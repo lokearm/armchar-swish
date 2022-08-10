@@ -51,7 +51,7 @@ armchar:cieran a arm:Magus, arm:Character ;
 # at the moment. TODO
 
 armchar:elksrun  a arm:Covenant ; 
-               arm:hasName "Elk's Run" ;
+               arm:hasLabel "Elk's Run" ;
 	       arm:hasSetting "Hibernia" ;
                arm:hasSaga armchar:contestedlands .
 
