@@ -64,6 +64,9 @@ arm:Reading  arm:hasLabel "Reading" ; a arm:AdvancementType .
 
 # Trait Advancement
 
+arm:changePossession a owl:ObjectProperty, arm:PersistentProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   arm:Possession .
 arm:advanceTrait a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Trait .
