@@ -194,6 +194,9 @@ getParam = do
           liftIO $ print $ "season: " ++ season
           return (char, year, season)
 
+-- | Given a character record and a function, show the result
+-- of applying the function to the record as JSON.
+-- The function also shows CPU time
 jsonif' :: Aeson.ToJSON a => Maybe CharacterRecord ->
            (G.RDFGraph -> a) -> S.ActionM ()
 jsonif' Nothing _  = notfound404
@@ -205,6 +208,9 @@ jsonif' (Just x) f =  jsonif'' x f
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
+-- | Given a character record and a function, show the result
+-- of applying the function to the record as text.
+-- The function also shows CPU time
 textif' :: Show a => Maybe CharacterRecord ->
            (G.RDFGraph -> a) -> S.ActionM ()
 textif' Nothing _  = notfound404
