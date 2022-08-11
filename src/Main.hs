@@ -44,7 +44,12 @@ import Data.SecureMem -- for constant-time comparison
 import ArM.Time
 
 -- Authentication
+
+-- | The `authf` function validates the password in the Wai middleware
 authf u p = return $ u == "user" && secureMemFromByteString p == password
+
+-- | Encoded password string.  This is for testing.  
+-- For production this has to be handled more securely.
 password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
 
