@@ -18,10 +18,13 @@
 -- Several representations are available.
 -- 1.  `charRawGreph` is the RDF Graph as stored on file.
 -- 2.  `charGreph` is the augmented graph, incorporating the schema,
---     the resources, and additional inference.
+--     the resources, and additional inference.  This is defined
+--     by functions from `ArM.Rules.FullGraph`.
 -- 3.  `characterMap` contains a map from (character,year,season)
 --     to character sheets at each point in time.  Each character sheet
---     is stored as an RDF graph.
+--     is stored as an RDF graph.  The character sheets are calculated
+--     by the `getAllCS` function from `ArM.Character.Character` which
+--     applies the advancements.
 --
 -- The last two are computed from `charRawGraph` and must never be  
 -- edited other than indirectly via the raw graph.
@@ -50,9 +53,7 @@ module ArM.STM ( ArM.STM.lookup
 import qualified Control.Concurrent.STM as STM
 import           Control.Monad.IO.Class (liftIO)
 import qualified Swish.RDF.Graph as G
-import qualified Swish.RDF.Query as Q
 import           Data.Maybe (fromJust)
-import           Network.URI (URI)
 
 import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
