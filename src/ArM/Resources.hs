@@ -88,12 +88,12 @@ addXPLabel = armRes  "addedXP"
 totalXPLabel = armRes "hasTotalXP" 
 scoreLabel = armRes "hasScore" 
 hasXPLabel = armRes "hasXP" 
-springLabel = armRes "Spring" 
-summerLabel = armRes "Summer" 
-autumnLabel = armRes "Autumn" 
-winterLabel = armRes "Winter" 
+
+-- | An RDFLabel used as a kind of Null pointer for traits and items.
 noSuchTrait = armRes "noSuchTrait" 
+-- | An RDFLabel used as a kind of Null pointer for advancements.
 noSuchAdvancement = armRes "noSuchAdvancement" 
+-- | An RDFLabel used as a kind of Null pointer for characters.
 noSuchCharacter = armRes "noSuchCharacter" 
 inSeason = armRes "inSeason" 
 atSeason = armRes "atSeason" 

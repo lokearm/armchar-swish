@@ -21,15 +21,11 @@ module ArM.Character.Trait ( Trait(..)
                            , advanceItemList
                            ) where
 
-import Data.Set (fromList)
-
-import           Swish.RDF.Graph as G
-import           Network.URI (URI)
-import           Swish.VarBinding  (vbMap)
+import           Data.Set (fromList)
 import           Data.List (sort)
+import           Swish.RDF.Graph 
 import ArM.Resources
 import ArM.KeyPair
-import ArM.BlankNode
 import ArM.Types.Character
 
 data XPType = XP { addXP :: Int, totalXP :: Int, score :: Int, hasXP :: Int }
@@ -175,7 +171,8 @@ getItemClass = f . getProperty ( armRes "itemClass" )
      where f Nothing = noSuchTrait
            f (Just x) = x
 
--- ** Item Advancement **
+-- |
+-- = Item Advancement 
 
 -- | Given one list of Items and one of Item advancements,
 -- apply each advancement to the corresponding Item.

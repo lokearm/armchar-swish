@@ -43,14 +43,6 @@ getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
                            keySeason = (C.csSeason cs),
                            keyChar = show $ C.csID cs }
 
-seasonString Nothing = ""
-seasonString (Just x ) | x == springLabel = "Spring"
-                   | x == summerLabel = "Summer"
-                   | x == autumnLabel = "Autumn"
-                   | x == winterLabel = "Winter"
-                   | otherwise  = "NoSeason"
-
-
 -- | Prepare a list of character sheets with a given schema and insert into the map 
 insertListS :: G.RDFGraph -> CharacterMap -> [C.CharacterSheet] -> CharacterMap
 insertListS schema cmap cs = foldl ins cmap $ parMap rpar ff cs
