@@ -174,6 +174,9 @@ notfound404 :: S.ActionM ()
 notfound404 = do status notFound404
                  text "404 Not Found."
 
+-- | Get a character record from the STM State.
+-- The record is selected by HTTP/GET parameters found in the monad.
+getCSGraph :: STM.TVar MapState -> S.ActionM (Maybe CharacterRecord)
 getCSGraph stateVar = do
           (char, year, season) <- getParam
           r <- liftIO $ ArM.STM.lookup stateVar char season (read year)
@@ -195,17 +198,18 @@ jsonif' :: Aeson.ToJSON a => Maybe CharacterRecord ->
            (G.RDFGraph -> a) -> S.ActionM ()
 jsonif' Nothing _  = notfound404
 jsonif' (Just x) f =  jsonif'' x f
-
-jsonif'' (CharacterRecord x) f = do
+  where jsonif'' (CharacterRecord x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             json $ f x
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
+textif' :: Show a => Maybe CharacterRecord ->
+           (G.RDFGraph -> a) -> S.ActionM ()
 textif' Nothing _  = notfound404
 textif' (Just x) f =  textif'' x f
-textif'' (CharacterRecord x) f = do
+  where textif'' (CharacterRecord x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             text $ T.pack $ show $ f x
