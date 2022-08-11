@@ -7,7 +7,7 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Queries to build JSON files for character metadata.
+-- Queries to build JSON files for character sheet metadata.
 --
 -----------------------------------------------------------------------------
 module ArM.Query.Metadata ( getMetaData ) where
