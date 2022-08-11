@@ -11,6 +11,9 @@
 -- to be defined in the `stateScotty` function which is called from
 -- the `Main` module.
 --
+-- A range of auxiliary functions are defined to avoid code duplication.
+-- Some also print diagnostic output like CPU time.
+--
 -----------------------------------------------------------------------------
 
 module ArM.WebService (stateScotty) where
