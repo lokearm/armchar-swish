@@ -14,6 +14,26 @@
 -- the data models, including the Character Map which supports the 
 -- `lookup` function.
 --
+-- The current version only stores a single character in the STM state.
+-- Several representations are available.
+-- 1.  `charRawGreph` is the RDF Graph as stored on file.
+-- 2.  `charGreph` is the augmented graph, incorporating the schema,
+--     the resources, and additional inference.
+-- 3.  `characterMap` contains a map from (character,year,season)
+--     to character sheets at each point in time.  Each character sheet
+--     is stored as an RDF graph.
+--
+-- The last two are computed from `charRawGraph` and must never be  
+-- edited other than indirectly via the raw graph.
+-- For reading, character and advancements should be looked up in
+-- `charGraph` while character sheets should be looked up in the
+-- `characterMap`.
+--
+-- It may also be important to look up and add resources.  Similarly
+-- to the above, editing should be confined to `resourceRawGraph`
+-- while reading should use `resourceGraph` which is derived from the raw
+-- graph,
+--
 -----------------------------------------------------------------------------
 module ArM.STM ( ArM.STM.lookup
                , CM.CharacterRecord(..)
