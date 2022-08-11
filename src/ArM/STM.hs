@@ -43,7 +43,7 @@ module ArM.STM ( ArM.STM.lookup
                , getResourceGraph
                , putAdvancement
                , putCharacter
-               , updateGraph -- TEST
+               , updateGraph 
                , MapState(..)
                ) where
 
@@ -78,7 +78,6 @@ data MapState = MapState { charGraph :: G.RDFGraph,
                            characterMap :: CM.CharacterMap
                            }
 
--- getSTM res schema g = STM.newTVarIO $ fromJust $ getState res schema g 
 -- | Make the State object to be stored in STM.
 -- The return value is Either a MapState object or an error message.
 getState :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> Either MapState String
@@ -138,8 +137,12 @@ getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
 
 
 -- | Return the sheet for a given character, season, and year (as RDFGraph).
-lookup :: STM.TVar MapState -> String -> String -> Int 
+lookup :: STM.TVar MapState -- ^ Memory state
+       -> String            -- ^ Character ID
+       -> String            -- ^ Season
+       -> Int               -- ^ Year
        -> IO (Maybe CM.CharacterRecord)
+       -- ^ Character sheet as an RDF Graph
 lookup stateVar char season year = do
           st <- STM.readTVarIO stateVar
           let g = charGraph st
@@ -153,10 +156,6 @@ lookup stateVar char season year = do
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
-
--- | Delete `g` and merge `g1` into `g0`.
-putGraph :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> G.RDFGraph
-putGraph g g0 g1 = G.merge (G.delete g0 g) g1
 
 -- | Update the state graph with the given Advancement object.
 putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO (Either G.RDFGraph String)
@@ -177,8 +176,13 @@ putAdvancement stateVar adv = do
                    return $ Left gg
                 Right x -> return $ Right x
 -- TODO: Check for conflicting advancements 
---
-putCharacter :: STM.TVar MapState -> TC.Character -> IO (Either G.RDFGraph String)
+
+-- | Update character metadata.  This has not been tested and requirs
+-- careful revision.
+putCharacter :: STM.TVar MapState   -- ^ Memory state
+             -> TC.Character        -- ^ New Character to be stored
+             -> IO (Either G.RDFGraph String) 
+                -- ^ Either the new character graph or an error message
 putCharacter stateVar char = do 
          STM.atomically $ do
              st <- STM.readTVar stateVar
@@ -195,15 +199,3 @@ putCharacter stateVar char = do
                    STM.writeTVar stateVar s 
                    return $ Left gg
                 Right x -> return $ Right x
-
--- postResource :: STM.TVar MapState -> G.RDFLabel -> G.RDFGraph
-             -- -> IO (Maybe G.RDFGraph)
--- postResource stateVar label newres = do 
-      -- STM.atomically $ do
-          -- st <- STM.readTVarIO stateVar
-          -- let g = charGraph st
-          -- case (putGraph g label newres) of
-             -- Nothing -> return Nothing
-             -- (Just gg) -> do
-                          -- STM.writeTVar stateVar $ st { charGraph = gg }
-                          -- return $ Just gg
