@@ -166,7 +166,7 @@ instance ToJSON CharacterSheet where
 
 instance ToJSON Character where 
     toJSON c = toJSON $ p x xs
-        where x = KeyValuePair prefixedidRes $ characterID c
+        where x = KeyValuePair (armRes "isCharacter") $ characterID c
               xs = characterData c 
               p x (KeyPairList xs) = KeyPairList (x:xs) 
 
@@ -176,23 +176,14 @@ instance FromJSON Character where
 -- | Auxiliary to parseJSON Character
 kpToChar :: KeyPairList -> Character
 kpToChar (KeyPairList xs) = defaultCharacter {
-         characterID = g x,
-         characterData = KeyPairList y
+         characterID = fromJ $ getProperty (armRes "isCharacter") xs,
+         characterData = KeyPairList xs
          }
-       where
-          (x,y) = f (Nothing,xs)
-          g Nothing = noSuchCharacter
-          g (Just c) = c
+         where fromJ Nothing = noSuchCharacter
+               fromJ (Just x) = x
 
--- | Auxiliary to kpToChar
-f :: (Maybe RDFLabel,[KeyValuePair]) -> (Maybe RDFLabel,[KeyValuePair]) 
-f (x,[]) = (x,[])
-f (x,(KeyValuePair k v):xs) 
-   | k == prefixedidRes  = (Just v,snd $ f (Just v,xs))
-   | otherwise            = (x,(KeyValuePair k v):(snd $ f (x,xs)))
-
-
--- ** Advancement
+-- |
+-- = Advancement
 
 data ProtoAdvancement = ProtoAdvancement {
     advancementid :: RDFLabel,

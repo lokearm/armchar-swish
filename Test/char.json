@@ -8,7 +8,7 @@
     "arm:hasPlayer": "Loke",
     "arm:hasProfession": "Rusticani (magus ex Miscellanea)",
     "arm:hasSagaTitle": "Foobar",
-    "arm:prefixedid": {
+    "arm:isCharacter": {
         "prefixedid": "armchar:cieran"
     }
 }
