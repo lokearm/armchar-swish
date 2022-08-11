@@ -15,7 +15,6 @@
 module ArM.Character.Trait ( Trait(..)
                            , Item(..)
                            , defaultTrait
-                           , toTrait
                            , kpToTrait
                            , kpToItem
                            , advanceTraitList
@@ -129,10 +128,6 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 
 -- ** Parsing Trait from RDF **
 
--- | Make a Trait object from a list of Quads
-toTrait :: [ObjectKeyValue] -> Trait
-toTrait = kpToTrait . toKeyPairList
-
 kpToTrait :: [KeyValuePair] -> Trait
 kpToTrait [] = defaultTrait
 kpToTrait xs = Trait { 
@@ -165,20 +160,6 @@ traitKVList' (k,a,b,c,xs) (KeyValuePair y2 y4:ys) =
                 c' = c || y4 == accelleratedtraitLabel
                 f x y | x ==  prefixedidRes = Just y
                       | otherwise           = k
-
--- | Remove the first element from each Quad in a list
-traitTripleList :: [ObjectKeyValue] -> (Bool,Bool,Bool,[KeyValuePair])
-traitTripleList xs = traitTripleList' (False,False,False,[]) xs
-traitTripleList' :: (Bool,Bool,Bool,[KeyValuePair]) -> [ObjectKeyValue]  
-                 -> (Bool,Bool,Bool,[KeyValuePair])
-traitTripleList' (a,b,c,xs) [] = (a,b,c,xs)
-traitTripleList' (a,b,c,xs) (y:ys) =
-         traitTripleList' (a',b',c',KeyValuePair y2 y4:xs) ys
-         where  a' = a || y4 == repeatableLabel
-                b' = b || y4 == xptraitLabel
-                c' = c || y4 == accelleratedtraitLabel
-                y2 = okvPred y
-                y4 = okvObj y
 
 -- | Get the Trait Class from a list of Triples belonging to
 -- an Trait Advancement
