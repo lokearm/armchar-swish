@@ -17,7 +17,7 @@
 -- The current version only stores a single character in the STM state.
 -- Several representations are available.
 -- 1.  `charRawGreph` is the RDF Graph as stored on file.
--- 2.  `charGreph` is the augmented graph, incorporating the schema,
+-- 2.  `charGraph` is the augmented graph, incorporating the schema,
 --     the resources, and additional inference.  This is defined
 --     by functions from `ArM.Rules.FullGraph`.
 -- 3.  `characterMap` contains a map from (character,year,season)
