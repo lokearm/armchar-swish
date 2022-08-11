@@ -19,14 +19,13 @@ module ArM.Character.Character ( CharacterSheet(..)
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
-import Data.Maybe
+import           Data.Maybe (fromJust)
 import           Data.List (sort)
 import ArM.Resources
 import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
-import           ArM.Rules.Aux (labelRes,listToRDFGraph,qgraph,litInt)
 import ArM.Types.Character
 
 getCharacterMetadata = CM.getCharacterMetadata
