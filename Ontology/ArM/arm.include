@@ -109,7 +109,8 @@ arm:CharacterSheet a owl:Class ;
     rdfs:subClassOf arm:GeneralCharacter ;
     rdfs:comment "A CharacterSheet represents the character at a particular point in time, is contains the character's dynamic properties and a reference to the base character." .
 
-arm:isCharacter a   owl:ObjectProperty ;
+arm:isCharacter a   owl:ObjectProperty, arm:ViewProperty ;
+        rdfs:label   "Character ID" ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Character .
 arm:hasInitialSheet  a   owl:ObjectProperty ;
