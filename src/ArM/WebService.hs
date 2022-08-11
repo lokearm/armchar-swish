@@ -8,7 +8,8 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -- This defines the Web API using `Scotty`.  Every URL pattern has 
--- to be defined in this file.
+-- to be defined in the `stateScotty` function which is called from
+-- the `Main` module.
 --
 -----------------------------------------------------------------------------
 
@@ -30,9 +31,11 @@ import Data.String (fromString)
 import           ArM.Query.Metadata (getMetaData)
 import qualified ArM.Types.Character as TC
 import qualified ArM.Character as C
+import qualified ArM.Character.Trait as CT
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.Resources as AR
 import ArM.JSON
+import qualified Data.Aeson as Aeson
 
 import           ArM.STM 
 import qualified Control.Concurrent.STM as STM
@@ -162,6 +165,9 @@ stateScotty stateVar = do
              Left g -> printGraph g
              Right x -> text $ T.pack x
 
+-- | Return a 404 error over HTTP, with a simple human readable error
+-- message.
+notfound404 :: S.ActionM ()
 notfound404 = do status notFound404
                  text "404 Not Found."
 
@@ -179,6 +185,8 @@ getParam = do
           liftIO $ print $ "season: " ++ season
           return (char, year, season)
 
+jsonif' :: Aeson.ToJSON a => Maybe CharacterRecord ->
+           (G.RDFGraph -> a) -> S.ActionM ()
 jsonif' Nothing _  = notfound404
 jsonif' (Just x) f =  jsonif'' x f
 
@@ -198,6 +206,9 @@ textif'' (CharacterRecord x) f = do
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
+-- | Output the given object as JSON over HTTP, or return a 404 error
+-- if Nothing is given.
+jsonif ::  Aeson.ToJSON a => Maybe a -> S.ActionM ()
 jsonif Nothing = notfound404
 jsonif (Just x) = do
             t1 <- liftIO $ getCPUTime
@@ -206,6 +217,9 @@ jsonif (Just x) = do
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
+-- | Format and output the given RDFGraph over HTTP, or return a 404
+-- error if Nothing is given.
+graphif :: Maybe C.CharacterSheet -> S.ActionM ()
 graphif Nothing = notfound404
 graphif (Just x) = do
             t1 <- liftIO $ getCPUTime
@@ -214,13 +228,20 @@ graphif (Just x) = do
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
--- printGraph = text . T.fromStrict . formatGraphAsText  
+-- | Format and output the given RDFGraph over HTTP.
+printGraph :: G.RDFGraph -> S.ActionM ()
 printGraph = text . toLazyText .  formatGraphIndent "\n" True
 
-textAb s p f = get (fromString p) $ do     
+-- | Generate get responses for trait subsets
+-- Both JSON and text versions are created, prepending the path
+-- by `/show` for the text version.
+getAb :: (Show a, Aeson.ToJSON a) => STM.TVar MapState ->
+         String -> (G.RDFGraph -> a) -> S.ScottyM ()
+getAb s p f = textAb s ("/show"++p) f >> jsonAb s p f
+   where
+      textAb s p f = get (fromString p) $ do     
                      r <- getCSGraph s
                      textif' r f
-jsonAb s p f = get (fromString p) $ do     
+      jsonAb s p f = get (fromString p) $ do     
                      r <- getCSGraph s
                      jsonif' r f
-getAb s p f = textAb s ("/show"++p) f >> jsonAb s p f
