@@ -27,12 +27,10 @@ module ArM.CharacterQuery ( getTraitList
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import qualified ArM.Character.Character as C
 import           ArM.Resources 
 import           ArM.KeyPair
 import qualified ArM.Character.Trait as CT
 import ArM.Rules.Aux
-import Swish.RDF.Vocabulary.RDF
 
 arcs :: G.RDFLabel -> G.RDFGraph
 arcs prop = listToRDFGraph [ G.arc sVar typeRes csRes
