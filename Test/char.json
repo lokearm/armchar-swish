@@ -1,0 +1,15 @@
+{
+    "arm:hasAlmaMater": "Hibernia",
+    "arm:hasBirthYear": 1192,
+    "arm:hasCovenantName": "Elk's Run",
+    "arm:hasGender": "Male",
+    "arm:hasName": "Cieran the Fletcher",
+    "arm:hasNationality": "Irish",
+    "arm:hasPlayer": "Loke",
+    "arm:hasProfession": "Rusticani (magus ex Miscellanea)",
+    "arm:hasSagaTitle": "Foobar",
+    "arm:prefixedid": {
+        "prefixedid": "armchar:cieran"
+    }
+}
+
