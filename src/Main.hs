@@ -12,11 +12,11 @@
 -- other modules, and some configuration options which may later be
 -- moved to data files or command line parameters.
 --
--- + The data structure is loaded by the `getRawGraph` function
+-- * The data structure is loaded by the `getRawGraph` function
 --   defined in `ArM.Load`
--- + Software Transactional Memory is set up by the `getState` function
+-- * Software Transactional Memory is set up by the `getState` function
 --   from `ArM.STM`.
--- + The Web API is defined in the `ArM.WebServices` module.
+-- * The Web API is defined in the `ArM.WebServices` module.
 --
 -----------------------------------------------------------------------------
 

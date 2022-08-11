@@ -8,9 +8,6 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -- Queries to build JSON files for character metadata.
--- 
--- The query function `getMetaData` returns all triples with an arm:ViewProperty.
--- There is no error checking.  The given graph must contain one CharacterSheet only.
 --
 -----------------------------------------------------------------------------
 module ArM.Query.Metadata ( getMetaData ) where
@@ -27,11 +24,14 @@ import Swish.RDF.Vocabulary.RDF
 
 arcs :: G.RDFGraph
 arcs = listToRDFGraph 
-           [ G.arc sVar typeRes csRes                           -- type CharacterSheet
-           , G.arc propertyVar typeRes (armRes "ViewProperty")  -- property of interest
-           , G.arc sVar propertyVar valueVar                    -- triple of interest
-           , G.arc propertyVar labelRes labelVar ]              -- property label
+   [ G.arc sVar typeRes csRes                          -- type CharacterSheet
+   , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
+   , G.arc sVar propertyVar valueVar                   -- triple of interest
+   , G.arc propertyVar labelRes labelVar ]             -- property label
 
 
+-- | The query function `getMetaData` returns all triples with an
+-- arm:ViewProperty.  There is no error checking.
+-- The given graph must contain one CharacterSheet only.
 getMetaData :: G.RDFGraph -> KeyPairList
 getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind arcs
