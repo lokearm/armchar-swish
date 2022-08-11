@@ -4,8 +4,8 @@
                 "prefixedid": "armchar:cieran"
             },
             "arm:atSeason": "Autumn",
-            "arm:awardsXP": 16,
-            "arm:hasAdvancementDescription": "Studies Mentem L16 Q13 +3",
+            "arm:awardsXP": 5,
+            "arm:hasAdvancementDescription": "Story",
             "arm:hasAdvancementIndex": 100,
             "arm:hasAdvancementType": {
                 "prefixedid": "arm:Reading"
@@ -28,15 +28,12 @@
         ],
         "advancementtraits": [
             {
-                "arm:addedXP": 16,
-                "arm:hasLabel": "Mentem",
-                "arm:isSpecialTrait": {
-                    "prefixedid": "arm:AccelleratedTrait"
-                },
+                "arm:addedXP": 5,
+                "arm:hasLabel": "",
                 "arm:traitClass": {
-                    "prefixedid": "armr:mentem"
+                    "prefixedid": "armr:parmamagica"
                 },
-                "arm:traitClassString": "Mentem"
+                "arm:traitClassString": ""
             }
         ]
 }

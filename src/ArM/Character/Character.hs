@@ -17,10 +17,7 @@ module ArM.Character.Character ( CharacterSheet(..)
                                ) where
 
 import qualified Swish.RDF.Graph as G
-import qualified Swish.RDF.Query as Q
-import qualified Data.Text.Lazy as T
 import qualified Swish.RDF.VarBinding as VB 
-import           Network.URI (URI,parseURI)
 import           Swish.VarBinding  (vbMap)
 import Data.Maybe
 import           Data.List (sort)
@@ -29,7 +26,7 @@ import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
-import           ArM.Rules.Aux (sVar,labelRes,listToRDFGraph,qgraph,litInt)
+import           ArM.Rules.Aux (labelRes,listToRDFGraph,qgraph,litInt)
 import ArM.Types.Character
 
 getCharacterMetadata = CM.getCharacterMetadata
