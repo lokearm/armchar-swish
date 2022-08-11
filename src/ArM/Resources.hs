@@ -95,7 +95,6 @@ noSuchTrait = armRes "noSuchTrait"
 noSuchAdvancement = armRes "noSuchAdvancement" 
 -- | An RDFLabel used as a kind of Null pointer for characters.
 noSuchCharacter = armRes "noSuchCharacter" 
-inSeason = armRes "inSeason" 
 atSeason = armRes "atSeason" 
 inYear = armRes "inYear" 
 advancementType = armRes "Advancement" 

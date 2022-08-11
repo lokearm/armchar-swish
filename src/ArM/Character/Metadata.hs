@@ -33,12 +33,8 @@ import           Swish.VarBinding (vbMap)
 import           Data.List (sort)
 
 
--- | Construct a query to get all
--- arm:CharacterProperty triples for a given subject.
-query c = listToRDFGraph 
-   [ arc c (G.Var "property") (G.Var "value")
-   , arc (G.Var "property") typeRes armCharacterProperty
-   , arc (G.Var "property") labelRes  (G.Var "label") ]
+-- |
+-- = Get Character ID from a grah
 
 -- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
@@ -58,6 +54,16 @@ uniqueSort = f . sort
           f (x:y:ys) | x == y = f (y:ys)
           f (x:y:ys) | x /= y = x:f (y:ys)
 
+-- |
+-- = Get Character Metadata
+
+-- | Construct a query to get all
+-- arm:CharacterProperty triples for a given subject.
+query c = listToRDFGraph 
+   [ arc c (G.Var "property") (G.Var "value")
+   , arc (G.Var "property") typeRes armCharacterProperty
+   , arc (G.Var "property") labelRes  (G.Var "label") ]
+
 -- | Make a list of metadata, where each data item is
 -- a triple consisting of URI, Label, and Value.
 -- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
@@ -70,6 +76,8 @@ getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
 getCharacterMetadataVB :: G.RDFGraph -> RDFLabel -> [VB.RDFVarBinding]
 getCharacterMetadataVB g c = Q.rdfQueryFind (query c) g
 
+-- |
+-- = Instances - Load Character object from graph
 
 instance FromRDFGraph Character where
    fromRDFGraph g label = defaultCharacter {

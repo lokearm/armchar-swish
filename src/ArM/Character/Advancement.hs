@@ -1,4 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Character.Advancement
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- Handling character advancement
+--
+-----------------------------------------------------------------------------
 
 module ArM.Character.Advancement ( Advancement(..)
                                  , getPregameAdvancements
@@ -42,12 +53,12 @@ getPregameAdvancements g c = getAdvancements g $ queryGraph preGameAdv c
 getIngameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
    where inGameAdv = armRes  "IngameAdvancement"
-q1 = queryGraph r
-   where r = armRes  "IngameAdvancement"
-q2 = queryGraph r
-   where r = armRes  "PregameAdvancement"
 
-queryGraph :: RDFLabel -> RDFLabel -> RDFGraph
+-- | Query graph to find a advancements of a given type (RDF class)
+-- for a given character.
+queryGraph :: RDFLabel -- ^ Label for the advancement type
+           -> RDFLabel -- ^ Label for the character to be advanced
+           -> RDFGraph -- ^ Resulting graph
 queryGraph c1 = listToRDFGraph  . f c1
    where f c1 c2 = [ arc (Var "id") typeRes c1,
             arc (Var "id") (Var "property") (Var "value"),
@@ -63,7 +74,7 @@ getAdvancements g = fixAdvancements g .
 getGenQuads :: RDFGraph -> RDFGraph -> [RDFTriple]
 getGenQuads g q = map arcFromBinding $ rdfQueryFind q g
 
--- | Auxiliary for 'getAdvancements'
+-- | Auxiliary for `getAdvancements`
 fixAdvancements :: RDFGraph -> [Advancement] -> [Advancement]
 fixAdvancements g adv = map (fixAdv g) adv
 
