@@ -34,4 +34,4 @@ arcs = listToRDFGraph
 
 
 getMetaData :: G.RDFGraph -> KeyPairList
-getMetaData = KeyPairList . toKeyPairList . map objectFromBinding . Q.rdfQueryFind arcs
+getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind arcs

@@ -7,26 +7,44 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Data Types to handle generic queries
+-- Query functions and associated data types.
+--
+-- Data types `KeyValuePair` and `KeyPairList` are used to hold
+-- property/value pairs associated with RDF resources and corresponding
+-- to the predicate and object from RDF Triples.
+--
+-- Queries must be constructed for each particular case, but if they
+-- use the three variables defined here (`propertyVar`, `idVar`, `valueVar`)
+-- the results can be processed using `arcFromBinding` or
+-- `keypairFromBinding`.  The latter assumes that all results share the
+-- same subject.
 --
 -----------------------------------------------------------------------------
-module ArM.KeyPair where
+module ArM.KeyPair ( keypairFromBinding 
+                   , KeyValuePair(..)
+                   , KeyPairList(..)
+                   , fromKeyPairList
+                   , toKeyPairList
+                   , arcFromBinding
+                   , arcListSplit
+                   , getProperty
+                   , getIntProperty
+                   , getStringProperty
+                   , propertyVar
+                   , idVar
+                   , valueVar
+                   , labelVar
+                   ) where
 
-import Swish.RDF.Graph (RDFLabel)
+import Swish.RDF.Graph as G
 import qualified Swish.RDF.VarBinding as VB 
-import Network.URI (URI)
 import Swish.VarBinding  (vbMap)
 import Data.Maybe  (fromJust)
 import Data.List (sort)
 import ArM.Resources
 
-import Swish.RDF.Graph as G
-import qualified Data.Text.Lazy as T
-
-idVar = (G.Var "id")
-propertyVar = (G.Var "property")
-valueVar = (G.Var "value")
-labelVar = (G.Var "label")
+-- |
+-- = Data Types
 
 -- | `KeyValuePair` represents a key/value pair in JSON jargon
 -- or a property/object pair in RDF.  It is designed to hold
@@ -46,48 +64,32 @@ instance Show KeyPairList where
 -- | Get the `KeyPairList` as a list of `KeyValuePair` objects.
 fromKeyPairList (KeyPairList xs) = xs
 
--- | `ObjectKeyValue` represents an RDF triple.  It is used
--- as an intermediate container before converting into a format
--- using `KeyValuePair`.  
--- It may be redundant, as it is functionally equivalent to `RDFTriple`.
--- It is retained in case we want to add additional redundant information
--- such as the contents of rdfs:label-s in the future.
-data ObjectKeyValue = ObjectKeyValue RDFLabel RDFLabel RDFLabel
-     deriving (Show,Eq,Ord)
-
--- | Get the subject from a triple
-okvSubj (ObjectKeyValue a _ _) = a
--- | Get the predicate (property) from a triple
-okvPred (ObjectKeyValue _ a _) = a
--- | Get the object from a triple
-okvObj (ObjectKeyValue _ _ a) = a
-
--- | Check if two triples have the same key
-sameKey :: ObjectKeyValue -> ObjectKeyValue -> Bool
-sameKey (ObjectKeyValue a _ _) (ObjectKeyValue b _ _) = a == b
+-- |
+-- == Conversion from RDF Triples
 
 -- | Convert a triple to a pair by removing the subject (first term)
-toKeyPair :: ObjectKeyValue -> KeyValuePair 
-toKeyPair (ObjectKeyValue a b c) = (KeyValuePair b c)
+toKeyPair :: G.RDFTriple -> KeyValuePair 
+toKeyPair x = KeyValuePair (arcPred x) (arcObj x)
 -- | Convert a list of triples to a pairs (using `toKeyPair`)
-toKeyPairList :: [ObjectKeyValue] -> [KeyValuePair]
+toKeyPairList :: [G.RDFTriple] -> [KeyValuePair]
 toKeyPairList = map toKeyPair
 
+-- |
+-- = Queries
 
--- | Split a list of `ObjectKeyValue` triples so that pairs belonging
--- to the same resource, -- as defined by the first element,
--- are place in the same constituent list.
-keypairSplit :: [ObjectKeyValue] -> [[ObjectKeyValue]]
-keypairSplit xs = fst $ keypairSplit' ([],sort xs)
 
--- | keypairSplit' is a mere auxiliary for 'keypairSplit'
-keypairSplit' :: ([[ObjectKeyValue]], [ObjectKeyValue]) 
-           -> ([[ObjectKeyValue]], [ObjectKeyValue]) 
-keypairSplit' (xs,[]) = (xs,[])
-keypairSplit' ([],y:ys) = keypairSplit' ([[y]],ys)
-keypairSplit' ((x:xs):xss,y:ys) 
-    | sameKey  x y = keypairSplit' ((y:x:xs):xss, ys)
-    | otherwise    = keypairSplit' ([y]:(x:xs):xss, ys)
+-- | Variable used for the resource ID in queries.
+idVar = (G.Var "id")
+-- | Variable used for a property of interest in queries.
+propertyVar = (G.Var "property")
+-- | Variable used for a value associated with the property of interest.
+valueVar = (G.Var "value")
+-- | Variable used for a human readable label for the property of interest.
+-- This is not really used in this module, but may be used in others.
+labelVar = (G.Var "label")
+
+-- |
+-- == Process query results
 
 -- | Map variable bindings to triples of (property,label,value)
 -- Three variables should be bound, property, label, and value.
@@ -96,34 +98,42 @@ keypairFromBinding = f . metadataFromBinding
      where 
        f (p,label,value) = KeyValuePair (fromJust p) (fromJust value) 
 
--- | Step 1. Map the variable bindings to Maybe RDFLabel
+-- | Map the variable bindings to Maybe RDFLabel.
+-- Auxiliary to `keypairFromBinding`
 metadataFromBinding :: VB.RDFVarBinding 
                  -> (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
 metadataFromBinding vb = (vbMap vb (G.Var "property"),
                           vbMap vb (G.Var "label"),
                           vbMap vb (G.Var "value"))
 
--- | Map variable bindings to quads of (id,property,label,value)
--- Three variables should be bound, id, property, label, and value.
-objectFromBinding :: VB.RDFVarBinding -> ObjectKeyValue
-objectFromBinding = f . quadVB 
-     where f (id,p,_,value) = ObjectKeyValue 
-              (fromJust id) (fromJust p) (fromJust value) 
 
--- | Map variable bindings to quads of (id,property,label,value)
--- Three variables should be bound, id, property, label, and value.
+-- | Map variable bindings to RDF triples.
+-- Three variables should be bound, id, property, and value.
 arcFromBinding :: VB.RDFVarBinding -> G.RDFTriple
 arcFromBinding vb = G.arc (fromJust $ vbMap vb (G.Var "id"))
                      (fromJust $ vbMap vb (G.Var "property"))
                      (fromJust $ vbMap vb (G.Var "value"))
 
-quadVB :: VB.RDFVarBinding 
-        -> (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
-quadVB vb = (vbMap vb (G.Var "id"),
-             vbMap vb (G.Var "property"),
-             vbMap vb (G.Var "label"),
-             vbMap vb (G.Var "value"))
+-- | Split a list of RDF triples so that pairs belonging
+-- to the same resource, -- as defined by the first element,
+-- are place in the same constituent list.
+arcListSplit :: [G.RDFTriple] -> [[G.RDFTriple]]
+arcListSplit xs = fst $ arcListSplit' ([],sort xs)
 
+-- | `arcListSplit'` is a mere auxiliary for `arcListSplit'`
+arcListSplit' :: ([[G.RDFTriple]], [G.RDFTriple]) 
+           -> ([[G.RDFTriple]], [G.RDFTriple]) 
+arcListSplit' (xs,[]) = (xs,[])
+arcListSplit' ([],y:ys) = arcListSplit' ([[y]],ys)
+arcListSplit' ((x:xs):xss,y:ys) 
+    | arcSubj x == arcSubj y = arcListSplit' ((y:x:xs):xss, ys)
+    | otherwise    = arcListSplit' ([y]:(x:xs):xss, ys)
+
+-- |
+-- = Scan lists of key/value pairs
+
+-- | Scan a list of Key/Value pairs for a given property and return an
+-- string value.  An empty string is returned if no valid value is found.
 getStringProperty :: RDFLabel -> [KeyValuePair] -> String
 getStringProperty _ [] = ""
 getStringProperty k' (KeyValuePair k v:xs) 
@@ -131,6 +141,10 @@ getStringProperty k' (KeyValuePair k v:xs)
    | otherwise      = getStringProperty k' xs
    where f Nothing = ""
          f (Just v) = v
+
+-- | Scan a list of Key/Value pairs for a given property and return an
+-- integer value.  If the properrty is not found or is not an integer,
+-- 0 is returned.
 getIntProperty :: RDFLabel -> KeyPairList -> Int
 getIntProperty x (KeyPairList xs) = getIntProperty' x xs
 getIntProperty' :: RDFLabel -> [KeyValuePair] -> Int
@@ -141,8 +155,10 @@ getIntProperty' k' (KeyValuePair k v:xs)
    where f Nothing = 0
          f (Just v) = v
 
+-- | Scan a list of Key/Value pairs for a given property and return the value.
 getProperty :: RDFLabel -> [KeyValuePair] -> Maybe RDFLabel
 getProperty _ [] = Nothing
 getProperty k' (KeyValuePair k v:xs) 
    | k' == k  = Just v
    | otherwise      = getProperty k' xs
+

@@ -57,11 +57,11 @@ queryGraph c1 = listToRDFGraph  . f c1
 -- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
 getAdvancements :: RDFGraph -> RDFGraph -> [Advancement]
 getAdvancements g = fixAdvancements g . 
-               map toAdvancement . keypairSplit . getGenQuads g 
+               map toAdvancement . arcListSplit . getGenQuads g 
 
 -- | Auxiliary for 'getAdvancements'
-getGenQuads :: RDFGraph -> RDFGraph -> [ObjectKeyValue]
-getGenQuads g q = map objectFromBinding $ rdfQueryFind q g
+getGenQuads :: RDFGraph -> RDFGraph -> [RDFTriple]
+getGenQuads g q = map arcFromBinding $ rdfQueryFind q g
 
 -- | Auxiliary for 'getAdvancements'
 fixAdvancements :: RDFGraph -> [Advancement] -> [Advancement]
@@ -75,10 +75,10 @@ fixAdv g a = a { traits = sort $ map toTrait $ getKP q,
           q' = qgraph (armRes "changePossession") (rdfid a)
           toTrait = kpToTrait . toKeyPairList 
           toItem = kpToItem . KeyPairList . toKeyPairList 
-          getKP q =  keypairSplit $ map objectFromBinding $ rdfQueryFind q g 
+          getKP q =  arcListSplit $ map arcFromBinding $ rdfQueryFind q g 
 
 -- | Make an Advancement object from a list of Quads
-toAdvancement :: [ObjectKeyValue] -> Advancement
+toAdvancement :: [RDFTriple] -> Advancement
 toAdvancement [] = defaultAdvancement 
 toAdvancement xs = defaultAdvancement { rdfid = getkey xs,
          year = getYear ys,
@@ -87,7 +87,7 @@ toAdvancement xs = defaultAdvancement { rdfid = getkey xs,
          contents = ys }
          where ys = toKeyPairList xs 
                getkey [] = noSuchAdvancement
-               getkey (x:xs) = okvSubj x
+               getkey (x:xs) = arcSubj x
 
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear :: [KeyValuePair] -> Maybe Int

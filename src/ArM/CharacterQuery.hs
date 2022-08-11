@@ -43,7 +43,7 @@ arcs prop = listToRDFGraph [ G.arc sVar typeRes csRes
 
 getTraitList :: G.RDFLabel -> G.RDFGraph -> [CT.Trait]
 getTraitList prop = map toTrait 
-               . keypairSplit . map objectFromBinding . Q.rdfQueryFind q
+               . arcListSplit . map arcFromBinding . Q.rdfQueryFind q
     where q = arcs prop
           toTrait = CT.kpToTrait . toKeyPairList 
 
@@ -58,6 +58,6 @@ getCharacteristics = getTraitList $ armRes "hasCharacteristic"
 
 getItemList :: G.RDFGraph -> [CT.Item]
 getItemList = map toItem 
-               . keypairSplit . map objectFromBinding . Q.rdfQueryFind q
+               . arcListSplit . map arcFromBinding . Q.rdfQueryFind q
     where q = arcs $ armRes "hasPossession"
           toItem = CT.kpToItem . KeyPairList . toKeyPairList 
