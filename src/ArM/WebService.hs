@@ -176,6 +176,9 @@ getCSGraph stateVar = do
           r <- liftIO $ ArM.STM.lookup stateVar char season (read year)
           return r
 
+-- | Get the HTTP/GET parameters selecting a character sheet and
+-- print diagnostic output.
+getParam :: S.ActionM (String,String,String)
 getParam = do
           char <- param  "char"
           liftIO $ print $ "char: " ++ char
