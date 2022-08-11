@@ -11,7 +11,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Load where
+module ArM.Load (getRawGraph) where
 
 import           ArM.Resources (baseURI)
 import           System.IO ( IO )
@@ -30,7 +30,11 @@ readGraph fn = do
            (Right g ) -> return g
 
 -- | Load the different graph.
-getRawGraph :: String -> String -> String -> IO (RDFGraph,RDFGraph,RDFGraph)
+getRawGraph :: String -- ^ file name for the character data
+            -> String -- ^ file name for the schema graph
+            -> String -- ^ file name for the resource graph
+            -> IO (RDFGraph,RDFGraph,RDFGraph)
+            -- ^ The character, schema, and resource graphs
 getRawGraph characterFile armFile resourceFile = do
         c0 <- readGraph characterFile 
         s0 <- readGraph armFile 

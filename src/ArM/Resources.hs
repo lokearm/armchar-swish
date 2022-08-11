@@ -10,6 +10,8 @@
 -- This module defines namespaces, URIs, and filenames used in the project.
 -- It also defines utility functions to create RDFLabel-s from strings.
 --
+-- Much of this data should be made configurable.
+--
 -----------------------------------------------------------------------------
 module ArM.Resources where
 
