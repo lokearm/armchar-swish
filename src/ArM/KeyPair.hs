@@ -110,6 +110,13 @@ objectFromBinding = f . quadVB
      where f (id,p,_,value) = ObjectKeyValue 
               (fromJust id) (fromJust p) (fromJust value) 
 
+-- | Map variable bindings to quads of (id,property,label,value)
+-- Three variables should be bound, id, property, label, and value.
+arcFromBinding :: VB.RDFVarBinding -> G.RDFTriple
+arcFromBinding vb = G.arc (fromJust $ vbMap vb (G.Var "id"))
+                     (fromJust $ vbMap vb (G.Var "property"))
+                     (fromJust $ vbMap vb (G.Var "value"))
+
 quadVB :: VB.RDFVarBinding 
         -> (Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel, Maybe RDFLabel)
 quadVB vb = (vbMap vb (G.Var "id"),
