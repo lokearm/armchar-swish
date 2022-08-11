@@ -6,7 +6,9 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Reasoning rules using the schema ontology.
+-- Reasoning rules applied to the CharacterRecord graph, using
+-- the schema ontology.
+--
 --
 -----------------------------------------------------------------------------
 

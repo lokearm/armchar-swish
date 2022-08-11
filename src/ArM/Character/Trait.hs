@@ -31,7 +31,8 @@ import ArM.Types.Character
 data XPType = XP { addXP :: Int, totalXP :: Int, score :: Int, hasXP :: Int }
 defaultXPType = XP { addXP = 0, totalXP = 0, score = 0, hasXP = 0 }
 
--- ** Advancement **
+-- |
+-- = Advancement
 
 -- | Given one list of Traits and one of Trait advancements,
 -- apply each advancement to the corresponding Trait.
@@ -122,7 +123,8 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
     where x = fromIntegral y  :: Double
 
 
--- ** Parsing Trait from RDF **
+-- |
+-- = Parsing Trait from RDF 
 
 kpToTrait :: [KeyValuePair] -> Trait
 kpToTrait [] = defaultTrait

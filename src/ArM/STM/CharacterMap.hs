@@ -43,7 +43,8 @@ getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
                            keySeason = (C.csSeason cs),
                            keyChar = show $ C.csID cs }
 
--- | Prepare a list of character sheets with a given schema and insert into the map 
+-- | Prepare a list of character sheets with a given schema and
+-- insert into the map 
 insertListS :: G.RDFGraph -> CharacterMap -> [C.CharacterSheet] -> CharacterMap
 insertListS schema cmap cs = foldl ins cmap $ parMap rpar ff cs
    where f = (CharacterRecord . R.prepareRecord schema . C.makeRDFGraph)
