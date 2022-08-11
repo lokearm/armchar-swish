@@ -7,16 +7,17 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Rules and Rules Application for ArM Character Sheets. 
+-- Apply the reasoner to make augmented graphs.
+-- The actual rules used are defined and (will be) documented in
+-- `ArM.Rules.*`.
 --
 -----------------------------------------------------------------------------
 
 module ArM.Rules ( makeGraph, makeGraphs ) where
 
-import qualified Data.Text as T
 import Swish.RDF.Graph
-import ArM.Resources
 
+import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.RDFS
 import ArM.Rules.Initial
