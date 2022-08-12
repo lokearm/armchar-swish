@@ -86,3 +86,21 @@ arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:range xsd:string .
 
 
+# 3. Combat options
+
+arm:CombatOption a owl:Class .
+arm:hasWeapon a owl:ObjectProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range arm:Weapon .
+arm:hasAtk a owl:DatatypeProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range xsd:int .
+arm:hasDef a owl:DatatypeProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range xsd:int .
+arm:hasInit a owl:DatatypeProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range xsd:int .
+arm:hasDam a owl:DatatypeProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range xsd:int .
