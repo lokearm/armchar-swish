@@ -100,13 +100,13 @@ arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
 
 arm:PossessionProperty rdfs:subClassOf arm:ViewProperty .
 arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty, arm:TraitProperty ;
-   rdfs:description "These are properties which should be copied from weapon to combat option." .
+   rdfs:comment "These are properties which should be copied from weapon to combat option." .
 
 # 3. Combat options
 
 arm:CombatOption owl:subClassOf arm:Trait ;
    rdfs:label "Weapon" ;
-   rdfs:description "A CombatOption is a set of natural or other weapons with attack/defence/damage scores. that is a row in the combat stats table on the character sheet." .
+   rdfs:comment "A CombatOption is a set of natural or other weapons with attack/defence/damage scores. that is a row in the combat stats table on the character sheet." .
 arm:skillClass a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:label "Skill Class" ;
     rdfs:domain arm:CombatOption  ;

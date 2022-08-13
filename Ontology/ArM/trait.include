@@ -2,6 +2,7 @@ arm:Trait a owl:Class ; rdfs:subClassOf arm:Object .
 arm:TraitProperty a owl:Property ; rdfs:subPropertyOf arm:ViewProperty ;
    rdfs:comment "These properties should be passed to the client for display."  .
 
+
 arm:isSpecialTrait a owl:ObjectProperty ;
     rdfs:label  "Special Trait Type" .
 arm:XPTrait rdfs:subClassOf arm:Trait ;
@@ -11,13 +12,17 @@ arm:AccelleratedTrait rdfs:subClassOf arm:Trait ;
 arm:RepeatableTrait rdfs:subClassOf arm:Trait ;
     a arm:SpecialTraitClass ;
     rdfs:label "Repeatable trait" ;
-    rdfs:comment "This class f traits can be taken more than once." .
+    rdfs:comment "Traits of this class can be taken more than once." .
 arm:Ability rdfs:subClassOf arm:XPTrait .
 arm:PersonalityTrait rdfs:subClassOf arm:Trait .
 arm:Characteristic rdfs:subClassOf arm:Trait .
 arm:Art rdfs:subClassOf arm:AccelleratedTrait .
 arm:Reputation rdfs:subClassOf arm:XPTrait .
 arm:OtherTrait rdfs:subClassOf arm:Trait .
+
+arm:LeafTraitClass rdfs:subClassOf owl:Class ;
+    rdfs:comment  "Classes that are instances of the LeafTraitClass class are traits as they may appear on a character's sheet.  Other traits should be seen as categories of LeafTraits." .
+
 
 arm:Size a arm:LeafTraitClass ; rdfs:label "Size" .
 arm:Warping a arm:LeafTraitClass ; rdfs:label "Warping" .
@@ -42,8 +47,6 @@ arm:hasReference a owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:range   xsd:string .
 
 
-arm:LeafTraitClass rdfs:subClassOf owl:Class ;
-    rdfs:comment  "Classes that are instances of the LeafTraitClass class are traits as they may appear on a character's sheet.  Other traits should be seen as categories of LeafTraits." .
 
 arm:GeneralAbility rdfs:subClassOf arm:Ability .
 arm:ArcaneAbility rdfs:subClassOf arm:Ability .
