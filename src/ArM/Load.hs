@@ -25,6 +25,7 @@ readGraph fn = do
         contents <- DTLIO.readFile fn 
         case ( parseTurtle ( contents ) baseURI ) of
            (Left s ) -> do
+               print $ "Error reading " ++ fn
                print s
                return emptyGraph
            (Right g ) -> return g
