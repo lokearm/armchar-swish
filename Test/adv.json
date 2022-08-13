@@ -29,7 +29,6 @@
         "advancementtraits": [
             {
                 "arm:addedXP": 5,
-                "arm:hasLabel": "",
                 "arm:traitClass": {
                     "prefixedid": "armr:parmamagica"
                 },

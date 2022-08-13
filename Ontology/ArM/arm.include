@@ -127,7 +127,8 @@ arm:hasDescription a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProp
 	rdfs:comment "Description of the trait." ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
-arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
         rdfs:label  "Label" ;
+        rdfs:description  "This is used on most objects and classes in ArMchar.  It is problematic because traits should usually derive their labels from classes, while some possessions and combat options need manually enterred labels.  Thus it is sometimes calculated, but it has to be made persistent for the other cases. " ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
