@@ -31,7 +31,7 @@ import Data.Maybe (fromJust)
 import Data.List (sort)
 import Data.String (fromString)
 
-import           ArM.Query.Metadata (getMetaData,getCombat)
+import           ArM.Query.Metadata (getMetaData)
 import qualified ArM.Types.Character as TC
 import qualified ArM.Character as C
 import qualified ArM.Character.Trait as CT
@@ -121,7 +121,7 @@ stateScotty stateVar = do
         getAb stateVar "/ability/:char/:year/:season"     CQ.getAbilities 
         getAb stateVar "/spell/:char/:year/:season"       CQ.getSpells 
         getAb stateVar "/art/:char/:year/:season"         CQ.getArts 
-        getAb stateVar "/combat/:char/:year/:season"      getCombat
+        getAb stateVar "/combat/:char/:year/:season"      CQ.getCombat
         getAb stateVar "/char/:char/:year/:season"        getMetaData
         getAb stateVar "/characteristic/:char/:year/:season" 
                                                      CQ.getCharacteristics 

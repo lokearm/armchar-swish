@@ -127,7 +127,7 @@ arm:hasDescription a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProp
 	rdfs:comment "Description of the trait." ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
-arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
+arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label  "Label" ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
