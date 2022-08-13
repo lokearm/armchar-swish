@@ -11,10 +11,13 @@ arm:CalculatedProperty rdfs:subClassOf arm:ViewProperty ;
 arm:PersistentProperty rdfs:subClassOf arm:ViewProperty ;
    rdfs:description "Persistent properties are stored on file and may be changed by the client.  Non-persistent properties should always be ignored in PUT requests." .
 arm:ImmutableProperty rdfs:subClassOf arm:ViewProperty ;
-   rdfs:description "Immutable Properties are not currently used, or at least not enforced. The intention is for properties which have to be persisted, but which cannot be changed by the client." .
+   rdfs:description "Immutable Properties are not currently used, or at least not enforced. The intention is for properties which have to be persisted, but which cannot be changed by the client. TODO Is it needed?" .
+
+# Generic Object
+arm:Object a owl:Class .
 
 # Saga
-arm:Saga a owl:Class .
+arm:Saga a owl:Class ; rdfs:subClassOf arm:Object .
 arm:hasSG a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:description "Names the storyguide.  Both sagas and characters have storyguides." ;
         rdfs:range   xsd:string ;
@@ -29,7 +32,7 @@ arm:hasSetting a   owl:DatatypeProperty ;
         rdfs:range   xsd:string .
 
 # Covenant and Character
-arm:GeneralCharacter a owl:Class ;
+arm:GeneralCharacter a owl:Class ; rdfs:subClassOf arm:Object ;
     rdfs:comment "A GeneralCharacter is an umbrella concept for all resources representing characters.  This is crude, and most references to a GeneralCharacter are probably concerned with only a subset." .
 arm:Covenant a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
     rdfs:comment "A Covenant represents a covenant independently of its statistics (sheet) at a given point in time." .

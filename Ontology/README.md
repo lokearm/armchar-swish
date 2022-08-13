@@ -64,8 +64,8 @@ of type `arm:PersistentProperty`.
       will in time be extended to work like a character with advancements
       over time.  `arm:GeneralCharacter` is a superclass comprising
       characters and covenants.
+    + `arm:Object` is a superclass of all ArM classes
 + TODO
-    + `arm:Object` is referenced but not used
     + traits and possessions may need a common superclass
 
 ## Comment on some properties
@@ -75,6 +75,8 @@ of type `arm:PersistentProperty`.
   Instances inherit them from classes, but may define their own,
   in which case there is no conflict resolution.
   TODO: they are currently not correctly typed.
+    - in the example, `arm:hasLabel` is also used in lieu of
+      `arm:hasName` and `arm:hasLabel` for saga and covenant.
 
 # The include files
 

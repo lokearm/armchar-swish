@@ -1,5 +1,5 @@
 
-arm:Possession a owl:Class .
+arm:Possession a owl:Class ; rdfs:subClassOf arm:Object .
 arm:UniqueItem rdfs:subClassOf arm:Possession ;
    rdfs:comment "A unique item can be a weapon or piece of equipment.  The notable feature is that it is one of a kind, and the item may have a reputation of its own." .
 arm:StockItem rdfs:subClassOf arm:Possession ;
