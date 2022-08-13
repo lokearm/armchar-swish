@@ -2,6 +2,8 @@
 title: The Web API described in Tests
 ---
 
+One should also refer to the test scripts in `/client` to
+see other web API calls available.
 
 # GET (main calls)
 
