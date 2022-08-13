@@ -26,7 +26,8 @@ import Control.Parallel.Strategies
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
-prepareRecord schema = fwdApplyList traitRules 
+prepareRecord schema = fwdApplyList combatRules 
+                 . fwdApplyList rdfstypeRules
                  . fwdApplyList rdfstypeRules
                  . merge schema
                  . fwdApplyList [ traitclasstypeRule ]
@@ -63,3 +64,45 @@ arcs1 t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
              [ arc cVar p tVar ] ) 
 arcs2 t p = ( [ arc cVar p tVar, arc tVar typeRes t ],
              [ arc cVar htRes tVar ] ) 
+
+combatRules = 
+    [ makeCRule "combat1rule"
+      [ arc sVar (armRes "hasCombatOption")  cVar
+      , arc sVar typeRes (armRes "CharacterSheet")
+      , arc cVar (armRes "weaponClass") tVar
+      , arc sVar (armRes "hasWeapon") oVar
+      , arc oVar typeRes tVar ]
+      [ arc cVar (armRes "hasWeapon") oVar ]
+-- 1.
+-- CharacterSheet has CombatOption
+-- CombatOption has WeaponClass
+-- Weapon is WeaponClass
+-- CharacterSheet has Weapon
+-- => CombatOption has Weapon
+    , makeCRule "combat2rule"
+      [ arc sVar (armRes "hasCombatOption")  cVar
+      , arc sVar typeRes (armRes "CharacterSheet")
+      , arc cVar (armRes "skillClass") tVar
+      , arc sVar (armRes "hasTrait") oVar
+      , arc oVar typeRes tVar ]
+      [ arc cVar (armRes "hasSkill") oVar ]
+-- Ability analogous to Weapon (possession) above
+    ]
+
+-- 2.
+-- for each CombatOption 
+-- add scores from weapon and from skill
+--
+-- E.g. Atk
+-- CombatOption has Skill, Skill has Score
+-- CombatOption has Weapon, Skill hasAtk Score
+-- Character has CombatOption, Character has Dex, Dex has  Score
+-- ADD all the scores
+-- => CombatOption hasAtk Score
+
+-- 3. (foreach)
+-- Character has Weapon
+-- Weapon has Skill
+-- => Character has NEW CombatOption
+-- CombatOption has Skill
+-- NB. New blank nodes.

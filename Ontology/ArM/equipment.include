@@ -94,6 +94,9 @@ arm:CombatOption owl:subClassOf arm:Trait ;
 arm:skillClass a owl:ObjectProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
+arm:hasSkill a owl:ObjectProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range arm:Trait .
 arm:weaponClass a owl:ObjectProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
