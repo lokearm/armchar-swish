@@ -77,8 +77,9 @@ Obviously, if you have a JSON test file, you can redirect from file instead.
 ## Test Scripts
 
 A couple of simple client scripts are provided in the `client` subdirectory.
-There are python scripts to generate off-line character sheets, and a
-simple `put.sh` script to test the update API.
+There are python scripts to generate off-line character sheets, a
+simple `put.sh` script to test updating of advancements API, and
+`putchar.sh` to test updating of other character data.
 
 ## Problems
 
@@ -92,15 +93,16 @@ as far as I can tell:
     - However, such generic functions could be expensive.
     - A recursive function `fwdApplyListR` has been implemented
       to solve this problem and it seems to work well.
-+ Rules cannot easily be defined in a separate file in a separate
-  rules language.  The focus of Swish has been the script language.
-    - Hence, the 'ArM.Rules' module is clunky
 + No JSON-LD support
     - However, not using JSON-LD may make the client a lot easier
       to implement
 + No noValue clause
     - However, the noValue clause makes the reasoner expensive.
     - Coding the inference without noValue is more efficient.
++ Rules cannot make new blank nodes.
+    - Hence reasoning steps that require this have to be custom made.
++ No arithmetic operations or support for RDF linked lists
+    - This also requires some custom made reasoning steps.
 
 ## Overview
 

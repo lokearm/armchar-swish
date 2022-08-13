@@ -1,7 +1,7 @@
 # Ontology
 
-Use make to generate the actual ontology (.ttl) and inference logic (.rules) files.
-Each file is split into multiple parts (.include and .r respectively) which are
+Use make to generate the actual ontology (.ttl) files.
+Each file is split into multiple parts (.include files) which are
 concatenated by make.
 
 The resulting files are
@@ -9,8 +9,6 @@ The resulting files are
 2. resources.ttl - resources, like lists of abilities, spells, etc.
 3. cieran.ttl - sample character
 4. contested.ttl - sample saga
-5. logic.rules - main inference rules
-6. basic.rules - a few cheap inference rules handled separately
 
 ## Client properties and editable properties
 
@@ -60,3 +58,20 @@ immutable for virtues and flaws.
 + B.  Expendable versus durable
 
 **NOTE.**  Some items are entities in their own right.
+
+# Basic Principles
+
+These principles have been established but refactoring may be
+required to ensure full compliance.
+
+1.  Properties that have instances as their domain may have type
+    + `arm:PersistentProperty` if they should be stored on file and
+      the client should be allowed to change them
+    + `arm:CalculatedProperty` if they are derived and should never
+      be persisted
+    + `arm:ViewProperty` if they should be included in get responses.
+      This is a superclass of both persistent and calculated properties.
+2.  All standard traits (e.g. as given in the rules) are classes.
+    Custom traits may also be classes.  However, the traits of a 
+    given character sheets are instances of those classes.
+    

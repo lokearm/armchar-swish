@@ -1,4 +1,4 @@
-TTL=arm.ttl resources.ttl contested.ttl 
+TTL=arm.ttl resources.ttl 
 all: $(TTL)
 install: $(TTL)
 	cp $(TTL) ../serverdata/
