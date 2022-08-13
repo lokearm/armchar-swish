@@ -26,7 +26,7 @@ import ArM.Rules.RDFS
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph = fwdApplyList (stringPropertyRule:vfScoreRules)
-             . fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule ]
+             . fwdApplyListR [ advancevfgrantRule, spectraitRule, rRule, pRule ]
              . applyRDFS
 
 
@@ -34,6 +34,11 @@ rRule = makeCRule "rRule" l1 l2
     where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
                arc tVar pVar oVar,
                arc pVar typeRes ( armRes  "TraitProperty" )  ]
+          l2 = [arc sVar pVar oVar]
+pRule = makeCRule "pRule" l1 l2
+    where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
+               arc tVar pVar oVar,
+               arc pVar typeRes ( armRes  "PossessionProperty" )  ]
           l2 = [arc sVar pVar oVar]
 
 

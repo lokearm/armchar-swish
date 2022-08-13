@@ -110,9 +110,9 @@ metadataFromBinding vb = (vbMap vb (G.Var "property"),
 -- | Map variable bindings to RDF triples.
 -- Three variables should be bound, id, property, and value.
 arcFromBinding :: VB.RDFVarBinding -> G.RDFTriple
-arcFromBinding vb = G.arc (fromJust $ vbMap vb (G.Var "id"))
-                     (fromJust $ vbMap vb (G.Var "property"))
-                     (fromJust $ vbMap vb (G.Var "value"))
+arcFromBinding vb = G.arc (fromJust $ vbMap vb idVar)
+                     (fromJust $ vbMap vb propertyVar)
+                     (fromJust $ vbMap vb valueVar)
 
 -- | Split a list of RDF triples so that pairs belonging
 -- to the same resource, -- as defined by the first element,

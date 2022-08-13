@@ -24,9 +24,9 @@ import Swish.RDF.Vocabulary.RDF
 
 arcs :: G.RDFGraph
 arcs = listToRDFGraph 
-   [ G.arc sVar typeRes csRes                          -- type CharacterSheet
+   [ G.arc idVar typeRes csRes                          -- type CharacterSheet
    , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
-   , G.arc sVar propertyVar valueVar                   -- triple of interest
+   , G.arc idVar propertyVar valueVar                   -- triple of interest
    , G.arc propertyVar labelRes labelVar ]             -- property label
 
 
@@ -38,9 +38,9 @@ getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind 
 
 coarcs :: G.RDFGraph
 coarcs = listToRDFGraph 
-   [ G.arc sVar typeRes (armRes "CombatOption")        -- type CombatOption
+   [ G.arc idVar typeRes (armRes "CombatOption")        -- type CombatOption
    , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
-   , G.arc sVar propertyVar valueVar                   -- triple of interest
+   , G.arc idVar propertyVar valueVar                   -- triple of interest
    , G.arc propertyVar labelRes labelVar ]             -- property label
 getCombat :: G.RDFGraph -> [KeyPairList]
 getCombat = map ( KeyPairList . toKeyPairList ) . arcListSplit . map arcFromBinding . Q.rdfQueryFind coarcs

@@ -62,15 +62,19 @@ arm:MissileWeapon rdfs:subClassOf arm:Weapon .
 arm:ThrownWeapon rdfs:subClassOf arm:Weapon .
 
 arm:hasWeaponInit a owl:DatatypeProperty, arm:PossessionProperty ;
+    rdfs:label "Weapon Init Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponAtk a owl:DatatypeProperty, arm:PossessionProperty ;
+    rdfs:label "Weapon Attack Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponDfn a owl:DatatypeProperty, arm:PossessionProperty ;
+    rdfs:label "Weapon Defence Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponDam a owl:DatatypeProperty, arm:PossessionProperty ;
+    rdfs:label "Weapon Damage Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponRange a owl:DatatypeProperty, arm:PossessionProperty, arm:WeaponProperty ;
@@ -87,6 +91,7 @@ arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:domain arm:Possession ;
     rdfs:range xsd:string .
 
+arm:PossessionProperty rdfs:subClassOf arm:ViewProperty .
 arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty, arm:TraitProperty ;
    rdfs:description "These are properties which should be copied from weapon to combat option." .
 
@@ -115,7 +120,7 @@ arm:hasAtk a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:label "Attack Score" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
-arm:hasDef a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
+arm:hasDfn a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:label "Defence Score" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .

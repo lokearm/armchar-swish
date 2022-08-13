@@ -37,7 +37,7 @@ prepareRecord schema = addCombatStats
 -- This works in three steps:
 -- 1. add necessary traits and weapons to each CombatOption,
 -- 2. add the consituent integer scores from each trait and weapon
--- 3. calculate the total combat scores (init/atk/def/dam)
+-- 3. calculate the total combat scores (init/atk/dfn/dam)
 addCombatStats = calculateCombatStats
                . fwdApplyListR ( combatScoreRules ++ combatRules )
 
@@ -119,11 +119,11 @@ combatScoreRules =
       , arc cVar (armRes "hasWeapon") oVar
       , arc oVar (armRes "hasWeaponAtk") (Var "score") ]
       [ arc cVar (armRes "hasWeaponAtk") (Var "score") ]
-  , makeCRule "combat-def-rule"
+  , makeCRule "combat-dfn-rule"
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeapon") oVar
-      , arc oVar (armRes "hasWeaponDef") (Var "score") ]
-      [ arc cVar (armRes "hasWeaponDef") (Var "score") ]
+      , arc oVar (armRes "hasWeaponDfn") (Var "score") ]
+      [ arc cVar (armRes "hasWeaponDfn") (Var "score") ]
   , makeCRule "combat-dam-rule"
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeapon") oVar
@@ -178,18 +178,18 @@ atkQuery = listToRDFGraph
       , arc cVar (armRes "hasSkillScore") (Var "skill") 
       , arc cVar (armRes "hasWeaponAtk") (Var "weapon") 
       , arc cVar (armRes "hasDex") (Var "char") ]
-defQuery = listToRDFGraph 
+dfnQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasSkillScore") (Var "skill") 
-      , arc cVar (armRes "hasWeaponDef") (Var "weapon") 
+      , arc cVar (armRes "hasWeaponDfn") (Var "weapon") 
       , arc cVar (armRes "hasQik") (Var "char") ]
 damQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeaponDam") (Var "weapon") 
       , arc cVar (armRes "hasStr") (Var "char") ]
 
-addAtkDef :: RDFGraph -> RDFGraph -> [RDFTriple]
-addAtkDef q = map f . Q.rdfQueryFind q
+addAtkDfn :: RDFGraph -> RDFGraph -> [RDFTriple]
+addAtkDfn q = map f . Q.rdfQueryFind q
            where f vb = arc cVar (armRes "hasDam") (litInt $ score vb)
                  score vb = foldl (+) 0 $ ff $ ss vb
                  ss vb = map vbToInt [ vbMap vb (Var "weapon"),
@@ -203,8 +203,8 @@ addDamInit q = map f . Q.rdfQueryFind q
                         vbMap vb (Var "char") ]
 addfunctions = [ addDamInit damQuery
                , addDamInit initQuery
-               , addAtkDef atkQuery
-               , addAtkDef defQuery ]
+               , addAtkDfn atkQuery
+               , addAtkDfn dfnQuery ]
 calculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
     where fs = parMap rpar ( \ f -> f g ) addfunctions 
 
