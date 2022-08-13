@@ -23,6 +23,8 @@ import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS
+import Debug.Trace
+import Data.Maybe (fromJust)
 
 import Control.Parallel.Strategies
 
@@ -169,42 +171,59 @@ combatScoreRules =
 -- CombatOption has Skill
 -- NB. New blank nodes.
 
+-- | Query to get constituent scores for Init Score
 initQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeaponInit") (Var "weapon") 
       , arc cVar (armRes "hasQik") (Var "char") ]
+-- | Query to get constituent scores for Attack Score
 atkQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasSkillScore") (Var "skill") 
       , arc cVar (armRes "hasWeaponAtk") (Var "weapon") 
       , arc cVar (armRes "hasDex") (Var "char") ]
+-- | Query to get constituent scores for Defence Score
 dfnQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasSkillScore") (Var "skill") 
       , arc cVar (armRes "hasWeaponDfn") (Var "weapon") 
       , arc cVar (armRes "hasQik") (Var "char") ]
+-- | Query to get constituent scores for Damage Score
 damQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeaponDam") (Var "weapon") 
       , arc cVar (armRes "hasStr") (Var "char") ]
 
-addAtkDfn :: RDFGraph -> RDFGraph -> [RDFTriple]
-addAtkDfn q = map f . Q.rdfQueryFind q
-           where f vb = arc cVar (armRes "hasDam") (litInt $ score vb)
-                 score vb = foldl (+) 0 $ ff $ ss vb
+-- | Function constructing Attack/Defence Scores.
+addAtkDfn :: String -- ^ Either "hasAtk" or "hasDfn"
+      -> RDFGraph -- ^ Either `atkQuery` or `dfnQuery`
+      -> RDFGraph -- ^ The graph of character data
+      -> [RDFTriple] -- ^ List of new triples; should be one per CombatOption
+addAtkDfn p q = map f . Q.rdfQueryFind q
+           where f vb = calc p (fromJust $ vbMap vb cVar) $ ss vb
                  ss vb = map vbToInt [ vbMap vb (Var "weapon"),
-                        vbMap vb (Var "score") ,
+                        vbMap vb (Var "skill") ,
                         vbMap vb (Var "char") ]
-addDamInit :: RDFGraph -> RDFGraph -> [RDFTriple]
-addDamInit q = map f . Q.rdfQueryFind q
-           where f vb = arc cVar (armRes "hasDam") (litInt $ score vb)
-                 score vb = foldl (+) 0 $ ff $ ss vb
+-- | Function constructing Init/Damage Scores.
+addDamInit :: String -- ^ Either "hasInit" or "hasDam"
+      -> RDFGraph -- ^ Either `initQuery` or `damQuery`
+      -> RDFGraph -- ^ The graph of character data
+      -> [RDFTriple] -- ^ List of new triples; should be one per CombatOption
+addDamInit p q = map f . Q.rdfQueryFind q
+           where f vb = calc p (fromJust $ vbMap vb cVar) $ ss vb
                  ss vb = map vbToInt [ vbMap vb (Var "weapon"),
                         vbMap vb (Var "char") ]
-addfunctions = [ addDamInit damQuery
-               , addDamInit initQuery
-               , addAtkDfn atkQuery
-               , addAtkDfn dfnQuery ]
+-- | Calculate an arc giving a CombatOption score.
+-- This is an auxiliary for `addDamInit` and `addAtkDfn`
+calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple 
+calc p idvar vb = trace ("Arc: " ++ show a) a
+    where score xs = foldl (+) 0 $ ff xs
+          a = arc idvar (armRes p) (litInt $ score vb)
+
+addfunctions = [ addDamInit "hasInit" damQuery
+               , addDamInit "hasDam"  initQuery
+               , addAtkDfn  "hasAtk"  atkQuery
+               , addAtkDfn  "hasDfn"  dfnQuery ]
 calculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
     where fs = parMap rpar ( \ f -> f g ) addfunctions 
 
@@ -214,4 +233,17 @@ ff (Nothing:xs) = ff xs
 ff (Just x:xs) = x:ff xs
 vbToInt :: Maybe RDFLabel -> Maybe Int
 vbToInt Nothing = Nothing
-vbToInt (Just x) = fromRDFLabel x
+vbToInt (Just x) = Just $ intFromRDF x
+
+rdfToInt :: RDFLabel -> Maybe Int
+rdfToInt = fromRDFLabel
+rdfToString :: RDFLabel -> Maybe String
+rdfToString = fromRDFLabel
+
+intFromRDF :: RDFLabel -> Int
+intFromRDF x = fi i
+   where i = rdfToInt x
+         s = rdfToString x
+         fi Nothing = fs s
+         fi (Just y) = y
+         fs (Just y) = read y

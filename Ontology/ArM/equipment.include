@@ -121,6 +121,10 @@ arm:hasWeapon a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:label "Weapon Instance" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Weapon .
+arm:hasSkillScore a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
+    rdfs:label "Skill Score" ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range xsd:int .
 arm:hasAtk a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:label "Attack Score" ;
     rdfs:domain arm:CombatOption  ;
