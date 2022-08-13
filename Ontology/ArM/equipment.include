@@ -55,13 +55,11 @@ arm:hasQuantity a owl:DatatypeProperty,
     rdfs:range xsd:int .
 
 # 1. Vis
-arm:Vis rdfs:subClassOf arm:Possession .
 arm:isVisOfArt a owl:ObjectProperty ;
     rdfs:domain arm:Vis ;
     rdfs:range arm:ArtClass .
 
 # 2. Weapons
-arm:Weapon rdfs:subClassOf arm:Possession .
 arm:MeleeWeapon rdfs:subClassOf arm:Weapon .
 arm:MissileWeapon rdfs:subClassOf arm:Weapon .
 arm:ThrownWeapon rdfs:subClassOf arm:Weapon .
