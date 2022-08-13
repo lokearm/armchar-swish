@@ -29,7 +29,7 @@ import Control.Parallel.Strategies
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
 prepareRecord schema = addCombatStats
-                 . fwdApplyList rdfstypeRules
+                 . fwdApplyList traitRules
                  . fwdApplyList rdfstypeRules
                  . merge schema
                  . fwdApplyList [ traitclasstypeRule ]
