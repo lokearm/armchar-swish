@@ -14,6 +14,8 @@
 
 module ArM.Rules.Record (prepareRecord) where
 
+import qualified Swish.RDF.Query as Q
+import Swish.VarBinding  (vbMap)
 import Swish.RDF.Graph
 import Swish.RDF.Vocabulary.RDF
 import Swish.RDF.Vocabulary.XSD
@@ -26,11 +28,19 @@ import Control.Parallel.Strategies
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
-prepareRecord schema = fwdApplyList combatRules 
+prepareRecord schema = addCombatStats
                  . fwdApplyList rdfstypeRules
                  . fwdApplyList rdfstypeRules
                  . merge schema
                  . fwdApplyList [ traitclasstypeRule ]
+-- | Add combat stats to a graph with character sheet data
+-- This works in three steps:
+-- 1. add necessary traits and weapons to each CombatOption,
+-- 2. add the consituent integer scores from each trait and weapon
+-- 3. calculate the total combat scores (init/atk/def/dam)
+addCombatStats = calculateCombatStats
+               . fwdApplyList combatScoreRules 
+               . fwdApplyList combatRules 
 
 traitRules = traitRules1 ++ traitRules2
 -- | Rules to infer subproperties of arm:hasTrait
@@ -151,3 +161,50 @@ combatScoreRules =
 -- => Character has NEW CombatOption
 -- CombatOption has Skill
 -- NB. New blank nodes.
+
+initQuery = listToRDFGraph 
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeaponInit") (Var "weapon") 
+      , arc cVar (armRes "hasQik") (Var "char") ]
+atkQuery = listToRDFGraph 
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasSkillScore") (Var "skill") 
+      , arc cVar (armRes "hasWeaponAtk") (Var "weapon") 
+      , arc cVar (armRes "hasDex") (Var "char") ]
+defQuery = listToRDFGraph 
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasSkillScore") (Var "skill") 
+      , arc cVar (armRes "hasWeaponDef") (Var "weapon") 
+      , arc cVar (armRes "hasQik") (Var "char") ]
+damQuery = listToRDFGraph 
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeaponDam") (Var "weapon") 
+      , arc cVar (armRes "hasStr") (Var "char") ]
+
+addAtkDef :: RDFGraph -> RDFGraph -> [RDFTriple]
+addAtkDef q = map f . Q.rdfQueryFind q
+           where f vb = arc cVar (armRes "hasDam") (litInt $ score vb)
+                 score vb = foldl (+) 0 $ ff $ ss vb
+                 ss vb = map vbToInt [ vbMap vb (Var "weapon"),
+                        vbMap vb (Var "score") ,
+                        vbMap vb (Var "char") ]
+addDamInit :: RDFGraph -> RDFGraph -> [RDFTriple]
+addDamInit q = map f . Q.rdfQueryFind q
+           where f vb = arc cVar (armRes "hasDam") (litInt $ score vb)
+                 score vb = foldl (+) 0 $ ff $ ss vb
+                 ss vb = map vbToInt [ vbMap vb (Var "weapon"),
+                        vbMap vb (Var "char") ]
+addfunctions = [ addDamInit damQuery
+               , addDamInit initQuery
+               , addAtkDef atkQuery
+               , addAtkDef defQuery ]
+calculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
+    where fs = parMap rpar ( \ f -> f g ) addfunctions 
+
+ff :: [Maybe Int] -> [Int]
+ff [] = [] 
+ff (Nothing:xs) = ff xs
+ff (Just x:xs) = x:ff xs
+vbToInt :: Maybe RDFLabel -> Maybe Int
+vbToInt Nothing = Nothing
+vbToInt (Just x) = fromRDFLabel x
