@@ -11,6 +11,23 @@
 -- The actual rules used are defined and (will be) documented in
 -- `ArM.Rules.*`.
 --
+-- The schema is prepared by the `prepareSchema` function in this module.
+-- The resource graph by functions in `ArM.Rules.Resource`.
+--
+-- The character graph is agumented in several steps.
+-- 1.  Initially by rules in `ArM.Rules.Initial`
+-- 2.  When the resources have been added, by rules in `ArM.Rules.FullGraph`.
+-- 3.  Advancement is applied using internal Haskell representations and 
+--     not RDF graphs.  These functions are in `ArM.Character.Character`.
+-- 4.  Individual character sheets, after advancement, are further 
+--     augmented by rules in `ArM.Rules.Record`.
+--
+-- Rules are also applied to extract properties to be stored upon
+-- update.  These rules are in `ArM.Rules.Persistence`.
+--
+-- Auxiliary and shared functions for the reasoners are provided by
+-- `ArM.Rules.Aux` and `ArM.Rules.Common`.
+--
 -----------------------------------------------------------------------------
 
 module ArM.Rules ( makeGraph, makeGraphs ) where
