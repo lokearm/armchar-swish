@@ -36,7 +36,6 @@ executable armchar-swish
                        , ArM.JSON
                        , ArM.STM.CharacterMap
                        , ArM.CharacterQuery
-                       , ArM.Query.Metadata
                        , ArM.WebService
                        , ArM.KeyPair
                        , ArM.Time
@@ -93,7 +92,6 @@ executable prof
                        , ArM.JSON
                        , ArM.STM.CharacterMap
                        , ArM.CharacterQuery
-                       , ArM.Query.Metadata
                        , ArM.WebService
                        , ArM.KeyPair
                        , ArM.Time
@@ -153,7 +151,6 @@ executable tst
                        , ArM.JSON
                        , ArM.STM.CharacterMap
                        , ArM.CharacterQuery
-                       , ArM.Query.Metadata
                        , ArM.WebService
                        , ArM.KeyPair
                        , ArM.Time

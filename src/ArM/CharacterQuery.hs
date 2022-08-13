@@ -24,6 +24,7 @@ module ArM.CharacterQuery ( getTraitList
                           , getCharacteristics
                           , getItemList
                           , getCombat
+                          , getMetaData
                           ) where
 
 import qualified Swish.RDF.Graph as G
@@ -54,3 +55,17 @@ traitarcs p = listToRDFGraph
 getTraitList :: G.RDFLabel -> G.RDFGraph -> [KeyPairList]
 getTraitList p = map ( KeyPairList . toKeyPairList ) . arcListSplit . map arcFromBinding . Q.rdfQueryFind (traitarcs p)
 
+
+arcs :: G.RDFGraph
+arcs = listToRDFGraph 
+   [ G.arc idVar typeRes csRes                          -- type CharacterSheet
+   , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
+   , G.arc idVar propertyVar valueVar                   -- triple of interest
+   , G.arc propertyVar labelRes labelVar ]             -- property label
+
+
+-- | The query function `getMetaData` returns all triples with an
+-- arm:ViewProperty.  There is no error checking.
+-- The given graph must contain one CharacterSheet only.
+getMetaData :: G.RDFGraph -> KeyPairList
+getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind arcs
