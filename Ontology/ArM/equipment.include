@@ -12,6 +12,8 @@ arm:Equipment rdfs:subClassOf arm:Possession .
 arm:Weapon rdfs:subClassOf arm:Possession .
 arm:Vis rdfs:subClassOf arm:StockItem .
 
+arm:hasCombatOption a owl:ObjectProperty, arm:CharacterProperty ;
+     rdfs:subPropertyOf  arm:CharacterProperty .
 arm:hasPossession a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Possession .
@@ -85,7 +87,7 @@ arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:domain arm:Possession ;
     rdfs:range xsd:string .
 
-arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty, arm:ViewProperty ;
+arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty, arm:TraitProperty ;
    rdfs:description "These are properties which should be copied from weapon to combat option." .
 
 # 3. Combat options
@@ -93,27 +95,27 @@ arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty, arm:ViewProperty ;
 arm:CombatOption owl:subClassOf arm:Trait ;
    rdfs:label "Weapon" ;
    rdfs:description "A CombatOption is a set of natural or other weapons with attack/defence/damage scores. that is a row in the combat stats table on the character sheet." .
-arm:skillClass a owl:ObjectProperty ;
+arm:skillClass a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
-arm:hasSkill a owl:ObjectProperty ;
+arm:hasSkill a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Trait .
-arm:weaponClass a owl:ObjectProperty ;
+arm:weaponClass a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
-arm:hasWeapon a owl:ObjectProperty ;
+arm:hasWeapon a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Weapon .
-arm:hasAtk a owl:DatatypeProperty, arm:CalculatedProperty ;
+arm:hasAtk a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
-arm:hasDef a owl:DatatypeProperty, arm:CalculatedProperty ;
+arm:hasDef a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
-arm:hasInit a owl:DatatypeProperty, arm:CalculatedProperty ;
+arm:hasInit a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
-arm:hasDam a owl:DatatypeProperty, arm:CalculatedProperty ;
+arm:hasDam a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .

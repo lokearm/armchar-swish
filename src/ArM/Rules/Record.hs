@@ -51,6 +51,7 @@ traitRules1 = map mkr [ "Ability"
                      , "Reputation"
                      , "Spell"
                      , "Art"
+                     , "CombatOption"
                      , "OtherTrait"
                      , "Characteristic" ]
     where mkr s = mkr' ("has" ++ s ++ "Rule")
