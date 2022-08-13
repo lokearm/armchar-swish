@@ -35,12 +35,3 @@ arcs = listToRDFGraph
 -- The given graph must contain one CharacterSheet only.
 getMetaData :: G.RDFGraph -> KeyPairList
 getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind arcs
-
-coarcs :: G.RDFGraph
-coarcs = listToRDFGraph 
-   [ G.arc idVar typeRes (armRes "CombatOption")        -- type CombatOption
-   , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
-   , G.arc idVar propertyVar valueVar                   -- triple of interest
-   , G.arc propertyVar labelRes labelVar ]             -- property label
-oldgetCombat :: G.RDFGraph -> [KeyPairList]
-oldgetCombat = map ( KeyPairList . toKeyPairList ) . arcListSplit . map arcFromBinding . Q.rdfQueryFind coarcs

@@ -33,19 +33,6 @@ import           ArM.KeyPair
 import qualified ArM.Character.Trait as CT
 import ArM.Rules.Aux
 
-arcs :: G.RDFLabel -> G.RDFGraph
-arcs prop = listToRDFGraph [ G.arc sVar typeRes csRes
-           , G.arc sVar prop idVar 
-           , G.arc idVar propertyVar valueVar 
-           , G.arc propertyVar labelRes labelVar  ]
-
-
-oldgetTraitList :: G.RDFLabel -> G.RDFGraph -> [CT.Trait]
-oldgetTraitList prop = map toTrait 
-               . arcListSplit . map arcFromBinding . Q.rdfQueryFind q
-    where q = arcs prop
-          toTrait = CT.kpToTrait . toKeyPairList 
-
 getVirtues = getTraitList $ armRes "hasVirtue"
 getFlaws = getTraitList $ armRes "hasFlaw"
 getPTs = getTraitList $ armRes "hasPersonalityTrait"
@@ -54,14 +41,10 @@ getArts = getTraitList $ armRes "hasArt"
 getReputations = getTraitList $ armRes "hasReputation"
 getSpells = getTraitList $ armRes "hasSpell"
 getCharacteristics = getTraitList $ armRes "hasCharacteristic"
+getItemList = getTraitList $ armRes "hasPossession"
+
 getCombat :: G.RDFGraph -> [KeyPairList]
 getCombat = getTraitList $ armRes "hasCombatOption"
-
-getItemList :: G.RDFGraph -> [CT.Item]
-getItemList = map toItem 
-               . arcListSplit . map arcFromBinding . Q.rdfQueryFind q
-    where q = arcs $ armRes "hasPossession"
-          toItem = CT.kpToItem . KeyPairList . toKeyPairList 
 
 traitarcs :: G.RDFLabel -> G.RDFGraph
 traitarcs p = listToRDFGraph 
