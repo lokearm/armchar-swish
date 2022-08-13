@@ -7,14 +7,14 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Auxiliary Functions to handle queries.
+-- Parsing and advancement of traits.
+--
 -- When parsing a trait without an arm:traitClass property, Nothing
 -- is returned.  Thus such traits will be discarded.  
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Trait ( Trait(..)
                            , Item(..)
-                           , defaultTrait
                            , kpToTrait
                            , kpToItem
                            , advanceTraitList
@@ -32,7 +32,7 @@ data XPType = XP { addXP :: Int, totalXP :: Int, score :: Int, hasXP :: Int }
 defaultXPType = XP { addXP = 0, totalXP = 0, score = 0, hasXP = 0 }
 
 -- |
--- = Advancement
+-- = Trait Advancement
 
 -- | Given one list of Traits and one of Trait advancements,
 -- apply each advancement to the corresponding Trait.
@@ -62,7 +62,6 @@ advanceTrait trait adv = recalculateXP  $
                  ( traitContents adv ) 
            }
 
-
 advanceTraitTriples :: [KeyValuePair] -> [KeyValuePair] -> [KeyValuePair]
 advanceTraitTriples xs [] = xs
 advanceTraitTriples [] ys = ys
@@ -72,6 +71,8 @@ advanceTraitTriples (x:xs) (y:ys)
     | x > y   = y:advanceTraitTriples (x:xs) (ys) 
     where fst' (KeyValuePair a _) = a
 
+-- |
+-- == Recalculation of XP (auxiliary functions
 
 -- | Make a new trait (for a CharacterSheet) from a Trait Advancement.
 --  - add addedXP to totalXP (defaulting to 0)
@@ -105,7 +106,6 @@ makeNewTraitTriples' (xp,ys) (KeyValuePair a c:zs)
           f Nothing = 0
           f (Just x) = x
 
-
 -- | Calculate the triples for total XP, score, and remaining XP,
 -- given an XPType object.
 processXP :: Int -> XPType -> (KeyValuePair,KeyValuePair,KeyValuePair)
@@ -124,7 +124,7 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
 
 
 -- |
--- = Parsing Trait from RDF 
+-- = Parsing Traits and Items from RDF 
 
 kpToTrait :: [KeyValuePair] -> Trait
 kpToTrait [] = defaultTrait
