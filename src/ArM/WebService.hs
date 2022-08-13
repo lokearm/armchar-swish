@@ -34,7 +34,6 @@ import Data.String (fromString)
 import           ArM.Query.Metadata (getMetaData)
 import qualified ArM.Types.Character as TC
 import qualified ArM.Character as C
-import qualified ArM.Character.Trait as CT
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.Resources as AR
 import ArM.JSON

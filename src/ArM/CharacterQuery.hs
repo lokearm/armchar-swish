@@ -30,7 +30,6 @@ import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import           ArM.Resources 
 import           ArM.KeyPair
-import qualified ArM.Character.Trait as CT
 import ArM.Rules.Aux
 
 getVirtues = getTraitList $ armRes "hasVirtue"

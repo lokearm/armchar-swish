@@ -14,10 +14,8 @@ module ArM.Query.Metadata ( getMetaData ) where
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import qualified ArM.Character.Character as C
 import           ArM.Resources 
 import           ArM.KeyPair
-import qualified ArM.Character.Trait as CT
 import ArM.Rules.Aux
 import Swish.RDF.Vocabulary.RDF
 
