@@ -67,6 +67,7 @@ of type `arm:PersistentProperty`.
     + `arm:Object` is a superclass of all ArM classes
 + TODO
     + traits and possessions may need a common superclass
+    + bonuses
 
 ## Comment on some properties
 
@@ -77,6 +78,9 @@ of type `arm:PersistentProperty`.
   TODO: they are currently not correctly typed.
     - in the example, `arm:hasLabel` is also used in lieu of
       `arm:hasName` and `arm:hasLabel` for saga and covenant.
++ `hasScore` and `hasTotalXP` are problematic as they may be either 
+  calculated or editable (persistent).
++ `arm:hasOrder` is not yet used but probably necessary
 
 # The include files
 

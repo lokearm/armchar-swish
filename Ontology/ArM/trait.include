@@ -2,6 +2,7 @@ arm:Trait a owl:Class ; rdfs:subClassOf arm:Object .
 arm:TraitProperty a owl:Property ; rdfs:subPropertyOf arm:ViewProperty ;
    rdfs:comment "These properties should be passed to the client for display."  .
 
+# Special kinds of traits
 
 arm:isSpecialTrait a owl:ObjectProperty ;
     rdfs:label  "Special Trait Type" .
@@ -13,6 +14,12 @@ arm:RepeatableTrait rdfs:subClassOf arm:Trait ;
     a arm:SpecialTraitClass ;
     rdfs:label "Repeatable trait" ;
     rdfs:comment "Traits of this class can be taken more than once." .
+
+arm:LeafTraitClass rdfs:subClassOf owl:Class ;
+    rdfs:comment  "Classes that are instances of the LeafTraitClass class are traits as they may appear on a character's sheet.  Other traits should be seen as categories of LeafTraits." .
+
+# Trait Categories
+
 arm:Ability rdfs:subClassOf arm:XPTrait .
 arm:PersonalityTrait rdfs:subClassOf arm:Trait .
 arm:Characteristic rdfs:subClassOf arm:Trait .
@@ -20,25 +27,21 @@ arm:Art rdfs:subClassOf arm:AccelleratedTrait .
 arm:Reputation rdfs:subClassOf arm:XPTrait .
 arm:OtherTrait rdfs:subClassOf arm:Trait .
 
-arm:LeafTraitClass rdfs:subClassOf owl:Class ;
-    rdfs:comment  "Classes that are instances of the LeafTraitClass class are traits as they may appear on a character's sheet.  Other traits should be seen as categories of LeafTraits." .
 
 
 arm:Size a arm:LeafTraitClass ; rdfs:label "Size" .
 arm:Warping a arm:LeafTraitClass ; rdfs:label "Warping" .
 arm:Decrepitude a arm:LeafTraitClass ; rdfs:label "Decrepitude" .
 arm:Confidence a arm:LeafTraitClass ; rdfs:label "Confidence" .
-arm:hasEffect a owl:DatatypeProperty ;
-        rdfs:range   xsd:string .
+
 arm:hasPoints a owl:DatatypeProperty, arm:PeristentProperty ;
         rdfs:subPropertyOf arm:hasXP ;
         rdfs:domain arm:Confidence ;
         rdfs:range   xsd:int .
 arm:hasAbbreviation a owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label  "Abbreviation" ;
-        rdfs:domain arm:SuperTrait ;
+        rdfs:comment  "Some traits have canon abbreviations." ;
         rdfs:range   xsd:string .
-arm:SuperTrait a owl:Class ; owl:unionOf ( arm:Trait owl:Class ) .
     
 arm:hasReference a owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label  "Reference" ;
@@ -54,12 +57,6 @@ arm:AcademicAbility rdfs:subClassOf arm:Ability .
 arm:MartialAbility rdfs:subClassOf arm:Ability .
 arm:SupernaturalAbility rdfs:subClassOf arm:Ability .
 
-arm:hasFixedScore  a   owl:DatatypeProperty, arm:TraitProperty,
-             arm:PeristentProperty ;
-        rdfs:label   "Score" ;
-        rdfs:domain  arm:Trait ;
-        rdfs:range   xsd:int ;
-        rdfs:comment "A Fixed Score does not depend on XP.  This is used for personality traits, virtues, and flaws." .
 arm:hasScore  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;
@@ -79,6 +76,9 @@ arm:hasDetail  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentPropert
 arm:hasSpeciality  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:range   xsd:string ;
         rdfs:label   "Speciality" .
+
+# Reputation
+
 arm:hasType  a   owl:ObjectProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:label  "Reputation Type" ;
         rdfs:domain  arm:Reputation ;
@@ -88,6 +88,9 @@ arm:ReputationType a owl:class ;
 arm:ecclesiastical rdfs:label "Ecclesiastical " .
 arm:hermetic rdfs:label "Hermetic" .
 arm:local rdfs:label "Local" .
+
+# Subproperties of hasTrait
+
 arm:hasTrait  a   owl:ObjectProperty ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Trait .
@@ -98,7 +101,7 @@ arm:hasPersonalityTrait  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:PersonalityTrait .
 arm:hasAbility  rdfs:subPropertyOf   arm:hasTrait ;
- a   owl:ObjectProperty ;
+        a   owl:ObjectProperty ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Ability .
 arm:hasCharacteristic  rdfs:subPropertyOf   arm:hasTrait ;
@@ -119,21 +122,19 @@ arm:hasReputation  rdfs:subPropertyOf   arm:hasTrait ;
 arm:hasSpell  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Spell .
-arm:hasOrder  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
-        rdfs:label  "Sort order" ;
-        rdfs:comment  "This is used to sort traits for display purposes" ;
-        rdfs:range   xsd:float .
 
-arm:ArtClass rdfs:subClassOf arm:LeafTraitClass ;
-             owl:disjointUnionOf ( arm:TechClass arm:FormClass ) .
-arm:TechClass rdfs:subClassOf arm:LeafTraitClass .
-arm:FormClass rdfs:subClassOf arm:LeafTraitClass .
-arm:Art owl:disjointUnionOf ( arm:Tech arm:Form ) .
+
+# Arts
+
+arm:ArtClass rdfs:subClassOf arm:LeafTraitClass .
+arm:TechClass rdfs:subClassOf arm:ArtClass .
+arm:FormClass rdfs:subClassOf arm:ArtClass .
 
 # The following should be redundant
 arm:Tech rdfs:subClassOf arm:Art  .
 arm:Form rdfs:subClassOf arm:Art  .
 
+# Spells
 
 arm:hasMasteryOption a owl:ObjectProperty, arm:TraitProperty ;
         arm:hasStringProperty arm:hasMasteryOptionString ;
@@ -143,6 +144,13 @@ arm:hasMasteryOptionString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewPr
         rdfs:domain   arm:Spell ;
         rdfs:range   xsd:string .
 arm:MasteryOption a owl:Class .
+
+# Other
+
+arm:hasOrder  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
+        rdfs:label  "Sort order" ;
+        rdfs:comment  "This is used to sort traits for display purposes" ;
+        rdfs:range   xsd:float .
 
 arm:hasBonus  a   owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
         rdfs:comment "A bonus which is added to the score of a trait." ;
