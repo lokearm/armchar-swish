@@ -27,7 +27,6 @@ import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS
-import Debug.Trace
 import Data.Maybe (fromJust)
 
 import Control.Parallel.Strategies
@@ -220,9 +219,8 @@ addDamInit p q = map f . Q.rdfQueryFind q
 -- | Calculate an arc giving a CombatOption score.
 -- This is an auxiliary for `addDamInit` and `addAtkDfn`
 calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple 
-calc p idvar vb = trace ("Arc: " ++ show a) a
+calc p idvar vb = arc idvar (armRes p) (litInt $ score vb)
     where score xs = foldl (+) 0 $ ff xs
-          a = arc idvar (armRes p) (litInt $ score vb)
 
 addfunctions = [ addDamInit "hasInit" damQuery
                , addDamInit "hasDam"  initQuery
