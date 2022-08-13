@@ -12,6 +12,14 @@
 -- When parsing a trait without an arm:traitClass property, Nothing
 -- is returned.  Thus such traits will be discarded.  
 --
+-- The advancement logic depends on Haskell types rather than
+-- working on the RDFGraph.  It is possible that this is slower
+-- than necessary.
+-- It is important to separate the different advancements into 
+-- separata data structures, sort them, and apply them in order.
+-- Working with all the advancement in one RDFGraph is expensive.
+-- However, the parsing into Haskell types may not be necessary.
+--
 -----------------------------------------------------------------------------
 module ArM.Character.Trait ( Trait(..)
                            , Item(..)
