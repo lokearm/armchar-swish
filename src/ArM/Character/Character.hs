@@ -7,7 +7,18 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- The CharacterSheet data type and corresponding functions
+-- The CharacterSheet data type and corresponding functions.
+--
+-- This module provides the functions to get character sheets
+-- from character data.
+--
+-- Pre-game character design has not yet been implemented.
+--
+-- The main function provided is the `getAllCS` function
+-- which is used to generate the data structure in `ArM.STM`.
+-- This relies on auxiliary functions to advance the character,
+-- and further on similar functions in `ArM.Character.Trait` to
+-- advance traits.
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Character ( CharacterSheet(..)
@@ -17,7 +28,6 @@ module ArM.Character.Character ( CharacterSheet(..)
                                ) where
 
 import qualified Swish.RDF.Graph as G
-import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
 import           Data.Maybe (fromJust)
 import           Data.List (sort)
