@@ -111,7 +111,7 @@ combatScoreRules =
       [ arc cVar pVar (Var "value") ]
   , makeCRule "combat-skillscore-rule"
       [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasTrait") oVar
+      , arc cVar (armRes "hasSkill") oVar
       , arc oVar (armRes "hasScore") (Var "score") ]
       [ arc cVar (armRes "hasSkillScore") (Var "score") ]
   , makeCRule "combat-atk-rule"
