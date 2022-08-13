@@ -13,19 +13,24 @@ arm:Weapon rdfs:subClassOf arm:Possession .
 arm:Vis rdfs:subClassOf arm:StockItem .
 
 arm:hasCombatOption a owl:ObjectProperty, arm:CharacterProperty ;
+     rdfs:label "Combat Option" ;
      rdfs:subPropertyOf  arm:CharacterProperty .
 arm:hasPossession a owl:ObjectProperty, arm:CharacterProperty ;
+     rdfs:label "hasPossession" ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Possession .
 arm:hasEquipment a owl:ObjectProperty, arm:CharacterProperty ;
+     rdfs:label "hasEquipment" ;
     rdfs:subPropertyOf arm:hasPossession ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Equipment .
 arm:hasVis a owl:ObjectProperty, arm:CharacterProperty ;
+     rdfs:label "hasVis" ;
     rdfs:subPropertyOf arm:hasPossession ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Vis .
 arm:hasWeapon a owl:ObjectProperty, arm:CharacterProperty ;
+     rdfs:label "hasWeapon" ;
     rdfs:subPropertyOf arm:hasPossession ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Weapon .

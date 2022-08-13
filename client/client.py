@@ -129,6 +129,19 @@ for i in y:
     output.append( f"  \\Aspell{{{i.get('arm:hasLabel','???')}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{masteryscore}}}{{{notes}}}" )
 output.append( "\\end{grimoire}" )
 
+y = get(conn,"/combat/" + cstring )
+output.append( "\\begin{combat}" )
+for i in y:
+    output.append( f"\weapon:{i.get('arm:hasLabel','??')}:"
+                    + f"init={i.get('arm:hasInit','-')},"
+                    + f"atk={i.get('arm:hasAtk','-')};"
+                    + f"def={i.get('arm:hasDfn','-')},"
+                    + f"dam={i.get('arm:hasDam','-')},"
+                    + f"rng={i.get('arm:hasWeaponRange','-')},"
+                    + f"str={i.get('arm:hasStr','-')}." )
+
+output.append( "\\end{combat}" )
+
 output.append(  "\\end{magus}" )
 f = open( fn, "w" )
 for line in output:

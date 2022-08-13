@@ -90,7 +90,8 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
    [ arm:traitClass armr:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] ,
    [ arm:traitClass arm:CombatOption ;
      arm:weaponClass armr:Longbow ;
-     arm:skillClass armr:bows
+     arm:skillClass armr:bows ;
+     arm:hasLabel "Longbow"
     ] .
 :lateradv arm:advanceCharacter armchar:cieran ;
   a arm:LaterLifeAdvancement ; 
