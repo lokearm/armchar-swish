@@ -15,6 +15,11 @@
 --     Trait and Possession instances has a unique arm:traitClass property
 --     which defines the class to which they directly belong.
 -- 3.  Infer cost (score) of virtues and flaws.
+-- 4.  Infer that advancements advance traits granted by virtues and flaws
+-- 5.  Infer special traits.
+--     **TODO** What is this used for?
+--
+-- RDFS rules are also applied.
 --     
 --
 -----------------------------------------------------------------------------
