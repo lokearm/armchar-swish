@@ -89,9 +89,54 @@ combatRules =
 -- Ability analogous to Weapon (possession) above
     ]
 
--- 2.
--- for each CombatOption 
--- add scores from weapon and from skill
+-- | Rules to add relevant constituentstats to each combat option.
+-- This is a preparatory step before calculating the actual combat stats. 
+combatScoreRules =
+  [ makeCRule "combat-skillscore-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasTrait") oVar
+      , arc oVar (armRes "hasScore") (Var "score") ]
+      [ arc cVar (armRes "hasSkillScore") (Var "score") ]
+  , makeCRule "combat-atk-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeapon") oVar
+      , arc oVar (armRes "hasWeaponAtk") (Var "score") ]
+      [ arc cVar (armRes "hasWeaponAtk") (Var "score") ]
+  , makeCRule "combat-def-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeapon") oVar
+      , arc oVar (armRes "hasWeaponDef") (Var "score") ]
+      [ arc cVar (armRes "hasWeaponDef") (Var "score") ]
+  , makeCRule "combat-dam-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeapon") oVar
+      , arc oVar (armRes "hasWeaponDam") (Var "score") ]
+      [ arc cVar (armRes "hasWeaponDam") (Var "score") ]
+  , makeCRule "combat-init-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeapon") oVar
+      , arc oVar (armRes "hasWeaponInit") (Var "score") ]
+      [ arc cVar (armRes "hasWeaponInit") (Var "score") ]
+  , makeCRule "combat-qik-rule"
+      [ arc sVar (armRes "hasCombatOption")  cVar
+      , arc sVar (armRes "hasCharacteristic")  tVar
+      , arc tVar typeRes (armrRes "qik")
+      , arc tVar (armRes "hasScore") (Var "score") ]
+      [ arc cVar (armRes "hasQik") (Var "score") ]
+  , makeCRule "combat-dex-rule"
+      [ arc sVar (armRes "hasCombatOption")  cVar
+      , arc sVar (armRes "hasCharacteristic")  tVar
+      , arc tVar typeRes (armrRes "dex")
+      , arc tVar (armRes "hasScore") (Var "score") ]
+      [ arc cVar (armRes "hasDex") (Var "score") ]
+  , makeCRule "combat-str-rule"
+      [ arc sVar (armRes "hasCombatOption")  cVar
+      , arc sVar (armRes "hasCharacteristic")  tVar
+      , arc tVar typeRes (armrRes "str")
+      , arc tVar (armRes "hasScore") (Var "score") ]
+      [ arc cVar (armRes "hasStr") (Var "score") ]
+  ]
+
 --
 -- E.g. Atk
 -- CombatOption has Skill, Skill has Score
