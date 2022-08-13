@@ -39,8 +39,7 @@ prepareRecord schema = addCombatStats
 -- 2. add the consituent integer scores from each trait and weapon
 -- 3. calculate the total combat scores (init/atk/def/dam)
 addCombatStats = calculateCombatStats
-               . fwdApplyList combatScoreRules 
-               . fwdApplyList combatRules 
+               . fwdApplyListR ( combatScoreRules ++ combatRules )
 
 traitRules = traitRules1 ++ traitRules2
 -- | Rules to infer subproperties of arm:hasTrait
@@ -81,7 +80,7 @@ combatRules =
       [ arc sVar (armRes "hasCombatOption")  cVar
       , arc sVar typeRes (armRes "CharacterSheet")
       , arc cVar (armRes "weaponClass") tVar
-      , arc sVar (armRes "hasWeapon") oVar
+      , arc sVar (armRes "hasPossession") oVar
       , arc oVar typeRes tVar ]
       [ arc cVar (armRes "hasWeapon") oVar ]
 -- 1.
