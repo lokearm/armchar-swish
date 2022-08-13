@@ -96,26 +96,34 @@ arm:CombatOption owl:subClassOf arm:Trait ;
    rdfs:label "Weapon" ;
    rdfs:description "A CombatOption is a set of natural or other weapons with attack/defence/damage scores. that is a row in the combat stats table on the character sheet." .
 arm:skillClass a owl:ObjectProperty, arm:TraitProperty ;
+    rdfs:label "Skill Class" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
 arm:hasSkill a owl:ObjectProperty, arm:TraitProperty ;
+    rdfs:label "Skill Instance" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Trait .
 arm:weaponClass a owl:ObjectProperty, arm:TraitProperty ;
+    rdfs:label "Weapon Class" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
 arm:hasWeapon a owl:ObjectProperty, arm:TraitProperty ;
+    rdfs:label "Weapon Instance" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Weapon .
 arm:hasAtk a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
+    rdfs:label "Attack Score" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
 arm:hasDef a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
+    rdfs:label "Defence Score" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
 arm:hasInit a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
+    rdfs:label "Initiative Score" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
 arm:hasDam a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
+    rdfs:label "Damage Bonus" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
