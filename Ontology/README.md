@@ -47,3 +47,40 @@ of type `arm:PersistentProperty`.
 3.  Advancement - read/write
     - with Trait with editable fields
     This represents changes to a character at a given time.
+
+## Top Level Entities
+
++ Core entities
+    + `arm:Character`
+    + `arm:Advancement`
+    + `arm:CharacterSheet` (derived)
++ Other important entities
+    + `arm:Trait` Both advancements and character sheets have traits.
+    + `arm:Possession` are handled much like traits
++ Less important entities.  
+    + `arm:Saga` is only used to hold some shared data which are 
+       copied to the character.
+    + `arm:Covenant` this is currently similar to `arm:Saga`, but
+      will in time be extended to work like a character with advancements
+      over time.  `arm:GeneralCharacter` is a superclass comprising
+      characters and covenants.
++ TODO
+    + `arm:Object` is referenced but not used
+    + traits and possessions may need a common superclass
+
+## Comment on some properties
+
++ `arm:hasLabel` and `arm:hasDescription` are used for both
+  traits and possessions and both for instances and classes.
+  Instances inherit them from classes, but may define their own,
+  in which case there is no conflict resolution.
+  TODO: they are currently not correctly typed.
+
+# The include files
+
+- arm.include  (reviewed)
+- advancement.include
+- spell.include
+- equipment.include
+- trait.include
+

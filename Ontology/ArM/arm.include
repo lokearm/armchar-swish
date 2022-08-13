@@ -16,6 +16,7 @@ arm:ImmutableProperty rdfs:subClassOf arm:ViewProperty ;
 # Saga
 arm:Saga a owl:Class .
 arm:hasSG a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:description "Names the storyguide.  Both sagas and characters have storyguides." ;
         rdfs:range   xsd:string ;
         rdfs:label "Storyguide" .
 arm:hasTitle a   owl:DatatypeProperty ;
@@ -23,14 +24,9 @@ arm:hasTitle a   owl:DatatypeProperty ;
         rdfs:range   xsd:string ;
         rdfs:label "Saga Title" .
 arm:hasSetting a   owl:DatatypeProperty ;
+        rdfs:description "Freeform description of the setting." ;
         rdfs:domain  arm:Saga ;
         rdfs:range   xsd:string .
-arm:hasCharacter a   owl:ObjectProperty ;
-        rdfs:domain  arm:Saga ;
-        rdfs:range   arm:Character .
-arm:hasSeasonTime a   owl:ObjectProperty ;
-        rdfs:domain  arm:Saga ;
-        rdfs:range   arm:SeasonTime .
 
 # Covenant and Character
 arm:GeneralCharacter a owl:Class ;
@@ -106,16 +102,7 @@ arm:hasAge a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:range   xsd:int ;
         rdfs:label    "Age" .
 
-# Seasons and Time
-arm:Season a owl:Class ;
-   owl:oneOf ( arm:Winter arm:Spring arm:Summer arm:Autumn ) .
-arm:Winter  rdfs:label   "Winter" .
-arm:Spring  rdfs:label   "Spring" .
-arm:Summer  rdfs:label   "Summer" .
-arm:Autumn   rdfs:label   "Autumn" .
-
-
-# Character Sheet and Base Character
+# Character Sheet 
 arm:CharacterSheet a owl:Class ;
     rdfs:subClassOf arm:GeneralCharacter ;
     rdfs:comment "A CharacterSheet represents the character at a particular point in time, is contains the character's dynamic properties and a reference to the base character." .
@@ -125,6 +112,7 @@ arm:isCharacter a   owl:ObjectProperty, arm:ViewProperty ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Character .
 arm:hasInitialSheet  a   owl:ObjectProperty ;
+        rdfs:description "TODO: What is this for?" ;
         rdfs:range    arm:CharacterSheet ;
         rdfs:domain   arm:Character .
 
