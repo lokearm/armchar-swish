@@ -9,6 +9,10 @@
 -- Reasoning rules applied to the CharacterRecord graph, using
 -- the schema ontology.
 --
+-- The following functionality is applied
+-- 1.  Infer the subproperties of arm:hasTrait, to make it easy to 
+--     extract traits of different kinds (abilities, virtues, etc.)
+-- 2.  Calculate Combat Stats.
 --
 -----------------------------------------------------------------------------
 

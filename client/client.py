@@ -138,7 +138,7 @@ for i in y:
                     + f"def={i.get('arm:hasDfn','-')},"
                     + f"dam={i.get('arm:hasDam','-')},"
                     + f"rng={i.get('arm:hasWeaponRange','-')},"
-                    + f"str={i.get('arm:hasStr','-')}." )
+                    + f"str={i.get('arm:hasWeaponStr','-')}." )
 
 output.append( "\\end{combat}" )
 
