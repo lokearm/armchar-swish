@@ -10,7 +10,7 @@
 -- Queries to build JSON files for character sheet metadata.
 --
 -----------------------------------------------------------------------------
-module ArM.Query.Metadata ( getMetaData ) where
+module ArM.Query.Metadata ( getMetaData, getCombat ) where
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -35,3 +35,12 @@ arcs = listToRDFGraph
 -- The given graph must contain one CharacterSheet only.
 getMetaData :: G.RDFGraph -> KeyPairList
 getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind arcs
+
+coarcs :: G.RDFGraph
+coarcs = listToRDFGraph 
+   [ G.arc sVar typeRes (armRes "CombatOption")        -- type CombatOption
+   , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
+   , G.arc sVar propertyVar valueVar                   -- triple of interest
+   , G.arc propertyVar labelRes labelVar ]             -- property label
+getCombat :: G.RDFGraph -> [KeyPairList]
+getCombat = map ( KeyPairList . toKeyPairList ) . arcListSplit . map arcFromBinding . Q.rdfQueryFind coarcs

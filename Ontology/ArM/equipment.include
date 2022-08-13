@@ -85,7 +85,7 @@ arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:domain arm:Possession ;
     rdfs:range xsd:string .
 
-arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty ;
+arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty, arm:ViewProperty ;
    rdfs:description "These are properties which should be copied from weapon to combat option." .
 
 # 3. Combat options
