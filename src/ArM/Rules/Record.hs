@@ -102,7 +102,14 @@ combatRules =
 -- | Rules to add relevant constituentstats to each combat option.
 -- This is a preparatory step before calculating the actual combat stats. 
 combatScoreRules =
-  [ makeCRule "combat-skillscore-rule"
+  [ makeCRule "combat-property-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeapon") oVar
+      , arc oVar pVar (Var "value")
+      , arc pVar typeRes (armRes "WeaponProperty")
+      ]
+      [ arc cVar pVar (Var "value") ]
+  , makeCRule "combat-skillscore-rule"
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasTrait") oVar
       , arc oVar (armRes "hasScore") (Var "score") ]

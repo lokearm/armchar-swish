@@ -71,10 +71,10 @@ arm:hasWeaponDfn a owl:DatatypeProperty, arm:PossessionProperty ;
 arm:hasWeaponDam a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponRange a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasWeaponRange a owl:DatatypeProperty, arm:PossessionProperty, arm:WeaponProperty ;
     rdfs:domain arm:MissileWeapon ;
     rdfs:range xsd:int .
-arm:hasWeaponStr a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasWeaponStr a owl:DatatypeProperty, arm:PossessionProperty, arm:WeaponProperty ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasWeaponLoad a owl:DatatypeProperty, arm:PossessionProperty ;
@@ -85,6 +85,8 @@ arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
     rdfs:domain arm:Possession ;
     rdfs:range xsd:string .
 
+arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty ;
+   rdfs:description "These are properties which should be copied from weapon to combat option." .
 
 # 3. Combat options
 
@@ -103,15 +105,15 @@ arm:weaponClass a owl:ObjectProperty ;
 arm:hasWeapon a owl:ObjectProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Weapon .
-arm:hasAtk a owl:DatatypeProperty ;
+arm:hasAtk a owl:DatatypeProperty, arm:CalculatedProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
-arm:hasDef a owl:DatatypeProperty ;
+arm:hasDef a owl:DatatypeProperty, arm:CalculatedProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
-arm:hasInit a owl:DatatypeProperty ;
+arm:hasInit a owl:DatatypeProperty, arm:CalculatedProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
-arm:hasDam a owl:DatatypeProperty ;
+arm:hasDam a owl:DatatypeProperty, arm:CalculatedProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
