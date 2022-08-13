@@ -88,6 +88,10 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
      arm:addedXP 5  ],
    [ arm:traitClass armr:folkken ; arm:hasSpeciality "Villagers" ; arm:addedXP 5  ],
    [ arm:traitClass armr:stealth ; arm:hasSpeciality "Hiding" ; arm:addedXP 5  ] .
+   [ arm:traitClass arm:CombatOption ;
+     arm:weaponClass armr:Longbow ;
+     arm:skillClass armr:bows
+    ] .
 :lateradv arm:advanceCharacter armchar:cieran ;
   a arm:LaterLifeAdvancement ; 
   arm:advanceTrait 

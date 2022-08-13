@@ -88,7 +88,15 @@ arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
 
 # 3. Combat options
 
-arm:CombatOption a owl:Class .
+arm:CombatOption owl:subClassOf arm:Trait ;
+   rdfs:label "Weapon" ;
+   rdfs:description "A CombatOption is a set of natural or other weapons with attack/defence/damage scores. that is a row in the combat stats table on the character sheet." .
+arm:skillClass a owl:ObjectProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range arm:Class .
+arm:weaponClass a owl:ObjectProperty ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range arm:Class .
 arm:hasWeapon a owl:ObjectProperty ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Weapon .
