@@ -11,6 +11,11 @@
 -- Rules used include
 -- 1.  String properties are added to avoid having to handle simple objects
 --     at the client.
+-- 2.  Infer RDF types from the arm:traitClass property.
+--     Trait and Possession instances has a unique arm:traitClass property
+--     which defines the class to which they directly belong.
+-- 3.  Infer cost (score) of virtues and flaws.
+--     
 --
 -----------------------------------------------------------------------------
 
