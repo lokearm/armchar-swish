@@ -35,7 +35,8 @@ import Control.Parallel.Strategies
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
-prepareRecord schema = addCombatStats
+prepareRecord :: RDFGraph -> RDFGraph -> RDFGraph
+prepareRecord schema = addCastingScores . addCombatStats
                  . fwdApplyList traitRules
                  . fwdApplyList rdfstypeRules
                  . merge schema
@@ -270,11 +271,16 @@ intFromRDF x = fi i
 -- * Aura is variable and can be left out here
 -- It is further affected by magical foci.
 
+addCastingScores :: RDFGraph -> RDFGraph
+addCastingScores = calculateCastingScores
+               . addSpellArtScores
+               . fwdApplyListR castingScoreRules
+
 -- | These rules add hasFormScore and hasTechScore properties
 -- for all the arts used by the spell, including requisites.
 -- A further step, not using the rules syntax, is needed to
 -- take the minimum over the triples.
-castringScoreRules = 
+castingScoreRules = 
   [ makeCRule "casting-form-rule"
       [ arc sheet (armRes "hasSpell") spell
       , arc spell (armRes "hasForm") art
@@ -316,6 +322,7 @@ castringScoreRules =
         art   = Var "art"
         sheet = Var "cs"
 
+artScores :: String -> RDFGraph -> [RDFTriple]
 artScores tp = arcMin . sort . map f . Q.rdfQueryFind q
    where f vb = arc (fromJust $ vbMap vb (Var "spell")) p1 
                     (fromJust $ vbMap vb (Var "score"))
@@ -326,6 +333,7 @@ artScores tp = arcMin . sort . map f . Q.rdfQueryFind q
          p1 = armRes $ "has" ++ tp ++ "EffectiveScore"
 
 
+
 arcMin :: [RDFTriple] -> [RDFTriple] 
 arcMin [] = []
 arcMin (x:[]) = x:[]
@@ -334,3 +342,20 @@ arcMin (x:y:xs) | arcSubj x /= arcSubj y = x:arcMin (y:xs)
                 | f x < f y = arcMin (x:xs)
                 | otherwise = arcMin (y:xs)
    where f = intFromRDF . arcObj
+
+addSpellArtScores :: RDFGraph -> RDFGraph
+addSpellArtScores g = foldl addGraphs g $ map listToRDFGraph xs 
+    where xs = parMap rpar ( \ f -> f g ) fs 
+          fs = [ artScores "Tech", artScores "Form" ]
+
+calculateCastingScores :: RDFGraph -> RDFGraph
+calculateCastingScores g = addGraphs g $ listToRDFGraph 
+                         $ map f $ Q.rdfQueryFind q g
+   where q = listToRDFGraph 
+             [ arc cVar typeRes (armRes "Spell")
+             , arc cVar (armRes "hasFormEffectiveScore") (Var "form") 
+             , arc cVar (armRes "hasTequEffectiveScore") (Var "tech") 
+             , arc cVar (armRes "hasSta") (Var "char") ]
+         f vb = calc "hasCastingScore" (fromJust $ vbMap vb cVar) $ ss vb
+         ss vb = map vbToInt [ vbMap vb (Var "tech"),
+                 vbMap vb (Var "form"), vbMap vb (Var "char") ]
