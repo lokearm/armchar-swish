@@ -13,6 +13,7 @@
 -- 1.  Infer the subproperties of arm:hasTrait, to make it easy to 
 --     extract traits of different kinds (abilities, virtues, etc.)
 -- 2.  Calculate Combat Stats.
+-- 3.  Calculate casting scores (TODO)
 --
 -----------------------------------------------------------------------------
 
@@ -38,13 +39,10 @@ prepareRecord schema = addCombatStats
                  . fwdApplyList rdfstypeRules
                  . merge schema
                  . fwdApplyList [ traitclasstypeRule ]
--- | Add combat stats to a graph with character sheet data
--- This works in three steps:
--- 1. add necessary traits and weapons to each CombatOption,
--- 2. add the consituent integer scores from each trait and weapon
--- 3. calculate the total combat scores (init/atk/dfn/dam)
-addCombatStats = calculateCombatStats
-               . fwdApplyListR ( combatScoreRules ++ combatRules )
+
+-- |
+-- = Trait sub properties
+
 
 traitRules = traitRules1 ++ traitRules2
 -- | Rules to infer subproperties of arm:hasTrait
@@ -79,6 +77,17 @@ arcs1 t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
              [ arc cVar p tVar ] ) 
 arcs2 t p = ( [ arc cVar p tVar, arc tVar typeRes t ],
              [ arc cVar htRes tVar ] ) 
+
+-- |
+-- = Combat stats
+
+-- | Add combat stats to a graph with character sheet data
+-- This works in three steps:
+-- 1. add necessary traits and weapons to each CombatOption,
+-- 2. add the consituent integer scores from each trait and weapon
+-- 3. calculate the total combat scores (init/atk/dfn/dam)
+addCombatStats = calculateCombatStats
+               . fwdApplyListR ( combatScoreRules ++ combatRules )
 
 combatRules = 
     [ makeCRule "combat1rule"
@@ -249,3 +258,6 @@ intFromRDF x = fi i
          fi Nothing = fs s
          fi (Just y) = y
          fs (Just y) = read y
+
+-- |
+-- = Casting Scores
