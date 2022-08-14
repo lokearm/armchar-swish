@@ -261,3 +261,50 @@ intFromRDF x = fi i
 
 -- |
 -- = Casting Scores
+-- 
+-- Casting score is the sum of
+-- * Technique and Form, each taking the minimum over requisites
+-- * Stamina
+-- * Possible bonuses
+-- * Aura is variable and can be left out here
+-- It is further affected by magical foci.
+
+-- | These rules add hasFormScore and hasTechScore properties
+-- for all the arts used by the spell, including requisites.
+-- A further step, not using the rules syntax, is needed to
+-- take the minimum over the triples.
+castringScoreRules = 
+  [ makeCRule "casting-form-rule"
+      [ arc sheet (armRes "hasSpell") spell
+      , arc spell (armRes "hasForm") art
+      , arc sheet (armRes "hasArt") trait
+      , arc trait typeRes art
+      , arc trait (armRes "hasScore") score ]
+      [ arc spell (armRes "hasFormScore") score ]
+  , makeCRule "casting-form-req-rule"
+      [ arc sheet (armRes "hasSpell") spell
+      , arc spell (armRes "hasFormRequisite") art
+      , arc sheet (armRes "hasArt") trait
+      , arc trait typeRes art
+      , arc trait (armRes "hasScore") score ]
+      [ arc spell (armRes "hasFormScore") score ]
+  , makeCRule "casting-tech-rule"
+      [ arc sheet (armRes "hasSpell") spell
+      , arc spell (armRes "hasTechnique") art
+      , arc sheet (armRes "hasArt") trait
+      , arc trait typeRes art
+      , arc trait (armRes "hasScore") score ]
+      [ arc spell (armRes "hasTechScore") score ]
+  , makeCRule "casting-tech-req-rule"
+      [ arc sheet (armRes "hasSpell") spell
+      , arc spell (armRes "hasTechRequisite") art
+      , arc sheet (armRes "hasArt") trait
+      , arc trait typeRes art
+      , arc trait (armRes "hasScore") score ]
+      [ arc spell (armRes "hasTechScore") score ]
+  ]
+  where spell = Var "spell"
+        score = Var "score"
+        trait = Var "trait"
+        art   = Var "art"
+        sheet = Var "cs"
