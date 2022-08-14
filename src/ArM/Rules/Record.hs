@@ -29,6 +29,7 @@ import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS
 import Data.Maybe (fromJust)
+import Data.List (sort)
 
 import Control.Parallel.Strategies
 
@@ -302,9 +303,34 @@ castringScoreRules =
       , arc trait typeRes art
       , arc trait (armRes "hasScore") score ]
       [ arc spell (armRes "hasTechScore") score ]
+  , makeCRule "combat-str-rule"
+      [ arc sheet (armRes "hasSpell") spell
+      , arc sheet (armRes "hasCharacteristic") trait
+      , arc trait typeRes (armrRes "str")
+      , arc trait (armRes "hasScore") score ]
+      [ arc spell (armRes "hasSta") score ]
   ]
   where spell = Var "spell"
         score = Var "score"
         trait = Var "trait"
         art   = Var "art"
         sheet = Var "cs"
+
+artScores tp = arcMin . sort . map f . Q.rdfQueryFind q
+   where f vb = arc (fromJust $ vbMap vb (Var "spell")) p1 
+                    (fromJust $ vbMap vb (Var "score"))
+         q = listToRDFGraph 
+             [ arc (Var "spell") typeRes (armRes "Spell")
+             , arc (Var "spell")  p (Var "score") ]
+         p = armRes $ "has" ++ tp ++ "Score"
+         p1 = armRes $ "has" ++ tp ++ "EffectiveScore"
+
+
+arcMin :: [RDFTriple] -> [RDFTriple] 
+arcMin [] = []
+arcMin (x:[]) = x:[]
+arcMin (x:y:xs) | arcSubj x /= arcSubj y = x:arcMin (y:xs)
+                | arcPred x /= arcPred y = x:arcMin (y:xs)
+                | f x < f y = arcMin (x:xs)
+                | otherwise = arcMin (y:xs)
+   where f = intFromRDF . arcObj
