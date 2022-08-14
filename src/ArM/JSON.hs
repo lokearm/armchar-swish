@@ -7,7 +7,8 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Functions to produce 
+-- Functions to output and parse JSON data.  The module defines
+-- instances of `ToJSON` and `FromJSON`.
 --
 -----------------------------------------------------------------------------
 module ArM.JSON where
@@ -31,22 +32,14 @@ import Swish.RDF.Vocabulary.XSD (xsdInteger)
 import Data.List       (intercalate)
 import Data.List.Split (splitOn)
 
-
 import qualified Data.Aeson.KeyMap as KM
 
-
--- We need to rethink the use of triples here, as it is not
--- one-to-one and contains redundant data.
--- Do we need the label from the (property,label,value) triple?
-
--- We may want to make an algebraic datatype to replace Triple
--- See here for decoding tips
+-- Some good ideas from the web:
 -- https://stackoverflow.com/questions/53478455/aeson-parse-json-object-to-list
---
--- Another comprehensive tutorial:
 -- https://williamyaoh.com/posts/2019-10-19-a-cheatsheet-to-json-handling.html
 
 -- | Convert a `KeyValuePair` to JSON
+tripleToJSON :: KeyValuePair -> (Key,Value)
 tripleToJSON (KeyValuePair a b) = 
     ((getKey $ fromJust $ fromRDFLabel a), (toJSON b))
 
