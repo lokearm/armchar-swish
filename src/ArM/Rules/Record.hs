@@ -30,7 +30,6 @@ import ArM.Rules.Common
 import ArM.Rules.RDFS
 import Data.Maybe (fromJust)
 import Data.List (sort)
-import Debug.Trace
 
 import Control.Parallel.Strategies
 
@@ -368,8 +367,7 @@ calculateCastingScores g = addGraphs g $ listToRDFGraph
 -- !
 -- = Scores including Bonuses
 
-addScores g = trace "addScores" $ addScores' g
-addScores' = applyRule getEffectiveScores
+addScores = applyRule getEffectiveScores
           . applyRule getBonuses
           . fwdApplyList scoreRules 
 
@@ -386,8 +384,7 @@ getEffectiveScores =
              [ arc cVar typeRes (armRes "Trait")
              , arc cVar (Var "property") (Var "score") 
              , arc (Var "property") typeRes (armRes "ScoreContribution") ]
-         f vb = trace ("getEScore " ++ show (f' vb)) (f' vb)
-         f' vb = arc (fromJust $ vbMap vb cVar)
+         f vb = arc (fromJust $ vbMap vb cVar)
                     (fromJust $ vbMap vb (Var "property"))
                     (fromJust $ vbMap vb (Var "score"))
 
@@ -402,8 +399,7 @@ getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQuery
              , arc character (armRes "hasBonus") bonus
              , arc bonus (armRes "bonusTo") tVar
              , arc bonus (armRes "hasScore") score ]
-         f vb = trace ("getBonus " ++ show (f' vb)) (f' vb)
-         f' vb = arc (fromJust $ vbMap vb trait)
+         f vb = arc (fromJust $ vbMap vb trait)
                     (fromJust $ vbMap vb bonus)
                     (fromJust $ vbMap vb score)
          character = Var "character"
@@ -413,13 +409,10 @@ getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQuery
 
 arcSum :: String -> [RDFTriple] -> [RDFTriple] 
 arcSum s [] = []
-arcSum s (x:[]) = trace ("arcSum1 " ++ (show x')) x'
-   where x' = arc (arcSubj x) (armRes s) (arcObj x):[]
+arcSum s (x:[]) = arc (arcSubj x) (armRes s) (arcObj x):[]
 arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
-                | otherwise = trace ("arcSum " ++ show a) a 
+                | otherwise = arcSum s (y':xs)
    where f = intFromRDF . arcObj
          t = f x + f y
-         x' = trace ("arcSumn2 "++(show x'')) x''
-         x'' = arc (arcSubj x) (armRes s) (arcObj x)
+         x' = arc (arcSubj x) (armRes s) (arcObj x)
          y' = arc (arcSubj x) (armRes s) (litInt t)
-         a = arcSum s (y':xs)
