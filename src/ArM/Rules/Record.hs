@@ -30,6 +30,7 @@ import ArM.Rules.Common
 import ArM.Rules.RDFS
 import Data.Maybe (fromJust)
 import Data.List (sort)
+import Debug.Trace
 
 import Control.Parallel.Strategies
 
@@ -367,17 +368,16 @@ calculateCastingScores g = addGraphs g $ listToRDFGraph
 -- !
 -- = Scores including Bonuses
 
-addScores = fwdApplyList scoreRules . addEffectiveScores . addTotalBonus
+addScores g = trace "addScores" $ addScores' g
+addScores' = applyRule getEffectiveScores
+          . applyRule getBonuses
+          . fwdApplyList scoreRules 
 
 -- Note: this needs to be changed to accommodate bonuses.
 scoreRules = 
-   [ makeCRule "scorerule1"
-     [ arc cVar (armRes "hasXPScore") oVar ]
-     [ arc cVar (armRes "hasScore") oVar ]
+   [ 
    ]
 
-addEffectiveScores :: RDFGraph -> RDFGraph
-addEffectiveScores g = g `addGraphs` getEffectiveScores g
 
 getEffectiveScores :: RDFGraph -> RDFGraph
 getEffectiveScores = 
@@ -386,12 +386,13 @@ getEffectiveScores =
              [ arc cVar typeRes (armRes "Trait")
              , arc cVar (Var "property") (Var "score") 
              , arc (Var "property") typeRes (armRes "ScoreContribution") ]
-         f vb = arc (fromJust $ vbMap vb cVar)
+         f vb = trace ("getEScore " ++ show (f' vb)) (f' vb)
+         f' vb = arc (fromJust $ vbMap vb cVar)
                     (fromJust $ vbMap vb (Var "property"))
                     (fromJust $ vbMap vb (Var "score"))
 
-addTotalBonus :: RDFGraph -> RDFGraph
-addTotalBonus g = g `addGraphs` getBonuses g
+applyRule :: (RDFGraph -> RDFGraph) -> RDFGraph -> RDFGraph
+applyRule f g = g `addGraphs` f g
 
 getBonuses :: RDFGraph -> RDFGraph
 getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQueryFind q
@@ -401,7 +402,8 @@ getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQuery
              , arc character (armRes "hasBonus") bonus
              , arc bonus (armRes "bonusTo") tVar
              , arc bonus (armRes "hasScore") score ]
-         f vb = arc (fromJust $ vbMap vb character)
+         f vb = trace ("getBonus " ++ show (f' vb)) (f' vb)
+         f' vb = arc (fromJust $ vbMap vb character)
                     (fromJust $ vbMap vb bonus)
                     (fromJust $ vbMap vb score)
          character = Var "character"
@@ -411,10 +413,13 @@ getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQuery
 
 arcSum :: String -> [RDFTriple] -> [RDFTriple] 
 arcSum s [] = []
-arcSum s (x:[]) = x:[]
-arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcMin (y:xs)
-                | otherwise = arcMin (y':xs)
+arcSum s (x:[]) = trace ("arcSum1 " ++ (show x')) x'
+   where x' = arc (arcSubj x) (armRes s) (arcObj x):[]
+arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
+                | otherwise = trace ("arcSum " ++ show a) a 
    where f = intFromRDF . arcObj
          t = f x + f y
-         x' = arc (arcSubj x) (armRes s) (arcObj x)
+         x' = trace ("arcSumn2 "++(show x'')) x''
+         x'' = arc (arcSubj x) (armRes s) (arcObj x)
          y' = arc (arcSubj x) (armRes s) (litInt t)
+         a = arcSum s (y':xs)
