@@ -76,7 +76,8 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
     [ arm:traitClass armr:com ; arm:hasScore -1 ], [ arm:traitClass armr:pre ; arm:hasScore 0 ],
     [ arm:traitClass armr:str ; arm:hasScore 2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
     [ arm:traitClass armr:dex ; arm:hasScore 2 ], [ arm:traitClass armr:qik ; arm:hasScore -3 ],
-   [ arm:traitClass armr:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ] .
+    [ arm:traitClass armr:gaelic ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ],
+    [ arm:traitClass armr:personality-villager ; arm:hasFixedScore 2 ] .
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:cieran ;
@@ -190,13 +191,13 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
   arm:awardsXP 2 ;
   arm:hasAdvancementType arm:Exposure .
 
-:spring1218av arm:advanceCharacter armchar:cieran ;
+:spring1218adv arm:advanceCharacter armchar:cieran ;
   a arm:IngameAdvancement ;
   arm:atSeason "Spring" ;
   arm:inYear   1218 ;
   arm:hasAdvancementDescription "Story" ;
   arm:advanceTrait [ arm:traitClass armr:awareness ; arm:addedXP 5 ],
                    [ arm:traitClass armr:creo ; arm:addedXP 2 ],
-                   [ arm:traitClass armr:personality-villager ; arm:hasScore 2 ] ;
+                   [ arm:traitClass armr:personality-villager ; arm:hasFixedScore 3 ] ;
   arm:awardsXP 7 ;
   arm:hasAdvancementType arm:Adventure .
