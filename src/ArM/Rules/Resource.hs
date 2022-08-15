@@ -34,7 +34,7 @@ prepareResources = fwdApplyList ( vfabRule:personalityflawRules )
 
 traitclass = Var "traitclass"
 trait = Var "trait"
-score = armRes "hasScore"
+score = armRes "hasFixedScore"
 
 
 -- | The rules to derive personality traits from personality flaws.
