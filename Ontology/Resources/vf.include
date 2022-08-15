@@ -1,19 +1,4 @@
-
-arm:Virtue rdfs:subClassOf arm:Trait .
-arm:Flaw rdfs:subClassOf arm:Trait .
-
 armr:theGift rdfs:subClassOf arm:freeVirtue ; arm:hasLabel "The Gift" .
-
-arm:majorVirtue rdfs:subClassOf arm:Virtue .
-arm:minorVirtue rdfs:subClassOf arm:Virtue .
-arm:freeVirtue rdfs:subClassOf arm:Virtue .
-arm:majorFlaw rdfs:subClassOf arm:Flaw .
-arm:minorFlaw rdfs:subClassOf arm:Flaw .
-
-arm:grantsTrait a owl:ObjectProperty ;
-  rdfs:label   "Grants Trait" ;
-  rdfs:domain   arm:Virtue ;
-  rdfs:range   arm:Trait .
 
 armr:majorHermeticVirtue rdfs:subClassOf arm:majorVirtue ;
                          arm:hasLabel "Hermetic, Major" .

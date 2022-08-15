@@ -11,9 +11,8 @@
 -- Rules used include
 -- 1.  String properties are added to avoid having to handle simple objects
 --     at the client.
--- 2.  Infer RDF types from the arm:traitClass property.
---     Trait and Possession instances has a unique arm:traitClass property
---     which defines the class to which they directly belong.
+-- 2.  Infer Trait and Possession properties from their class
+--     (via the `arm:traitClass` property).
 -- 3.  Infer cost (score) of virtues and flaws.
 -- 4.  Infer that advancements advance traits granted by virtues and flaws
 -- 5.  Infer special traits.
@@ -35,8 +34,8 @@ import ArM.Rules.RDFS
 -- | Final inference to be done after merging character data and resources
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
-prepareGraph = fwdApplyList (stringPropertyRule:vfScoreRules)
-             . fwdApplyListR [ advancevfgrantRule,
+prepareGraph = fwdApplyList (advancementindexRule:stringPropertyRule:vfScoreRules)
+             . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, bonus2rule,
                                spectraitRule, rRule, pRule ]
              . applyRDFS
@@ -82,12 +81,18 @@ spectraitRule = makeCRule  "spectraitRule"
       [ arc sVar ( armRes  "isSpecialTrait" ) tVar ]
 
 
--- | apply grantsTrait to an Advancement
+-- | Add traits granted by an advanced traits class as other advanced traits.
 advancevfgrantRule = makeCRule  "advancevfgrantRule" 
      [ arc sVar (armRes "advanceTrait") oVar,
        arc oVar typeRes tVar,   -- o a t
        arc sVar typeRes ( armRes "CharacterAdvancement" ),
        arc tVar gtRes cVar ]
+     [ arc sVar (armRes "advanceTrait") cVar ]
+-- | Add traits granted by an advanced traits instance as other advanced traits.
+advancevfgrantRule2 = makeCRule  "advancevfgrantRule2" 
+     [ arc sVar (armRes "advanceTrait") oVar,
+       arc sVar typeRes ( armRes "CharacterAdvancement" ),
+       arc oVar gtRes cVar ]
      [ arc sVar (armRes "advanceTrait") cVar ]
 
 bonus1rule = makeCRule  "bonus1rule" 
@@ -101,3 +106,8 @@ bonus2rule =  makeCRule  "bonus2rule"
      , arc sVar typeRes ( armRes "CharacterAdvancement" )
      , arc tVar gtRes cVar ]
      [ arc sVar (armRes "advanceTrait") cVar ]
+
+-- | Add indices used for sorting advancements
+advancementindexRule = makeCRule "advancementindexRule" 
+    [ tArc, arc tVar (armRes "hasAdvancementIndex") cVar ]
+    [ arc sVar (armRes "hasAdvancementIndex") cVar ]
