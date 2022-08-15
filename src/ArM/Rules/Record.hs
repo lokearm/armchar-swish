@@ -13,7 +13,7 @@
 -- 1.  Infer the subproperties of arm:hasTrait, to make it easy to 
 --     extract traits of different kinds (abilities, virtues, etc.)
 -- 2.  Calculate Combat Stats.
--- 3.  Calculate casting scores (TODO)
+-- 3.  Calculate casting scores.
 --
 -----------------------------------------------------------------------------
 
@@ -37,6 +37,7 @@ import Control.Parallel.Strategies
 -- This includes merging in the given schema
 prepareRecord :: RDFGraph -> RDFGraph -> RDFGraph
 prepareRecord schema = addCastingScores . addCombatStats
+                 . addScores
                  . fwdApplyList traitRules
                  . fwdApplyList rdfstypeRules
                  . merge schema
@@ -359,3 +360,15 @@ calculateCastingScores g = addGraphs g $ listToRDFGraph
          f vb = calc "hasCastingScore" (fromJust $ vbMap vb cVar) $ ss vb
          ss vb = map vbToInt [ vbMap vb (Var "tech"),
                  vbMap vb (Var "form"), vbMap vb (Var "char") ]
+
+-- !
+-- = Scores including Bonuses
+
+addScores = fwdApplyList scoreRules
+
+-- Note: this needs to be changed to accommodate bonuses.
+scoreRules = 
+   [ makeCRule "scorerule1"
+     [ arc cVar (armRes "hasXPScore") oVar ]
+     [ arc cVar (armRes "hasScore") oVar ]
+   ]
