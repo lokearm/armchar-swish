@@ -35,7 +35,7 @@ import ArM.Rules.RDFS
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph = fwdApplyList (advancementindexRule:stringPropertyRule:vfScoreRules)
-             . fwdApplyListR [ advancevfgrantRule,
+             . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, bonus2rule,
                                spectraitRule, rRule, pRule ]
              . applyRDFS
@@ -81,12 +81,18 @@ spectraitRule = makeCRule  "spectraitRule"
       [ arc sVar ( armRes  "isSpecialTrait" ) tVar ]
 
 
--- | apply grantsTrait to an Advancement
+-- | Add traits granted by an advanced traits class as other advanced traits.
 advancevfgrantRule = makeCRule  "advancevfgrantRule" 
      [ arc sVar (armRes "advanceTrait") oVar,
        arc oVar typeRes tVar,   -- o a t
        arc sVar typeRes ( armRes "CharacterAdvancement" ),
        arc tVar gtRes cVar ]
+     [ arc sVar (armRes "advanceTrait") cVar ]
+-- | Add traits granted by an advanced traits instance as other advanced traits.
+advancevfgrantRule2 = makeCRule  "advancevfgrantRule2" 
+     [ arc sVar (armRes "advanceTrait") oVar,
+       arc sVar typeRes ( armRes "CharacterAdvancement" ),
+       arc oVar gtRes cVar ]
      [ arc sVar (armRes "advanceTrait") cVar ]
 
 bonus1rule = makeCRule  "bonus1rule" 
