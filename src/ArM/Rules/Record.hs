@@ -30,7 +30,6 @@ import ArM.Rules.Common
 import ArM.Rules.RDFS
 import Data.Maybe (fromJust)
 import Data.List (sort)
-import Debug.Trace
 
 import Control.Parallel.Strategies
 
@@ -231,9 +230,8 @@ addDamInit p q = map f . Q.rdfQueryFind q
 -- | Calculate an arc giving a CombatOption score.
 -- This is an auxiliary for `addDamInit` and `addAtkDfn`
 calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple 
-calc p idvar vb = trace ("calc: "++show a) a
+calc p idvar vb = arc idvar (armRes p) (litInt $ score vb)
     where score xs = foldl (+) 0 $ ff xs
-          a = arc idvar (armRes p) (litInt $ score vb)
 
 addfunctions = [ addDamInit "hasInit" damQuery
                , addDamInit "hasDam"  initQuery
@@ -351,8 +349,7 @@ addSpellArtScores g = foldl addGraphs g $ map listToRDFGraph xs
           fs = [ artScores "Tech", artScores "Form" ]
 
 calculateCastingScores :: RDFGraph -> RDFGraph
-calculateCastingScores g = trace "calculateCastingScores"
-                         $ addGraphs g $ listToRDFGraph 
+calculateCastingScores g = addGraphs g $ listToRDFGraph 
                          $ map f $ Q.rdfQueryFind q g
    where q = listToRDFGraph 
              [ arc cVar typeRes (armRes "Spell")
