@@ -57,6 +57,7 @@ traitRules1 = map mkr [ "Ability"
                      , "Spell"
                      , "Art"
                      , "CombatOption"
+                     , "Bonus"
                      , "OtherTrait"
                      , "Characteristic" ]
     where mkr s = mkr' ("has" ++ s ++ "Rule")
@@ -70,6 +71,8 @@ traitRules2 = map mkr [ "Ability"
                      , "Reputation"
                      , "Spell"
                      , "Art"
+                     , "CombatOption"
+                     , "Bonus"
                      , "OtherTrait"
                      , "Characteristic" ]
     where mkr s = mkr' ("has" ++ s ++ "IRule")

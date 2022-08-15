@@ -152,24 +152,27 @@ arm:hasOrder  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty
         rdfs:comment  "This is used to sort traits for display purposes" ;
         rdfs:range   xsd:float .
 
-arm:hasBonus  a   owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
-        rdfs:comment "A bonus which is added to the score of a trait." ;
-        rdfs:label   "Bonus" ;
-        rdfs:domain  arm:Trait ;
-        rdfs:range   xsd:int .
-arm:grantsBonusTrait  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
+arm:bonusTo  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
         rdfs:comment "A trait to which a bonus is granted." ;
         rdfs:label   "Bonus Trait" ;
-        rdfs:domain  arm:Trait ;
+        rdfs:domain  arm:Bonus ;
         rdfs:range   arm:Trait .
+
 arm:grantsBonusScore  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
         rdfs:comment "The bonus granted to a trait (e.g. by puissant virtues)." ;
         rdfs:label   "Bonus Score" ;
-        rdfs:domain  arm:Trait ;
+        rdfs:domain  arm:Class ;
         rdfs:range   xsd:int .
 arm:grantsBonus  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
         rdfs:label   "Bonus" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   arm:Bonus .
-arm:Bonus a owl:Class ;
+
+arm:Bonus a owl:Class ; rdfs:subClassOf arm:Trait ;
         rdfs:comment "A specification to a bonus which is appled to a trait, class of traits, or other total, for example as granted by Puissant ability." .
+arm:hasBonus  a   owl:DatatypeProperty, arm:CharacterProperty ;
+        rdfs:subPropertyOf arm:hasTrait ;
+        rdfs:comment "The character may have bonuses which apply to other traits." ;
+        rdfs:label   "Bonus" ;
+        rdfs:domain  arm:CharacterSheet ;
+        rdfs:range  arm:Trait .
