@@ -189,3 +189,14 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
 	          arm:hasMasteryOption armr:quietcasting-mastery	] ;
   arm:awardsXP 2 ;
   arm:hasAdvancementType arm:Exposure .
+
+:spring1218av arm:advanceCharacter armchar:cieran ;
+  a arm:IngameAdvancement ;
+  arm:atSeason "Spring" ;
+  arm:inYear   1218 ;
+  arm:hasAdvancementDescription "Story" ;
+  arm:advanceTrait [ arm:traitClass armr:awareness ; arm:addedXP 5 ],
+                   [ arm:traitClass armr:creo ; arm:addedXP 2 ],
+                   [ arm:traitClass armr:personality-villager ; arm:hasScore 2 ] ;
+  arm:awardsXP 7 ;
+  arm:hasAdvancementType arm:Adventure .
