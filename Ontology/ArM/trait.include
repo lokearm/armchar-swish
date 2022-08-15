@@ -185,7 +185,7 @@ arm:hasBonus  a   owl:ObjectProperty, arm:CharacterProperty ;
         rdfs:label   "Bonus" ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range  arm:Trait .
-arm:hasTotalBonus  a   owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasTotalBonus  a   owl:DatatypeProperty, arm:TraitProperty, arm:ScoreContribution ;
         rdfs:comment "The total bonuses which apply to the given trait." ;
         rdfs:label   "Total Bonus" ;
         rdfs:domain  arm:Trait ;

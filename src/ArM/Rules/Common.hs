@@ -32,3 +32,8 @@ stringPropertyRule = makeCRule "stringRule1"
        , arc pVar (armRes "hasStringProperty") ( Var "p2" )
        , arc oVar (armRes "hasLabel") sVar ]
        [ arc cVar (Var "p2") sVar ]
+
+bonusclassrule = makeCRule "bonusclassrule"
+       [ arc cVar (armRes "bonusTo") oVar ]
+       [ arc cVar (armRes "traitClass") (armRes "Bonus")
+       , arc cVar typeRes  (armRes "Bonus") ]

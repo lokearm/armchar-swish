@@ -36,7 +36,7 @@ import ArM.Rules.RDFS
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph = fwdApplyList (advancementindexRule:stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
-                               bonus1rule, bonus2rule,
+                               bonus1rule, 
                                spectraitRule, rRule, pRule ]
              . applyRDFS
 
@@ -95,17 +95,12 @@ advancevfgrantRule2 = makeCRule  "advancevfgrantRule2"
        arc oVar gtRes cVar ]
      [ arc sVar (armRes "advanceTrait") cVar ]
 
+-- | Add bonus score to bonuses granted by virtues (e.g. puissant)
 bonus1rule = makeCRule  "bonus1rule" 
-     [ arc sVar (armRes "grantsBonus") oVar,
+     [ arc sVar (armRes "grantsTrait") oVar,
        arc sVar typeRes tVar, 
        arc tVar (armRes "grantsBonusScore") (Var "score") ]
      [ arc oVar (armRes "hasScore") (Var "score") ]
-bonus2rule =  makeCRule  "bonus2rule" 
-     [ arc sVar (armRes "advanceTrait") oVar
-     , arc oVar (armRes "grantsBonus") cVar
-     , arc sVar typeRes ( armRes "CharacterAdvancement" )
-     , arc tVar gtRes cVar ]
-     [ arc sVar (armRes "advanceTrait") cVar ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule = makeCRule "advancementindexRule" 

@@ -57,8 +57,10 @@ makeGraph :: RDFGraph -- ^ The raw character graph
              ->  RDFGraph -- ^ The pre-processed schema graph
              ->  RDFGraph -- ^ The pre-processed resource graph
              ->  RDFGraph -- ^ The derived character graph
-makeGraph c0 s1 res1 = ( prepareGraph . merge res1 . 
-                         fwdApplyList [ traitclasstypeRule ] ) c0
+makeGraph c0 s1 res1 = ( prepareGraph . merge res1 . initialRules ) c0
+
+-- | Apply simple rules which do not depend on the schema
+initialRules = fwdApplyList [ traitclasstypeRule, bonusclassrule ] 
 
 -- | Compute the three graph to be kept in software transactional
 -- memory.
@@ -69,7 +71,7 @@ makeGraphs ::
     -- ^ Graphs augmented by the reasoner (character graph,schema,resources)
 makeGraphs (c0,s0,res0) =
       s1 `par` res1 `pseq` ( c2, s1, res1 )
-    where c1 = fwdApplyList [ traitclasstypeRule ] c0
+    where c1 = initialRules c0
           s1 = prepareSchema s0
           res1 = prepareResources $ res0 `merge` s1
           c2 = prepareGraph $ merge res1 c1

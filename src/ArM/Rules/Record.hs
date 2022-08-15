@@ -403,7 +403,7 @@ getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQuery
              , arc bonus (armRes "bonusTo") tVar
              , arc bonus (armRes "hasScore") score ]
          f vb = trace ("getBonus " ++ show (f' vb)) (f' vb)
-         f' vb = arc (fromJust $ vbMap vb character)
+         f' vb = arc (fromJust $ vbMap vb trait)
                     (fromJust $ vbMap vb bonus)
                     (fromJust $ vbMap vb score)
          character = Var "character"
