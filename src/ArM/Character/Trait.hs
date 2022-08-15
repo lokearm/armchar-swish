@@ -124,6 +124,8 @@ processXP n xp = ( KeyValuePair (totalXPLabel) (toRDFLabel t),
          s = scoreFromXP (t `div` n)
          r = t - n*(s*(s+1) `div` 2)
 
+scoreLabel = armRes "hasXPScore" 
+
 -- | Calculate score from total XP, using the arts scale.
 -- For abilities, the argument should be divided by 5 beforehand.
 scoreFromXP :: Int -> Int

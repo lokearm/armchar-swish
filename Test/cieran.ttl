@@ -63,7 +63,8 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
     [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
     [ arm:traitClass armr:flawlessMagic ],
     [ arm:traitClass armr:skilledParens ],
-    [ arm:traitClass armr:puissantAbility ; arm:grantsBonusTrait armr:magictheory ],
+    [ arm:traitClass armr:puissantAbility ; 
+      arm:grantsTrait [ arm:bonusTo armr:magictheory ] ],
     [ arm:traitClass armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ],
     [ arm:traitClass armr:meddlerMajor ; a arm:majorFlaw ],

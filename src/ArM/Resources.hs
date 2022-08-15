@@ -86,7 +86,6 @@ xptraitLabel = armRes  "XPTrait"
 accelleratedtraitLabel = armRes  "AccelleratedTrait"
 addXPLabel = armRes  "addedXP"
 totalXPLabel = armRes "hasTotalXP" 
-scoreLabel = armRes "hasScore" 
 hasXPLabel = armRes "hasXP" 
 
 -- | An RDFLabel used as a kind of Null pointer for traits and items.
