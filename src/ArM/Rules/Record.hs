@@ -367,7 +367,7 @@ calculateCastingScores g = addGraphs g $ listToRDFGraph
 -- !
 -- = Scores including Bonuses
 
-addScores = fwdApplyList scoreRules
+addScores = fwdApplyList scoreRules . addEffectiveScores . addTotalBonus
 
 -- Note: this needs to be changed to accommodate bonuses.
 scoreRules = 
@@ -375,3 +375,46 @@ scoreRules =
      [ arc cVar (armRes "hasXPScore") oVar ]
      [ arc cVar (armRes "hasScore") oVar ]
    ]
+
+addEffectiveScores :: RDFGraph -> RDFGraph
+addEffectiveScores g = g `addGraphs` getEffectiveScores g
+
+getEffectiveScores :: RDFGraph -> RDFGraph
+getEffectiveScores = 
+         listToRDFGraph . arcSum "hasScore" . sort . map f . Q.rdfQueryFind q
+   where q = listToRDFGraph 
+             [ arc cVar typeRes (armRes "Trait")
+             , arc cVar (Var "property") (Var "score") 
+             , arc (Var "property") typeRes (armRes "ScoreContribution") ]
+         f vb = arc (fromJust $ vbMap vb cVar)
+                    (fromJust $ vbMap vb (Var "property"))
+                    (fromJust $ vbMap vb (Var "score"))
+
+addTotalBonus :: RDFGraph -> RDFGraph
+addTotalBonus g = g `addGraphs` getBonuses g
+
+getBonuses :: RDFGraph -> RDFGraph
+getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQueryFind q
+   where q = listToRDFGraph 
+             [ arc character (armRes "hasTrait") trait
+             , arc trait typeRes tVar
+             , arc character (armRes "hasBonus") bonus
+             , arc bonus (armRes "bonusTo") tVar
+             , arc bonus (armRes "hasScore") score ]
+         f vb = arc (fromJust $ vbMap vb character)
+                    (fromJust $ vbMap vb bonus)
+                    (fromJust $ vbMap vb score)
+         character = Var "character"
+         score = Var "score"
+         bonus = Var "bonus"
+         trait = Var "trait"
+
+arcSum :: String -> [RDFTriple] -> [RDFTriple] 
+arcSum s [] = []
+arcSum s (x:[]) = x:[]
+arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcMin (y:xs)
+                | otherwise = arcMin (y':xs)
+   where f = intFromRDF . arcObj
+         t = f x + f y
+         x' = arc (arcSubj x) (armRes s) (arcObj x)
+         y' = arc (arcSubj x) (armRes s) (litInt t)

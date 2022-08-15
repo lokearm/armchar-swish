@@ -57,7 +57,16 @@ arm:AcademicAbility rdfs:subClassOf arm:Ability .
 arm:MartialAbility rdfs:subClassOf arm:Ability .
 arm:SupernaturalAbility rdfs:subClassOf arm:Ability .
 
-arm:hasScore  a   owl:DatatypeProperty, arm:TraitProperty ;
+arm:ScoreContribution rdfs:subClassOf arm:TraitProperty .
+arm:hasFixedScore  a   owl:DatatypeProperty, arm:TraitProperty, arm:ScoreContribution ;
+        rdfs:label   "Score" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   xsd:int .
+arm:hasXPScore  a   owl:DatatypeProperty, arm:TraitProperty, arm:ScoreContribution ;
+        rdfs:label   "Score" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   xsd:int .
+arm:hasScore  a   owl:DatatypeProperty, arm:TraitProperty, arm:ScoreContribution ;
         rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
@@ -170,9 +179,14 @@ arm:grantsBonus  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
 
 arm:Bonus a owl:Class ; rdfs:subClassOf arm:Trait ;
         rdfs:comment "A specification to a bonus which is appled to a trait, class of traits, or other total, for example as granted by Puissant ability." .
-arm:hasBonus  a   owl:DatatypeProperty, arm:CharacterProperty ;
+arm:hasBonus  a   owl:ObjectProperty, arm:CharacterProperty ;
         rdfs:subPropertyOf arm:hasTrait ;
         rdfs:comment "The character may have bonuses which apply to other traits." ;
         rdfs:label   "Bonus" ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range  arm:Trait .
+arm:hasTotalBonus  a   owl:DatatypeProperty, arm:TraitProperty ;
+        rdfs:comment "The total bonuses which apply to the given trait." ;
+        rdfs:label   "Total Bonus" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range  xsd:int .
