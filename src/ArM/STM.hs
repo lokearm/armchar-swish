@@ -191,7 +191,7 @@ putCharacter stateVar char = do
              let schema = schemaGraph st
              let charg = TC.makeRDFGraph char
              let g1 = RP.persistChar schema charg
-             let g0 = RP.persistedChar (charGraph st) (TC.characterID char) 
+             let g0 = RP.persistedChar (charRawGraph st) (TC.characterID char) 
              let gg = (g0 `G.delete` g) `G.addGraphs` g1
 
              let newst = st `updateGraph` gg

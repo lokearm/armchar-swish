@@ -15,7 +15,7 @@
 -- The resource graph by functions in `ArM.Rules.Resource`.
 --
 -- The character graph is agumented in several steps.
--- 1.  Initially by rules in `ArM.Rules.Initial`
+-- 1.  Initially using the `traitclasstypeRule`.
 -- 2.  When the resources have been added, by rules in `ArM.Rules.FullGraph`.
 -- 3.  Advancement is applied using internal Haskell representations and 
 --     not RDF graphs.  These functions are in `ArM.Character.Character`.
@@ -56,8 +56,7 @@ makeGraph :: RDFGraph -- ^ The raw character graph
              ->  RDFGraph -- ^ The pre-processed schema graph
              ->  RDFGraph -- ^ The pre-processed resource graph
              ->  RDFGraph -- ^ The derived character graph
-makeGraph c0 s1 res1 = ( prepareGraph . merge res1 
-    . prepareInitialCharacter . merge s1 . prepareCharGraph ) c0
+makeGraph c0 s1 res1 = ( prepareGraph . merge res1 . prepareCharGraph ) c0
 
 -- | Compute the three graph to be kept in software transactional
 -- memory.
@@ -67,10 +66,8 @@ makeGraphs ::
     ->  (RDFGraph,RDFGraph,RDFGraph) 
     -- ^ Graphs augmented by the reasoner (character graph,schema,resources)
 makeGraphs (c0,s0,res0) =
-      s1 `par` res1 `par` res2 `par` c2 `pseq` ( c3, s1, res2 )
-    where c1 = prepareCharGraph c0
+      s1 `par` res1 `pseq` ( c2, s1, res1 )
+    where c1 = fwdApplyList [ traitclasstypeRule ] c0
           s1 = prepareSchema s0
-          res1 = prepareResources res0
-          c2 = prepareInitialCharacter $ merge s1 c1
-          c3 = prepareGraph $ merge res1 c2 
-          res2 = applyRDFS $ merge s1 res1
+          res1 = prepareResources $ res0 `merge` s1
+          c2 = prepareGraph $ merge res1 c1
