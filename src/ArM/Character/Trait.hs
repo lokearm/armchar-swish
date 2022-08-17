@@ -97,7 +97,7 @@ recalculateXP x
 makeNewTraitTriples :: [KeyValuePair] -> [KeyValuePair]
 makeNewTraitTriples ts = sort $ x:ys
     where (xp,ys) = makeNewTraitTriples' (defaultXPType,[]) ts
-          x = processXP xp
+          KeyValuePair (totalXPLabel) (toRDFLabel ( totalXP xp + addXP xp ))
 
 -- | Parse through the Triples of a Trait and remove XP related traits
 makeNewTraitTriples' :: (XPType,[KeyValuePair]) -> [KeyValuePair] -> (XPType,[KeyValuePair]) 
@@ -110,10 +110,6 @@ makeNewTraitTriples' (xp,ys) (KeyValuePair a c:zs)
           f Nothing = 0
           f (Just x) = x
 
--- | Calculate the new total XP given an XPType object.
-processXP :: XPType -> KeyValuePair
-processXP xp = KeyValuePair (totalXPLabel) (toRDFLabel t)
-   where t = totalXP xp + addXP xp
 
 -- |
 -- = Parsing Traits and Items from RDF 
