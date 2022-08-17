@@ -10,10 +10,12 @@
 -- the schema ontology.
 --
 -- The following functionality is applied
--- 1.  Infer the subproperties of arm:hasTrait, to make it easy to 
+-- 1.  Calculate ability scores and XP towards next level.
+-- 2.  Infer the subproperties of arm:hasTrait, to make it easy to 
 --     extract traits of different kinds (abilities, virtues, etc.)
--- 2.  Calculate Combat Stats.
--- 3.  Calculate casting scores.
+-- 3.  Calculate effective scores (including bonuses like puissant)
+-- 3.  Calculate Combat Stats.
+-- 4.  Calculate casting scores.
 --
 -----------------------------------------------------------------------------
 
@@ -39,6 +41,7 @@ prepareRecord :: RDFGraph -> RDFGraph -> RDFGraph
 prepareRecord schema = addCastingScores . addCombatStats
                  . addScores
                  . fwdApplyList traitRules
+                 . processXP
                  . fwdApplyList rdfstypeRules
                  . merge schema
                  . fwdApplyList [ traitclasstypeRule ]
@@ -416,3 +419,43 @@ arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
          t = f x + f y
          x' = arc (arcSubj x) (armRes s) (arcObj x)
          y' = arc (arcSubj x) (armRes s) (litInt t)
+
+-- |
+-- = Recalculate Scores and XP
+
+-- | Calculate score and remaining XP from total XP.
+processXP :: RDFGraph -> RDFGraph
+processXP g = foldr addArc g' g1 
+    where g1 = processArtXP g
+          g2 = processAbXP g
+          g' = foldr addArc g g2
+
+-- | Calculate the triples for total XP, score, and remaining XP,
+-- given an XPType object.
+-- This is an auxiliary for `processXP`
+processXP' :: String -> Int -> RDFGraph -> [RDFTriple]
+processXP' s n g = foldr (++) [] $ map ( makeXPArcs n . f ) $ Q.rdfQueryFind q g
+   where f vb = (fromJust $ vbMap vb (Var "trait")
+                , fromJust $ vbToInt $ vbMap vb (Var "xp"))
+         q = listToRDFGraph
+             [ arc ( Var "trait" ) ( armRes "hasTotalXP" ) ( Var "xp" )
+             , arc ( Var "trait" ) typeRes ( armRes s ) ]
+
+-- Note the use of `foldr`, which is a lot faster than `foldl`.
+
+processArtXP :: RDFGraph -> [RDFTriple]
+processArtXP = processXP' "XPTrait" 5
+processAbXP :: RDFGraph -> [RDFTriple]
+processAbXP = processXP' "AccelleratedTrait" 1
+          
+-- | Calculate score from total XP, using the arts scale.
+-- For abilities, the argument should be divided by 5 beforehand.
+scoreFromXP :: Int -> Int
+scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
+    where x = fromIntegral y  :: Double
+
+makeXPArcs :: Int -> (RDFLabel,Int) -> [RDFTriple]
+makeXPArcs n (trait,total) = [ arc trait (armRes "hasXPScore") (litInt score),
+                             arc trait (armRes "hasXP") (litInt xp) ]
+   where score = scoreFromXP (total `div` n)
+         xp = total - n*(score*(score+1) `div` 2)
