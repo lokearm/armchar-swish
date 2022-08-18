@@ -86,14 +86,15 @@ fixAdv g adv = adv { traits = traitsFromRDF advid g,
                  items = itemsFromRDF advid g }
         where advid = rdfid adv
 
-itemsFromRDF advid g = itFromRDF "changePossession" advid g
-traitsFromRDF advid g = itFromRDF "advanceTrait" advid g
+itemsFromRDF advid g = itFromRDF True "changePossession" advid g
+traitsFromRDF advid g = itFromRDF False "advanceTrait" advid g
 
-itFromRDF s advid g = splitTrait $ sort $ map vb2tt $ rdfQueryFind q g 
+itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ rdfQueryFind q g 
     where q = traitqgraph (armRes s) advid
 
-vb2tt :: VB.RDFVarBinding -> Trait
-vb2tt vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
+vb2tt :: Bool -> VB.RDFVarBinding -> Trait
+vb2tt b vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
+               isRepeatableTrait = b,
                traitContents = [ arc (fromJust $ vbMap vb (Var "id")) 
                                (fromJust $ vbMap vb (Var "property"))
                                (fromJust $ vbMap vb (Var "value")) ] }

@@ -138,7 +138,7 @@ csToArcListM cs = do
           tsm <- fixBlanksM $ csTraits cs
           ism <- fixBlanksM $ csItems cs
           let ht = map ( \ y -> arc x (armRes "hasTrait") (fromJust $ traitID y) ) tsm
-          let hi = map ( \ y -> arc x (armRes "hasItem") (fromJust $ traitID y) ) ism
+          let hi = map ( \ y -> arc x (armRes "hasPossession") (fromJust $ traitID y) ) ism
           let ts =  map traitContents tsm
           let is =  map traitContents ism
           let metadata = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)

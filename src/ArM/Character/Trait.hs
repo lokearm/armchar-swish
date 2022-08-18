@@ -99,10 +99,9 @@ getXPtriples' (xs,ys) | ys == [] = (xs,ys)
                       | p == armRes "hasTotalXP" = (y:xs',ys')
                       | p == armRes "addedXP" = (y:xs',ys')
                       | otherwise             = (xs',y:ys')
-    where (xs',ys') = getXPtriples' (xs,yt)
+    where (xs',ys') = getXPtriples' (xs,tail ys)
           p = arcPred y
           y = head ys
-          yt = tail ys
 
 -- |
 -- == Recalculation of XP (auxiliary functions
