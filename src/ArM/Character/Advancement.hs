@@ -109,12 +109,12 @@ splitTrait' ([],x:xs) = splitTrait' (x:[],xs)
 splitTrait' (t:ts,x:xs) 
     | traitClass t == traitClass x = splitTrait' (t':ts,xs) 
     | otherwise                    = splitTrait' (x:t:ts,xs) 
-       where t' = addToTrait x t
+       where t' = addToTrait t x
 
 addToTrait :: Trait -> Trait -> Trait
 addToTrait t x | traitClass t /= traitClass x 
                       = error "traitClass mismatch in addToTrait"
-      | otherwise = t { traitContents = traitContents t ++ traitContents x }
+      | otherwise = t { traitContents = traitContents x ++ traitContents t }
 
 traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph
 traitqgraph p s = listToRDFGraph 

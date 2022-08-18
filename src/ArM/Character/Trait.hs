@@ -55,9 +55,9 @@ advanceTraitList (x:xs) (y:ys)
 -- 1.  take other properties from the second Trait if available
 -- 2.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = trace ( "advanceTrait: " ++ (show $ traitID trait) ) 
-  $ fixTrait $ trait { traitContents = map fixSubj $ advanceTriples ( traitContents trait ) 
-                                     ( traitContents adv ) }
+advanceTrait trait adv = 
+  fixTrait $ trait { traitContents = map fixSubj $ advanceTriples ( sort $ traitContents trait ) 
+                                     ( sort $ traitContents adv ) }
 
 -- | Merge two lists of trait statements.  If a subject/property
 -- pair is found in both lists, it is taken only from the former.

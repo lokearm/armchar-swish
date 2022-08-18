@@ -80,7 +80,7 @@ advanceList cs (x:xs) = cs' : advanceList cs' xs
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
-advanceCharacter cs adv = trace ("advanceCharacter\n"++(show $ csID cs)++(show $ rdfid adv)) $
+advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid adv)) $
      cs { sheetID = Nothing
         , csYear = y
         , csSeason = s
