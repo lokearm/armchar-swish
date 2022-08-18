@@ -137,9 +137,12 @@ csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
           tsm <- fixBlanksM $ csTraits cs
           ism <- fixBlanksM $ csItems cs
+          let ht = map ( \ y -> arc x (armRes "hasTrait") (fromJust $ traitID y) ) tsm
+          let hi = map ( \ y -> arc x (armRes "hasItem") (fromJust $ traitID y) ) ism
           let ts =  map traitContents tsm
           let is =  map traitContents ism
-          let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
+          let metadata = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
+          let ms = metadata ++ hi ++ ht 
           let ct = arc x isCharacterLabel (csID cs)
           let ct1 = arc x typeRes csRes 
           let ms1 = foldr (++) ms ts
