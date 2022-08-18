@@ -199,8 +199,8 @@ csToArcListM cs = do
           let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ct = arc x isCharacterLabel (csID cs)
           let ct1 = arc x typeRes csRes 
-          let ms1 = foldl (++) ms ts
-          return $ ct1:ct:foldl (++) ms1 is
+          let ms1 = foldr (++) ms ts
+          return $ ct1:ct:foldr (++) ms1 is
 
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank
@@ -291,8 +291,8 @@ advToArcListM :: Advancement -> BlankState [RDFTriple]
 advToArcListM adv = do
         xs1 <- mapM (traitToArcListM atRes x) (traits adv) 
         xs2 <- mapM (traitToArcListM cpRes x) (items adv) 
-        let ys1 = foldl (++) ms xs1
-        let ys2 = foldl (++) ys1 xs2
+        let ys1 = foldr (++) ms xs1
+        let ys2 = foldr (++) ys1 xs2
         return ys2
     where ms = keyvalueToArcList x (contents adv)
           x = rdfid adv
