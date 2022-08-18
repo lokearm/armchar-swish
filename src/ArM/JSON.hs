@@ -34,7 +34,8 @@ import Data.List.Split (splitOn)
 
 import qualified Data.Aeson.KeyMap as KM
 
-import Debug.Trace
+-- import Debug.Trace
+trace x y = y
 
 -- Some good ideas from the web:
 -- https://stackoverflow.com/questions/53478455/aeson-parse-json-object-to-list

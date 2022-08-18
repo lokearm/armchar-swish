@@ -66,7 +66,8 @@ advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples x = sort . map fixSubj . advanceTriples2 . advanceTriples1 x
 
 fixSubj :: RDFTriple -> RDFTriple
-fixSubj x = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
+fixSubj x = trace ("fixSubj: "++ show y) y
+   where y = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
 
 
 -- | Merge two lists of trait statements.  If a subject/property
