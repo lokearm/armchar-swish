@@ -24,7 +24,6 @@
 module ArM.Character.Trait ( Trait(..)
                            , Item(..)
                            , advanceTraitList
-                           , advanceItemList
                            ) where
 
 import           Data.Set (fromList)
@@ -35,8 +34,6 @@ import ArM.KeyPair
 import ArM.Rules.Aux
 import ArM.Types.Character
 
-data XPType = XP { addXP :: Maybe Int, totalXP :: Maybe Int }
-defaultXPType = XP { addXP = Nothing, totalXP = Nothing }
 
 -- |
 -- = Trait Advancement
@@ -55,18 +52,21 @@ advanceTraitList (x:xs) (y:ys)
            yc = traitClass y
 
 -- | apply a given Trait Advancement to a given Trait
--- 1.  apply addedXP
--- 3.  take other properties from the second Trait if available
--- 4.  default to properties from the first Trait
+-- 1.  take other properties from the second Trait if available
+-- 2.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = trait { traitContents = advanceTriples 
                                              ( traitContents trait ) 
                                              ( traitContents adv ) 
                                }
-
+-- | Merge two lists of trait statements using `advanceTriple1`.
+-- Then total XP is recalculated adding up all `hasTotalXP` and
+-- `addedXP` properties.
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
-advanceTriples x = snd . advanceTriples2 defaultXPType . advanceTriples1 x
+advanceTriples x = advanceTriples2 . advanceTriples1 x
 
+-- | Merge two lists of trait statements.  If a subject/property
+-- pair is found in both lists, it is taken only from the former.
 advanceTriples1 :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples1 xs [] = xs
 advanceTriples1 [] ys = ys
@@ -76,15 +76,14 @@ advanceTriples1 (x:xs) (y:ys)
     | arcPred x > arcPred y = y:advanceTriples (x:xs) (ys)
     | otherwise = x:advanceTriples xs ys
 
-advanceTriples2 :: XPType -> [RDFTriple] -> (XPType,[RDFTriple])
-advanceTriples2 xp []  = (xp,[])
-advanceTriples2 xp (x:xs) 
-   | p == armRes "hasTotalXP" = (xp' { totalXP = val }, xs' )
-   | p == armRes "addedXP" = (xp' { addXP = val }, xs' )
-   | otherwise = (xp', x:xs' )
-           where p = arcPred x
-                 (xp',xs') = advanceTriples2 xp xs
-                 val = Just $ intFromRDF $ arcObj x
+advanceTriples2 :: [RDFTriple] -> [RDFTriple]
+advanceTriples2 xs = makeXParc xs ys 
+   where (xs,ys) = getXPtriples xs
+makeXParc [] ys = ys
+makeXParc xs ys = getXParc xs:ys
+
+-- | TODO Dummy
+getXParc (x:xs) = x
 
 getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
 getXPtriples xs = getXPtriples' ([],xs)
@@ -101,24 +100,16 @@ getXPtriples' (xs,ys) | ys == [] = (xs,ys)
 -- |
 -- == Recalculation of XP (auxiliary functions
 
-
--- | Parse through the Triples of a Trait and recalculate score
--- based on XP
-makeNewTraitTriples :: [KeyValuePair] -> [KeyValuePair]
-makeNewTraitTriples ts = sort $ x:ys
-    where (xp,ys) = makeNewTraitTriples' (defaultXPType,[]) ts
-          x = KeyValuePair (totalXPLabel) (toRDFLabel ( totalXP xp + addXP xp ))
-
--- | Parse through the Triples of a Trait and remove XP related traits
-makeNewTraitTriples' :: (XPType,[KeyValuePair]) -> [KeyValuePair] -> (XPType,[KeyValuePair]) 
-makeNewTraitTriples' xt [] = xt
-makeNewTraitTriples' (xp,ys) (KeyValuePair a c:zs) 
-    | a == addXPLabel = makeNewTraitTriples' (xp { addXP = read c },ys) zs
-    | a == totalXPLabel = makeNewTraitTriples' (xp { totalXP = read c },ys) zs
-    | otherwise       = makeNewTraitTriples' (xp, KeyValuePair a c:ys) zs
-    where read = f . fromRDFLabel
-          f Nothing = 0
-          f (Just x) = x
+xpSum :: [RDFTriple]  -- ^ Input list
+      -> RDFTriple  -- ^ New arc
+xpSum [] = error "xpSum called on empty list"
+xpSum (x:[]) = arc (arcSubj x) (armRes "hasTotalXP") (arcObj x)
+xpSum (x:y:xs) | arcSubj x /= arcSubj y = error "Subject mismatch in xpSum."
+               | otherwise = xpSum (y':xs)
+   where f = intFromRDF . arcObj
+         t = f x + f y
+         y' = arc (arcSubj x) p (litInt t)
+         p = armRes "hasTotalXP"
 
 -- |
 -- = Parsing Traits and Items from RDF 

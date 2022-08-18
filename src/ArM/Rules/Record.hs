@@ -398,7 +398,12 @@ getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQuery
          bonus = Var "bonus"
          trait = Var "trait"
 
-arcSum :: String -> [RDFTriple] -> [RDFTriple] 
+-- | Add RDFTriples for each subject in a sorted list of triples.
+-- For each subject a new triple is created by adding the objects
+-- which are assumed to be integers in the original triples.
+arcSum :: String     -- ^ String identifying the property for the new triple
+          -> [RDFTriple]  -- ^ Input list
+          -> [RDFTriple]  -- ^ Output list
 arcSum s [] = []
 arcSum s (x:[]) = arc (arcSubj x) (armRes s) (arcObj x):[]
 arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
