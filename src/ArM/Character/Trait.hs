@@ -36,8 +36,8 @@ import ArM.Resources
 import ArM.KeyPair
 import ArM.Types.Character
 
-data XPType = XP { addXP :: Maybe Int, totalXP :: Maybe Int, xpTrait :: RDFLabel }
-defaultXPType = XP { addXP = Nothing, totalXP = Nothing, xpTrait = noSuchTrait }
+data XPType = XP { addXP :: Maybe Int, totalXP :: Maybe Int }
+defaultXPType = XP { addXP = Nothing, totalXP = Nothing }
 
 -- |
 -- = Trait Advancement
@@ -49,10 +49,8 @@ advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] = xs
 advanceTraitList [] (y:ys) = recalculateXP y:advanceTraitList [] ys
 advanceTraitList (x:xs) (y:ys) 
-     | xc < yc  = x:advanceTraitList xs (y:ys)
-     | xc > yc  = recalculateXP y:advanceTraitList (x:xs) ys
-     | isRepeatableTrait x && x < y = x:advanceTraitList xs (y:ys)
-     | isRepeatableTrait y = recalculateXP y:advanceTraitList (x:xs) ys
+     | x < y  = x:advanceTraitList xs (y:ys)
+     | x > y  = recalculateXP y:advanceTraitList (x:xs) ys
      | otherwise = advanceTraitList ( advanceTrait x y:xs ) ys
      where xc = traitClass x
            yc = traitClass y
@@ -69,34 +67,27 @@ advanceTrait trait adv = recalculateXP  $
                  ( traitContents adv ) 
            }
 
-advanceTraitTriples :: [KeyValuePair] -> [KeyValuePair] -> [KeyValuePair]
-advanceTraitTriples xs [] = xs
-advanceTraitTriples [] ys = ys
-advanceTraitTriples (x:xs) (y:ys) 
-    | fst' x == fst' y   = y:advanceTraitTriples xs ys 
-    | x < y   = x:advanceTraitTriples (xs) (y:ys) 
-    | x > y   = y:advanceTraitTriples (x:xs) (ys) 
-    where fst' (KeyValuePair a _) = a
-
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples x = snd . advanceTriple2 defaultXPType . advanceTriple1 x
 
 advanceTriples1 :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples1 xs [] = xs
 advanceTriples1 [] ys = ys
-advanceTriples1 (x:x':xs) (y:y':ys) 
-    | arcSubj x < arcSubj y = x:advanceTraitTriples (xs) (y:ys)
-    | arcSubj x > arcSubj y = y:advanceTraitTriples (x:xs) (ys)
+advanceTriples1 (x:xs) (y:ys) 
+    | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples1."
     | arcPred x < arcPred y = x:advanceTraitTriples (xs) (y:ys)
     | arcPred x > arcPred y = y:advanceTraitTriples (x:xs) (ys)
-    | otherwise = x:advanceTraitTriples (x:xs) (y:ys)
+    | otherwise = x:advanceTraitTriples xs ys
 
 advanceTriples2 :: XPType -> [RDFTriple] -> (XPType,[RDFTriple])
 advanceTriples2 xp []  = (xp,xs)
-advanceTriples2 xp (x:xs) | xpTrait xp /= arcSubj x = f xp x xs
-                          | arcPred x == armRes "hasTotalXP" = (defaultXP { totalXP = arcPred x }, advanceTriples2 (xs) )
-                          | arcPred x == armRes "addedXP" = (defaultXP { addXP = arcPred x }, advanceTriples2 (xs) )
-                          | otherwise = (xp, x:advanceTriples2 (xs) )
+advanceTriples2 xp (x:xs) 
+        | arcPred x == armRes "hasTotalXP" 
+            = (xp { totalXP = arcPred x }, advanceTriples2 (xs) )
+        | arcPred x == armRes "addedXP" 
+            = (xp { addXP = arcPred x }, advanceTriples2 (xs) )
+        | otherwise = (xp, x:advanceTriples2 (xs) )
+  where
     f xp x xs | xpTrait xp == noSuchTrait = (xp', advanceTriples2 (x:xs) )
               | otherwise = g (addXP xp) (totalXP xp) (x:xs)
     g Nothing Nothing xs = (xp', advanceTriples2 xs )
@@ -112,10 +103,8 @@ advanceTriples2 xp (x:xs) | xpTrait xp /= arcSubj x = f xp x xs
 --  - add implied traits
 recalculateXP :: Trait -> Trait
 recalculateXP x 
-   | isXPTrait x  = x { traitID = Nothing,
-        traitContents = makeNewTraitTriples $ traitContents x }
-   | isAccelleratedTrait x  = x { traitID = Nothing,
-        traitContents = makeNewTraitTriples $ traitContents x }
+   | isXPTrait x  = x { traitContents = makeNewTraitTriples $ traitContents x }
+   | isAccelleratedTrait x  = x { traitContents = makeNewTraitTriples $ traitContents x }
    | otherwise  = x
 
 -- | Parse through the Triples of a Trait and recalculate score
