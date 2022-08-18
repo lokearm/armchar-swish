@@ -65,7 +65,7 @@ advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples xs [] = xs
 advanceTriples [] ys = ys
 advanceTriples (x:xs) (y:ys) 
-    | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples."
+    -- | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples."
     | arcPred x < arcPred y = x:advanceTriples (xs) (y:ys)
     | arcPred x > arcPred y = y:advanceTriples (x:xs) (ys)
     | otherwise = y:advanceTriples xs ys
