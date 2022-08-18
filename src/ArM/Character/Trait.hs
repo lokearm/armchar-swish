@@ -46,11 +46,11 @@ defaultXPType = XP { addXP = Nothing, totalXP = Nothing }
 -- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] = xs
-advanceTraitList [] (y:ys) = recalculateXP y:advanceTraitList [] ys
+advanceTraitList [] (y:ys) = y:advanceTraitList [] ys
 advanceTraitList (x:xs) (y:ys) 
-     | x < y  = x:advanceTraitList xs (y:ys)
-     | x > y  = recalculateXP y:advanceTraitList (x:xs) ys
-     | otherwise = advanceTraitList ( advanceTrait x y:xs ) ys
+  | x < y  = x:advanceTraitList xs (y:ys)
+  | x > y  = y:advanceTraitList (x:xs) ys
+  | otherwise = advanceTraitList ( (advanceTrait x y):xs ) ys
      where xc = traitClass x
            yc = traitClass y
 
@@ -59,11 +59,10 @@ advanceTraitList (x:xs) (y:ys)
 -- 3.  take other properties from the second Trait if available
 -- 4.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = recalculateXP  $
-           trait { traitContents = advanceTriples 
-                      ( traitContents trait ) 
-                      ( traitContents adv ) 
-           }
+advanceTrait trait adv = trait { traitContents = advanceTriples 
+                                             ( traitContents trait ) 
+                                             ( traitContents adv ) 
+                               }
 
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples x = snd . advanceTriples2 defaultXPType . advanceTriples1 x
@@ -87,15 +86,21 @@ advanceTriples2 xp (x:xs)
                  (xp',xs') = advanceTriples2 xp xs
                  val = Just $ intFromRDF $ arcObj x
 
+getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
+getXPtriples xs = getXPtriples' ([],xs)
+getXPtriples' :: ([RDFTriple],[RDFTriple]) -> ([RDFTriple],[RDFTriple])
+getXPtriples' (xs,ys) | ys == [] = (xs,ys)
+                      | p == armRes "hasTotalXP" = (y:xs',ys')
+                      | p == armRes "addedXP" = (y:xs',ys')
+                      | otherwise             = (xs',y:ys')
+    where (xs',ys') = getXPtriples' (xs,yt)
+          p = arcPred y
+          y = head ys
+          yt = tail ys
+
 -- |
 -- == Recalculation of XP (auxiliary functions
 
--- | Make a new trait (for a CharacterSheet) from a Trait Advancement.
---  - add addedXP to totalXP (defaulting to 0)
---  - add implied traits
-recalculateXP :: Trait -> Trait
-recalculateXP x 
-     = x { traitContents = makeNewTraitTriples $ traitContents x }
 
 -- | Parse through the Triples of a Trait and recalculate score
 -- based on XP
