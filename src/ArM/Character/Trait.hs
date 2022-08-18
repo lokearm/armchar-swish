@@ -55,7 +55,7 @@ advanceTraitList (x:xs) (y:ys)
 -- 1.  take other properties from the second Trait if available
 -- 2.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = trace ( show $ traitID trait ) trait
+advanceTrait trait adv = trace ( "advanceTrait: " ++ (show $ traitID trait) ) trait
     { traitContents = advanceTriples ( traitContents trait ) 
                                      ( traitContents adv ) }
 
@@ -63,8 +63,7 @@ advanceTrait trait adv = trace ( show $ traitID trait ) trait
 -- Then total XP is recalculated adding up all `hasTotalXP` and
 -- `addedXP` properties.
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
-advanceTriples x = sort . map fixSubj 
-                 . advanceTriples2 . advanceTriples1 x
+advanceTriples x = sort . map fixSubj . advanceTriples2 . advanceTriples1 x
 
 fixSubj :: RDFTriple -> RDFTriple
 fixSubj x = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
@@ -77,9 +76,9 @@ advanceTriples1 xs [] = xs
 advanceTriples1 [] ys = ys
 advanceTriples1 (x:xs) (y:ys) 
     | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples1."
-    | arcPred x < arcPred y = x:advanceTriples (xs) (y:ys)
-    | arcPred x > arcPred y = y:advanceTriples (x:xs) (ys)
-    | otherwise = x:advanceTriples xs ys
+    | arcPred x < arcPred y = x:advanceTriples1 (xs) (y:ys)
+    | arcPred x > arcPred y = y:advanceTriples1 (x:xs) (ys)
+    | otherwise = x:advanceTriples1 xs ys
 
 advanceTriples2 :: [RDFTriple] -> [RDFTriple]
 advanceTriples2 xs = makeXParc xs ys 

@@ -89,7 +89,7 @@ fixAdv g adv = adv { traits = traitsFromRDF advid g,
 itemsFromRDF advid g = itFromRDF "changePossession" advid g
 traitsFromRDF advid g = itFromRDF "advanceTrait" advid g
 
-itFromRDF s advid g = sort $ splitTrait $ map vb2tt $ rdfQueryFind q g 
+itFromRDF s advid g = splitTrait $ sort $ map vb2tt $ rdfQueryFind q g 
     where q = traitqgraph (armRes s) advid
 
 vb2tt :: VB.RDFVarBinding -> Trait
