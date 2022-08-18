@@ -46,7 +46,7 @@ advanceTraitList xs [] = trace ("aTL xs "++(show . traitClass . head) xs) xs
 advanceTraitList [] ys = trace ("aTL ys "++(show . traitClass . head) ys) $ map fixTrait ys
 advanceTraitList (x:xs) (y:ys) 
   | x < y  = trace ("aTL x "++show (xc,yc)) $ x:advanceTraitList xs (y:ys)
-  | x > y  = trace ("aTL y "++show (xc,yc)) $ y:advanceTraitList (x:xs) ys
+  | x > y  = trace ("aTL y "++show (xc,yc)) $ fixTrait y:advanceTraitList (x:xs) ys
   | otherwise = trace ("aTL "++show (xc,yc)) $ advanceTraitList ( (advanceTrait x y):xs ) ys
      where xc = traitClass x
            yc = traitClass y
@@ -65,7 +65,6 @@ advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples xs [] = xs
 advanceTriples [] ys = ys
 advanceTriples (x:xs) (y:ys) 
-    -- | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples."
     | arcPred x < arcPred y = x:advanceTriples (xs) (y:ys)
     | arcPred x > arcPred y = y:advanceTriples (x:xs) (ys)
     | otherwise = y:advanceTriples xs ys
@@ -77,12 +76,12 @@ fixSubj x = trace ("fixSubj: "++ show y) y
 
 fixTrait :: Trait -> Trait
 fixTrait trait = trace "fixTrait" $ trait {
-       traitContents = sort $ advanceTriples2 $ traitContents trait
+       traitContents = sort $ calculateXP $ traitContents trait
     }
 
 
-advanceTriples2 :: [RDFTriple] -> [RDFTriple]
-advanceTriples2 ts = trace ("advanceTriple2\n"++show ts) $ makeXParc xs ys 
+calculateXP :: [RDFTriple] -> [RDFTriple]
+calculateXP ts = trace ("calculateXP\n"++show ts) $ makeXParc xs ys 
    where (xs,ys) = getXPtriples ts
          makeXParc [] ys = ys
          makeXParc xs ys = getXParc xs:ys
