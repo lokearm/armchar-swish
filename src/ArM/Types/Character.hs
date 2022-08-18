@@ -222,7 +222,6 @@ seasonNo _ = 10
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
 
-<<<<<<< HEAD
 advToArcList :: Advancement -> [RDFTriple]
 advToArcList adv = ys2
     where ms = keyvalueToArcList (rdfid adv) (contents adv)
