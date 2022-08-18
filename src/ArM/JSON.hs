@@ -19,7 +19,7 @@ import Control.Monad.Fail
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Key
-import Swish.RDF.Graph (RDFLabel(..), fromRDFLabel, toRDFLabel)
+import Swish.RDF.Graph (RDFLabel(..), fromRDFLabel, toRDFLabel, arc)
 import Swish.Namespace (ScopedName)
 import ArM.Types.Character
 import ArM.Character
@@ -137,8 +137,9 @@ instance ToJSON Trait where
 instance FromJSON Trait where 
     parseJSON val = do 
                      v <- parseJSON val
-                     return $ kpToTrait' v
-       where kpToTrait' (KeyPairList x ) = kpToTrait x
+                     return $ f1 v
+       where f1 (KeyPairList x ) = defaultTrait { traitContents = map f2 x }
+             f2 (KeyValuePair x y) = arc (armRes "unnamedBlankNode") x y
 
 -- ** CharacterSheet
 
