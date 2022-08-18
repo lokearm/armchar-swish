@@ -63,7 +63,7 @@ advanceTrait trait adv = trace ( "advanceTrait: " ++ (show $ traitID trait) ) tr
 -- Then total XP is recalculated adding up all `hasTotalXP` and
 -- `addedXP` properties.
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
-advanceTriples x = sort . map fixSubj . advanceTriples2 . advanceTriples1 x
+advanceTriples x = trace "advanceTriples" . sort . map fixSubj . advanceTriples2 . advanceTriples1 x
 
 fixSubj :: RDFTriple -> RDFTriple
 fixSubj x = trace ("fixSubj: "++ show y) y
@@ -79,18 +79,20 @@ advanceTriples1 (x:xs) (y:ys)
     | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples1."
     | arcPred x < arcPred y = x:advanceTriples1 (xs) (y:ys)
     | arcPred x > arcPred y = y:advanceTriples1 (x:xs) (ys)
-    | otherwise = x:advanceTriples1 xs ys
+    | otherwise = y:advanceTriples1 xs ys
 
 advanceTriples2 :: [RDFTriple] -> [RDFTriple]
 advanceTriples2 xs = makeXParc xs ys 
    where (xs,ys) = getXPtriples xs
-makeXParc [] ys = ys
-makeXParc xs ys = getXParc xs:ys
+         makeXParc [] ys = ys
+         makeXParc xs ys = getXParc xs:ys
 
 getXParc (x:[]) = x
-getXParc (x:y:xs) = trace ("getXParc: " ++ show s) $ arc (arcSubj x) (armRes "hasTotalXP") (litInt s)
-    where s = f x + f y
-          f = intFromRDF . arcObj
+getXParc (x:y:xs) = trace ("getXParc: " ++ show s) 
+  $ getXParc (a:xs)
+     where s = f x + f y
+           f = intFromRDF . arcObj
+           a = arc (arcSubj x) (armRes "hasTotalXP") (litInt s)
 
 getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
 getXPtriples xs = getXPtriples' ([],xs)
@@ -99,7 +101,7 @@ getXPtriples' (xs,ys) | ys == [] = (xs,ys)
                       | p == armRes "hasTotalXP" = (y:xs',ys')
                       | p == armRes "addedXP" = (y:xs',ys')
                       | otherwise             = (xs',y:ys')
-    where (xs',ys') = getXPtriples' (xs,tail ys)
+    where (xs',ys') = trace ("XPTriples: " ++ show y ++ "\n") $ getXPtriples' (xs,tail ys)
           p = arcPred y
           y = head ys
 
