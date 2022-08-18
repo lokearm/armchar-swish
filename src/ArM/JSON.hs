@@ -133,7 +133,7 @@ instance ToJSON Trait where
     toJSON t = toJSON $ KeyPairList $ f (traitID t)
         where f Nothing = t'
               f (Just x) = KeyValuePair prefixedidRes x:t'
-              t' = traitContents t 
+              t' = toKeyPairList $ traitContents t 
 instance FromJSON Trait where 
     parseJSON val = do 
                      v <- parseJSON val
@@ -173,7 +173,7 @@ data ProtoAdvancement = ProtoAdvancement {
     advancementid :: RDFLabel,
     advancementcontents :: KeyPairList,
     advancementtraits :: [Trait],
-    advancementitems :: [Item]
+    advancementitems :: [Trait]
    } 
 
 instance ToJSON Advancement where 

@@ -28,6 +28,10 @@ defaultTrait = Trait {
     isRepeatableTrait = False,
     traitContents = []
    } 
+traitID :: Trait -> Maybe RDFLabel
+traitID = f . traitContents
+   where f [] = Nothing
+         f (x:_) = Just $ arcSubj x
 
 instance Show Trait where
    show a = "**" ++ show (traitClass a) ++ "**\n" 
@@ -45,8 +49,6 @@ instance Ord Trait where
                | instanceLabel x > instanceLabel y = GT
                | otherwise = EQ
 
-
-type Item = Trait
 
 keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 keyvalueToArcList x [] = []
@@ -74,7 +76,7 @@ data CharacterSheet = CharacterSheet {
       csYear :: Maybe Int,  -- ^ Current Year
       csSeason :: String,   -- ^ Current Season
       born     :: Int,      -- ^ Year of Birth
-      csItems :: [Item],    -- ^ List of possessions (weapons, equipment)
+      csItems :: [Trait],    -- ^ List of possessions (weapons, equipment)
       csTraits :: [Trait],  -- ^ List of traits (abilities, spells, etc.)
       csMetadata :: KeyPairList
       -- ^ Metadata, i.e. data which are not traits or items.
@@ -133,13 +135,35 @@ instance ToRDFGraph Character where
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
-          let ts =  map traitContents (csTraits cs)
-          let is =  map traitContents (csItems cs)
+          tsm <- fixBlanksM $ csTraits cs
+          ism <- fixBlanksM $ csItems cs
+          let ts =  map traitContents tsm
+          let is =  map traitContents ism
           let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ct = arc x isCharacterLabel (csID cs)
           let ct1 = arc x typeRes csRes 
           let ms1 = foldr (++) ms ts
           return $ ct1:ct:foldr (++) ms1 is
+
+fixBlanksM :: [Trait] -> BlankState [Trait]
+fixBlanksM [] = return []
+fixBlanksM (x:xs) = do
+             x' <- fixBlankNodeM x
+             xs' <- fixBlanksM xs
+             return $ x':xs'
+fixBlankNodeM :: Trait -> BlankState Trait
+fixBlankNodeM t 
+   | traitContents t == [] = return t
+   | key == (armRes "unnamedBlankNode") = return t
+   | otherwise = do
+        b <- getBlank
+        return $ t { traitContents = map ( replaceBlank b ) 
+                      $ traitContents t }
+     where key = arcSubj $ head $ traitContents t
+
+replaceBlank :: RDFLabel -> RDFTriple -> RDFTriple
+replaceBlank b x = arc b ( arcPred x ) ( arcObj x )
+            
 
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank
@@ -158,7 +182,7 @@ data Advancement = Advancement {
     contents :: [KeyValuePair],
     advSortIndex :: Int,
     traits :: [Trait],
-    items :: [Item]
+    items :: [Trait]
    } deriving Eq
 
 defaultAdvancement = Advancement { year = Nothing,

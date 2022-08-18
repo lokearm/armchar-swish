@@ -22,7 +22,6 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Trait ( Trait(..)
-                           , Item(..)
                            , advanceTraitList
                            ) where
 
@@ -58,11 +57,17 @@ advanceTrait trait adv = trait { traitContents = advanceTriples
                                              ( traitContents trait ) 
                                              ( traitContents adv ) 
                                }
+
 -- | Merge two lists of trait statements using `advanceTriple1`.
 -- Then total XP is recalculated adding up all `hasTotalXP` and
 -- `addedXP` properties.
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
-advanceTriples x = advanceTriples2 . advanceTriples1 x
+advanceTriples x = sort . map fixSubj 
+                 . advanceTriples2 . advanceTriples1 x
+
+fixSubj :: RDFTriple -> RDFTriple
+fixSubj x = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
+
 
 -- | Merge two lists of trait statements.  If a subject/property
 -- pair is found in both lists, it is taken only from the former.
