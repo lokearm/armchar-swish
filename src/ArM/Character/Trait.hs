@@ -82,25 +82,22 @@ fixTrait trait = trace "fixTrait" $ trait {
 
 
 advanceTriples2 :: [RDFTriple] -> [RDFTriple]
-advanceTriples2 xs = makeXParc xs ys 
-   where (xs,ys) = getXPtriples xs
+advanceTriples2 ts = trace ("advanceTriple2\n"++show ts) $ makeXParc xs ys 
+   where (xs,ys) = getXPtriples ts
          makeXParc [] ys = ys
          makeXParc xs ys = getXParc xs:ys
 
-getXParc (x:[]) = x
-getXParc (x:y:xs) = trace ("getXParc: " ++ show s) 
-  $ getXParc (a:xs)
-     where s = f x + f y
-           f = intFromRDF . arcObj
-           a = arc (arcSubj x) (armRes "hasTotalXP") (litInt s)
+getXParc (x:xs) = trace ("getXParc "++show xp) $
+                  arc (arcSubj x) (armRes "hasTotalXP") (litInt xp)
+   where xp = foldr (+) 0 $ map ( intFromRDF . arcObj ) (x:xs)
 
 getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
-getXPtriples xs = getXPtriples' ([],xs)
+getXPtriples xs = trace "getXPtriples" $ getXPtriples' ([],xs)
 getXPtriples' :: ([RDFTriple],[RDFTriple]) -> ([RDFTriple],[RDFTriple])
-getXPtriples' (xs,ys) | ys == [] = (xs,ys)
-                      | p == armRes "hasTotalXP" = (y:xs',ys')
-                      | p == armRes "addedXP" = (y:xs',ys')
-                      | otherwise             = (xs',y:ys')
+getXPtriples' (xs,ys) | ys == [] = trace "getTriples' []" (xs,ys)
+                      | p == armRes "hasTotalXP" = trace (show y) (y:xs',ys')
+                      | p == armRes "addedXP" = trace (show y) (y:xs',ys')
+                      | otherwise             = trace (show y) (xs',y:ys')
     where (xs',ys') = trace ("XPTriples: " ++ show y ++ "\n") $ getXPtriples' (xs,tail ys)
           p = arcPred y
           y = head ys
