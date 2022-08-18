@@ -36,8 +36,8 @@ import ArM.Resources
 import ArM.KeyPair
 import ArM.Types.Character
 
-data XPType = XP { addXP :: Int, totalXP :: Int }
-defaultXPType = XP { addXP = 0, totalXP = 0 }
+data XPType = XP { addXP :: Maybe Int, totalXP :: Maybe Int, xpTrait :: RDFLabel }
+defaultXPType = XP { addXP = Nothing, totalXP = Nothing, xpTrait = noSuchTrait }
 
 -- |
 -- = Trait Advancement
@@ -78,6 +78,32 @@ advanceTraitTriples (x:xs) (y:ys)
     | x > y   = y:advanceTraitTriples (x:xs) (ys) 
     where fst' (KeyValuePair a _) = a
 
+advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
+advanceTriples x = snd . advanceTriple2 defaultXPType . advanceTriple1 x
+
+advanceTriples1 :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
+advanceTriples1 xs [] = xs
+advanceTriples1 [] ys = ys
+advanceTriples1 (x:x':xs) (y:y':ys) 
+    | arcSubj x < arcSubj y = x:advanceTraitTriples (xs) (y:ys)
+    | arcSubj x > arcSubj y = y:advanceTraitTriples (x:xs) (ys)
+    | arcPred x < arcPred y = x:advanceTraitTriples (xs) (y:ys)
+    | arcPred x > arcPred y = y:advanceTraitTriples (x:xs) (ys)
+    | otherwise = x:advanceTraitTriples (x:xs) (y:ys)
+
+advanceTriples2 :: XPType -> [RDFTriple] -> (XPType,[RDFTriple])
+advanceTriples2 xp []  = (xp,xs)
+advanceTriples2 xp (x:xs) | xpTrait xp /= arcSubj x = f xp x xs
+                          | arcPred x == armRes "hasTotalXP" = (defaultXP { totalXP = arcPred x }, advanceTriples2 (xs) )
+                          | arcPred x == armRes "addedXP" = (defaultXP { addXP = arcPred x }, advanceTriples2 (xs) )
+                          | otherwise = (xp, x:advanceTriples2 (xs) )
+    f xp x xs | xpTrait xp == noSuchTrait = (xp', advanceTriples2 (x:xs) )
+              | otherwise = g (addXP xp) (totalXP xp) (x:xs)
+    g Nothing Nothing xs = (xp', advanceTriples2 xs )
+    g Nothing (Just y) xs = (xp', arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
+    g (Just y) Nothing xs = (xp', arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
+    g (Just x) (Just y) xs = (xp', arc (arcSubj x) (armRes "hasTotalXP") (Just $ litInt $ intFromRDF x + intFromRDF y):advanceTriples2 xs )
+    xp' = defaultXP { xpTrait = arcSubj x }
 -- |
 -- == Recalculation of XP (auxiliary functions
 
@@ -97,7 +123,7 @@ recalculateXP x
 makeNewTraitTriples :: [KeyValuePair] -> [KeyValuePair]
 makeNewTraitTriples ts = sort $ x:ys
     where (xp,ys) = makeNewTraitTriples' (defaultXPType,[]) ts
-          KeyValuePair (totalXPLabel) (toRDFLabel ( totalXP xp + addXP xp ))
+          x = KeyValuePair (totalXPLabel) (toRDFLabel ( totalXP xp + addXP xp ))
 
 -- | Parse through the Triples of a Trait and remove XP related traits
 makeNewTraitTriples' :: (XPType,[KeyValuePair]) -> [KeyValuePair] -> (XPType,[KeyValuePair]) 
@@ -109,7 +135,6 @@ makeNewTraitTriples' (xp,ys) (KeyValuePair a c:zs)
     where read = f . fromRDFLabel
           f Nothing = 0
           f (Just x) = x
-
 
 -- |
 -- = Parsing Traits and Items from RDF 

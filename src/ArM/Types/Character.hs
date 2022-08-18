@@ -17,101 +17,38 @@ import ArM.Rules.Aux
 -- When new traits are created, `traitID` is set to nothing?
 -- A blank node is only created when it is written into an RDFGraph.
 data Trait = Trait {
-    traitID :: Maybe RDFLabel,
     traitClass :: RDFLabel,
+    instanceLabel :: String,
     isRepeatableTrait :: Bool,
-    isXPTrait :: Bool,
-    isAccelleratedTrait :: Bool,
-    traitContents :: [KeyValuePair]
+    traitContents :: [RDFTriple]
    } deriving (Eq)
 defaultTrait = Trait {
-    traitID = Nothing,
     traitClass = noSuchTrait,
+    instanceLabel = "",
     isRepeatableTrait = False,
-    isXPTrait = False,
-    isAccelleratedTrait = False,
     traitContents = []
    } 
 
 instance Show Trait where
-   show a = "**" ++ y (traitID a) ++ " " ++ show (traitClass a) ++ "**\n" 
+   show a = "**" ++ show (traitClass a) ++ "**\n" 
                  ++ sc (traitContents a) 
                  ++ "\n"
       where 
-         y Nothing = ""
-         y (Just x) = show x
-         s Nothing = ""
-         s (Just x) = x
          sc [] = ""
-         sc (KeyValuePair x y:xs) = "  " ++ show x ++ ": " ++ show y ++ "\n" ++ sc xs
+         sc (x:xs) = "  " ++ show x ++ "\n" ++ sc xs
 instance Ord Trait where
    compare x y | traitClass x < traitClass y = LT
                | traitClass x > traitClass y = GT
-               | traitID x < traitID y = LT
-               | traitID x > traitID y = GT
+               | instanceLabel x < instanceLabel y = LT
+               | instanceLabel x > instanceLabel y = GT
                | otherwise = EQ
 
+
+type Item = Trait
 
 keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 keyvalueToArcList x [] = []
 keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
-
-traitToArcListM :: TraitLike a => RDFLabel -> RDFLabel -> a -> BlankState [RDFTriple]
-traitToArcListM hasTraitRes cs t 
-     | x' == Nothing = do
-                      y <- getBlank 
-                      return $ arc cs hasTraitRes y:keyvalueToArcList y ts
-     | otherwise    = return $ arc cs hasTraitRes x:keyvalueToArcList x ts
-                 where x' = traitlikeID t
-                       x = fromJust x'
-                       ts = traitlikeContents t
-
-class TraitLike a where
-    traitlikeID :: a -> Maybe RDFLabel
-    traitlikeClass :: a -> RDFLabel
-    traitlikeContents :: a -> [KeyValuePair]
-instance TraitLike Trait where
-    traitlikeID = traitID
-    traitlikeClass = traitClass
-    traitlikeContents = traitContents
-instance TraitLike Item where
-    traitlikeID = itemID
-    traitlikeClass = itemClass
-    traitlikeContents = itemContents
-
-
-data Item = Item {
-    itemID :: Maybe RDFLabel,
-    itemClass :: RDFLabel,
-    itemLabel :: String,
-    itemContents :: [KeyValuePair]
-   } deriving (Eq)
-defaultItem = Item {
-    itemID = Nothing,
-    itemClass = noSuchTrait,
-    itemLabel = "",
-    itemContents = []
-   } 
-instance Show Item where
-   show a = "**" ++ itemLabel a ++ "(" ++ y (itemID a) ++ ") "
-                 ++ show (itemClass a) ++ "**\n" 
-                 ++ sc (itemContents a) 
-                 ++ "\n"
-      where 
-         y Nothing = ""
-         y (Just x) = show x
-         s Nothing = ""
-         s (Just x) = x
-         sc [] = ""
-         sc (KeyValuePair x y:xs) = "  " ++ show x ++ ": " ++ show y ++ "\n" ++ sc xs
-instance Ord Item where
-   compare x y | itemClass x < itemClass y = LT
-               | itemClass x > itemClass y = GT
-               | itemLabel x < itemLabel y = LT
-               | itemLabel x > itemLabel y = GT
-               | itemID x < itemID y = LT
-               | itemID x > itemID y = GT
-               | otherwise = EQ
 
 data Character = Character {
          characterID :: RDFLabel,
@@ -194,13 +131,13 @@ instance ToRDFGraph Character where
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
-          ts <- mapM (traitToArcListM htRes x) (csTraits cs)
-          is <- mapM (traitToArcListM (armRes "hasPossession") x) (csItems cs)
+          let ts =  map traitContents (csTraits cs)
+          let is =  map traitContents (csItems cs)
           let ms = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ct = arc x isCharacterLabel (csID cs)
           let ct1 = arc x typeRes csRes 
-          let ms1 = foldl (++) ms ts
-          return $ ct1:ct:foldl (++) ms1 is
+          let ms1 = foldr (++) ms ts
+          return $ ct1:ct:foldr (++) ms1 is
 
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank
@@ -283,18 +220,14 @@ seasonNo "Winter" = 4
 seasonNo _ = 10
 
 instance ToRDFGraph Advancement where
-   makeRDFGraph cs =
-         ( listToRDFGraph  . fst . runBlank ( advToArcListM cs ) )
-         ("charsheet",1)
+   makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
 
-advToArcListM :: Advancement -> BlankState [RDFTriple]
-advToArcListM adv = do
-        xs1 <- mapM (traitToArcListM atRes x) (traits adv) 
-        xs2 <- mapM (traitToArcListM cpRes x) (items adv) 
-        let ys1 = foldl (++) ms xs1
-        let ys2 = foldl (++) ys1 xs2
-        return ys2
-    where ms = keyvalueToArcList x (contents adv)
-          x = rdfid adv
+advToArcList :: Advancement -> [RDFTriple]
+advToArcList adv = ys2
+    where ms = keyvalueToArcList (rdfid adv) (contents adv)
           atRes = armRes "advanceTrait"
           cpRes = armRes "changePossession"
+          xs1 =  map traitContents (traits adv)
+          xs2 =  map traitContents (items adv)
+          ys1 = foldl (++) ms xs1
+          ys2 = foldl (++) ys1 xs2
