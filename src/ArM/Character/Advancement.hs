@@ -29,6 +29,8 @@ import Data.List
 import ArM.Character.Trait
 import ArM.Types.Character
 import ArM.Rules.Aux
+import qualified Swish.RDF.VarBinding  as VB
+import           Swish.VarBinding  (vbMap)
 
 -- Class:
 --    a arm:CharacterAdvancement ;
@@ -80,13 +82,36 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g a = a { traits = sort $ map toTrait $ getKP q,
-                 items = sort $ map toItem $ getKP q' }
-    where q = qgraph (armRes "advanceTrait") (rdfid a)
-          q' = qgraph (armRes "changePossession") (rdfid a)
-          toTrait = kpToTrait . toKeyPairList 
-          toItem = kpToItem . KeyPairList . toKeyPairList 
-          getKP q =  arcListSplit $ map arcFromBinding $ rdfQueryFind q g 
+fixAdv g adv = adv { traits = itemsFromRDF advid g,
+                 items = traitsFromRDF advid g }
+        where advid = rdfid adv
+
+itemsFromRDF advid g = itFromRDF "changePossesion" advid g
+traitsFromRDF advid g = itFromRDF "advanceTrait" advid g
+
+itFromRDF s advid g = sort $ splitTrait $ map vb2tt $ rdfQueryFind q g 
+    where q = traitqgraph (armRes s) advid
+
+vb2tt :: VB.RDFVarBinding -> Trait
+vb2tt vb = defaultTrait { traitClass = vbMap vb (Var "class"),
+               traitContents = [ arc (vbMap vb (Var "id")) 
+                               (vbMap vb (Var "property"))
+                               (vbMap vb (Var "value")) ] }
+
+splitTrait :: [Trait] -> [Trait]
+splitTrait xs = splitTrait' ([],xs)
+splitTrait' :: ([Trait],[Trait]) -> [Trait]
+splitTrait' ([],x:xs) = splitTrait' (x:[],xs) 
+splitTrait' (t:ts,x:xs) 
+    | traitClass t == traitClass x = splitTrait' (t':ts,xs) 
+    | otherwise                    = splitTrait' (x:t:ts,xs) 
+       where t' = addToTrait x t
+
+traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph
+traitqgraph p s = listToRDFGraph 
+      [ arc s p (Var "id")
+      , arc (Var "id") (Var "property") (Var "value")
+      , arc (Var "id") (armRes "traitClass") (Var "class") ]
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [RDFTriple] -> Advancement
