@@ -222,6 +222,7 @@ seasonNo _ = 10
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
 
+<<<<<<< HEAD
 advToArcList :: Advancement -> [RDFTriple]
 advToArcList adv = ys2
     where ms = keyvalueToArcList (rdfid adv) (contents adv)
@@ -229,5 +230,5 @@ advToArcList adv = ys2
           cpRes = armRes "changePossession"
           xs1 =  map traitContents (traits adv)
           xs2 =  map traitContents (items adv)
-          ys1 = foldl (++) ms xs1
-          ys2 = foldl (++) ys1 xs2
+          ys1 = foldr (++) ms xs1
+          ys2 = foldr (++) ys1 xs2
