@@ -102,3 +102,16 @@ litInt i = TypedLit (T.pack $ show i) xsdInteger
 -- for the sake of simplicity.
 litString i = Lit (T.pack i) 
 -- litString i = TypedLit (T.pack i) xsdString
+
+rdfToInt :: RDFLabel -> Maybe Int
+rdfToInt = fromRDFLabel
+rdfToString :: RDFLabel -> Maybe String
+rdfToString = fromRDFLabel
+
+intFromRDF :: RDFLabel -> Int
+intFromRDF x = fi i
+   where i = rdfToInt x
+         s = rdfToString x
+         fi Nothing = fs s
+         fi (Just y) = y
+         fs (Just y) = read y

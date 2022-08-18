@@ -255,18 +255,6 @@ vbToInt :: Maybe RDFLabel -> Maybe Int
 vbToInt Nothing = Nothing
 vbToInt (Just x) = Just $ intFromRDF x
 
-rdfToInt :: RDFLabel -> Maybe Int
-rdfToInt = fromRDFLabel
-rdfToString :: RDFLabel -> Maybe String
-rdfToString = fromRDFLabel
-
-intFromRDF :: RDFLabel -> Int
-intFromRDF x = fi i
-   where i = rdfToInt x
-         s = rdfToString x
-         fi Nothing = fs s
-         fi (Just y) = y
-         fs (Just y) = read y
 
 -- |
 -- = Casting Scores

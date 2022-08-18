@@ -23,8 +23,6 @@
 -----------------------------------------------------------------------------
 module ArM.Character.Trait ( Trait(..)
                            , Item(..)
-                           , kpToTrait
-                           , kpToItem
                            , advanceTraitList
                            , advanceItemList
                            ) where
@@ -82,17 +80,13 @@ advanceTriples1 (x:xs) (y:ys)
 advanceTriples2 :: XPType -> [RDFTriple] -> (XPType,[RDFTriple])
 advanceTriples2 xp []  = (xp,[])
 advanceTriples2 xp (x:xs) 
-        | arcPred x == armRes "hasTotalXP" 
-            = (xp { totalXP = arcPred x }, advanceTriples2 (xs) )
-        | arcPred x == armRes "addedXP" 
-            = (xp { addXP = arcPred x }, advanceTriples2 (xs) )
-        | otherwise = (xp, x:advanceTriples2 (xs) )
-  where
-    f xp x xs = g (addXP xp) (totalXP xp) (x:xs)
-    g Nothing Nothing xs = (xp, advanceTriples2 xs )
-    g Nothing (Just y) xs = (xp, arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
-    g (Just y) Nothing xs = (xp, arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
-    g (Just x) (Just y) xs = (xp, arc (arcSubj x) (armRes "hasTotalXP") (Just $ litInt $ intFromRDF x + intFromRDF y):advanceTriples2 xs )
+   | p == armRes "hasTotalXP" = (xp' { totalXP = val }, xs' )
+   | p == armRes "addedXP" = (xp' { addXP = val }, xs' )
+   | otherwise = (xp', x:xs' )
+           where p = arcPred x
+                 (xp',xs') = advanceTriples2 xp xs
+                 val = Just $ intFromRDF $ arcObj x
+
 -- |
 -- == Recalculation of XP (auxiliary functions
 
@@ -101,9 +95,7 @@ advanceTriples2 xp (x:xs)
 --  - add implied traits
 recalculateXP :: Trait -> Trait
 recalculateXP x 
-   | isXPTrait x  = x { traitContents = makeNewTraitTriples $ traitContents x }
-   | isAccelleratedTrait x  = x { traitContents = makeNewTraitTriples $ traitContents x }
-   | otherwise  = x
+     = x { traitContents = makeNewTraitTriples $ traitContents x }
 
 -- | Parse through the Triples of a Trait and recalculate score
 -- based on XP
@@ -126,21 +118,6 @@ makeNewTraitTriples' (xp,ys) (KeyValuePair a c:zs)
 -- |
 -- = Parsing Traits and Items from RDF 
 
-kpToTrait :: [KeyValuePair] -> Trait
-kpToTrait [] = defaultTrait
-kpToTrait xs = Trait { 
-             traitClass = getTraitClass ys,
-             isRepeatableTrait = a,
-             traitContents = ys }
-          where (k,a,b,c,ys) = traitKVList xs 
-
-kpToItem :: KeyPairList -> Trait
-kpToItem (KeyPairList []) = defaultItem
-kpToItem (KeyPairList xs) = Trait { 
-             traitClass = getTraitClass xs,
-             instanceLabel = getStringProperty (armRes "hasLabel") xs,
-             traitContents = xs }
-
 traitKVList :: [KeyValuePair] -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
 traitKVList xs = traitKVList' (Nothing,False,False,False,[]) xs
 traitKVList' :: (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair]) 
@@ -154,42 +131,4 @@ traitKVList' (k,a,b,c,xs) (KeyValuePair y2 y4:ys) =
                 c' = c || y4 == accelleratedtraitLabel
                 f x y | x ==  prefixedidRes = Just y
                       | otherwise           = k
-
--- | Get the Trait Class from a list of Triples belonging to
--- an Trait Advancement
-getTraitClass :: [KeyValuePair] -> RDFLabel
-getTraitClass = f . getProperty ( armRes "traitClass" )
-     where f Nothing = noSuchTrait
-           f (Just x) = x
-
--- | Get the Item Class from a list of Triples belonging to
--- an Item Advancement
-getItemClass :: [KeyValuePair] -> RDFLabel
-getItemClass = f . getProperty ( armRes "itemClass" )
-     where f Nothing = noSuchTrait
-           f (Just x) = x
-
--- |
--- = Item Advancement 
-
--- | Given one list of Items and one of Item advancements,
--- apply each advancement to the corresponding Item.
--- The lists must be sorted by Item class name.
-advanceItemList :: [Item] -> [Item] -> [Item]
-advanceItemList xs [] = xs
-advanceItemList [] ys = ys
-advanceItemList (x:xs) (y:ys) 
-     | x < y  = x:advanceItemList xs (y:ys)
-     | x > y  = y:advanceItemList (x:xs) ys
-     | otherwise = advanceItemList ( advanceItem x y:xs ) ys
-
--- | apply a given Item Advancement to a given Item
--- 3.  take other properties from the second Item if available
--- 4.  default to properties from the first Item
-advanceItem :: Item -> Item -> Item 
-advanceItem trait adv = 
-           trait { traitContents = advanceTraitTriples 
-                 ( traitContents trait ) 
-                 ( traitContents adv ) 
-           }
 
