@@ -80,12 +80,12 @@ advanceList cs (x:xs) = cs' : advanceList cs' xs
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
-advanceCharacter cs adv = trace ("advanceCharacter\n"++show adv) cs { 
-     sheetID = Nothing,
-     csYear = y,
-     csSeason = s,
-     csTraits = advanceTraitList (csTraits cs) (traits adv),
-     csItems = advanceTraitList (csItems cs) (items adv)
+advanceCharacter cs adv = trace ("advanceCharacter\n"++show adv) 
+     cs { sheetID = Nothing
+        , csYear = y
+        , csSeason = s
+        , csTraits = advanceTraitList (csTraits cs) (traits adv)
+        , csItems = advanceTraitList (csItems cs) (items adv)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)
 

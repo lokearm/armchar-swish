@@ -43,7 +43,7 @@ import Debug.Trace
 -- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] = xs
-advanceTraitList [] (y:ys) = y:advanceTraitList [] ys
+advanceTraitList [] ys = ys
 advanceTraitList (x:xs) (y:ys) 
   | x < y  = trace (show x) $ x:advanceTraitList xs (y:ys)
   | x > y  = trace (show y) $ y:advanceTraitList (x:xs) ys
@@ -55,10 +55,9 @@ advanceTraitList (x:xs) (y:ys)
 -- 1.  take other properties from the second Trait if available
 -- 2.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = trait { traitContents = advanceTriples 
-                                             ( traitContents trait ) 
-                                             ( traitContents adv ) 
-                               }
+advanceTrait trait adv = trace ( show $ traitID trait ) trait
+    { traitContents = advanceTriples ( traitContents trait ) 
+                                     ( traitContents adv ) }
 
 -- | Merge two lists of trait statements using `advanceTriple1`.
 -- Then total XP is recalculated adding up all `hasTotalXP` and
@@ -89,7 +88,7 @@ makeXParc [] ys = ys
 makeXParc xs ys = getXParc xs:ys
 
 getXParc (x:[]) = x
-getXParc (x:y:xs) = arc (arcSubj x) (armRes "hasTotalXP") (litInt s)
+getXParc (x:y:xs) = trace ("getXParc: " ++ show s) $ arc (arcSubj x) (armRes "hasTotalXP") (litInt s)
     where s = f x + f y
           f = intFromRDF . arcObj
 
