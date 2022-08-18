@@ -30,7 +30,6 @@ import           Data.Set (fromList)
 import           Data.List (sort)
 import           Swish.RDF.Graph 
 import ArM.Resources
-import ArM.KeyPair
 import ArM.Rules.Aux
 import ArM.Types.Character
 
@@ -110,21 +109,4 @@ xpSum (x:y:xs) | arcSubj x /= arcSubj y = error "Subject mismatch in xpSum."
          t = f x + f y
          y' = arc (arcSubj x) p (litInt t)
          p = armRes "hasTotalXP"
-
--- |
--- = Parsing Traits and Items from RDF 
-
-traitKVList :: [KeyValuePair] -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
-traitKVList xs = traitKVList' (Nothing,False,False,False,[]) xs
-traitKVList' :: (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair]) 
-                 -> [KeyValuePair]  
-                 -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
-traitKVList' (k,a,b,c,xs) [] = (k,a,b,c,xs)
-traitKVList' (k,a,b,c,xs) (KeyValuePair y2 y4:ys) =
-         traitKVList' (f y2 y4 ,a',b',c',KeyValuePair y2 y4:xs) ys
-         where  a' = a || y4 == repeatableLabel
-                b' = b || y4 == xptraitLabel
-                c' = c || y4 == accelleratedtraitLabel
-                f x y | x ==  prefixedidRes = Just y
-                      | otherwise           = k
 
