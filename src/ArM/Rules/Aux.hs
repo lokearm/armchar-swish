@@ -82,16 +82,6 @@ makeCRule s l1 l2 = makeRDFClosureRule ( makeSN s )
             varBindingId
 
 
--- | Query Graph to get an Object property from a resource
--- The first argument p is a property and the second one s is a resource ID.
--- The query will find a triple (s,p,x) and return all triples with x as
--- subject.
-qgraph :: RDFLabel -> RDFLabel -> RDFGraph
-qgraph p s = listToRDFGraph 
-      [ arc s p (Var "id")
-      , arc (Var "id") (Var "property") (Var "value")
-      , arc (Var "property") labelRes (Var "label") ]
-
 fwdApplyRules rs g = foldGraphs $ parMap rpar (`fwdApplySimple` g) rs
 
 -- | Make an RDF label of type xsd:integer
