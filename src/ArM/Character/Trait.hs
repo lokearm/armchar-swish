@@ -61,26 +61,25 @@ advanceTraitList (x:xs) (y:ys)
 -- 4.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = recalculateXP  $
-           trait { traitID = Nothing,
-              traitContents = advanceTraitTriples 
-                 ( traitContents trait ) 
-                 ( traitContents adv ) 
+           trait { traitContents = advanceTriples 
+                      ( traitContents trait ) 
+                      ( traitContents adv ) 
            }
 
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
-advanceTriples x = snd . advanceTriple2 defaultXPType . advanceTriple1 x
+advanceTriples x = snd . advanceTriples2 defaultXPType . advanceTriples1 x
 
 advanceTriples1 :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples1 xs [] = xs
 advanceTriples1 [] ys = ys
 advanceTriples1 (x:xs) (y:ys) 
     | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples1."
-    | arcPred x < arcPred y = x:advanceTraitTriples (xs) (y:ys)
-    | arcPred x > arcPred y = y:advanceTraitTriples (x:xs) (ys)
-    | otherwise = x:advanceTraitTriples xs ys
+    | arcPred x < arcPred y = x:advanceTriples (xs) (y:ys)
+    | arcPred x > arcPred y = y:advanceTriples (x:xs) (ys)
+    | otherwise = x:advanceTriples xs ys
 
 advanceTriples2 :: XPType -> [RDFTriple] -> (XPType,[RDFTriple])
-advanceTriples2 xp []  = (xp,xs)
+advanceTriples2 xp []  = (xp,[])
 advanceTriples2 xp (x:xs) 
         | arcPred x == armRes "hasTotalXP" 
             = (xp { totalXP = arcPred x }, advanceTriples2 (xs) )
@@ -88,13 +87,11 @@ advanceTriples2 xp (x:xs)
             = (xp { addXP = arcPred x }, advanceTriples2 (xs) )
         | otherwise = (xp, x:advanceTriples2 (xs) )
   where
-    f xp x xs | xpTrait xp == noSuchTrait = (xp', advanceTriples2 (x:xs) )
-              | otherwise = g (addXP xp) (totalXP xp) (x:xs)
-    g Nothing Nothing xs = (xp', advanceTriples2 xs )
-    g Nothing (Just y) xs = (xp', arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
-    g (Just y) Nothing xs = (xp', arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
-    g (Just x) (Just y) xs = (xp', arc (arcSubj x) (armRes "hasTotalXP") (Just $ litInt $ intFromRDF x + intFromRDF y):advanceTriples2 xs )
-    xp' = defaultXP { xpTrait = arcSubj x }
+    f xp x xs = g (addXP xp) (totalXP xp) (x:xs)
+    g Nothing Nothing xs = (xp, advanceTriples2 xs )
+    g Nothing (Just y) xs = (xp, arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
+    g (Just y) Nothing xs = (xp, arc (arcSubj x) (armRes "hasTotalXP") (Just y):advanceTriples2 xs )
+    g (Just x) (Just y) xs = (xp, arc (arcSubj x) (armRes "hasTotalXP") (Just $ litInt $ intFromRDF x + intFromRDF y):advanceTriples2 xs )
 -- |
 -- == Recalculation of XP (auxiliary functions
 
@@ -131,21 +128,17 @@ makeNewTraitTriples' (xp,ys) (KeyValuePair a c:zs)
 kpToTrait :: [KeyValuePair] -> Trait
 kpToTrait [] = defaultTrait
 kpToTrait xs = Trait { 
-             traitID = k,
              traitClass = getTraitClass ys,
              isRepeatableTrait = a,
-             isXPTrait = b,
-             isAccelleratedTrait = c,
              traitContents = ys }
           where (k,a,b,c,ys) = traitKVList xs 
 
-kpToItem :: KeyPairList -> Item
+kpToItem :: KeyPairList -> Trait
 kpToItem (KeyPairList []) = defaultItem
-kpToItem (KeyPairList xs) = Item { 
-             itemID = getProperty prefixedidRes xs,
-             itemClass = getTraitClass xs,
-             itemLabel = getStringProperty (armRes "hasLabel") xs,
-             itemContents = xs }
+kpToItem (KeyPairList xs) = Trait { 
+             traitClass = getTraitClass xs,
+             instanceLabel = getStringProperty (armRes "hasLabel") xs,
+             traitContents = xs }
 
 traitKVList :: [KeyValuePair] -> (Maybe RDFLabel,Bool,Bool,Bool,[KeyValuePair])
 traitKVList xs = traitKVList' (Nothing,False,False,False,[]) xs
@@ -194,9 +187,8 @@ advanceItemList (x:xs) (y:ys)
 -- 4.  default to properties from the first Item
 advanceItem :: Item -> Item -> Item 
 advanceItem trait adv = 
-           trait { itemID = Nothing,
-              itemContents = advanceTraitTriples 
-                 ( itemContents trait ) 
-                 ( itemContents adv ) 
+           trait { traitContents = advanceTraitTriples 
+                 ( traitContents trait ) 
+                 ( traitContents adv ) 
            }
 
