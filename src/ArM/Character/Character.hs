@@ -38,6 +38,8 @@ import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
 import ArM.Types.Character
 
+import Debug.Trace
+
 getCharacterMetadata = CM.getCharacterMetadata
 
 
@@ -78,7 +80,7 @@ advanceList cs (x:xs) = cs' : advanceList cs' xs
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
-advanceCharacter cs adv = cs { 
+advanceCharacter cs adv = trace ("advanceCharacter\n"++show adv) cs { 
      sheetID = Nothing,
      csYear = y,
      csSeason = s,

@@ -34,6 +34,8 @@ import Data.List.Split (splitOn)
 
 import qualified Data.Aeson.KeyMap as KM
 
+import Debug.Trace
+
 -- Some good ideas from the web:
 -- https://stackoverflow.com/questions/53478455/aeson-parse-json-object-to-list
 -- https://williamyaoh.com/posts/2019-10-19-a-cheatsheet-to-json-handling.html
@@ -130,10 +132,7 @@ pairToKeyValue (x,y) = do
 -- ** Trait
 
 instance ToJSON Trait where 
-    toJSON t = toJSON $ KeyPairList $ f (traitID t)
-        where f Nothing = t'
-              f (Just x) = KeyValuePair prefixedidRes x:t'
-              t' = toKeyPairList $ traitContents t 
+    toJSON t = trace ("toJSON Trait"++show t) $ toJSON $ KeyPairList $ toKeyPairList $ traitContents t 
 instance FromJSON Trait where 
     parseJSON val = do 
                      v <- parseJSON val

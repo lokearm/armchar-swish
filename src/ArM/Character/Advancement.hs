@@ -82,11 +82,11 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g adv = adv { traits = itemsFromRDF advid g,
-                 items = traitsFromRDF advid g }
+fixAdv g adv = adv { traits = traitsFromRDF advid g,
+                 items = itemsFromRDF advid g }
         where advid = rdfid adv
 
-itemsFromRDF advid g = itFromRDF "changePossesion" advid g
+itemsFromRDF advid g = itFromRDF "changePossession" advid g
 traitsFromRDF advid g = itFromRDF "advanceTrait" advid g
 
 itFromRDF s advid g = sort $ splitTrait $ map vb2tt $ rdfQueryFind q g 

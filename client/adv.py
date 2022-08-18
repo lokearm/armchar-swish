@@ -47,7 +47,7 @@ for i in y:
     ts = i.get("advancementitems",{})
     print(ts)
     if ts:
-        output.append( "    Possesions:" )
+        output.append( "    Possessions:" )
         output.append( "    \\begin{itemize}" )
         for t in ts:
            nxp = t.get( "arm:hasQuantity", "")

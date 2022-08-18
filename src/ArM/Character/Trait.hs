@@ -32,6 +32,8 @@ import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Types.Character
 
+import Debug.Trace
+
 
 -- |
 -- = Trait Advancement
