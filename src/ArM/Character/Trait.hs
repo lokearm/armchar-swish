@@ -45,8 +45,8 @@ advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] = xs
 advanceTraitList [] ys = ys
 advanceTraitList (x:xs) (y:ys) 
-  | x < y  = trace (show x) $ x:advanceTraitList xs (y:ys)
-  | x > y  = trace (show y) $ y:advanceTraitList (x:xs) ys
+  | x < y  = trace ("advance x"++show x) $ x:advanceTraitList xs (y:ys)
+  | x > y  = trace ("advance y"++show y) $ y:advanceTraitList (x:xs) ys
   | otherwise = trace (show (xc,yc)) $ advanceTraitList ( (advanceTrait x y):xs ) ys
      where xc = traitClass x
            yc = traitClass y
