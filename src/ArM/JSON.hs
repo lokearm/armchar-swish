@@ -130,24 +130,15 @@ pairToKeyValue (x,y) = do
 -- ** Trait
 
 instance ToJSON Trait where 
-    toJSON t = toJSON $ KeyPairList $ f (traitlikeID t)
+    toJSON t = toJSON $ KeyPairList $ f (traitID t)
         where f Nothing = t'
               f (Just x) = KeyValuePair prefixedidRes x:t'
-              t' = traitlikeContents t 
-instance ToJSON Item where 
-    toJSON t = toJSON $ KeyPairList $ f (traitlikeID t)
-        where f Nothing = t'
-              f (Just x) = KeyValuePair prefixedidRes x:t'
-              t' = traitlikeContents t 
+              t' = traitContents t 
 instance FromJSON Trait where 
     parseJSON val = do 
                      v <- parseJSON val
                      return $ kpToTrait' v
        where kpToTrait' (KeyPairList x ) = kpToTrait x
-instance FromJSON Item where 
-    parseJSON val = do 
-                     v <- parseJSON val
-                     return $ kpToItem v
 
 -- ** CharacterSheet
 

@@ -83,7 +83,7 @@ advanceCharacter cs adv = cs {
      csYear = y,
      csSeason = s,
      csTraits = advanceTraitList (csTraits cs) (traits adv),
-     csItems = advanceItemList (csItems cs) (items adv)
+     csItems = advanceTraitList (csItems cs) (items adv)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)
 

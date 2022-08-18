@@ -93,10 +93,10 @@ itFromRDF s advid g = sort $ splitTrait $ map vb2tt $ rdfQueryFind q g
     where q = traitqgraph (armRes s) advid
 
 vb2tt :: VB.RDFVarBinding -> Trait
-vb2tt vb = defaultTrait { traitClass = vbMap vb (Var "class"),
-               traitContents = [ arc (vbMap vb (Var "id")) 
-                               (vbMap vb (Var "property"))
-                               (vbMap vb (Var "value")) ] }
+vb2tt vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
+               traitContents = [ arc (fromJust $ vbMap vb (Var "id")) 
+                               (fromJust $ vbMap vb (Var "property"))
+                               (fromJust $ vbMap vb (Var "value")) ] }
 
 splitTrait :: [Trait] -> [Trait]
 splitTrait xs = splitTrait' ([],xs)
@@ -106,6 +106,11 @@ splitTrait' (t:ts,x:xs)
     | traitClass t == traitClass x = splitTrait' (t':ts,xs) 
     | otherwise                    = splitTrait' (x:t:ts,xs) 
        where t' = addToTrait x t
+
+addToTrait :: Trait -> Trait -> Trait
+addToTrait t x | traitClass t /= traitClass x 
+                      = error "traitClass mismatch in addToTrait"
+      | otherwise = t { traitContents = traitContents t ++ traitContents x }
 
 traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph
 traitqgraph p s = listToRDFGraph 
