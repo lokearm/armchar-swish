@@ -99,8 +99,9 @@ vb2tt vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
                                (fromJust $ vbMap vb (Var "value")) ] }
 
 splitTrait :: [Trait] -> [Trait]
-splitTrait xs = splitTrait' ([],xs)
-splitTrait' :: ([Trait],[Trait]) -> [Trait]
+splitTrait xs = fst $ splitTrait' ([],xs)
+splitTrait' :: ([Trait],[Trait]) -> ([Trait],[Trait])
+splitTrait' (ts,[]) = (ts,[])
 splitTrait' ([],x:xs) = splitTrait' (x:[],xs) 
 splitTrait' (t:ts,x:xs) 
     | traitClass t == traitClass x = splitTrait' (t':ts,xs) 
