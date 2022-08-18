@@ -34,6 +34,7 @@ import           Data.List (sort)
 import           Swish.RDF.Graph 
 import ArM.Resources
 import ArM.KeyPair
+import ArM.Rules.Aux
 import ArM.Types.Character
 
 data XPType = XP { addXP :: Maybe Int, totalXP :: Maybe Int }
