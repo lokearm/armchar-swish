@@ -45,9 +45,9 @@ advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] = xs
 advanceTraitList [] (y:ys) = y:advanceTraitList [] ys
 advanceTraitList (x:xs) (y:ys) 
-  | x < y  = x:advanceTraitList xs (y:ys)
-  | x > y  = y:advanceTraitList (x:xs) ys
-  | otherwise = advanceTraitList ( (advanceTrait x y):xs ) ys
+  | x < y  = trace (show x) $ x:advanceTraitList xs (y:ys)
+  | x > y  = trace (show y) $ y:advanceTraitList (x:xs) ys
+  | otherwise = trace (show (xc,yc)) $ advanceTraitList ( (advanceTrait x y):xs ) ys
      where xc = traitClass x
            yc = traitClass y
 
@@ -88,8 +88,10 @@ advanceTriples2 xs = makeXParc xs ys
 makeXParc [] ys = ys
 makeXParc xs ys = getXParc xs:ys
 
--- | TODO Dummy
-getXParc (x:xs) = x
+getXParc (x:[]) = x
+getXParc (x:y:xs) = arc (arcSubj x) (armRes "hasTotalXP") (litInt s)
+    where s = f x + f y
+          f = intFromRDF . arcObj
 
 getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
 getXPtriples xs = getXPtriples' ([],xs)
