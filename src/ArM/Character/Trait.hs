@@ -42,13 +42,12 @@ import Debug.Trace
 -- apply each advancement to the corresponding Trait.
 -- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
-advanceTraitList xs = map fixTrait . advanceTraitList' xs
-advanceTraitList' xs [] = trace ("aTL xs "++(show . traitClass . head) xs) xs
-advanceTraitList' [] ys = trace ("aTL xs "++(show . traitClass . head) ys) ys
-advanceTraitList' (x:xs) (y:ys) 
-  | x < y  = trace ("aTL x "++show (xc,yc)) $ x:advanceTraitList' xs (y:ys)
-  | x > y  = trace ("aTL y "++show (xc,yc)) $ y:advanceTraitList' (x:xs) ys
-  | otherwise = trace ("aTL "++show (xc,yc)) $ advanceTraitList' ( (advanceTrait x y):xs ) ys
+advanceTraitList xs [] = trace ("aTL xs "++(show . traitClass . head) xs) xs
+advanceTraitList [] ys = trace ("aTL ys "++(show . traitClass . head) ys) $ map fixTrait ys
+advanceTraitList (x:xs) (y:ys) 
+  | x < y  = trace ("aTL x "++show (xc,yc)) $ x:advanceTraitList xs (y:ys)
+  | x > y  = trace ("aTL y "++show (xc,yc)) $ y:advanceTraitList (x:xs) ys
+  | otherwise = trace ("aTL "++show (xc,yc)) $ advanceTraitList ( (advanceTrait x y):xs ) ys
      where xc = traitClass x
            yc = traitClass y
 
@@ -57,7 +56,7 @@ advanceTraitList' (x:xs) (y:ys)
 -- 2.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = trace ( "advanceTrait: " ++ (show $ traitID trait) ) 
-  $ trait { traitContents = map fixSubj $ advanceTriples ( traitContents trait ) 
+  $ fixTrait $ trait { traitContents = map fixSubj $ advanceTriples ( traitContents trait ) 
                                      ( traitContents adv ) }
 
 -- | Merge two lists of trait statements.  If a subject/property
@@ -77,7 +76,7 @@ fixSubj x = trace ("fixSubj: "++ show y) y
 
 
 fixTrait :: Trait -> Trait
-fixTrait trait = trait {
+fixTrait trait = trace "fixTrait" $ trait {
        traitContents = sort $ advanceTriples2 $ traitContents trait
     }
 

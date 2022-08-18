@@ -32,6 +32,8 @@ import ArM.Rules.Aux
 import qualified Swish.RDF.VarBinding  as VB
 import           Swish.VarBinding  (vbMap)
 
+import Debug.Trace
+
 -- Class:
 --    a arm:CharacterAdvancement ;
 -- Time:
@@ -82,7 +84,7 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g adv = adv { traits = sort $ traitsFromRDF advid g,
+fixAdv g adv = trace ("fixAdv "++show advid) $ adv { traits = sort $ traitsFromRDF advid g,
                  items = sort $ itemsFromRDF advid g }
         where advid = rdfid adv
 
@@ -93,14 +95,14 @@ itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ rdfQueryFind q g
     where q = traitqgraph (armRes s) advid
 
 vb2tt :: Bool -> VB.RDFVarBinding -> Trait
-vb2tt b vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
+vb2tt b vb = trace "vb2tt" $ defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
                isRepeatableTrait = b,
                traitContents = [ arc (fromJust $ vbMap vb (Var "id")) 
                                (fromJust $ vbMap vb (Var "property"))
                                (fromJust $ vbMap vb (Var "value")) ] }
 
 splitTrait :: [Trait] -> [Trait]
-splitTrait xs = fst $ splitTrait' ([],xs)
+splitTrait xs = fst $ trace "splitTrait" $ splitTrait' ([],xs)
 splitTrait' :: ([Trait],[Trait]) -> ([Trait],[Trait])
 splitTrait' (ts,[]) = (ts,[])
 splitTrait' ([],x:xs) = splitTrait' (x:[],xs) 
