@@ -42,12 +42,13 @@ import Debug.Trace
 -- apply each advancement to the corresponding Trait.
 -- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
-advanceTraitList xs [] = xs
-advanceTraitList [] ys = ys
-advanceTraitList (x:xs) (y:ys) 
-  | x < y  = trace ("advance x"++show x) $ x:advanceTraitList xs (y:ys)
-  | x > y  = trace ("advance y"++show y) $ y:advanceTraitList (x:xs) ys
-  | otherwise = trace (show (xc,yc)) $ advanceTraitList ( (advanceTrait x y):xs ) ys
+advanceTraitList xs = map fixTrait . advanceTraitList' xs
+advanceTraitList' xs [] = trace ("aTL xs "++(show . traitClass . head) xs) xs
+advanceTraitList' [] ys = trace ("aTL xs "++(show . traitClass . head) ys) ys
+advanceTraitList' (x:xs) (y:ys) 
+  | x < y  = trace ("aTL x "++show (xc,yc)) $ x:advanceTraitList' xs (y:ys)
+  | x > y  = trace ("aTL y "++show (xc,yc)) $ y:advanceTraitList' (x:xs) ys
+  | otherwise = trace ("aTL "++show (xc,yc)) $ advanceTraitList' ( (advanceTrait x y):xs ) ys
      where xc = traitClass x
            yc = traitClass y
 
@@ -55,31 +56,31 @@ advanceTraitList (x:xs) (y:ys)
 -- 1.  take other properties from the second Trait if available
 -- 2.  default to properties from the first Trait
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = trace ( "advanceTrait: " ++ (show $ traitID trait) ) trait
-    { traitContents = advanceTriples ( traitContents trait ) 
+advanceTrait trait adv = trace ( "advanceTrait: " ++ (show $ traitID trait) ) 
+  $ trait { traitContents = map fixSubj $ advanceTriples ( traitContents trait ) 
                                      ( traitContents adv ) }
 
--- | Merge two lists of trait statements using `advanceTriple1`.
--- Then total XP is recalculated adding up all `hasTotalXP` and
--- `addedXP` properties.
+-- | Merge two lists of trait statements.  If a subject/property
+-- pair is found in both lists, it is taken only from the former.
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
-advanceTriples x = trace "advanceTriples" . sort . map fixSubj . advanceTriples2 . advanceTriples1 x
+advanceTriples xs [] = xs
+advanceTriples [] ys = ys
+advanceTriples (x:xs) (y:ys) 
+    | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples."
+    | arcPred x < arcPred y = x:advanceTriples (xs) (y:ys)
+    | arcPred x > arcPred y = y:advanceTriples (x:xs) (ys)
+    | otherwise = y:advanceTriples xs ys
 
 fixSubj :: RDFTriple -> RDFTriple
 fixSubj x = trace ("fixSubj: "++ show y) y
    where y = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
 
 
--- | Merge two lists of trait statements.  If a subject/property
--- pair is found in both lists, it is taken only from the former.
-advanceTriples1 :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
-advanceTriples1 xs [] = xs
-advanceTriples1 [] ys = ys
-advanceTriples1 (x:xs) (y:ys) 
-    | arcSubj x /=  arcSubj y = error "Conflicting Trait IDs in advanceTriples1."
-    | arcPred x < arcPred y = x:advanceTriples1 (xs) (y:ys)
-    | arcPred x > arcPred y = y:advanceTriples1 (x:xs) (ys)
-    | otherwise = y:advanceTriples1 xs ys
+fixTrait :: Trait -> Trait
+fixTrait trait = trait {
+       traitContents = sort $ advanceTriples2 $ traitContents trait
+    }
+
 
 advanceTriples2 :: [RDFTriple] -> [RDFTriple]
 advanceTriples2 xs = makeXParc xs ys 

@@ -82,8 +82,8 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g adv = adv { traits = traitsFromRDF advid g,
-                 items = itemsFromRDF advid g }
+fixAdv g adv = adv { traits = sort $ traitsFromRDF advid g,
+                 items = sort $ itemsFromRDF advid g }
         where advid = rdfid adv
 
 itemsFromRDF advid g = itFromRDF True "changePossession" advid g

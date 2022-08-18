@@ -8,8 +8,6 @@ import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
 
-import Debug.Trace
-
 -- ** Trait ** 
 
 -- | Trait Resource
@@ -43,8 +41,7 @@ instance Show Trait where
          sc [] = ""
          sc (x:xs) = "  " ++ show x ++ "\n" ++ sc xs
 instance Ord Trait where
-   compare x y = trace (show x ++ show y ++ show (f x y)) $ f x y
-      where f x y | traitClass x < traitClass y = LT
+   compare x y | traitClass x < traitClass y = LT
                | traitClass x > traitClass y = GT
                | not (isRepeatableTrait x) = EQ
                | not (isRepeatableTrait y) = EQ
