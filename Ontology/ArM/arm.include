@@ -53,8 +53,8 @@ arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentPrope
 arm:hasSaga a   owl:ObjectProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   arm:Saga ;
-	arm:hasStringProperty arm:hasSagaTitle .
-arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
+	arm:hasNameProperty arm:hasName .
+arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Saga Title" .
@@ -70,7 +70,7 @@ arm:hasFoundingYear a   owl:DatatypeProperty, arm:CharacterProperty ;
 arm:hasCovenant a   owl:ObjectProperty ;
         rdfs:domain  arm:Saga ;
         rdfs:range   arm:Covenant ;
-	arm:hasStringProperty arm:hasCovenantName .
+	arm:hasNameProperty arm:hasCovenantName .
 arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:range   xsd:string ;
         rdfs:label    "Covenant"  .

@@ -33,6 +33,15 @@ stringPropertyRule = makeCRule "stringRule1"
        , arc oVar (armRes "hasLabel") sVar ]
        [ arc cVar (Var "p2") sVar ]
 
+-- | Many Object Properties are used only internally, and have an
+-- associate property of string type for display purposes.  These
+-- string properties are inferred by this rule.
+namePropertyRule = makeCRule "nameRule1"
+       [ arc cVar pVar oVar
+       , arc pVar (armRes "hasNameProperty") ( Var "p2" )
+       , arc oVar (armRes "hasName") sVar ]
+       [ arc cVar (Var "p2") sVar ]
+
 bonusclassrule = makeCRule "bonusclassrule"
        [ arc cVar (armRes "bonusTo") oVar ]
        [ arc cVar (armRes "traitClass") (armRes "Bonus")

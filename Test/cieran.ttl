@@ -51,7 +51,9 @@ armchar:elksrun  a arm:Covenant ;
                arm:hasLabel "Elk's Run" ;
 	       arm:hasSetting "Hibernia" ;
                arm:hasSaga armchar:contestedlands .
-armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
+armchar:contestedlands a arm:Saga ; 
+      arm:hasName "Contested Lands" ;
+      arm:hasCharacter armchar:cieran .
 
 :zeroadv arm:advanceCharacter armchar:cieran ;
    a arm:BaseAdvancement ; 
