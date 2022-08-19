@@ -86,7 +86,7 @@ advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid 
         , csYear = y
         , csSeason = s
         , csTraits = advanceTraitList (sort $ csTraits cs) (sort $ traits adv)
-        -- , csItems = advanceTraitList (csItems cs) (items adv)
+        , csItems = advanceTraitList (csItems cs) (items adv)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)
 

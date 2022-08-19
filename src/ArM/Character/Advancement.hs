@@ -102,7 +102,7 @@ vb2tt b vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
                                (fromJust $ vbMap vb (Var "value")) ] }
 
 splitTrait :: [Trait] -> [Trait]
-splitTrait xs = fst $ trace "splitTrait" $ splitTrait' ([],xs)
+splitTrait xs = fst $ splitTrait' ([],xs)
 splitTrait' :: ([Trait],[Trait]) -> ([Trait],[Trait])
 splitTrait' (ts,[]) = (ts,[])
 splitTrait' ([],x:xs) = splitTrait' (x:[],xs) 

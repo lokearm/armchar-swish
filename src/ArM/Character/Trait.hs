@@ -71,7 +71,7 @@ advanceTriples (x:xs) (y:ys)
     | otherwise = y:advanceTriples xs ys
 
 fixSubj :: RDFTriple -> RDFTriple
-fixSubj x = trace ("fixSubj: "++ show y) y
+fixSubj x = y -- trace ("fixSubj: "++ show y) y
    where y = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
 
 
