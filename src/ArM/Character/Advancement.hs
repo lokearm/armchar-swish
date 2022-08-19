@@ -91,30 +91,51 @@ fixAdv g adv = trace ("fixAdv "++show advid) $ adv { traits = sort $ traitsFromR
 itemsFromRDF advid g = itFromRDF True "changePossession" advid g
 traitsFromRDF advid g = itFromRDF False "advanceTrait" advid g
 
+
+itFromRDF :: Bool -> String -> RDFLabel -> RDFGraph -> [Trait]
 itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ rdfQueryFind q g 
     where q = traitqgraph (armRes s) advid
 
-vb2tt :: Bool -> VB.RDFVarBinding -> Trait
-vb2tt b vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
-               isRepeatableTrait = b,
-               traitContents = [ arc (fromJust $ vbMap vb (Var "id")) 
-                               (fromJust $ vbMap vb (Var "property"))
-                               (fromJust $ vbMap vb (Var "value")) ] }
+type ProtoTrait = (RDFLabel, RDFLabel, RDFLabel,RDFLabel)
+vb2tt :: Bool -> VB.RDFVarBinding -> ProtoTrait
+vb2tt b vb = ( fromJust $ vbMap vb (Var "class")
+             , (fromJust $ vbMap vb (Var "id")) 
+             , (fromJust $ vbMap vb (Var "property"))
+             , (fromJust $ vbMap vb (Var "value")) 
+             )
 
-splitTrait :: [Trait] -> [Trait]
+splitTrait :: [ProtoTrait] -> [Trait]
 splitTrait xs = fst $ splitTrait' ([],xs)
-splitTrait' :: ([Trait],[Trait]) -> ([Trait],[Trait])
+splitTrait' :: ([Trait],[ProtoTrait]) -> ([Trait],[ProtoTrait])
 splitTrait' (ts,[]) = (ts,[])
-splitTrait' ([],x:xs) = splitTrait' (x:[],xs) 
+splitTrait' ([],x:xs) = splitTrait' (mkTrait x:[],xs) 
 splitTrait' (t:ts,x:xs) 
-    | traitClass t == traitClass x = splitTrait' (t':ts,xs) 
-    | otherwise                    = splitTrait' (x:t:ts,xs) 
+    | traitClass t == c = splitTrait' (t':ts,xs) 
+    | otherwise         = splitTrait' (mkTrait x:t:ts,xs) 
        where t' = addToTrait t x
+             (c,s,p,o) = x
+mkTrait :: ProtoTrait -> Trait
+mkTrait (a,b,c,d) = defaultTrait { traitClass = a,
+                         traitContents = [ arc b c d ] }
 
-addToTrait :: Trait -> Trait -> Trait
-addToTrait t x | traitClass t /= traitClass x 
-                      = error "traitClass mismatch in addToTrait"
-      | otherwise = t { traitContents = traitContents x ++ traitContents t }
+
+addToTrait :: Trait -> ProtoTrait -> Trait
+addToTrait t (c,s,p,o) 
+      | traitClass t /= c = error "traitClass mismatch in addToTrait"
+      | p == armRes "instanceLabel" 
+             = t { instanceLabel = lab o
+                 , traitContents = triple:traitContents t }
+      | p == typeRes && o == armRes "RepeatableTrait" 
+                        = t { isRepeatableTrait = True
+                            , traitContents = triple:traitContents t }
+      | p == typeRes && o == armRes "Equipment" 
+                        = t { isRepeatableTrait = True
+                            , traitContents = triple:traitContents t }
+      | otherwise = t { traitContents = triple:traitContents t }
+         where lab = f . rdfToString 
+               triple = arc s p o
+               f Nothing = ""
+               f (Just x) = x
 
 traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph
 traitqgraph p s = listToRDFGraph 

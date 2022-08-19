@@ -10,7 +10,7 @@ if ( len(sys.argv) > 1 ):
     fn = sys.argv[1]
 print ( "Filename: " + fn )
 
-cstring = "cieran/1218/Spring"
+cstring = "cieran/1218/Summer"
 if ( len(sys.argv) > 1 ):
     cstring = sys.argv[2]
 print ( "cstring: " + cstring )
