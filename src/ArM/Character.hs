@@ -11,8 +11,6 @@
 -- *  `ArM.Character.Character` defines the `CharacterSheet` datatype and
 --    the functions to advance them.
 -- *  `ArM.Character.Trait` handles processing and advancement of `Trait`
--- *  `ArM.Character.Metadata` handles `Character` objects, that is the
---    metadata which do not change during the game
 -- *  `ArM.Character.Advancement` handles processing of the `Advancement`
 --    type.
 -- Most of the actual types are defined in `ArM.Types.Character`
