@@ -95,7 +95,7 @@ itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ rdfQueryFind q g
     where q = traitqgraph (armRes s) advid
 
 vb2tt :: Bool -> VB.RDFVarBinding -> Trait
-vb2tt b vb = trace "vb2tt" $ defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
+vb2tt b vb = defaultTrait { traitClass = fromJust $ vbMap vb (Var "class"),
                isRepeatableTrait = b,
                traitContents = [ arc (fromJust $ vbMap vb (Var "id")) 
                                (fromJust $ vbMap vb (Var "property"))
