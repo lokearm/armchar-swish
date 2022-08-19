@@ -42,6 +42,7 @@ import Debug.Trace
 -- apply each advancement to the corresponding Trait.
 -- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
+advanceTraitList [] [] = [] -- only to support head in the debug trace
 advanceTraitList xs [] = trace ("aTL xs "++(show . traitClass . head) xs) xs
 advanceTraitList [] ys = trace ("aTL ys "++(show . traitClass . head) ys) $ map fixTrait ys
 advanceTraitList (x:xs) (y:ys) 

@@ -101,8 +101,8 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
       [ arm:traitClass armr:bargain ;  arm:addedXP 5  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
         arm:addedXP 5  ],
-      [ arm:traitClass armr:craft-cooking ; arm:addedXP 30  ],
-      [ arm:traitClass armr:craft-fletching ; arm:addedXP 30  ],
+      [ arm:traitClass armr:craft-cooking ; arm:hasSpeciality "Cookies" ; arm:addedXP 30  ],
+      [ arm:traitClass armr:craft-fletching ; arm:hasSpeciality "Arrows" ; arm:addedXP 30  ],
       [ arm:traitClass armr:hermeslore ; arm:hasSpeciality "Hibernia" ;
         arm:addedXP 5  ] .
 :apprenticeadv arm:advanceCharacter armchar:cieran ;

@@ -23,6 +23,19 @@ def get(conn,path):
    data = response.read()
    return json.loads(data)
 
+def label(i):
+    lab = i.get("arm:hasLabel","")
+    det = i.get("arm:hasDetail","")
+    ins = i.get("arm:instanceLabel","")
+    if (lab != "") & (ins != ""):
+        lab += " - " + ins
+    elif ins:
+        lab = ins
+    if not lab: lab = "???"
+    if det:
+        lab += " (" + det + ")"
+    return lab
+
 conn = http.client.HTTPConnection("localhost:3000")
 
 output = [ "\\documentclass{armsheet}", "\\begin{magus}" ]
@@ -61,7 +74,7 @@ if y.__contains__( "arm:inYear" ):
 
 y = get(conn,"/ability/" + cstring  )
 
-ab = [ (i.get("arm:hasLabel","???"),i.get("arm:hasSpeciality","-"),i.get("arm:hasScore","-"),i.get("arm:hasXP","-")) for i in y ]
+ab = [ (label(i),i.get("arm:hasSpeciality","-"),i.get("arm:hasScore","-"),i.get("arm:hasXP","-")) for i in y ]
 ab.sort()
 
 
@@ -76,13 +89,13 @@ y += get(conn,"/flaw/" + cstring )
 
 output.append( "\\begin{vf}" )
 for i in y:
-    output.append( f"  \\vfLine{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasScore','?')}}}" )
+    output.append( f"  \\vfLine{{{label(i)}}}{{{i.get('arm:hasScore','?')}}}" )
 output.append( "\\end{vf}" )
 
 y = get(conn,"/pt/" + cstring )
 output.append( "\\begin{personality}" )
 for i in y:
-    output.append( f"  \\aPtrait{{{i.get('arm:hasLabel','???')}}}{{{i.get('arm:hasScore','?')}}}" )
+    output.append( f"  \\aPtrait{{{label(i)}}}{{{i.get('arm:hasScore','?')}}}" )
 output.append( "\\end{personality}" )
 
 y = get(conn,"/equipment/" + cstring )
@@ -90,7 +103,7 @@ output.append( "\\begin{equipment}" )
 for i in y:
     q = i.get('arm:hasQuantity','')
     if q != "": q = f" ({q})"
-    output.append( f"  \\eqPiece{{{i.get('arm:hasLabel','???')}{q}}}{{{i.get('arm:hasLoad','')}}}" )
+    output.append( f"  \\eqPiece{{{label(i)}{q}}}{{{i.get('arm:hasLoad','')}}}" )
 output.append( "\\end{equipment}" )
 
 y = get(conn,"/characteristic/" + cstring )
@@ -100,7 +113,7 @@ for i in y:
 y = get(conn,"/art/" + cstring )
 
 for i in y:
-    output.append( f'\AnArt{{{i.get("arm:hasLabel","?").lower()}}}{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasXP","?")}}}{{{i.get("arm:hasVis","-")}}}' )
+    output.append( f'\AnArt{{{label(i).lower()}}}{{{i.get("arm:hasScore","?")}}}{{{i.get("arm:hasXP","?")}}}{{{i.get("arm:hasVis","-")}}}' )
 
 y = get(conn,"/spell/" + cstring )
 output.append( "\\begin{grimoire}" )
@@ -129,13 +142,13 @@ for i in y:
         t2 = "".join( [ s[:2] for s in t2 ] )
     if t2 != "": t = t + "("+t2+")"
     tefo = t + f
-    output.append( f"  \\Aspell{{{i.get('arm:hasLabel','???')}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{masteryscore}}}{{{notes}}}" )
+    output.append( f"  \\Aspell{{{label(i)}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{masteryscore}}}{{{notes}}}" )
 output.append( "\\end{grimoire}" )
 
 y = get(conn,"/combat/" + cstring )
 output.append( "\\begin{combat}" )
 for i in y:
-    output.append( f"\weapon:{i.get('arm:hasLabel','??')}:"
+    output.append( f"\weapon:{label(i)}:"
                     + f"init={i.get('arm:hasInit','-')},"
                     + f"atk={i.get('arm:hasAtk','-')};"
                     + f"def={i.get('arm:hasDfn','-')},"
