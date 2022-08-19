@@ -32,7 +32,12 @@ import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Types.Character
 
-import Debug.Trace
+import Control.Parallel.Strategies (parMap,rpar)
+
+
+
+-- import Debug.Trace
+trace x y = y
 
 
 -- |
@@ -42,12 +47,12 @@ import Debug.Trace
 -- apply each advancement to the corresponding Trait.
 -- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
-advanceTraitList xs [] = trace ("aTL xs "++(show . traitClass . head) xs) xs
-advanceTraitList [] ys = trace ("aTL ys "++(show . traitClass . head) ys) $ map fixTrait ys
+advanceTraitList xs [] =  xs
+advanceTraitList [] ys = parMap rpar fixTrait ys
 advanceTraitList (x:xs) (y:ys) 
-  | x < y  = trace ("aTL x "++show (xc,yc)) $ x:advanceTraitList xs (y:ys)
-  | x > y  = trace ("aTL y "++show (xc,yc)) $ fixTrait y:advanceTraitList (x:xs) ys
-  | otherwise = trace ("aTL "++show (xc,yc)) $ advanceTraitList ( (advanceTrait x y):xs ) ys
+  | x < y  =  x:advanceTraitList xs (y:ys)
+  | x > y  =  fixTrait y:advanceTraitList (x:xs) ys
+  | otherwise =  advanceTraitList ( (advanceTrait x y):xs ) ys
      where xc = traitClass x
            yc = traitClass y
 
@@ -71,8 +76,7 @@ advanceTriples (x:xs) (y:ys)
     | otherwise = y:advanceTriples xs ys
 
 fixSubj :: RDFTriple -> RDFTriple
-fixSubj x = trace ("fixSubj: "++ show y) y
-   where y = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
+fixSubj x = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
 
 
 fixTrait :: Trait -> Trait

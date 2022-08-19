@@ -33,8 +33,6 @@ import           ArM.Resources
 import           ArM.KeyPair
 import ArM.Rules.Aux
 
-import Debug.Trace
-
 getVirtues = getTraitList $ armRes "hasVirtue"
 getFlaws = getTraitList $ armRes "hasFlaw"
 getPTs = getTraitList $ armRes "hasPersonalityTrait"
@@ -55,7 +53,8 @@ traitarcs p = listToRDFGraph
    , G.arc idVar propertyVar valueVar                  -- triple of interest
    , G.arc propertyVar labelRes labelVar ]             -- property label
 getTraitList :: G.RDFLabel -> G.RDFGraph -> [KeyPairList]
-getTraitList p = trace (show p) . map ( KeyPairList . toKeyPairList ) . arcListSplit . ( \ x -> trace (show x) x ) . map arcFromBinding . Q.rdfQueryFind (traitarcs p)
+getTraitList p = map ( KeyPairList . toKeyPairList ) . arcListSplit 
+               . map arcFromBinding . Q.rdfQueryFind (traitarcs p)
 
 
 arcs :: G.RDFGraph

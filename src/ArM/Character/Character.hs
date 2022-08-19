@@ -38,7 +38,8 @@ import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
 import ArM.Types.Character
 
-import Debug.Trace
+-- import Debug.Trace
+trace x y = y
 
 getCharacterMetadata = CM.getCharacterMetadata
 
@@ -84,6 +85,6 @@ advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid 
         , csYear = y
         , csSeason = s
         , csTraits = advanceTraitList (sort $ csTraits cs) (sort $ traits adv)
-        -- , csItems = advanceTraitList (csItems cs) (items adv)
+        , csItems = advanceTraitList (csItems cs) (items adv)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)

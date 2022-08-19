@@ -61,8 +61,8 @@ instance Show Trait where
 instance Ord Trait where
    compare x y | traitClass x < traitClass y = LT
                | traitClass x > traitClass y = GT
-               | not (isRepeatableTrait x) = EQ
-               | not (isRepeatableTrait y) = EQ
+               -- | not (isRepeatableTrait x) = EQ
+               -- | not (isRepeatableTrait y) = EQ
                | instanceLabel x < instanceLabel y = LT
                | instanceLabel x > instanceLabel y = GT
                | otherwise = EQ
