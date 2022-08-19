@@ -149,7 +149,7 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
   arm:changePossession
      [ arm:traitClass armr:Longbow ; arm:hasQuantity 1 ],
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 1 ;
-       arm:hasLabel "Fletcher's toolbelt" ;
+       arm:instanceLabel "Fletcher's toolbelt" ;
        arm:hasDescription "All the tools he needs to make arrows, darts, and javelins." ;
        ] .
 
@@ -176,7 +176,7 @@ armchar:contestedlands a arm:Saga ; arm:hasLabel "Contested Lands" .
   arm:hasAdvancementType arm:Reading ;
   arm:changePossession
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 2 ;
-       arm:hasLabel "Initiation scripts" ;
+       arm:instanceLabel "Initiation scripts" ;
        arm:hasDescription "These initiation scripts came from Jerome's Tower, apparently belonging to some Cult of the Servants of the Common People." ;
        ] .
 

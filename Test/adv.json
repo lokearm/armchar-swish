@@ -19,7 +19,7 @@
         "advancementitems": [
             {
                 "arm:hasDescription": "A very simple handcart.",
-                "arm:hasLabel": "Cart",
+                "arm:instanceLabel": "Cart",
                 "arm:hasQuantity": 1,
                 "arm:traitClass": {
                     "prefixedid": "arm:Equipment"
