@@ -8,7 +8,23 @@ import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
 
--- ** Trait ** 
+
+-- |
+-- = RDF Conversion
+
+class FromRDFGraph a where
+    fromRDFGraph :: RDFGraph -> RDFLabel -> a 
+class ToRDFGraph a where
+    makeRDFGraph :: a -> RDFGraph
+
+-- | Convert `KeyValuePair` to `RDFTriple`
+-- This is an auxiliary for other ToRDFGraph functions
+keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
+keyvalueToArcList x [] = []
+keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
+
+-- | 
+-- = Trait
 
 -- | Trait Resource
 -- `traitID` and `traitContents` are sufficient to describe the trait.
@@ -28,6 +44,8 @@ defaultTrait = Trait {
     isRepeatableTrait = False,
     traitContents = []
    } 
+
+-- | Get the ID (RDFLabel) of a trait if possible.
 traitID :: Trait -> Maybe RDFLabel
 traitID = f . traitContents
    where f [] = Nothing
@@ -49,10 +67,9 @@ instance Ord Trait where
                | instanceLabel x > instanceLabel y = GT
                | otherwise = EQ
 
+-- | 
+-- = Character
 
-keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
-keyvalueToArcList x [] = []
-keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
 
 data Character = Character {
          characterID :: RDFLabel,
@@ -67,6 +84,9 @@ defaultCharacter = Character {
          characterID = noSuchCharacter,
          characterData = KeyPairList []
        }  
+
+-- | 
+-- = Character Sheet
 
 data CharacterSheet = CharacterSheet {
       csID :: RDFLabel,
@@ -104,10 +124,7 @@ showSheetID = f . sheetID
     where f Nothing = "no sheet ID"
           f (Just x) = show x
 
-class FromRDFGraph a where
-    fromRDFGraph :: RDFGraph -> RDFLabel -> a 
-class ToRDFGraph a where
-    makeRDFGraph :: a -> RDFGraph
+
 instance ToRDFGraph CharacterSheet where
    makeRDFGraph cs =
          ( listToRDFGraph  . fst . runBlank ( csToArcListM cs' ) )
@@ -132,6 +149,7 @@ instance ToRDFGraph Character where
        where x = characterID cs
              ms = keyvalueToArcList x (fromKeyPairList $ characterData cs)
              ct = arc x typeRes (armRes  "Character")
+
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM cs $ sheetID cs
@@ -167,10 +185,12 @@ fixBlankNodeM t
 replaceBlank :: RDFLabel -> RDFTriple -> RDFTriple
 replaceBlank b x = arc b ( arcPred x ) ( arcObj x )
             
-
 getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM _ Nothing = getBlank
 getSheetIDM _ (Just x) = return x
+
+-- |
+-- = Character Advancement
 
 -- | CharacterAdvancement Resource
 -- Essential information is in `rdfid`, `contents`, and `traits.
@@ -224,6 +244,23 @@ instance Ord Advancement where
                | contents x < contents y = LT
                | contents x > contents y = GT
                | otherwise = EQ
+
+instance ToRDFGraph Advancement where
+   makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
+
+advToArcList :: Advancement -> [RDFTriple]
+advToArcList adv = ys2
+    where ms = keyvalueToArcList (rdfid adv) (contents adv)
+          atRes = armRes "advanceTrait"
+          cpRes = armRes "changePossession"
+          xs1 =  map traitContents (traits adv)
+          xs2 =  map traitContents (items adv)
+          ys1 = foldr (++) ms xs1
+          ys2 = foldr (++) ys1 xs2
+
+-- |
+-- = Season
+
 sno = seasonNo . season
 
 -- | The `SeasonYear` gives a season with year.
@@ -248,15 +285,8 @@ seasonNo "Autumn" = 3
 seasonNo "Winter" = 4
 seasonNo _ = 10
 
-instance ToRDFGraph Advancement where
-   makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
-
-advToArcList :: Advancement -> [RDFTriple]
-advToArcList adv = ys2
-    where ms = keyvalueToArcList (rdfid adv) (contents adv)
-          atRes = armRes "advanceTrait"
-          cpRes = armRes "changePossession"
-          xs1 =  map traitContents (traits adv)
-          xs2 =  map traitContents (items adv)
-          ys1 = foldr (++) ms xs1
-          ys2 = foldr (++) ys1 xs2
+maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
+maybeNextSeason ("",Just y) = ("",Just (y+1)) 
+maybeNextSeason ("",Nothing) = ("",Nothing) 
+maybeNextSeason (s,Just y) = (s',Just y') where (s',y') = nextSeason (s,y)
+maybeNextSeason (s,Nothing) = (s',Nothing) where (s',y') = nextSeason (s,0) 

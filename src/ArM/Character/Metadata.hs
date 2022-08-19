@@ -34,7 +34,7 @@ import           Data.List (sort)
 
 
 -- |
--- = Get Character ID from a grah
+-- = Get Character ID from a graph
 
 -- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
@@ -70,11 +70,7 @@ query c = listToRDFGraph
 -- either as a prefixed name or as a full URI in angled brackets (<uri>).
 getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
 getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
-                          $  getCharacterMetadataVB g s
-
--- | Get the variable bindings from the graph.
-getCharacterMetadataVB :: G.RDFGraph -> RDFLabel -> [VB.RDFVarBinding]
-getCharacterMetadataVB g c = Q.rdfQueryFind (query c) g
+                          $  Q.rdfQueryFind (query s) g
 
 -- |
 -- = Instances - Load Character object from graph

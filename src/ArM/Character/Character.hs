@@ -42,7 +42,6 @@ import Debug.Trace
 
 getCharacterMetadata = CM.getCharacterMetadata
 
-
 getGameStartCharacter :: G.RDFGraph -> G.RDFLabel -> Maybe CharacterSheet
 getGameStartCharacter g label = Just $ getGameStartCS g y
      where x = CM.fromRDFGraph g label :: Character
@@ -88,9 +87,3 @@ advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid 
         -- , csItems = advanceTraitList (csItems cs) (items adv)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)
-
-maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
-maybeNextSeason ("",Just y) = ("",Just (y+1)) 
-maybeNextSeason ("",Nothing) = ("",Nothing) 
-maybeNextSeason (s,Just y) = (s',Just y') where (s',y') = nextSeason (s,y)
-maybeNextSeason (s,Nothing) = (s',Nothing) where (s',y') = nextSeason (s,0) 
