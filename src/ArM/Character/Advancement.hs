@@ -32,7 +32,8 @@ import ArM.Rules.Aux
 import qualified Swish.RDF.VarBinding  as VB
 import           Swish.VarBinding  (vbMap)
 
-import Debug.Trace
+-- import Debug.Trace
+trace x y = y
 
 -- Class:
 --    a arm:CharacterAdvancement ;

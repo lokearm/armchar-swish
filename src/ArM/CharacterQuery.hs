@@ -33,8 +33,6 @@ import           ArM.Resources
 import           ArM.KeyPair
 import ArM.Rules.Aux
 
-import Debug.Trace
-
 getVirtues = getTraitList $ armRes "hasVirtue"
 getFlaws = getTraitList $ armRes "hasFlaw"
 getPTs = getTraitList $ armRes "hasPersonalityTrait"
