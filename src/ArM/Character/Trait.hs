@@ -59,7 +59,7 @@ advanceTraitList (x:xs) (y:ys)
 -- 2.  default to properties from the first Trait
 -- The advancement's list of trait statements is assumed not be sorted,
 -- and are sorted prior to processing.  The character sheet's OTOH
--- has to be pre-sorted.
+-- has to be pre-sorted, which is not unfortunately.
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = 
   fixTrait $ trait { traitContents = map fixSubj 

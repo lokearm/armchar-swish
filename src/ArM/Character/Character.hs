@@ -101,7 +101,7 @@ advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid 
      cs { sheetID = Nothing
         , csYear = y
         , csSeason = s
-        , csTraits = advanceTraitList (sort $ csTraits cs) (sort $ traits adv)
+        , csTraits = advanceTraitList (csTraits cs) (sort $ traits adv)
         , csItems = advanceTraitList (csItems cs) (items adv)
      }
      where (s,y) = maybeNextSeason $ (season adv, year adv)
