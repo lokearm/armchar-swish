@@ -89,22 +89,31 @@ y = get(conn,"/virtue/" + cstring )
 y += get(conn,"/flaw/" + cstring )
 
 output.append( "\\begin{vf}" )
+tmpout = []
 for i in y:
-    output.append( f"  \\vfLine{{{label(i)}}}{{{i.get('arm:hasScore','?')}}}" )
+    tmpout.append( f"  \\vfLine{{{label(i)}}}{{{i.get('arm:hasScore','?')}}}" )
+tmpout.sort()
+output += tmpout
 output.append( "\\end{vf}" )
 
 y = get(conn,"/pt/" + cstring )
 output.append( "\\begin{personality}" )
+tmpout = []
 for i in y:
-    output.append( f"  \\aPtrait{{{label(i)}}}{{{i.get('arm:hasScore','?')}}}" )
+    tmpout.append( f"  \\aPtrait{{{label(i)}}}{{{i.get('arm:hasScore','?')}}}" )
+tmpout.sort()
+output += tmpout
 output.append( "\\end{personality}" )
 
 y = get(conn,"/equipment/" + cstring )
 output.append( "\\begin{equipment}" )
+tmpout = []
 for i in y:
     q = i.get('arm:hasQuantity','')
     if q != "": q = f" ({q})"
-    output.append( f"  \\eqPiece{{{label(i)}{q}}}{{{i.get('arm:hasLoad','')}}}" )
+    tmpout.append( f"  \\eqPiece{{{label(i)}{q}}}{{{i.get('arm:hasLoad','')}}}" )
+tmpout.sort()
+output += tmpout
 output.append( "\\end{equipment}" )
 
 y = get(conn,"/characteristic/" + cstring )
@@ -118,6 +127,7 @@ for i in y:
 
 y = get(conn,"/spell/" + cstring )
 output.append( "\\begin{grimoire}" )
+tmpout = []
 for i in y:
     masteryscore = i.get('arm:hasScore','-')
     mxp = i.get('arm:hasXP','')
@@ -143,7 +153,9 @@ for i in y:
         t2 = "".join( [ s[:2] for s in t2 ] )
     if t2 != "": t = t + "("+t2+")"
     tefo = t + f
-    output.append( f"  \\Aspell{{{label(i)}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{masteryscore}}}{{{notes}}}" )
+    tmpout.append( f"  \\Aspell{{{label(i)}}}{{{tefo}}}{{{i.get('arm:hasLevel','?')}}}{{{i.get('arm:hasCastingScore','?')}}}{{{masteryscore}}}{{{notes}}}" )
+tmpout.sort()
+output += tmpout
 output.append( "\\end{grimoire}" )
 
 y = get(conn,"/combat/" + cstring )
