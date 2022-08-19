@@ -40,7 +40,6 @@ executable armchar-swish
                        , ArM.Time
                        , ArM.Character.Character
                        , ArM.Character.Advancement
-                       , ArM.Character.Metadata
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
@@ -95,7 +94,6 @@ executable prof
                        , ArM.Time
                        , ArM.Character.Character
                        , ArM.Character.Advancement
-                       , ArM.Character.Metadata
                        , ArM.Character.Trait
                        , ArM.Types.Character
                        , ArM.STM
@@ -153,7 +151,6 @@ executable tst
                        , ArM.Time
                        , ArM.Character.Character
                        , ArM.Character.Advancement
-                       , ArM.Character.Metadata
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character

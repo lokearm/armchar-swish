@@ -34,8 +34,6 @@ import ArM.Types.Character
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-
-
 -- import Debug.Trace
 trace x y = y
 
