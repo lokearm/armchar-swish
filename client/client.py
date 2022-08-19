@@ -33,7 +33,8 @@ def label(i):
         lab = ins
     if not lab: lab = "???"
     if det:
-        lab += " (" + det + ")"
+        # lab += " (" + det + ")"
+        pass
     return lab
 
 conn = http.client.HTTPConnection("localhost:3000")

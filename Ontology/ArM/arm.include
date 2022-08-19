@@ -130,3 +130,8 @@ arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
         rdfs:comment  "This is used on most objects and classes in ArMchar.  It is problematic because traits should usually derive their labels from classes, while some possessions and combat options need manually enterred labels.  Thus it is sometimes calculated, but it has to be made persistent for the other cases. " ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
+arm:instanceLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
+        rdfs:label  "Label" ;
+        rdfs:comment  "Object's whose label differs from the class should use instance label to distinguish. This is editable and persisted." ;
+        rdfs:domain arm:Object ;
+        rdfs:range   xsd:string .
