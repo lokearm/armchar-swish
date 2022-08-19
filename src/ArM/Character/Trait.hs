@@ -54,17 +54,23 @@ advanceTraitList (x:xs) (y:ys)
      where xc = traitClass x
            yc = traitClass y
 
--- | apply a given Trait Advancement to a given Trait
+-- | Apply a given Trait Advancement to a given Trait
 -- 1.  take other properties from the second Trait if available
 -- 2.  default to properties from the first Trait
+-- The advancement's list of trait statements is assumed not be sorted,
+-- and are sorted prior to processing.  The character sheet's OTOH
+-- has to be pre-sorted.
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = 
   fixTrait $ trait { traitContents = map fixSubj 
-           $ advanceTriples ( sort $ traitContents trait ) 
-                                     ( sort $ traitContents adv ) }
+           $ advanceTriples ( traitContents trait ) 
+                            ( sort $ traitContents adv ) }
+      where fixSubj x = arc ( armRes "unnamedBlankNode" ) 
+                            ( arcPred x ) ( arcObj x )
 
 -- | Merge two lists of trait statements.  If a subject/property
 -- pair is found in both lists, it is taken only from the former.
+-- The lists must be sorted.
 advanceTriples :: [RDFTriple] -> [RDFTriple] -> [RDFTriple]
 advanceTriples xs [] = xs
 advanceTriples [] ys = ys
@@ -73,39 +79,43 @@ advanceTriples (x:xs) (y:ys)
     | arcPred x > arcPred y = y:advanceTriples (x:xs) (ys)
     | otherwise = y:advanceTriples xs ys
 
-fixSubj :: RDFTriple -> RDFTriple
-fixSubj x = arc ( armRes "unnamedBlankNode" ) ( arcPred x ) ( arcObj x )
-
-
+-- | When a trait is copied or merged from an advancement,
+-- XP need to be recalculated.  This auxiliary is applied
+-- by two different functions to do this.
 fixTrait :: Trait -> Trait
 fixTrait trait = trace "fixTrait" $ trait {
        traitContents = sort $ calculateXP $ traitContents trait
     }
 
+-- |
+-- == Recalculation of XP (auxiliary functions
 
+-- | Auxiliary for `fixTrait`
 calculateXP :: [RDFTriple] -> [RDFTriple]
 calculateXP ts = trace ("calculateXP\n"++show ts) $ makeXParc xs ys 
    where (xs,ys) = getXPtriples ts
          makeXParc [] ys = ys
          makeXParc xs ys = getXParc xs:ys
 
+-- | Auxiliary for `calculateXP`
 getXParc (x:xs) = trace ("getXParc "++show xp) $
                   arc (arcSubj x) (armRes "hasTotalXP") (litInt xp)
    where xp = foldr (+) 0 $ map ( intFromRDF . arcObj ) (x:xs)
 
+-- | Auxiliary for `calculateXP`
 getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
 getXPtriples xs = trace "getXPtriples" $ getXPtriples' ([],xs)
+
+-- | Auxiliary for `calculateXP`
 getXPtriples' :: ([RDFTriple],[RDFTriple]) -> ([RDFTriple],[RDFTriple])
 getXPtriples' (xs,ys) | ys == [] = trace "getTriples' []" (xs,ys)
                       | p == armRes "hasTotalXP" = trace (show y) (y:xs',ys')
                       | p == armRes "addedXP" = trace (show y) (y:xs',ys')
                       | otherwise             = trace (show y) (xs',y:ys')
-    where (xs',ys') = trace ("XPTriples: " ++ show y ++ "\n") $ getXPtriples' (xs,tail ys)
+    where (xs',ys') = getXPtriples' (xs,tail ys)
           p = arcPred y
           y = head ys
 
--- |
--- == Recalculation of XP (auxiliary functions
 
 xpSum :: [RDFTriple]  -- ^ Input list
       -> RDFTriple  -- ^ New arc
