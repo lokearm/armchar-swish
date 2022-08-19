@@ -38,7 +38,8 @@ import ArM.KeyPair
 import qualified ArM.Character.Metadata as CM
 import ArM.Types.Character
 
-import Debug.Trace
+-- import Debug.Trace
+trace x y = y
 
 getCharacterMetadata = CM.getCharacterMetadata
 
