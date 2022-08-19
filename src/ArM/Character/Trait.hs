@@ -32,6 +32,10 @@ import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Types.Character
 
+import Control.Parallel.Strategies (parMap,rpar)
+
+
+
 -- import Debug.Trace
 trace x y = y
 
@@ -44,7 +48,7 @@ trace x y = y
 -- The lists must be sorted by Trait class name.
 advanceTraitList :: [Trait] -> [Trait] -> [Trait]
 advanceTraitList xs [] =  xs
-advanceTraitList [] ys =  map fixTrait ys
+advanceTraitList [] ys = parMap rpar fixTrait ys
 advanceTraitList (x:xs) (y:ys) 
   | x < y  =  x:advanceTraitList xs (y:ys)
   | x > y  =  fixTrait y:advanceTraitList (x:xs) ys
