@@ -21,6 +21,7 @@ executable armchar-swish
   main-is:             Main.hs
   -- documentation:       True
   other-modules:       ArM.Rules
+                       , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
                        , ArM.Rules.Persistence
@@ -76,6 +77,7 @@ executable armchar-swish
 executable prof
   main-is:             Main.hs
   other-modules:       ArM.Rules
+                       , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
                        , ArM.Rules.Persistence
@@ -134,6 +136,7 @@ executable prof
 executable tst
   main-is:             Test.hs
   other-modules:       ArM.Rules
+                       , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
                        , ArM.Rules.Persistence

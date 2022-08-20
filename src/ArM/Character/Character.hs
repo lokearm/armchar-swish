@@ -36,6 +36,7 @@ module ArM.Character.Character ( CharacterSheet(..)
                                ) where
 
 import ArM.Rules.Aux
+import ArM.Internal.Aux
 
 import           Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -121,13 +122,6 @@ characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph'
     where f [] = []
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
--- | Sort the list and remove duplicates.
-uniqueSort :: (Ord a,Eq a) => [a] -> [a]
-uniqueSort = f . sort
-    where f [] = []
-          f (x:[]) = x:[]
-          f (x:y:ys) | x == y = f (y:ys)
-          f (x:y:ys) | x /= y = x:f (y:ys)
 
 -- |
 -- = Get Character Metadata
