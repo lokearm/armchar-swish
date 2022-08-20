@@ -112,8 +112,8 @@ putCharGraph stateVar g = do
         st <- STM.readTVar stateVar
         let res1 = resourceGraph st
         let g1 = R.makeGraph  g (schemaGraph st) (resourceGraph st)
-        STM.writeTVar (charGraph st) g
-        STM.writeTVar (charRawGraph st) g1
+        STM.writeTVar (charRawGraph st) g
+        STM.writeTVar (charGraph st) g1
         let ll = C.characterFromGraph g1
         let clab = head ll
         let cid = getLocalID clab
