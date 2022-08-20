@@ -11,7 +11,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Load (getRawGraph) where
+module ArM.Load (readGraph,getRawGraph) where
 
 import           ArM.Resources (baseURI)
 import           System.IO ( IO )

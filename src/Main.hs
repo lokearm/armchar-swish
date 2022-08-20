@@ -27,7 +27,7 @@ import Control.Monad.IO.Class (liftIO)
 
 
 -- Loading ArM data 
-import ArM.Load (getRawGraph)
+import ArM.Load (readGraph,getRawGraph)
 import qualified ArM.Resources as AR
 
 -- Software Transactional Memory
@@ -55,10 +55,14 @@ authf u p = return $ u == "user" && secureMemFromByteString p == password
 password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
 
+-- | Saga File
+sagaFile = "Test/saga.ttl"
+
 main :: IO ()
 main = do 
      print "Starting: armchar-swish  ..."
      printTime
+     sagaGraph <- readGraph sagaFile
      (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
      st1 <- STM.atomically $ do
          st0 <- getState res schema
