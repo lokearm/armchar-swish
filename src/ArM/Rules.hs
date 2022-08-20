@@ -31,7 +31,9 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules ( makeGraph, makeGraphs ) where
+module ArM.Rules ( makeGraph, makeGraphs
+                 , prepareSchema, prepareResources 
+                 ) where
 
 import Swish.RDF.Graph
 
@@ -75,3 +77,4 @@ makeGraphs (c0,s0,res0) =
           s1 = prepareSchema s0
           res1 = prepareResources $ res0 `merge` s1
           c2 = prepareGraph $ merge res1 c1
+

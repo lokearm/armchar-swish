@@ -61,70 +61,68 @@ import qualified ArM.Types.Character as TC
 import qualified ArM.Resources as AR
 import           ArM.Rules.Aux
 import qualified ArM.Rules.Persistence as RP
-import           ArM.Rules (makeGraph, makeGraphs)
+import qualified ArM.Rules as R
 import           ArM.Resources
+
 
 -- | The `MapState` object defines the state of the server.
 -- The server process maintains a single `MapState` object in
 -- software transactional memory (STM), recording all the data
 -- which may potentially change during operation.
-data MapState = MapState { charGraph :: G.RDFGraph,
+data MapState = MapState { charGraph :: STM.TVar G.RDFGraph,
                            schemaGraph :: G.RDFGraph,
                            resourceGraph :: G.RDFGraph,
-                           charRawGraph :: G.RDFGraph,
+                           charRawGraph :: STM.TVar G.RDFGraph,
                            schemaRawGraph :: G.RDFGraph,
                            resourceRawGraph :: G.RDFGraph,
-                           characterLabel :: G.RDFLabel,
-                           characterID :: String,
-                           characterMap :: CM.CharacterMap
+                           characterLabel :: STM.TVar G.RDFLabel,
+                           characterID :: STM.TVar String,
+                           characterMap :: STM.TVar CM.CharacterMap
                            }
 
 -- | Make the State object to be stored in STM.
 -- The return value is Either a MapState object or an error message.
-getState :: G.RDFGraph -> G.RDFGraph -> G.RDFGraph -> Either MapState String
-getState res schema g 
-    | cl == Nothing = Right "Failed to make character sheets"
-    | cid == Nothing = Right "Could not parse character ID"
-    | ll == [] = Right "No character found"
-    | tail ll /= [] = Right $ "Multiple characters found\n" ++ show ll
-    | otherwise = Left MapState {
-                    charGraph = g1,
-                    schemaGraph = s1,
-                    resourceGraph = res1,
-                    charRawGraph = g,
-                    schemaRawGraph = schema,
-                    resourceRawGraph = res,
-                    characterLabel = clab,
-                    characterID  = fromJust cid,
-                    characterMap = CM.insertListS res1 CM.empty $ fromJust cl
-                  }
-   where (g1,s1,res1) = makeGraphs (g,schema,res)
-         ll = C.characterFromGraph g1
-         clab = head ll
-         cid = getLocalID clab
-         cl = C.getAllCS g1 clab
+getStateIO :: G.RDFGraph -> G.RDFGraph -> IO (STM.TVar MapState)
+getStateIO res schema = do
+    char <- STM.newTVarIO G.emptyGraph
+    rawchar <- STM.newTVarIO G.emptyGraph
+    cm <- STM.newTVarIO CM.empty
+    cid <- STM.newTVarIO ""
+    clab <- STM.newTVarIO (armRes "noSuchCharacter")
+    STM.newTVarIO $ MapState
+                      { charGraph = char
+                      , schemaGraph = s1
+                      , resourceGraph = res1
+                      , charRawGraph = rawchar
+                      , schemaRawGraph = schema
+                      , resourceRawGraph = res
+                      , characterLabel = clab
+                      , characterID = cid
+                      , characterMap = cm
+                        }
+   where s1 = R.prepareSchema schema
+         res1 = R.prepareResources $ res `G.merge` s1 
+
 
 -- | Replace the raw character graph in the MapState.
 -- All other elements are recalculated.
-updateGraph :: MapState -> G.RDFGraph -> Either MapState String
-updateGraph st g 
-    | cl == Nothing = Right "Failed to make character sheets"
-    | cid == Nothing = Right "Could not parse character ID"
-    | ll == [] = Right "No character found"
-    | tail ll /= [] = Right $ "Multiple characters found\n" ++ show ll
-    | otherwise = Left st {
-                    charGraph = g1,
-                    charRawGraph = g,
-                    characterLabel = clab,
-                    characterID  = fromJust cid,
-                    characterMap = CM.insertListS res1 CM.empty $ fromJust cl
-                  }
-   where g1 = makeGraph  g (schemaGraph st) (resourceGraph st)
-         ll = C.characterFromGraph g1
-         res1 = resourceGraph st
-         clab = head ll
-         cid = getLocalID clab
-         cl = C.getAllCS g1 clab
+putCharIO :: STM.TVar MapState -> G.RDFGraph -> IO (STM.TVar MapState)
+putCharIO state g = do
+        st <- STM.readTVarIO state
+        let res1 = resourceGraph st
+        liftIO $ STM.atomically $ do
+           let g1 = R.makeGraph  g (schemaGraph st) (resourceGraph st)
+           STM.writeTVar (charGraph st) g
+           STM.writeTVar (charRawGraph st) g1
+           let ll = C.characterFromGraph g1
+           let clab = head ll
+           let cid = getLocalID clab
+           let cl = C.getAllCS g1 clab
+           STM.writeTVar (characterLabel st) clab
+           STM.writeTVar (characterID st)  $ fromJust cid
+           STM.writeTVar (characterMap st) 
+                $ CM.insertListS res1 CM.empty $ fromJust cl
+        return $ return st
 
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
