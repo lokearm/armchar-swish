@@ -23,6 +23,7 @@ arm:hasSG a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:range   xsd:string ;
         rdfs:label "Storyguide" .
 arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
+        rdfs:comment "This property is used on Character's, copying the arm:hasLabel value from the saga.  Logically, it could also be used on sagas, but that would require an extra rule in the reasoner to copy it to the character." ;
         rdfs:domain  arm:Object ;
         rdfs:range   xsd:string ;
         rdfs:label "Saga Title" .
