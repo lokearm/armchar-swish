@@ -23,6 +23,8 @@
 module Main where
 
 import System.IO (IO)
+import Control.Monad.IO.Class (liftIO)
+
 
 -- Loading ArM data 
 import ArM.Load (getRawGraph)
@@ -58,17 +60,21 @@ main = do
      print "Starting: armchar-swish  ..."
      printTime
      (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
-     let st = getState res schema  g 
-     case (st) of
-        Right x -> 
-           do print $ "Error: " ++ x
-        Left x -> do
-           stateVar <- STM.newTVarIO x
-           print $ "Loaded character: " ++ show (characterLabel x)
-           print $ "Character ID: " ++ (characterID x)
+     st1 <- STM.atomically $ do
+         st0 <- getState res schema
+         putCharGraph st0 g
 
-           printTime
-
-           print "Starting Scotty"
-           S.scotty 3000 $ stateScotty stateVar
-              -- HA.middleware $ basicAuth authf "armchar"
+     case (st1) of
+         Right x -> error $ "Error: " ++ x
+         Left stateVar -> do
+               st <- STM.readTVarIO stateVar
+               clab <- STM.readTVarIO $ characterLabel st
+               cid <- STM.readTVarIO $ characterID st
+               liftIO $ print $ "Loaded character: " ++ show clab
+               liftIO $ print $ "Character ID: " ++ cid
+               liftIO $ printTime
+               return st1
+    
+               print "Starting Scotty"
+               S.scotty 3000 $ stateScotty stateVar
+               -- HA.middleware $ basicAuth authf "armchar"

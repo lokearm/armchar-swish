@@ -134,46 +134,9 @@ stateScotty stateVar = do
         put "/" $ do
           text "This was a PUT request!"
         put "/debug/char" $ do
-          char <- jsonData :: S.ActionM TC.Character 
-          st <- liftIO $ STM.readTVarIO stateVar
-          let g = charRawGraph st
-          let schema = schemaGraph st
-          let charg = TC.makeRDFGraph char
-          let id = TC.characterID char
-          liftIO $ print id
-          let g1 = RP.persistChar schema charg
-          let g0 = RP.persistedChar (charGraph st) id
-          let gg = (g0 `G.delete` g) `G.addGraphs` g1
-          liftIO $ print "charg"
-          liftIO $ print $ formatGraphIndent "\n" True charg
-          liftIO $ print "g1"
-          liftIO $ print $ formatGraphIndent "\n" True g1
-          liftIO $ print "g0"
-          liftIO $ print $ formatGraphIndent "\n" True g0
-          let newst = st `updateGraph` gg
-          case (newst) of
-                Left s -> do
-                   liftIO $ STM.atomically $ STM.writeTVar stateVar s 
-                   printGraph gg
-                Right x -> text $ T.pack x
+          text "This was a PUT request!"
         put "/debug/adv" $ do
-          adv <- jsonData :: S.ActionM C.Advancement 
-          st <- liftIO $ STM.readTVarIO stateVar
-          let g = charRawGraph st
-          let schema = schemaGraph st
-          let advg = TC.makeRDFGraph adv
-          let g1 = RP.persistGraph schema advg
-          let g0 = RP.persistedGraph (charGraph st) (TC.rdfid adv) 
-          let gg = (g0 `G.delete` g) `G.addGraphs` g1
-          liftIO $ print $ formatGraphIndent "\n" True advg
-          liftIO $ print $ formatGraphIndent "\n" True g1
-          liftIO $ print $ formatGraphIndent "\n" True g0
-          let newst = st `updateGraph` gg
-          case (newst) of
-                Left s -> do
-                   liftIO $ STM.atomically $ STM.writeTVar stateVar s 
-                   printGraph gg
-                Right x -> text $ T.pack x
+          text "This was a PUT request!"
 
         put "/adv" $ do
           adv <- jsonData :: S.ActionM C.Advancement 

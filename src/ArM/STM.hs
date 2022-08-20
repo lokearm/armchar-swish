@@ -46,7 +46,7 @@ module ArM.STM ( ArM.STM.lookup
                , getResourceGraph
                , putAdvancement
                , putCharacter
-               , updateGraph 
+               , putCharGraph 
                , MapState(..)
                ) where
 
@@ -82,14 +82,14 @@ data MapState = MapState { charGraph :: STM.TVar G.RDFGraph,
 
 -- | Make the State object to be stored in STM.
 -- The return value is Either a MapState object or an error message.
-getStateIO :: G.RDFGraph -> G.RDFGraph -> IO (STM.TVar MapState)
-getStateIO res schema = do
-    char <- STM.newTVarIO G.emptyGraph
-    rawchar <- STM.newTVarIO G.emptyGraph
-    cm <- STM.newTVarIO CM.empty
-    cid <- STM.newTVarIO ""
-    clab <- STM.newTVarIO (armRes "noSuchCharacter")
-    STM.newTVarIO $ MapState
+getState :: G.RDFGraph -> G.RDFGraph -> STM.STM (STM.TVar MapState)
+getState res schema = do
+    char <- STM.newTVar G.emptyGraph
+    rawchar <- STM.newTVar G.emptyGraph
+    cm <- STM.newTVar CM.empty
+    cid <- STM.newTVar ""
+    clab <- STM.newTVar (armRes "noSuchCharacter")
+    STM.newTVar $ MapState
                       { charGraph = char
                       , schemaGraph = s1
                       , resourceGraph = res1
@@ -106,30 +106,34 @@ getStateIO res schema = do
 
 -- | Replace the raw character graph in the MapState.
 -- All other elements are recalculated.
-putCharIO :: STM.TVar MapState -> G.RDFGraph -> IO (STM.TVar MapState)
-putCharIO state g = do
-        st <- STM.readTVarIO state
+putCharGraph :: (STM.TVar MapState) -> G.RDFGraph
+    -> STM.STM (Either (STM.TVar MapState) String)
+putCharGraph stateVar g = do
+        st <- STM.readTVar stateVar
         let res1 = resourceGraph st
-        liftIO $ STM.atomically $ do
-           let g1 = R.makeGraph  g (schemaGraph st) (resourceGraph st)
-           STM.writeTVar (charGraph st) g
-           STM.writeTVar (charRawGraph st) g1
-           let ll = C.characterFromGraph g1
-           let clab = head ll
-           let cid = getLocalID clab
-           let cl = C.getAllCS g1 clab
-           STM.writeTVar (characterLabel st) clab
-           STM.writeTVar (characterID st)  $ fromJust cid
-           STM.writeTVar (characterMap st) 
+        let g1 = R.makeGraph  g (schemaGraph st) (resourceGraph st)
+        STM.writeTVar (charGraph st) g
+        STM.writeTVar (charRawGraph st) g1
+        let ll = C.characterFromGraph g1
+        let clab = head ll
+        let cid = getLocalID clab
+        let cl = C.getAllCS g1 clab
+        STM.writeTVar (characterLabel st) clab
+        STM.writeTVar (characterID st)  $ fromJust cid
+        STM.writeTVar (characterMap st) 
                 $ CM.insertListS res1 CM.empty $ fromJust cl
-        return $ return st
+        return $ Left stateVar
 
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: STM.TVar MapState -> IO G.RDFGraph
-getStateGraph st = fmap charGraph $ STM.readTVarIO st
+getStateGraph st = STM.readTVarIO st
+       >>= ( \ state -> STM.readTVarIO (charGraph state) )
+
+
 -- | Return the schema from STM as an RDF Graph.
 getSchemaGraph :: STM.TVar MapState -> IO G.RDFGraph
 getSchemaGraph st = fmap schemaGraph $ STM.readTVarIO st
+
 -- | Return the resource graph from STM as an RDF Graph.
 getResourceGraph :: STM.TVar MapState -> IO G.RDFGraph
 getResourceGraph st = fmap resourceGraph $ STM.readTVarIO st
@@ -147,7 +151,7 @@ lookup stateVar char season year = do
           let g = charGraph st
           let res = resourceGraph st
           print $ char ++ " - " ++ season ++ " - " ++ show year
-          let cmap =  characterMap st
+          cmap <- STM.readTVarIO (characterMap st)
           print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
           return $ CM.lookup cmap charstring season year
@@ -161,18 +165,16 @@ putAdvancement :: STM.TVar MapState -> TC.Advancement -> IO (Either G.RDFGraph S
 putAdvancement stateVar adv = do 
          STM.atomically $ do
              st <- STM.readTVar stateVar
-             let g = charRawGraph st
+             g <- STM.readTVar (charRawGraph st)
              let schema = schemaGraph st
              let advg = TC.makeRDFGraph adv
              let g1 = RP.persistGraph schema advg
-             let g0 = RP.persistedGraph (charGraph st) (TC.rdfid adv) 
+             charg <- STM.readTVar (charGraph st)
+             let g0 = RP.persistedGraph charg (TC.rdfid adv) 
              let gg = (g0 `G.delete` g) `G.addGraphs` g1
-
-             let newst = st `updateGraph` gg
+             newst <- putCharGraph stateVar gg
              case (newst) of
-                Left s -> do
-                   STM.writeTVar stateVar s 
-                   return $ Left gg
+                Left s -> return $ Left gg
                 Right x -> return $ Right x
 -- TODO: Check for conflicting advancements 
 
@@ -185,16 +187,17 @@ putCharacter :: STM.TVar MapState   -- ^ Memory state
 putCharacter stateVar char = do 
          STM.atomically $ do
              st <- STM.readTVar stateVar
-             let g = charRawGraph st
+             g <- STM.readTVar (charRawGraph st)
              let schema = schemaGraph st
+
+             chargraph <- STM.readTVar (charGraph st)
              let charg = TC.makeRDFGraph char
              let g1 = RP.persistChar schema charg
-             let g0 = RP.persistedChar (charGraph st) (TC.characterID char) 
+             let g0 = RP.persistedChar chargraph (TC.characterID char) 
              let gg = (g0 `G.delete` g) `G.addGraphs` g1
 
-             let newst = st `updateGraph` gg
+             newst <- putCharGraph stateVar gg
              case (newst) of
-                Left s -> do
-                   STM.writeTVar stateVar s 
-                   return $ Left gg
+                Left s -> return $ Left gg
                 Right x -> return $ Right x
+
