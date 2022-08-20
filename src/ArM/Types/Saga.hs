@@ -31,6 +31,7 @@ data Saga = Saga { sagaID :: RDFLabel
                  , schemaFile :: String
                  , resourceFiles :: [String]
                  , characterFiles :: [String]
+                 , sagaGraph :: RDFGraph
                  }
 
 defaultSaga = Saga { sagaID = armRes "noSuchSaga"
@@ -38,6 +39,7 @@ defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  , schemaFile = "/dev/null"
                  , resourceFiles = []
                  , characterFiles = []
+                 , sagaGraph = emptyGraph
                  }
 
 
