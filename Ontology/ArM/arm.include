@@ -22,8 +22,9 @@ arm:hasSG a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:comment "Names the storyguide.  Both sagas and characters have storyguides." ;
         rdfs:range   xsd:string ;
         rdfs:label "Storyguide" .
-arm:hasTitle a   owl:DatatypeProperty ;
-        rdfs:domain  arm:Saga ;
+arm:hasSagaTitle a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
+        rdfs:comment "This property is used on Character's, copying the arm:hasLabel value from the saga.  Logically, it could also be used on sagas, but that would require an extra rule in the reasoner to copy it to the character." ;
+        rdfs:domain  arm:Object ;
         rdfs:range   xsd:string ;
         rdfs:label "Saga Title" .
 arm:hasSetting a   owl:DatatypeProperty ;
@@ -50,14 +51,14 @@ arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentPrope
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Name" .
+arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   xsd:string ;
+        rdfs:label    "Covenant" .
 arm:hasSaga a   owl:ObjectProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   arm:Saga ;
-	arm:hasNameProperty arm:hasName .
-arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Saga Title" .
+        arm:hasStringProperty arm:hasSagaTitle .
 arm:hasTribunal a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty  ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
@@ -67,13 +68,9 @@ arm:hasFoundingYear a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:range   xsd:int .
 
 # Covenant Properties
-arm:hasCovenant a   owl:ObjectProperty ;
+arm:hasCovenant a  owl:ObjectProperty ;
         rdfs:domain  arm:Saga ;
-        rdfs:range   arm:Covenant ;
-	arm:hasNameProperty arm:hasCovenantName .
-arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Covenant"  .
+        rdfs:range   arm:Covenant .
 
 # Character Properties
 arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
@@ -125,7 +122,7 @@ arm:hasDescription a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProp
 	rdfs:comment "Description of the trait." ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
-arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
+arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
         rdfs:label  "Label" ;
         rdfs:comment  "This is used on most objects and classes in ArMchar.  It is problematic because traits should usually derive their labels from classes, while some possessions and combat options need manually enterred labels.  Thus it is sometimes calculated, but it has to be made persistent for the other cases. " ;
         rdfs:domain arm:Object ;

@@ -34,7 +34,7 @@ import ArM.Rules.RDFS
 -- | Final inference to be done after merging character data and resources
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
-prepareGraph = fwdApplyList (advancementindexRule:namePropertyRule:stringPropertyRule:vfScoreRules)
+prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, 
                                spectraitRule, rRule, pRule ]
@@ -106,3 +106,10 @@ bonus1rule = makeCRule  "bonus1rule"
 advancementindexRule = makeCRule "advancementindexRule" 
     [ tArc, arc tVar (armRes "hasAdvancementIndex") cVar ]
     [ arc sVar (armRes "hasAdvancementIndex") cVar ]
+
+
+covenantRule = makeCRule "covenantRule"
+       [ arc cVar (armRes "hasCovenant") oVar
+       , arc oVar (armRes "hasName") sVar
+       ]
+       [ arc cVar (armRes "hasCovenantName") sVar ]
