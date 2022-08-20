@@ -50,15 +50,26 @@ sagaFromGraph = uniqueSort . f . map (`vbMap` cVar) . parsegraph
           parsegraph = Q.rdfQueryFind 
                      $ listToRDFGraph  [ arc cVar typeRes (armRes "Saga") ]
 
--- | Construct a query to get all
--- arm:CharacterProperty triples for a given subject.
-query c = listToRDFGraph 
-   [ arc c (G.Var "property") (G.Var "value") ]
+getFiles :: String -> RDFLabel -> RDFGraph -> [String]
+getFiles ft s = f . map rdfToString . f 
+                   . map (`vbMap` (Var "file")) . parsegraph 
+    where f [] = []
+          f (Nothing:xs) = f xs
+          f (Just x:xs) = x:f xs
+          parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
+          a = arc s (armRes ft) (Var "file") 
+getResourceFiles = getFiles "hasResourceFile"
+getSchemaFiles = getFiles "hasSchemaFile"
+getCharacterFiles = getFiles "hasCharacterFile"
 
--- |
--- = Instances - Load Character object from graph
-
-instance FromRDFGraph Saga where
-   fromRDFGraph g label = defaultSaga {
-                 sagaID = label
-                 }
+getSagaTitle :: RDFLabel -> RDFGraph -> String
+getSagaTitle s = f1 . map rdfToString . f 
+                   . map (`vbMap` (Var "label")) . parsegraph 
+    where f [] = []
+          f (Nothing:xs) = f xs
+          f (Just x:xs) = x:f xs
+          f1 [] = error "Saga has no title"
+          f1 (Nothing:xs) = error "Saga title does not parse"
+          f1 (Just x:xs) = x
+          parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
+          a = arc s (armRes "hasLabel") (Var "label") 
