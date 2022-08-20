@@ -69,15 +69,15 @@ import           ArM.Resources
 -- The server process maintains a single `MapState` object in
 -- software transactional memory (STM), recording all the data
 -- which may potentially change during operation.
-data MapState = MapState { charGraph :: STM.TVar G.RDFGraph,
-                           schemaGraph :: G.RDFGraph,
-                           resourceGraph :: G.RDFGraph,
-                           charRawGraph :: STM.TVar G.RDFGraph,
-                           schemaRawGraph :: G.RDFGraph,
-                           resourceRawGraph :: G.RDFGraph,
-                           characterLabel :: STM.TVar G.RDFLabel,
-                           characterID :: STM.TVar String,
-                           characterMap :: STM.TVar CM.CharacterMap
+data MapState = MapState { charGraph :: STM.TVar G.RDFGraph
+                         , schemaGraph :: G.RDFGraph
+                         , resourceGraph :: G.RDFGraph
+                         , charRawGraph :: STM.TVar G.RDFGraph
+                         , schemaRawGraph :: G.RDFGraph
+                         , resourceRawGraph :: G.RDFGraph
+                         , characterLabel :: STM.TVar G.RDFLabel
+                         , characterID :: STM.TVar String
+                         , characterMap :: STM.TVar CM.CharacterMap
                            }
 
 -- | Make the State object to be stored in STM.
