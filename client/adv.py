@@ -39,21 +39,27 @@ for i in y:
 
     ts = i.get("advancementtraits",{})
     output.append( "    \\begin{itemize}" )
+    tmpout = []
     for t in ts:
         nxp = t.get( "arm:addedXP", "")
         if nxp != "": nxp = f": {nxp}xp"
-        output.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}' )
+        tmpout.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}' )
+    tmpout.sort()
+    output += tmpout 
     output.append( "    \\end{itemize}" )
     ts = i.get("advancementitems",{})
     print(ts)
     if ts:
         output.append( "    Possessions:" )
         output.append( "    \\begin{itemize}" )
+        tmpout = []
         for t in ts:
            nxp = t.get( "arm:hasQuantity", "")
            if nxp != "": nxp = f" ({nxp})"
-           output.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}' )
-           output.append( f'      \\item {t.get("arm:hasDescription","")}' )
+           tmpout.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}\n' 
+                        + f'             {t.get("arm:hasDescription","")}' )
+        tmpout.sort()
+        output += tmpout 
         output.append( "    \\end{itemize}" )
 
 output.append( "\\end{description}" )
