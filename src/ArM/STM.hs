@@ -58,6 +58,7 @@ import           Data.Maybe (fromJust)
 import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
+import qualified ArM.Types.Saga as TS
 import qualified ArM.Resources as AR
 import           ArM.Rules.Aux
 import qualified ArM.Rules.Persistence as RP
@@ -69,7 +70,8 @@ import           ArM.Resources
 -- The server process maintains a single `MapState` object in
 -- software transactional memory (STM), recording all the data
 -- which may potentially change during operation.
-data MapState = MapState { charGraph :: STM.TVar G.RDFGraph
+data MapState = MapState { saga :: STM.TVar TS.Saga
+                         , charGraph :: STM.TVar G.RDFGraph
                          , schemaGraph :: G.RDFGraph
                          , resourceGraph :: G.RDFGraph
                          , charRawGraph :: STM.TVar G.RDFGraph
@@ -89,8 +91,10 @@ getState res schema = do
     cm <- STM.newTVar CM.empty
     cid <- STM.newTVar ""
     clab <- STM.newTVar (armRes "noSuchCharacter")
+    saga <- STM.newTVar TS.defaultSaga
     STM.newTVar $ MapState
-                      { charGraph = char
+                      { saga = saga
+                      , charGraph = char
                       , schemaGraph = s1
                       , resourceGraph = res1
                       , charRawGraph = rawchar

@@ -43,6 +43,7 @@ executable armchar-swish
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
+                       , ArM.Types.Saga
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
@@ -96,6 +97,7 @@ executable prof
                        , ArM.Character.Advancement
                        , ArM.Character.Trait
                        , ArM.Types.Character
+                       , ArM.Types.Saga
                        , ArM.STM
   -- other-extensions:
   build-depends:       base >=4.13 
@@ -154,6 +156,7 @@ executable tst
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
+                       , ArM.Types.Saga
   -- other-extensions:
   build-depends:       base >=4.13 
   -- && <4.14
