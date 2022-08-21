@@ -240,8 +240,8 @@ calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple
 calc p idvar vb = arc idvar (armRes p) (litInt $ score vb)
     where score xs = foldl (+) 0 $ ff xs
 
-addfunctions = [ addDamInit "hasInit" damQuery
-               , addDamInit "hasDam"  initQuery
+addfunctions = [ addDamInit "hasDam" damQuery
+               , addDamInit "hasInit"  initQuery
                , addAtkDfn  "hasAtk"  atkQuery
                , addAtkDfn  "hasDfn"  dfnQuery ]
 calculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
