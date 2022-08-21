@@ -64,24 +64,65 @@ import           ArM.Rules.Aux
 import qualified ArM.Rules.Persistence as RP
 import qualified ArM.Rules as R
 import           ArM.Resources
+import           ArM.Load
 
 
 -- | The `MapState` object defines the state of the server.
 -- The server process maintains a single `MapState` object in
 -- software transactional memory (STM), recording all the data
 -- which may potentially change during operation.
-data MapState = MapState { saga :: STM.TVar TS.Saga
+data MapState = MapState { sagaGraph :: STM.TVar G.RDFGraph
                          , charGraph :: STM.TVar G.RDFGraph
                          , schemaGraph :: G.RDFGraph
                          , resourceGraph :: G.RDFGraph
                          , charRawGraph :: STM.TVar G.RDFGraph
                          , schemaRawGraph :: G.RDFGraph
                          , resourceRawGraph :: G.RDFGraph
-                         , characterLabel :: STM.TVar G.RDFLabel
                          , characterID :: STM.TVar String
                          , characterMap :: STM.TVar CM.CharacterMap
                            }
 
+readAllFiles :: [String] -> IO [G.RDFGraph]
+readAllFiles = mapM readGraph
+mergeGraphs :: [G.RDFGraph] -> G.RDFGraph
+mergeGraphs [] = G.emptyGraph
+mergeGraphs (x:xs) = foldr G.merge x xs
+
+
+-- | Make the State object to be stored in STM.
+-- The return value is Either a MapState object or an error message.
+loadSaga :: String -> IO (STM.TVar MapState)
+loadSaga fn = do
+    saga <- readGraph fn
+    let sid = head $ TS.sagaFromGraph saga
+    sagaVar <- STM.newTVarIO saga
+    let schemaFN = TS.getSchemaFiles sid saga
+    ss <- readAllFiles schemaFN
+    schemaVar <- STM.newTVarIO ss
+    let resFN = TS.getResourceFiles sid saga
+    rs <- readAllFiles resFN
+    resVar <- STM.newTVarIO rs
+    let s0 = mergeGraphs ss
+    let res = mergeGraphs rs
+    let s1 = R.prepareSchema s0
+    let res1 = R.prepareResources $ res `G.merge` s1 
+
+    char <- STM.newTVarIO G.emptyGraph
+    rawchar <- STM.newTVarIO G.emptyGraph
+    cm <- STM.newTVarIO CM.empty
+    cid <- STM.newTVarIO ""
+    clab <- STM.newTVarIO (armRes "noSuchCharacter")
+    STM.newTVarIO $ MapState
+                      { sagaGraph = sagaVar
+                      , charGraph = char
+                      , schemaGraph = s1
+                      , resourceGraph = res1
+                      , charRawGraph = rawchar
+                      , schemaRawGraph = s0
+                      , resourceRawGraph = res
+                      , characterID = cid
+                      , characterMap = cm
+                        }
 -- | Make the State object to be stored in STM.
 -- The return value is Either a MapState object or an error message.
 getState :: G.RDFGraph -> G.RDFGraph -> STM.STM (STM.TVar MapState)
@@ -91,16 +132,15 @@ getState res schema = do
     cm <- STM.newTVar CM.empty
     cid <- STM.newTVar ""
     clab <- STM.newTVar (armRes "noSuchCharacter")
-    saga <- STM.newTVar TS.defaultSaga
+    saga <- STM.newTVar G.emptyGraph
     STM.newTVar $ MapState
-                      { saga = saga
+                      { sagaGraph = saga
                       , charGraph = char
                       , schemaGraph = s1
                       , resourceGraph = res1
                       , charRawGraph = rawchar
                       , schemaRawGraph = schema
                       , resourceRawGraph = res
-                      , characterLabel = clab
                       , characterID = cid
                       , characterMap = cm
                         }
@@ -122,7 +162,6 @@ putCharGraph stateVar g = do
         let clab = head ll
         let cid = getLocalID clab
         let cl = C.getAllCS g1 clab
-        STM.writeTVar (characterLabel st) clab
         STM.writeTVar (characterID st)  $ fromJust cid
         STM.writeTVar (characterMap st) 
                 $ CM.insertListS res1 CM.empty $ fromJust cl

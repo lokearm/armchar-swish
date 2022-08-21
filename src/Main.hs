@@ -72,9 +72,7 @@ main = do
          Right x -> error $ "Error: " ++ x
          Left stateVar -> do
                st <- STM.readTVarIO stateVar
-               clab <- STM.readTVarIO $ characterLabel st
                cid <- STM.readTVarIO $ characterID st
-               liftIO $ print $ "Loaded character: " ++ show clab
                liftIO $ print $ "Character ID: " ++ cid
                liftIO $ printTime
                return st1
