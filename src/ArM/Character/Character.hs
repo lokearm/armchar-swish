@@ -30,6 +30,7 @@
 module ArM.Character.Character ( CharacterSheet(..)
                                , getGameStartCharacter
                                , getAllCS
+                               , makeCharGen
                                , characterFromGraph
                                , ToRDFGraph(..)
                                , FromRDFGraph(..)
@@ -59,15 +60,17 @@ trace x y = y
 -- |
 -- = Making Character Sheets
 
-makeCharGen :: G.RDFGraph -> Character -> CharGen
-makeCharGen g char = CharGen {
-             charID = characterID char,
+makeCharGen :: G.RDFGraph -> G.RDFGraph -> CharGen
+makeCharGen schema g = CharGen {
+             charID = clab,
              charName = "",
              charGraph = g,
-             charSheets = []
+             charSheets = makeCS schema as cs0
            }
-     where as = reverse $ sort $ getPregameAdvancements g $ csID cs0
+     where as = reverse $ sort $ getPregameAdvancements g $ clab
            cs0 = getInitialCharacter char
+           char = fromRDFGraph g clab
+           clab = head $ characterFromGraph g
 
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
 makeCS schema  as cs0 = makeCS' schema as [stage]

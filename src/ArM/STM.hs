@@ -58,6 +58,7 @@ import           Data.Maybe (fromJust)
 import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
+import qualified ArM.Types.CharGen as TCG
 import qualified ArM.Types.Saga as TS
 import qualified ArM.Resources as AR
 import           ArM.Rules.Aux
@@ -72,10 +73,10 @@ import           ArM.Load
 -- software transactional memory (STM), recording all the data
 -- which may potentially change during operation.
 data MapState = MapState { sagaGraph :: STM.TVar G.RDFGraph
-                         , charGraph :: STM.TVar G.RDFGraph
+                         , charGraph :: STM.TVar [TCG.CharGen]
                          , schemaGraph :: STM.TVar G.RDFGraph
                          , resourceGraph :: STM.TVar G.RDFGraph
-                         , charRawGraph :: STM.TVar G.RDFGraph
+                         , charRawGraph :: STM.TVar [G.RDFGraph]
                          , schemaRawGraph :: STM.TVar [G.RDFGraph]
                          , resourceRawGraph :: STM.TVar [G.RDFGraph]
                          , characterID :: STM.TVar String
@@ -120,23 +121,18 @@ loadSaga fn = do
     let charFN = TS.getCharacterFiles sid saga
     cs <- readAllFiles charFN
 
-    char <- STM.newTVarIO $ G.emptyGraph
-    rawchar <- STM.newTVarIO $ G.emptyGraph
-    let cg = head cs
+    let cgs = map (C.makeCharGen s1) cs
+
+    charVar <- STM.newTVarIO cgs
     cm <- STM.newTVarIO CM.empty
-    cid <- STM.newTVarIO ""
-    let st = MapState
-                      { sagaGraph = sagaVar
-                      , charGraph = char
+    return $ MapState { sagaGraph = sagaVar
+                      , charGraph = charVar
                       , schemaGraph = schemaVar
                       , resourceGraph = resVar
-                      , charRawGraph = rawchar
                       , schemaRawGraph = schemaRawVar
                       , resourceRawGraph = resRawVar
-                      , characterID = cid
                       , characterMap = cm
                         } 
-    STM.atomically $ putCharGraph st cg 
 
 
 -- | Replace the raw character graph in the MapState.
