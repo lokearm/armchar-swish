@@ -73,7 +73,7 @@ import           ArM.Load
 -- software transactional memory (STM), recording all the data
 -- which may potentially change during operation.
 data MapState = MapState { sagaGraph :: STM.TVar G.RDFGraph
-                         , charGraph :: STM.TVar [TCG.CharGen]
+                         , charGraph :: [STM.TVar TCG.CharGen]
                          , schemaGraph :: STM.TVar G.RDFGraph
                          , resourceGraph :: STM.TVar G.RDFGraph
                          , charRawGraph :: STM.TVar [G.RDFGraph]
@@ -121,7 +121,7 @@ loadSaga fn = do
     let charFN = TS.getCharacterFiles sid saga
     cs <- readAllFiles charFN
 
-    let cgs = map (C.makeCharGen s1) cs
+    charVar <- mapM (STM.newTVar . C.makeCharGen s1) cs
 
     charVar <- STM.newTVarIO cgs
     cm <- STM.newTVarIO CM.empty
