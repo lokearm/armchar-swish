@@ -1,3 +1,16 @@
+{-# LANGUAGE OverloadedStrings #-}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Types.Character
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- Types to handle Characters, Traits, and Advancements, with some basic
+-- associated functions.
+--
+-----------------------------------------------------------------------------
 module ArM.Types.Character where
 
 import Swish.RDF.Graph as G
@@ -201,6 +214,7 @@ getSheetIDM _ (Just x) = return x
 data Advancement = Advancement {
     year :: Maybe Int,
     season :: String,
+    advLabel :: String,
     rdfid :: RDFLabel,
     contents :: [KeyValuePair],
     advSortIndex :: Int,
@@ -210,6 +224,7 @@ data Advancement = Advancement {
 
 defaultAdvancement = Advancement { year = Nothing,
                 season = "",
+                advLabel = "",
                 rdfid = noSuchAdvancement, 
                 advSortIndex = 0,
                 contents = [],

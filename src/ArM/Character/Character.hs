@@ -49,12 +49,43 @@ import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
 import ArM.Types.Character
+import ArM.Types.CharGen
+
+import qualified ArM.Rules.Record as R
 
 -- import Debug.Trace
 trace x y = y
 
 -- |
 -- = Making Character Sheets
+
+makeCharGen :: G.RDFGraph -> Character -> CharGen
+makeCharGen g char = CharGen {
+             charID = characterID char,
+             charName = "",
+             charGraph = g,
+             charSheets = []
+           }
+     where as = reverse $ sort $ getPregameAdvancements g $ csID cs0
+           cs0 = getInitialCharacter char
+
+makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
+makeCS schema  as cs0 = makeCS' schema as [stage]
+   where stage = CharStage { stage = "Initial Sheet",
+                             advancement = Nothing, 
+                             sheetObject = cs0,
+                             sheetGraph = makeCGraph schema cs0 }
+makeCS' :: RDFGraph -> [Advancement] -> [CharStage] -> [CharStage]
+makeCS' schema [] xs = xs
+makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
+   where y = CharStage { stage = advLabel a,
+                         advancement = Just a, 
+                         sheetObject = cs,
+                         sheetGraph = makeCGraph schema cs
+                         }
+         cs = advanceCharacter (sheetObject $ head xs) a
+
+makeCGraph schema = R.prepareRecord schema . makeRDFGraph
 
 getGameStartCharacter :: G.RDFGraph -> G.RDFLabel -> Maybe CharacterSheet
 getGameStartCharacter g label = Just $ getGameStartCS g y
