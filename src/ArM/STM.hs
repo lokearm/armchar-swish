@@ -121,9 +121,8 @@ loadSaga fn = do
     let charFN = TS.getCharacterFiles sid saga
     cs <- readAllFiles charFN
 
-    charVar <- mapM (STM.newTVar . C.makeCharGen s1) cs
+    charVar <- mapM (STM.newTVarIO . C.makeCharGen s1) cs
 
-    charVar <- STM.newTVarIO cgs
     cm <- STM.newTVarIO CM.empty
     return $ MapState { sagaGraph = sagaVar
                       , charGraph = charVar
