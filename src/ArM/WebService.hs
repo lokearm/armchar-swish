@@ -50,7 +50,7 @@ import ArM.Time
 -- TEST
 import qualified ArM.Rules.Persistence as RP
 
-stateScotty ::  STM.TVar MapState -> S.ScottyM ()
+stateScotty ::  MapState -> S.ScottyM ()
 stateScotty stateVar = do
         middleware logStdoutDev
         middleware simpleCors
@@ -161,7 +161,7 @@ notfound404 = do status notFound404
 
 -- | Get a character record from the STM State.
 -- The record is selected by HTTP/GET parameters found in the monad.
-getCSGraph :: STM.TVar MapState -> S.ActionM (Maybe CharacterRecord)
+getCSGraph :: MapState -> S.ActionM (Maybe CharacterRecord)
 getCSGraph stateVar = do
           (char, year, season) <- getParam
           r <- liftIO $ ArM.STM.lookup stateVar char season (read year)
@@ -236,7 +236,7 @@ printGraph = text . toLazyText .  formatGraphIndent "\n" True
 -- | Generate get responses for trait subsets
 -- Both JSON and text versions are created, prepending the path
 -- by `/show` for the text version.
-getAb :: (Show a, Aeson.ToJSON a) => STM.TVar MapState ->
+getAb :: (Show a, Aeson.ToJSON a) => MapState ->
          String -> (G.RDFGraph -> a) -> S.ScottyM ()
 getAb s p f = textAb s ("/show"++p) f >> jsonAb s p f
    where

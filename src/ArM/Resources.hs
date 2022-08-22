@@ -24,9 +24,6 @@ import           Data.Text (unpack)
 
 -- * Ontology Files
 
-armFile = "Ontology/arm.ttl"
-resourceFile = "Ontology/resources.ttl"
-characterFile = "Test/cieran.ttl"
 baseURI = Nothing
     
 -- * URIs and NameSpaces

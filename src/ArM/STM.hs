@@ -40,6 +40,7 @@
 -----------------------------------------------------------------------------
 module ArM.STM ( ArM.STM.lookup
                , CM.CharacterRecord(..)
+               , loadSaga
                , getStateGraph
                , getSchemaGraph
                , getResourceGraph
@@ -92,28 +93,39 @@ mergeGraphs (x:xs) = foldr G.merge x xs
 -- The return value is Either a MapState object or an error message.
 loadSaga :: String -> IO MapState
 loadSaga fn = do
+    -- 1. Load Saga
     saga <- readGraph fn
     let sid = head $ TS.sagaFromGraph saga
     sagaVar <- STM.newTVarIO saga
+    -- 2. Load Schema
     let schemaFN = TS.getSchemaFiles sid saga
     ss <- readAllFiles schemaFN
     schemaRawVar <- STM.newTVarIO ss
+    -- 3. Load resources
     let resFN = TS.getResourceFiles sid saga
     rs <- readAllFiles resFN
     resRawVar <- STM.newTVarIO rs
+
+    -- 4. Augment graphs
     let s0 = mergeGraphs ss
     let res = mergeGraphs rs
     let s1 = R.prepareSchema s0
     let res1 = R.prepareResources $ res `G.merge` s1 
 
+    -- 5. Save augmented graphs
     schemaVar <- STM.newTVarIO s1
     resVar <- STM.newTVarIO res1
 
-    char <- STM.newTVarIO G.emptyGraph
-    rawchar <- STM.newTVarIO G.emptyGraph
+    -- 6. Load Character Graphs
+    let charFN = TS.getCharacterFiles sid saga
+    cs <- readAllFiles charFN
+
+    char <- STM.newTVarIO $ G.emptyGraph
+    rawchar <- STM.newTVarIO $ G.emptyGraph
+    let cg = head cs
     cm <- STM.newTVarIO CM.empty
     cid <- STM.newTVarIO ""
-    return $ MapState
+    let st = MapState
                       { sagaGraph = sagaVar
                       , charGraph = char
                       , schemaGraph = schemaVar
@@ -123,13 +135,14 @@ loadSaga fn = do
                       , resourceRawGraph = resRawVar
                       , characterID = cid
                       , characterMap = cm
-                        }
+                        } 
+    STM.atomically $ putCharGraph st cg 
 
 
 -- | Replace the raw character graph in the MapState.
 -- All other elements are recalculated.
 putCharGraph :: MapState -> G.RDFGraph
-    -> STM.STM (Either MapState String)
+    -> STM.STM MapState 
 putCharGraph st g = do
         res1 <- STM.readTVar $ resourceGraph st
         s1 <- STM.readTVar $ schemaGraph st
@@ -143,7 +156,7 @@ putCharGraph st g = do
         STM.writeTVar (characterID st)  $ fromJust cid
         STM.writeTVar (characterMap st) 
                 $ CM.insertListS res1 CM.empty $ fromJust cl
-        return $ Left st
+        return $ st
 
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: MapState -> IO G.RDFGraph
@@ -191,9 +204,7 @@ putAdvancement st adv = do
              let g0 = RP.persistedGraph charg (TC.rdfid adv) 
              let gg = (g0 `G.delete` g) `G.addGraphs` g1
              newst <- putCharGraph st gg
-             case (newst) of
-                Left s -> return $ Left gg
-                Right x -> return $ Right x
+             return $ Left gg
 -- TODO: Check for conflicting advancements 
 
 -- | Update character metadata.  This has not been tested and requirs
@@ -214,7 +225,5 @@ putCharacter st char = do
              let gg = (g0 `G.delete` g) `G.addGraphs` g1
 
              newst <- putCharGraph st gg
-             case (newst) of
-                Left s -> return $ Left gg
-                Right x -> return $ Right x
+             return $ Left gg
 

@@ -13,6 +13,6 @@ armchar:elksrun  a arm:Covenant ;
                arm:hasSaga armchar:contestedlands .
 armchar:contestedlands a arm:Saga ; 
       arm:hasName "Contested Lands" ;
-      arm:hasSchemaFile "arm.ttl" ;
-      arm:hasResourceFile "resources.ttl" ;
-      arm:hasCharacterFile "cieran.ttl" .
+      arm:hasSchemaFile "Ontology/arm.ttl" ;
+      arm:hasResourceFile "Ontology/resources.ttl" ;
+      arm:hasCharacterFile "Test/cieran.ttl" .

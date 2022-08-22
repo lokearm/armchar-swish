@@ -62,21 +62,7 @@ main :: IO ()
 main = do 
      print "Starting: armchar-swish  ..."
      printTime
-     sagaGraph <- readGraph sagaFile
-     (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
-     st1 <- STM.atomically $ do
-         st0 <- getState res schema
-         putCharGraph st0 g
-
-     case (st1) of
-         Right x -> error $ "Error: " ++ x
-         Left stateVar -> do
-               st <- STM.readTVarIO stateVar
-               cid <- STM.readTVarIO $ characterID st
-               liftIO $ print $ "Character ID: " ++ cid
-               liftIO $ printTime
-               return st1
-    
-               print "Starting Scotty"
-               S.scotty 3000 $ stateScotty stateVar
-               -- HA.middleware $ basicAuth authf "armchar"
+     stateVar <- loadSaga sagaFile
+     print "Starting Scotty"
+     S.scotty 3000 $ stateScotty stateVar
+     -- HA.middleware $ basicAuth authf "armchar"
