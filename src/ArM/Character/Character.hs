@@ -74,18 +74,19 @@ makeCharGen schema g = CharGen {
 
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
 makeCS schema  as cs0 = makeCS' schema as [stage]
-   where stage = CharStage { stage = "Initial Sheet",
-                             advancement = Nothing, 
-                             sheetObject = cs0,
-                             sheetGraph = makeCGraph schema cs0 }
+   where stage = CharStage 
+                   { stage = "Initial Sheet" 
+                   , advancement = Nothing
+                   , sheetObject = cs0
+                   , sheetGraph = CharacterRecord $ makeCGraph schema cs0 }
 makeCS' :: RDFGraph -> [Advancement] -> [CharStage] -> [CharStage]
 makeCS' schema [] xs = xs
 makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
-   where y = CharStage { stage = advLabel a,
-                         advancement = Just a, 
-                         sheetObject = cs,
-                         sheetGraph = makeCGraph schema cs
-                         }
+   where y = CharStage 
+                   { stage = advLabel a
+                   , advancement = Just a
+                   , sheetObject = cs
+                   , sheetGraph = CharacterRecord $ makeCGraph schema cs }
          cs = advanceCharacter (sheetObject $ head xs) a
 
 makeCGraph schema = R.prepareRecord schema . makeRDFGraph

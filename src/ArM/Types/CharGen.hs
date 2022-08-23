@@ -21,19 +21,26 @@ import ArM.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.Character
 
-data CharStage = CharStage {
-         stage :: String,
-         advancement :: Maybe Advancement,
-         sheetObject :: CharacterSheet,
-         sheetGraph :: RDFGraph
-       }  deriving (Eq)
-data CharGen = CharGen {
-         charID :: RDFLabel,
-         charName :: String,
-         charGraph :: RDFGraph,
-         charSheets :: [CharStage]
-       }  deriving (Eq)
+data CharStage = CharStage 
+     { stage :: String    
+       -- ^ Stage of development, e.g. Early Childhood
+     , advancement :: Maybe Advancement  
+       -- ^ The advancement of this stage
+     , sheetObject :: CharacterSheet     
+       -- ^ The resulting character
+     , sheetGraph :: CharacterRecord 
+       -- ^ The character sheet as RDF Graph
+     }  deriving (Eq)
+data CharGen = CharGen 
+      { charID :: RDFLabel
+      , charName :: String
+      , charGraph :: RDFGraph
+      , charSheets :: [CharStage]
+      }  deriving (Eq)
 instance Show CharStage where
     show cs = stage cs ++ show (advancement cs)
 instance Show CharGen where
     show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
+
+data CharacterRecord = CharacterRecord G.RDFGraph
+    deriving (Show,Eq)
