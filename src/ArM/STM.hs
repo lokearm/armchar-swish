@@ -124,10 +124,9 @@ loadSaga fn = do
     let charFN = TS.getCharacterFiles sid saga
     cs <- readAllFiles charFN
 
-    charVar <- mapM (STM.newTVarIO . C.makeCharGen s1) cs
 
     cm <- STM.atomically  M.empty
-    return $ MapState { sagaGraph = sagaVar
+    let st = MapState { sagaGraph = sagaVar
                       , schemaGraph = schemaVar
                       , resourceGraph = resVar
                       , schemaRawGraph = schemaRawVar
@@ -135,6 +134,8 @@ loadSaga fn = do
                       , resourceRawGraph = resRawVar
                       , characterMap = cm
                       } 
+    Let cgs = map (C.makeCharGen s1) cs
+    return st
 
 
 -- | Replace the raw character graph in the MapState.
