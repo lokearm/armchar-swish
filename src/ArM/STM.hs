@@ -69,11 +69,6 @@ import qualified ArM.Rules as R
 import           ArM.Resources
 import           ArM.Load
 
-type CharacterMap = M.Map CharacterKey TCG.CharacterRecord
-data CharacterKey = CharacterKey {
-            keyYear :: Int,
-            keySeason :: String,
-            keyChar :: String } deriving (Ord,Eq,Show)
 
 
 -- | The `MapState` object defines the state of the server.
@@ -157,12 +152,6 @@ putCharGraph st g = do
         mapM ( \ x -> M.insert (getKey x) x cmap) $ fromJust cl
         return $ st
 
-getKey :: C.CharacterSheet -> CharacterKey
-getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
-                                Nothing -> 0
-                                (Just y) -> y,
-                           keySeason = (C.csSeason cs),
-                           keyChar = show $ C.csID cs }
 
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: MapState -> IO G.RDFGraph

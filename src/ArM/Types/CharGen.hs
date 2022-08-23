@@ -34,7 +34,8 @@ data CharStage = CharStage
 data CharGen = CharGen 
       { charID :: RDFLabel
       , charName :: String
-      , charGraph :: RDFGraph
+      , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
+      , charGraph :: RDFGraph   -- ^ Augmented graph with inference
       , charSheets :: [CharStage]
       }  deriving (Eq)
 instance Show CharStage where
@@ -44,3 +45,19 @@ instance Show CharGen where
 
 data CharacterRecord = CharacterRecord G.RDFGraph
     deriving (Show,Eq)
+
+type CharacterMap = M.Map CharacterKey TCG.CharacterRecord
+
+-- |
+-- = Keys
+data CharacterKey = CharacterKey {
+            keyYear :: Int,
+            keySeason :: String,
+            keyChar :: String } deriving (Ord,Eq,Show)
+
+getKey :: C.CharacterSheet -> CharacterKey
+getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
+                                Nothing -> 0
+                                (Just y) -> y,
+                           keySeason = (C.csSeason cs),
+                           keyChar = show $ C.csID cs }
