@@ -82,8 +82,8 @@ data MapState = MapState
               , resourceGraph :: STM.TVar G.RDFGraph
               , schemaRawGraph :: STM.TVar [G.RDFGraph]
               , resourceRawGraph :: STM.TVar [G.RDFGraph]
-              , characterMap :: M.Map CharacterKey TCG.CharacterRecord
-              , cgMap :: M.Map CharacterKey TCG.CharGen
+              , characterMap :: M.Map TCG.CharacterKey TCG.CharacterRecord
+              , cgMap :: M.Map G.RDFLabel TCG.CharGen
               }
 
 readAllFiles :: [String] -> IO [G.RDFGraph]
@@ -91,7 +91,6 @@ readAllFiles = mapM readGraph
 mergeGraphs :: [G.RDFGraph] -> G.RDFGraph
 mergeGraphs [] = G.emptyGraph
 mergeGraphs (x:xs) = foldr G.merge x xs
-
 
 -- | Make the State object to be stored in STM.
 -- The return value is Either a MapState object or an error message.
@@ -126,16 +125,16 @@ loadSaga fn = do
 
 
     cm <- STM.atomically  M.empty
+    cgm <- STM.atomically  M.empty
     let st = MapState { sagaGraph = sagaVar
                       , schemaGraph = schemaVar
                       , resourceGraph = resVar
                       , schemaRawGraph = schemaRawVar
-                      , charGraph = charVar
                       , resourceRawGraph = resRawVar
                       , characterMap = cm
+                      , cgMap = cgm
                       } 
-    Let cgs = map (C.makeCharGen s1) cs
-    return st
+    mapM (putCharGraph st) cs
 
 
 -- | Replace the raw character graph in the MapState.
@@ -145,18 +144,18 @@ putCharGraph st g = do
         res1 <- STM.readTVar $ resourceGraph st
         s1 <- STM.readTVar $ schemaGraph st
         let g1 = R.makeGraph  g s1 res1
-        STM.writeTVar (charGraph st) g1
-        let ll = C.characterFromGraph g1
-        let clab = head ll
+        let cgen = C.makeCharGen s1 g1
+        let clab = TCG.charID cgen
         let cl = C.getAllCS g1 clab
         let cmap = characterMap st
-        mapM ( \ x -> M.insert (getKey x) x cmap) $ fromJust cl
+        M.insert clab 
+        mapM ( \ x -> M.insert (TCG.getKey x) x cmap) $ fromJust cl
         return $ st
 
 
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: MapState -> IO G.RDFGraph
-getStateGraph st = STM.readTVarIO (charGraph st) 
+getStateGraph st = STM.readTVarIO (TCG.charGraph st) 
 
 
 -- | Return the schema from STM as an RDF Graph.
@@ -185,9 +184,9 @@ lookup st char season year = do
           let cmap = characterMap st
           print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
-          let k = CharacterKey { keyYear = year
-                               , keySeason = season 
-                               , keyChar = charstring }
+          let k = TCG.CharacterKey { TCG.keyYear = year
+                               , TCG.keySeason = season 
+                               , TCG.keyChar = charstring }
           M.lookup k cmap 
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph

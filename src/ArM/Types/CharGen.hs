@@ -46,8 +46,6 @@ instance Show CharGen where
 data CharacterRecord = CharacterRecord G.RDFGraph
     deriving (Show,Eq)
 
-type CharacterMap = M.Map CharacterKey TCG.CharacterRecord
-
 -- |
 -- = Keys
 data CharacterKey = CharacterKey {
@@ -55,9 +53,10 @@ data CharacterKey = CharacterKey {
             keySeason :: String,
             keyChar :: String } deriving (Ord,Eq,Show)
 
-getKey :: C.CharacterSheet -> CharacterKey
-getKey cs = CharacterKey { keyYear = case (C.csYear cs) of
+getKey :: CharacterSheet -> CharacterKey
+getKey cs = CharacterKey { keyYear = case (csYear cs) of
                                 Nothing -> 0
                                 (Just y) -> y,
-                           keySeason = (C.csSeason cs),
-                           keyChar = show $ C.csID cs }
+                           keySeason = (csSeason cs),
+                           keyChar = show $ csID cs }
+
