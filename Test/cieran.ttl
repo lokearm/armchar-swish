@@ -41,7 +41,8 @@ armchar:cieran a arm:Magus, arm:Character ;
 	       arm:hasNationality "Irish" ;
                arm:hasAlmaMater "Stonehenge" ;
                arm:hasCovenant armchar:elksrun ;
-               arm:hasSaga armchar:contestedlands .
+               arm:hasSaga armchar:contestedlands ;
+               arm:hasAdvancementFile "Test/cieran-adv.ttl" .
 
 # Saga and Covenant are reasonable entities to define
 # in their own right, but this is not fully implemented
