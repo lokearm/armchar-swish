@@ -63,7 +63,8 @@ executable armchar-swish
                        , wai-extra >= 3.1
                        , securemem >= 0.1.10
                        , parallel >= 3.2
-                       , stm >= 2.5
+                       , ttrie >= 0.1.2
+                       -- , stm >= 2.5
                        , unordered-containers >= 0.2.18
                        , split >= 0.2.3
                        , wai-cors >= 0.2.7
@@ -120,7 +121,8 @@ executable prof
                        , wai-extra >= 3.1
                        , securemem >= 0.1.10
                        , parallel >= 3.2
-                       , stm >= 2.5
+                       , ttrie >= 0.1.2
+                       -- , stm >= 2.5
                        , unordered-containers >= 0.2.18
                        , split >= 0.2.3
                        , wai-cors >= 0.2.7
@@ -181,7 +183,8 @@ executable tst
                        , wai-cors >= 0.2.7
                        , securemem >= 0.1.10
                        , parallel >= 3.2
-                       , stm >= 2.5
+                       , ttrie >= 0.1.2
+                       -- , stm >= 2.5
                        , unordered-containers >= 0.2.18
                        , split >= 0.2.3
   hs-source-dirs:      . , ./src

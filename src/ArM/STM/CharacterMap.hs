@@ -13,20 +13,19 @@
 -- This is an auxiliary for STM and should normally not be imported elsewhere
 --
 -----------------------------------------------------------------------------
-module ArM.STM.CharacterMap ( CharacterRecord(..)
-                            , CharacterMap
-                            , insertListS
-                            , empty 
-                            , ArM.STM.CharacterMap.lookup 
-                            ) where
+module ArM.STM.CharacterMap where
 
-import qualified Data.Map as M
+-- import qualified Data.Map as M
+import qualified Control.Concurrent.STM.Map as M
+
 import qualified Swish.RDF.Graph as G
 import qualified ArM.Character as C
 import qualified ArM.Rules.Record as R
 import           Data.Maybe (fromJust)
 import ArM.Resources 
 import Control.Parallel.Strategies (parMap,rpar)
+
+{-
 
 type CharacterMap = M.Map CharacterKey CharacterRecord
 data CharacterKey = CharacterKey {
@@ -57,3 +56,4 @@ lookup :: CharacterMap -> String -> String -> Int -> Maybe CharacterRecord
 lookup cmap c s y = M.lookup ck cmap
    where ck = CharacterKey { keyYear = y, keySeason = s, keyChar = c }
 
+-}

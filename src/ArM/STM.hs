@@ -39,7 +39,7 @@
 --
 -----------------------------------------------------------------------------
 module ArM.STM ( ArM.STM.lookup
-               , CM.CharacterRecord(..)
+               , CharacterRecord(..)
                , loadSaga
                , getStateGraph
                , getSchemaGraph
@@ -50,12 +50,13 @@ module ArM.STM ( ArM.STM.lookup
                , MapState(..)
                ) where
 
-import qualified Control.Concurrent.STM as STM
+import qualified GHC.Conc as STM
 import           Control.Monad.IO.Class (liftIO)
+import qualified Control.Concurrent.STM.Map as M
 import qualified Swish.RDF.Graph as G
 import           Data.Maybe (fromJust)
 
-import qualified ArM.STM.CharacterMap as CM
+-- import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.CharGen as TCG
@@ -66,6 +67,14 @@ import qualified ArM.Rules.Persistence as RP
 import qualified ArM.Rules as R
 import           ArM.Resources
 import           ArM.Load
+
+type CharacterMap = M.Map CharacterKey CharacterRecord
+data CharacterKey = CharacterKey {
+            keyYear :: Int,
+            keySeason :: String,
+            keyChar :: String } deriving (Ord,Eq,Show)
+data CharacterRecord = CharacterRecord G.RDFGraph
+    deriving Show
 
 
 -- | The `MapState` object defines the state of the server.
@@ -80,7 +89,8 @@ data MapState = MapState { sagaGraph :: STM.TVar G.RDFGraph
                          , schemaRawGraph :: STM.TVar [G.RDFGraph]
                          , resourceRawGraph :: STM.TVar [G.RDFGraph]
                          , characterID :: STM.TVar String
-                         , characterMap :: STM.TVar CM.CharacterMap
+                         , characterMap :: M.Map CharacterKey CharacterRecord
+                         , cgMap :: M.Map CharacterKey TCG.CharGen
                            }
 
 readAllFiles :: [String] -> IO [G.RDFGraph]
@@ -120,11 +130,13 @@ loadSaga fn = do
     -- 6. Load Character Graphs
     let charFN = TS.getCharacterFiles sid saga
     cs <- readAllFiles charFN
+    charRawVar <- STM.newTVarIO cs
 
     charVar <- mapM (STM.newTVarIO . C.makeCharGen s1) cs
 
-    cm <- STM.newTVarIO CM.empty
+    cm <- STM.newTVarIO M.empty
     return $ MapState { sagaGraph = sagaVar
+                      , charRawGraph = charRawVar
                       , charGraph = charVar
                       , schemaGraph = schemaVar
                       , resourceGraph = resVar
@@ -150,7 +162,7 @@ putCharGraph st g = do
         let cl = C.getAllCS g1 clab
         STM.writeTVar (characterID st)  $ fromJust cid
         STM.writeTVar (characterMap st) 
-                $ CM.insertListS res1 CM.empty $ fromJust cl
+                $ CM.insertListS res1 M.empty $ fromJust cl
         return $ st
 
 -- | Return the state graph (i.e. character data) from STM.
@@ -172,17 +184,17 @@ lookup :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
        -> String            -- ^ Season
        -> Int               -- ^ Year
-       -> IO (Maybe CM.CharacterRecord)
+       -> IO (Maybe CharacterRecord)
        -- ^ Character sheet as an RDF Graph
 lookup st char season year = do
-          let g = charGraph st
-          let res = resourceGraph st
           print $ char ++ " - " ++ season ++ " - " ++ show year
-          cmap <- STM.readTVarIO (characterMap st)
+          let cmap = characterMap st
           print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
-          return $ CM.lookup cmap charstring season year
-
+          let k = CharacterKey { keyYear = year
+                               , keySeason = season 
+                               , keyChar = charstring }
+          M.lookup k cmap 
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
