@@ -28,7 +28,6 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Character.Character ( CharacterSheet(..)
-                               , getGameStartCharacter
                                , makeCharGen
                                , characterFromGraph
                                , ToRDFGraph(..)
@@ -113,10 +112,6 @@ makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
 
 makeCGraph schema = R.prepareRecord schema . makeRDFGraph
 
-getGameStartCharacter :: G.RDFGraph -> G.RDFLabel -> Maybe CharacterSheet
-getGameStartCharacter g label = Just $ getGameStartCS g y
-     where x = fromRDFGraph g label :: Character
-           y = getInitialCharacter x
 
 -- | Get initial CharacterSheet, before *any* advancements.
 getInitialCharacter ::
@@ -127,10 +122,6 @@ getInitialCharacter c = defaultCS {
             born = getIntProperty (armRes "hasBirthYear") $ characterData c,
             csMetadata = characterData  c
          }
-
-getGameStartCS :: G.RDFGraph -> CharacterSheet -> CharacterSheet
-getGameStartCS g cs = foldl advanceCharacter cs as
-    where as = sort $ getPregameAdvancements g $ csID cs
 
 -- |
 -- = Advancement
