@@ -213,11 +213,17 @@ putAdvancement st adv = do
              schema <- STM.readTVar $ schemaGraph st
              let newg = RP.persistGraph schema advg
 
-             charg <- STM.readTVar (charGraph st)
-             let g0 = RP.persistedGraph charg (TC.rdfid adv) 
-             let gg = (g0 `G.delete` g) `G.addGraphs` g1
-             newst <- putCharGraph st gg
-             return $ Left gg
+             cgm <- cgMap st
+             cgen <- M.lookup clab cgm
+
+             case (cgen) of
+                Nothing -> return $ Right "No such character"
+                Left cgen0 -> do
+                   charg <- STM.readTVar (TCG.charGraph cgen0)
+                   let g0 = RP.persistedGraph charg (TC.rdfid adv) 
+                   let gg = (g0 `G.delete` (TCG.rawGraph cgen0)) `G.addGraphs` newg
+                   newst <- putCharGraph st gg
+                   return $ Left gg
 -- TODO: Check for conflicting advancements 
 
 -- | Update character metadata.  This has not been tested and requirs
