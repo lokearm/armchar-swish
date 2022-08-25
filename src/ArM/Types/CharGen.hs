@@ -20,6 +20,7 @@ import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.Character
+import ArM.Types.Saga
 
 data CharStage = CharStage 
      { stage :: String    
@@ -32,11 +33,14 @@ data CharStage = CharStage
        -- ^ The character sheet as RDF Graph
      }  deriving (Eq)
 data CharGen = CharGen 
-      { charID :: RDFLabel
-      , charName :: String
+      { charID :: RDFLabel      -- ^ Character ID 
+      , charName :: String      -- ^ Character Name (for display purpose)
       , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
       , charGraph :: RDFGraph   -- ^ Augmented graph with inference
-      , charSheets :: [CharStage]
+      , baseSheet :: CharacterSheet 
+        -- ^ Character Sheet at the start of the process
+      , charSheets :: [CharStage]  
+        -- ^ List of development stages, most recent first
       }  deriving (Eq)
 instance Show CharStage where
     show cs = stage cs ++ show (advancement cs)
@@ -60,3 +64,4 @@ getKey cs = CharacterKey { keyYear = case (csYear cs) of
                            keySeason = (csSeason cs),
                            keyChar = show $ csID cs }
 
+getAdvFiles ft s = getFiles "hasAdvancementFile"

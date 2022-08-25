@@ -143,8 +143,7 @@ putCharGraph :: MapState -> G.RDFGraph -> STM.STM MapState
 putCharGraph st g = do
         res1 <- STM.readTVar $ resourceGraph st
         s1 <- STM.readTVar $ schemaGraph st
-        let g1 = R.makeGraph  g s1 res1
-        let cgen = C.makeCharGen s1 g1
+        let cgen = C.makeCharGen s1 res1 g
         let clab = TCG.charID cgen
         let cl = C.getAllCS g1 clab
         let cmap = characterMap st

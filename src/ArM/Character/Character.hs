@@ -45,6 +45,7 @@ import qualified Swish.RDF.VarBinding as VB
 import           Swish.VarBinding  (vbMap)
 import           Data.Maybe (fromJust)
 import           Data.List (sort)
+import ArM.Rules (makeGraph)
 import ArM.Resources
 import ArM.Character.Trait
 import ArM.Character.Advancement
@@ -59,23 +60,45 @@ trace x y = y
 
 -- |
 -- = Making Character Sheets
+makeCharDev :: G.RDFGraph  -- ^ Schema graph
+           -> G.RDFGraph  -- ^ Resource graph
+           -> G.RDFGraph  -- ^ Raw character graph
+           -> CharacterSheet  -- ^ Character Sheet at the start of development
+           -> CharGen         -- ^ Resulting datastructure
+makeCharDev schema res1 g0 cs0 = CharGen 
+             { charID = clab
+             , charName = ""
+             , charGraph = g1
+             , rawGraph = g0
+             , baseSheet = cs0
+             , charSheets = makeCS schema as "Game Start" cs0
+             }
+     where as = reverse $ sort $ getIngameAdvancements g1 $ clab
+           clab = csID cs0
+           g1 = makeGraph  g0 schema res1
 
-makeCharGen :: G.RDFGraph -> G.RDFGraph -> CharGen
-makeCharGen schema g = CharGen {
-             charID = clab,
-             charName = "",
-             charGraph = g,
-             charSheets = makeCS schema as cs0
-           }
-     where as = reverse $ sort $ getPregameAdvancements g $ clab
-           cs0 = getInitialCharacter char
-           char = fromRDFGraph g clab
-           clab = head $ characterFromGraph g
+makeCharGen :: G.RDFGraph  -- ^ Schema graph
+           -> G.RDFGraph  -- ^ Resource graph
+           -> G.RDFGraph  -- ^ Raw character graph
+           -> CharGen         -- ^ Resulting datastructure
+makeCharGen schema res1 g0 = CharGen 
+             { charID = clab
+             , charName = ""
+             , charGraph = g1
+             , rawGraph = g0
+             , baseSheet = cs0
+             , charSheets = makeCS schema as "Game Start" cs0
+             }
+     where cs0 = getInitialCharacter char
+           char = fromRDFGraph g0 clab
+           clab = head $ characterFromGraph g0
+           g1 = makeGraph  g0 schema res1
+           as = reverse $ sort $ getIngameAdvancements g1 $ clab
 
-makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
-makeCS schema  as cs0 = makeCS' schema as [stage]
+makeCS :: RDFGraph -> [Advancement] -> String -> CharacterSheet -> [CharStage] 
+makeCS schema  as stage0 cs0 = makeCS' schema as [stage]
    where stage = CharStage 
-                   { stage = "Initial Sheet" 
+                   { stage = stage0
                    , advancement = Nothing
                    , sheetObject = cs0
                    , sheetGraph = CharacterRecord $ makeCGraph schema cs0 }
