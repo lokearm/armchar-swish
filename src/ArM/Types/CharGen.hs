@@ -22,16 +22,23 @@ import ArM.Rules.Aux
 import ArM.Types.Character
 import ArM.Types.Saga
 
+-- ^ A `CharStage` object represents a character's state of development
+-- at one particular point on the in-game timeline. 
 data CharStage = CharStage 
      { stage :: String    
-       -- ^ Stage of development, e.g. Early Childhood
+       -- ^ Stage of development, e.g. Early Childhood or Summer 1221
      , advancement :: Maybe Advancement  
-       -- ^ The advancement of this stage
+       -- ^ The advancement of leading to the stage
      , sheetObject :: CharacterSheet     
-       -- ^ The resulting character
+       -- ^ The resulting character sheet
      , sheetGraph :: RDFGraph 
-       -- ^ The character sheet as RDF Graph
+       -- ^ The character sheet as an RDF Graph
      }  deriving (Eq)
+-- ^ A `CharGen` object represents a character's development over a
+-- series of stages.  It contains a list of CharStage objects which
+-- in turn contains the Character Sheet for each point in time, as
+-- well as the raw data used in calculation and the character name
+-- for display purposes.
 data CharGen = CharGen 
       { charID :: RDFLabel      -- ^ Character ID 
       , charName :: String      -- ^ Character Name (for display purpose)
@@ -42,23 +49,31 @@ data CharGen = CharGen
       , charSheets :: [CharStage]  
         -- ^ List of development stages, most recent first
       }  deriving (Eq)
-instance Show CharStage where
-    show cs = stage cs ++ show (advancement cs)
-instance Show CharGen where
-    show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
 
--- |
--- = Keys
+-- The `CharacterKey` type is used to index character sheets and
+-- `CharStage` objects when these are stored in maps.
 data CharacterKey = CharacterKey {
             keyYear :: Int,
             keySeason :: String,
             keyChar :: String } deriving (Ord,Eq,Show)
 
-getKey :: CharacterSheet -> CharacterKey
-getKey cs = CharacterKey { keyYear = case (csYear cs) of
+class Keyable a where
+    getKey :: a -> CharacterKey
+instance Keyable CharacterSheet where
+   getKey cs = CharacterKey { keyYear = case (csYear cs) of
                                 Nothing -> 0
                                 (Just y) -> y,
                            keySeason = (csSeason cs),
                            keyChar = show $ csID cs }
+instance Keyable CharStage where
+   getKey = getKey . sheetObject
 
 getAdvFiles ft s = getFiles "hasAdvancementFile"
+
+-- |
+-- = Instances of standard classes
+
+instance Show CharStage where
+    show cs = stage cs ++ show (advancement cs)
+instance Show CharGen where
+    show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
