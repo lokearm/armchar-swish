@@ -147,6 +147,8 @@ putCharGraph st g = do
         let clab = TCG.charID cgen
         let cmap = characterMap st
         M.insert clab cgen cmap
+        -- TODO load advancement graph
+        -- TODO call putAdvGraph
         return $ st
 
 putAdvGraph :: MapState -> G.RDFLabel -> G.RDFGraph -> STM.STM MapState 
@@ -205,10 +207,12 @@ lookup st char season year = do
 putAdvancement :: MapState -> TC.Advancement -> IO (Either G.RDFGraph String)
 putAdvancement st adv = do 
          STM.atomically $ do
-             g <- STM.readTVar (charRawGraph st)
-             schema <- STM.readTVar $ schemaGraph st
              let advg = TC.makeRDFGraph adv
-             let g1 = RP.persistGraph schema advg
+             let clab = TC.advChar adv
+
+             schema <- STM.readTVar $ schemaGraph st
+             let newg = RP.persistGraph schema advg
+
              charg <- STM.readTVar (charGraph st)
              let g0 = RP.persistedGraph charg (TC.rdfid adv) 
              let gg = (g0 `G.delete` g) `G.addGraphs` g1

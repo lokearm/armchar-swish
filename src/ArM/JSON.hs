@@ -171,6 +171,7 @@ kpToChar (KeyPairList xs) = defaultCharacter {
 -- = Advancement
 
 data ProtoAdvancement = ProtoAdvancement {
+    advancementchar :: RDFLabel,
     advancementid :: RDFLabel,
     advancementcontents :: KeyPairList,
     advancementtraits :: [Trait],
@@ -178,11 +179,12 @@ data ProtoAdvancement = ProtoAdvancement {
    } 
 
 instance ToJSON Advancement where 
-    toJSON cs = object (c:x:z:y:[])
+    toJSON cs = object (c:s:x:z:y:[])
        where x = (fromString "advancementtraits") .= (toJSON (traits cs))
              z = (fromString "advancementitems") .= (toJSON (items cs))
              y = (fromString "advancementcontents") .= KeyPairList (contents cs)
              c = (fromString "advancementid") .= toJSON (rdfid cs)
+             s = (fromString "advancementcharacter") .= toJSON (advChar cs)
 
 instance FromJSON Advancement where 
    parseJSON = fmap fromProtoAdvancement . parseJSON
@@ -191,11 +193,13 @@ instance FromJSON ProtoAdvancement where
                                            <*> v .: "advancementcontents"
                                            <*> v .: "advancementtraits"
                                            <*> v .: "advancementitems"
+                                           <*> v .: "advancementcharacter"
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement {
                      rdfid = advancementid adv,
                      traits = advancementtraits adv,
                      items = advancementitems adv,
+                     advChar = advancementchar adv,
                      year = getYear ys,
                      season = getSeason ys,
                      advSortIndex = getSortIndex ys,
