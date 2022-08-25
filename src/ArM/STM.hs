@@ -39,7 +39,6 @@
 --
 -----------------------------------------------------------------------------
 module ArM.STM ( ArM.STM.lookup
-               , CharacterRecord(..)
                , loadSaga
                , getStateGraph
                , getSchemaGraph
@@ -82,8 +81,9 @@ data MapState = MapState
               , resourceGraph :: STM.TVar G.RDFGraph
               , schemaRawGraph :: STM.TVar [G.RDFGraph]
               , resourceRawGraph :: STM.TVar [G.RDFGraph]
-              , characterMap :: M.Map TCG.CharacterKey TCG.CharacterRecord
+              , characterMap :: M.Map TCG.CharacterKey G.RDFGraph
               , cgMap :: M.Map G.RDFLabel TCG.CharGen
+              , devMap :: M.Map G.RDFLabel TCG.CharGen
               }
 
 readAllFiles :: [String] -> IO [G.RDFGraph]
@@ -154,8 +154,8 @@ putAdvGraph st clab g = do
         res1 <- STM.readTVar $ resourceGraph st
         s1 <- STM.readTVar $ schemaGraph st
         let cgen = C.makeCharGen s1 res1 g
-        let cmap = characterMap st
-        -- M.insert clab 
+        let cmap = devMap st
+        M.insert clab cgen cmap
         mapM ( \ x -> M.insert (TCG.getKey x) x cmap) $ fromJust cl
         return $ st
 
@@ -179,13 +179,13 @@ lookupIO :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
        -> String            -- ^ Season
        -> Int               -- ^ Year
-       -> IO (Maybe TCG.CharacterRecord)
+       -> IO (Maybe G.RDFGraph)
 lookupIO m c s y  = liftIO $ lookup m c s y
 lookup :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
        -> String            -- ^ Season
        -> Int               -- ^ Year
-       -> STM.STM (Maybe TCG.CharacterRecord)
+       -> STM.STM (Maybe G.RDFGraph)
 lookup st char season year = do
           print $ char ++ " - " ++ season ++ " - " ++ show year
           let cmap = characterMap st

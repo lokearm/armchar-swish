@@ -101,7 +101,7 @@ makeCS schema  as stage0 cs0 = makeCS' schema as [stage]
                    { stage = stage0
                    , advancement = Nothing
                    , sheetObject = cs0
-                   , sheetGraph = CharacterRecord $ makeCGraph schema cs0 }
+                   , sheetGraph = makeCGraph schema cs0 }
 makeCS' :: RDFGraph -> [Advancement] -> [CharStage] -> [CharStage]
 makeCS' schema [] xs = xs
 makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
@@ -109,7 +109,7 @@ makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
                    { stage = advLabel a
                    , advancement = Just a
                    , sheetObject = cs
-                   , sheetGraph = CharacterRecord $ makeCGraph schema cs }
+                   , sheetGraph = makeCGraph schema cs }
          cs = advanceCharacter (sheetObject $ head xs) a
 
 makeCGraph schema = R.prepareRecord schema . makeRDFGraph

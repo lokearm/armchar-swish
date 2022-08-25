@@ -29,7 +29,7 @@ data CharStage = CharStage
        -- ^ The advancement of this stage
      , sheetObject :: CharacterSheet     
        -- ^ The resulting character
-     , sheetGraph :: CharacterRecord 
+     , sheetGraph :: RDFGraph 
        -- ^ The character sheet as RDF Graph
      }  deriving (Eq)
 data CharGen = CharGen 
@@ -46,9 +46,6 @@ instance Show CharStage where
     show cs = stage cs ++ show (advancement cs)
 instance Show CharGen where
     show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
-
-data CharacterRecord = CharacterRecord G.RDFGraph
-    deriving (Show,Eq)
 
 -- |
 -- = Keys
