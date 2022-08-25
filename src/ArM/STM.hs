@@ -81,7 +81,7 @@ data MapState = MapState
               , resourceGraph :: STM.TVar G.RDFGraph
               , schemaRawGraph :: STM.TVar [G.RDFGraph]
               , resourceRawGraph :: STM.TVar [G.RDFGraph]
-              , characterMap :: M.Map TCG.CharacterKey G.RDFGraph
+              , characterMap :: M.Map TCG.CharacterKey TCG.CharStage 
               , cgMap :: M.Map G.RDFLabel TCG.CharGen
               , devMap :: M.Map G.RDFLabel TCG.CharGen
               }
