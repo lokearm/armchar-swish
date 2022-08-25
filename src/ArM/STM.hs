@@ -145,9 +145,17 @@ putCharGraph st g = do
         s1 <- STM.readTVar $ schemaGraph st
         let cgen = C.makeCharGen s1 res1 g
         let clab = TCG.charID cgen
-        let cl = C.getAllCS g1 clab
         let cmap = characterMap st
-        M.insert clab 
+        M.insert clab cgen cmap
+        return $ st
+
+putAdvGraph :: MapState -> G.RDFLabel -> G.RDFGraph -> STM.STM MapState 
+putAdvGraph st clab g = do
+        res1 <- STM.readTVar $ resourceGraph st
+        s1 <- STM.readTVar $ schemaGraph st
+        let cgen = C.makeCharGen s1 res1 g
+        let cmap = characterMap st
+        -- M.insert clab 
         mapM ( \ x -> M.insert (TCG.getKey x) x cmap) $ fromJust cl
         return $ st
 
