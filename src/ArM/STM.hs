@@ -156,7 +156,9 @@ putAdvGraph st clab g = do
         let cgen = C.makeCharGen s1 res1 g
         let cmap = devMap st
         M.insert clab cgen cmap
-        mapM ( \ x -> M.insert (TCG.getKey x) x cmap) $ fromJust cl
+        let cl = TCG.charSheets cgen
+        let cm = characterMap st
+        mapM ( \ x -> M.insert (TCG.getKey x) x cm)  cl
         return $ st
 
 
