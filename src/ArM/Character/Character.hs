@@ -29,7 +29,6 @@
 -----------------------------------------------------------------------------
 module ArM.Character.Character ( CharacterSheet(..)
                                , getGameStartCharacter
-                               , getAllCS
                                , makeCharGen
                                , characterFromGraph
                                , ToRDFGraph(..)
@@ -132,16 +131,6 @@ getInitialCharacter c = defaultCS {
 getGameStartCS :: G.RDFGraph -> CharacterSheet -> CharacterSheet
 getGameStartCS g cs = foldl advanceCharacter cs as
     where as = sort $ getPregameAdvancements g $ csID cs
-
--- | Given a graph and a string identifying a character
--- make a list of all ingame character sheets for the 
--- character by applying all available advancements.
-getAllCS :: G.RDFGraph -> G.RDFLabel -> Maybe [CharacterSheet]
-getAllCS g c | cs == Nothing = Nothing
-             | otherwise     = Just $ cs':advanceList cs' as
-    where cs = getGameStartCharacter g c
-          cs' = fromJust cs
-          as = sort $ getIngameAdvancements g c
 
 -- |
 -- = Advancement
