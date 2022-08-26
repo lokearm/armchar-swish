@@ -34,6 +34,15 @@ data CharStage = CharStage
      , sheetGraph :: RDFGraph 
        -- ^ The character sheet as an RDF Graph
      }  deriving (Eq)
+
+findSeason :: [CharStage] -> String -> Int -> CharStage
+findSeason [] _ _ = Nothing
+findSeason (x:xs) s y | isSeason x s y = Just x
+                      | otherwise  = findSeason xs s y
+
+isSeason :: CharStage -> String -> Int -> Bool
+isSeason cs s y | otherwise = False
+
 -- ^ A `CharGen` object represents a character's development over a
 -- series of stages.  It contains a list of CharStage objects which
 -- in turn contains the Character Sheet for each point in time, as
