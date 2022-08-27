@@ -86,10 +86,10 @@ data CharacterKey = CharacterKey {
 class Keyable a where
     getKey :: a -> CharacterKey
 instance Keyable CharacterSheet where
-   getKey cs = CharacterKey { keyYear = case (csYear cs) of
+   getKey cs = CharacterKey { keyYear = case (hasYear cs) of
                                 Nothing -> 0
                                 (Just y) -> y,
-                           keySeason = (csSeason cs),
+                           keySeason = (hasSeason cs),
                            keyChar = show $ csID cs }
 instance Keyable CharStage where
    getKey = getKey . sheetObject
@@ -102,7 +102,7 @@ getAdvFiles ft s = getFiles "hasAdvancementFile"
 instance Show CharGen where
     show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
 instance HasTime CharStage where
-    timeOf = timeOf . advancement
+    timeOf = timeOf . charSheet
 
 -- |
 -- = Making Character Sheets
@@ -144,16 +144,14 @@ makeCharGen schema res1 g0 = CharGen
 makeCS :: RDFGraph -> [Advancement] -> String -> CharacterSheet -> [CharStage] 
 makeCS schema  as stage0 cs0 = makeCS' schema as [stage]
    where stage = CharStage 
-                   { stage = stage0
-                   , advancement = Nothing
+                   { advancement = Nothing
                    , sheetObject = cs0
                    , sheetGraph = makeCGraph schema cs0 }
 makeCS' :: RDFGraph -> [Advancement] -> [CharStage] -> [CharStage]
 makeCS' schema [] xs = xs
 makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
    where y = CharStage 
-                   { stage = advLabel a
-                   , advancement = Just a
+                   { advancement = Just a
                    , sheetObject = cs
                    , sheetGraph = makeCGraph schema cs }
          cs = advanceCharacter (sheetObject $ head xs) a

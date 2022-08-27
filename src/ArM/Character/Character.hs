@@ -84,12 +84,10 @@ advanceList cs (x:xs) = cs' : advanceList cs' xs
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid adv)) $
      cs { sheetID = Nothing
-        , csYear = y
-        , csSeason = s
+        , csTime = nextCharTime $ advTime adv
         , csTraits = advanceTraitList (csTraits cs) (sort $ traits adv)
         , csItems = advanceTraitList (csItems cs) (items adv)
      }
-     where (s,y) = maybeNextSeason $ (season adv, year adv)
 
 
 

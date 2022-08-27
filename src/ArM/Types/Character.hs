@@ -107,8 +107,7 @@ data CharacterSheet = CharacterSheet {
       -- ^ Character ID (i.e. same ID for every season)
       sheetID :: Maybe RDFLabel,  
       -- ^ ID of the Character Sheet, usually Nothing suggesting a blank node
-      csYear :: Maybe Int,  -- ^ Current Year
-      csSeason :: String,   -- ^ Current Season
+      csTime :: CharTime,  -- ^ Current Year
       born     :: Int,      -- ^ Year of Birth
       csItems :: [Trait],    -- ^ List of possessions (weapons, equipment)
       csTraits :: [Trait],  -- ^ List of traits (abilities, spells, etc.)
@@ -125,8 +124,7 @@ instance Show CharacterSheet where
 defaultCS = CharacterSheet {
          csID = noSuchCharacter,
          sheetID = Nothing,
-         csYear = Nothing,
-         csSeason = "",
+         csTime = defaultCharTime,
          born = 0,
          csItems = [],
          csTraits = [],
@@ -156,8 +154,8 @@ instance ToRDFGraph CharacterSheet where
             age' Nothing _ = 0
             age' (Just y) b | b == 0 = 0 
                             | otherwise = y - b
-            age = age' (csYear cs) (born cs)
-            a = aAge age . aYear (csYear cs) . aSeason (csSeason cs)
+            age = age' (hasYear cs) (born cs)
+            a = aAge age . aYear (hasYear cs) . aSeason (hasSeason cs)
 instance ToRDFGraph Character where
    makeRDFGraph cs = listToRDFGraph  ( ct:ms )
        where x = characterID cs
@@ -224,7 +222,7 @@ data Advancement = Advancement
 advSortIndex :: Advancement -> Int
 advSortIndex = advancementIndex . advTime
 year :: Advancement -> Int
-year = f . charYear . advTime
+year = f . hasYear 
    where f Nothing = 0
          f (Just y) = y
 season :: Advancement -> String
@@ -282,3 +280,6 @@ advToArcList adv = ys2
           xs2 =  map traitContents (items adv)
           ys1 = foldr (++) ms xs1
           ys2 = foldr (++) ys1 xs2
+
+instance HasTime CharacterSheet where
+    timeOf = csTime
