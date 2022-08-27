@@ -81,7 +81,6 @@ data MapState = MapState
               , resourceGraph :: STM.TVar G.RDFGraph
               , schemaRawGraph :: STM.TVar [G.RDFGraph]
               , resourceRawGraph :: STM.TVar [G.RDFGraph]
-              , characterMap :: M.Map TCG.CharacterKey TCG.CharStage 
               , cgMap :: M.Map G.RDFLabel TCG.CharGen
               , devMap :: M.Map G.RDFLabel TCG.CharGen
               }
@@ -131,7 +130,6 @@ loadSaga fn = do
                       , resourceGraph = resVar
                       , schemaRawGraph = schemaRawVar
                       , resourceRawGraph = resRawVar
-                      , characterMap = cm
                       , cgMap = cgm
                       } 
     mapM (putCharGraph st) cs
@@ -145,7 +143,7 @@ putCharGraph st g = do
         s1 <- STM.readTVar $ schemaGraph st
         let cgen = C.makeCharGen s1 res1 g
         let clab = TCG.charID cgen
-        let cmap = characterMap st
+        let cmap = cgMap st
         M.insert clab cgen cmap
         return $ st
 
@@ -157,8 +155,6 @@ putAdvGraph st clab g = do
         let cmap = devMap st
         M.insert clab cgen cmap
         let cl = TCG.charSheets cgen
-        let cm = characterMap st
-        mapM ( \ x -> M.insert (TCG.getKey x) x cm)  cl
         return $ st
 
 
@@ -190,7 +186,6 @@ lookup :: MapState          -- ^ Memory state
        -> STM.STM (Maybe G.RDFGraph)
 lookup st char season year = do
           print $ char ++ " - " ++ season ++ " - " ++ show year
-          let cmap = characterMap st
           print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
           let k = TCG.CharacterKey { TCG.keyYear = year
