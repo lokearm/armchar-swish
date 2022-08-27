@@ -16,6 +16,7 @@ module ArM.Types.Character where
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import Data.Maybe
+import ArM.Types.Season
 import ArM.KeyPair
 import ArM.Resources
 import ArM.BlankNode
@@ -211,31 +212,34 @@ getSheetIDM _ (Just x) = return x
 -- critical information without having to search the lists.
 -- TraitAdvancements are represented as a list of `Trait`s.
 -- Other properties are listed as 'contents'.
-data Advancement = Advancement {
-    advChar :: RDFLabel,
-    year :: Maybe Int,
-    season :: String,
-    advLabel :: String,
-    rdfid :: RDFLabel,
-    contents :: [KeyValuePair],
-    advSortIndex :: Int,
-    traits :: [Trait],
-    items :: [Trait]
+data Advancement = Advancement 
+    { advChar :: RDFLabel
+    , advTime :: CharTime
+    , rdfid :: RDFLabel
+    , contents :: [KeyValuePair]
+    , traits :: [Trait]
+    , items :: [Trait]
    } deriving Eq
+
+advSortIndex :: Advancement -> Int
+advSortIndex = advancementIndex . advTime
+year :: Advancement -> Int
+year = f . charYear . advTime
+   where f Nothing = 0
+         f (Just y) = y
+season :: Advancement -> String
+season = charSeason . advTime
 
 defaultAdvancement = Advancement 
                 { advChar = armRes "noSuchCharacter"
-                , year = Nothing
-                , season = ""
-                , advLabel = ""
                 , rdfid = noSuchAdvancement
-                , advSortIndex = 0
                 , contents = []
+                , advTime = defaultCharTime
                 , traits = []
                 , items = []
                 }
 instance Show Advancement where
-   show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
+   show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ show (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
                  ++ show (items a) 
@@ -243,13 +247,14 @@ instance Show Advancement where
                  ++ "\nSeason No: " ++ show (sno a) 
                  ++ "\n"
       where 
-         y Nothing = ""
-         y (Just x) = show x
          sc [] = ""
          sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
          st [] = ""
          st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
                                   ++  "\n" ++ st xs
+
+instance HasTime Advancement where
+    timeOf = advTime
 instance Ord Advancement where
    compare x y | advSortIndex x < advSortIndex y = LT
                | advSortIndex x > advSortIndex y = GT
@@ -263,6 +268,8 @@ instance Ord Advancement where
                | contents x > contents y = GT
                | otherwise = EQ
 
+sno = seasonNo . season
+
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
 
@@ -275,36 +282,3 @@ advToArcList adv = ys2
           xs2 =  map traitContents (items adv)
           ys1 = foldr (++) ms xs1
           ys2 = foldr (++) ys1 xs2
-
--- |
--- = Season
-
-sno = seasonNo . season
-
--- | The `SeasonYear` gives a season with year.
-type SeasonYear = (String,Int) 
--- | Given a season/year, `nextSeason` returns the subsequent season.
--- Winter is the last season of the year, and is followed by the Spring of
--- the next year.
-nextSeason :: SeasonYear -> SeasonYear
-nextSeason ("Spring",y) = ("Summer",y)
-nextSeason ("Summer",y) = ("Autumn",y)
-nextSeason ("Autumn",y) = ("Winter",y)
-nextSeason ("Winter",y) = ("Spring",y+1)
-
-
--- | Given a season as a String, `nextSeason` returns a number by which 
--- seasons can be ordered within a calendar year.
--- Winter is the last season in the year.
-seasonNo :: String -> Int
-seasonNo "Spring" = 1
-seasonNo "Summer" = 2
-seasonNo "Autumn" = 3
-seasonNo "Winter" = 4
-seasonNo _ = 10
-
-maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
-maybeNextSeason ("",Just y) = ("",Just (y+1)) 
-maybeNextSeason ("",Nothing) = ("",Nothing) 
-maybeNextSeason (s,Just y) = (s',Just y') where (s',y') = nextSeason (s,y)
-maybeNextSeason (s,Nothing) = (s',Nothing) where (s',y') = nextSeason (s,0) 

@@ -43,6 +43,7 @@ executable armchar-swish
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
+                       , ArM.Types.Season
                        , ArM.Types.CharGen
                        , ArM.Types.Saga
   -- other-extensions:
@@ -99,6 +100,7 @@ executable prof
                        , ArM.Character.Advancement
                        , ArM.Character.Trait
                        , ArM.Types.Character
+                       , ArM.Types.Season
                        , ArM.Types.CharGen
                        , ArM.Types.Saga
                        , ArM.STM
@@ -160,6 +162,7 @@ executable tst
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
+                       , ArM.Types.Season
                        , ArM.Types.CharGen
                        , ArM.Types.Saga
   -- other-extensions:

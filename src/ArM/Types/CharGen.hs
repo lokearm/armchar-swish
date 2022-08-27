@@ -21,27 +21,43 @@ import ArM.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.Character
 import ArM.Types.Saga
+import ArM.Types.Season
 
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
 data CharStage = CharStage 
-     { stage :: String    
-       -- ^ Stage of development, e.g. Early Childhood or Summer 1221
-     , advancement :: Maybe Advancement  
+     { advancement :: Advancement  
        -- ^ The advancement of leading to the stage
      , sheetObject :: CharacterSheet     
        -- ^ The resulting character sheet
      , sheetGraph :: RDFGraph 
        -- ^ The character sheet as an RDF Graph
-     }  deriving (Eq)
+     }  deriving (Eq,Show)
 
-findSeason :: [CharStage] -> String -> Int -> CharStage
-findSeason [] _ _ = Nothing
-findSeason (x:xs) s y | isSeason x s y = Just x
-                      | otherwise  = findSeason xs s y
+findSeason :: [CharStage] -> CharTime -> Maybe CharStage
+findSeason [] _ = Nothing
+findSeason (x:xs) t | timeOf x == t = Just x
+                    | timeOf x > t = Nothing
+                    | otherwise  = findSeason xs t
 
-isSeason :: CharStage -> String -> Int -> Bool
-isSeason cs s y | otherwise = False
+putSeason :: CharacterSheet
+          -> [CharStage] 
+          -> Advancement 
+          -> [CharStage] 
+putSeason cs [] a =  [makeCharStage cs a]
+putSeason cs (x:xs) a 
+                 | timeOf a < timeOf x = x:makeCharStage (f xs) a:xs
+                 | timeOf a == timeOf x = makeCharStage (f xs) a:xs
+                 | otherwise  = x:putSeason xs a
+             where f [] = cs
+                   f (y:ys) = sheetObject y
+
+makeCharStage :: CharacterSheet -> Advancement -> CharStage
+makeCharStage cs adv = CharStage 
+              { advancement = adv
+              , sheetObject = advanceCharacter cs adv 
+              , sheetGraph = emptyGraph }
+             
 
 -- ^ A `CharGen` object represents a character's development over a
 -- series of stages.  It contains a list of CharStage objects which
@@ -82,7 +98,7 @@ getAdvFiles ft s = getFiles "hasAdvancementFile"
 -- |
 -- = Instances of standard classes
 
-instance Show CharStage where
-    show cs = stage cs ++ show (advancement cs)
 instance Show CharGen where
     show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
+instance HasTime CharStage where
+    timeOf = timeOf . advancement

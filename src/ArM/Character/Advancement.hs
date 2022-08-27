@@ -28,6 +28,7 @@ import Data.Maybe
 import Data.List
 import ArM.Character.Trait
 import ArM.Types.Character
+import ArM.Types.Season
 import ArM.Rules.Aux
 import qualified Swish.RDF.VarBinding  as VB
 import           Swish.VarBinding  (vbMap)
@@ -146,15 +147,20 @@ traitqgraph p s = listToRDFGraph
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [RDFTriple] -> Advancement
-toAdvancement [] = defaultAdvancement 
-toAdvancement xs = defaultAdvancement { rdfid = getkey xs,
-         year = getYear ys,
-         season = getSeason ys,
-         advSortIndex = getSortIndex ys,
-         contents = ys }
+toAdvancement xs = defaultAdvancement { rdfid = getkey xs
+                                      , advTime = parseTime defaultCharTime ys 
+                                      , contents = ys }
          where ys = toKeyPairList xs 
                getkey [] = noSuchAdvancement
                getkey (x:xs) = arcSubj x
+
+parseTime :: [KeyValuePair] -> CharTime  -> CharTime
+parseTime [] a = a
+parseTime a (x:xs) = parseTime (f a x) xs
+     where f a (KeyValuePair k v) 
+             | k == inYear = a { charYear = Just ( rdfToInt v ) }
+             | k == atSeason = a { charSeason = rdfToString v }
+             | k == hasAdvancementIndex = a { advancementIndex = rdfToInt v }
 
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear :: [KeyValuePair] -> Maybe Int
@@ -176,12 +182,10 @@ getSortIndex xs = f1 x
             f2 (Just idx) = idx
 
 instance FromRDFGraph Advancement where
-   fromRDFGraph g label = fixAdv g $ defaultAdvancement {
-                 rdfid = label,
-                 year = getYear ys,
-                 season = getSeason ys,
-                 advSortIndex = getSortIndex ys,
-                 contents = ys }
+   fromRDFGraph g label = fixAdv g $ defaultAdvancement 
+                 { rdfid = label
+                 , advTime = parseTime defaultCharTime ys 
+                 , contents = ys }
         where q = listToRDFGraph  $
                   [ arc label typeRes advancementType,
                     arc label (Var "property") (Var "value"),
