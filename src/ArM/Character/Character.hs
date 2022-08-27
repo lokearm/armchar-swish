@@ -32,6 +32,7 @@ module ArM.Character.Character ( CharacterSheet(..)
                                , ToRDFGraph(..)
                                , FromRDFGraph(..)
                                , advanceCharacter
+                               , getInitialCS
                                , makeCGraph
                                ) where
 
@@ -125,6 +126,11 @@ getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
 getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
                           $  Q.rdfQueryFind (query s) g
 
+getInitialCS :: RDFGraph -> CharacterSheet
+getInitialCS = getInitialCharacter . getCharacter
+getCharacter :: RDFGraph -> Character
+getCharacter g = fromRDFGraph g label 
+   where label = head $ characterFromGraph g
 -- |
 -- = Instances - Load Character object from graph
 

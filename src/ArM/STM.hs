@@ -58,6 +58,7 @@ import           Data.Maybe (fromJust)
 
 -- import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
+import qualified ArM.Types.Season as TS
 import qualified ArM.Types.Character as TC
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.Types.Saga as TS
@@ -183,11 +184,10 @@ lookupIO :: MapState          -- ^ Memory state
 lookupIO m c s y  = liftIO $ lookup m c s y
 lookup :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
-       -> String            -- ^ Season
-       -> Int               -- ^ Year
+       -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> STM.STM (Maybe G.RDFGraph)
-lookup st char season year = do
-          print $ char ++ " - " ++ season ++ " - " ++ show year
+lookup st char t = do
+          print $ char ++ show t
           let cmap = devMap st
           print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
@@ -195,8 +195,8 @@ lookup st char season year = do
           case (cg) of
              Nothing -> return Nothing
              Just cg1 -> do
-                let cstage = findSeason cg1 season year
-                return $ sheetObject cstage
+                let cstage = TCG.findSeason (TCG.charSheets cg1) t 
+                return $ TCG.sheetObject cstage
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing

@@ -112,9 +112,8 @@ instance HasTime CharStage where
 makeCharGen :: G.RDFGraph  -- ^ Schema graph
            -> G.RDFGraph  -- ^ Resource graph
            -> G.RDFGraph  -- ^ Raw character graph
-           -> CharacterSheet  -- ^ Character Sheet at the start of development
            -> CharGen         -- ^ Resulting datastructure
-makeCharGen schema res1 g0 cs0 = CharGen 
+makeCharGen schema res1 g0 = CharGen 
              { charID = clab
              , charName = ""
              , charGraph = g1
@@ -123,6 +122,7 @@ makeCharGen schema res1 g0 cs0 = CharGen
              , charSheets = makeCS schema as cs0
              }
      where as = sortBy (flip compare) $ getAllAdvancements g1 $ clab
+           cs0 = getInitialCS g1
            clab = csID cs0
            g1 = makeGraph  g0 schema res1
 
