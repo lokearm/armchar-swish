@@ -32,6 +32,7 @@ module ArM.Character.Character ( CharacterSheet(..)
                                , ToRDFGraph(..)
                                , FromRDFGraph(..)
                                , advanceCharacter
+                               , makeCGraph
                                ) where
 
 import ArM.Rules.Aux

@@ -18,12 +18,14 @@ import Data.Maybe
 import ArM.KeyPair
 import ArM.Resources
 import ArM.BlankNode
+import ArM.Rules (makeGraph)
 import ArM.Rules.Aux
 import ArM.Character.Character
+import ArM.Character.Advancement
 import ArM.Types.Character
 import ArM.Types.Saga
 import ArM.Types.Season
-import Data.List (sort)
+import Data.List (sort,sortBy)
 
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
@@ -120,7 +122,7 @@ makeCharGen schema res1 g0 cs0 = CharGen
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
-     where as = reverse $ sort $ getIngameAdvancements g1 $ clab
+     where as = sortBy (flip compare) $ getAllAdvancements g1 $ clab
            clab = csID cs0
            g1 = makeGraph  g0 schema res1
 
@@ -129,7 +131,7 @@ makeCS schema as cs0 = makeCS' schema as cs0 []
 makeCS' :: RDFGraph -> [Advancement] -> CharacterSheet 
         -> [CharStage] -- ^ CharStages already constructed
         -> [CharStage]
-makeCS' schema [] xs = xs
+makeCS' schema [] _ xs = xs
 makeCS' schema (a:as) cs0 xs = makeCS' schema as cs (y:xs)
    where y = CharStage 
                    { advancement = a

@@ -14,6 +14,7 @@
 module ArM.Character.Advancement ( Advancement(..)
                                  , getPregameAdvancements
                                  , getIngameAdvancements
+                                 , getAllAdvancements
                                  , defaultAdvancement
                                  , getSeason
                                  , getYear
@@ -59,6 +60,10 @@ getPregameAdvancements g c = getAdvancements g $ queryGraph preGameAdv c
 getIngameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
    where inGameAdv = armRes  "IngameAdvancement"
+
+getAllAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
+getAllAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
+   where inGameAdv = armRes  "Advancement"
 
 -- | Query graph to find a advancements of a given type (RDF class)
 -- for a given character.
