@@ -141,7 +141,7 @@ putCharGraph :: MapState -> G.RDFGraph -> STM.STM MapState
 putCharGraph st g = do
         res1 <- STM.readTVar $ resourceGraph st
         s1 <- STM.readTVar $ schemaGraph st
-        let cgen = C.makeCharGen s1 res1 g
+        let cgen = TCG.makeCharGen s1 res1 g
         let clab = TCG.charID cgen
         let cmap = cgMap st
         M.insert clab cgen cmap
@@ -153,7 +153,7 @@ putAdvGraph :: MapState -> G.RDFLabel -> G.RDFGraph -> STM.STM MapState
 putAdvGraph st clab g = do
         res1 <- STM.readTVar $ resourceGraph st
         s1 <- STM.readTVar $ schemaGraph st
-        let cgen = C.makeCharGen s1 res1 g
+        let cgen = TCG.makeCharGen s1 res1 g
         let cmap = devMap st
         M.insert clab cgen cmap
         let cl = TCG.charSheets cgen
@@ -196,6 +196,7 @@ lookup st char season year = do
              Nothing -> return Nothing
              Just cg1 -> do
                 let cstage = findSeason cg1 season year
+                return $ sheetObject cstage
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
