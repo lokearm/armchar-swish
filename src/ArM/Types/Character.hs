@@ -212,6 +212,7 @@ getSheetIDM _ (Just x) = return x
 -- TraitAdvancements are represented as a list of `Trait`s.
 -- Other properties are listed as 'contents'.
 data Advancement = Advancement {
+    advChar :: RDFLabel,
     year :: Maybe Int,
     season :: String,
     advLabel :: String,
@@ -222,14 +223,16 @@ data Advancement = Advancement {
     items :: [Trait]
    } deriving Eq
 
-defaultAdvancement = Advancement { year = Nothing,
-                season = "",
-                advLabel = "",
-                rdfid = noSuchAdvancement, 
-                advSortIndex = 0,
-                contents = [],
-                traits = [],
-                items = []
+defaultAdvancement = Advancement 
+                { advChar = armRes "noSuchCharacter"
+                , year = Nothing
+                , season = ""
+                , advLabel = ""
+                , rdfid = noSuchAdvancement
+                , advSortIndex = 0
+                , contents = []
+                , traits = []
+                , items = []
                 }
 instance Show Advancement where
    show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 

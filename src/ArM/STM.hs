@@ -145,6 +145,8 @@ putCharGraph st g = do
         let clab = TCG.charID cgen
         let cmap = cgMap st
         M.insert clab cgen cmap
+        -- TODO load advancement graph
+        -- TODO call putAdvGraph
         return $ st
 
 putAdvGraph :: MapState -> G.RDFLabel -> G.RDFGraph -> STM.STM MapState 
@@ -186,12 +188,14 @@ lookup :: MapState          -- ^ Memory state
        -> STM.STM (Maybe G.RDFGraph)
 lookup st char season year = do
           print $ char ++ " - " ++ season ++ " - " ++ show year
+          let cmap = devMap st
           print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
-          let k = TCG.CharacterKey { TCG.keyYear = year
-                               , TCG.keySeason = season 
-                               , TCG.keyChar = charstring }
-          M.lookup k cmap 
+          cg <- M.lookup (armRes char) cmap 
+          case (cg) of
+             Nothing -> return Nothing
+             Just cg1 -> do
+                let cstage = findSeason cg1 season year
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
@@ -200,15 +204,23 @@ lookup st char season year = do
 putAdvancement :: MapState -> TC.Advancement -> IO (Either G.RDFGraph String)
 putAdvancement st adv = do 
          STM.atomically $ do
-             g <- STM.readTVar (charRawGraph st)
-             schema <- STM.readTVar $ schemaGraph st
              let advg = TC.makeRDFGraph adv
-             let g1 = RP.persistGraph schema advg
-             charg <- STM.readTVar (charGraph st)
-             let g0 = RP.persistedGraph charg (TC.rdfid adv) 
-             let gg = (g0 `G.delete` g) `G.addGraphs` g1
-             newst <- putCharGraph st gg
-             return $ Left gg
+             let clab = TC.advChar adv
+
+             schema <- STM.readTVar $ schemaGraph st
+             let newg = RP.persistGraph schema advg
+
+             cgm <- cgMap st
+             cgen <- M.lookup clab cgm
+
+             case (cgen) of
+                Nothing -> return $ Right "No such character"
+                Left cgen0 -> do
+                   charg <- STM.readTVar (TCG.charGraph cgen0)
+                   let g0 = RP.persistedGraph charg (TC.rdfid adv) 
+                   let gg = (g0 `G.delete` (TCG.rawGraph cgen0)) `G.addGraphs` newg
+                   newst <- putCharGraph st gg
+                   return $ Left gg
 -- TODO: Check for conflicting advancements 
 
 -- | Update character metadata.  This has not been tested and requirs
