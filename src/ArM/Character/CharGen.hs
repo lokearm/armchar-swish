@@ -23,6 +23,7 @@ import ArM.Character.Character
 import ArM.Types.Character
 import ArM.Types.Saga
 import ArM.Types.Season
+import Data.List (sort)
 
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
@@ -49,7 +50,7 @@ putSeason cs [] a =  [makeCharStage cs a]
 putSeason cs (x:xs) a 
                  | timeOf a < timeOf x = x:makeCharStage (f xs) a:xs
                  | timeOf a == timeOf x = makeCharStage (f xs) a:xs
-                 | otherwise  = x:putSeason xs a
+                 | otherwise  = x:putSeason cs xs a
              where f [] = cs
                    f (y:ys) = sheetObject y
 
@@ -102,56 +103,36 @@ getAdvFiles ft s = getFiles "hasAdvancementFile"
 instance Show CharGen where
     show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
 instance HasTime CharStage where
-    timeOf = timeOf . charSheet
+    timeOf = timeOf . sheetObject
 
 -- |
 -- = Making Character Sheets
-makeCharDev :: G.RDFGraph  -- ^ Schema graph
+makeCharGen :: G.RDFGraph  -- ^ Schema graph
            -> G.RDFGraph  -- ^ Resource graph
            -> G.RDFGraph  -- ^ Raw character graph
            -> CharacterSheet  -- ^ Character Sheet at the start of development
            -> CharGen         -- ^ Resulting datastructure
-makeCharDev schema res1 g0 cs0 = CharGen 
+makeCharGen schema res1 g0 cs0 = CharGen 
              { charID = clab
              , charName = ""
              , charGraph = g1
              , rawGraph = g0
              , baseSheet = cs0
-             , charSheets = makeCS schema as "Game Start" cs0
+             , charSheets = makeCS schema as cs0
              }
      where as = reverse $ sort $ getIngameAdvancements g1 $ clab
            clab = csID cs0
            g1 = makeGraph  g0 schema res1
 
-makeCharGen :: G.RDFGraph  -- ^ Schema graph
-           -> G.RDFGraph  -- ^ Resource graph
-           -> G.RDFGraph  -- ^ Raw character graph
-           -> CharGen         -- ^ Resulting datastructure
-makeCharGen schema res1 g0 = CharGen 
-             { charID = clab
-             , charName = ""
-             , charGraph = g1
-             , rawGraph = g0
-             , baseSheet = cs0
-             , charSheets = makeCS schema as "Game Start" cs0
-             }
-     where cs0 = getInitialCharacter char
-           char = fromRDFGraph g0 clab
-           clab = head $ characterFromGraph g0
-           g1 = makeGraph  g0 schema res1
-           as = reverse $ sort $ getIngameAdvancements g1 $ clab
-
-makeCS :: RDFGraph -> [Advancement] -> String -> CharacterSheet -> [CharStage] 
-makeCS schema  as stage0 cs0 = makeCS' schema as [stage]
-   where stage = CharStage 
-                   { advancement = Nothing
-                   , sheetObject = cs0
-                   , sheetGraph = makeCGraph schema cs0 }
-makeCS' :: RDFGraph -> [Advancement] -> [CharStage] -> [CharStage]
+makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
+makeCS schema as cs0 = makeCS' schema as cs0 []
+makeCS' :: RDFGraph -> [Advancement] -> CharacterSheet 
+        -> [CharStage] -- ^ CharStages already constructed
+        -> [CharStage]
 makeCS' schema [] xs = xs
-makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
+makeCS' schema (a:as) cs0 xs = makeCS' schema as cs (y:xs)
    where y = CharStage 
-                   { advancement = Just a
+                   { advancement = a
                    , sheetObject = cs
                    , sheetGraph = makeCGraph schema cs }
          cs = advanceCharacter (sheetObject $ head xs) a
