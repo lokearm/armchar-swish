@@ -44,7 +44,7 @@ executable armchar-swish
                        , ArM.STM
                        , ArM.Types.Character
                        , ArM.Types.Season
-                       , ArM.Types.CharGen
+                       , ArM.Character.CharGen
                        , ArM.Types.Saga
   -- other-extensions:
   build-depends:       base >=4.13 
@@ -101,7 +101,7 @@ executable prof
                        , ArM.Character.Trait
                        , ArM.Types.Character
                        , ArM.Types.Season
-                       , ArM.Types.CharGen
+                       , ArM.Character.CharGen
                        , ArM.Types.Saga
                        , ArM.STM
   -- other-extensions:
@@ -163,7 +163,7 @@ executable tst
                        , ArM.STM
                        , ArM.Types.Character
                        , ArM.Types.Season
-                       , ArM.Types.CharGen
+                       , ArM.Character.CharGen
                        , ArM.Types.Saga
   -- other-extensions:
   build-depends:       base >=4.13 

@@ -59,7 +59,7 @@ import           Data.Maybe (fromJust)
 -- import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
 import qualified ArM.Types.Character as TC
-import qualified ArM.Types.CharGen as TCG
+import qualified ArM.Character.CharGen as TCG
 import qualified ArM.Types.Saga as TS
 import qualified ArM.Resources as AR
 import           ArM.Rules.Aux

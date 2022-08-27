@@ -154,13 +154,17 @@ toAdvancement xs = defaultAdvancement { rdfid = getkey xs
                getkey [] = noSuchAdvancement
                getkey (x:xs) = arcSubj x
 
-parseTime :: [KeyValuePair] -> CharTime  -> CharTime
-parseTime [] a = a
+parseTime :: CharTime  -> [KeyValuePair] -> CharTime
+parseTime a [] = a
 parseTime a (x:xs) = parseTime (f a x) xs
-     where f a (KeyValuePair k v) 
-             | k == inYear = a { charYear = Just ( rdfToInt v ) }
-             | k == atSeason = a { charSeason = rdfToString v }
-             | k == hasAdvancementIndex = a { advancementIndex = rdfToInt v }
+  where f a (KeyValuePair k v) 
+         | k == inYear = a { charYear = rdfToInt v }
+         | k == atSeason = a { charSeason = fs (rdfToString v) }
+         | k == hasAdvancementIndex = a { advancementIndex = fi (rdfToInt v) }
+         where fs Nothing = "" 
+               fs (Just x) = x
+               fi Nothing = 0 
+               fi (Just x) = x
 
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear :: [KeyValuePair] -> Maybe Int
@@ -193,3 +197,4 @@ instance FromRDFGraph Advancement where
                     arc (Var "property") labelRes (Var "label") ]
               vb = Q.rdfQueryFind g q
               ys = map keypairFromBinding vb
+
