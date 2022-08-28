@@ -24,9 +24,9 @@ import ArM.Resources
 import ArM.KeyPair 
 import Data.Maybe 
 import Data.List
-import ArM.Character.Trait
+-- import ArM.Character.Trait
 import ArM.Types.Advancement
-import ArM.Types.Character
+-- import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Rules.Aux
 

@@ -58,6 +58,7 @@ year = f . hasYear
 season :: Advancement -> String
 season = charSeason . advTime
 
+defaultAdvancement :: Advancement 
 defaultAdvancement = Advancement 
                 { advChar = armRes "noSuchCharacter"
                 , rdfid = noSuchAdvancement
@@ -96,6 +97,7 @@ instance Ord Advancement where
                | contents x > contents y = GT
                | otherwise = EQ
 
+sno :: Advancement -> Int
 sno = seasonNo . season
 
 instance ToRDFGraph Advancement where
@@ -104,8 +106,6 @@ instance ToRDFGraph Advancement where
 advToArcList :: Advancement -> [RDFTriple]
 advToArcList adv = ys2
     where ms = keyvalueToArcList (rdfid adv) (contents adv)
-          atRes = armRes "advanceTrait"
-          cpRes = armRes "changePossession"
           xs1 =  map traitContents (traits adv)
           xs2 =  map traitContents (items adv)
           ys1 = foldr (++) ms xs1

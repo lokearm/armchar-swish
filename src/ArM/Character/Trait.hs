@@ -95,10 +95,12 @@ fixTrait trait = trace "fixTrait" $ trait {
 calculateXP :: [RDFTriple] -> [RDFTriple]
 calculateXP ts = trace ("calculateXP\n"++show ts) $ makeXParc xs ys 
    where (xs,ys) = getXPtriples ts
-         makeXParc [] ys = ys
-         makeXParc xs ys = getXParc xs:ys
+         makeXParc [] zs = zs
+         makeXParc ws zs = getXParc ws:zs
 
 -- | Auxiliary for `calculateXP`
+getXParc :: [RDFTriple] -> RDFTriple
+getXParc [] = error "getXParc should not be called on an empty list"
 getXParc (x:xs) = trace ("getXParc "++show xp) $
                   arc (arcSubj x) (armRes "hasTotalXP") (litInt xp)
    where xp = foldr (+) 0 $ map ( intFromRDF . arcObj ) (x:xs)
@@ -117,7 +119,7 @@ getXPtriples' (xs,ys) | ys == [] = trace "getTriples' []" (xs,ys)
           p = arcPred y
           y = head ys
 
-
+{-
 xpSum :: [RDFTriple]  -- ^ Input list
       -> RDFTriple  -- ^ New arc
 xpSum [] = error "xpSum called on empty list"
@@ -128,4 +130,4 @@ xpSum (x:y:xs) | arcSubj x /= arcSubj y = error "Subject mismatch in xpSum."
          t = f x + f y
          y' = arc (arcSubj x) p (litInt t)
          p = armRes "hasTotalXP"
-
+-}
