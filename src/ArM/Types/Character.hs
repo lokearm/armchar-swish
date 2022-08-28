@@ -21,7 +21,7 @@ import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.RDF
-import ArM.Types.Advancement
+-- import ArM.Types.Advancement
 import ArM.Types.Trait
 import Data.Aeson
 import Data.Aeson.Key
@@ -38,8 +38,7 @@ data Character = Character {
 instance Show Character where
     show cs = "**" ++ show (characterID cs) ++ "**\n" 
            ++ "Metadata Triples:\n" ++ show ( characterData cs )
-        where showw [] = ""
-              showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
+defaultCharacter :: Character 
 defaultCharacter = Character {
          characterID = noSuchCharacter,
          characterData = KeyPairList []
@@ -67,6 +66,7 @@ instance Show CharacterSheet where
            ++ "Metadata Triples:\n" ++ show ( csMetadata cs )
         where showw [] = ""
               showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
+defaultCS :: CharacterSheet
 defaultCS = CharacterSheet {
          csID = noSuchCharacter,
          sheetID = Nothing,
@@ -89,9 +89,9 @@ instance ToRDFGraph CharacterSheet where
          ("charsheet",1)
       where cs' = cs { csMetadata = KeyPairList $ a xs }
             KeyPairList xs = csMetadata cs
-            aAge age ys  
-                   | age == 0 = ys
-                   | otherwise = KeyValuePair (armRes "hasAge") (litInt age):ys
+            aAge x ys  
+                   | x == 0 = ys
+                   | otherwise = KeyValuePair (armRes "hasAge") (litInt x):ys
             aYear Nothing ys   = ys
             aYear (Just x) ys  = KeyValuePair (armRes "inYear") (litInt x):ys
             aSeason x ys  
@@ -160,7 +160,7 @@ instance ToJSON Character where
     toJSON c = toJSON $ p x xs
         where x = KeyValuePair (armRes "isCharacter") $ characterID c
               xs = characterData c 
-              p x (KeyPairList xs) = KeyPairList (x:xs) 
+              p y (KeyPairList ys) = KeyPairList (y:ys) 
 
 instance FromJSON Character where 
     parseJSON val = fmap kpToChar $ parseJSON val
@@ -193,6 +193,7 @@ getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
 
 -- | Construct a query to get all
 -- arm:CharacterProperty triples for a given subject.
+query :: RDFLabel -> RDFGraph 
 query c = listToRDFGraph 
    [ arc c (G.Var "property") (G.Var "value")
    , arc (G.Var "property") typeRes armCharacterProperty

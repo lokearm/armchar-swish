@@ -55,9 +55,7 @@ import ArM.Types.Season
 
 import qualified ArM.Rules.Record as R
 
--- import Debug.Trace
-trace :: b -> a -> a
-trace _ y = y
+import ArM.NoTrace
 
 
 makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph

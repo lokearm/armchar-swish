@@ -30,8 +30,7 @@ import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Rules.Aux
 
--- import Debug.Trace
-trace x y = y
+import ArM.NoTrace
 
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
@@ -71,11 +70,6 @@ getGenQuads g q = map arcFromBinding $ rdfQueryFind q g
 fixAdvancements :: RDFGraph -> [Advancement] -> [Advancement]
 fixAdvancements g adv = map (fixAdv g) adv
 
-
-
-
-
-
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [RDFTriple] -> Advancement
 toAdvancement xs = defaultAdvancement { rdfid = getkey xs
@@ -83,7 +77,5 @@ toAdvancement xs = defaultAdvancement { rdfid = getkey xs
                                       , contents = ys }
          where ys = toKeyPairList xs 
                getkey [] = noSuchAdvancement
-               getkey (x:xs) = arcSubj x
-
-
+               getkey (x:_) = arcSubj x
 

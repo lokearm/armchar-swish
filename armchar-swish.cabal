@@ -22,6 +22,7 @@ executable armchar-swish
   -- documentation:       True
   other-modules:       ArM.Rules
                        , ArM.Trace
+                       , ArM.NoTrace
                        , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
@@ -84,6 +85,7 @@ executable prof
   main-is:             Main.hs
   other-modules:       ArM.Rules
                        , ArM.Trace
+                       , ArM.NoTrace
                        , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
@@ -150,6 +152,7 @@ executable tst
   main-is:             Test.hs
   other-modules:       ArM.Rules
                        , ArM.Trace
+                       , ArM.NoTrace
                        , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
