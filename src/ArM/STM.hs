@@ -72,6 +72,9 @@ import qualified ArM.Rules as R
 import           ArM.Resources
 import           ArM.Load
 
+import Debug.Trace
+ttrace x = trace (show x) x
+strace x = trace  x x
 
 
 -- | The `MapState` object defines the state of the server.
@@ -178,7 +181,7 @@ lookupCharIO m = STM.atomically . lookupChar m
 lookupChar :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
        -> STM.STM (Maybe TCG.CharGen)
-lookupChar st char = M.lookup (show (armRes char)) cmap 
+lookupChar st char = M.lookup (strace $ show (armcharRes char)) cmap 
          where cmap = cgMap st
                charstring = "armchar:" ++ char
 
@@ -196,7 +199,7 @@ lookup :: MapState          -- ^ Memory state
 lookup st char t = do
           let cmap = cgMap st
           let charstring = "armchar:" ++ char
-          cg <- M.lookup (show (armRes char)) cmap 
+          cg <- M.lookup (show (armcharRes char)) cmap 
           case (cg) of
              Nothing -> return Nothing
              Just cg1 -> case ( TCG.findSeason (TCG.charSheets cg1) t ) of
