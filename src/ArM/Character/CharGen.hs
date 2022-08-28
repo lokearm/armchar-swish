@@ -136,12 +136,18 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
            g1 = makeGraph  g0 schema res1
 
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
-makeCS schema as cs0 = trace "makeCS" $ makeCS' schema as cs0 []
-makeCS' :: RDFGraph -> [Advancement] -> CharacterSheet 
+makeCS schema [] cs0 = []
+makeCS schema (a:as) cs0 = trace "makeCS" $ makeCS' schema as [y]
+   where y = CharStage 
+                   { advancement = ttrace a
+                   , sheetObject = cs
+                   , sheetGraph = makeCGraph schema cs }
+         cs = advanceCharacter cs0 a
+makeCS' :: RDFGraph -> [Advancement] 
         -> [CharStage] -- ^ CharStages already constructed
         -> [CharStage]
-makeCS' schema [] _ xs = xs
-makeCS' schema (a:as) cs0 xs = trace "makeCS'" $ makeCS' schema as cs (y:xs)
+makeCS' schema [] xs = xs
+makeCS' schema (a:as) xs = trace "makeCS'" $ makeCS' schema as (y:xs)
    where y = CharStage 
                    { advancement = ttrace a
                    , sheetObject = cs
