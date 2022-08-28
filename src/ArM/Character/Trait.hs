@@ -35,7 +35,7 @@ import ArM.Types.Trait
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.NoTrace
+import ArM.Trace
 
 
 -- |
@@ -59,12 +59,13 @@ advanceTraitList (x:xs) (y:ys)
 -- and are sorted prior to processing.  The character sheet's OTOH
 -- has to be pre-sorted, which is not unfortunately.
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = 
+advanceTrait trait adv = trace ("advanceTrait " ++ tid trait ++ " " ++ tid adv) $
   fixTrait $ trait { traitContents = map fixSubj 
            $ advanceTriples ( traitContents trait ) 
                             ( sort $ traitContents adv ) }
       where fixSubj x = arc ( armRes "unnamedBlankNode" ) 
                             ( arcPred x ) ( arcObj x )
+            tid = show . traitID
 
 -- | Merge two lists of trait statements.  If a subject/property
 -- pair is found in both lists, it is taken only from the former.

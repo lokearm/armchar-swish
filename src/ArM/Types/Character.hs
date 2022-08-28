@@ -85,7 +85,7 @@ showSheetID = f . sheetID
 
 
 instance ToRDFGraph CharacterSheet where
-   makeRDFGraph cs = trace "makeRDFGraph for CharacterSheet" $
+   makeRDFGraph cs = trace msg $
          ( listToRDFGraph  . fst . runBlank ( csToArcListM cs' ) )
          ("charsheet",1)
       where cs' = cs { csMetadata = KeyPairList $ a xs }
@@ -103,6 +103,8 @@ instance ToRDFGraph CharacterSheet where
                             | otherwise = y - b
             age = age' (hasYear cs) (born cs)
             a = aAge age . aYear (hasYear cs) . aSeason (hasSeason cs)
+            msg = "makeRDFGraph for CharacterSheet (" ++ show traitcount ++ " traits)"
+            traitcount = length $ csTraits cs
 instance ToRDFGraph Character where
    makeRDFGraph cs = listToRDFGraph  ( ct:ms )
        where x = characterID cs
@@ -113,7 +115,7 @@ csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM $ sheetID cs
           tsm <- fixBlanksM $ csTraits cs
-          ism <- fixBlanksM $ csItems cs
+          ism <- fixBlanksM $ csItems $ trace ("#tsm = " ++ show (length tsm)) cs
           let ht = map ( \ y -> arc x (armRes "hasTrait") (fromJust $ traitID y) ) tsm
           let hi = map ( \ y -> arc x (armRes "hasPossession") (fromJust $ traitID y) ) ism
           let ts =  map traitContents tsm
@@ -139,7 +141,7 @@ fixBlankNodeM t
         b <- getBlank
         return $ trace ("BlankNode "++show b) $ t { traitContents = map ( replaceBlank b ) 
                       $ traitContents t }
-     where key = ttrace $ arcSubj $ head $ traitContents t
+     where key = ttrace $ fromJust $ traitID t
 
 replaceBlank :: RDFLabel -> RDFTriple -> RDFTriple
 replaceBlank b x =  arc b ( arcPred x ) ( arcObj x )
