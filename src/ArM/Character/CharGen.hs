@@ -20,7 +20,7 @@ import ArM.Character.Advancement
 import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Types.Advancement
-import Data.List (sortBy)
+import Data.List (sort)
 
 import ArM.Trace
 
@@ -125,7 +125,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
-     where as = trace ( "makeCharGen (adv)" ++ show clab) $ sortBy (flip compare) $ getAllAdvancements g1 $ clab
+     where as = trace ( "makeCharGen (adv)" ++ show clab) $ sort $ getAllAdvancements g1 $ clab
            cs0 = getInitialCS g1
            clab = ttrace $ csID cs0
            g1 = trace "makeCharGen calls makeGraph" $ makeGraph  g0 schema res1

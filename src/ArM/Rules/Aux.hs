@@ -104,6 +104,7 @@ fwdApplyRules :: [RDFRule] -> RDFGraph -> RDFGraph
 fwdApplyRules rs g = foldGraphs $ parMap rpar (`fwdApplySimple` g) rs
 
 -- | Make an RDF label of type xsd:integer
+litInt :: Int -> RDFLabel
 litInt i = TypedLit (T.pack $ show i) xsdInteger
 
 
