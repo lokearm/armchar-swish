@@ -78,19 +78,12 @@ instance Show Advancement where
       where 
          sc [] = ""
          sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
-         st [] = ""
-         st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
-                                  ++  "\n" ++ st xs
 
 instance HasTime Advancement where
     timeOf = advTime
 instance Ord Advancement where
-   compare x y | advSortIndex x < advSortIndex y = LT
-               | advSortIndex x > advSortIndex y = GT
-               | year x < year y = LT
-               | year x > year y = GT
-               | sno x < sno y = LT
-               | sno x > sno y = GT
+   compare x y | advTime x < advTime y = LT
+               | advTime x > advTime y = GT
                | rdfid x < rdfid y = LT
                | rdfid x > rdfid y = GT
                | contents x < contents y = LT
@@ -192,7 +185,7 @@ itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ Q.rdfQueryFind q g
 
 type ProtoTrait = (RDFLabel, RDFLabel, RDFLabel,RDFLabel)
 vb2tt :: Bool -> VB.RDFVarBinding -> ProtoTrait
-vb2tt b vb = ( fromJust $ vbMap vb (Var "class")
+vb2tt _ vb = ( fromJust $ vbMap vb (Var "class")
              , (fromJust $ vbMap vb (Var "id")) 
              , (fromJust $ vbMap vb (Var "property"))
              , (fromJust $ vbMap vb (Var "value")) 

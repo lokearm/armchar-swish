@@ -22,15 +22,13 @@ import Swish.RDF.Graph
 import Swish.RDF.Query as Q
 import ArM.Resources 
 import ArM.KeyPair 
-import Data.Maybe 
-import Data.List
 -- import ArM.Character.Trait
 import ArM.Types.Advancement
 -- import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Rules.Aux
 
-import ArM.NoTrace
+-- import ArM.NoTrace
 
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
@@ -51,7 +49,7 @@ getAllAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
 queryGraph :: RDFLabel -- ^ Label for the advancement type
            -> RDFLabel -- ^ Label for the character to be advanced
            -> RDFGraph -- ^ Resulting graph
-queryGraph c1 = listToRDFGraph  . f c1
+queryGraph c = listToRDFGraph  . f c
    where f c1 c2 = [ arc (Var "id") typeRes c1,
             arc (Var "id") (Var "property") (Var "value"),
             arc (Var "id") (armRes  "advanceCharacter") c2,
