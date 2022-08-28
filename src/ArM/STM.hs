@@ -39,6 +39,9 @@
 --
 -----------------------------------------------------------------------------
 module ArM.STM ( ArM.STM.lookup
+               , ArM.STM.lookupIO
+               , ArM.STM.lookupChar
+               , ArM.STM.lookupCharIO
                , loadSaga
                , getStateGraph
                , getSchemaGraph
@@ -166,6 +169,18 @@ getSchemaGraph st = STM.readTVarIO ( schemaGraph st)
 -- | Return the resource graph from STM as an RDF Graph.
 getResourceGraph :: MapState -> IO G.RDFGraph
 getResourceGraph st =  STM.readTVarIO (resourceGraph st)
+
+-- | Return the sheet for a given character, season, and year (as RDFGraph).
+lookupCharIO :: MapState          -- ^ Memory state
+       -> String            -- ^ Character ID
+       -> IO (Maybe TCG.CharGen)
+lookupCharIO m = STM.atomically . lookupChar m
+lookupChar :: MapState          -- ^ Memory state
+       -> String            -- ^ Character ID
+       -> STM.STM (Maybe TCG.CharGen)
+lookupChar st char = M.lookup (show (armRes char)) cmap 
+         where cmap = cgMap st
+               charstring = "armchar:" ++ char
 
 
 -- | Return the sheet for a given character, season, and year (as RDFGraph).

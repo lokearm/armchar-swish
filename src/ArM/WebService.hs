@@ -33,13 +33,14 @@ import Data.String (fromString)
 
 import qualified ArM.Types.Character as TC
 import qualified ArM.Character as C
+import qualified ArM.Character.CharGen as TCG
 import qualified ArM.CharacterQuery as CQ
 import qualified ArM.Resources as AR
 import ArM.JSON
 import qualified Data.Aeson as Aeson
 
-import           ArM.STM 
-import qualified GHC.Conc as STM
+import qualified ArM.STM as STM
+-- import qualified GHC.Conc as STM
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 import Network.Wai.Middleware.Cors (simpleCors)
@@ -50,7 +51,7 @@ import ArM.Time
 -- TEST
 import qualified ArM.Rules.Persistence as RP
 
-stateScotty ::  MapState -> S.ScottyM ()
+stateScotty ::  STM.MapState -> S.ScottyM ()
 stateScotty stateVar = do
         middleware logStdoutDev
         middleware simpleCors
@@ -60,54 +61,42 @@ stateScotty stateVar = do
         get "/" $ do     
           text $ "Test a get call\n"
         get "/schema" $ do     
-          schema <- liftIO $ getSchemaGraph stateVar
+          schema <- liftIO $ STM.getSchemaGraph stateVar
           printGraph schema
         get "/res" $ do     
-          res <- liftIO $ getResourceGraph stateVar
+          res <- liftIO $ STM.getResourceGraph stateVar
           printGraph res
-        get "/graph" $ do     
-          g <- liftIO $ getStateGraph stateVar
-          printGraph  g
-
-        -- Pre-defined character sheets
-        get "/graph/gamestart/:char" $ do     
-          char' <- param "char"
-          let char = AR.armcharRes char'
-          g <- liftIO $ getStateGraph stateVar
-          graphif $ C.getGameStartCharacter g char 
-        get "/gamestart/:char" $ do     
-          char' <- param "char"
-          let char = AR.armcharRes char'
-          g <- liftIO $ getStateGraph stateVar
-          jsonif $ C.getGameStartCharacter g char 
 
         -- Advancement lists
         get "/show/adv/:char" $ do     
-          char' <- param "char"
-          let char = AR.armcharRes char'
-          g <- liftIO $ getStateGraph stateVar
-          text $ T.pack $ show $ sort $ C.getIngameAdvancements g char
+          char <- param "char"
+          cg <- STM.lookupIO stateVar char
+          let g = TCG.charGraph cg
+          let clab = TCG.charID cg
+          text $ T.pack $ show $ sort $ C.getIngameAdvancements g clab
         get "/adv/:char" $ do     
-          char' <- param "char"
-          let char = AR.armcharRes char'
-          g <- liftIO $ getStateGraph stateVar
-          jsonif $ Just $ sort $ C.getIngameAdvancements g char
+          char <- param "char"
+          cg <- STM.lookupIO stateVar char
+          let g = TCG.charGraph cg
+          let clab = TCG.charID cg
+          jsonif $ Just $ sort $ C.getIngameAdvancements g clab
         get "/pregameadvancement/:char" $ do     
-          char' <- param "char"
-          let char = AR.armcharRes char'
-          g <- liftIO $ getStateGraph stateVar
-          jsonif $ Just $ C.getPregameAdvancements g char
+          char <- param "char"
+          cg <- STM.lookupIO stateVar char
+          let g = TCG.charGraph cg
+          let clab = TCG.charID cg
+          jsonif $ Just $ C.getPregameAdvancements g clab
 
         -- Character Sheet
         get "/char/:char" $ do     
           char <- fmap AR.armcharRes $ param "char"
-          g <- liftIO $ getStateGraph stateVar
+          g <- liftIO $ STM.getStateGraph stateVar
           let c =  TC.fromRDFGraph g char :: TC.Character
           json c
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
-             Just (CharacterRecord cgraph) -> do
+             Just (cgraph) -> do
                 text $ T.fromStrict $ formatGraphAsText $ cgraph
              Nothing -> notfound404 
 
@@ -140,7 +129,7 @@ stateScotty stateVar = do
 
         put "/adv" $ do
           adv <- jsonData :: S.ActionM C.Advancement 
-          newg <- liftIO $ putAdvancement stateVar adv
+          newg <- liftIO $ STM.putAdvancement stateVar adv
           liftIO $ print adv
           case (newg) of
              Left g -> printGraph g
@@ -148,7 +137,7 @@ stateScotty stateVar = do
         put "/char" $ do
           char <- jsonData :: S.ActionM TC.Character 
           liftIO $ print char
-          newg <- liftIO $ putCharacter stateVar char
+          newg <- liftIO $ STM.putCharacter stateVar char
           case (newg) of
              Left g -> printGraph g
              Right x -> text $ T.pack x
@@ -161,10 +150,10 @@ notfound404 = do status notFound404
 
 -- | Get a character record from the STM State.
 -- The record is selected by HTTP/GET parameters found in the monad.
-getCSGraph :: MapState -> S.ActionM (Maybe CharacterRecord)
+getCSGraph :: STM.MapState -> S.ActionM (Maybe G.RDFGraph)
 getCSGraph stateVar = do
           (char, year, season) <- getParam
-          r <- liftIO $ ArM.STM.lookup stateVar char season (read year)
+          r <- liftIO $ STM.lookup stateVar char season (read year)
           return r
 
 -- | Get the HTTP/GET parameters selecting a character sheet and
@@ -182,11 +171,11 @@ getParam = do
 -- | Given a character record and a function, show the result
 -- of applying the function to the record as JSON.
 -- The function also shows CPU time
-jsonif' :: Aeson.ToJSON a => Maybe CharacterRecord ->
+jsonif' :: Aeson.ToJSON a => Maybe G.RDFGraph ->
            (G.RDFGraph -> a) -> S.ActionM ()
 jsonif' Nothing _  = notfound404
 jsonif' (Just x) f =  jsonif'' x f
-  where jsonif'' (CharacterRecord x) f = do
+  where jsonif'' (x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             json $ f x
@@ -196,11 +185,11 @@ jsonif' (Just x) f =  jsonif'' x f
 -- | Given a character record and a function, show the result
 -- of applying the function to the record as text.
 -- The function also shows CPU time
-textif' :: Show a => Maybe CharacterRecord ->
+textif' :: Show a => Maybe G.RDFGraph ->
            (G.RDFGraph -> a) -> S.ActionM ()
 textif' Nothing _  = notfound404
 textif' (Just x) f =  textif'' x f
-  where textif'' (CharacterRecord x) f = do
+  where textif'' (x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
             text $ T.pack $ show $ f x
@@ -236,7 +225,7 @@ printGraph = text . toLazyText .  formatGraphIndent "\n" True
 -- | Generate get responses for trait subsets
 -- Both JSON and text versions are created, prepending the path
 -- by `/show` for the text version.
-getAb :: (Show a, Aeson.ToJSON a) => MapState ->
+getAb :: (Show a, Aeson.ToJSON a) => STM.MapState ->
          String -> (G.RDFGraph -> a) -> S.ScottyM ()
 getAb s p f = textAb s ("/show"++p) f >> jsonAb s p f
    where
