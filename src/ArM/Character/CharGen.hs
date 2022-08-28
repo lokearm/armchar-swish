@@ -27,6 +27,10 @@ import ArM.Types.Saga
 import ArM.Types.Season
 import Data.List (sort,sortBy)
 
+import Debug.Trace
+ttrace x = trace (show x) x
+strace x = trace  x x
+
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
 data CharStage = CharStage 
@@ -40,8 +44,8 @@ data CharStage = CharStage
 
 findSeason :: [CharStage] -> CharTime -> Maybe CharStage
 findSeason [] _ = Nothing
-findSeason (x:xs) t | timeOf x == t = Just x
-                    | timeOf x > t = Nothing
+findSeason (x:xs) t | ttrace (timeOf x) == t = Just x
+                    | ttrace (timeOf x) > t = Nothing
                     | otherwise  = findSeason xs t
 
 putAdvancement :: CharGen -> Advancement -> CharGen
@@ -139,7 +143,7 @@ makeCS' :: RDFGraph -> [Advancement] -> CharacterSheet
 makeCS' schema [] _ xs = xs
 makeCS' schema (a:as) cs0 xs = makeCS' schema as cs (y:xs)
    where y = CharStage 
-                   { advancement = a
+                   { advancement = ttrace a
                    , sheetObject = cs
                    , sheetGraph = makeCGraph schema cs }
          cs = advanceCharacter (sheetObject $ head xs) a

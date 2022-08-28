@@ -183,7 +183,6 @@ lookupChar :: MapState          -- ^ Memory state
        -> STM.STM (Maybe TCG.CharGen)
 lookupChar st char = M.lookup (strace $ show (armcharRes char)) cmap 
          where cmap = cgMap st
-               charstring = "armchar:" ++ char
 
 
 -- | Return the sheet for a given character, season, and year (as RDFGraph).
@@ -198,12 +197,12 @@ lookup :: MapState          -- ^ Memory state
        -> STM.STM (Maybe G.RDFGraph)
 lookup st char t = do
           let cmap = cgMap st
-          let charstring = "armchar:" ++ char
-          cg <- M.lookup (show (armcharRes char)) cmap 
+          let k = strace $ show (armcharRes char)
+          cg <- M.lookup k cmap 
           case (cg) of
-             Nothing -> return Nothing
-             Just cg1 -> case ( TCG.findSeason (TCG.charSheets cg1) t ) of
-                Nothing -> return Nothing
+             Nothing -> return $ trace "lookup: character not found" Nothing
+             Just cg1 -> case ( TCG.findSeason (ttrace $ TCG.charSheets cg1) t ) of
+                Nothing -> return $ trace "lookup: season not found" Nothing
                 Just cstage -> return $ Just $ TCG.sheetGraph cstage
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
