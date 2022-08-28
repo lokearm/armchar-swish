@@ -121,8 +121,13 @@ hasAdvancementIndex :: RDFLabel
 hasAdvancementIndex = armRes "hasAdvancementIndex" 
 hasAdvancementType :: RDFLabel
 hasAdvancementType = armRes "hasAdvancementType" 
+hasAdvancementTypeString :: RDFLabel
 hasAdvancementTypeString = armRes "hasAdvancementTypeString" 
+prefixedidRes :: RDFLabel
 prefixedidRes = armRes "prefixedid" 
+armPersistentProperty :: RDFLabel
 armPersistentProperty = armRes "PersistentProperty" 
+armCharacterProperty :: RDFLabel
 armCharacterProperty = armRes "CharacterProperty" 
+armCharacter :: RDFLabel
 armCharacter = armRes "Character" 
