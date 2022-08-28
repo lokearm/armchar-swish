@@ -31,6 +31,7 @@ import           Swish.RDF.Graph
 import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Types.Character
+import ArM.Types.Trait
 
 import Control.Parallel.Strategies (parMap,rpar)
 

@@ -21,6 +21,8 @@
 --
 -----------------------------------------------------------------------------
 module ArM.KeyPair ( keypairFromBinding 
+                   , keyvalueToArcList 
+                   , tripleToJSON 
                    , KeyValuePair(..)
                    , KeyPairList(..)
                    , fromKeyPairList
@@ -42,6 +44,11 @@ import Swish.VarBinding  (vbMap)
 import Data.Maybe  (fromJust)
 import Data.List (sort)
 import ArM.Resources
+import Data.Aeson
+import Data.Aeson.Key
+import qualified Data.Aeson.KeyMap as KM
+import Swish.Namespace (ScopedName)
+import ArM.Types.RDF
 
 -- |
 -- = Data Types
@@ -162,3 +169,39 @@ getProperty k' (KeyValuePair k v:xs)
    | k' == k  = Just v
    | otherwise      = getProperty k' xs
 
+-- | Convert a `KeyValuePair` to JSON
+tripleToJSON :: KeyValuePair -> (Key,Value)
+tripleToJSON (KeyValuePair a b) = 
+    ((getKey $ fromJust $ fromRDFLabel a), (toJSON b))
+
+
+-- | Convert an RDFLabel to an Aeson Key for JSON serialisation
+getKey :: RDFLabel -> Key
+getKey = fromString  . show
+
+-- |
+-- = KeyPairList
+
+instance FromJSON KeyPairList  where
+  parseJSON = withObject "KeyPairList" $ \obj ->
+    let kvs = KM.toList obj
+        parsed = mapM pairToKeyValue kvs
+    in fmap KeyPairList parsed
+instance ToJSON KeyPairList where 
+    toJSON (KeyPairList t) = object $ map tripleToJSON t
+
+-- | Parse a JSON attribute/value pair and return a KeyValuePair 
+-- (property/object in RDF terms)
+-- This is a an axiliary for `parseJSON` for `KeyPairList`
+pairToKeyValue (x,y) = do
+    v <- parseJSON y
+    case k of
+        Left k' -> return $ KeyValuePair k' v
+        Right s -> fail s
+    where k = stringToRDFLabel $ toString x
+
+-- | Convert `KeyValuePair` to `RDFTriple`
+-- This is an auxiliary for other ToRDFGraph functions
+keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
+keyvalueToArcList x [] = []
+keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys

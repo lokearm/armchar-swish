@@ -13,25 +13,15 @@
 module ArM.Character.CharGen where
 
 import Swish.RDF.Graph as G
-import qualified Swish.RDF.Query as Q
-import Data.Maybe
 import ArM.KeyPair
-import ArM.Resources
-import ArM.BlankNode
 import ArM.Rules (makeGraph)
-import ArM.Rules.Aux
 import ArM.Character.Character
 import ArM.Character.Advancement
 import ArM.Types.Character
-import ArM.Types.Saga
 import ArM.Types.Season
-import Data.List (sort,sortBy)
+import Data.List (sortBy)
 
-import Debug.Trace
-ttrace :: Show a => a -> a
-ttrace x = trace (show x) x
-strace :: String -> String
-strace x = trace  x x
+import ArM.Trace
 
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
@@ -66,7 +56,7 @@ putSeason schema cs (x:xs) a
                  | timeOf a == timeOf x = ys
                  | otherwise  = x:putSeason schema cs xs a
              where f [] = cs
-                   f (y:ys) = sheetObject y
+                   f (y:_) = sheetObject y
                    ys = makeCharStage schema (f xs) a:xs
 
 makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage

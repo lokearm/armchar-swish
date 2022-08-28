@@ -21,6 +21,7 @@ executable armchar-swish
   main-is:             Main.hs
   -- documentation:       True
   other-modules:       ArM.Rules
+                       , ArM.Trace
                        , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
@@ -33,7 +34,6 @@ executable armchar-swish
                        , ArM.Character
                        , ArM.Load
                        , ArM.BlankNode
-                       , ArM.JSON
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
@@ -43,6 +43,9 @@ executable armchar-swish
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
+                       , ArM.Types.Advancement
+                       , ArM.Types.Trait
+                       , ArM.Types.RDF
                        , ArM.Types.Season
                        , ArM.Character.CharGen
                        , ArM.Types.Saga
@@ -80,6 +83,7 @@ executable armchar-swish
 executable prof
   main-is:             Main.hs
   other-modules:       ArM.Rules
+                       , ArM.Trace
                        , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
@@ -92,7 +96,6 @@ executable prof
                        , ArM.Character
                        , ArM.Load
                        , ArM.BlankNode
-                       , ArM.JSON
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
@@ -101,6 +104,9 @@ executable prof
                        , ArM.Character.Advancement
                        , ArM.Character.Trait
                        , ArM.Types.Character
+                       , ArM.Types.Advancement
+                       , ArM.Types.Trait
+                       , ArM.Types.RDF
                        , ArM.Types.Season
                        , ArM.Character.CharGen
                        , ArM.Types.Saga
@@ -143,6 +149,7 @@ executable prof
 executable tst
   main-is:             Test.hs
   other-modules:       ArM.Rules
+                       , ArM.Trace
                        , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
@@ -155,7 +162,6 @@ executable tst
                        , ArM.Character
                        , ArM.Load
                        , ArM.BlankNode
-                       , ArM.JSON
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
@@ -165,6 +171,9 @@ executable tst
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
+                       , ArM.Types.Advancement
+                       , ArM.Types.Trait
+                       , ArM.Types.RDF
                        , ArM.Types.Season
                        , ArM.Character.CharGen
                        , ArM.Types.Saga

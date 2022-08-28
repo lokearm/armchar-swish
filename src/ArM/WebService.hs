@@ -36,7 +36,6 @@ import qualified ArM.Character as C
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.CharacterQuery as CQ
 import ArM.Resources()
-import ArM.JSON()
 import qualified Data.Aeson as Aeson
 
 import qualified ArM.STM as STM

@@ -72,10 +72,7 @@ import qualified ArM.Rules as R
 import           ArM.Resources
 import           ArM.Load
 
-import Debug.Trace
-ttrace x = trace (show x) x
-strace x = trace  x x
-
+import ArM.Trace
 
 -- | The `MapState` object defines the state of the server.
 -- The server process maintains a single `MapState` object in

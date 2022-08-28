@@ -7,8 +7,7 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Types to handle Characters, Traits, and Advancements, with some basic
--- associated functions.
+-- Types to handle Characters and Traits, with some basic associated functions.
 --
 -----------------------------------------------------------------------------
 module ArM.Types.Character where
@@ -21,65 +20,12 @@ import ArM.KeyPair
 import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
+import ArM.Types.RDF
+import ArM.Types.Advancement
+import ArM.Types.Trait
+import Data.Aeson
+import Data.Aeson.Key
 
-
--- |
--- = RDF Conversion
-
-class FromRDFGraph a where
-    fromRDFGraph :: RDFGraph -> RDFLabel -> a 
-class ToRDFGraph a where
-    makeRDFGraph :: a -> RDFGraph
-
--- | Convert `KeyValuePair` to `RDFTriple`
--- This is an auxiliary for other ToRDFGraph functions
-keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
-keyvalueToArcList x [] = []
-keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
-
--- | 
--- = Trait
-
--- | Trait Resource
--- `traitID` and `traitContents` are sufficient to describe the trait.
--- The other fields duplicate information to facilitate searching and
--- sorting.
--- When new traits are created, `traitID` is set to nothing?
--- A blank node is only created when it is written into an RDFGraph.
-data Trait = Trait {
-    traitClass :: RDFLabel,
-    instanceLabel :: String,
-    isRepeatableTrait :: Bool,
-    traitContents :: [RDFTriple]
-   } deriving (Eq)
-defaultTrait = Trait {
-    traitClass = noSuchTrait,
-    instanceLabel = "",
-    isRepeatableTrait = False,
-    traitContents = []
-   } 
-
--- | Get the ID (RDFLabel) of a trait if possible.
-traitID :: Trait -> Maybe RDFLabel
-traitID = f . traitContents
-   where f [] = Nothing
-         f (x:_) = Just $ arcSubj x
-
-instance Show Trait where
-   show a = "**" ++ show (traitClass a) ++ "**\n" 
-                 ++ sc (traitContents a) 
-                 ++ "\n"
-      where 
-         sc [] = ""
-         sc (x:xs) = "  " ++ show x ++ "\n" ++ sc xs
-instance Ord Trait where
-   compare x y | traitClass x < traitClass y = LT
-               | traitClass x > traitClass y = GT
-               -- | not (isRepeatableTrait x) = EQ
-               -- | not (isRepeatableTrait y) = EQ
-               | instanceLabel x < instanceLabel y = LT
-               | instanceLabel x > instanceLabel y = GT
-               | otherwise = EQ
 
 -- | 
 -- = Character
@@ -202,84 +148,32 @@ getSheetIDM _ Nothing = getBlank
 getSheetIDM _ (Just x) = return x
 
 -- |
--- = Character Advancement
+-- = CharacterSheet
 
--- | CharacterAdvancement Resource
--- Essential information is in `rdfid`, `contents`, and `traits.
--- The other properties are redundant, merely giving access to
--- critical information without having to search the lists.
--- TraitAdvancements are represented as a list of `Trait`s.
--- Other properties are listed as 'contents'.
-data Advancement = Advancement 
-    { advChar :: RDFLabel
-    , advTime :: CharTime
-    , rdfid :: RDFLabel
-    , contents :: [KeyValuePair]
-    , traits :: [Trait]
-    , items :: [Trait]
-   } deriving Eq
+instance ToJSON CharacterSheet where 
+    toJSON cs = object (c:x:xs)
+       where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
+             xs = map tripleToJSON (fromKeyPairList $ csMetadata cs)
+             c = (fromString "arm:isCharacter") .= (show $ csID cs)
 
-advSortIndex :: Advancement -> Int
-advSortIndex = advancementIndex . advTime
-year :: Advancement -> Int
-year = f . hasYear 
-   where f Nothing = 0
-         f (Just y) = y
-season :: Advancement -> String
-season = charSeason . advTime
+instance ToJSON Character where 
+    toJSON c = toJSON $ p x xs
+        where x = KeyValuePair (armRes "isCharacter") $ characterID c
+              xs = characterData c 
+              p x (KeyPairList xs) = KeyPairList (x:xs) 
 
-defaultAdvancement = Advancement 
-                { advChar = armRes "noSuchCharacter"
-                , rdfid = noSuchAdvancement
-                , contents = []
-                , advTime = defaultCharTime
-                , traits = []
-                , items = []
-                }
-instance Show Advancement where
-   show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ show (year a) ++ "**\n" 
-                 ++ sc (contents a) 
-                 ++ show (traits a) 
-                 ++ show (items a) 
-                 ++ "\nSort Index: " ++ show (advSortIndex a) 
-                 ++ "\nSeason No: " ++ show (sno a) 
-                 ++ "\n"
-      where 
-         sc [] = ""
-         sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
-         st [] = ""
-         st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
-                                  ++  "\n" ++ st xs
+instance FromJSON Character where 
+    parseJSON val = fmap kpToChar $ parseJSON val
 
-instance HasTime Advancement where
-    timeOf = advTime
-instance Ord Advancement where
-   compare x y | advSortIndex x < advSortIndex y = LT
-               | advSortIndex x > advSortIndex y = GT
-               | year x < year y = LT
-               | year x > year y = GT
-               | sno x < sno y = LT
-               | sno x > sno y = GT
-               | rdfid x < rdfid y = LT
-               | rdfid x > rdfid y = GT
-               | contents x < contents y = LT
-               | contents x > contents y = GT
-               | otherwise = EQ
-
-sno = seasonNo . season
-
-instance ToRDFGraph Advancement where
-   makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
-
-advToArcList :: Advancement -> [RDFTriple]
-advToArcList adv = ys2
-    where ms = keyvalueToArcList (rdfid adv) (contents adv)
-          atRes = armRes "advanceTrait"
-          cpRes = armRes "changePossession"
-          xs1 =  map traitContents (traits adv)
-          xs2 =  map traitContents (items adv)
-          ys1 = foldr (++) ms xs1
-          ys2 = foldr (++) ys1 xs2
+-- | Auxiliary to parseJSON Character
+kpToChar :: KeyPairList -> Character
+kpToChar (KeyPairList xs) = defaultCharacter {
+         characterID = fromJ $ getProperty (armRes "isCharacter") xs,
+         characterData = KeyPairList xs
+         }
+         where fromJ Nothing = noSuchCharacter
+               fromJ (Just x) = x
 
 instance HasTime CharacterSheet where
     timeOf = csTime
+

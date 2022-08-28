@@ -19,7 +19,6 @@ module ArM.Character.Advancement ( Advancement(..)
                                  , getSeason
                                  , getYear
                                  , getSortIndex
-                                 , parseTime
                                  ) where
 
 import Swish.RDF.Graph 
@@ -29,6 +28,7 @@ import ArM.KeyPair
 import Data.Maybe 
 import Data.List
 import ArM.Character.Trait
+import ArM.Types.Advancement
 import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Rules.Aux
@@ -76,11 +76,6 @@ getGenQuads g q = map arcFromBinding $ rdfQueryFind q g
 fixAdvancements :: RDFGraph -> [Advancement] -> [Advancement]
 fixAdvancements g adv = map (fixAdv g) adv
 
--- | Auxiliary for 'fixAdvancements'
-fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g adv = trace ("fixAdv "++show advid) $ adv { traits = traitsFromRDF advid g,
-                 items = itemsFromRDF advid g }
-        where advid = rdfid adv
 
 itemsFromRDF advid g = itFromRDF True "changePossession" advid g
 traitsFromRDF advid g = itFromRDF False "advanceTrait" advid g
@@ -146,18 +141,6 @@ toAdvancement xs = defaultAdvancement { rdfid = getkey xs
                getkey [] = noSuchAdvancement
                getkey (x:xs) = arcSubj x
 
-parseTime :: CharTime  -> [KeyValuePair] -> CharTime
-parseTime a [] = a
-parseTime a (x:xs) = parseTime (f a x) xs
-  where f a (KeyValuePair k v) 
-         | k == inYear = a { charYear = rdfToInt v }
-         | k == atSeason = a { charSeason = fs (rdfToString v) }
-         | k == hasAdvancementIndex = a { advancementIndex = fi (rdfToInt v) }
-         | otherwise = a
-         where fs Nothing = "" 
-               fs (Just x) = x
-               fi Nothing = 0 
-               fi (Just x) = x
 
 -- | Get the year from a list of Triples belonging to an Advancement
 getYear :: [KeyValuePair] -> Maybe Int
@@ -177,17 +160,4 @@ getSortIndex xs = f1 x
             f1 (Just idx) = f2 $ fromRDFLabel idx
             f2 Nothing = 2^30
             f2 (Just idx) = idx
-
-instance FromRDFGraph Advancement where
-   fromRDFGraph g label = fixAdv g $ defaultAdvancement 
-                 { rdfid = label
-                 , advTime = parseTime defaultCharTime ys 
-                 , contents = ys }
-        where q = listToRDFGraph  $
-                  [ arc label typeRes (armRes "CharacterAdvancement"),
-                    arc label (Var "property") (Var "value"),
-                    arc (Var "property") typeRes armViewProperty,
-                    arc (Var "property") labelRes (Var "label") ]
-              vb = Q.rdfQueryFind g q
-              ys = map keypairFromBinding vb
 
