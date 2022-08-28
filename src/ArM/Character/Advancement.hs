@@ -167,6 +167,7 @@ parseTime a (x:xs) = parseTime (f a x) xs
          | k == inYear = a { charYear = rdfToInt v }
          | k == atSeason = a { charSeason = fs (rdfToString v) }
          | k == hasAdvancementIndex = a { advancementIndex = fi (rdfToInt v) }
+         | otherwise = a
          where fs Nothing = "" 
                fs (Just x) = x
                fi Nothing = 0 
