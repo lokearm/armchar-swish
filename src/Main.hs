@@ -22,16 +22,7 @@
 
 module Main where
 
-import System.IO (IO)
-import Control.Monad.IO.Class (liftIO)
-
-
--- Loading ArM data 
-import ArM.Load (readGraph,getRawGraph)
-import qualified ArM.Resources as AR
-
 -- Software Transactional Memory
-import qualified GHC.Conc as STM
 import ArM.STM
 
 -- Web service
@@ -56,13 +47,14 @@ password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
 
 -- | Saga File
+sagaFile :: String
 sagaFile = "Test/saga.ttl"
 
 main :: IO ()
 main = do 
-     print "Starting: armchar-swish  ..."
+     putStrLn "Starting: armchar-swish  ..."
      printTime
      stateVar <- loadSaga sagaFile
-     print "Starting Scotty"
+     putStrLn "Starting Scotty"
      S.scotty 3000 $ stateScotty stateVar
      -- HA.middleware $ basicAuth authf "armchar"

@@ -28,7 +28,9 @@ import ArM.Types.Season
 import Data.List (sort,sortBy)
 
 import Debug.Trace
+ttrace :: Show a => a -> a
 ttrace x = trace (show x) x
+strace :: String -> String
 strace x = trace  x x
 
 -- ^ A `CharStage` object represents a character's state of development
@@ -68,11 +70,11 @@ putSeason schema cs (x:xs) a
                    ys = makeCharStage schema (f xs) a:xs
 
 makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage
-makeCharStage schema cs adv = CharStage 
+makeCharStage schema cs0 adv = CharStage 
               { advancement = adv
               , sheetObject = cs
               , sheetGraph = makeCGraph schema cs }
-              where cs = advanceCharacter cs adv 
+              where cs = advanceCharacter cs0 adv 
              
 
 -- ^ A `CharGen` object represents a character's development over a
@@ -109,13 +111,12 @@ instance Keyable CharacterSheet where
 instance Keyable CharStage where
    getKey = getKey . sheetObject
 
-getAdvFiles ft s = getFiles "hasAdvancementFile"
-
 -- |
 -- = Instances of standard classes
 
 instance Show CharGen where
-    show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")"
+    show cs = charName cs ++ " (" ++ (show $ charID cs) ++ ")\n" ++ showw (charSheets cs)
+         where showw xs = show $ map timeOf xs
 instance HasTime CharStage where
     timeOf = timeOf . sheetObject
 
@@ -133,20 +134,20 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
-     where as = trace ( "makeCharGen " ++ show clab) $ sortBy (flip compare) $ getAllAdvancements g1 $ clab
+     where as = trace ( "makeCharGen (adv)" ++ show clab) $ sortBy (flip compare) $ getAllAdvancements g1 $ clab
            cs0 = getInitialCS g1
            clab = ttrace $ csID cs0
-           g1 = makeGraph  g0 schema res1
+           g1 = trace "makeCharGen calls makeGraph" $ makeGraph  g0 schema res1
 
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
-makeCS schema [] cs0 = []
-makeCS schema (a:as) cs0 = trace "makeCS" $ makeCS' schema as [y]
+makeCS _ [] _ = []
+makeCS schema (a:as) cs0 = trace ("makeCS\n" ++ show y) $ makeCS' schema as [y]
    where y = makeCharStage schema cs0 a
 makeCS' :: RDFGraph -> [Advancement] 
         -> [CharStage] -- ^ CharStages already constructed
         -> [CharStage]
-makeCS' schema [] xs = xs
-makeCS' schema (a:as) xs = trace "makeCS'" $ makeCS' schema as (y:xs)
+makeCS' _ [] xs = xs
+makeCS' schema (a:as) xs = trace ("makeCS'\n" ++ show y) $ makeCS' schema as (y:xs)
    where y = CharStage 
                    { advancement = a
                    , sheetObject = cs

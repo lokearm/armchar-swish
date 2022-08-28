@@ -24,4 +24,5 @@ getBlank = do
     put (s,x+1)
     return $ Blank $ s ++ show x
 
+runBlank :: BlankState a -> (String,Int) -> (a, (String,Int))
 runBlank = runState

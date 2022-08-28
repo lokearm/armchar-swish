@@ -21,13 +21,12 @@ module ArM.WebService (stateScotty) where
 import Web.Scotty  as S
 import Network.HTTP.Types
 
-import Control.Monad
+-- import Control.Monad
 import qualified Data.Text.Lazy as  T
 import Data.Text.Lazy.Builder (toLazyText)
 import Swish.RDF.Formatter.Turtle (formatGraphAsText,formatGraphIndent)
 import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
-import Data.Maybe (fromJust)
 import Data.List (sort)
 import Data.String (fromString)
 
@@ -36,8 +35,8 @@ import qualified ArM.Types.Season as TS
 import qualified ArM.Character as C
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.CharacterQuery as CQ
-import qualified ArM.Resources as AR
-import ArM.JSON
+import ArM.Resources()
+import ArM.JSON()
 import qualified Data.Aeson as Aeson
 
 import qualified ArM.STM as STM
@@ -50,7 +49,7 @@ import System.CPUTime
 import ArM.Time
 
 -- TEST
-import qualified ArM.Rules.Persistence as RP
+-- import qualified ArM.Rules.Persistence as RP
 
 stateScotty ::  STM.MapState -> S.ScottyM ()
 stateScotty stateVar = do
@@ -147,7 +146,7 @@ stateScotty stateVar = do
           newg <- liftIO $ STM.putAdvancement stateVar adv
           liftIO $ print adv
           case (newg) of
-             Left g -> text $ T.pack "Not implemented"
+             Left _ -> text $ T.pack "Not implemented"
              Right x -> text $ T.pack x
         put "/char" $ do
           char <- jsonData :: S.ActionM TC.Character 
@@ -190,7 +189,7 @@ getParam = do
 jsonif' :: Aeson.ToJSON a => Maybe G.RDFGraph ->
            (G.RDFGraph -> a) -> S.ActionM ()
 jsonif' Nothing _  = notfound404
-jsonif' (Just x) f =  jsonif'' x f
+jsonif' (Just xin) fin =  jsonif'' xin fin
   where jsonif'' (x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
@@ -204,7 +203,7 @@ jsonif' (Just x) f =  jsonif'' x f
 textif' :: Show a => Maybe G.RDFGraph ->
            (G.RDFGraph -> a) -> S.ActionM ()
 textif' Nothing _  = notfound404
-textif' (Just x) f =  textif'' x f
+textif' (Just xin) fin =  textif'' xin fin
   where textif'' (x) f = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
@@ -243,7 +242,8 @@ printGraph = text . toLazyText .  formatGraphIndent "\n" True
 -- by `/show` for the text version.
 getAb :: (Show a, Aeson.ToJSON a) => STM.MapState ->
          String -> (G.RDFGraph -> a) -> S.ScottyM ()
-getAb s p f = textAb s ("/show"++p) f >> jsonAb s p f
+getAb st property func = textAb st ("/show"++property) func 
+                       >> jsonAb st property func
    where
       textAb s p f = get (fromString p) $ do     
                      r <- getCSGraph s

@@ -24,26 +24,31 @@ import           Data.Text (unpack)
 
 -- * Ontology Files
 
+baseURI :: Maybe URI
 baseURI = Nothing
     
 -- * URIs and NameSpaces
 
 auth = URIAuth "" "hg.schaathun.net" ""
+armURI :: URI 
 armURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/schema",
            uriQuery = "",
            uriFragment = "#" }
+armrURI :: URI 
 armrURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/resources",
            uriQuery = "",
            uriFragment = "#" }
+rulesURI :: URI 
 rulesURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/rules",
            uriQuery = "",
            uriFragment = "#" }
+armcharURI :: URI 
 armcharURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/character/",
@@ -77,24 +82,39 @@ armrRes s = Res $ makeScopedName (Just $ T.pack "armr") armrURI (newLName s)
 
 -- * Ontology Labels
 
+isCharacterLabel :: RDFLabel
 isCharacterLabel = armRes  "isCharacter"
+repeatableLabel :: RDFLabel
 repeatableLabel = armRes  "RepeatableTrait"
+xptraitLabel :: RDFLabel
 xptraitLabel = armRes  "XPTrait"
+accelleratedtraitLabel :: RDFLabel
 accelleratedtraitLabel = armRes  "AccelleratedTrait"
+addXPLabel :: RDFLabel
 addXPLabel = armRes  "addedXP"
+totalXPLabel :: RDFLabel
 totalXPLabel = armRes "hasTotalXP" 
+hasXPLabel :: RDFLabel
 hasXPLabel = armRes "hasXP" 
 
 -- | An RDFLabel used as a kind of Null pointer for traits and items.
+noSuchTrait :: RDFLabel
 noSuchTrait = armRes "noSuchTrait" 
 -- | An RDFLabel used as a kind of Null pointer for advancements.
+noSuchAdvancement :: RDFLabel
 noSuchAdvancement = armRes "noSuchAdvancement" 
 -- | An RDFLabel used as a kind of Null pointer for characters.
+noSuchCharacter :: RDFLabel
 noSuchCharacter = armRes "noSuchCharacter" 
+
+atSeason :: RDFLabel
 atSeason = armRes "atSeason" 
+inYear :: RDFLabel
 inYear = armRes "inYear" 
-advancementType = armRes "Advancement" 
+
+hasAdvancementIndex :: RDFLabel
 hasAdvancementIndex = armRes "hasAdvancementIndex" 
+hasAdvancementType :: RDFLabel
 hasAdvancementType = armRes "hasAdvancementType" 
 hasAdvancementTypeString = armRes "hasAdvancementTypeString" 
 prefixedidRes = armRes "prefixedid" 

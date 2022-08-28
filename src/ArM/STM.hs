@@ -150,15 +150,20 @@ loadSaga fn = do
 putCharGraph :: MapState -> G.RDFGraph -> IO MapState 
 putCharGraph st g = trace "putCharGraph" $ do
         res1 <- STM.readTVarIO $ resourceGraph st
-        s1 <- STM.readTVarIO $ schemaGraph st
-        let cgen = TCG.makeCharGen s1 res1 g
+        schema1 <- STM.readTVarIO $ schemaGraph st
+        let cgen = TCG.makeCharGen schema1 res1 g
         let clab = TCG.charID cgen
         let cmap = cgMap st
         let clVar = charList st
+        print "Ready to instert CharGen object"
         STM.atomically $ do
-           s1 <- STM.readTVar clVar 
-           STM.writeTVar clVar (clab:s1)
+           cl1 <- STM.readTVar clVar 
+           STM.writeTVar clVar (clab:cl1)
            M.insert (show clab) cgen cmap
+        print $ "putCharGraph " ++ show clab
+        let cls = TCG.charSheets cgen
+        print $ "Number of character stages: " ++ show (length cls)
+        print $ show cgen
         return $ st
 
 
@@ -241,8 +246,8 @@ putCharacter :: MapState            -- ^ Memory state
              -> TC.Character        -- ^ New Character to be stored
              -> IO (Either G.RDFGraph String) 
                 -- ^ Either the new character graph or an error message
-putCharacter st char = return $ Right "Not implemented"
--- do 
+putCharacter _ _ = return $ Right "Not implemented"
+-- putCharacter st char = do 
          -- STM.atomically $ do
              -- g <- STM.readTVar (charRawGraph st)
              -- schema <- STM.readTVar (schemaGraph st)
