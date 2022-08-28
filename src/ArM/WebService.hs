@@ -70,29 +70,43 @@ stateScotty stateVar = do
         -- Advancement lists
         get "/show/adv/:char" $ do     
           char <- param "char"
-          cg <- STM.lookupIO stateVar char
-          let g = TCG.charGraph cg
-          let clab = TCG.charID cg
-          text $ T.pack $ show $ sort $ C.getIngameAdvancements g clab
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> do
+               let g = TCG.charGraph cg1
+               let clab = TCG.charID cg1
+               text $ T.pack $ show $ sort $ C.getIngameAdvancements g clab
         get "/adv/:char" $ do     
           char <- param "char"
-          cg <- STM.lookupIO stateVar char
-          let g = TCG.charGraph cg
-          let clab = TCG.charID cg
-          jsonif $ Just $ sort $ C.getIngameAdvancements g clab
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> do
+               let g = TCG.charGraph cg1
+               let clab = TCG.charID cg1
+               json $ sort $ C.getIngameAdvancements g clab
         get "/pregameadvancement/:char" $ do     
           char <- param "char"
-          cg <- STM.lookupIO stateVar char
-          let g = TCG.charGraph cg
-          let clab = TCG.charID cg
-          jsonif $ Just $ C.getPregameAdvancements g clab
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> do
+               let g = TCG.charGraph cg1
+               let clab = TCG.charID cg1
+               json $ C.getPregameAdvancements g clab
 
         -- Character Sheet
         get "/char/:char" $ do     
-          char <- fmap AR.armcharRes $ param "char"
-          g <- liftIO $ STM.getStateGraph stateVar
-          let c =  TC.fromRDFGraph g char :: TC.Character
-          json c
+          char <- param "char"
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> do
+               let g = TCG.charGraph cg1
+               let clab = TCG.charID cg1
+               let c =  TC.fromRDFGraph g clab :: TC.Character
+               json c
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar
           case (r) of
