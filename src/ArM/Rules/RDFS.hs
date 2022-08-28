@@ -16,8 +16,10 @@ module ArM.Rules.RDFS where
 import Swish.RDF.Graph
 import ArM.Rules.Aux
 import Swish.RDF.Vocabulary.RDF
+import Swish.RDF.Ruleset (RDFRule)
 
 -- | Infer subclass and subproperty relations by transitivity
+rdfsRules :: [RDFRule]
 rdfsRules = [
   makeCRule "subclassRule" 
       [ arc sVar (Res rdfsSubClassOf) tVar 
@@ -31,6 +33,7 @@ rdfsRules = [
 
 -- | Rules to infer additional types and properties from subclass 
 -- and subproperty relations (using RDFS vocabulary).
+rdfstypeRules :: [RDFRule]
 rdfstypeRules = [
     makeCRule "subclasstypeRule"
       [ arc sVar (Res rdfType) tVar 
@@ -43,4 +46,5 @@ rdfstypeRules = [
     ]
 
 -- | Make inferences on the joint graph including resources
+applyRDFS :: RDFGraph -> RDFGraph
 applyRDFS = fwdApplyList rdfstypeRules . fwdApplyListR rdfsRules 
