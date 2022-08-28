@@ -32,6 +32,7 @@ import Data.List (sort)
 import Data.String (fromString)
 
 import qualified ArM.Types.Character as TC
+import qualified ArM.Types.Season as TS
 import qualified ArM.Character as C
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.CharacterQuery as CQ
@@ -146,7 +147,7 @@ stateScotty stateVar = do
           newg <- liftIO $ STM.putAdvancement stateVar adv
           liftIO $ print adv
           case (newg) of
-             Left g -> printGraph g
+             Left g -> text $ T.pack "Not implemented"
              Right x -> text $ T.pack x
         put "/char" $ do
           char <- jsonData :: S.ActionM TC.Character 
@@ -167,8 +168,9 @@ notfound404 = do status notFound404
 getCSGraph :: STM.MapState -> S.ActionM (Maybe G.RDFGraph)
 getCSGraph stateVar = do
           (char, year, season) <- getParam
-          r <- liftIO $ STM.lookup stateVar char season (read year)
-          return r
+          let t = TS.defaultCharTime { TS.charYear = Just $ read year, 
+                                    TS.charSeason = season }
+          liftIO $ STM.lookupIO stateVar char t
 
 -- | Get the HTTP/GET parameters selecting a character sheet and
 -- print diagnostic output.
