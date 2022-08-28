@@ -26,8 +26,6 @@ import ArM.Types.Advancement
 import ArM.Types.Season
 import ArM.Rules.Aux
 
--- import ArM.NoTrace
-
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getPregameAdvancements g c = getAdvancements g $ queryGraph preGameAdv c

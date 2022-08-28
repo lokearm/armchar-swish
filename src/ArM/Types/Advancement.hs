@@ -29,7 +29,7 @@ import Data.Aeson.Key
 import qualified Swish.RDF.VarBinding  as VB
 import           Swish.VarBinding  (vbMap)
 
-import ArM.Trace
+import ArM.NoTrace
 
 -- |
 -- = Character Advancement
@@ -200,10 +200,10 @@ splitTrait' ([],x:xs) = splitTrait' (mkTrait x:[],xs)
 splitTrait' (t:ts,x:xs) 
     | traitClass t == c = splitTrait' (t':ts,xs) 
     | otherwise         = splitTrait' (mkTrait x:t:ts,xs) 
-       where t' = trace ("add to trait " ++ show x) addToTrait t x
+       where t' = addToTrait t x
              (c,_,_,_) = x
 mkTrait :: ProtoTrait -> Trait
-mkTrait (a,b,c,d) = trace ( "mkTrait " ++ show (a,b,c,d) ) $ defaultTrait { traitClass = a,
+mkTrait (a,b,c,d) = defaultTrait { traitClass = a,
                          traitContents = [ arc b c d ] }
 
 traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph

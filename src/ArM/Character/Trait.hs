@@ -35,7 +35,7 @@ import ArM.Types.Trait
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Trace
+import ArM.NoTrace
 
 
 -- |
@@ -109,10 +109,10 @@ getXPtriples xs = trace "getXPtriples" $ getXPtriples' ([],xs)
 
 -- | Auxiliary for `calculateXP`
 getXPtriples' :: ([RDFTriple],[RDFTriple]) -> ([RDFTriple],[RDFTriple])
-getXPtriples' (xs,ys) | ys == [] = trace "getTriples' []" (xs,ys)
-                      | p == armRes "hasTotalXP" = trace (show y) (y:xs',ys')
-                      | p == armRes "addedXP" = trace (show y) (y:xs',ys')
-                      | otherwise             = trace (show y) (xs',y:ys')
+getXPtriples' (xs,ys) | ys == [] = (xs,ys)
+                      | p == armRes "hasTotalXP" =  (y:xs',ys')
+                      | p == armRes "addedXP" =  (y:xs',ys')
+                      | otherwise             =  (xs',y:ys')
     where (xs',ys') = getXPtriples' (xs,tail ys)
           p = arcPred y
           y = head ys

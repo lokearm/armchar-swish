@@ -22,7 +22,7 @@ import ArM.Types.Season
 import ArM.Types.Advancement
 import Data.List (sort)
 
-import ArM.Trace
+import ArM.NoTrace
 
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
