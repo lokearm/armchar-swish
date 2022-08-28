@@ -42,6 +42,7 @@ class ToRDFGraph a where
 
 -- | Convert a string to an RDFLabel, parsing URIs
 stringToRDFLabel :: String -> Either RDFLabel String
+stringToRDFLabel "" = Right "Cannont make a label from an empty string"
 stringToRDFLabel (k:ks) 
         | k == '<'  = tl $ parseURI uri 
         | splits == [] = Right "Parser error: empty string."
