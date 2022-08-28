@@ -54,10 +54,10 @@ module ArM.STM ( ArM.STM.lookup
 
 import Prelude hiding (lookup)
 import qualified GHC.Conc as STM
-import           Control.Monad.IO.Class (liftIO)
+-- import           Control.Monad.IO.Class (liftIO)
 import qualified Control.Concurrent.STM.Map as M
 import qualified Swish.RDF.Graph as G
-import           Data.Maybe (fromJust)
+-- import           Data.Maybe (fromJust)
 
 import qualified ArM.Character as C
 import           ArM.Types.RDF (fromRDFGraph)
@@ -66,8 +66,8 @@ import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Advancement as TA
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.Types.Saga as TS
-import qualified ArM.Resources as AR
-import           ArM.Rules.Aux
+-- import qualified ArM.Resources as AR
+-- import           ArM.Rules.Aux
 import qualified ArM.Rules.Persistence as RP
 import qualified ArM.Rules as R
 import           ArM.Resources
@@ -153,7 +153,7 @@ putCharGraph st g = trace "putCharGraph" $ do
         let clab = TCG.charID cgen
         let cmap = cgMap st
         let clVar = charList st
-        print "Ready to instert CharGen object"
+        print "Ready to insert CharGen object"
         STM.atomically $ do
            cl1 <- STM.readTVar clVar 
            STM.writeTVar clVar (clab:cl1)

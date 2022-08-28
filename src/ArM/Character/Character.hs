@@ -42,9 +42,9 @@ import           Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
-import           Data.Maybe (fromJust)
+-- import           Data.Maybe (fromJust)
 import           Data.List (sort)
-import ArM.Rules (makeGraph)
+-- import ArM.Rules (makeGraph)
 import ArM.Resources
 import ArM.Character.Trait
 import ArM.Character.Advancement
@@ -56,9 +56,11 @@ import ArM.Types.Season
 import qualified ArM.Rules.Record as R
 
 -- import Debug.Trace
-trace x y = y
+trace :: b -> a -> a
+trace _ y = y
 
 
+makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
 makeCGraph schema = R.prepareRecord schema . makeRDFGraph
 
 
@@ -74,14 +76,6 @@ getInitialCharacter c = defaultCS {
 
 -- |
 -- = Advancement
-
--- | Given a character sheet and a sorted list of advancements,
--- apply all the advancements in order and produce a list
--- of character sheets for every step
-advanceList :: CharacterSheet -> [Advancement] -> [CharacterSheet]
-advanceList _ [] = []
-advanceList cs (x:xs) = cs' : advanceList cs' xs
-            where cs' = advanceCharacter cs x 
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
