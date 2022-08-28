@@ -7,8 +7,7 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- These auxiliary functions were made to log CPU usage, but it does
--- not work very well due to Haskell's laziness.
+-- Simple functions to log CPU usage.
 --
 -----------------------------------------------------------------------------
 
@@ -18,7 +17,7 @@ import System.CPUTime
 
 showf :: Integer -> String
 showf f = showFFloat (Just 3) t1 "" 
-            where t1 = fromIntegral ( f `div` 10^9 ) * 10**(-3)
+            where t1 = fromIntegral f * 10**(-12) :: Double
 printTime :: IO ()
 printTime = do
      t1 <- getCPUTime
