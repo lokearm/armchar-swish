@@ -131,6 +131,7 @@ getInitialCS = getInitialCharacter . getCharacter
 getCharacter :: RDFGraph -> Character
 getCharacter g = fromRDFGraph g label 
    where label = head $ characterFromGraph g
+
 -- |
 -- = Instances - Load Character object from graph
 
