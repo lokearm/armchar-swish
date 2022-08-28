@@ -35,7 +35,7 @@ strace x = trace  x x
 -- at one particular point on the in-game timeline. 
 data CharStage = CharStage 
      { advancement :: Advancement  
-       -- ^ The advancement of leading to the stage
+       -- ^ The advancement leading to the stage
      , sheetObject :: CharacterSheet     
        -- ^ The resulting character sheet
      , sheetGraph :: RDFGraph 
@@ -44,32 +44,35 @@ data CharStage = CharStage
 
 findSeason :: [CharStage] -> CharTime -> Maybe CharStage
 findSeason [] _ = Nothing
-findSeason (x:xs) t | ttrace (timeOf x) == ttrace t = trace ("findSeason returns Just " ++ show x) $ Just x
-                    | ttrace (timeOf x) > ttrace t = trace ("findSeason returns Nothing") Nothing
-                    | otherwise  = trace "findSeason recurses" findSeason xs t
+findSeason (x:xs) t | timeOf x == t = Just x
+                    | timeOf x > t = Nothing
+                    | otherwise  = findSeason xs t
 
-putAdvancement :: CharGen -> Advancement -> CharGen
-putAdvancement cg adv = cg { charSheets = putSeason cs0 csl adv }
+putAdvancement :: RDFGraph -> CharGen -> Advancement -> CharGen
+putAdvancement schema cg adv = cg { charSheets = putSeason schema cs0 csl adv }
            where cs0 = baseSheet cg
                  csl = charSheets cg
 
-putSeason :: CharacterSheet
+putSeason :: RDFGraph
+          -> CharacterSheet
           -> [CharStage] 
           -> Advancement 
           -> [CharStage] 
-putSeason cs [] a =  [makeCharStage cs a]
-putSeason cs (x:xs) a 
-                 | timeOf a < timeOf x = x:makeCharStage (f xs) a:xs
-                 | timeOf a == timeOf x = makeCharStage (f xs) a:xs
-                 | otherwise  = x:putSeason cs xs a
+putSeason schema cs [] a =  [makeCharStage schema cs a]
+putSeason schema cs (x:xs) a 
+                 | timeOf a < timeOf x = x:ys
+                 | timeOf a == timeOf x = ys
+                 | otherwise  = x:putSeason schema cs xs a
              where f [] = cs
                    f (y:ys) = sheetObject y
+                   ys = makeCharStage schema (f xs) a:xs
 
-makeCharStage :: CharacterSheet -> Advancement -> CharStage
-makeCharStage cs adv = CharStage 
+makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage
+makeCharStage schema cs adv = CharStage 
               { advancement = adv
-              , sheetObject = advanceCharacter cs adv 
-              , sheetGraph = emptyGraph }
+              , sheetObject = cs
+              , sheetGraph = makeCGraph schema cs }
+              where cs = advanceCharacter cs adv 
              
 
 -- ^ A `CharGen` object represents a character's development over a
@@ -138,11 +141,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
 makeCS schema [] cs0 = []
 makeCS schema (a:as) cs0 = trace "makeCS" $ makeCS' schema as [y]
-   where y = CharStage 
-                   { advancement = a
-                   , sheetObject = cs
-                   , sheetGraph = makeCGraph schema cs }
-         cs = advanceCharacter cs0 a
+   where y = makeCharStage schema cs0 a
 makeCS' :: RDFGraph -> [Advancement] 
         -> [CharStage] -- ^ CharStages already constructed
         -> [CharStage]

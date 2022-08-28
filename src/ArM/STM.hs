@@ -230,7 +230,7 @@ putAdvancement st adv = do
              case (cgen) of
                 Nothing -> return $ Right "No such character"
                 Just cgen0 -> do
-                   let cgen1 = TCG.putAdvancement cgen0 adv1
+                   let cgen1 = TCG.putAdvancement schema cgen0 adv1
                    M.insert (show clab) cgen1 cgm
                    return $ Left cgen1
 -- TODO: Check for conflicting advancements 
