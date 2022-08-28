@@ -61,6 +61,7 @@ grantarc :: RDFTriple
 grantarc = arc traitclass gtRes trait
 
 -- | Rule to infer abilities granted by virtues and flaws
+vfabRule :: RDFRule
 vfabRule = makeCRule "abilities-from-virtues" [grantarc, vfab3] [vfabT]
 vfab3 :: RDFTriple
 vfab3 = arc trait typeRes (armRes "Ability" )
