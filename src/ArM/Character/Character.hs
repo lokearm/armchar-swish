@@ -30,7 +30,6 @@
 module ArM.Character.Character ( CharacterSheet(..)
                                , characterFromGraph
                                , ToRDFGraph(..)
-                               , FromRDFGraph(..)
                                , advanceCharacter
                                , getInitialCS
                                , makeCGraph
@@ -50,6 +49,7 @@ import ArM.Resources
 import ArM.Character.Trait
 import ArM.Character.Advancement
 import ArM.KeyPair
+import ArM.Types.RDF
 import ArM.Types.Character
 import ArM.Types.Season
 
@@ -111,20 +111,7 @@ characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph'
 -- |
 -- = Get Character Metadata
 
--- | Construct a query to get all
--- arm:CharacterProperty triples for a given subject.
-query c = listToRDFGraph 
-   [ arc c (G.Var "property") (G.Var "value")
-   , arc (G.Var "property") typeRes armCharacterProperty
-   , arc (G.Var "property") labelRes  (G.Var "label") ]
 
--- | Make a list of metadata, where each data item is
--- a triple consisting of URI, Label, and Value.
--- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
--- either as a prefixed name or as a full URI in angled brackets (<uri>).
-getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
-getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
-                          $  Q.rdfQueryFind (query s) g
 
 getInitialCS :: RDFGraph -> CharacterSheet
 getInitialCS = getInitialCharacter . getCharacter
@@ -132,11 +119,3 @@ getCharacter :: RDFGraph -> Character
 getCharacter g = fromRDFGraph g label 
    where label = head $ characterFromGraph g
 
--- |
--- = Instances - Load Character object from graph
-
-instance FromRDFGraph Character where
-   fromRDFGraph g label = defaultCharacter {
-                 characterID = label,
-                 characterData = getCharacterMetadata g label
-                 }

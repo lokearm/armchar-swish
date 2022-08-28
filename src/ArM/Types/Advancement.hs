@@ -15,6 +15,7 @@ module ArM.Types.Advancement where
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import Data.Maybe
+import Data.List (sort)
 import ArM.Types.Season
 import ArM.KeyPair
 import ArM.Resources
@@ -25,6 +26,10 @@ import ArM.Types.Trait
 import qualified ArM.Types.Season as TS
 import Data.Aeson
 import Data.Aeson.Key
+import qualified Swish.RDF.VarBinding  as VB
+import           Swish.VarBinding  (vbMap)
+
+import ArM.Trace
 
 -- |
 -- = Character Advancement
@@ -175,3 +180,59 @@ fixAdv :: RDFGraph -> Advancement -> Advancement
 fixAdv g adv = trace ("fixAdv "++show advid) $ adv { traits = traitsFromRDF advid g,
                  items = itemsFromRDF advid g }
         where advid = rdfid adv
+
+itemsFromRDF :: RDFLabel -> RDFGraph -> [Trait]
+itemsFromRDF advid g = itFromRDF True "changePossession" advid g
+traitsFromRDF :: RDFLabel -> RDFGraph -> [Trait]
+traitsFromRDF advid g = itFromRDF False "advanceTrait" advid g
+
+itFromRDF :: Bool -> String -> RDFLabel -> RDFGraph -> [Trait]
+itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ Q.rdfQueryFind q g 
+    where q = traitqgraph (armRes s) advid
+
+type ProtoTrait = (RDFLabel, RDFLabel, RDFLabel,RDFLabel)
+vb2tt :: Bool -> VB.RDFVarBinding -> ProtoTrait
+vb2tt b vb = ( fromJust $ vbMap vb (Var "class")
+             , (fromJust $ vbMap vb (Var "id")) 
+             , (fromJust $ vbMap vb (Var "property"))
+             , (fromJust $ vbMap vb (Var "value")) 
+             )
+
+splitTrait :: [ProtoTrait] -> [Trait]
+splitTrait xs = fst $ splitTrait' ([],xs)
+splitTrait' :: ([Trait],[ProtoTrait]) -> ([Trait],[ProtoTrait])
+splitTrait' (ts,[]) = (ts,[])
+splitTrait' ([],x:xs) = splitTrait' (mkTrait x:[],xs) 
+splitTrait' (t:ts,x:xs) 
+    | traitClass t == c = splitTrait' (t':ts,xs) 
+    | otherwise         = splitTrait' (mkTrait x:t:ts,xs) 
+       where t' = addToTrait t x
+             (c,s,p,o) = x
+mkTrait :: ProtoTrait -> Trait
+mkTrait (a,b,c,d) = defaultTrait { traitClass = a,
+                         traitContents = [ arc b c d ] }
+
+traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph
+traitqgraph p s = listToRDFGraph 
+      [ arc s p (Var "id")
+      , arc (Var "id") (Var "property") (Var "value")
+      , arc (Var "id") (armRes "traitClass") (Var "class") ]
+
+addToTrait :: Trait -> ProtoTrait -> Trait
+addToTrait t (c,s,p,o) 
+      | traitClass t /= c = error "traitClass mismatch in addToTrait"
+      | p == armRes "instanceLabel" 
+             = t { instanceLabel = lab o
+                 , traitContents = triple:traitContents t }
+      | p == typeRes && o == armRes "RepeatableTrait" 
+                        = t { isRepeatableTrait = True
+                            , traitContents = triple:traitContents t }
+      | p == typeRes && o == armRes "Equipment" 
+                        = t { isRepeatableTrait = True
+                            , traitContents = triple:traitContents t }
+      | otherwise = t { traitContents = triple:traitContents t }
+         where lab = f . rdfToString 
+               triple = arc s p o
+               f Nothing = ""
+               f (Just x) = x
+

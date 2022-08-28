@@ -30,6 +30,7 @@ import Control.Monad.IO.Class (liftIO)
 import Data.List (sort)
 import Data.String (fromString)
 
+import           ArM.Types.RDF (fromRDFGraph)
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Season as TS
 import qualified ArM.Character as C
@@ -104,7 +105,7 @@ stateScotty stateVar = do
              Just cg1 -> do
                let g = TCG.charGraph cg1
                let clab = TCG.charID cg1
-               let c =  TC.fromRDFGraph g clab :: TC.Character
+               let c =  fromRDFGraph g clab :: TC.Character
                json c
         get "/cs/:char/:year/:season" $ do     
           r <- getCSGraph stateVar

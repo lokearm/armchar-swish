@@ -177,3 +177,23 @@ kpToChar (KeyPairList xs) = defaultCharacter {
 instance HasTime CharacterSheet where
     timeOf = csTime
 
+instance FromRDFGraph Character where
+   fromRDFGraph g label = defaultCharacter {
+                 characterID = label,
+                 characterData = getCharacterMetadata g label
+                 }
+
+-- | Make a list of metadata, where each data item is
+-- a triple consisting of URI, Label, and Value.
+-- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
+-- either as a prefixed name or as a full URI in angled brackets (<uri>).
+getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
+getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
+                          $  Q.rdfQueryFind (query s) g
+
+-- | Construct a query to get all
+-- arm:CharacterProperty triples for a given subject.
+query c = listToRDFGraph 
+   [ arc c (G.Var "property") (G.Var "value")
+   , arc (G.Var "property") typeRes armCharacterProperty
+   , arc (G.Var "property") labelRes  (G.Var "label") ]

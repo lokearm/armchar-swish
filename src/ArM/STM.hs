@@ -59,10 +59,11 @@ import qualified Control.Concurrent.STM.Map as M
 import qualified Swish.RDF.Graph as G
 import           Data.Maybe (fromJust)
 
--- import qualified ArM.STM.CharacterMap as CM
 import qualified ArM.Character as C
+import           ArM.Types.RDF (fromRDFGraph)
 import qualified ArM.Types.Season as TS
 import qualified ArM.Types.Character as TC
+import qualified ArM.Types.Advancement as TA
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.Types.Saga as TS
 import qualified ArM.Resources as AR
@@ -215,15 +216,15 @@ lookup st char t = trace ("lookup" ++ show char ++ show t) $ do
 -- getResource g label = Nothing
 
 -- | Update the state graph with the given Advancement object.
-putAdvancement :: MapState -> TC.Advancement -> IO (Either TCG.CharGen String)
+putAdvancement :: MapState -> TA.Advancement -> IO (Either TCG.CharGen String)
 putAdvancement st adv = do 
-         let advg = TC.makeRDFGraph adv
-         let clab = TC.advChar adv
+         let advg = C.makeRDFGraph adv
+         let clab = TA.advChar adv
 
          schema <- STM.readTVarIO $ schemaGraph st
          let newg = RP.persistGraph schema advg
 
-         let adv1 = TC.fromRDFGraph newg (TC.rdfid adv)
+         let adv1 = fromRDFGraph newg (TA.rdfid adv)
 
          let cgm = cgMap st
          STM.atomically $ do
