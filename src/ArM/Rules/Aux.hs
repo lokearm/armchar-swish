@@ -110,6 +110,7 @@ litInt i = TypedLit (T.pack $ show i) xsdInteger
 
 -- | Make an RDF label to hold a string.  This is currently made untyped
 -- for the sake of simplicity.
+litString :: String -> RDFLabel
 litString i = Lit (T.pack i) 
 -- litString i = TypedLit (T.pack i) xsdString
 
@@ -124,4 +125,5 @@ intFromRDF x = fi i
          s = rdfToString x
          fi Nothing = fs s
          fi (Just y) = y
+         fs Nothing = 0
          fs (Just y) = read y
