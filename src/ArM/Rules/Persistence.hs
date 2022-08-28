@@ -15,8 +15,8 @@ module ArM.Rules.Persistence where
 import           ArM.Rules.Aux
 import           ArM.Rules.RDFS
 import qualified Swish.RDF.Graph as G
-import qualified Swish.RDF.Query as Q
-import           Swish.RDF.Vocabulary.RDF
+-- import qualified Swish.RDF.Query as Q
+-- import           Swish.RDF.Vocabulary.RDF
 
 import ArM.Resources
 
