@@ -77,13 +77,12 @@ import           ArM.Load
 -- which may potentially change during operation.
 data MapState = MapState 
               { sagaGraph :: STM.TVar G.RDFGraph
-              , charGraph :: [STM.TVar TCG.CharGen]
+              , charGraph :: STM.TVar [TCG.CharGen]
               , schemaGraph :: STM.TVar G.RDFGraph
               , resourceGraph :: STM.TVar G.RDFGraph
               , schemaRawGraph :: STM.TVar [G.RDFGraph]
               , resourceRawGraph :: STM.TVar [G.RDFGraph]
               , cgMap :: M.Map G.RDFLabel TCG.CharGen
-              , devMap :: M.Map G.RDFLabel TCG.CharGen
               }
 
 readAllFiles :: [String] -> IO [G.RDFGraph]
@@ -124,7 +123,6 @@ loadSaga fn = do
     cs <- readAllFiles charFN
 
 
-    cm <- STM.atomically  M.empty
     cgm <- STM.atomically  M.empty
     let st = MapState { sagaGraph = sagaVar
                       , schemaGraph = schemaVar
@@ -133,7 +131,8 @@ loadSaga fn = do
                       , resourceRawGraph = resRawVar
                       , cgMap = cgm
                       } 
-    mapM (putCharGraph st) cs
+    STM.atomically $ mapM_ (putCharGraph st) cs
+    return st
 
 
 -- | Replace the raw character graph in the MapState.
@@ -146,24 +145,12 @@ putCharGraph st g = do
         let clab = TCG.charID cgen
         let cmap = cgMap st
         M.insert clab cgen cmap
-        -- TODO load advancement graph
-        -- TODO call putAdvGraph
-        return $ st
-
-putAdvGraph :: MapState -> G.RDFLabel -> G.RDFGraph -> STM.STM MapState 
-putAdvGraph st clab g = do
-        res1 <- STM.readTVar $ resourceGraph st
-        s1 <- STM.readTVar $ schemaGraph st
-        let cgen = TCG.makeCharGen s1 res1 g
-        let cmap = devMap st
-        M.insert clab cgen cmap
-        let cl = TCG.charSheets cgen
         return $ st
 
 
 -- | Return the state graph (i.e. character data) from STM.
-getStateGraph :: MapState -> IO G.RDFGraph
-getStateGraph st = STM.readTVarIO (TCG.charGraph st) 
+getStateGraph :: MapState -> IO [G.RDFGraph]
+getStateGraph st = STM.readTVarIO (charGraph st) 
 
 
 -- | Return the schema from STM as an RDF Graph.
@@ -230,17 +217,18 @@ putCharacter :: MapState            -- ^ Memory state
              -> TC.Character        -- ^ New Character to be stored
              -> IO (Either G.RDFGraph String) 
                 -- ^ Either the new character graph or an error message
-putCharacter st char = do 
-         STM.atomically $ do
-             g <- STM.readTVar (charRawGraph st)
-             schema <- STM.readTVar (schemaGraph st)
+putCharacter st char = return $ Right "Not implemented"
+-- do 
+         -- STM.atomically $ do
+             -- g <- STM.readTVar (charRawGraph st)
+             -- schema <- STM.readTVar (schemaGraph st)
 
-             chargraph <- STM.readTVar (charGraph st)
-             let charg = TC.makeRDFGraph char
-             let g1 = RP.persistChar schema charg
-             let g0 = RP.persistedChar chargraph (TC.characterID char) 
-             let gg = (g0 `G.delete` g) `G.addGraphs` g1
+             -- chargraph <- STM.readTVar (charGraph st)
+             -- let charg = TC.makeRDFGraph char
+             -- let g1 = RP.persistChar schema charg
+             -- let g0 = RP.persistedChar chargraph (TC.characterID char) 
+             -- let gg = (g0 `G.delete` g) `G.addGraphs` g1
 
-             newst <- putCharGraph st gg
-             return $ Left gg
+             -- newst <- putCharGraph st gg
+             -- return $ Left gg
 
