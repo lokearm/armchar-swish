@@ -77,7 +77,7 @@ import           ArM.Load
 -- which may potentially change during operation.
 data MapState = MapState 
               { sagaGraph :: STM.TVar G.RDFGraph
-              , charGraph :: STM.TVar [TCG.CharGen]
+              , charGraph :: STM.TVar [G.RDFLabel]
               , schemaGraph :: STM.TVar G.RDFGraph
               , resourceGraph :: STM.TVar G.RDFGraph
               , schemaRawGraph :: STM.TVar [G.RDFGraph]
@@ -149,7 +149,7 @@ putCharGraph st g = do
 
 
 -- | Return the state graph (i.e. character data) from STM.
-getStateGraph :: MapState -> IO [G.RDFGraph]
+getStateGraph :: MapState -> IO [G.RDFLabel]
 getStateGraph st = STM.readTVarIO (charGraph st) 
 
 
@@ -165,25 +165,24 @@ getResourceGraph st =  STM.readTVarIO (resourceGraph st)
 -- | Return the sheet for a given character, season, and year (as RDFGraph).
 lookupIO :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
-       -> String            -- ^ Season
-       -> Int               -- ^ Year
+       -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> IO (Maybe G.RDFGraph)
-lookupIO m c s y  = liftIO $ lookup m c s y
+lookupIO m c t  = STM.atomically $ lookup m c t
 lookup :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
        -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> STM.STM (Maybe G.RDFGraph)
 lookup st char t = do
-          print $ char ++ show t
-          let cmap = devMap st
-          print $  AR.armcharRes char
+          liftIO $ print $ char ++ show t
+          let cmap = cgMap st
+          liftIO $ print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
           cg <- M.lookup (armRes char) cmap 
           case (cg) of
              Nothing -> return Nothing
-             Just cg1 -> do
-                let cstage = TCG.findSeason (TCG.charSheets cg1) t 
-                return $ TCG.sheetObject cstage
+             Just cg1 -> case ( TCG.findSeason (TCG.charSheets cg1) t ) of
+                Nothing -> return Nothing
+                Just cstage -> return $ Just $ TCG.sheetGraph cstage
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
@@ -198,7 +197,7 @@ putAdvancement st adv = do
              schema <- STM.readTVar $ schemaGraph st
              let newg = RP.persistGraph schema advg
 
-             cgm <- cgMap st
+             let cgm = cgMap st
              cgen <- M.lookup clab cgm
 
              case (cgen) of
