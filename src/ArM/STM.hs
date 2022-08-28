@@ -203,9 +203,11 @@ lookup st char t = trace ("lookup" ++ show char ++ show t) $ do
           cg <- M.lookup k cmap 
           case (cg) of
              Nothing -> return $ trace "lookup: character not found" Nothing
-             Just cg1 -> case ( TCG.findSeason (ttrace $ TCG.charSheets cg1) t ) of
-                Nothing -> return $ trace "lookup: season not found" Nothing
-                Just cstage -> return $ Just $ TCG.sheetGraph cstage
+             Just cg1 -> do
+                let csl = TCG.charSheets cg1
+                case ( trace (show $ map TS.timeOf csl) $ TCG.findSeason csl t ) of
+                   Nothing -> return $ trace "lookup: season not found" Nothing
+                   Just cstage -> return $ Just $ TCG.sheetGraph cstage
 
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing

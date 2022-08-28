@@ -44,9 +44,9 @@ data CharStage = CharStage
 
 findSeason :: [CharStage] -> CharTime -> Maybe CharStage
 findSeason [] _ = Nothing
-findSeason (x:xs) t | ttrace (timeOf x) == t = Just x
-                    | ttrace (timeOf x) > t = Nothing
-                    | otherwise  = findSeason xs t
+findSeason (x:xs) t | ttrace (timeOf x) == ttrace t = trace ("findSeason returns Just " ++ show x) $ Just x
+                    | ttrace (timeOf x) > ttrace t = trace ("findSeason returns Nothing") Nothing
+                    | otherwise  = trace "findSeason recurses" findSeason xs t
 
 putAdvancement :: CharGen -> Advancement -> CharGen
 putAdvancement cg adv = cg { charSheets = putSeason cs0 csl adv }
@@ -130,7 +130,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
-     where as = trace ( "makeCharGen " ++ show clab) $ ttrace $ sortBy (flip compare) $ getAllAdvancements g1 $ clab
+     where as = trace ( "makeCharGen " ++ show clab) $ sortBy (flip compare) $ getAllAdvancements g1 $ clab
            cs0 = getInitialCS g1
            clab = ttrace $ csID cs0
            g1 = makeGraph  g0 schema res1
@@ -139,7 +139,7 @@ makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage]
 makeCS schema [] cs0 = []
 makeCS schema (a:as) cs0 = trace "makeCS" $ makeCS' schema as [y]
    where y = CharStage 
-                   { advancement = ttrace a
+                   { advancement = a
                    , sheetObject = cs
                    , sheetGraph = makeCGraph schema cs }
          cs = advanceCharacter cs0 a
@@ -149,7 +149,7 @@ makeCS' :: RDFGraph -> [Advancement]
 makeCS' schema [] xs = xs
 makeCS' schema (a:as) xs = trace "makeCS'" $ makeCS' schema as (y:xs)
    where y = CharStage 
-                   { advancement = ttrace a
+                   { advancement = a
                    , sheetObject = cs
                    , sheetGraph = makeCGraph schema cs }
          cs = advanceCharacter (sheetObject $ head xs) a

@@ -18,22 +18,29 @@ data CharTime = CharTime
                 , charSeason :: String
                 , advancementStage :: String
                 , advancementIndex :: Int 
-                } deriving (Show,Eq)
+                } deriving (Show)
 defaultCharTime = CharTime 
                 { charYear = Nothing
                 , charSeason = ""
                 , advancementStage = ""
                 , advancementIndex = 0
                 } 
+instance Eq CharTime where
+  (==) x y | (charYear x == charYear y) && (charSeason x == charSeason y) = True
+           | (advancementIndex x == advancementIndex y) = True
+           | otherwise = False
 instance Ord CharTime where
-      compare x y | (advancementIndex x < advancementIndex y) = LT
-                  | (advancementIndex x > advancementIndex y) = GT
-                  | (charYear x < charYear y) = LT
+      compare x y | (charYear x < charYear y) = LT
                   | (charYear x > charYear y) = GT
+                  | charYear x == Nothing = idxcompare x y
                   | (f x < f y) = LT
                   | (f x > f y) = GT
                   | otherwise  = EQ
-                  where f = seasonNo . charSeason
+         where f = seasonNo . charSeason
+               idxcompare x y
+                  | (advancementIndex x < advancementIndex y) = LT
+                  | (advancementIndex x > advancementIndex y) = GT
+                  | otherwise = EQ
 
 -- |
 -- = Season
