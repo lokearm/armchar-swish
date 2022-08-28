@@ -68,7 +68,7 @@ vfabT :: RDFTriple
 vfabT = arc trait (armRes "hasTotalXP") (litInt 5)
 
 -- | Rules to infer virtues/flaws granted by virtues and flaws
-cfRules :: [RDFRule] 
+vfRules :: [RDFRule] 
 vfRules =
    [ makeCRule "vfvRule" [grantarc, vfv3] [vfT]
    , makeCRule "vffRule" [grantarc, vff3] [vfT]
