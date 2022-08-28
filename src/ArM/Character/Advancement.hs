@@ -64,7 +64,7 @@ getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
 
 getAllAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getAllAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
-   where inGameAdv = armRes  "Advancement"
+   where inGameAdv = armRes  "CharacterAdvancement"
 
 -- | Query graph to find a advancements of a given type (RDF class)
 -- for a given character.

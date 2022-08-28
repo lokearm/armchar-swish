@@ -122,7 +122,7 @@ makeCharGen :: G.RDFGraph  -- ^ Schema graph
            -> G.RDFGraph  -- ^ Resource graph
            -> G.RDFGraph  -- ^ Raw character graph
            -> CharGen         -- ^ Resulting datastructure
-makeCharGen schema res1 g0 = CharGen 
+makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen 
              { charID = clab
              , charName = ""
              , charGraph = g1
@@ -130,18 +130,18 @@ makeCharGen schema res1 g0 = CharGen
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
-     where as = sortBy (flip compare) $ getAllAdvancements g1 $ clab
+     where as = trace ( "makeCharGen " ++ show clab) $ ttrace $ sortBy (flip compare) $ getAllAdvancements g1 $ clab
            cs0 = getInitialCS g1
-           clab = csID cs0
+           clab = ttrace $ csID cs0
            g1 = makeGraph  g0 schema res1
 
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
-makeCS schema as cs0 = makeCS' schema as cs0 []
+makeCS schema as cs0 = trace "makeCS" $ makeCS' schema as cs0 []
 makeCS' :: RDFGraph -> [Advancement] -> CharacterSheet 
         -> [CharStage] -- ^ CharStages already constructed
         -> [CharStage]
 makeCS' schema [] _ xs = xs
-makeCS' schema (a:as) cs0 xs = makeCS' schema as cs (y:xs)
+makeCS' schema (a:as) cs0 xs = trace "makeCS'" $ makeCS' schema as cs (y:xs)
    where y = CharStage 
                    { advancement = ttrace a
                    , sheetObject = cs

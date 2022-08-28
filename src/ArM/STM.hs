@@ -139,14 +139,16 @@ loadSaga fn = do
                       , resourceRawGraph = resRawVar
                       , cgMap = cgm
                       } 
+    print "Ready to put graphs"
     mapM_ (putCharGraph st) cs
+    print "graphs put"
     return st
 
 
 -- | Replace the raw character graph in the MapState.
 -- All other elements are recalculated.
 putCharGraph :: MapState -> G.RDFGraph -> IO MapState 
-putCharGraph st g = do
+putCharGraph st g = trace "putCharGraph" $ do
         res1 <- STM.readTVarIO $ resourceGraph st
         s1 <- STM.readTVarIO $ schemaGraph st
         let cgen = TCG.makeCharGen s1 res1 g
@@ -195,7 +197,7 @@ lookup :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
        -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> STM.STM (Maybe G.RDFGraph)
-lookup st char t = do
+lookup st char t = trace ("lookup" ++ show char ++ show t) $ do
           let cmap = cgMap st
           let k = strace $ show (armcharRes char)
           cg <- M.lookup k cmap 
