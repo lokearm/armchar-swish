@@ -29,6 +29,7 @@ baseURI = Nothing
     
 -- * URIs and NameSpaces
 
+auth :: URIAuth
 auth = URIAuth "" "hg.schaathun.net" ""
 armURI :: URI 
 armURI = URI { uriScheme = "https:",
@@ -54,12 +55,15 @@ armcharURI = URI { uriScheme = "https:",
            uriPath = "/armchar/character/",
            uriQuery = "",
            uriFragment = "" }
+armNS :: Namespace
 armNS = makeNamespace (Just $ T.pack "arm") armURI
+rulesNS :: Namespace
 rulesNS = makeNamespace (Just $ T.pack "armrules") armURI
 
 -- * Utility functions to manage local names
 
 -- | Define a local name from a String
+newLName :: String -> QN.LName
 newLName s = case (QN.newLName $ T.pack s) of
    (Nothing) -> QN.emptyLName
    (Just ln) -> ln
@@ -72,6 +76,7 @@ getLocalID lab = f $ fromRDFLabel lab
 
 -- * Convenience functions to make ontology labels
 
+makeSN :: String -> ScopedName
 makeSN s = makeScopedName (Just $ T.pack "arm") armURI (newLName s)
 armRes :: String -> RDFLabel
 armRes = Res . makeSN
@@ -118,7 +123,6 @@ hasAdvancementType :: RDFLabel
 hasAdvancementType = armRes "hasAdvancementType" 
 hasAdvancementTypeString = armRes "hasAdvancementTypeString" 
 prefixedidRes = armRes "prefixedid" 
-armViewProperty = armRes "ViewProperty" 
 armPersistentProperty = armRes "PersistentProperty" 
 armCharacterProperty = armRes "CharacterProperty" 
 armCharacter = armRes "Character" 
