@@ -58,7 +58,7 @@ stringToRDFLabel (k:ks)
            px =  f x $ intercalate ":" xs
            rdfuri ('>':[]) = []
            rdfuri (_:[]) = error "Malformed URL in RDF.  No closing >."
-           rdfuri (x:xs) = x:rdfuri xs
+           rdfuri (u:us) = u:rdfuri us
            uri = rdfuri ks
            tl Nothing = Right "Parser error: Could not parse URI."
            tl (Just x) = Left $ toRDFLabel x
@@ -78,6 +78,6 @@ instance FromJSON RDFLabel where
    parseJSON x = do
        s <- fmap prefixedid $ parseJSON x
        case stringToRDFLabel s of
-          Left x -> return x
-          Right x -> fail x
+          Left r -> return r
+          Right r -> fail r
 
