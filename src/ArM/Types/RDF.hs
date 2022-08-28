@@ -10,7 +10,7 @@ import Data.List       (intercalate)
 import Swish.Namespace (ScopedName)
 import Data.List.Split (splitOn)
 import Data.Maybe (fromJust)
-import Network.URI (URI,parseURI)
+import Network.URI (parseURI)
 import Swish.RDF.Vocabulary.XSD (xsdInteger)
 
 -- | Convert an RDFLabel to String/Int/URI for serialisation purposes.
@@ -61,7 +61,7 @@ stringToRDFLabel (k:ks)
            rdfuri (u:us) = u:rdfuri us
            uri = rdfuri ks
            tl Nothing = Right "Parser error: Could not parse URI."
-           tl (Just x) = Left $ toRDFLabel x
+           tl (Just xx) = Left $ toRDFLabel xx
 
 
 
