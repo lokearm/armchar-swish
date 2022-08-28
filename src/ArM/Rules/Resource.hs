@@ -18,6 +18,7 @@ module ArM.Rules.Resource (prepareResources) where
 
 -- import qualified Data.Text as T
 import Swish.RDF.Graph
+import Swish.RDF.Ruleset (RDFRule)
 -- import Swish.RDF.Vocabulary.RDF
 -- import Swish.RDF.Vocabulary.XSD
 import ArM.Resources
@@ -42,6 +43,7 @@ score = armRes "hasFixedScore"
 
 
 -- | The rules to derive personality traits from personality flaws.
+personalityflawRules :: [RDFRule] 
 personalityflawRules = 
   [ makeCRule "minor-personality-flaw" [grantarc
      , arc traitclass subclassRes (armRes "minorFlaw")
@@ -66,6 +68,7 @@ vfabT :: RDFTriple
 vfabT = arc trait (armRes "hasTotalXP") (litInt 5)
 
 -- | Rules to infer virtues/flaws granted by virtues and flaws
+cfRules :: [RDFRule] 
 vfRules =
    [ makeCRule "vfvRule" [grantarc, vfv3] [vfT]
    , makeCRule "vffRule" [grantarc, vff3] [vfT]
