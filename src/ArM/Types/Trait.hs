@@ -13,15 +13,15 @@
 module ArM.Types.Trait where
 
 import Swish.RDF.Graph as G
-import qualified Swish.RDF.Query as Q
-import Data.Maybe
+-- import qualified Swish.RDF.Query as Q
+-- import Data.Maybe
 import Data.Aeson
-import ArM.Types.Season
+-- import ArM.Types.Season
 import ArM.KeyPair
 import ArM.Resources
-import ArM.BlankNode
-import ArM.Rules.Aux
-import ArM.Types.RDF
+-- import ArM.BlankNode
+-- import ArM.Rules.Aux
+-- import ArM.Types.RDF
 
 -- | 
 -- = Trait
@@ -38,6 +38,7 @@ data Trait = Trait {
     isRepeatableTrait :: Bool,
     traitContents :: [RDFTriple]
    } deriving (Eq)
+defaultTrait :: Trait
 defaultTrait = Trait {
     traitClass = noSuchTrait,
     instanceLabel = "",

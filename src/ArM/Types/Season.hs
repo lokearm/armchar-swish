@@ -19,6 +19,7 @@ data CharTime = CharTime
                 , advancementStage :: String
                 , advancementIndex :: Int 
                 } deriving (Show)
+defaultCharTime :: CharTime 
 defaultCharTime = CharTime 
                 { charYear = Nothing
                 , charSeason = ""
@@ -37,9 +38,9 @@ instance Ord CharTime where
                   | (f x > f y) = GT
                   | otherwise  = EQ
          where f = seasonNo . charSeason
-               idxcompare x y
-                  | (advancementIndex x < advancementIndex y) = LT
-                  | (advancementIndex x > advancementIndex y) = GT
+               idxcompare x1 x2 
+                  | (advancementIndex x1 < advancementIndex x2) = LT
+                  | (advancementIndex x1 > advancementIndex x2) = GT
                   | otherwise = EQ
 
 -- |
@@ -57,6 +58,7 @@ nextSeason ("Summer",y) = ("Autumn",y)
 nextSeason ("Autumn",y) = ("Winter",y)
 nextSeason ("Winter",y) = ("Spring",y+1)
 nextSeason ("",y) = ("",y+1)
+nextSeason (_,_) = error "Invalid Season in nextSeason"
 
 nextCharTime :: CharTime -> CharTime
 nextCharTime x | charYear x == Nothing = x
@@ -78,7 +80,7 @@ maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
 maybeNextSeason ("",Just y) = ("",Just (y+1)) 
 maybeNextSeason ("",Nothing) = ("",Nothing) 
 maybeNextSeason (s,Just y) = (s',Just y') where (s',y') = nextSeason (s,y)
-maybeNextSeason (s,Nothing) = (s',Nothing) where (s',y') = nextSeason (s,0) 
+maybeNextSeason (s,Nothing) = (s',Nothing) where (s',_) = nextSeason (s,0) 
 
 class HasTime a where
     timeOf :: a -> CharTime

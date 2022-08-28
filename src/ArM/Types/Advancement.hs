@@ -19,7 +19,7 @@ import Data.List (sort)
 import ArM.Types.Season
 import ArM.KeyPair
 import ArM.Resources
-import ArM.BlankNode
+-- import ArM.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.RDF
 import ArM.Types.Trait
@@ -132,6 +132,7 @@ instance FromJSON ProtoAdvancement where
                                            <*> v .: "advancementtraits"
                                            <*> v .: "advancementitems"
                                            <*> v .: "advancementcharacter"
+   parseJSON _ = error "No-exhaustive pattern when parsing ProtoAdvancement from JSON."
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement 
                      { rdfid = advancementid adv
@@ -144,7 +145,7 @@ fromProtoAdvancement adv = defaultAdvancement
 
 parseTime :: CharTime  -> [KeyValuePair] -> CharTime
 parseTime a [] = a
-parseTime a (x:xs) = parseTime (f a x) xs
+parseTime ain (xin:xs) = parseTime (f ain xin) xs
   where f a (KeyValuePair k v) 
          | k == inYear = a { charYear = rdfToInt v }
          | k == atSeason = a { charSeason = fs (rdfToString v) }
@@ -200,7 +201,7 @@ splitTrait' (t:ts,x:xs)
     | traitClass t == c = splitTrait' (t':ts,xs) 
     | otherwise         = splitTrait' (mkTrait x:t:ts,xs) 
        where t' = addToTrait t x
-             (c,s,p,o) = x
+             (c,_,_,_) = x
 mkTrait :: ProtoTrait -> Trait
 mkTrait (a,b,c,d) = defaultTrait { traitClass = a,
                          traitContents = [ arc b c d ] }

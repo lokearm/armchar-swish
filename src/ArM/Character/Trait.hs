@@ -25,18 +25,17 @@ module ArM.Character.Trait ( Trait(..)
                            , advanceTraitList
                            ) where
 
-import           Data.Set (fromList)
+-- import           Data.Set (fromList)
 import           Data.List (sort)
 import           Swish.RDF.Graph 
 import ArM.Resources
 import ArM.Rules.Aux
-import ArM.Types.Character
+-- import ArM.Types.Character
 import ArM.Types.Trait
 
 import Control.Parallel.Strategies (parMap,rpar)
 
--- import Debug.Trace
-trace x y = y
+import ArM.NoTrace
 
 
 -- |
@@ -52,8 +51,6 @@ advanceTraitList (x:xs) (y:ys)
   | x < y  =  x:advanceTraitList xs (y:ys)
   | x > y  =  fixTrait y:advanceTraitList (x:xs) ys
   | otherwise =  advanceTraitList ( (advanceTrait x y):xs ) ys
-     where xc = traitClass x
-           yc = traitClass y
 
 -- | Apply a given Trait Advancement to a given Trait
 -- 1.  take other properties from the second Trait if available
