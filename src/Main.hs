@@ -31,7 +31,7 @@ import ArM.Load (readGraph,getRawGraph)
 import qualified ArM.Resources as AR
 
 -- Software Transactional Memory
-import qualified Control.Concurrent.STM as STM
+import qualified GHC.Conc as STM
 import ArM.STM
 
 -- Web service
