@@ -39,7 +39,7 @@ import ArM.JSON
 import qualified Data.Aeson as Aeson
 
 import           ArM.STM 
-import qualified CHC.Conc as STM
+import qualified GHC.Conc as STM
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 import Network.Wai.Middleware.Cors (simpleCors)

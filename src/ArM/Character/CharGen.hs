@@ -44,6 +44,11 @@ findSeason (x:xs) t | timeOf x == t = Just x
                     | timeOf x > t = Nothing
                     | otherwise  = findSeason xs t
 
+putAdvancement :: CharGen -> Advancement -> CharGen
+putAdvancement cg adv = cg { charSheets = putSeason cs0 csl adv }
+           where cs0 = baseSheet cg
+                 csl = charSheets cg
+
 putSeason :: CharacterSheet
           -> [CharStage] 
           -> Advancement 

@@ -21,6 +21,7 @@ import Data.Aeson
 import Data.Aeson.Key
 import Swish.RDF.Graph (RDFLabel(..), fromRDFLabel, toRDFLabel, arc)
 import Swish.Namespace (ScopedName)
+import qualified ArM.Types.Season as TS
 import ArM.Types.Character
 import ArM.Character
 import ArM.KeyPair
@@ -195,11 +196,11 @@ instance FromJSON ProtoAdvancement where
                                            <*> v .: "advancementitems"
                                            <*> v .: "advancementcharacter"
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
-fromProtoAdvancement adv = defaultAdvancement {
-                     rdfid = advancementid adv,
-                     traits = advancementtraits adv,
-                     items = advancementitems adv,
-                     advChar = advancementchar adv,
-                     advTime = parseTime defaultCharTime ys
-                     contents = ys
+fromProtoAdvancement adv = defaultAdvancement 
+                     { rdfid = advancementid adv
+                     , traits = advancementtraits adv
+                     , items = advancementitems adv
+                     , advChar = advancementchar adv
+                     , advTime = parseTime TS.defaultCharTime ys
+                     , contents = ys
                  } where ys = fromKeyPairList $ advancementcontents adv

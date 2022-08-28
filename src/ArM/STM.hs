@@ -77,12 +77,12 @@ import           ArM.Load
 -- which may potentially change during operation.
 data MapState = MapState 
               { sagaGraph :: STM.TVar G.RDFGraph
-              , charGraph :: STM.TVar [G.RDFLabel]
+              , charList :: STM.TVar [G.RDFLabel]
               , schemaGraph :: STM.TVar G.RDFGraph
               , resourceGraph :: STM.TVar G.RDFGraph
               , schemaRawGraph :: STM.TVar [G.RDFGraph]
               , resourceRawGraph :: STM.TVar [G.RDFGraph]
-              , cgMap :: M.Map G.RDFLabel TCG.CharGen
+              , cgMap :: M.Map String TCG.CharGen
               }
 
 readAllFiles :: [String] -> IO [G.RDFGraph]
@@ -122,35 +122,41 @@ loadSaga fn = do
     let charFN = TS.getCharacterFiles sid saga
     cs <- readAllFiles charFN
 
+    clVar <- STM.newTVarIO []
 
     cgm <- STM.atomically  M.empty
     let st = MapState { sagaGraph = sagaVar
+                      , charList = clVar
                       , schemaGraph = schemaVar
                       , resourceGraph = resVar
                       , schemaRawGraph = schemaRawVar
                       , resourceRawGraph = resRawVar
                       , cgMap = cgm
                       } 
-    STM.atomically $ mapM_ (putCharGraph st) cs
+    mapM_ (putCharGraph st) cs
     return st
 
 
 -- | Replace the raw character graph in the MapState.
 -- All other elements are recalculated.
-putCharGraph :: MapState -> G.RDFGraph -> STM.STM MapState 
+putCharGraph :: MapState -> G.RDFGraph -> IO MapState 
 putCharGraph st g = do
-        res1 <- STM.readTVar $ resourceGraph st
-        s1 <- STM.readTVar $ schemaGraph st
+        res1 <- STM.readTVarIO $ resourceGraph st
+        s1 <- STM.readTVarIO $ schemaGraph st
         let cgen = TCG.makeCharGen s1 res1 g
         let clab = TCG.charID cgen
         let cmap = cgMap st
-        M.insert clab cgen cmap
+        let clVar = charList st
+        STM.atomically $ do
+           s1 <- STM.readTVar clVar 
+           STM.writeTVar clVar (clab:s1)
+           M.insert (show clab) cgen cmap
         return $ st
 
 
 -- | Return the state graph (i.e. character data) from STM.
 getStateGraph :: MapState -> IO [G.RDFLabel]
-getStateGraph st = STM.readTVarIO (charGraph st) 
+getStateGraph st = STM.readTVarIO (charList st) 
 
 
 -- | Return the schema from STM as an RDF Graph.
@@ -173,11 +179,9 @@ lookup :: MapState          -- ^ Memory state
        -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> STM.STM (Maybe G.RDFGraph)
 lookup st char t = do
-          liftIO $ print $ char ++ show t
           let cmap = cgMap st
-          liftIO $ print $  AR.armcharRes char
           let charstring = "armchar:" ++ char
-          cg <- M.lookup (armRes char) cmap 
+          cg <- M.lookup (show (armRes char)) cmap 
           case (cg) of
              Nothing -> return Nothing
              Just cg1 -> case ( TCG.findSeason (TCG.charSheets cg1) t ) of
@@ -188,26 +192,26 @@ lookup st char t = do
 -- getResource g label = Nothing
 
 -- | Update the state graph with the given Advancement object.
-putAdvancement :: MapState -> TC.Advancement -> IO (Either G.RDFGraph String)
+putAdvancement :: MapState -> TC.Advancement -> IO (Either TCG.CharGen String)
 putAdvancement st adv = do 
+         let advg = TC.makeRDFGraph adv
+         let clab = TC.advChar adv
+
+         schema <- STM.readTVarIO $ schemaGraph st
+         let newg = RP.persistGraph schema advg
+
+         let adv1 = TC.fromRDFGraph newg (TC.rdfid adv)
+
+         let cgm = cgMap st
          STM.atomically $ do
-             let advg = TC.makeRDFGraph adv
-             let clab = TC.advChar adv
-
-             schema <- STM.readTVar $ schemaGraph st
-             let newg = RP.persistGraph schema advg
-
-             let cgm = cgMap st
-             cgen <- M.lookup clab cgm
+             cgen <- M.lookup (show clab) cgm
 
              case (cgen) of
                 Nothing -> return $ Right "No such character"
-                Left cgen0 -> do
-                   charg <- STM.readTVar (TCG.charGraph cgen0)
-                   let g0 = RP.persistedGraph charg (TC.rdfid adv) 
-                   let gg = (g0 `G.delete` (TCG.rawGraph cgen0)) `G.addGraphs` newg
-                   newst <- putCharGraph st gg
-                   return $ Left gg
+                Just cgen0 -> do
+                   let cgen1 = TCG.putAdvancement cgen0 adv1
+                   M.insert (show clab) cgen1 cgm
+                   return $ Left cgen1
 -- TODO: Check for conflicting advancements 
 
 -- | Update character metadata.  This has not been tested and requirs

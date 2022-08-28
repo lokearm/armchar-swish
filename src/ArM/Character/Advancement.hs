@@ -19,6 +19,7 @@ module ArM.Character.Advancement ( Advancement(..)
                                  , getSeason
                                  , getYear
                                  , getSortIndex
+                                 , parseTime
                                  ) where
 
 import Swish.RDF.Graph 
