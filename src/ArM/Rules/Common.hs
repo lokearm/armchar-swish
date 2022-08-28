@@ -17,8 +17,6 @@ import Swish.RDF.Graph
 import ArM.Resources
 import ArM.Rules.Aux
 
-import Control.Parallel
-
 -- | Infer rdf:type from arm:traitClass
 traitclasstypeRule = makeCRule "traitclasstypeRule" 
        [ arc sVar ( armRes "traitClass" ) tVar ]

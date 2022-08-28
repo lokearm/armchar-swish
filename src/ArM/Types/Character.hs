@@ -26,6 +26,7 @@ import ArM.Types.Trait
 import Data.Aeson
 import Data.Aeson.Key
 
+import ArM.Trace
 
 -- | 
 -- = Character
@@ -84,7 +85,7 @@ showSheetID = f . sheetID
 
 
 instance ToRDFGraph CharacterSheet where
-   makeRDFGraph cs =
+   makeRDFGraph cs = trace "makeRDFGraph for CharacterSheet" $
          ( listToRDFGraph  . fst . runBlank ( csToArcListM cs' ) )
          ("charsheet",1)
       where cs' = cs { csMetadata = KeyPairList $ a xs }
@@ -110,7 +111,7 @@ instance ToRDFGraph Character where
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
-          x <- getSheetIDM cs $ sheetID cs
+          x <- getSheetIDM $ sheetID cs
           tsm <- fixBlanksM $ csTraits cs
           ism <- fixBlanksM $ csItems cs
           let ht = map ( \ y -> arc x (armRes "hasTrait") (fromJust $ traitID y) ) tsm
@@ -133,19 +134,19 @@ fixBlanksM (x:xs) = do
 fixBlankNodeM :: Trait -> BlankState Trait
 fixBlankNodeM t 
    | traitContents t == [] = return t
-   | key /= (armRes "unnamedBlankNode") = return t
+   | key /= (armRes "unnamedBlankNode") = return $ trace ("Non-blank node "++show key) t
    | otherwise = do
         b <- getBlank
-        return $ t { traitContents = map ( replaceBlank b ) 
+        return $ trace ("BlankNode "++show b) $ t { traitContents = map ( replaceBlank b ) 
                       $ traitContents t }
-     where key = arcSubj $ head $ traitContents t
+     where key = ttrace $ arcSubj $ head $ traitContents t
 
 replaceBlank :: RDFLabel -> RDFTriple -> RDFTriple
-replaceBlank b x = arc b ( arcPred x ) ( arcObj x )
+replaceBlank b x =  arc b ( arcPred x ) ( arcObj x )
             
-getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
-getSheetIDM _ Nothing = getBlank
-getSheetIDM _ (Just x) = return x
+getSheetIDM :: Maybe RDFLabel -> BlankState RDFLabel
+getSheetIDM Nothing = getBlank
+getSheetIDM (Just x) = return x
 
 -- |
 -- = CharacterSheet

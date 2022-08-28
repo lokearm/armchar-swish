@@ -17,8 +17,9 @@ import ArM.KeyPair()
 import ArM.Rules (makeGraph)
 import ArM.Character.Character
 import ArM.Character.Advancement
--- import ArM.Types.Character
+import ArM.Types.Character
 import ArM.Types.Season
+import ArM.Types.Advancement
 import Data.List (sortBy)
 
 import ArM.Trace
@@ -131,13 +132,13 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
 
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
 makeCS _ [] _ = []
-makeCS schema (a:as) cs0 = trace ("makeCS\n" ++ show y) $ makeCS' schema as [y]
+makeCS schema (a:as) cs0 = makeCS' schema as [y]
    where y = makeCharStage schema cs0 a
 makeCS' :: RDFGraph -> [Advancement] 
         -> [CharStage] -- ^ CharStages already constructed
         -> [CharStage]
 makeCS' _ [] xs = xs
-makeCS' schema (a:as) xs = trace ("makeCS'\n" ++ show y) $ makeCS' schema as (y:xs)
+makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
    where y = CharStage 
                    { advancement = a
                    , sheetObject = cs

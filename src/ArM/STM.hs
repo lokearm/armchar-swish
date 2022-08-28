@@ -59,8 +59,8 @@ import qualified Control.Concurrent.STM.Map as M
 import qualified Swish.RDF.Graph as G
 -- import           Data.Maybe (fromJust)
 
-import qualified ArM.Character as C
-import           ArM.Types.RDF (fromRDFGraph)
+-- import qualified ArM.Character as C
+import           ArM.Types.RDF (fromRDFGraph,makeRDFGraph)
 import qualified ArM.Types.Season as TS
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Advancement as TA
@@ -200,7 +200,7 @@ lookup :: MapState          -- ^ Memory state
        -> String            -- ^ Character ID
        -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> STM.STM (Maybe G.RDFGraph)
-lookup st char t = trace ("lookup" ++ show char ++ show t) $ do
+lookup st char t = do
           let cmap = cgMap st
           let k = strace $ show (armcharRes char)
           cg <- M.lookup k cmap 
@@ -218,7 +218,7 @@ lookup st char t = trace ("lookup" ++ show char ++ show t) $ do
 -- | Update the state graph with the given Advancement object.
 putAdvancement :: MapState -> TA.Advancement -> IO (Either TCG.CharGen String)
 putAdvancement st adv = do 
-         let advg = C.makeRDFGraph adv
+         let advg = makeRDFGraph adv
          let clab = TA.advChar adv
 
          schema <- STM.readTVarIO $ schemaGraph st

@@ -14,68 +14,77 @@ module ArM.Rules.Persistence where
 
 import           ArM.Rules.Aux
 import           ArM.Rules.RDFS
-import qualified Swish.RDF.Graph as G
+import           Swish.RDF.Graph
+import Swish.RDF.Ruleset (RDFRule)
 -- import qualified Swish.RDF.Query as Q
 -- import           Swish.RDF.Vocabulary.RDF
 
 import ArM.Resources
 
--- persistGraph' s g = persistGraph' $ G.merge s g
+-- persistGraph' s g = persistGraph' $ merge s g
 -- persistGraph' s g = foldGraphs $ Q.rdfQuerySubs vb tg
 --     where vb = Q.rdfQueryFind qg g
---           qg = listToRDFGraph  [ G.arc sVar pVar cVar,
---                        G.arc pVar typeRes armPersistentProperty ]
---           tg = listToRDFGraph  [ G.arc sVar pVar cVar ]
+--           qg = listToRDFGraph  [ arc sVar pVar cVar,
+--                        arc pVar typeRes armPersistentProperty ]
+--           tg = listToRDFGraph  [ arc sVar pVar cVar ]
 
+p1 :: RDFRule
 p1 =  makeCRule "persistRule" 
-    [ G.arc sVar pVar cVar,
-      G.arc pVar typeRes armPersistentProperty ]
-    [ G.arc sVar pVar cVar ]
+    [ arc sVar pVar cVar,
+      arc pVar typeRes armPersistentProperty ]
+    [ arc sVar pVar cVar ]
+persistRules :: [RDFRule]
 persistRules = 
   [ p1
   , makeCRule "persistTraitRule" 
-    [ G.arc sVar (armRes "advanceTrait") tVar
-    , G.arc tVar pVar oVar
-    , G.arc pVar typeRes armPersistentProperty 
+    [ arc sVar (armRes "advanceTrait") tVar
+    , arc tVar pVar oVar
+    , arc pVar typeRes armPersistentProperty 
     ]
-    [ G.arc sVar (armRes "advanceTrait") tVar
-    , G.arc tVar pVar oVar
+    [ arc sVar (armRes "advanceTrait") tVar
+    , arc tVar pVar oVar
     ]
   , makeCRule "persistItemRule" 
-    [ G.arc sVar (armRes "changePossession") tVar
-    , G.arc tVar pVar oVar
-    , G.arc pVar typeRes armPersistentProperty 
+    [ arc sVar (armRes "changePossession") tVar
+    , arc tVar pVar oVar
+    , arc pVar typeRes armPersistentProperty 
     ]
-    [ G.arc sVar (armRes "changePossession") tVar
-    , G.arc tVar pVar oVar
-    ]
-  ]
-p2 id = makeCRule "persistedRule" 
-    [ G.arc id pVar cVar,
-      G.arc pVar typeRes armPersistentProperty ]
-    [ G.arc id pVar cVar ]
-persistedRules id =
-  [ p2 id
-  , makeCRule "persistedTraitRule" 
-    [ G.arc id (armRes "advanceTrait") tVar
-    , G.arc tVar pVar oVar
-    , G.arc pVar typeRes armPersistentProperty 
-    ]
-    [ G.arc id (armRes "advanceTrait") tVar
-    , G.arc tVar pVar oVar
-    ]
-  , makeCRule "persistedTraitRule" 
-    [ G.arc id (armRes "changePossession") tVar
-    , G.arc tVar pVar oVar
-    , G.arc pVar typeRes armPersistentProperty 
-    ]
-    [ G.arc id (armRes "changePossession") tVar
-    , G.arc tVar pVar oVar
+    [ arc sVar (armRes "changePossession") tVar
+    , arc tVar pVar oVar
     ]
   ]
+p2 :: RDFLabel -> RDFRule
+p2 k = makeCRule "persistedRule" 
+    [ arc k pVar cVar,
+      arc pVar typeRes armPersistentProperty ]
+    [ arc k pVar cVar ]
+persistedRules :: RDFLabel -> [RDFRule]
+persistedRules k =
+  [ p2 k
+  , makeCRule "persistedTraitRule" 
+    [ arc k (armRes "advanceTrait") tVar
+    , arc tVar pVar oVar
+    , arc pVar typeRes armPersistentProperty 
+    ]
+    [ arc k (armRes "advanceTrait") tVar
+    , arc tVar pVar oVar
+    ]
+  , makeCRule "persistedTraitRule" 
+    [ arc k (armRes "changePossession") tVar
+    , arc tVar pVar oVar
+    , arc pVar typeRes armPersistentProperty 
+    ]
+    [ arc k (armRes "changePossession") tVar
+    , arc tVar pVar oVar
+    ]
+  ]
+persistedGraph :: RDFGraph -> RDFLabel -> RDFGraph
 persistedGraph g s = fwdApplyRules (persistedRules s) g
-persistGraph s g = fwdApplyRules persistRules  $ applyRDFS $ G.merge s g
+persistGraph :: RDFGraph -> RDFGraph -> RDFGraph
+persistGraph s g = fwdApplyRules persistRules  $ applyRDFS $ merge s g
 
+persistedChar :: RDFGraph -> RDFLabel -> RDFGraph
 persistedChar g s = fwdApplyRules [ p2 s ] g
-persistChar s g = fwdApplyRules [ p1 ] $ applyRDFS $ G.merge s g
+persistChar :: RDFGraph -> RDFGraph -> RDFGraph
+persistChar s g = fwdApplyRules [ p1 ] $ applyRDFS $ merge s g
 

@@ -24,8 +24,9 @@ module ArM.Rules.Record (prepareRecord) where
 import qualified Swish.RDF.Query as Q
 import Swish.VarBinding  (vbMap)
 import Swish.RDF.Graph
-import Swish.RDF.Vocabulary.RDF
-import Swish.RDF.Vocabulary.XSD
+-- import Swish.RDF.Vocabulary.RDF
+-- import Swish.RDF.Vocabulary.XSD
+import Swish.RDF.Ruleset (RDFRule)
 import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Common
@@ -50,8 +51,10 @@ prepareRecord schema = addCastingScores . addCombatStats
 -- = Trait sub properties
 
 
+traitRules :: [RDFRule]
 traitRules = traitRules1 ++ traitRules2
 -- | Rules to infer subproperties of arm:hasTrait
+traitRules1 :: [RDFRule]
 traitRules1 = map mkr [ "Ability"
                      , "Virtue"
                      , "Flaw"
@@ -67,6 +70,7 @@ traitRules1 = map mkr [ "Ability"
                        (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
           mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs1 t p
 -- | Rules to infer arm:hasTrait from subproperties
+traitRules2 :: [RDFRule]
 traitRules2 = map mkr [ "Ability"
                      , "Virtue"
                      , "Flaw"
@@ -82,8 +86,10 @@ traitRules2 = map mkr [ "Ability"
                        (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
           mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs2 t p
 
+arcs1 :: RDFLabel -> RDFLabel -> ([RDFTriple],[RDFTriple])
 arcs1 t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
              [ arc cVar p tVar ] ) 
+arcs2 :: RDFLabel -> RDFLabel -> ([RDFTriple],[RDFTriple])
 arcs2 t p = ( [ arc cVar p tVar, arc tVar typeRes t ],
              [ arc cVar htRes tVar ] ) 
 
@@ -95,9 +101,11 @@ arcs2 t p = ( [ arc cVar p tVar, arc tVar typeRes t ],
 -- 1. add necessary traits and weapons to each CombatOption,
 -- 2. add the consituent integer scores from each trait and weapon
 -- 3. calculate the total combat scores (init/atk/dfn/dam)
+addCombatStats :: RDFGraph -> RDFGraph
 addCombatStats = calculateCombatStats
                . fwdApplyListR ( combatScoreRules ++ combatRules )
 
+combatRules :: [RDFRule]
 combatRules = 
     [ makeCRule "combat1rule"
       [ arc sVar (armRes "hasCombatOption")  cVar
@@ -124,6 +132,7 @@ combatRules =
 
 -- | Rules to add relevant constituentstats to each combat option.
 -- This is a preparatory step before calculating the actual combat stats. 
+combatScoreRules :: [RDFRule]
 combatScoreRules =
   [ makeCRule "combat-property-rule"
       [ arc cVar typeRes (armRes "CombatOption")
@@ -193,23 +202,27 @@ combatScoreRules =
 -- NB. New blank nodes.
 
 -- | Query to get constituent scores for Init Score
+initQuery :: RDFGraph
 initQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeaponInit") (Var "weapon") 
       , arc cVar (armRes "hasQik") (Var "char") ]
 -- | Query to get constituent scores for Attack Score
+atkQuery :: RDFGraph
 atkQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasSkillScore") (Var "skill") 
       , arc cVar (armRes "hasWeaponAtk") (Var "weapon") 
       , arc cVar (armRes "hasDex") (Var "char") ]
 -- | Query to get constituent scores for Defence Score
+dfnQuery :: RDFGraph
 dfnQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasSkillScore") (Var "skill") 
       , arc cVar (armRes "hasWeaponDfn") (Var "weapon") 
       , arc cVar (armRes "hasQik") (Var "char") ]
 -- | Query to get constituent scores for Damage Score
+damQuery :: RDFGraph
 damQuery = listToRDFGraph 
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeaponDam") (Var "weapon") 
@@ -240,10 +253,12 @@ calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple
 calc p idvar vb = arc idvar (armRes p) (litInt $ score vb)
     where score xs = foldl (+) 0 $ ff xs
 
+addfunctions :: [ RDFGraph -> [RDFTriple] ]
 addfunctions = [ addDamInit "hasInit" damQuery
                , addDamInit "hasDam"  initQuery
                , addAtkDfn  "hasAtk"  atkQuery
                , addAtkDfn  "hasDfn"  dfnQuery ]
+calculateCombatStats :: RDFGraph -> RDFGraph
 calculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
     where fs = parMap rpar ( \ f -> f g ) addfunctions 
 
@@ -275,6 +290,7 @@ addCastingScores = calculateCastingScores
 -- for all the arts used by the spell, including requisites.
 -- A further step, not using the rules syntax, is needed to
 -- take the minimum over the triples.
+castingScoreRules :: [RDFRule] 
 castingScoreRules = 
   [ makeCRule "casting-form-rule"
       [ arc sheet (armRes "hasSpell") spell
@@ -358,15 +374,9 @@ calculateCastingScores g = addGraphs g $ listToRDFGraph
 -- !
 -- = Scores including Bonuses
 
+addScores :: RDFGraph -> RDFGraph
 addScores = applyRule getEffectiveScores
           . applyRule getBonuses
-          . fwdApplyList scoreRules 
-
--- Note: this needs to be changed to accommodate bonuses.
-scoreRules = 
-   [ 
-   ]
-
 
 getEffectiveScores :: RDFGraph -> RDFGraph
 getEffectiveScores = 
@@ -404,7 +414,7 @@ getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQuery
 arcSum :: String     -- ^ String identifying the property for the new triple
           -> [RDFTriple]  -- ^ Input list
           -> [RDFTriple]  -- ^ Output list
-arcSum s [] = []
+arcSum _ [] = []
 arcSum s (x:[]) = arc (arcSubj x) (armRes s) (arcObj x):[]
 arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
                 | otherwise = arcSum s (y':xs)

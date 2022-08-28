@@ -31,6 +31,7 @@ import Data.List (sort)
 import Data.String (fromString)
 
 import           ArM.Types.RDF (fromRDFGraph)
+import qualified ArM.Types.Advancement as TA
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Season as TS
 import qualified ArM.Character as C
@@ -142,7 +143,7 @@ stateScotty stateVar = do
           text "This was a PUT request!"
 
         put "/adv" $ do
-          adv <- jsonData :: S.ActionM C.Advancement 
+          adv <- jsonData :: S.ActionM TA.Advancement 
           newg <- liftIO $ STM.putAdvancement stateVar adv
           liftIO $ print adv
           case (newg) of
@@ -211,6 +212,7 @@ textif' (Just xin) fin =  textif'' xin fin
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
 
+{-
 -- | Output the given object as JSON over HTTP, or return a 404 error
 -- if Nothing is given.
 jsonif ::  Aeson.ToJSON a => Maybe a -> S.ActionM ()
@@ -224,14 +226,15 @@ jsonif (Just x) = do
 
 -- | Format and output the given RDFGraph over HTTP, or return a 404
 -- error if Nothing is given.
-graphif :: Maybe C.CharacterSheet -> S.ActionM ()
+graphif :: Maybe TC.CharacterSheet -> S.ActionM ()
 graphif Nothing = notfound404
 graphif (Just x) = do
             t1 <- liftIO $ getCPUTime
             liftIO $ print $ "Serving request (" ++ showf t1 ++ "s)"
-            printGraph $ C.makeRDFGraph x
+            printGraph $ makeRDFGraph x
             t2 <- liftIO $ getCPUTime
             liftIO $ print $ "CPUTime spent: " ++ showf (t2-t1) ++ "s (" ++ showf t1 ++ "s)"
+-}
 
 -- | Format and output the given RDFGraph over HTTP.
 printGraph :: G.RDFGraph -> S.ActionM ()

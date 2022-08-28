@@ -11,11 +11,9 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Character.Advancement ( Advancement(..)
-                                 , getPregameAdvancements
+module ArM.Character.Advancement ( getPregameAdvancements
                                  , getIngameAdvancements
                                  , getAllAdvancements
-                                 , defaultAdvancement
                                  ) where
 
 import Swish.RDF.Graph 

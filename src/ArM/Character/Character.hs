@@ -27,9 +27,7 @@
 -- all Character objects in a graph.
 --
 -----------------------------------------------------------------------------
-module ArM.Character.Character ( CharacterSheet(..)
-                               , characterFromGraph
-                               , ToRDFGraph(..)
+module ArM.Character.Character ( characterFromGraph
                                , advanceCharacter
                                , getInitialCS
                                , makeCGraph
@@ -47,7 +45,7 @@ import           Data.List (sort)
 -- import ArM.Rules (makeGraph)
 import ArM.Resources
 import ArM.Character.Trait
-import ArM.Character.Advancement
+import ArM.Types.Advancement
 import ArM.KeyPair
 import ArM.Types.RDF
 import ArM.Types.Character
