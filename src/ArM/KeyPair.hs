@@ -43,11 +43,11 @@ import qualified Swish.RDF.VarBinding as VB
 import Swish.VarBinding  (vbMap)
 import Data.Maybe  (fromJust)
 import Data.List (sort)
-import ArM.Resources
+-- import ArM.Resources
 import Data.Aeson
 import Data.Aeson.Key
 import qualified Data.Aeson.KeyMap as KM
-import Swish.Namespace (ScopedName)
+-- import Swish.Namespace (ScopedName)
 import ArM.Types.RDF
 
 -- |
@@ -66,9 +66,10 @@ data KeyPairList  = KeyPairList [KeyValuePair]
     deriving Eq
 instance Show KeyPairList where
         show (KeyPairList []) = ""
-        show (KeyPairList (x:xs)) = "  " ++ show x ++ "\n" 
+        show (KeyPairList (x:_)) = "  " ++ show x ++ "\n" 
 
 -- | Get the `KeyPairList` as a list of `KeyValuePair` objects.
+fromKeyPairList :: KeyPairList -> [KeyValuePair]
 fromKeyPairList (KeyPairList xs) = xs
 
 -- |
@@ -86,13 +87,17 @@ toKeyPairList = map toKeyPair
 
 
 -- | Variable used for the resource ID in queries.
+idVar :: RDFLabel
 idVar = (G.Var "id")
 -- | Variable used for a property of interest in queries.
+propertyVar :: RDFLabel
 propertyVar = (G.Var "property")
 -- | Variable used for a value associated with the property of interest.
+valueVar :: RDFLabel
 valueVar = (G.Var "value")
 -- | Variable used for a human readable label for the property of interest.
 -- This is not really used in this module, but may be used in others.
+labelVar :: RDFLabel
 labelVar = (G.Var "label")
 
 -- |
@@ -103,7 +108,7 @@ labelVar = (G.Var "label")
 keypairFromBinding :: VB.RDFVarBinding -> KeyValuePair
 keypairFromBinding = f . metadataFromBinding 
      where 
-       f (p,label,value) = KeyValuePair (fromJust p) (fromJust value) 
+       f (p,_,value) = KeyValuePair (fromJust p) (fromJust value) 
 
 -- | Map the variable bindings to Maybe RDFLabel.
 -- Auxiliary to `keypairFromBinding`
@@ -132,6 +137,7 @@ arcListSplit' :: ([[G.RDFTriple]], [G.RDFTriple])
            -> ([[G.RDFTriple]], [G.RDFTriple]) 
 arcListSplit' (xs,[]) = (xs,[])
 arcListSplit' ([],y:ys) = arcListSplit' ([[y]],ys)
+arcListSplit' ([]:_,_) = error "Empty constituent list in arcListSplit'"
 arcListSplit' ((x:xs):xss,y:ys) 
     | arcSubj x == arcSubj y = arcListSplit' ((y:x:xs):xss, ys)
     | otherwise    = arcListSplit' ([y]:(x:xs):xss, ys)
@@ -147,7 +153,7 @@ getStringProperty k' (KeyValuePair k v:xs)
    | k' == k  = f (fromRDFLabel v)
    | otherwise      = getStringProperty k' xs
    where f Nothing = ""
-         f (Just v) = v
+         f (Just x) = x
 
 -- | Scan a list of Key/Value pairs for a given property and return an
 -- integer value.  If the properrty is not found or is not an integer,
@@ -160,7 +166,7 @@ getIntProperty' k' (KeyValuePair k v:xs)
    | k' == k  = f (fromRDFLabel v)
    | otherwise      = getIntProperty' k' xs
    where f Nothing = 0
-         f (Just v) = v
+         f (Just x) = x
 
 -- | Scan a list of Key/Value pairs for a given property and return the value.
 getProperty :: RDFLabel -> [KeyValuePair] -> Maybe RDFLabel
@@ -193,6 +199,7 @@ instance ToJSON KeyPairList where
 -- | Parse a JSON attribute/value pair and return a KeyValuePair 
 -- (property/object in RDF terms)
 -- This is a an axiliary for `parseJSON` for `KeyPairList`
+-- pairToKeyValue :: (Key,Value) -> Parser KeyValuePair
 pairToKeyValue (x,y) = do
     v <- parseJSON y
     case k of
@@ -203,5 +210,5 @@ pairToKeyValue (x,y) = do
 -- | Convert `KeyValuePair` to `RDFTriple`
 -- This is an auxiliary for other ToRDFGraph functions
 keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
-keyvalueToArcList x [] = []
+keyvalueToArcList _ [] = []
 keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
