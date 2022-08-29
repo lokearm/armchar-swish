@@ -14,7 +14,7 @@
             "arm:inYear": 1217
         },
         "advancementid": {
-            "prefixedid": "<https://hg.schaathun.net/armchar/character/cieran#autumn1217adv>"
+            "prefixedid": "armchar:cieran#autumn1217adv"
         },
         "advancementitems": [
             {

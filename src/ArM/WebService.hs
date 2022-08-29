@@ -144,8 +144,11 @@ stateScotty stateVar = do
 
         put "/adv" $ do
           adv <- jsonData :: S.ActionM TA.Advancement 
-          newg <- liftIO $ STM.putAdvancement stateVar adv
+          liftIO $ putStrLn "Received Advancement"
           liftIO $ print adv
+          liftIO $ putStrLn "===="
+          newg <- liftIO $ STM.putAdvancement stateVar adv
+          liftIO $ putStrLn "Advancement put into data structure"
           case (newg) of
              Left _ -> text $ T.pack "Not implemented"
              Right x -> text $ T.pack x

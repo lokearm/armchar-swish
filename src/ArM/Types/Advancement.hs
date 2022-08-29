@@ -132,7 +132,7 @@ instance FromJSON ProtoAdvancement where
                                            <*> v .: "advancementtraits"
                                            <*> v .: "advancementitems"
                                            <*> v .: "advancementcharacter"
-   parseJSON _ = error "No-exhaustive pattern when parsing ProtoAdvancement from JSON."
+   parseJSON _ = error "Non-exhaustive pattern when parsing ProtoAdvancement from JSON."
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement 
                      { rdfid = advancementid adv

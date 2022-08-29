@@ -21,7 +21,7 @@ import ArM.KeyPair
 import ArM.Resources
 -- import ArM.BlankNode
 -- import ArM.Rules.Aux
--- import ArM.Types.RDF
+import ArM.Types.RDF()
 
 -- | 
 -- = Trait
