@@ -79,6 +79,7 @@ stringToRDFLabel (k:ks)
            f "armr" = Just . armrRes
            f _ = \ _ -> Nothing
            px =  f x $ intercalate ":" xs
+           rdfuri [] = error "Trying to parse empty string as URI."
            rdfuri ('>':[]) = []
            rdfuri (_:[]) = error "Malformed URL in RDF.  No closing >."
            rdfuri (u:us) = u:rdfuri us
