@@ -114,7 +114,7 @@ data ProtoAdvancement = ProtoAdvancement {
     advancementcontents :: KeyPairList,
     advancementtraits :: [Trait],
     advancementitems :: [Trait]
-   } 
+   } deriving Show
 
 instance ToJSON Advancement where 
     toJSON cs = object (c:s:x:z:y:[])
@@ -125,16 +125,16 @@ instance ToJSON Advancement where
              s = (fromString "advancementcharacter") .= toJSON (advChar cs)
 
 instance FromJSON Advancement where 
-   parseJSON = fmap fromProtoAdvancement . parseJSON
+   parseJSON = trace "parseJSON Advancement" $ fmap fromProtoAdvancement . parseJSON
 instance FromJSON ProtoAdvancement where 
-   parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementid"
+   parseJSON (Object v) = trace "parseJSON ProtoAdvancement" $ trace ("parseJSON " ++ show v) $ ProtoAdvancement <$> v .: "advancementid"
                                            <*> v .: "advancementcontents"
                                            <*> v .: "advancementtraits"
                                            <*> v .: "advancementitems"
                                            <*> v .: "advancementcharacter"
    parseJSON _ = error "Non-exhaustive pattern when parsing ProtoAdvancement from JSON."
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
-fromProtoAdvancement adv = defaultAdvancement 
+fromProtoAdvancement adv = trace ( "fromProtoAdvancement " ++ show adv) $ defaultAdvancement 
                      { rdfid = advancementid adv
                      , traits = advancementtraits adv
                      , items = advancementitems adv
