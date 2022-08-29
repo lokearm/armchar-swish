@@ -29,7 +29,7 @@ import Data.Aeson.Key
 import qualified Swish.RDF.VarBinding  as VB
 import           Swish.VarBinding  (vbMap)
 
-import ArM.NoTrace
+import ArM.Trace
 
 -- |
 -- = Character Advancement

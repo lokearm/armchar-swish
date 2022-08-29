@@ -14,6 +14,8 @@ import Network.URI (parseURI)
 import Swish.RDF.Vocabulary.XSD (xsdInteger)
 import Control.Monad (mzero)
 
+import ArM.Trace
+
 -- | A `KVP` holds a prefixed ID for RDF serialisation.
 -- In JSON this appears as an object with only the `prefixedid` attribute.
 data KVP = KVP { prefixedid :: String }
@@ -45,10 +47,10 @@ instance FromJSON RDFLabel where
    parseJSON (Number x) = return $ TypedLit (T.pack $ show  (truncate x::Int)) xsdInteger
    parseJSON (String x) = return $ Lit x
    parseJSON x = do
-       s <- fmap prefixedid $ parseJSON x
+       s <- fmap prefixedid $ parseJSON $ trace "RDFLabel other" $ ttrace x
        case stringToRDFLabel s of
-          Left r -> return r
-          Right r -> fail r
+          Left r -> trace "return from FromJSON RDFLabel" $ return r
+          Right r -> trace "Fail in FromJSON RDFLabel" $ fail r
 
 -- | Convert an RDFLabel to String/Int/URI for serialisation purposes.
 labelToData :: RDFLabel -> Either KVP (Either Int String)
