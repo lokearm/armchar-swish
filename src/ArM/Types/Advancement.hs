@@ -109,7 +109,7 @@ advToArcList adv = ys2
 -- = JSON
 
 data ProtoAdvancement = ProtoAdvancement {
-    advancementchar :: RDFLabel,
+    advancementcharacter :: RDFLabel,
     advancementid :: RDFLabel,
     advancementcontents :: KeyPairList,
     advancementtraits :: [Trait],
@@ -127,18 +127,20 @@ instance ToJSON Advancement where
 instance FromJSON Advancement where 
    parseJSON = fmap fromProtoAdvancement . parseJSON
 instance FromJSON ProtoAdvancement where 
-   parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementid"
+   parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementcharacter"
+                                           <*> v .: "advancementid"
                                            <*> v .: "advancementcontents"
                                            <*> v .: "advancementtraits"
                                            <*> v .: "advancementitems"
-                                           <*> v .: "advancementcharacter"
+   -- NOTE.  The ordering of the fields in parseJSON above has to
+   -- match the ordering in the Algebraic Datatyep.
    parseJSON _ = error "Non-exhaustive pattern when parsing ProtoAdvancement from JSON."
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement 
                      { rdfid = advancementid adv
                      , traits = advancementtraits adv
                      , items = advancementitems adv
-                     , advChar = advancementchar adv
+                     , advChar = advancementcharacter adv
                      , advTime = parseTime TS.defaultCharTime ys
                      , contents = ys
                  } where ys = fromKeyPairList $ advancementcontents adv
