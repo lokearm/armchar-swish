@@ -224,6 +224,9 @@ putAdvancement st adv = do
          -- (1) Reformat adv into adv1
          -- This removes non-editable properties form the input and
          -- regenerates calculated fields.
+         liftIO $ putStrLn "adv"
+         liftIO $ print adv
+         liftIO $ putStrLn "=== adv"
          let advg = makeRDFGraph adv
          liftIO $ putStrLn "advg"
          liftIO $ print $ formatGraphIndent "\n" True advg
@@ -237,23 +240,31 @@ putAdvancement st adv = do
          liftIO $ print $ formatGraphIndent "\n" True advg1
          liftIO $ putStrLn "== advg1"
          let newg = R.makeGraph advg1 schema res1
-         let adv1 = head $ TA.getAllAdvancements newg clab
+         liftIO $ print $ formatGraphIndent "\n" True newg
+         let as = TA.getAllAdvancements newg clab
+         liftIO $ print $ "clab " ++ show clab
          liftIO $ print $ "rdfid " ++ show (TA.rdfid adv)
-         liftIO $ putStrLn "adv"
-         liftIO $ print adv
-         liftIO $ putStrLn "adv1"
-         liftIO $ print adv1
-         liftIO $ putStrLn "===="
+         liftIO $ print as
+         case as of
+            [] -> return $ Right "No advancements in input"
+            (x:_) -> do
+                 liftIO $ putStrLn "x (adv)"
+                 liftIO $ print x
+                 liftIO $ putStrLn "==== x"
+                 putAdvancement' st x
 
-         -- (2) Find the map
-         let cgm = cgMap st
+putAdvancement' :: MapState -> TA.Advancement -> IO (Either String String)
+putAdvancement' st adv = 
+         let cgm = cgMap st 
+             clab = TA.advChar adv in
          STM.atomically $ do
              cgen <- M.lookup (show clab) cgm
+             schema <- STM.readTVar $ schemaGraph st
 
              case (cgen) of
                 Nothing -> return $ Right "No such character"
                 Just cgen0 -> do
-                   let cgen1 = TCG.putAdvancement schema cgen0 $ ttrace adv1
+                   let cgen1 = TCG.putAdvancement schema cgen0 $ ttrace adv
                    M.insert (show clab) cgen1 cgm
                    return $ Left "Advancement Inserted"
 -- TODO: Check for conflicting advancements 

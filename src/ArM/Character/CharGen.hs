@@ -132,7 +132,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              }
      where as = trace ( "makeCharGen (adv)" ++ show clab) $ sort $ getAllAdvancements g1 $ clab
            cs0 = getInitialCS g1
-           clab = ttrace $ csID cs0
+           clab = csID cs0
            g1 = trace "makeCharGen calls makeGraph" $ makeGraph  g0 schema res1
 
 makeCS :: RDFGraph -> [Advancement] -> CharacterSheet -> [CharStage] 
