@@ -54,7 +54,7 @@ module ArM.STM ( ArM.STM.lookup
 
 import Prelude hiding (lookup)
 import qualified GHC.Conc as STM
--- import           Control.Monad.IO.Class (liftIO)
+import           Control.Monad.IO.Class (liftIO)
 import qualified Control.Concurrent.STM.Map as M
 import qualified Swish.RDF.Graph as G
 -- import           Data.Maybe (fromJust)
@@ -226,8 +226,13 @@ putAdvancement st adv = do
          let clab = TA.advChar adv
          putStrLn $ "STM.putAdvancement: " ++ show clab
          schema <- STM.readTVarIO $ schemaGraph st
-         let newg = RP.persistGraph schema advg
+         res1 <- STM.readTVarIO $ resourceGraph st
+         let newg = R.makeGraph (RP.persistGraph schema advg) schema res1
          let adv1 = fromRDFGraph newg (TA.rdfid adv)
+         liftIO $ print "adv"
+         liftIO $ print adv
+         liftIO $ print "adv1"
+         liftIO $ print adv1
 
          -- (2) Find the map
          let cgm = cgMap st

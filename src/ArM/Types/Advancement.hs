@@ -136,14 +136,15 @@ instance FromJSON ProtoAdvancement where
    -- match the ordering in the Algebraic Datatyep.
    parseJSON _ = error "Non-exhaustive pattern when parsing ProtoAdvancement from JSON."
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
-fromProtoAdvancement adv = trace ( "fromProtoAdvancement " ++ show adv) $ defaultAdvancement 
+fromProtoAdvancement adv = trace ( "fromProtoAdvancement " ++ show tm ++ "\n" ++ show adv) $ defaultAdvancement 
                      { rdfid = advancementid adv
                      , traits = advancementtraits adv
                      , items = advancementitems adv
                      , advChar = advancementcharacter adv
-                     , advTime = parseTime TS.defaultCharTime ys
+                     , advTime = tm
                      , contents = ys
                  } where ys = fromKeyPairList $ advancementcontents adv
+                         tm = parseTime TS.defaultCharTime ys
 
 parseTime :: CharTime  -> [KeyValuePair] -> CharTime
 parseTime a [] = a
