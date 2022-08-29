@@ -58,7 +58,7 @@ putSeason schema cs (x:xs) a
                  | timeOf a == timeOf x =  y:xs
                  | otherwise  = x':xs'
         where f [] = cs
-              f (y:_) = sheetObject y
+              f (z:_) = sheetObject z
               y = makeCharStage schema (f xs) a
               -- t1 = show $ timeOf a
               -- t2 = show $ timeOf x
