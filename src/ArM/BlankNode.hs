@@ -15,6 +15,11 @@ module ArM.BlankNode where
 
 import Swish.RDF.Graph (RDFLabel(..))
 import Control.Monad.State.Lazy
+import ArM.Types.Trait
+import ArM.Resources
+import ArM.Trace
+import Swish.RDF.Graph
+import Data.Maybe (fromJust)
 
 type BlankState = State (String,Int) 
 
@@ -26,3 +31,22 @@ getBlank = do
 
 runBlank :: BlankState a -> (String,Int) -> (a, (String,Int))
 runBlank = runState
+
+replaceBlank :: RDFLabel -> RDFTriple -> RDFTriple
+replaceBlank b x =  arc b ( arcPred x ) ( arcObj x )
+
+fixBlanksM :: [Trait] -> BlankState [Trait]
+fixBlanksM [] = return []
+fixBlanksM (x:xs) = do
+             x' <- fixBlankNodeM x
+             xs' <- fixBlanksM xs
+             return $ x':xs'
+fixBlankNodeM :: Trait -> BlankState Trait
+fixBlankNodeM t 
+   | traitContents t == [] = return t
+   | key /= (armRes "unnamedBlankNode") = return $ trace ("Non-blank node "++show key) t
+   | otherwise = do
+        b <- getBlank
+        return $ trace ("BlankNode "++show b) $ t { traitContents = map ( replaceBlank b ) 
+                      $ traitContents t }
+     where key = ttrace $ fromJust $ traitID t

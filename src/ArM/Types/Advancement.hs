@@ -19,7 +19,7 @@ import Data.List (sort)
 import ArM.Types.Season
 import ArM.KeyPair
 import ArM.Resources
--- import ArM.BlankNode
+import ArM.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.RDF
 import ArM.Types.Trait
@@ -94,7 +94,9 @@ sno :: Advancement -> Int
 sno = seasonNo . season
 
 instance ToRDFGraph Advancement where
-   makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
+   makeRDFGraph cs =  
+         ( listToRDFGraph  . fst . runBlank ( advToArcListM cs ) )
+         ("charsheet",1)
 
 advToArcList :: Advancement -> [RDFTriple]
 advToArcList adv = ys2
@@ -103,6 +105,16 @@ advToArcList adv = ys2
           xs2 =  map traitContents (items adv)
           ys1 = foldr (++) ms xs1
           ys2 = foldr (++) ys1 xs2
+
+advToArcListM :: Advancement -> BlankState [RDFTriple]
+advToArcListM adv = do
+       tsm <- fixBlanksM $ traits adv
+       ism <- fixBlanksM $ items adv
+       let xs1 =  map traitContents tsm
+       let xs2 =  map traitContents ism
+       let ys1 = foldr (++) ms xs1
+       return $ foldr (++) ys1 xs2
+    where ms = keyvalueToArcList (rdfid adv) (contents adv)
 
 
 -- |

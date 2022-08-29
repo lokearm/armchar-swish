@@ -127,25 +127,7 @@ csToArcListM cs = do
           let ms1 = foldr (++) ms ts
           return $ ct1:ct:foldr (++) ms1 is
 
-fixBlanksM :: [Trait] -> BlankState [Trait]
-fixBlanksM [] = return []
-fixBlanksM (x:xs) = do
-             x' <- fixBlankNodeM x
-             xs' <- fixBlanksM xs
-             return $ x':xs'
-fixBlankNodeM :: Trait -> BlankState Trait
-fixBlankNodeM t 
-   | traitContents t == [] = return t
-   | key /= (armRes "unnamedBlankNode") = return $ trace ("Non-blank node "++show key) t
-   | otherwise = do
-        b <- getBlank
-        return $ trace ("BlankNode "++show b) $ t { traitContents = map ( replaceBlank b ) 
-                      $ traitContents t }
-     where key = ttrace $ fromJust $ traitID t
 
-replaceBlank :: RDFLabel -> RDFTriple -> RDFTriple
-replaceBlank b x =  arc b ( arcPred x ) ( arcObj x )
-            
 getSheetIDM :: Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM Nothing = getBlank
 getSheetIDM (Just x) = return x

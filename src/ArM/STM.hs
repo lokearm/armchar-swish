@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  ArM.STM
@@ -53,6 +54,7 @@ module ArM.STM ( ArM.STM.lookup
                ) where
 
 import Prelude hiding (lookup)
+import Swish.RDF.Formatter.Turtle (formatGraphAsText,formatGraphIndent)
 import qualified GHC.Conc as STM
 import           Control.Monad.IO.Class (liftIO)
 import qualified Control.Concurrent.STM.Map as M
@@ -223,16 +225,19 @@ putAdvancement st adv = do
          -- This removes non-editable properties form the input and
          -- regenerates calculated fields.
          let advg = makeRDFGraph adv
+         liftIO $ print $ formatGraphIndent "\n" True advg
          let clab = TA.advChar adv
          putStrLn $ "STM.putAdvancement: " ++ show clab
          schema <- STM.readTVarIO $ schemaGraph st
          res1 <- STM.readTVarIO $ resourceGraph st
          let newg = R.makeGraph (RP.persistGraph schema advg) schema res1
          let adv1 = fromRDFGraph newg (TA.rdfid adv)
-         liftIO $ print "adv"
+         liftIO $ print $ "rdfid " ++ show (TA.rdfid adv)
+         liftIO $ putStrLn "adv"
          liftIO $ print adv
-         liftIO $ print "adv1"
+         liftIO $ putStrLn "adv1"
          liftIO $ print adv1
+         liftIO $ putStrLn "===="
 
          -- (2) Find the map
          let cgm = cgMap st
