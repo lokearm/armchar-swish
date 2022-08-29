@@ -32,6 +32,10 @@ instance FromJSON KVP where
 
 class FromRDFGraph a where
     fromRDFGraph :: RDFGraph -> RDFLabel -> a 
+    rawFromRDFGraph :: RDFGraph -> RDFLabel -> a 
+    rawFromRDFGraph = fromRDFGraph
+    viewFromRDFGraph :: RDFGraph -> RDFLabel -> a 
+    viewFromRDFGraph = fromRDFGraph
 class ToRDFGraph a where
     makeRDFGraph :: a -> RDFGraph
 

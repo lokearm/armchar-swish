@@ -176,7 +176,7 @@ parseTime ain (xin:xs) = parseTime (f ain xin) xs
                fi (Just x) = x
 
 instance FromRDFGraph Advancement where
-   fromRDFGraph g label = fixAdv g $ defaultAdvancement 
+   viewFromRDFGraph g label = fixAdv g $ defaultAdvancement 
                  { rdfid = label
                  , advTime = parseTime defaultCharTime ys 
                  , contents = ys }
@@ -184,6 +184,17 @@ instance FromRDFGraph Advancement where
                   [ -- arc label typeRes (armRes "CharacterAdvancement"),
                     arc label (Var "property") (Var "value"),
                     arc (Var "property") typeRes (armRes "ViewProperty"),
+                    arc (Var "property") labelRes (Var "label") ]
+              vb = Q.rdfQueryFind g q
+              ys = map keypairFromBinding vb
+
+   fromRDFGraph g label = fixAdv g $ defaultAdvancement 
+                 { rdfid = label
+                 , advTime = parseTime defaultCharTime ys 
+                 , contents = ys }
+        where q = listToRDFGraph  $
+                  [ arc label typeRes (armRes "CharacterAdvancement"),
+                    arc label (Var "property") (Var "value"),
                     arc (Var "property") labelRes (Var "label") ]
               vb = Q.rdfQueryFind g q
               ys = map keypairFromBinding vb
