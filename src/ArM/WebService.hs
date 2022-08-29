@@ -34,7 +34,6 @@ import           ArM.Types.RDF (fromRDFGraph)
 import qualified ArM.Types.Advancement as TA
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Season as TS
-import qualified ArM.Character as C
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.CharacterQuery as CQ
 import ArM.Resources()
@@ -87,7 +86,7 @@ stateScotty stateVar = do
              Just cg1 -> do
                let g = TCG.charGraph cg1
                let clab = TCG.charID cg1
-               text $ T.pack $ show $ sort $ C.getIngameAdvancements g clab
+               text $ T.pack $ show $ sort $ TA.getIngameAdvancements g clab
         get "/adv/:char" $ do     
           char <- param "char"
           cg <- liftIO $ STM.lookupCharIO stateVar char
@@ -96,7 +95,7 @@ stateScotty stateVar = do
              Just cg1 -> do
                let g = TCG.charGraph cg1
                let clab = TCG.charID cg1
-               json $ sort $ C.getIngameAdvancements g clab
+               json $ sort $ TA.getIngameAdvancements g clab
         get "/pregameadvancement/:char" $ do     
           char <- param "char"
           cg <- liftIO $ STM.lookupCharIO stateVar char
@@ -105,7 +104,7 @@ stateScotty stateVar = do
              Just cg1 -> do
                let g = TCG.charGraph cg1
                let clab = TCG.charID cg1
-               json $ C.getPregameAdvancements g clab
+               json $ TA.getPregameAdvancements g clab
 
         -- Character Sheet
         get "/char/:char" $ do     

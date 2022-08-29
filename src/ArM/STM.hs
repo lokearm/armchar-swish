@@ -225,13 +225,17 @@ putAdvancement st adv = do
          -- This removes non-editable properties form the input and
          -- regenerates calculated fields.
          let advg = makeRDFGraph adv
+         liftIO $ putStrLn "advg"
          liftIO $ print $ formatGraphIndent "\n" True advg
+         liftIO $ putStrLn "=== advg"
          let clab = TA.advChar adv
          putStrLn $ "STM.putAdvancement: " ++ show clab
          schema <- STM.readTVarIO $ schemaGraph st
          res1 <- STM.readTVarIO $ resourceGraph st
          let advg1 = RP.persistGraph schema advg
+         liftIO $ putStrLn "advg1"
          liftIO $ print $ formatGraphIndent "\n" True advg1
+         liftIO $ putStrLn "== advg1"
          let newg = R.makeGraph advg1 schema res1
          let adv1 = fromRDFGraph newg (TA.rdfid adv)
          liftIO $ print $ "rdfid " ++ show (TA.rdfid adv)

@@ -18,9 +18,7 @@
 -----------------------------------------------------------------------------
 module ArM.Character ( module ArM.Character.Character
                      , module ArM.Character.Trait
-                     , module ArM.Character.Advancement
                      ) where
 
 import ArM.Character.Character 
 import ArM.Character.Trait
-import ArM.Character.Advancement

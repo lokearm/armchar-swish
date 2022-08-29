@@ -40,7 +40,6 @@ executable armchar-swish
                        , ArM.KeyPair
                        , ArM.Time
                        , ArM.Character.Character
-                       , ArM.Character.Advancement
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
@@ -103,7 +102,6 @@ executable prof
                        , ArM.KeyPair
                        , ArM.Time
                        , ArM.Character.Character
-                       , ArM.Character.Advancement
                        , ArM.Character.Trait
                        , ArM.Types.Character
                        , ArM.Types.Advancement
@@ -170,7 +168,6 @@ executable tst
                        , ArM.KeyPair
                        , ArM.Time
                        , ArM.Character.Character
-                       , ArM.Character.Advancement
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character

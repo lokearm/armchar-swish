@@ -44,9 +44,9 @@ fixBlanksM (x:xs) = do
 fixBlankNodeM :: Trait -> BlankState Trait
 fixBlankNodeM t 
    | traitContents t == [] = return t
-   | key /= (armRes "unnamedBlankNode") = return $ trace ("Non-blank node "++show key) t
+   | key /= (armRes "unnamedBlankNode") = return t
    | otherwise = do
         b <- getBlank
-        return $ trace ("BlankNode "++show b) $ t { traitContents = map ( replaceBlank b ) 
+        return $ t { traitContents = map ( replaceBlank b ) 
                       $ traitContents t }
      where key = ttrace $ fromJust $ traitID t
