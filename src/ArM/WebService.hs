@@ -153,11 +153,7 @@ stateScotty stateVar = do
 
         put "/adv" $ do
           adv <- jsonData :: S.ActionM TA.Advancement 
-          liftIO $ putStrLn "Received Advancement"
-          liftIO $ print adv
-          liftIO $ putStrLn "===="
           newg <- liftIO $ STM.putAdvancement stateVar adv
-          liftIO $ putStrLn "putAdvancement has returned"
           case (newg) of
              Right x -> do status conflict409
                            text $ T.pack $
