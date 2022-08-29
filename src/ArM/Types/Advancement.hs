@@ -141,7 +141,7 @@ instance ToJSON Advancement where
              s = (fromString "advancementcharacter") .= toJSON (advChar cs)
 
 instance FromJSON Advancement where 
-   parseJSON = trace "parseJSON Advancement" $ fmap fromProtoAdvancement . parseJSON
+   parseJSON = fmap fromProtoAdvancement . parseJSON
 instance FromJSON ProtoAdvancement where 
    parseJSON (Object v) = ProtoAdvancement <$> v .: "advancementcharacter"
                                            <*> v .: "advancementid"
@@ -152,7 +152,7 @@ instance FromJSON ProtoAdvancement where
    -- match the ordering in the Algebraic Datatyep.
    parseJSON _ = error "Non-exhaustive pattern when parsing ProtoAdvancement from JSON."
 fromProtoAdvancement :: ProtoAdvancement -> Advancement
-fromProtoAdvancement adv = trace ( "fromProtoAdvancement " ++ show tm ++ "\n" ++ show adv) $ defaultAdvancement 
+fromProtoAdvancement adv = defaultAdvancement 
                      { rdfid = advancementid adv
                      , traits = advancementtraits adv
                      , items = advancementitems adv
@@ -175,22 +175,9 @@ parseTime ain (xin:xs) = parseTime (f ain xin) xs
                fi Nothing = 0 
                fi (Just x) = x
 
-instance FromRDFGraph Advancement where
-   fromRDFGraph g label = fixAdv g $ defaultAdvancement 
-                 { rdfid = label
-                 , advTime = parseTime defaultCharTime ys 
-                 , contents = ys }
-        where q = listToRDFGraph  $
-                  [ -- arc label typeRes (armRes "CharacterAdvancement"),
-                    arc label (Var "property") (Var "value"),
-                    arc (Var "property") typeRes (armRes "ViewProperty"),
-                    arc (Var "property") labelRes (Var "label") ]
-              vb = Q.rdfQueryFind g q
-              ys = map keypairFromBinding vb
-
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g adv = trace ("fixAdv "++show advid) $ adv { traits = traitsFromRDF advid g,
+fixAdv g adv = adv { traits = traitsFromRDF advid g,
                  items = itemsFromRDF advid g }
         where advid = rdfid adv
 
