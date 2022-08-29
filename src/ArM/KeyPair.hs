@@ -181,6 +181,7 @@ getKey = fromString  . show
 
 instance FromJSON KeyPairList  where
   parseJSON = withObject "KeyPairList" $ \obj ->
+    trace ( "parseJSON for KeyPairList " ++ show obj) $
     let kvs = KM.toList obj
         parsed = mapM pairToKeyValue kvs
     in fmap KeyPairList parsed
