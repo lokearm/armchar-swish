@@ -230,7 +230,9 @@ putAdvancement st adv = do
          putStrLn $ "STM.putAdvancement: " ++ show clab
          schema <- STM.readTVarIO $ schemaGraph st
          res1 <- STM.readTVarIO $ resourceGraph st
-         let newg = R.makeGraph (RP.persistGraph schema advg) schema res1
+         let advg1 = RP.persistGraph schema advg
+         liftIO $ print $ formatGraphIndent "\n" True advg1
+         let newg = R.makeGraph advg1 schema res1
          let adv1 = fromRDFGraph newg (TA.rdfid adv)
          liftIO $ print $ "rdfid " ++ show (TA.rdfid adv)
          liftIO $ putStrLn "adv"

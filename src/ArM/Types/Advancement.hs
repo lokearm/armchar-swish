@@ -110,9 +110,12 @@ advToArcListM :: Advancement -> BlankState [RDFTriple]
 advToArcListM adv = do
        tsm <- fixBlanksM $ traits adv
        ism <- fixBlanksM $ items adv
+       let x = rdfid adv
        let xs1 =  map traitContents tsm
        let xs2 =  map traitContents ism
-       let ys1 = foldr (++) ms xs1
+       let ht = map ( \ y -> arc x (armRes "advanceTrait") (fromJust $ traitID y) ) tsm
+       let hi = map ( \ y -> arc x (armRes "changePossession") (fromJust $ traitID y) ) ism
+       let ys1 = foldr (++) (ms++hi++ht) xs1
        return $ foldr (++) ys1 xs2
     where ms = keyvalueToArcList (rdfid adv) (contents adv)
 
