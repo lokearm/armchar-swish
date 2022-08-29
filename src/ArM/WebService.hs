@@ -27,7 +27,7 @@ import Data.Text.Lazy.Builder (toLazyText)
 import Swish.RDF.Formatter.Turtle (formatGraphAsText,formatGraphIndent)
 import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
-import Data.List (sort)
+import Data.List (sort,intercalate)
 import Data.String (fromString)
 
 import           ArM.Types.RDF (fromRDFGraph)
@@ -67,6 +67,16 @@ stateScotty stateVar = do
         get "/res" $ do     
           res <- liftIO $ STM.getResourceGraph stateVar
           printGraph res
+        get "/show/chargen/:char" $ do     
+          char <- param "char"
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> do
+               let g = TCG.charSheets cg1
+               let t1 = map ( TS.timeOf . TCG.advancement ) g
+               let t2 = map ( TS.timeOf . TCG.sheetObject ) g
+               text $ T.pack $ intercalate "\n" $ map show $ zip t1 t2
 
         -- Advancement lists
         get "/show/adv/:char" $ do     

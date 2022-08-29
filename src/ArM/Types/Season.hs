@@ -28,7 +28,7 @@ defaultCharTime = CharTime
                 } 
 instance Eq CharTime where
   (==) x y | (charYear x == charYear y) && (charSeason x == charSeason y) = True
-           | (advancementIndex x == advancementIndex y) = True
+           | x == y = True
            | otherwise = False
 instance Ord CharTime where
       compare x y | (charYear x < charYear y) = LT

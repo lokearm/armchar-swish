@@ -22,7 +22,7 @@ import ArM.Types.Season
 import ArM.Types.Advancement
 import Data.List (sort)
 
-import ArM.NoTrace
+import ArM.Trace
 
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
@@ -54,17 +54,17 @@ putSeason :: RDFGraph
           -> [CharStage] 
 putSeason schema cs [] a =  [makeCharStage schema cs a]
 putSeason schema cs (x:xs) a 
-                 | timeOf a > timeOf x =  x'':y:xs
-                 | timeOf a == timeOf x =  y:xs
+                 | atime < xtime =  x'':y:xs
+                 | atime == xtime =  y:xs
                  | otherwise  = x':xs'
         where f [] = cs
               f (z:_) = sheetObject z
-              y = makeCharStage schema (f xs) a
-              -- t1 = show $ timeOf a
-              -- t2 = show $ timeOf x
+              y = trace ("y = makeCharStage " ++ show atime ++ show xtime) $ makeCharStage schema (f xs) a
+              atime = timeOf a
+              xtime = timeOf $ advancement x
               xs' = putSeason schema cs xs a
-              x' = makeCharStage schema (f xs') (advancement x)
-              x'' = makeCharStage schema (sheetObject y) (advancement x)
+              x' = trace ("x' = makeCharStage " ++ show atime ++ show xtime) $ makeCharStage schema (f xs') (advancement x)
+              x'' = trace ("x'' = makeCharStage " ++ show atime ++ show xtime) $ makeCharStage schema (sheetObject y) (advancement x)
 
 makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage
 makeCharStage schema cs0 adv = CharStage 
