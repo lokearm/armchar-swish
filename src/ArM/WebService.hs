@@ -148,10 +148,13 @@ stateScotty stateVar = do
           liftIO $ print adv
           liftIO $ putStrLn "===="
           newg <- liftIO $ STM.putAdvancement stateVar adv
-          liftIO $ putStrLn "Advancement put into data structure"
+          liftIO $ putStrLn "putAdvancement has returned"
           case (newg) of
-             Left _ -> text $ T.pack "Not implemented"
-             Right x -> text $ T.pack x
+             Right x -> do status conflict409
+                           text $ T.pack $
+                                "Advancement could not be inserted\n"
+                                ++ x
+             Left x -> text $ T.pack $ "OK! " ++ x
         put "/char" $ do
           char <- jsonData :: S.ActionM TC.Character 
           liftIO $ print char

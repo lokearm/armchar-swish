@@ -216,16 +216,20 @@ lookup st char t = do
 -- getResource g label = Nothing
 
 -- | Update the state graph with the given Advancement object.
-putAdvancement :: MapState -> TA.Advancement -> IO (Either TCG.CharGen String)
+putAdvancement :: MapState -> TA.Advancement -> IO (Either String String)
 putAdvancement st adv = do 
+
+         -- (1) Reformat adv into adv1
+         -- This removes non-editable properties form the input and
+         -- regenerates calculated fields.
          let advg = makeRDFGraph adv
          let clab = TA.advChar adv
-
+         putStrLn $ "STM.putAdvancement: " ++ show clab
          schema <- STM.readTVarIO $ schemaGraph st
          let newg = RP.persistGraph schema advg
-
          let adv1 = fromRDFGraph newg (TA.rdfid adv)
 
+         -- (2) Find the map
          let cgm = cgMap st
          STM.atomically $ do
              cgen <- M.lookup (show clab) cgm
@@ -233,9 +237,9 @@ putAdvancement st adv = do
              case (cgen) of
                 Nothing -> return $ Right "No such character"
                 Just cgen0 -> do
-                   let cgen1 = TCG.putAdvancement schema cgen0 adv1
+                   let cgen1 = TCG.putAdvancement schema cgen0 $ ttrace adv1
                    M.insert (show clab) cgen1 cgm
-                   return $ Left cgen1
+                   return $ Left "Advancement Inserted"
 -- TODO: Check for conflicting advancements 
 
 -- | Update character metadata.  This has not been tested and requirs
