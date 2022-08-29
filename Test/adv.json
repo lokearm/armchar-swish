@@ -1,4 +1,7 @@
 {
+        "advancementcharacter": {
+                "prefixedid": "armchar:cieran"
+        },
         "advancementcontents": {
             "arm:advanceCharacter": {
                 "prefixedid": "armchar:cieran"
