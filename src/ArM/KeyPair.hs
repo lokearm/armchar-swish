@@ -31,7 +31,6 @@ module ArM.KeyPair ( keypairFromBinding
                    , arcListSplit
                    , getProperty
                    , getIntProperty
-                   , getStringProperty
                    , propertyVar
                    , idVar
                    , valueVar
@@ -49,6 +48,8 @@ import Data.Aeson.Key
 import qualified Data.Aeson.KeyMap as KM
 -- import Swish.Namespace (ScopedName)
 import ArM.Types.RDF
+
+import ArM.Trace
 
 -- |
 -- = Data Types
@@ -146,16 +147,6 @@ arcListSplit' ((x:xs):xss,y:ys)
 -- = Scan lists of key/value pairs
 
 -- | Scan a list of Key/Value pairs for a given property and return an
--- string value.  An empty string is returned if no valid value is found.
-getStringProperty :: RDFLabel -> [KeyValuePair] -> String
-getStringProperty _ [] = ""
-getStringProperty k' (KeyValuePair k v:xs) 
-   | k' == k  = f (fromRDFLabel v)
-   | otherwise      = getStringProperty k' xs
-   where f Nothing = ""
-         f (Just x) = x
-
--- | Scan a list of Key/Value pairs for a given property and return an
 -- integer value.  If the properrty is not found or is not an integer,
 -- 0 is returned.
 getIntProperty :: RDFLabel -> KeyPairList -> Int
@@ -204,7 +195,8 @@ pairToKeyValue (x,y) = do
     v <- parseJSON y
     case k of
         Left k' -> return $ KeyValuePair k' v
-        Right s -> fail s
+        Right s -> trace "Fail in pairToKeyValue" $ fail s
+
     where k = stringToRDFLabel $ toString x
 
 -- | Convert `KeyValuePair` to `RDFTriple`
