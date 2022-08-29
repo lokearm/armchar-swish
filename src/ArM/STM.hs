@@ -259,12 +259,12 @@ putAdvancement' st adv =
              clab = TA.advChar adv in
          STM.atomically $ do
              cgen <- M.lookup (show clab) cgm
-             schema <- STM.readTVar $ schemaGraph st
 
              case (cgen) of
-                Nothing -> return $ Right "No such character"
+                Nothing -> return $ Right $ "No such character: " ++ show clab
                 Just cgen0 -> do
-                   let cgen1 = TCG.putAdvancement schema cgen0 $ ttrace adv
+                   schema <- STM.readTVar $ schemaGraph st
+                   let cgen1 = TCG.putAdvancement schema cgen0 adv
                    M.insert (show clab) cgen1 cgm
                    return $ Left "Advancement Inserted"
 -- TODO: Check for conflicting advancements 
