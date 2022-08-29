@@ -237,7 +237,7 @@ putAdvancement st adv = do
          liftIO $ print $ formatGraphIndent "\n" True advg1
          liftIO $ putStrLn "== advg1"
          let newg = R.makeGraph advg1 schema res1
-         let adv1 = fromRDFGraph newg (TA.rdfid adv)
+         let adv1 = head $ TA.getAllAdvancements newg (TA.rdfid adv)
          liftIO $ print $ "rdfid " ++ show (TA.rdfid adv)
          liftIO $ putStrLn "adv"
          liftIO $ print adv

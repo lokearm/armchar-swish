@@ -176,7 +176,7 @@ parseTime ain (xin:xs) = parseTime (f ain xin) xs
                fi (Just x) = x
 
 instance FromRDFGraph Advancement where
-   viewFromRDFGraph g label = fixAdv g $ defaultAdvancement 
+   fromRDFGraph g label = fixAdv g $ defaultAdvancement 
                  { rdfid = label
                  , advTime = parseTime defaultCharTime ys 
                  , contents = ys }
@@ -184,17 +184,6 @@ instance FromRDFGraph Advancement where
                   [ -- arc label typeRes (armRes "CharacterAdvancement"),
                     arc label (Var "property") (Var "value"),
                     arc (Var "property") typeRes (armRes "ViewProperty"),
-                    arc (Var "property") labelRes (Var "label") ]
-              vb = Q.rdfQueryFind g q
-              ys = map keypairFromBinding vb
-
-   fromRDFGraph g label = fixAdv g $ defaultAdvancement 
-                 { rdfid = label
-                 , advTime = parseTime defaultCharTime ys 
-                 , contents = ys }
-        where q = listToRDFGraph  $
-                  [ arc label typeRes (armRes "CharacterAdvancement"),
-                    arc label (Var "property") (Var "value"),
                     arc (Var "property") labelRes (Var "label") ]
               vb = Q.rdfQueryFind g q
               ys = map keypairFromBinding vb
@@ -274,8 +263,8 @@ getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
    where inGameAdv = armRes  "IngameAdvancement"
 
 getAllAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
-getAllAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
-   where inGameAdv = armRes  "CharacterAdvancement"
+getAllAdvancements g c = getAdvancements g $ queryGraph t c
+   where t = armRes  "CharacterAdvancement"
 
 -- | Query graph to find a advancements of a given type (RDF class)
 -- for a given character.
