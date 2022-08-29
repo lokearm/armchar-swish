@@ -180,7 +180,7 @@ instance FromRDFGraph Advancement where
                  , advTime = parseTime defaultCharTime ys 
                  , contents = ys }
         where q = listToRDFGraph  $
-                  [ arc label typeRes (armRes "CharacterAdvancement"),
+                  [ -- arc label typeRes (armRes "CharacterAdvancement"),
                     arc label (Var "property") (Var "value"),
                     arc (Var "property") typeRes (armRes "ViewProperty"),
                     arc (Var "property") labelRes (Var "label") ]
