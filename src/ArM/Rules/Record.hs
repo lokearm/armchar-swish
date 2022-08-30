@@ -45,7 +45,7 @@ prepareRecord schema = addCastingScores . addCombatStats
                  . processXP
                  . fwdApplyList rdfstypeRules
                  . merge schema
-                 . fwdApplyList [ traitclasstypeRule ]
+                 . fwdApplyList [ advclasstypeRule, traitclasstypeRule ]
 
 -- |
 -- = Trait sub properties

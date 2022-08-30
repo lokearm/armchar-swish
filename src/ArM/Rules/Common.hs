@@ -23,6 +23,10 @@ traitclasstypeRule :: RDFRule
 traitclasstypeRule = makeCRule "traitclasstypeRule" 
        [ arc sVar ( armRes "traitClass" ) tVar ]
        [ arc sVar typeRes tVar ]
+advclasstypeRule :: RDFRule
+advclasstypeRule = makeCRule "advclasstypeRule" 
+       [ arc sVar ( armRes "advancementClass" ) tVar ]
+       [ arc sVar typeRes tVar ]
 
 -- | Many Object Properties are used only internally, and have an
 -- associate property of string type for display purposes.  These

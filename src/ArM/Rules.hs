@@ -60,4 +60,4 @@ makeGraph c0 _ res1 = ( prepareGraph . merge res1 . initialRules ) c0
 
 -- | Apply simple rules which do not depend on the schema
 initialRules :: RDFGraph -> RDFGraph
-initialRules = fwdApplyList [ traitclasstypeRule, bonusclassrule ] 
+initialRules = fwdApplyList [ advclasstypeRule, traitclasstypeRule, bonusclassrule ] 

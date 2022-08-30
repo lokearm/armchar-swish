@@ -32,7 +32,7 @@ prepareResources :: RDFGraph -> RDFGraph
 prepareResources = fwdApplyList ( vfabRule:personalityflawRules ) 
                  . fwdApplyListR vfRules
                  . applyRDFS
-                 . fwdApplyList [ traitclasstypeRule ]
+                 . fwdApplyList [ advclasstypeRule, traitclasstypeRule ]
 
 traitclass :: RDFLabel
 traitclass = Var "traitclass"
