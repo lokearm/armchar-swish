@@ -37,7 +37,6 @@ common deps
                        , ArM.WebService
                        , ArM.KeyPair
                        , ArM.Time
-                       , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
                        , ArM.Types.Advancement

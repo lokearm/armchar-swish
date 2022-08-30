@@ -54,8 +54,6 @@ import ArM.Types.Trait
 import Data.Aeson
 import Data.Aeson.Key
 
-import ArM.Character.Trait
-
 import ArM.NoTrace
 
 -- | 
