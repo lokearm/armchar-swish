@@ -50,6 +50,9 @@ import ArM.Time
 
 -- TEST
 -- import qualified ArM.Rules.Persistence as RP
+--
+showw [] = ""
+showw ((a,b):xs) = show a ++ "\n" ++ show b ++ "\n" ++ showw xs
 
 stateScotty ::  STM.MapState -> S.ScottyM ()
 stateScotty stateVar = do
@@ -75,7 +78,9 @@ stateScotty stateVar = do
                let g = TCG.charSheets cg1
                let t1 = map ( TS.timeOf . TCG.advancement ) g
                let t2 = map ( TS.timeOf . TCG.sheetObject ) g
-               text $ T.pack $ intercalate "\n" $ map show $ zip t1 t2
+               let ts = zip t1 t2
+               let as = map ( TCG.advancement ) g
+               text $ T.pack $ showw $ zip ts as
 
         -- Advancement lists
         get "/show/adv/:char" $ do     

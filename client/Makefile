@@ -12,3 +12,7 @@ cieran.ttl: .force
 graph.ttl: .force
 	http :3000/graph > $@
 .force:
+
+chargen.log: .force
+	http :3000/show/chargen/cieran > $@
+
