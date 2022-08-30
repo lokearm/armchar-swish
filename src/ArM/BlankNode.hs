@@ -11,7 +11,11 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.BlankNode where
+module ArM.BlankNode ( BlankState
+                     , fixBlanksM
+                     , runBlank
+                     , getBlank 
+                     ) where
 
 import Swish.RDF.Graph (RDFLabel(..),RDFTriple,arc,arcObj,arcPred)
 import Control.Monad.State.Lazy
