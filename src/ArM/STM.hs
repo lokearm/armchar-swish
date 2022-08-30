@@ -163,7 +163,7 @@ putCharGraph st g = trace "putCharGraph" $ do
         print $ "putCharGraph " ++ show clab
         let cls = TCG.charSheets cgen
         print $ "Number of character stages: " ++ show (length cls)
-        print $ show cgen
+        print cgen
         return $ st
 
 
@@ -228,9 +228,6 @@ putAdvancement st adv = do
          liftIO $ print adv
          liftIO $ putStrLn "=== adv"
          let advg = makeRDFGraph adv
-         liftIO $ putStrLn "advg"
-         liftIO $ print $ formatGraphIndent "\n" True advg
-         liftIO $ putStrLn "=== advg"
          let clab = TA.advChar adv
          putStrLn $ "STM.putAdvancement: " ++ show clab
          schema <- STM.readTVarIO $ schemaGraph st
@@ -240,7 +237,6 @@ putAdvancement st adv = do
          liftIO $ print $ formatGraphIndent "\n" True advg1
          liftIO $ putStrLn "== advg1"
          let newg = R.makeGraph advg1 schema res1
-         liftIO $ print $ formatGraphIndent "\n" True newg
          let as = TA.getAllAdvancements newg clab
          liftIO $ print $ "clab " ++ show clab
          liftIO $ print $ "rdfid " ++ show (TA.rdfid adv)

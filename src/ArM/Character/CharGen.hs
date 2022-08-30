@@ -53,7 +53,7 @@ putSeason :: RDFGraph
           -> [CharStage] 
 putSeason schema cs [] a =  [makeCharStage schema cs a]
 putSeason schema cs (x:xs) a 
-                 | atime < xtime =  x'':y:xs
+                 | atime > xtime =  y:x:xs
                  | atime == xtime =  y:xs
                  | otherwise  = x':xs'
         where f [] = cs
@@ -63,7 +63,6 @@ putSeason schema cs (x:xs) a
               xtime = timeOf $ advancement x
               xs' = putSeason schema cs xs a
               x' = trace ("x' = makeCharStage " ++ show atime ++ show xtime) $ makeCharStage schema (f xs') (advancement x)
-              x'' = trace ("x'' = makeCharStage " ++ show atime ++ show xtime) $ makeCharStage schema (sheetObject y) (advancement x)
 
 makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage
 makeCharStage schema cs0 adv = CharStage 

@@ -72,6 +72,11 @@ arm:advanceTrait a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:label  "Trait to Advance" ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Trait .
+arm:advancementClass  a owl:ObjectProperty, arm:PersistentProperty ;
+        rdfs:subPropertyOf rdf:type ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   owl:Class ;
+        rdfs:label   "Advancement Type" .
 arm:traitClass a owl:ObjectProperty, arm:PersistentProperty ;
         arm:hasStringProperty arm:traitClassString ;
         rdfs:domain  arm:Trait ;
