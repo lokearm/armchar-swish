@@ -98,7 +98,7 @@ sno = seasonNo . season
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =  
          ( listToRDFGraph  . fst . runBlank ( advToArcListM cs ) )
-         ("charsheet",1)
+         ("advancement",1)
 
 advToArcListM :: Advancement -> BlankState [RDFTriple]
 advToArcListM adv = do
