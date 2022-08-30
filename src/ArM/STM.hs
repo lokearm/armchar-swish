@@ -223,13 +223,9 @@ cleanAdvancement :: MapState -> TA.Advancement
                -> IO (Either TA.Advancement String) 
                   -- ^ Either a cleaned up Advancement or an error message
 cleanAdvancement st adv = do 
-
-         -- (1) Reformat adv into adv1
+         -- Reformat adv into adv1
          -- This removes non-editable properties form the input and
          -- regenerates calculated fields.
-         liftIO $ putStrLn "adv"
-         liftIO $ print adv
-         liftIO $ putStrLn "=== adv"
          let advg = makeRDFGraph adv
          let clab = TA.advChar adv
          putStrLn $ "STM.putAdvancement: " ++ show clab
@@ -243,7 +239,6 @@ cleanAdvancement st adv = do
          let as = TA.getAllAdvancements newg clab
          liftIO $ print $ "clab " ++ show clab
          liftIO $ print $ "rdfid " ++ show (TA.rdfid adv)
-         liftIO $ print as
          case as of
             [] -> return $ Right "No advancements in input"
             (x:[]) -> return $ Left x
@@ -264,7 +259,6 @@ putAdvancement st adv =
                    let cgen1 = TCG.putAdvancement schema res1 cgen0 adv
                    M.insert (show clab) cgen1 cgm
                    return $ Left "Advancement Inserted"
--- TODO: Check for conflicting advancements 
 
 -- | Update character metadata.  This has not been tested and requirs
 -- careful revision.

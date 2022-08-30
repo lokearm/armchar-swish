@@ -47,7 +47,6 @@ putAdvancement schema res1 cg adv = trace "TCG.putAdvancement" $
      cg { charSheets = trace "call putSeason" csl1
         , rawGraph = g
         , charGraph = makeGraph  g schema res1
-        -- TODO: res1
         }
                          -- $ trace (show cs0) 
                          -- $ trace "Base character sheet above"
