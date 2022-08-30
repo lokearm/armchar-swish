@@ -282,10 +282,14 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [RDFTriple] -> Advancement
-toAdvancement xs = defaultAdvancement { rdfid = getkey xs
-                                      , advTime = parseTime defaultCharTime ys 
-                                      , contents = ys }
+toAdvancement xs = defaultAdvancement 
+                 { rdfid = getkey xs
+                 , advChar = fm $ getProperty (armRes "advanceCharacter") ys 
+                 , advTime = parseTime defaultCharTime ys 
+                 , contents = ys }
          where ys = toKeyPairList xs 
                getkey [] = noSuchAdvancement
                getkey (x:_) = arcSubj x
+               fm Nothing = armRes "noSuchCharacter"
+               fm (Just x) = x
 

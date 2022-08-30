@@ -159,13 +159,15 @@ stateScotty stateVar = do
 
         put "/adv" $ do
           adv <- jsonData :: S.ActionM TA.Advancement 
-          newg <- liftIO $ STM.putAdvancement stateVar adv
-          case (newg) of
-             Right x -> do status conflict409
-                           text $ T.pack $
-                                "Advancement could not be inserted\n"
-                                ++ x
-             Left x -> text $ T.pack $ "OK! " ++ x
+          adv1 <- liftIO $ STM.cleanAdvancement stateVar adv
+          case (adv1) of
+             Right x -> error409 $ "Malformed input.\n" ++ x
+             Left x -> do
+                 newg <- liftIO $ STM.putAdvancement stateVar x
+                 case (newg) of
+                    Right m -> error409 $
+                                 "Advancement could not be inserted.\n" ++ m
+                    Left m -> text $ T.pack $ "OK! " ++ m
         put "/char" $ do
           char <- jsonData :: S.ActionM TC.Character 
           liftIO $ print char
@@ -179,6 +181,9 @@ stateScotty stateVar = do
 notfound404 :: S.ActionM ()
 notfound404 = do status notFound404
                  text "404 Not Found."
+error409 :: String -> S.ActionM ()
+error409 msg = do status conflict409
+                  text $ T.pack $ "400 Conflict.\n" ++ msg
 
 -- | Get a character record from the STM State.
 -- The record is selected by HTTP/GET parameters found in the monad.

@@ -3,6 +3,9 @@
                 "prefixedid": "armchar:cieran"
         },
         "advancementcontents": {
+            "arm:advancementClass": {
+                "prefixedid": "arm:IngameAdvancement"
+            },
             "arm:advanceCharacter": {
                 "prefixedid": "armchar:cieran"
             },

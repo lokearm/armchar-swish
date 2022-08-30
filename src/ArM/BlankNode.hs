@@ -17,7 +17,6 @@ import Swish.RDF.Graph (RDFLabel(..),RDFTriple,arc,arcObj,arcPred)
 import Control.Monad.State.Lazy
 import ArM.Types.Trait
 import ArM.Resources
-import ArM.Trace
 import Data.Maybe (fromJust)
 
 type BlankState = State (String,Int) 
@@ -48,4 +47,4 @@ fixBlankNodeM t
         b <- getBlank
         return $ t { traitContents = map ( replaceBlank b ) 
                       $ traitContents t }
-     where key = ttrace $ fromJust $ traitID t
+     where key = fromJust $ traitID t

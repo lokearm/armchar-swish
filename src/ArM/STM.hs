@@ -47,6 +47,7 @@ module ArM.STM ( ArM.STM.lookup
                , getStateGraph
                , getSchemaGraph
                , getResourceGraph
+               , cleanAdvancement
                , putAdvancement
                , putCharacter
                , putCharGraph 
@@ -218,8 +219,10 @@ lookup st char t = do
 -- getResource g label = Nothing
 
 -- | Update the state graph with the given Advancement object.
-putAdvancement :: MapState -> TA.Advancement -> IO (Either String String)
-putAdvancement st adv = do 
+cleanAdvancement :: MapState -> TA.Advancement 
+               -> IO (Either TA.Advancement String) 
+                  -- ^ Either a cleaned up Advancement or an error message
+cleanAdvancement st adv = do 
 
          -- (1) Reformat adv into adv1
          -- This removes non-editable properties form the input and
@@ -243,14 +246,11 @@ putAdvancement st adv = do
          liftIO $ print as
          case as of
             [] -> return $ Right "No advancements in input"
-            (x:_) -> do
-                 liftIO $ putStrLn "x (adv)"
-                 liftIO $ print x
-                 liftIO $ putStrLn "==== x"
-                 putAdvancement' st x
+            (x:[]) -> return $ Left x
+            (_:_:_) -> return $ Right "Multiple advancements not supported."
 
-putAdvancement' :: MapState -> TA.Advancement -> IO (Either String String)
-putAdvancement' st adv = 
+putAdvancement :: MapState -> TA.Advancement -> IO (Either String String)
+putAdvancement st adv = 
          let cgm = cgMap st 
              clab = TA.advChar adv in
          STM.atomically $ do
