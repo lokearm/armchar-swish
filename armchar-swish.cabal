@@ -31,14 +31,12 @@ common deps
                        , ArM.Rules.FullGraph
                        , ArM.Rules.Record
                        , ArM.Resources
-                       , ArM.Character
                        , ArM.IO
                        , ArM.BlankNode
                        , ArM.CharacterQuery
                        , ArM.WebService
                        , ArM.KeyPair
                        , ArM.Time
-                       , ArM.Character.Character
                        , ArM.Character.Trait
                        , ArM.STM
                        , ArM.Types.Character
