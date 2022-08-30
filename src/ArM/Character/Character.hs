@@ -40,9 +40,7 @@ import           Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
--- import           Data.Maybe (fromJust)
 import           Data.List (sort)
--- import ArM.Rules (makeGraph)
 import ArM.Resources
 import ArM.Character.Trait
 import ArM.Types.Advancement
@@ -59,20 +57,6 @@ import ArM.NoTrace
 makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
 makeCGraph schema = R.prepareRecord schema . makeRDFGraph
 
-
--- | Get initial CharacterSheet, before *any* advancements.
-getInitialCharacter ::
-    Character          -- ^ Character Object
-    -> CharacterSheet  -- ^ Empty charactersheet (age 0) for the character
-getInitialCharacter c = defaultCS {
-            csID = characterID c,
-            born = getIntProperty (armRes "hasBirthYear") $ characterData c,
-            csMetadata = characterData  c
-         }
-
--- |
--- = Advancement
-
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
 advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid adv)) $
@@ -82,18 +66,19 @@ advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid 
         , csItems = advanceTraitList (csItems cs) (items adv)
      }
 
-
-
 -- |
 -- = Get Character ID from a graph
 
--- | Find all characters in a given graph.  Auxiliary for `characterFromGraph`.
+-- | Find all characters in a given graph.
+-- Auxiliary for `characterFromGraph`.
 characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
 characterFromGraph' = Q.rdfQueryFind
              $ listToRDFGraph  [ arc cVar typeRes armCharacter ]
+
 -- | Get the labels of all characters in a given graph.
 characterFromGraph :: RDFGraph -> [RDFLabel]
-characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph' 
+characterFromGraph = uniqueSort . f . map (`vbMap` cVar) 
+                  . characterFromGraph' 
     where f [] = []
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
@@ -101,10 +86,15 @@ characterFromGraph = uniqueSort . f . map (`vbMap` cVar) . characterFromGraph'
 -- |
 -- = Get Character Metadata
 
-
-
-getInitialCS :: RDFGraph -> CharacterSheet
+getInitialCS :: RDFGraph -- ^ RDFGraph containing the character
+    -> CharacterSheet  -- ^ Empty charactersheet (age 0) for the character
 getInitialCS = getInitialCharacter . getCharacter
+   where getInitialCharacter c = defaultCS {
+            csID = characterID c,
+            born = getIntProperty (armRes "hasBirthYear") $ characterData c,
+            csMetadata = characterData  c
+         }
+
 getCharacter :: RDFGraph -> Character
 getCharacter g = fromRDFGraph g label 
    where label = head $ characterFromGraph g

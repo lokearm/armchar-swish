@@ -10,7 +10,10 @@
 -- Types to handle Characters and Traits, with some basic associated functions.
 --
 -----------------------------------------------------------------------------
-module ArM.Types.Character where
+module ArM.Types.Character ( Character(..)
+                           , CharacterSheet(..)
+                           , defaultCS
+                           ) where
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -21,7 +24,6 @@ import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.RDF
--- import ArM.Types.Advancement
 import ArM.Types.Trait
 import Data.Aeson
 import Data.Aeson.Key
@@ -30,7 +32,6 @@ import ArM.NoTrace
 
 -- | 
 -- = Character
-
 
 data Character = Character {
          characterID :: RDFLabel,
@@ -44,6 +45,43 @@ defaultCharacter = Character {
          characterID = noSuchCharacter,
          characterData = KeyPairList []
        }  
+
+instance ToRDFGraph Character where
+   makeRDFGraph cs = listToRDFGraph  ( ct:ms )
+       where x = characterID cs
+             ms = keyvalueToArcList x (fromKeyPairList $ characterData cs)
+             ct = arc x typeRes (armRes  "Character")
+
+instance ToJSON Character where 
+    toJSON c = toJSON $ p x xs
+        where x = KeyValuePair (armRes "isCharacter") $ characterID c
+              xs = characterData c 
+              p y (KeyPairList ys) = KeyPairList (y:ys) 
+
+instance FromJSON Character where 
+    parseJSON val = fmap kpToChar $ parseJSON val
+
+instance FromRDFGraph Character where
+   fromRDFGraph g label = defaultCharacter {
+                 characterID = label,
+                 characterData = getCharacterMetadata g label
+                 }
+
+-- | Make a list of metadata, where each data item is
+-- a triple consisting of URI, Label, and Value.
+-- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
+-- either as a prefixed name or as a full URI in angled brackets (<uri>).
+getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
+getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
+                          $  Q.rdfQueryFind (query s) g
+
+-- | Construct a query to get all
+-- arm:CharacterProperty triples for a given subject.
+query :: RDFLabel -> RDFGraph 
+query c = listToRDFGraph 
+   [ arc c (G.Var "property") (G.Var "value")
+   , arc (G.Var "property") typeRes armCharacterProperty
+   , arc (G.Var "property") labelRes  (G.Var "label") ]
 
 -- | 
 -- = Character Sheet
@@ -105,11 +143,6 @@ instance ToRDFGraph CharacterSheet where
             a = aAge age . aYear (hasYear cs) . aSeason (hasSeason cs)
             msg = "makeRDFGraph for CharacterSheet (" ++ show traitcount ++ " traits)"
             traitcount = length $ csTraits cs
-instance ToRDFGraph Character where
-   makeRDFGraph cs = listToRDFGraph  ( ct:ms )
-       where x = characterID cs
-             ms = keyvalueToArcList x (fromKeyPairList $ characterData cs)
-             ct = arc x typeRes (armRes  "Character")
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
@@ -127,28 +160,15 @@ csToArcListM cs = do
           let ms1 = foldr (++) ms ts
           return $ ct1:ct:foldr (++) ms1 is
 
-
 getSheetIDM :: Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM Nothing = getBlank
 getSheetIDM (Just x) = return x
-
--- |
--- = CharacterSheet
 
 instance ToJSON CharacterSheet where 
     toJSON cs = object (c:x:xs)
        where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
              xs = map tripleToJSON (fromKeyPairList $ csMetadata cs)
              c = (fromString "arm:isCharacter") .= (show $ csID cs)
-
-instance ToJSON Character where 
-    toJSON c = toJSON $ p x xs
-        where x = KeyValuePair (armRes "isCharacter") $ characterID c
-              xs = characterData c 
-              p y (KeyPairList ys) = KeyPairList (y:ys) 
-
-instance FromJSON Character where 
-    parseJSON val = fmap kpToChar $ parseJSON val
 
 -- | Auxiliary to parseJSON Character
 kpToChar :: KeyPairList -> Character
@@ -162,24 +182,3 @@ kpToChar (KeyPairList xs) = defaultCharacter {
 instance HasTime CharacterSheet where
     timeOf = csTime
 
-instance FromRDFGraph Character where
-   fromRDFGraph g label = defaultCharacter {
-                 characterID = label,
-                 characterData = getCharacterMetadata g label
-                 }
-
--- | Make a list of metadata, where each data item is
--- a triple consisting of URI, Label, and Value.
--- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
--- either as a prefixed name or as a full URI in angled brackets (<uri>).
-getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
-getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
-                          $  Q.rdfQueryFind (query s) g
-
--- | Construct a query to get all
--- arm:CharacterProperty triples for a given subject.
-query :: RDFLabel -> RDFGraph 
-query c = listToRDFGraph 
-   [ arc c (G.Var "property") (G.Var "value")
-   , arc (G.Var "property") typeRes armCharacterProperty
-   , arc (G.Var "property") labelRes  (G.Var "label") ]
