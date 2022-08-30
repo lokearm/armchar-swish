@@ -50,7 +50,8 @@ import ArM.Time
 
 -- TEST
 -- import qualified ArM.Rules.Persistence as RP
---
+
+showw :: (Show a1, Show a2) => [(a1, a2)] -> String
 showw [] = ""
 showw ((a,b):xs) = show a ++ "\n" ++ show b ++ "\n" ++ showw xs
 
