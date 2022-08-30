@@ -22,12 +22,11 @@ import qualified Data.Text as T
 import qualified Swish.QName as QN
 import           Data.Text (unpack)
 
--- * Ontology Files
+-- |
+-- = URIs and NameSpaces
 
 baseURI :: Maybe URI
 baseURI = Nothing
-    
--- * URIs and NameSpaces
 
 auth :: URIAuth
 auth = URIAuth "" "hg.schaathun.net" ""
@@ -60,7 +59,8 @@ armNS = makeNamespace (Just $ T.pack "arm") armURI
 rulesNS :: Namespace
 rulesNS = makeNamespace (Just $ T.pack "armrules") armURI
 
--- * Utility functions to manage local names
+-- |
+-- = Utility functions to make and manage resources
 
 -- | Define a local name from a String
 newLName :: String -> QN.LName
@@ -74,8 +74,6 @@ getLocalID lab = f $ fromRDFLabel lab
       where f Nothing = Nothing
             f (Just x) = Just $ unpack $ QN.getLName $ getScopeLocal x
 
--- * Convenience functions to make ontology labels
-
 makeSN :: String -> ScopedName
 makeSN s = makeScopedName (Just $ T.pack "arm") armURI (newLName s)
 armRes :: String -> RDFLabel
@@ -85,22 +83,11 @@ armcharRes s = Res $ makeScopedName (Just $ T.pack "armchar") armcharURI (newLNa
 armrRes :: String -> RDFLabel
 armrRes s = Res $ makeScopedName (Just $ T.pack "armr") armrURI (newLName s)
 
--- * Ontology Labels
+-- |
+-- = Vocabulary
 
 isCharacterLabel :: RDFLabel
 isCharacterLabel = armRes  "isCharacter"
-repeatableLabel :: RDFLabel
-repeatableLabel = armRes  "RepeatableTrait"
-xptraitLabel :: RDFLabel
-xptraitLabel = armRes  "XPTrait"
-accelleratedtraitLabel :: RDFLabel
-accelleratedtraitLabel = armRes  "AccelleratedTrait"
-addXPLabel :: RDFLabel
-addXPLabel = armRes  "addedXP"
-totalXPLabel :: RDFLabel
-totalXPLabel = armRes "hasTotalXP" 
-hasXPLabel :: RDFLabel
-hasXPLabel = armRes "hasXP" 
 
 -- | An RDFLabel used as a kind of Null pointer for traits and items.
 noSuchTrait :: RDFLabel
@@ -119,12 +106,6 @@ inYear = armRes "inYear"
 
 hasAdvancementIndex :: RDFLabel
 hasAdvancementIndex = armRes "hasAdvancementIndex" 
-hasAdvancementType :: RDFLabel
-hasAdvancementType = armRes "hasAdvancementType" 
-hasAdvancementTypeString :: RDFLabel
-hasAdvancementTypeString = armRes "hasAdvancementTypeString" 
-prefixedidRes :: RDFLabel
-prefixedidRes = armRes "prefixedid" 
 armPersistentProperty :: RDFLabel
 armPersistentProperty = armRes "PersistentProperty" 
 armCharacterProperty :: RDFLabel
