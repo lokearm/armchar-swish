@@ -29,8 +29,6 @@
 -----------------------------------------------------------------------------
 module ArM.Types.Character ( Character(..)
                            , CharacterSheet(..)
-                           , defaultCS
-                           , characterFromGraph
                            , advanceCharacter
                            , getInitialCS
                            , makeCGraph
@@ -44,7 +42,6 @@ import           Data.List (sort)
 import           Data.Maybe (fromJust)
 
 import qualified ArM.Rules.Record as R
-import ArM.Types.Season
 import ArM.KeyPair
 import ArM.Resources
 import ArM.BlankNode
