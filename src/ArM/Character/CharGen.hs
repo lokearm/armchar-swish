@@ -146,7 +146,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , charName = ""
              , charGraph = g1
              , rawGraph = g0
-             , baseGraph = emptyGraph -- TODO
+             , baseGraph = extractBaseCharacterGraph g0 clab
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
