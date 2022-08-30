@@ -3,6 +3,7 @@
 import http.client, urllib.parse
 import json
 import sys
+from functions import *
 
 fn = "adv.tex"
 print (sys.argv)
@@ -43,7 +44,7 @@ for i in y:
     for t in ts:
         nxp = t.get( "arm:addedXP", "")
         if nxp != "": nxp = f": {nxp}xp"
-        tmpout.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}' )
+        tmpout.append( f'      \\item {label(t)}{nxp}' )
     tmpout.sort()
     output += tmpout 
     output.append( "    \\end{itemize}" )
@@ -56,7 +57,7 @@ for i in y:
         for t in ts:
            nxp = t.get( "arm:hasQuantity", "")
            if nxp != "": nxp = f" ({nxp})"
-           tmpout.append( f'      \\item {t.get("arm:hasLabel","???")}{nxp}\n' 
+           tmpout.append( f'      \\item {label(t)}{nxp}\n' 
                         + f'             {t.get("arm:hasDescription","")}' )
         tmpout.sort()
         output += tmpout 
