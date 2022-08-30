@@ -27,6 +27,9 @@ import Data.List (sort)
 
 import ArM.Trace
 
+-- |
+-- = Data Types
+
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
 data CharStage = CharStage 
@@ -37,6 +40,26 @@ data CharStage = CharStage
      , sheetGraph :: RDFGraph 
        -- ^ The character sheet as an RDF Graph
      }  deriving (Eq,Show)
+
+-- | A `CharGen` object represents a character's development over a
+-- series of stages.  It contains a list of CharStage objects which
+-- in turn contains the Character Sheet for each point in time, as
+-- well as the raw data used in calculation and the character name
+-- for display purposes.
+data CharGen = CharGen 
+      { charID :: RDFLabel      -- ^ Character ID 
+      , charName :: String      -- ^ Character Name (for display purpose)
+      , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
+      , charGraph :: RDFGraph   -- ^ Augmented graph with inference
+      , baseGraph :: RDFGraph   -- ^ Graph containing only the character 
+      , baseSheet :: CharacterSheet 
+        -- ^ Character Sheet at the start of the process
+      , charSheets :: [CharStage]  
+        -- ^ List of development stages, most recent first
+      }  deriving (Eq)
+
+-- |
+-- = Search and Insert
 
 -- | Find the Character Stage at a given time.
 findSeason :: [CharStage] -> CharTime -> Maybe CharStage
@@ -86,7 +109,10 @@ putSeason schema cs (x:xs) a
               x' = trace ("x' = makeCharStage " ++ show atime ++ show xtime) 
                  $ makeCharStage schema (f xs') (advancement x)
 
-makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage
+-- | Make a CharStage object by applying a given Advancement to a
+-- given CharacterSheet
+makeCharStage :: RDFGraph -- ^ Shema Graph
+              -> CharacterSheet -> Advancement -> CharStage
 makeCharStage schema cs0 adv = CharStage 
               { advancement = adv
               , sheetObject = cs
@@ -94,22 +120,9 @@ makeCharStage schema cs0 adv = CharStage
               where cs = advanceCharacter cs0 adv 
              
 
--- ^ A `CharGen` object represents a character's development over a
--- series of stages.  It contains a list of CharStage objects which
--- in turn contains the Character Sheet for each point in time, as
--- well as the raw data used in calculation and the character name
--- for display purposes.
-data CharGen = CharGen 
-      { charID :: RDFLabel      -- ^ Character ID 
-      , charName :: String      -- ^ Character Name (for display purpose)
-      , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
-      , charGraph :: RDFGraph   -- ^ Augmented graph with inference
-      , baseGraph :: RDFGraph   -- ^ Graph containing only the character 
-      , baseSheet :: CharacterSheet 
-        -- ^ Character Sheet at the start of the process
-      , charSheets :: [CharStage]  
-        -- ^ List of development stages, most recent first
-      }  deriving (Eq)
+
+-- |
+-- = Keys 
 
 -- The `CharacterKey` type is used to index character sheets and
 -- `CharStage` objects when these are stored in maps.
@@ -140,6 +153,7 @@ instance HasTime CharStage where
 
 -- |
 -- = Making Character Sheets
+
 makeCharGen :: G.RDFGraph  -- ^ Schema graph
            -> G.RDFGraph  -- ^ Resource graph
            -> G.RDFGraph  -- ^ Raw character graph
