@@ -54,7 +54,7 @@ module ArM.STM ( ArM.STM.lookup
                ) where
 
 import Prelude hiding (lookup)
-import Swish.RDF.Formatter.Turtle (formatGraphAsText,formatGraphIndent)
+import Swish.RDF.Formatter.Turtle (formatGraphIndent)
 import qualified GHC.Conc as STM
 import           Control.Monad.IO.Class (liftIO)
 import qualified Control.Concurrent.STM.Map as M
@@ -62,7 +62,7 @@ import qualified Swish.RDF.Graph as G
 -- import           Data.Maybe (fromJust)
 
 -- import qualified ArM.Character as C
-import           ArM.Types.RDF (fromRDFGraph,makeRDFGraph)
+import           ArM.Types.RDF (makeRDFGraph)
 import qualified ArM.Types.Season as TS
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Advancement as TA
@@ -139,9 +139,9 @@ loadSaga fn = do
                       , resourceRawGraph = resRawVar
                       , cgMap = cgm
                       } 
-    print "Ready to put graphs"
+    putStrLn "Ready to put graphs"
     mapM_ (putCharGraph st) cs
-    print "graphs put"
+    putStrLn "graphs put"
     return st
 
 
@@ -155,7 +155,7 @@ putCharGraph st g = trace "putCharGraph" $ do
         let clab = TCG.charID cgen
         let cmap = cgMap st
         let clVar = charList st
-        print "Ready to insert CharGen object"
+        putStrLn "Ready to insert CharGen object"
         STM.atomically $ do
            cl1 <- STM.readTVar clVar 
            STM.writeTVar clVar (clab:cl1)

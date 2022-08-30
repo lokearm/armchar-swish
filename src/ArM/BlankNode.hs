@@ -13,12 +13,11 @@
 
 module ArM.BlankNode where
 
-import Swish.RDF.Graph (RDFLabel(..))
+import Swish.RDF.Graph (RDFLabel(..),RDFTriple,arc,arcObj,arcPred)
 import Control.Monad.State.Lazy
 import ArM.Types.Trait
 import ArM.Resources
 import ArM.Trace
-import Swish.RDF.Graph
 import Data.Maybe (fromJust)
 
 type BlankState = State (String,Int) 
