@@ -10,7 +10,11 @@
 -- Types to handle characters as stored in web server memory.
 --
 -----------------------------------------------------------------------------
-module ArM.Character.CharGen where
+module ArM.Character.CharGen ( CharGen(..)
+                             , CharStage(..)
+                             , makeCharGen
+                             , findSeason
+                             , putAdvancement ) where
 
 import Swish.RDF.Graph as G
 import ArM.KeyPair()
@@ -34,12 +38,15 @@ data CharStage = CharStage
        -- ^ The character sheet as an RDF Graph
      }  deriving (Eq,Show)
 
+-- | Find the Character Stage at a given time.
 findSeason :: [CharStage] -> CharTime -> Maybe CharStage
 findSeason [] _ = Nothing
 findSeason (x:xs) t | timeOf x == t = Just x
                     | timeOf x < t = Nothing
                     | otherwise  = findSeason xs t
 
+-- | Insert a new advancement object.  If an advancement
+-- already exists at the same time, it will be replaced.
 putAdvancement :: RDFGraph  -- ^ Schema Graph
                -> RDFGraph  -- ^ Resource Graph
                -> CharGen -> Advancement -> CharGen
@@ -48,18 +55,14 @@ putAdvancement schema res1 cg adv = trace "TCG.putAdvancement" $
         , rawGraph = g
         , charGraph = makeGraph  g schema res1
         }
-                         -- $ trace (show cs0) 
-                         -- $ trace "Base character sheet above"
-                         -- $ trace (show adv) 
-                         -- $ trace "Advancement above"
-                         -- $ trace (show csl) 
-                         -- $ trace "computed arguments to putSeason"
        where cs0 = baseSheet cg
              csl = charSheets cg
              csl1 = putSeason schema cs0 csl adv 
              g = foldl addGraphs (baseGraph cg) 
                $ map ( makeRDFGraph . advancement ) csl1
 
+-- | Insert a new advancement object into a list of CharStage objects.
+-- This is an auxiliary to `putAdvancement`.
 putSeason :: RDFGraph
           -> CharacterSheet
           -> [CharStage] 
