@@ -43,12 +43,12 @@ findSeason (x:xs) t | timeOf x == t = Just x
 putAdvancement :: RDFGraph -> CharGen -> Advancement -> CharGen
 putAdvancement schema cg adv = trace "TCG.putAdvancement" $
          cg { charSheets = trace "call putSeason" 
-                         $ trace (show cs0) 
-                         $ trace "Base character sheet above"
-                         $ trace (show adv) 
-                         $ trace "Advancement above"
-                         $ trace (show csl) 
-                         $ trace "computed arguments to putSeason"
+                         -- $ trace (show cs0) 
+                         -- $ trace "Base character sheet above"
+                         -- $ trace (show adv) 
+                         -- $ trace "Advancement above"
+                         -- $ trace (show csl) 
+                         -- $ trace "computed arguments to putSeason"
                          $ putSeason schema cs0 csl adv }
            where cs0 = baseSheet cg
                  csl = charSheets cg
@@ -70,13 +70,8 @@ putSeason schema cs (x:xs) a
                 $ makeCharStage schema (sheetObject x) a
               y' = trace ("y' = makeCharStage " ++ show atime ++ show xtime) 
                 $ makeCharStage schema (f xs) a
-              atime = trace ("timeof Advancement " ++ show (timeOf a)) 
-                    $ timeOf a
-              xtime = trace ("timeof CharStage " ++ show (timeOf x)) 
-                    $ trace ("CharStage Adv " 
-                      ++ show (timeOf $ advancement x)) 
-                    $ trace "ready to return time of the CharStage"
-                    $ timeOf $ advancement x
+              atime = timeOf a
+              xtime = timeOf $ advancement x
               xs' = putSeason schema cs xs a
               x' = trace ("x' = makeCharStage " ++ show atime ++ show xtime) 
                  $ makeCharStage schema (f xs') (advancement x)
