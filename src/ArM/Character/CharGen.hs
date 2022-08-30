@@ -164,8 +164,4 @@ makeCS' :: RDFGraph -> [Advancement]
         -> [CharStage]
 makeCS' _ [] xs = xs
 makeCS' schema (a:as) xs = makeCS' schema as (y:xs)
-   where y = CharStage 
-                   { advancement = a
-                   , sheetObject = cs
-                   , sheetGraph = makeCGraph schema cs }
-         cs = advanceCharacter (sheetObject $ head xs) a
+   where y = makeCharStage  schema (sheetObject $ head xs) a
