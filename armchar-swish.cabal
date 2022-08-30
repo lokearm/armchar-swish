@@ -33,7 +33,7 @@ executable armchar-swish
                        , ArM.Rules.Record
                        , ArM.Resources
                        , ArM.Character
-                       , ArM.Load
+                       , ArM.IO
                        , ArM.BlankNode
                        , ArM.CharacterQuery
                        , ArM.WebService
@@ -95,7 +95,7 @@ executable prof
                        , ArM.Rules.Record
                        , ArM.Resources
                        , ArM.Character
-                       , ArM.Load
+                       , ArM.IO
                        , ArM.BlankNode
                        , ArM.CharacterQuery
                        , ArM.WebService
@@ -161,7 +161,7 @@ executable tst
                        , ArM.Rules.Record
                        , ArM.Resources
                        , ArM.Character
-                       , ArM.Load
+                       , ArM.IO
                        , ArM.BlankNode
                        , ArM.CharacterQuery
                        , ArM.WebService

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Load
+-- Module      :  ArM.IO
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -11,7 +11,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Load (readGraph) where
+module ArM.IO (readGraph) where
 
 import           ArM.Resources (baseURI)
 import           System.IO (IO)

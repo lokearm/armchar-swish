@@ -10,7 +10,7 @@
 -- This defines the data model as managed in memory, using
 -- Software Transactional Memory (STM).
 -- The `getSTM` functions gives a simple call to set up the data model
--- using three RDF graphs which can be read from file (`ArM.Load` module).
+-- using three RDF graphs which can be read from file (`ArM.IO` module).
 -- A lot of inferred graphs and other objects are set up as part of
 -- the data models, including the Character Map which supports the 
 -- `lookup` function.
@@ -73,7 +73,7 @@ import qualified ArM.Types.Saga as TS
 import qualified ArM.Rules.Persistence as RP
 import qualified ArM.Rules as R
 import           ArM.Resources
-import           ArM.Load
+import           ArM.IO
 
 import ArM.Trace
 
