@@ -27,7 +27,7 @@ import Data.Text.Lazy.Builder (toLazyText)
 import Swish.RDF.Formatter.Turtle (formatGraphAsText,formatGraphIndent)
 import qualified Swish.RDF.Graph as G
 import Control.Monad.IO.Class (liftIO)
-import Data.List (sort,intercalate)
+import Data.List (sort)
 import Data.String (fromString)
 
 import           ArM.Types.RDF (fromRDFGraph)

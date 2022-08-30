@@ -260,7 +260,8 @@ putAdvancement st adv =
                 Nothing -> return $ Right $ "No such character: " ++ show clab
                 Just cgen0 -> do
                    schema <- STM.readTVar $ schemaGraph st
-                   let cgen1 = TCG.putAdvancement schema cgen0 adv
+                   res1 <- STM.readTVar $ resourceGraph st
+                   let cgen1 = TCG.putAdvancement schema res1 cgen0 adv
                    M.insert (show clab) cgen1 cgm
                    return $ Left "Advancement Inserted"
 -- TODO: Check for conflicting advancements 

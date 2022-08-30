@@ -18,6 +18,7 @@ import ArM.Rules (makeGraph)
 import ArM.Character.Character
 import ArM.Types.Character
 import ArM.Types.Season
+import ArM.Types.RDF
 import ArM.Types.Advancement
 import Data.List (sort)
 
@@ -40,25 +41,33 @@ findSeason (x:xs) t | timeOf x == t = Just x
                     | timeOf x < t = Nothing
                     | otherwise  = findSeason xs t
 
-putAdvancement :: RDFGraph -> CharGen -> Advancement -> CharGen
-putAdvancement schema cg adv = trace "TCG.putAdvancement" $
-         cg { charSheets = trace "call putSeason" 
+putAdvancement :: RDFGraph  -- ^ Schema Graph
+               -> RDFGraph  -- ^ Resource Graph
+               -> CharGen -> Advancement -> CharGen
+putAdvancement schema res1 cg adv = trace "TCG.putAdvancement" $
+     cg { charSheets = trace "call putSeason" csl1
+        , rawGraph = g
+        , charGraph = makeGraph  g schema res1
+        -- TODO: res1
+        }
                          -- $ trace (show cs0) 
                          -- $ trace "Base character sheet above"
                          -- $ trace (show adv) 
                          -- $ trace "Advancement above"
                          -- $ trace (show csl) 
                          -- $ trace "computed arguments to putSeason"
-                         $ putSeason schema cs0 csl adv }
-           where cs0 = baseSheet cg
-                 csl = charSheets cg
+       where cs0 = baseSheet cg
+             csl = charSheets cg
+             csl1 = putSeason schema cs0 csl adv 
+             g = foldl addGraphs (baseGraph cg) 
+               $ map ( makeRDFGraph . advancement ) csl1
 
 putSeason :: RDFGraph
           -> CharacterSheet
           -> [CharStage] 
           -> Advancement 
           -> [CharStage] 
-putSeason schema cs [] a = trace "putSeason insert at tail"  [makeCharStage schema cs a]
+putSeason schema cs [] a = [makeCharStage schema cs a]
 putSeason schema cs (x:xs) a 
                  | atime > xtime =  trace "putSeason >" $ y:x:xs
                  | atime == xtime =  trace "putSeason =" $ y':xs
@@ -94,6 +103,7 @@ data CharGen = CharGen
       , charName :: String      -- ^ Character Name (for display purpose)
       , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
       , charGraph :: RDFGraph   -- ^ Augmented graph with inference
+      , baseGraph :: RDFGraph   -- ^ Graph containing only the character 
       , baseSheet :: CharacterSheet 
         -- ^ Character Sheet at the start of the process
       , charSheets :: [CharStage]  
@@ -138,6 +148,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , charName = ""
              , charGraph = g1
              , rawGraph = g0
+             , baseGraph = emptyGraph -- TODO
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }

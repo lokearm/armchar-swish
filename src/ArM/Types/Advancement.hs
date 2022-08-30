@@ -33,8 +33,8 @@ import           Swish.VarBinding  (vbMap)
 -- |
 -- = Character Advancement
 
--- | CharacterAdvancement Resource
--- Essential information is in `rdfid`, `contents`, and `traits.
+-- | Character Advancement Resource
+-- Essential information is in `rdfid`, `contents`, and `traits`.
 -- The other properties are redundant, merely giving access to
 -- critical information without having to search the lists.
 -- TraitAdvancements are represented as a list of `Trait`s.

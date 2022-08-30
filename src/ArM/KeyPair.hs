@@ -45,6 +45,7 @@ import Data.List (sort)
 -- import ArM.Resources
 import Data.Aeson
 import Data.Aeson.Key
+import Data.Aeson.Types (Parser)
 import qualified Data.Aeson.KeyMap as KM
 -- import Swish.Namespace (ScopedName)
 import ArM.Types.RDF
@@ -192,6 +193,7 @@ instance ToJSON KeyPairList where
 -- (property/object in RDF terms)
 -- This is a an axiliary for `parseJSON` for `KeyPairList`
 -- pairToKeyValue :: (Key,Value) -> Parser KeyValuePair
+pairToKeyValue :: (Key,Value) -> Parser KeyValuePair
 pairToKeyValue (x,y) = do
     v <- parseJSON y
     case k of
