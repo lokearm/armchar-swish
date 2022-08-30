@@ -42,7 +42,14 @@ findSeason (x:xs) t | timeOf x == t = Just x
 
 putAdvancement :: RDFGraph -> CharGen -> Advancement -> CharGen
 putAdvancement schema cg adv = trace "TCG.putAdvancement" $
-         cg { charSheets = putSeason schema cs0 csl adv }
+         cg { charSheets = trace "call putSeason" 
+                         $ trace (show cs0) 
+                         $ trace "Base character sheet above"
+                         $ trace (show adv) 
+                         $ trace "Advancement above"
+                         $ trace (show csl) 
+                         $ trace "computed arguments to putSeason"
+                         $ putSeason schema cs0 csl adv }
            where cs0 = baseSheet cg
                  csl = charSheets cg
 
@@ -51,18 +58,28 @@ putSeason :: RDFGraph
           -> [CharStage] 
           -> Advancement 
           -> [CharStage] 
-putSeason schema cs [] a =  [makeCharStage schema cs a]
+putSeason schema cs [] a = trace "putSeason insert at tail"  [makeCharStage schema cs a]
 putSeason schema cs (x:xs) a 
-                 | atime > xtime =  y:x:xs
-                 | atime == xtime =  y:xs
-                 | otherwise  = x':xs'
+                 | atime > xtime =  trace "putSeason >" $ y:x:xs
+                 | atime == xtime =  trace "putSeason =" $ y':xs
+                 | otherwise  = trace "putSeason otherwise" $ x':xs'
         where f [] = cs
-              f (z:_) = sheetObject z
-              y = trace ("y = makeCharStage " ++ show atime ++ show xtime) $ makeCharStage schema (f xs) a
-              atime = timeOf a
-              xtime = timeOf $ advancement x
+              f (z:_) = trace ("get SheetObject from head" 
+                        ++ (show $ timeOf $ sheetObject z)) sheetObject z
+              y = trace ("y = makeCharStage " ++ show atime ++ show xtime) 
+                $ makeCharStage schema (sheetObject x) a
+              y' = trace ("y' = makeCharStage " ++ show atime ++ show xtime) 
+                $ makeCharStage schema (f xs) a
+              atime = trace ("timeof Advancement " ++ show (timeOf a)) 
+                    $ timeOf a
+              xtime = trace ("timeof CharStage " ++ show (timeOf x)) 
+                    $ trace ("CharStage Adv " 
+                      ++ show (timeOf $ advancement x)) 
+                    $ trace "ready to return time of the CharStage"
+                    $ timeOf $ advancement x
               xs' = putSeason schema cs xs a
-              x' = trace ("x' = makeCharStage " ++ show atime ++ show xtime) $ makeCharStage schema (f xs') (advancement x)
+              x' = trace ("x' = makeCharStage " ++ show atime ++ show xtime) 
+                 $ makeCharStage schema (f xs') (advancement x)
 
 makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage
 makeCharStage schema cs0 adv = CharStage 
