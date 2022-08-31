@@ -218,7 +218,11 @@ lookup st char t = do
 -- getResource :: G.RDFGraph -> G.RDFLabel -> Maybe G.RDFGraph
 -- getResource g label = Nothing
 
--- | Update the state graph with the given Advancement object.
+-- | Clean up a submitted Advancement object.
+-- This should always be done before `putAdvancement` is called.
+-- The reason not to embed this into the `putAdvancement` function itself
+-- is to make a separate error message on failure to allow `WebService` to
+-- report distinct errors differently.
 cleanAdvancement :: MapState -> TA.Advancement 
                -> IO (Either TA.Advancement String) 
                   -- ^ Either a cleaned up Advancement or an error message
@@ -244,6 +248,7 @@ cleanAdvancement st adv = do
             (x:[]) -> return $ Left x
             (_:_:_) -> return $ Right "Multiple advancements not supported."
 
+-- | Update the state graph with the given Advancement object.
 putAdvancement :: MapState -> TA.Advancement -> IO (Either String String)
 putAdvancement st adv = 
          let cgm = cgMap st 
@@ -280,6 +285,8 @@ putCharacter st char =
                     return $ Left "Metadata inserted.  Character sheets not updated"
                     -- TODO Regenerate CharGen object
 
+-- | Auxiliary to `putCharacter`.  Clean up the input, converting it to a graph.
+-- There is no actual error checking.
 cleanCharacter :: MapState     -- ^ The memory state
                -> TC.Character -- ^ User input to be cleaned
                -> STM.STM G.RDFGraph 
