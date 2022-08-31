@@ -228,7 +228,7 @@ cleanAdvancement st adv = do
          -- regenerates calculated fields.
          let advg = makeRDFGraph adv
          let clab = TA.advChar adv
-         putStrLn $ "STM.putAdvancement: " ++ show clab
+         putStrLn $ "STM.cleanAdvancement: " ++ show clab
          schema <- STM.readTVarIO $ schemaGraph st
          res1 <- STM.readTVarIO $ resourceGraph st
          let advg1 = RP.persistGraph schema advg
@@ -264,30 +264,29 @@ putAdvancement st adv =
 -- careful revision.
 putCharacter :: MapState            -- ^ Memory state
              -> TC.Character        -- ^ New Character to be stored
-             -> IO (Either G.RDFGraph String) 
+             -> IO (Either String String) 
                 -- ^ Either the new character graph or an error message
 putCharacter st char = 
          let cgm = cgMap st 
              clab = TC.characterID char in
          STM.atomically $ do
+             chgraph <- cleanCharacter st char
              cgen <- M.lookup (show clab) cgm
              case (cgen) of
                 Nothing -> return $ Right $ "No such character: " ++ show clab
-                Just cgen0 -> return $ Right "Not implemented"
-             -- g <- STM.readTVar (charRawGraph st)
-             -- schema <- STM.readTVar (schemaGraph st)
-
-             -- chargraph <- STM.readTVar (charGraph st)
-             -- let charg = TC.makeRDFGraph char
-             -- let g1 = RP.persistChar schema charg
-             -- let g0 = RP.persistedChar chargraph (TC.characterID char) 
-             -- let gg = (g0 `G.delete` g) `G.addGraphs` g1
-
-             -- newst <- putCharGraph st gg
-             -- return $ Left gg
+                Just cgen0 -> do
+                    let cgen1 = cgen0 { TCG.baseGraph = chgraph }
+                    M.insert (show clab) cgen1 cgm
+                    return $ Left "Metadata inserted.  Character sheets not updated"
+                    -- TODO Regenerate CharGen object
 
 cleanCharacter :: MapState     -- ^ The memory state
                -> TC.Character -- ^ User input to be cleaned
-               -> IO (Either TC.Character String) 
-                  -- ^ Either a cleaned up Advancement or an error message
-cleanCharacter st ch = return $ Right "Not implemented" 
+               -> STM.STM G.RDFGraph 
+                  -- ^ Cleaned up graph representation of the Character
+cleanCharacter st ch = do
+         -- Removes non-editable properties form the input and
+         -- regenerates calculated fields.
+         let chgraph = makeRDFGraph ch
+         schema <- STM.readTVar $ schemaGraph st 
+         return $ RP.persistChar schema chgraph

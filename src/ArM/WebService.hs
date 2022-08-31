@@ -177,10 +177,10 @@ stateScotty stateVar = do
         put "/char" $ do
           char <- jsonData :: S.ActionM TC.Character 
           liftIO $ print char
-          newg <- liftIO $ STM.putCharacter stateVar char
-          case (newg) of
-             Left g -> printGraph g
-             Right x -> text $ T.pack x
+          r <- liftIO $ STM.putCharacter stateVar char
+          case (r) of
+             Left m -> text $ T.pack $ "OK! " ++ m
+             Right m -> error409 $ "Data could not be inserted.\n" ++ m
 
 -- | Return a 404 error over HTTP, with a simple human readable error
 -- message.
