@@ -292,7 +292,8 @@ putCharacter st char =
                     return $ Left "Metadata inserted."
                     -- TODO Regenerate CharGen object
 
--- | Auxiliary to `putCharacter`.  Clean up the input, converting it to a graph.
+-- | Auxiliary to `putCharacter`.
+-- Clean up the input, converting it to a graph.
 -- There is no actual error checking.
 cleanCharacter :: MapState     -- ^ The memory state
                -> TC.Character -- ^ User input to be cleaned

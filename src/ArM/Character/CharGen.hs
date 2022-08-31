@@ -24,7 +24,7 @@ import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Types.RDF
 import ArM.Types.Advancement
-import Data.List (sort)
+import Data.List (sort,reverse)
 
 import ArM.Trace
 
@@ -92,10 +92,15 @@ putCharacter :: RDFGraph   -- ^ Schema Graph
              -> CharGen    -- ^ Old CharGen object
              -> RDFGraph   -- ^ New graph of Character Metadata
              -> CharGen    -- ^ Updated CharGen object
-putCharacter schema res1 cg chgraph = cg1 { charSheets = makeCS schema as cs0 }
+putCharacter schema res1 cg chgraph = cg1 { charSheets = csl1 }
        where cs0 = baseSheet cg
              csl = charSheets cg
-             as = ttrace $ map advancement csl
+             csl1 = trace ("csl1 " ++ (show $ length csl1')) 
+                  $ trace ("as " ++ (show $ length as))
+                  $ trace (show $ head as)
+                  $ csl1'
+             csl1' = makeCS schema as cs0 
+             as = reverse $ map advancement csl
              cg1 = updateBaseGraph schema res1 $ cg { baseGraph = chgraph }
 
 -- | Insert a new advancement object into a list of CharStage objects.
