@@ -1,75 +1,63 @@
-module ArM.Types.Character where
+{-# LANGUAGE OverloadedStrings #-}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Types.Character
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- The Character and CharacterSheet data types and corresponding functions.
+--
+-- This module provides the functions to get character sheets
+-- from character data.
+--
+-- Pre-game character design has not yet been implemented.
+--
+-- The main function provided is the `getAllCS` function
+-- which is used to generate the data structure in `ArM.STM`.
+-- This relies on auxiliary functions to advance the character,
+-- and further on similar functions in `ArM.Character.Trait` to
+-- advance traits.
+--
+-- Metadata can be extracted for either a Character or a CharacterSheet
+-- by giving just the ID.  Metadata can also be extracted as part of
+-- a Character object using `fromRDFGraph`.
+-- There is also a function, `characterFromGraph` to get the IDs of
+-- all Character objects in a graph.
+--
+-----------------------------------------------------------------------------
+module ArM.Types.Character ( Character(..)
+                           , CharacterSheet(..)
+                           , advanceCharacter
+                           , getInitialCS
+                           , makeCGraph
+                           , extractBaseCharacterGraph 
+                           ) where
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import Data.Maybe
+import           Swish.VarBinding  (vbMap)
+import           Data.List (sort)
+import           Data.Maybe (fromJust)
+
+import qualified ArM.Rules.Record as R
 import ArM.KeyPair
 import ArM.Resources
 import ArM.BlankNode
 import ArM.Rules.Aux
+import ArM.Internal.Aux
+import ArM.Types.Advancement
+import ArM.Types.Season
+import ArM.Types.RDF
+import ArM.Types.Trait
+import Data.Aeson
+import Data.Aeson.Key
 
-
--- |
--- = RDF Conversion
-
-class FromRDFGraph a where
-    fromRDFGraph :: RDFGraph -> RDFLabel -> a 
-class ToRDFGraph a where
-    makeRDFGraph :: a -> RDFGraph
-
--- | Convert `KeyValuePair` to `RDFTriple`
--- This is an auxiliary for other ToRDFGraph functions
-keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
-keyvalueToArcList x [] = []
-keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
-
--- | 
--- = Trait
-
--- | Trait Resource
--- `traitID` and `traitContents` are sufficient to describe the trait.
--- The other fields duplicate information to facilitate searching and
--- sorting.
--- When new traits are created, `traitID` is set to nothing?
--- A blank node is only created when it is written into an RDFGraph.
-data Trait = Trait {
-    traitClass :: RDFLabel,
-    instanceLabel :: String,
-    isRepeatableTrait :: Bool,
-    traitContents :: [RDFTriple]
-   } deriving (Eq)
-defaultTrait = Trait {
-    traitClass = noSuchTrait,
-    instanceLabel = "",
-    isRepeatableTrait = False,
-    traitContents = []
-   } 
-
--- | Get the ID (RDFLabel) of a trait if possible.
-traitID :: Trait -> Maybe RDFLabel
-traitID = f . traitContents
-   where f [] = Nothing
-         f (x:_) = Just $ arcSubj x
-
-instance Show Trait where
-   show a = "**" ++ show (traitClass a) ++ "**\n" 
-                 ++ sc (traitContents a) 
-                 ++ "\n"
-      where 
-         sc [] = ""
-         sc (x:xs) = "  " ++ show x ++ "\n" ++ sc xs
-instance Ord Trait where
-   compare x y | traitClass x < traitClass y = LT
-               | traitClass x > traitClass y = GT
-               -- | not (isRepeatableTrait x) = EQ
-               -- | not (isRepeatableTrait y) = EQ
-               | instanceLabel x < instanceLabel y = LT
-               | instanceLabel x > instanceLabel y = GT
-               | otherwise = EQ
+import ArM.Trace
 
 -- | 
 -- = Character
-
 
 data Character = Character {
          characterID :: RDFLabel,
@@ -78,12 +66,61 @@ data Character = Character {
 instance Show Character where
     show cs = "**" ++ show (characterID cs) ++ "**\n" 
            ++ "Metadata Triples:\n" ++ show ( characterData cs )
-        where showw [] = ""
-              showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
+defaultCharacter :: Character 
 defaultCharacter = Character {
          characterID = noSuchCharacter,
          characterData = KeyPairList []
        }  
+
+instance ToRDFGraph Character where
+   makeRDFGraph cs = listToRDFGraph  ( ct:ms )
+       where x = characterID cs
+             ms = keyvalueToArcList x (fromKeyPairList $ characterData cs)
+             ct = arc x typeRes (armRes  "Character")
+
+instance ToJSON Character where 
+    toJSON c = toJSON $ p x xs
+        where x = KeyValuePair (armRes "isCharacter") $ characterID c
+              xs = characterData c 
+              p y (KeyPairList ys) = KeyPairList (y:ys) 
+
+instance FromJSON Character where 
+    parseJSON val = fmap kpToChar $ parseJSON val
+       where kpToChar (KeyPairList xs) = defaultCharacter {
+                      characterID = fromJ $ getProperty (armRes "isCharacter") xs,
+                      characterData = KeyPairList xs
+                      }
+             fromJ Nothing = noSuchCharacter
+             fromJ (Just x) = x
+
+instance FromRDFGraph Character where
+   fromRDFGraph g label = defaultCharacter {
+                 characterID = label,
+                 characterData = getCharacterMetadata g label
+                 }
+
+-- | Make a list of metadata, where each data item is
+-- a triple consisting of URI, Label, and Value.
+-- The inputs are an 'RDFGraph' g and a string naming an RDF resource,
+-- either as a prefixed name or as a full URI in angled brackets (<uri>).
+getCharacterMetadata :: G.RDFGraph -> RDFLabel -> KeyPairList
+getCharacterMetadata g s = KeyPairList $ map keypairFromBinding
+                          $  Q.rdfQueryFind (query s) g
+
+-- | Construct a query to get all
+-- arm:CharacterProperty triples for a given subject.
+query :: RDFLabel -> RDFGraph 
+query c = listToRDFGraph 
+   [ arc c (G.Var "property") (G.Var "value")
+   , arc (G.Var "property") typeRes armCharacterProperty
+   , arc (G.Var "property") labelRes  (G.Var "label") ]
+
+extractBaseCharacterGraph :: RDFGraph -> RDFLabel -> RDFGraph 
+extractBaseCharacterGraph g c = listToRDFGraph
+                              $ map f $  Q.rdfQueryFind (query c) g
+   where f vb = arc c (fromJust $ vbMap vb (G.Var "property"))
+                      (fromJust $ vbMap vb (G.Var "value"))
+
 
 -- | 
 -- = Character Sheet
@@ -93,8 +130,7 @@ data CharacterSheet = CharacterSheet {
       -- ^ Character ID (i.e. same ID for every season)
       sheetID :: Maybe RDFLabel,  
       -- ^ ID of the Character Sheet, usually Nothing suggesting a blank node
-      csYear :: Maybe Int,  -- ^ Current Year
-      csSeason :: String,   -- ^ Current Season
+      csTime :: CharTime,  -- ^ Current Year
       born     :: Int,      -- ^ Year of Birth
       csItems :: [Trait],    -- ^ List of possessions (weapons, equipment)
       csTraits :: [Trait],  -- ^ List of traits (abilities, spells, etc.)
@@ -108,11 +144,11 @@ instance Show CharacterSheet where
            ++ "Metadata Triples:\n" ++ show ( csMetadata cs )
         where showw [] = ""
               showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
+defaultCS :: CharacterSheet
 defaultCS = CharacterSheet {
          csID = noSuchCharacter,
          sheetID = Nothing,
-         csYear = Nothing,
-         csSeason = "",
+         csTime = defaultCharTime,
          born = 0,
          csItems = [],
          csTraits = [],
@@ -126,14 +162,14 @@ showSheetID = f . sheetID
 
 
 instance ToRDFGraph CharacterSheet where
-   makeRDFGraph cs =
+   makeRDFGraph cs = trace msg $
          ( listToRDFGraph  . fst . runBlank ( csToArcListM cs' ) )
          ("charsheet",1)
       where cs' = cs { csMetadata = KeyPairList $ a xs }
             KeyPairList xs = csMetadata cs
-            aAge age ys  
-                   | age == 0 = ys
-                   | otherwise = KeyValuePair (armRes "hasAge") (litInt age):ys
+            aAge x ys  
+                   | x == 0 = ys
+                   | otherwise = KeyValuePair (armRes "hasAge") (litInt x):ys
             aYear Nothing ys   = ys
             aYear (Just x) ys  = KeyValuePair (armRes "inYear") (litInt x):ys
             aSeason x ys  
@@ -142,151 +178,89 @@ instance ToRDFGraph CharacterSheet where
             age' Nothing _ = 0
             age' (Just y) b | b == 0 = 0 
                             | otherwise = y - b
-            age = age' (csYear cs) (born cs)
-            a = aAge age . aYear (csYear cs) . aSeason (csSeason cs)
-instance ToRDFGraph Character where
-   makeRDFGraph cs = listToRDFGraph  ( ct:ms )
-       where x = characterID cs
-             ms = keyvalueToArcList x (fromKeyPairList $ characterData cs)
-             ct = arc x typeRes (armRes  "Character")
+            age = age' (hasYear cs) (born cs)
+            a = aAge age . aYear (hasYear cs) . aSeason (hasSeason cs)
+            msg = "makeRDFGraph for CharacterSheet (" ++ show traitcount ++ " traits)"
+            traitcount = length $ csTraits cs
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
-          x <- getSheetIDM cs $ sheetID cs
+          x <- getSheetIDM $ sheetID cs
           tsm <- fixBlanksM $ csTraits cs
-          ism <- fixBlanksM $ csItems cs
+          ism <- fixBlanksM $ csItems $ trace ("#tsm = " ++ show (length tsm)) cs
           let ht = map ( \ y -> arc x (armRes "hasTrait") (fromJust $ traitID y) ) tsm
           let hi = map ( \ y -> arc x (armRes "hasPossession") (fromJust $ traitID y) ) ism
           let ts =  map traitContents tsm
           let is =  map traitContents ism
           let metadata = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ms = metadata ++ hi ++ ht 
-          let ct = arc x isCharacterLabel (csID cs)
+          let ct = arc x (armRes "ïsCharacter") (csID cs)
           let ct1 = arc x typeRes csRes 
           let ms1 = foldr (++) ms ts
           return $ ct1:ct:foldr (++) ms1 is
 
-fixBlanksM :: [Trait] -> BlankState [Trait]
-fixBlanksM [] = return []
-fixBlanksM (x:xs) = do
-             x' <- fixBlankNodeM x
-             xs' <- fixBlanksM xs
-             return $ x':xs'
-fixBlankNodeM :: Trait -> BlankState Trait
-fixBlankNodeM t 
-   | traitContents t == [] = return t
-   | key /= (armRes "unnamedBlankNode") = return t
-   | otherwise = do
-        b <- getBlank
-        return $ t { traitContents = map ( replaceBlank b ) 
-                      $ traitContents t }
-     where key = arcSubj $ head $ traitContents t
+getSheetIDM :: Maybe RDFLabel -> BlankState RDFLabel
+getSheetIDM Nothing = getBlank
+getSheetIDM (Just x) = return x
 
-replaceBlank :: RDFLabel -> RDFTriple -> RDFTriple
-replaceBlank b x = arc b ( arcPred x ) ( arcObj x )
-            
-getSheetIDM :: CharacterSheet -> Maybe RDFLabel -> BlankState RDFLabel
-getSheetIDM _ Nothing = getBlank
-getSheetIDM _ (Just x) = return x
+instance ToJSON CharacterSheet where 
+    toJSON cs = object (c:x:xs)
+       where x = (fromString "arm:hasTrait") .= (toJSON (csTraits cs))
+             xs = map tripleToJSON (fromKeyPairList $ csMetadata cs)
+             c = (fromString "arm:isCharacter") .= (show $ csID cs)
+
+
+instance HasTime CharacterSheet where
+    timeOf = csTime
 
 -- |
--- = Character Advancement
+-- = Advancement 
+--
+makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
+makeCGraph schema = R.prepareRecord schema . makeRDFGraph
 
--- | CharacterAdvancement Resource
--- Essential information is in `rdfid`, `contents`, and `traits.
--- The other properties are redundant, merely giving access to
--- critical information without having to search the lists.
--- TraitAdvancements are represented as a list of `Trait`s.
--- Other properties are listed as 'contents'.
-data Advancement = Advancement {
-    year :: Maybe Int,
-    season :: String,
-    rdfid :: RDFLabel,
-    contents :: [KeyValuePair],
-    advSortIndex :: Int,
-    traits :: [Trait],
-    items :: [Trait]
-   } deriving Eq
-
-defaultAdvancement = Advancement { year = Nothing,
-                season = "",
-                rdfid = noSuchAdvancement, 
-                advSortIndex = 0,
-                contents = [],
-                traits = [],
-                items = []
-                }
-instance Show Advancement where
-   show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ y (year a) ++ "**\n" 
-                 ++ sc (contents a) 
-                 ++ show (traits a) 
-                 ++ show (items a) 
-                 ++ "\nSort Index: " ++ show (advSortIndex a) 
-                 ++ "\nSeason No: " ++ show (sno a) 
-                 ++ "\n"
-      where 
-         y Nothing = ""
-         y (Just x) = show x
-         sc [] = ""
-         sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
-         st [] = ""
-         st ((x,_,y,z):xs) = "  " ++ show x ++ ": " ++ y ++ " - " ++ z 
-                                  ++  "\n" ++ st xs
-instance Ord Advancement where
-   compare x y | advSortIndex x < advSortIndex y = LT
-               | advSortIndex x > advSortIndex y = GT
-               | year x < year y = LT
-               | year x > year y = GT
-               | sno x < sno y = LT
-               | sno x > sno y = GT
-               | rdfid x < rdfid y = LT
-               | rdfid x > rdfid y = GT
-               | contents x < contents y = LT
-               | contents x > contents y = GT
-               | otherwise = EQ
-
-instance ToRDFGraph Advancement where
-   makeRDFGraph cs =  listToRDFGraph  ( advToArcList cs ) 
-
-advToArcList :: Advancement -> [RDFTriple]
-advToArcList adv = ys2
-    where ms = keyvalueToArcList (rdfid adv) (contents adv)
-          atRes = armRes "advanceTrait"
-          cpRes = armRes "changePossession"
-          xs1 =  map traitContents (traits adv)
-          xs2 =  map traitContents (items adv)
-          ys1 = foldr (++) ms xs1
-          ys2 = foldr (++) ys1 xs2
+-- | apply a given Advancement to a given CharacterSheet
+advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
+advanceCharacter cs adv = 
+     cs { sheetID = Nothing
+        , csTime = nextCharTime $ advTime adv
+        , csTraits = advanceTraitList (csTraits cs) (sort $ traits adv)
+        , csItems = advanceTraitList (csItems cs) (items adv)
+     }
 
 -- |
--- = Season
+-- = Get Character from a graph
 
-sno = seasonNo . season
+-- | Get the labels of all characters in a given graph.
+characterFromGraph :: RDFGraph -> [RDFLabel]
+characterFromGraph = uniqueSort . f . map (`vbMap` cVar) 
+                . Q.rdfQueryFind ( listToRDFGraph  [ arc cVar typeRes armCharacter ] )
+    where f [] = []
+          f (Nothing:xs) = f xs
+          f (Just x:xs) = x:f xs
 
--- | The `SeasonYear` gives a season with year.
-type SeasonYear = (String,Int) 
--- | Given a season/year, `nextSeason` returns the subsequent season.
--- Winter is the last season of the year, and is followed by the Spring of
--- the next year.
-nextSeason :: SeasonYear -> SeasonYear
-nextSeason ("Spring",y) = ("Summer",y)
-nextSeason ("Summer",y) = ("Autumn",y)
-nextSeason ("Autumn",y) = ("Winter",y)
-nextSeason ("Winter",y) = ("Spring",y+1)
+-- | Create an initial character sheet (age 0) without any traits added.
+-- The function assumes that the give Graph contains definitions for a
+-- single character resource.
+getInitialCS :: RDFGraph -- ^ RDFGraph containing the character
+    -> CharacterSheet  -- ^ Empty charactersheet (age 0) for the character
+getInitialCS = getInitialCharacter . getCharacter
+   where getInitialCharacter c = defaultCS {
+            csID = characterID c,
+            born = getIntProperty (armRes "hasBirthYear") $ characterData c,
+            csMetadata = characterData  c
+         }
 
+-- | Get a character object from an RDFGraph object.
+-- The function assumes that the give Graph contains definitions for a
+-- single character resource.  If none is found, an empty (default) character
+-- is returned.  If multiple characters are defined, the first one (arbitrarily)
+-- is used.
+-- This is only used as an auxiliary to `getInitialCS`.
+getCharacter :: RDFGraph -> Character
+getCharacter g = f $ lab $ characterFromGraph g
+   where lab [] = trace "getCharacter finds no character" Nothing
+         lab (x:_) = trace ( "getCharacter found a character: " ++ show x) $ Just x
+         f Nothing = defaultCharacter
+         f (Just x) = fromRDFGraph g $ x 
 
--- | Given a season as a String, `nextSeason` returns a number by which 
--- seasons can be ordered within a calendar year.
--- Winter is the last season in the year.
-seasonNo :: String -> Int
-seasonNo "Spring" = 1
-seasonNo "Summer" = 2
-seasonNo "Autumn" = 3
-seasonNo "Winter" = 4
-seasonNo _ = 10
-
-maybeNextSeason :: (String,Maybe Int) ->  (String,Maybe Int)
-maybeNextSeason ("",Just y) = ("",Just (y+1)) 
-maybeNextSeason ("",Nothing) = ("",Nothing) 
-maybeNextSeason (s,Just y) = (s',Just y') where (s',y') = nextSeason (s,y)
-maybeNextSeason (s,Nothing) = (s',Nothing) where (s',y') = nextSeason (s,0) 

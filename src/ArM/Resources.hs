@@ -22,42 +22,48 @@ import qualified Data.Text as T
 import qualified Swish.QName as QN
 import           Data.Text (unpack)
 
--- * Ontology Files
+-- |
+-- = URIs and NameSpaces
 
-armFile = "Ontology/arm.ttl"
-resourceFile = "Ontology/resources.ttl"
-characterFile = "Test/cieran.ttl"
+baseURI :: Maybe URI
 baseURI = Nothing
-    
--- * URIs and NameSpaces
 
+auth :: URIAuth
 auth = URIAuth "" "hg.schaathun.net" ""
+armURI :: URI 
 armURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/schema",
            uriQuery = "",
            uriFragment = "#" }
+armrURI :: URI 
 armrURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/resources",
            uriQuery = "",
            uriFragment = "#" }
+rulesURI :: URI 
 rulesURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/rules",
            uriQuery = "",
            uriFragment = "#" }
+armcharURI :: URI 
 armcharURI = URI { uriScheme = "https:",
            uriAuthority = Just auth,
            uriPath = "/armchar/character/",
            uriQuery = "",
            uriFragment = "" }
+armNS :: Namespace
 armNS = makeNamespace (Just $ T.pack "arm") armURI
+rulesNS :: Namespace
 rulesNS = makeNamespace (Just $ T.pack "armrules") armURI
 
--- * Utility functions to manage local names
+-- |
+-- = Utility functions to make and manage resources
 
 -- | Define a local name from a String
+newLName :: String -> QN.LName
 newLName s = case (QN.newLName $ T.pack s) of
    (Nothing) -> QN.emptyLName
    (Just ln) -> ln
@@ -68,8 +74,7 @@ getLocalID lab = f $ fromRDFLabel lab
       where f Nothing = Nothing
             f (Just x) = Just $ unpack $ QN.getLName $ getScopeLocal x
 
--- * Convenience functions to make ontology labels
-
+makeSN :: String -> ScopedName
 makeSN s = makeScopedName (Just $ T.pack "arm") armURI (newLName s)
 armRes :: String -> RDFLabel
 armRes = Res . makeSN
@@ -78,30 +83,29 @@ armcharRes s = Res $ makeScopedName (Just $ T.pack "armchar") armcharURI (newLNa
 armrRes :: String -> RDFLabel
 armrRes s = Res $ makeScopedName (Just $ T.pack "armr") armrURI (newLName s)
 
--- * Ontology Labels
-
-isCharacterLabel = armRes  "isCharacter"
-repeatableLabel = armRes  "RepeatableTrait"
-xptraitLabel = armRes  "XPTrait"
-accelleratedtraitLabel = armRes  "AccelleratedTrait"
-addXPLabel = armRes  "addedXP"
-totalXPLabel = armRes "hasTotalXP" 
-hasXPLabel = armRes "hasXP" 
+-- |
+-- = Vocabulary
 
 -- | An RDFLabel used as a kind of Null pointer for traits and items.
+noSuchTrait :: RDFLabel
 noSuchTrait = armRes "noSuchTrait" 
 -- | An RDFLabel used as a kind of Null pointer for advancements.
+noSuchAdvancement :: RDFLabel
 noSuchAdvancement = armRes "noSuchAdvancement" 
 -- | An RDFLabel used as a kind of Null pointer for characters.
+noSuchCharacter :: RDFLabel
 noSuchCharacter = armRes "noSuchCharacter" 
+
+atSeason :: RDFLabel
 atSeason = armRes "atSeason" 
+inYear :: RDFLabel
 inYear = armRes "inYear" 
-advancementType = armRes "Advancement" 
+
+hasAdvancementIndex :: RDFLabel
 hasAdvancementIndex = armRes "hasAdvancementIndex" 
-hasAdvancementType = armRes "hasAdvancementType" 
-hasAdvancementTypeString = armRes "hasAdvancementTypeString" 
-prefixedidRes = armRes "prefixedid" 
-armViewProperty = armRes "ViewProperty" 
+armPersistentProperty :: RDFLabel
 armPersistentProperty = armRes "PersistentProperty" 
+armCharacterProperty :: RDFLabel
 armCharacterProperty = armRes "CharacterProperty" 
+armCharacter :: RDFLabel
 armCharacter = armRes "Character" 

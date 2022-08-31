@@ -1,5 +1,11 @@
 {
+        "advancementcharacter": {
+                "prefixedid": "armchar:cieran"
+        },
         "advancementcontents": {
+            "arm:advancementClass": {
+                "prefixedid": "arm:IngameAdvancement"
+            },
             "arm:advanceCharacter": {
                 "prefixedid": "armchar:cieran"
             },
@@ -8,13 +14,13 @@
             "arm:hasAdvancementDescription": "Story",
             "arm:hasAdvancementIndex": 100,
             "arm:hasAdvancementType": {
-                "prefixedid": "arm:Reading"
+                "prefixedid": "arm:Adventure"
             },
             "arm:hasAdvancementTypeString": "Reading",
             "arm:inYear": 1217
         },
         "advancementid": {
-            "prefixedid": "<https://hg.schaathun.net/armchar/character/cieran#autumn1217adv>"
+            "prefixedid": "armchar:cieran#autumn1217adv"
         },
         "advancementitems": [
             {

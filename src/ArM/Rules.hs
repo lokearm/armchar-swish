@@ -31,21 +31,18 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Rules ( makeGraph, makeGraphs
+module ArM.Rules ( makeGraph
                  , prepareSchema, prepareResources 
                  ) where
 
 import Swish.RDF.Graph
 
-import ArM.Resources
+-- import ArM.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS
 import ArM.Rules.FullGraph (prepareGraph)
 import ArM.Rules.Resource (prepareResources)
-
-import Control.Parallel
-
 
 -- | Apply standard RDFS rules to elaborate the schema
 -- This is used only once, so it may be allowed to be costly.
@@ -59,22 +56,8 @@ makeGraph :: RDFGraph -- ^ The raw character graph
              ->  RDFGraph -- ^ The pre-processed schema graph
              ->  RDFGraph -- ^ The pre-processed resource graph
              ->  RDFGraph -- ^ The derived character graph
-makeGraph c0 s1 res1 = ( prepareGraph . merge res1 . initialRules ) c0
+makeGraph c0 _ res1 = ( prepareGraph . merge res1 . initialRules ) c0
 
 -- | Apply simple rules which do not depend on the schema
-initialRules = fwdApplyList [ traitclasstypeRule, bonusclassrule ] 
-
--- | Compute the three graph to be kept in software transactional
--- memory.
-makeGraphs :: 
-    (RDFGraph,RDFGraph,RDFGraph) 
-    -- ^ Raw graphs as read from file (character graph,schema,resources)
-    ->  (RDFGraph,RDFGraph,RDFGraph) 
-    -- ^ Graphs augmented by the reasoner (character graph,schema,resources)
-makeGraphs (c0,s0,res0) =
-      s1 `par` res1 `pseq` ( c2, s1, res1 )
-    where c1 = initialRules c0
-          s1 = prepareSchema s0
-          res1 = prepareResources $ res0 `merge` s1
-          c2 = prepareGraph $ merge res1 c1
-
+initialRules :: RDFGraph -> RDFGraph
+initialRules = fwdApplyList classRules

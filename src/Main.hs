@@ -22,16 +22,7 @@
 
 module Main where
 
-import System.IO (IO)
-import Control.Monad.IO.Class (liftIO)
-
-
--- Loading ArM data 
-import ArM.Load (readGraph,getRawGraph)
-import qualified ArM.Resources as AR
-
 -- Software Transactional Memory
-import qualified Control.Concurrent.STM as STM
 import ArM.STM
 
 -- Web service
@@ -48,7 +39,7 @@ import ArM.Time
 -- Authentication
 
 -- | The `authf` function validates the password in the Wai middleware
-authf u p = return $ u == "user" && secureMemFromByteString p == password
+-- authf u p = return $ u == "user" && secureMemFromByteString p == password
 
 -- | Encoded password string.  This is for testing.  
 -- For production this has to be handled more securely.
@@ -56,29 +47,14 @@ password :: SecureMem
 password = secureMemFromByteString "ElksRun" 
 
 -- | Saga File
+sagaFile :: String
 sagaFile = "Test/saga.ttl"
 
 main :: IO ()
 main = do 
-     print "Starting: armchar-swish  ..."
+     putStrLn "Starting: armchar-swish  ..."
      printTime
-     sagaGraph <- readGraph sagaFile
-     (g,schema,res) <- getRawGraph AR.characterFile AR.armFile AR.resourceFile
-     st1 <- STM.atomically $ do
-         st0 <- getState res schema
-         putCharGraph st0 g
-
-     case (st1) of
-         Right x -> error $ "Error: " ++ x
-         Left stateVar -> do
-               st <- STM.readTVarIO stateVar
-               clab <- STM.readTVarIO $ characterLabel st
-               cid <- STM.readTVarIO $ characterID st
-               liftIO $ print $ "Loaded character: " ++ show clab
-               liftIO $ print $ "Character ID: " ++ cid
-               liftIO $ printTime
-               return st1
-    
-               print "Starting Scotty"
-               S.scotty 3000 $ stateScotty stateVar
-               -- HA.middleware $ basicAuth authf "armchar"
+     stateVar <- loadSaga sagaFile
+     putStrLn "Starting Scotty"
+     S.scotty 3000 $ stateScotty stateVar
+     -- HA.middleware $ basicAuth authf "armchar"

@@ -21,6 +21,8 @@
 --
 -----------------------------------------------------------------------------
 module ArM.KeyPair ( keypairFromBinding 
+                   , keyvalueToArcList 
+                   , tripleToJSON 
                    , KeyValuePair(..)
                    , KeyPairList(..)
                    , fromKeyPairList
@@ -29,7 +31,6 @@ module ArM.KeyPair ( keypairFromBinding
                    , arcListSplit
                    , getProperty
                    , getIntProperty
-                   , getStringProperty
                    , propertyVar
                    , idVar
                    , valueVar
@@ -37,11 +38,19 @@ module ArM.KeyPair ( keypairFromBinding
                    ) where
 
 import Swish.RDF.Graph as G
+import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.VarBinding as VB 
 import Swish.VarBinding  (vbMap)
 import Data.Maybe  (fromJust)
 import Data.List (sort)
-import ArM.Resources
+import Data.Aeson
+import Data.Aeson.Key
+import Data.Aeson.Types (Parser)
+import qualified Data.Aeson.KeyMap as KM
+import ArM.Types.RDF
+import ArM.Rules.Aux
+
+import ArM.Trace
 
 -- |
 -- = Data Types
@@ -59,9 +68,10 @@ data KeyPairList  = KeyPairList [KeyValuePair]
     deriving Eq
 instance Show KeyPairList where
         show (KeyPairList []) = ""
-        show (KeyPairList (x:xs)) = "  " ++ show x ++ "\n" 
+        show (KeyPairList (x:_)) = "  " ++ show x ++ "\n" 
 
 -- | Get the `KeyPairList` as a list of `KeyValuePair` objects.
+fromKeyPairList :: KeyPairList -> [KeyValuePair]
 fromKeyPairList (KeyPairList xs) = xs
 
 -- |
@@ -79,13 +89,17 @@ toKeyPairList = map toKeyPair
 
 
 -- | Variable used for the resource ID in queries.
+idVar :: RDFLabel
 idVar = (G.Var "id")
 -- | Variable used for a property of interest in queries.
+propertyVar :: RDFLabel
 propertyVar = (G.Var "property")
 -- | Variable used for a value associated with the property of interest.
+valueVar :: RDFLabel
 valueVar = (G.Var "value")
 -- | Variable used for a human readable label for the property of interest.
 -- This is not really used in this module, but may be used in others.
+labelVar :: RDFLabel
 labelVar = (G.Var "label")
 
 -- |
@@ -96,7 +110,7 @@ labelVar = (G.Var "label")
 keypairFromBinding :: VB.RDFVarBinding -> KeyValuePair
 keypairFromBinding = f . metadataFromBinding 
      where 
-       f (p,label,value) = KeyValuePair (fromJust p) (fromJust value) 
+       f (p,_,value) = KeyValuePair (fromJust p) (fromJust value) 
 
 -- | Map the variable bindings to Maybe RDFLabel.
 -- Auxiliary to `keypairFromBinding`
@@ -125,22 +139,13 @@ arcListSplit' :: ([[G.RDFTriple]], [G.RDFTriple])
            -> ([[G.RDFTriple]], [G.RDFTriple]) 
 arcListSplit' (xs,[]) = (xs,[])
 arcListSplit' ([],y:ys) = arcListSplit' ([[y]],ys)
+arcListSplit' ([]:_,_) = error "Empty constituent list in arcListSplit'"
 arcListSplit' ((x:xs):xss,y:ys) 
     | arcSubj x == arcSubj y = arcListSplit' ((y:x:xs):xss, ys)
     | otherwise    = arcListSplit' ([y]:(x:xs):xss, ys)
 
 -- |
 -- = Scan lists of key/value pairs
-
--- | Scan a list of Key/Value pairs for a given property and return an
--- string value.  An empty string is returned if no valid value is found.
-getStringProperty :: RDFLabel -> [KeyValuePair] -> String
-getStringProperty _ [] = ""
-getStringProperty k' (KeyValuePair k v:xs) 
-   | k' == k  = f (fromRDFLabel v)
-   | otherwise      = getStringProperty k' xs
-   where f Nothing = ""
-         f (Just v) = v
 
 -- | Scan a list of Key/Value pairs for a given property and return an
 -- integer value.  If the properrty is not found or is not an integer,
@@ -153,7 +158,7 @@ getIntProperty' k' (KeyValuePair k v:xs)
    | k' == k  = f (fromRDFLabel v)
    | otherwise      = getIntProperty' k' xs
    where f Nothing = 0
-         f (Just v) = v
+         f (Just x) = x
 
 -- | Scan a list of Key/Value pairs for a given property and return the value.
 getProperty :: RDFLabel -> [KeyValuePair] -> Maybe RDFLabel
@@ -162,3 +167,47 @@ getProperty k' (KeyValuePair k v:xs)
    | k' == k  = Just v
    | otherwise      = getProperty k' xs
 
+-- | Convert a `KeyValuePair` to JSON
+tripleToJSON :: KeyValuePair -> (Key,Value)
+tripleToJSON (KeyValuePair a b) = 
+    ((getKey $ fromJust $ fromRDFLabel a), (toJSON b))
+
+
+-- | Convert an RDFLabel to an Aeson Key for JSON serialisation
+getKey :: RDFLabel -> Key
+getKey = fromString  . show
+
+-- |
+-- = KeyPairList
+
+instance FromJSON KeyPairList  where
+  parseJSON = withObject "KeyPairList" $ \obj ->
+    trace ( "parseJSON for KeyPairList " ++ show obj) $
+    let kvs = KM.toList obj
+        parsed = mapM pairToKeyValue kvs
+    in fmap KeyPairList parsed
+instance ToJSON KeyPairList where 
+    toJSON (KeyPairList t) = object $ map tripleToJSON t
+
+-- | Parse a JSON attribute/value pair and return a KeyValuePair 
+-- (property/object in RDF terms)
+-- This is a an axiliary for `parseJSON` for `KeyPairList`
+-- pairToKeyValue :: (Key,Value) -> Parser KeyValuePair
+pairToKeyValue :: (Key,Value) -> Parser KeyValuePair
+pairToKeyValue (x,y) = do
+    v <- parseJSON y
+    case k of
+        Left k' -> return $ KeyValuePair k' v
+        Right s -> trace "Fail in pairToKeyValue" $ fail s
+    where k = stringToRDFLabel $ toString x
+
+-- | Convert `KeyValuePair` to `RDFTriple`
+-- This is an auxiliary for other ToRDFGraph functions
+keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
+keyvalueToArcList _ [] = []
+keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
+
+instance FromRDFGraph KeyPairList where
+   fromRDFGraph g label = KeyPairList $ map keypairFromBinding 
+                        $  Q.rdfQueryFind query g
+       where query = listToRDFGraph [ arc label (G.Var "property") (G.Var "value") ]

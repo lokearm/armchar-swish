@@ -47,29 +47,45 @@ fwdApplyMerge :: RDFRule ->  RDFGraph -> RDFGraph
 fwdApplyMerge r c = addGraphs c $ fwdApplySimple r c
 
 -- | Apply a list of rules to a graph
+
+fwdApplyList :: [RDFRule] -> RDFGraph -> RDFGraph
 fwdApplyList rs g =
      foldl addGraphs g $ parMap rpar (`fwdApplySimple` g) rs
 
+fwdApplyMap :: [RDFRule] -> RDFGraph -> [RDFGraph]
 fwdApplyMap rs g = parMap rpar (`fwdApplySimple` g) rs
 
+fwdApplyListR :: [RDFRule] -> RDFGraph -> RDFGraph
 fwdApplyListR rs g = if (g' == g) then g'
                      else fwdApplyListR rs g'
                      where g' = fwdApplyList rs g
 
+typeRes :: RDFLabel
 typeRes = Res rdfType 
-subclassRes = Res rdfsSubClassOf 
+tArc :: RDFTriple
 tArc = arc sVar (Res rdfType) tVar 
+lVar :: RDFLabel
 lVar = (Var "l")
+sVar :: RDFLabel
 sVar = (Var "s")
+tVar :: RDFLabel
 tVar = (Var "t")
+oVar :: RDFLabel
 oVar = (Var "o")
+pVar :: RDFLabel
 pVar = (Var "p")
+cVar :: RDFLabel
 cVar = (Var "c")
+csVar :: RDFLabel
 csVar = (Var "cs")
 
+gtRes :: RDFLabel
 gtRes = armRes "grantsTrait" 
+htRes :: RDFLabel
 htRes = armRes "hasTrait" 
+csRes :: RDFLabel
 csRes = armRes "CharacterSheet" 
+labelRes :: RDFLabel
 labelRes = (Res rdfsLabel)
 
 listToRDFGraph :: [RDFTriple] -> RDFGraph
@@ -82,14 +98,17 @@ makeCRule s l1 l2 = makeRDFClosureRule ( makeSN s )
             varBindingId
 
 
+fwdApplyRules :: [RDFRule] -> RDFGraph -> RDFGraph
 fwdApplyRules rs g = foldGraphs $ parMap rpar (`fwdApplySimple` g) rs
 
 -- | Make an RDF label of type xsd:integer
+litInt :: Int -> RDFLabel
 litInt i = TypedLit (T.pack $ show i) xsdInteger
 
 
 -- | Make an RDF label to hold a string.  This is currently made untyped
 -- for the sake of simplicity.
+litString :: String -> RDFLabel
 litString i = Lit (T.pack i) 
 -- litString i = TypedLit (T.pack i) xsdString
 
@@ -104,4 +123,5 @@ intFromRDF x = fi i
          s = rdfToString x
          fi Nothing = fs s
          fi (Just y) = y
+         fs Nothing = 0
          fs (Just y) = read y

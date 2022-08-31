@@ -17,14 +17,15 @@ import ArM.Internal.Aux
 
 import           Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import qualified Swish.RDF.VarBinding as VB 
+-- import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
-import           Data.Maybe (fromJust)
-import           Data.List (sort)
-import qualified ArM.KeyPair as KP
-import           ArM.Types.Character 
+import           Data.Aeson
+-- import           Data.Maybe (fromJust)
+-- import           Data.List (sort)
+import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Resources
+import           ArM.KeyPair
 
 data Saga = Saga { sagaID :: RDFLabel
                  , sagaTitle :: String
@@ -34,6 +35,7 @@ data Saga = Saga { sagaID :: RDFLabel
                  , sagaGraph :: RDFGraph
                  }
 
+defaultSaga :: Saga 
 defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  , sagaTitle = "No Title"
                  , schemaFile = "/dev/null"
@@ -42,15 +44,25 @@ defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  , sagaGraph = emptyGraph
                  }
 
+instance FromRDFGraph Saga where 
+   fromRDFGraph g label = defaultSaga
+                 { sagaID = label
+                 , sagaGraph = g
+                 }
+
+instance ToJSON Saga where 
+    toJSON c = toJSON $ p x xs
+        where x = KeyValuePair (armRes "sagaID") $ sagaID c
+              xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
+              p y (KeyPairList ys) = KeyPairList (y:ys) 
 
 -- | Get the labels of all sagas in a given graph.
-sagaFromGraph :: G.RDFGraph -> [G.RDFLabel]
-sagaFromGraph = uniqueSort . f . map (`vbMap` cVar) . parsegraph
+sagaFromGraph :: RDFGraph -> [RDFLabel]
+sagaFromGraph = uniqueSort . f . map (`vbMap` cVar) 
+                . Q.rdfQueryFind ( listToRDFGraph  [ arc cVar typeRes (armRes "Saga") ] )
     where f [] = []
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
-          parsegraph = Q.rdfQueryFind 
-                     $ listToRDFGraph  [ arc cVar typeRes (armRes "Saga") ]
 
 getFiles :: String -> RDFLabel -> RDFGraph -> [String]
 getFiles ft s = f . map rdfToString . f 
@@ -60,8 +72,11 @@ getFiles ft s = f . map rdfToString . f
           f (Just x:xs) = x:f xs
           parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
           a = arc s (armRes ft) (Var "file") 
+getResourceFiles :: RDFLabel -> RDFGraph -> [String]
 getResourceFiles = getFiles "hasResourceFile"
+getSchemaFiles :: RDFLabel -> RDFGraph -> [String]
 getSchemaFiles = getFiles "hasSchemaFile"
+getCharacterFiles :: RDFLabel -> RDFGraph -> [String]
 getCharacterFiles = getFiles "hasCharacterFile"
 
 getSagaTitle :: RDFLabel -> RDFGraph -> String
@@ -71,7 +86,7 @@ getSagaTitle s = f1 . map rdfToString . f
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
           f1 [] = error "Saga has no title"
-          f1 (Nothing:xs) = error "Saga title does not parse"
-          f1 (Just x:xs) = x
+          f1 (Nothing:_) = error "Saga title does not parse"
+          f1 (Just x:_) = x
           parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
           a = arc s (armRes "hasLabel") (Var "label") 

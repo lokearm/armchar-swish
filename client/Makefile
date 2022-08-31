@@ -10,5 +10,9 @@ all: magus.pdf adv.pdf
 cieran.ttl: .force
 	http :3000/cs/cieran/1218/Summer > $@
 graph.ttl: .force
-	http :3000/graph > $@
+	http :3000/graph/cieran > $@
 .force:
+
+chargen.log: .force
+	http :3000/show/chargen/cieran > $@
+

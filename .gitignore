@@ -24,3 +24,5 @@ cabal.project.local~
 t
 .*.swp
 prof.*
+__pycache__
+log

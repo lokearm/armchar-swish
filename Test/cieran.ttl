@@ -31,7 +31,7 @@
      rdfs:comment "This is a sample character for the ArM ontology." .
 
 # Metadata.  Defined for character, copied to character sheet
-armchar:cieran a arm:Magus, arm:Character ; 
+armchar:cieran arm:characterClass arm:Magus ; 
                arm:hasName "Cieran the Fletcher" ;
 	       arm:hasGender "Male" ;
                arm:hasBirthYear 1192 ;
@@ -56,7 +56,7 @@ armchar:contestedlands a arm:Saga ;
       arm:hasCharacter armchar:cieran .
 
 :zeroadv arm:advanceCharacter armchar:cieran ;
-   a arm:BaseAdvancement ; 
+   arm:advancementClass arm:BaseAdvancement ; 
    arm:hasHouseVirtue 
     [ arm:traitClass armr:craftmagic  ],
     [ arm:traitClass armr:spellfoci  ],
@@ -83,7 +83,7 @@ armchar:contestedlands a arm:Saga ;
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:cieran ;
-   a arm:EarlyChildhoodAdvancement ; 
+   arm:advancementClass arm:EarlyChildhoodAdvancement ; 
    arm:advanceTrait 
    [ arm:traitClass armr:secondsightAb ; arm:hasSpeciality "Faerie Illusions" ],
    [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
@@ -98,7 +98,7 @@ armchar:contestedlands a arm:Saga ;
      arm:hasLabel "Longbow"
     ] .
 :lateradv arm:advanceCharacter armchar:cieran ;
-  a arm:LaterLifeAdvancement ; 
+  arm:advancementClass arm:LaterLifeAdvancement ; 
   arm:advanceTrait 
       [ arm:traitClass armr:bargain ;  arm:addedXP 5  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
@@ -108,7 +108,7 @@ armchar:contestedlands a arm:Saga ;
       [ arm:traitClass armr:hermeslore ; arm:hasSpeciality "Hibernia" ;
         arm:addedXP 5  ] .
 :apprenticeadv arm:advanceCharacter armchar:cieran ;
-  a arm:ApprenticeshipAdvancement ; 
+  arm:advancementClass arm:ApprenticeshipAdvancement ; 
   arm:advanceTrait 
       [ arm:traitClass armr:creo ; arm:addedXP 21 ],
       [ arm:traitClass armr:intellego ; arm:addedXP 0 ],
@@ -155,12 +155,11 @@ armchar:contestedlands a arm:Saga ;
        arm:hasDescription "All the tools he needs to make arrows, darts, and javelins." ;
        ] .
 
-# Date the game entry sheet
-:summer1217   arm:atSeasonTime arm:summer1217 .
+
 
 # In-game advancement
 :summer1217adv arm:advanceCharacter armchar:cieran ;
-  a arm:IngameAdvancement ; 
+  arm:advancementClass arm:IngameAdvancement ; 
   arm:atSeason "Summer" ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
@@ -169,7 +168,7 @@ armchar:contestedlands a arm:Saga ;
   arm:hasAdvancementType arm:Reading .
 
 :autumn1217adv arm:advanceCharacter armchar:cieran ;
-  a arm:IngameAdvancement ;
+  arm:advancementClass arm:IngameAdvancement ;
   arm:atSeason "Autumn" ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
@@ -183,7 +182,7 @@ armchar:contestedlands a arm:Saga ;
        ] .
 
 :winter1217adv arm:advanceCharacter armchar:cieran ;
-  a arm:IngameAdvancement ;
+  arm:advancementClass arm:IngameAdvancement ;
   arm:atSeason "Winter" ;
   arm:inYear   1217 ;
   arm:hasAdvancementDescription "Learn Spell" ;
@@ -194,7 +193,7 @@ armchar:contestedlands a arm:Saga ;
   arm:hasAdvancementType arm:Exposure .
 
 :spring1218adv arm:advanceCharacter armchar:cieran ;
-  a arm:IngameAdvancement ;
+  arm:advancementClass arm:IngameAdvancement ;
   arm:atSeason "Spring" ;
   arm:inYear   1218 ;
   arm:hasAdvancementDescription "Story" ;

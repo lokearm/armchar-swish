@@ -8,4 +8,4 @@ uniqueSort = f . sort
     where f [] = []
           f (x:[]) = x:[]
           f (x:y:ys) | x == y = f (y:ys)
-          f (x:y:ys) | x /= y = x:f (y:ys)
+                     | otherwise = x:f (y:ys)

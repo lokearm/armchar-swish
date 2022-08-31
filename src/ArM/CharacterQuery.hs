@@ -10,7 +10,8 @@
 -- Queries to build JSON files describing separate blocks of the
 -- Character Sheet.  The input for all the functions is a Character Record
 -- as stored in `CharacterMap`.  
--- 
+--
+-- Only queries on the character sheet are defined in this module.
 --
 -----------------------------------------------------------------------------
 module ArM.CharacterQuery ( getTraitList
@@ -33,14 +34,23 @@ import           ArM.Resources
 import           ArM.KeyPair
 import ArM.Rules.Aux
 
+getVirtues :: G.RDFGraph -> [KeyPairList]
 getVirtues = getTraitList $ armRes "hasVirtue"
+getFlaws :: G.RDFGraph -> [KeyPairList]
 getFlaws = getTraitList $ armRes "hasFlaw"
+getPTs :: G.RDFGraph -> [KeyPairList]
 getPTs = getTraitList $ armRes "hasPersonalityTrait"
+getAbilities :: G.RDFGraph -> [KeyPairList]
 getAbilities = getTraitList $ armRes "hasAbility"
+getArts :: G.RDFGraph -> [KeyPairList]
 getArts = getTraitList $ armRes "hasArt"
+getReputations :: G.RDFGraph -> [KeyPairList]
 getReputations = getTraitList $ armRes "hasReputation"
+getSpells :: G.RDFGraph -> [KeyPairList]
 getSpells = getTraitList $ armRes "hasSpell"
+getCharacteristics :: G.RDFGraph -> [KeyPairList]
 getCharacteristics = getTraitList $ armRes "hasCharacteristic"
+getItemList :: G.RDFGraph -> [KeyPairList]
 getItemList = getTraitList $ armRes "hasPossession"
 
 getCombat :: G.RDFGraph -> [KeyPairList]
