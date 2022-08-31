@@ -37,7 +37,6 @@ module ArM.Types.Character ( Character(..)
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
 import           Data.List (sort)
 import           Data.Maybe (fromJust)
@@ -87,6 +86,12 @@ instance ToJSON Character where
 
 instance FromJSON Character where 
     parseJSON val = fmap kpToChar $ parseJSON val
+       where kpToChar (KeyPairList xs) = defaultCharacter {
+                      characterID = fromJ $ getProperty (armRes "isCharacter") xs,
+                      characterData = KeyPairList xs
+                      }
+             fromJ Nothing = noSuchCharacter
+             fromJ (Just x) = x
 
 instance FromRDFGraph Character where
    fromRDFGraph g label = defaultCharacter {
@@ -204,14 +209,6 @@ instance ToJSON CharacterSheet where
              xs = map tripleToJSON (fromKeyPairList $ csMetadata cs)
              c = (fromString "arm:isCharacter") .= (show $ csID cs)
 
--- | Auxiliary to parseJSON Character
-kpToChar :: KeyPairList -> Character
-kpToChar (KeyPairList xs) = defaultCharacter {
-         characterID = fromJ $ getProperty (armRes "isCharacter") xs,
-         characterData = KeyPairList xs
-         }
-         where fromJ Nothing = noSuchCharacter
-               fromJ (Just x) = x
 
 instance HasTime CharacterSheet where
     timeOf = csTime
@@ -232,25 +229,19 @@ advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid 
      }
 
 -- |
--- = Get Character ID from a graph
-
--- | Find all characters in a given graph.
--- Auxiliary for `characterFromGraph`.
-characterFromGraph' :: RDFGraph -> [VB.RDFVarBinding]
-characterFromGraph' = Q.rdfQueryFind
-             $ listToRDFGraph  [ arc cVar typeRes armCharacter ]
+-- = Get Character from a graph
 
 -- | Get the labels of all characters in a given graph.
 characterFromGraph :: RDFGraph -> [RDFLabel]
 characterFromGraph = uniqueSort . f . map (`vbMap` cVar) 
-                  . characterFromGraph' 
+                . Q.rdfQueryFind ( listToRDFGraph  [ arc cVar typeRes armCharacter ] )
     where f [] = []
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
 
--- |
--- = Get Character Metadata
-
+-- | Create an initial character sheet (age 0) without any traits added.
+-- The function assumes that the give Graph contains definitions for a
+-- single character resource.
 getInitialCS :: RDFGraph -- ^ RDFGraph containing the character
     -> CharacterSheet  -- ^ Empty charactersheet (age 0) for the character
 getInitialCS = getInitialCharacter . getCharacter
@@ -260,7 +251,16 @@ getInitialCS = getInitialCharacter . getCharacter
             csMetadata = characterData  c
          }
 
+-- | Get a character object from an RDFGraph object.
+-- The function assumes that the give Graph contains definitions for a
+-- single character resource.  If none is found, an empty (default) character
+-- is returned.  If multiple characters are defined, the first one (arbitrarily)
+-- is used.
+-- This is only used as an auxiliary to `getInitialCS`.
 getCharacter :: RDFGraph -> Character
-getCharacter g = fromRDFGraph g label 
-   where label = head $ characterFromGraph g
+getCharacter g = f $ lab $ characterFromGraph g
+   where lab [] = Nothing
+         lab (x:_) = Just x
+         f Nothing = defaultCharacter
+         f (Just x) = fromRDFGraph g $ x 
 

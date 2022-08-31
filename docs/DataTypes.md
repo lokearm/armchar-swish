@@ -84,7 +84,20 @@ This is handled by the `ArM.Character.CharGen` module.
 This way the data is always represented twice.  Once as an internal
 data type and once as RDFGraph.
 
+## Other constituent objects
+
+1.  During the `CharGen` creation, the subgraph defining the character
+    metadata is extracted from the full graph by
+    `ArM.Types.Character.extractBaseCharacterGraph`.
+    + This is used to reconstruct the full graph when advancements are 
+      added or updated.
+
 ## Retrieval
+
+1.  Character Metada are retrieved using fromRDFGraph on the full character graph,
+    and then converting this to JSON implicitly in the Scotty `json` function.
+    - The Character could here be replaced by a KeyPairList, but it is not clear
+      that this would be advantageous.
 
 ## Updates
 
