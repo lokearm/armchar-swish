@@ -266,9 +266,14 @@ putCharacter :: MapState            -- ^ Memory state
              -> TC.Character        -- ^ New Character to be stored
              -> IO (Either G.RDFGraph String) 
                 -- ^ Either the new character graph or an error message
-putCharacter _ _ = return $ Right "Not implemented"
--- putCharacter st char = do 
-         -- STM.atomically $ do
+putCharacter st char = 
+         let cgm = cgMap st 
+             clab = TC.characterID char in
+         STM.atomically $ do
+             cgen <- M.lookup (show clab) cgm
+             case (cgen) of
+                Nothing -> return $ Right $ "No such character: " ++ show clab
+                Just cgen0 -> return $ Right "Not implemented"
              -- g <- STM.readTVar (charRawGraph st)
              -- schema <- STM.readTVar (schemaGraph st)
 
@@ -281,3 +286,8 @@ putCharacter _ _ = return $ Right "Not implemented"
              -- newst <- putCharGraph st gg
              -- return $ Left gg
 
+cleanCharacter :: MapState     -- ^ The memory state
+               -> TC.Character -- ^ User input to be cleaned
+               -> IO (Either TC.Character String) 
+                  -- ^ Either a cleaned up Advancement or an error message
+cleanCharacter st ch = return $ Right "Not implemented" 
