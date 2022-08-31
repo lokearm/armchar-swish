@@ -48,5 +48,6 @@ bonusclassrule = makeCRule "bonusclassrule"
        [ arc cVar (armRes "traitClass") (armRes "Bonus")
        , arc cVar typeRes  (armRes "Bonus") ]
 
+classRules  :: [RDFRule]
 classRules = [ bonusclassrule, traitclasstypeRule
              , advclasstypeRule, charclasstypeRule ]

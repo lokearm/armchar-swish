@@ -147,7 +147,6 @@ loadSaga fn = do
     putStrLn "graphs put"
     return st
 
-
 -- | Replace the raw character graph in the MapState.
 -- All other elements are recalculated.
 putCharGraph :: MapState -> G.RDFGraph -> IO MapState 
@@ -281,14 +280,16 @@ putCharacter st char =
          let cgm = cgMap st 
              clab = TC.characterID char in
          STM.atomically $ do
-             chgraph <- cleanCharacter st char
              cgen <- M.lookup (show clab) cgm
              case (cgen) of
                 Nothing -> return $ Right $ "No such character: " ++ show clab
                 Just cgen0 -> do
-                    let cgen1 = cgen0 { TCG.baseGraph = chgraph }
+                    chgraph <- cleanCharacter st char
+                    schema <- STM.readTVar $ schemaGraph st
+                    res1 <- STM.readTVar $ resourceGraph st
+                    let cgen1 = TCG.putCharacter schema res1 cgen0 chgraph
                     M.insert (show clab) cgen1 cgm
-                    return $ Left "Metadata inserted.  Character sheets not updated"
+                    return $ Left "Metadata inserted."
                     -- TODO Regenerate CharGen object
 
 -- | Auxiliary to `putCharacter`.  Clean up the input, converting it to a graph.

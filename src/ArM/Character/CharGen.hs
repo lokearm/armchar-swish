@@ -14,6 +14,7 @@ module ArM.Character.CharGen ( CharGen(..)
                              , CharStage(..)
                              , makeCharGen
                              , findSeason
+                             , putCharacter
                              , putAdvancement ) where
 
 import Swish.RDF.Graph as G
@@ -73,16 +74,29 @@ findSeason (x:xs) t | timeOf x == t = Just x
 putAdvancement :: RDFGraph  -- ^ Schema Graph
                -> RDFGraph  -- ^ Resource Graph
                -> CharGen -> Advancement -> CharGen
-putAdvancement schema res1 cg adv = trace "TCG.putAdvancement" $
-     cg { charSheets = trace "call putSeason" csl1
-        , rawGraph = g
-        , charGraph = makeGraph  g schema res1
-        }
+putAdvancement schema res1 cg adv = trace "TCG.putAdvancement" 
+     $ updateBaseGraph schema res1
+     $ cg { charSheets = trace "call putSeason" csl1 }
        where cs0 = baseSheet cg
              csl = charSheets cg
              csl1 = putSeason schema cs0 csl adv 
-             g = foldl addGraphs (baseGraph cg) 
-               $ map ( makeRDFGraph . advancement ) csl1
+
+updateBaseGraph :: RDFGraph -> RDFGraph -> CharGen -> CharGen
+updateBaseGraph schema res1 cg = cg { rawGraph = g
+                                    , charGraph = makeGraph  g schema res1 }
+       where g = foldl addGraphs (baseGraph cg) 
+               $ map ( makeRDFGraph . advancement ) $ charSheets cg
+
+putCharacter :: RDFGraph   -- ^ Schema Graph
+             -> RDFGraph   -- ^ Resource Graph
+             -> CharGen    -- ^ Old CharGen object
+             -> RDFGraph   -- ^ New graph of Character Metadata
+             -> CharGen    -- ^ Updated CharGen object
+putCharacter schema res1 cg chgraph = cg1 { charSheets = makeCS schema as cs0 }
+       where cs0 = baseSheet cg
+             csl = charSheets cg
+             as = ttrace $ map advancement csl
+             cg1 = updateBaseGraph schema res1 $ cg { baseGraph = chgraph }
 
 -- | Insert a new advancement object into a list of CharStage objects.
 -- This is an auxiliary to `putAdvancement`.
