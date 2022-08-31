@@ -86,9 +86,6 @@ armrRes s = Res $ makeScopedName (Just $ T.pack "armr") armrURI (newLName s)
 -- |
 -- = Vocabulary
 
-isCharacterLabel :: RDFLabel
-isCharacterLabel = armRes  "isCharacter"
-
 -- | An RDFLabel used as a kind of Null pointer for traits and items.
 noSuchTrait :: RDFLabel
 noSuchTrait = armRes "noSuchTrait" 

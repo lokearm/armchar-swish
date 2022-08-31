@@ -64,6 +64,9 @@ stateScotty stateVar = do
         -- Top level graphs
         get "/" $ do     
           text $ "Test a get call\n"
+        get "/saga" $ do     
+          saga <- liftIO $ STM.getSagaGraph stateVar 
+          printGraph saga
         get "/schema" $ do     
           schema <- liftIO $ STM.getSchemaGraph stateVar
           printGraph schema

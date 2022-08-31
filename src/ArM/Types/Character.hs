@@ -194,7 +194,7 @@ csToArcListM cs = do
           let is =  map traitContents ism
           let metadata = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ms = metadata ++ hi ++ ht 
-          let ct = arc x isCharacterLabel (csID cs)
+          let ct = arc x (armRes "ïsCharacter") (csID cs)
           let ct1 = arc x typeRes csRes 
           let ms1 = foldr (++) ms ts
           return $ ct1:ct:foldr (++) ms1 is

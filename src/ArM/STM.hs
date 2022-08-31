@@ -45,6 +45,7 @@ module ArM.STM ( ArM.STM.lookup
                , ArM.STM.lookupCharIO
                , loadSaga
                , getStateGraph
+               , getSagaGraph
                , getSchemaGraph
                , getResourceGraph
                , cleanAdvancement
@@ -172,6 +173,10 @@ putCharGraph st g = trace "putCharGraph" $ do
 getStateGraph :: MapState -> IO [G.RDFLabel]
 getStateGraph st = STM.readTVarIO (charList st) 
 
+
+-- | Return the schema from STM as an RDF Graph.
+getSagaGraph :: MapState -> IO G.RDFGraph
+getSagaGraph st = STM.readTVarIO ( sagaGraph st)
 
 -- | Return the schema from STM as an RDF Graph.
 getSchemaGraph :: MapState -> IO G.RDFGraph
