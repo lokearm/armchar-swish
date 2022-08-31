@@ -40,10 +40,13 @@ arm:Covenant a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
 arm:Character a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
     rdfs:comment "A Character represents a player character or NPC independently of its statistics (sheet) at a given point in time." .
 arm:Magus a owl:Class ;
+    arm:hasLabel "Magus" ;
     rdfs:subClassOf arm:Character .
 arm:Companion a owl:Class ;
+    arm:hasLabel "Companion" ;
     rdfs:subClassOf arm:Character .
 arm:Grog a owl:Class ;
+    arm:hasLabel "Grog" ;
     rdfs:subClassOf arm:Character .
 
 # Covenant and Character - Shared Properties
@@ -59,6 +62,10 @@ arm:hasSaga a   owl:ObjectProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   arm:Saga ;
         arm:hasStringProperty arm:hasSagaTitle .
+arm:characterClass a   owl:ObjectProperty, arm:ViewProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   owl:Class ;
+        arm:hasStringProperty arm:characterClassString .
 arm:hasTribunal a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty  ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;

@@ -27,6 +27,10 @@ advclasstypeRule :: RDFRule
 advclasstypeRule = makeCRule "advclasstypeRule" 
        [ arc sVar ( armRes "advancementClass" ) tVar ]
        [ arc sVar typeRes tVar ]
+charclasstypeRule :: RDFRule
+charclasstypeRule = makeCRule "charclasstypeRule" 
+       [ arc sVar ( armRes "characterClass" ) tVar ]
+       [ arc sVar typeRes tVar ]
 
 -- | Many Object Properties are used only internally, and have an
 -- associate property of string type for display purposes.  These
@@ -43,3 +47,6 @@ bonusclassrule = makeCRule "bonusclassrule"
        [ arc cVar (armRes "bonusTo") oVar ]
        [ arc cVar (armRes "traitClass") (armRes "Bonus")
        , arc cVar typeRes  (armRes "Bonus") ]
+
+classRules = [ bonusclassrule, traitclasstypeRule
+             , advclasstypeRule, charclasstypeRule ]

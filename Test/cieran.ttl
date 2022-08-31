@@ -31,7 +31,7 @@
      rdfs:comment "This is a sample character for the ArM ontology." .
 
 # Metadata.  Defined for character, copied to character sheet
-armchar:cieran a arm:Magus, arm:Character ; 
+armchar:cieran arm:characterClass arm:Magus ; 
                arm:hasName "Cieran the Fletcher" ;
 	       arm:hasGender "Male" ;
                arm:hasBirthYear 1192 ;
