@@ -85,11 +85,12 @@ updateBaseGraph :: RDFGraph -> RDFGraph -> CharGen -> CharGen
 updateBaseGraph schema res1 cg = cg { rawGraph = g
                                     , charGraph = g1
                                     , baseGraph = bg
-                                    , baseSheet = getInitialCS bg }
+                                    , baseSheet = getInitialCS g1 }
        where g = foldl addGraphs (baseGraph cg) 
                $ map ( makeRDFGraph . advancement ) $ charSheets cg
              g1 = makeGraph  g schema res1 
-             bg = extractBaseCharacterGraph g1 $ charID cg
+             bg = trace ("charID "++(show$charID cg))
+                  extractBaseCharacterGraph g1 $ charID cg
 
 putCharacter :: RDFGraph   -- ^ Schema Graph
              -> RDFGraph   -- ^ Resource Graph
@@ -102,7 +103,6 @@ putCharacter schema res1 cg chgraph = cg1 { charSheets = csl1 }
              cs0 = baseSheet cg1
              csl1 = trace ("csl1 " ++ (show $ length csl1')) 
                   $ trace ("as " ++ (show $ length as))
-                  $ trace (show $ head as)
                   $ csl1'
              csl1' = makeCS schema as cs0 
              as = reverse $ map advancement csl

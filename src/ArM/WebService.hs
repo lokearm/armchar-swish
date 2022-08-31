@@ -73,12 +73,34 @@ stateScotty stateVar = do
         get "/res" $ do     
           res <- liftIO $ STM.getResourceGraph stateVar
           printGraph res
-        get "/graph/:char" $ do     
+        get "/raw/:char" $ do     
           char <- param "char"
           cg <- liftIO $ STM.lookupCharIO stateVar char
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> printGraph $ TCG.rawGraph cg1
+        get "/graph/:char" $ do     
+          char <- param "char"
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> printGraph $ TCG.charGraph cg1
+        get "/graph/base/:char" $ do     
+          char <- param "char"
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> do
+               let cs = TCG.baseGraph cg1
+               printGraph cs
+        get "/show/base/:char" $ do     
+          char <- param "char"
+          cg <- liftIO $ STM.lookupCharIO stateVar char
+          case (cg) of
+             Nothing -> notfound404
+             Just cg1 -> do
+               let cs = TCG.baseSheet cg1
+               text $ T.pack $ show cs
         get "/show/chargen/:char" $ do     
           char <- param "char"
           cg <- liftIO $ STM.lookupCharIO stateVar char

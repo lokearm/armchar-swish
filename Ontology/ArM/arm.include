@@ -62,7 +62,7 @@ arm:hasSaga a   owl:ObjectProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   arm:Saga ;
         arm:hasStringProperty arm:hasSagaTitle .
-arm:characterClass a   owl:ObjectProperty, arm:CharacterProperty ;
+arm:characterClass a   owl:ObjectProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   owl:Class ;
         rdfs:label "Character Type" ;

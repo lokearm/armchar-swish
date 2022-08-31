@@ -1,5 +1,5 @@
 
-time http put :3000/adv < ../Test/adv.json > put.log
+time http put :3000/adv < ../Test/adv.json 
 time python3 client.py magus2.tex
 time python3 adv.py adv2.tex
 

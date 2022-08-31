@@ -1,5 +1,5 @@
 
-time http put :3000/char < ../Test/char.json > char.log
+time http put :3000/char < ../Test/char.json 
 time python3 client.py magus3.tex
 
 diff magus2.tex magus3.tex

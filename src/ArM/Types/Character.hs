@@ -54,7 +54,7 @@ import ArM.Types.Trait
 import Data.Aeson
 import Data.Aeson.Key
 
-import ArM.NoTrace
+import ArM.Trace
 
 -- | 
 -- = Character
@@ -221,7 +221,7 @@ makeCGraph schema = R.prepareRecord schema . makeRDFGraph
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
-advanceCharacter cs adv = trace ("advanceCharacter\n"++(show cs)++(show $ rdfid adv)) $
+advanceCharacter cs adv = 
      cs { sheetID = Nothing
         , csTime = nextCharTime $ advTime adv
         , csTraits = advanceTraitList (csTraits cs) (sort $ traits adv)
@@ -259,8 +259,8 @@ getInitialCS = getInitialCharacter . getCharacter
 -- This is only used as an auxiliary to `getInitialCS`.
 getCharacter :: RDFGraph -> Character
 getCharacter g = f $ lab $ characterFromGraph g
-   where lab [] = Nothing
-         lab (x:_) = Just x
+   where lab [] = trace "getCharacter finds no character" Nothing
+         lab (x:_) = trace ( "getCharacter found a character: " ++ show x) $ Just x
          f Nothing = defaultCharacter
          f (Just x) = fromRDFGraph g $ x 
 
