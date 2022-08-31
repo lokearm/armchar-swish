@@ -101,8 +101,19 @@ data type and once as RDFGraph.
 
 ## Updates
 
+### Character Metadata
+
+1.  Input is converted to a graph using `makeRDFgraph`.
+2.  The reasoner is used to get persistent properties.
+3.  The base graph is replaced in the CharGen object.
+4.  TODO: regenerate CharStage objects with new metadata
+
+### Advancements
+
 # Questions and Caveats
 
 1.  Can the `Character` object be made redundant or internal to 
     `ArM.Types.Character`?  It seems to be used once elsewhere,
     in `putCharacter`.
+2.  Updating metadata is unnecessarily slow because CharStage objects must
+    be regenerated.
