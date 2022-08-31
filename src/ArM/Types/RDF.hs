@@ -1,5 +1,19 @@
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Types.RDF
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- Types to parse RDFLabel objects.
+--
+-----------------------------------------------------------------------------
 
-module ArM.Types.RDF where
+module ArM.Types.RDF ( FromRDFGraph(..)
+                     , ToRDFGraph(..) 
+                     , stringToRDFLabel
+                     ) where
 
 import Swish.RDF.Graph
 import Data.Aeson
