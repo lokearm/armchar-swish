@@ -19,7 +19,7 @@ module ArM.Rules.Resource (prepareResources) where
 -- import qualified Data.Text as T
 import Swish.RDF.Graph
 import Swish.RDF.Ruleset (RDFRule)
--- import Swish.RDF.Vocabulary.RDF
+import Swish.RDF.Vocabulary.RDF
 -- import Swish.RDF.Vocabulary.XSD
 import ArM.Resources
 import ArM.Rules.Aux
@@ -46,11 +46,11 @@ score = armRes "hasFixedScore"
 personalityflawRules :: [RDFRule] 
 personalityflawRules = 
   [ makeCRule "minor-personality-flaw" [grantarc
-     , arc traitclass subclassRes (armRes "minorFlaw")
+     , arc traitclass (Res rdfsSubClassOf) (armRes "minorFlaw")
      , vfp3
      ] [ arc trait score (litInt 3) ]
   , makeCRule "major-personality-flaw" [grantarc
-     , arc traitclass subclassRes (armRes "majorFlaw")
+     , arc traitclass (Res rdfsSubClassOf) (armRes "majorFlaw")
      , vfp3
      ] [ arc trait score (litInt 6) ]
   ]

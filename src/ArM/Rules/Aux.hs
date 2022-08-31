@@ -62,8 +62,6 @@ fwdApplyListR rs g = if (g' == g) then g'
 
 typeRes :: RDFLabel
 typeRes = Res rdfType 
-subclassRes :: RDFLabel
-subclassRes = Res rdfsSubClassOf 
 tArc :: RDFTriple
 tArc = arc sVar (Res rdfType) tVar 
 lVar :: RDFLabel
