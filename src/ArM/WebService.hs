@@ -67,6 +67,7 @@ stateScotty stateVar = do
         get "/saga" $ do     
           saga <- liftIO $ STM.getSagaGraph stateVar 
           printGraph saga
+          -- json saga
         get "/schema" $ do     
           schema <- liftIO $ STM.getSchemaGraph stateVar
           printGraph schema

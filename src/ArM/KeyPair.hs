@@ -38,6 +38,7 @@ module ArM.KeyPair ( keypairFromBinding
                    ) where
 
 import Swish.RDF.Graph as G
+import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.VarBinding as VB 
 import Swish.VarBinding  (vbMap)
 import Data.Maybe  (fromJust)
@@ -47,6 +48,7 @@ import Data.Aeson.Key
 import Data.Aeson.Types (Parser)
 import qualified Data.Aeson.KeyMap as KM
 import ArM.Types.RDF
+import ArM.Rules.Aux
 
 import ArM.Trace
 
@@ -204,3 +206,8 @@ pairToKeyValue (x,y) = do
 keyvalueToArcList :: RDFLabel -> [KeyValuePair] -> [RDFTriple]
 keyvalueToArcList _ [] = []
 keyvalueToArcList x (KeyValuePair a c:ys) = arc x a c:keyvalueToArcList x ys
+
+instance FromRDFGraph KeyPairList where
+   fromRDFGraph g label = KeyPairList $ map keypairFromBinding 
+                        $  Q.rdfQueryFind query g
+       where query = listToRDFGraph [ arc label (G.Var "property") (G.Var "value") ]

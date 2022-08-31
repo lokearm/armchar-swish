@@ -19,12 +19,15 @@ import           Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 -- import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
+import           Data.Aeson
 -- import           Data.Maybe (fromJust)
 -- import           Data.List (sort)
 -- import qualified ArM.KeyPair as KP
 -- import           ArM.Types.Character 
+import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Resources
+import           ArM.KeyPair
 
 data Saga = Saga { sagaID :: RDFLabel
                  , sagaTitle :: String
@@ -33,6 +36,12 @@ data Saga = Saga { sagaID :: RDFLabel
                  , characterFiles :: [String]
                  , sagaGraph :: RDFGraph
                  }
+
+instance ToJSON Saga where 
+    toJSON c = toJSON $ p x xs
+        where x = KeyValuePair (armRes "sagaID") $ sagaID c
+              xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
+              p y (KeyPairList ys) = KeyPairList (y:ys) 
 
 defaultSaga :: Saga 
 defaultSaga = Saga { sagaID = armRes "noSuchSaga"
