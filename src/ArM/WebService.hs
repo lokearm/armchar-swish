@@ -40,7 +40,6 @@ import ArM.Resources()
 import qualified Data.Aeson as Aeson
 
 import qualified ArM.STM as STM
--- import qualified GHC.Conc as STM
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 import Network.Wai.Middleware.Cors (simpleCors)
@@ -65,9 +64,9 @@ stateScotty stateVar = do
         get "/" $ do     
           text $ "Test a get call\n"
         get "/saga" $ do     
-          saga <- liftIO $ STM.getSagaGraph stateVar 
-          printGraph saga
-          -- json saga
+          saga <- liftIO $ STM.getSaga stateVar 
+          -- printGraph saga
+          json saga
         get "/schema" $ do     
           schema <- liftIO $ STM.getSchemaGraph stateVar
           printGraph schema

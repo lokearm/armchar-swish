@@ -45,7 +45,7 @@ module ArM.STM ( ArM.STM.lookup
                , ArM.STM.lookupCharIO
                , loadSaga
                , getStateGraph
-               , getSagaGraph
+               , getSaga
                , getSchemaGraph
                , getResourceGraph
                , cleanAdvancement
@@ -64,7 +64,7 @@ import qualified Swish.RDF.Graph as G
 -- import           Data.Maybe (fromJust)
 
 -- import qualified ArM.Character as C
-import           ArM.Types.RDF (makeRDFGraph)
+import           ArM.Types.RDF (makeRDFGraph,fromRDFGraph)
 import qualified ArM.Types.Season as TS
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Advancement as TA
@@ -84,7 +84,7 @@ import ArM.Trace
 -- software transactional memory (STM), recording all the data
 -- which may potentially change during operation.
 data MapState = MapState 
-              { sagaGraph :: STM.TVar G.RDFGraph
+              { saga :: STM.TVar TS.Saga
               , charList :: STM.TVar [G.RDFLabel]
               , schemaGraph :: STM.TVar G.RDFGraph
               , resourceGraph :: STM.TVar G.RDFGraph
@@ -104,15 +104,16 @@ mergeGraphs (x:xs) = foldr G.merge x xs
 loadSaga :: String -> IO MapState
 loadSaga fn = do
     -- 1. Load Saga
-    saga <- readGraph fn
-    let sid = head $ TS.sagaFromGraph saga
-    sagaVar <- STM.newTVarIO saga
+    sgraph <- readGraph fn
+    let sid = head $ TS.sagaFromGraph sgraph
+    let sob = fromRDFGraph sgraph sid :: TS.Saga
+    sagaVar <- STM.newTVarIO sob
     -- 2. Load Schema
-    let schemaFN = TS.getSchemaFiles sid saga
+    let schemaFN = TS.getSchemaFiles sid sgraph
     ss <- readAllFiles schemaFN
     schemaRawVar <- STM.newTVarIO ss
     -- 3. Load resources
-    let resFN = TS.getResourceFiles sid saga
+    let resFN = TS.getResourceFiles sid sgraph
     rs <- readAllFiles resFN
     resRawVar <- STM.newTVarIO rs
 
@@ -127,13 +128,13 @@ loadSaga fn = do
     resVar <- STM.newTVarIO res1
 
     -- 6. Load Character Graphs
-    let charFN = TS.getCharacterFiles sid saga
+    let charFN = TS.getCharacterFiles sid sgraph
     cs <- readAllFiles charFN
 
     clVar <- STM.newTVarIO []
 
     cgm <- STM.atomically  M.empty
-    let st = MapState { sagaGraph = sagaVar
+    let st = MapState { saga = sagaVar
                       , charList = clVar
                       , schemaGraph = schemaVar
                       , resourceGraph = resVar
@@ -175,8 +176,8 @@ getStateGraph st = STM.readTVarIO (charList st)
 
 
 -- | Return the schema from STM as an RDF Graph.
-getSagaGraph :: MapState -> IO G.RDFGraph
-getSagaGraph st = STM.readTVarIO ( sagaGraph st)
+getSaga :: MapState -> IO TS.Saga
+getSaga st = STM.readTVarIO ( saga st)
 
 -- | Return the schema from STM as an RDF Graph.
 getSchemaGraph :: MapState -> IO G.RDFGraph

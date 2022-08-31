@@ -22,8 +22,6 @@ import           Swish.VarBinding  (vbMap)
 import           Data.Aeson
 -- import           Data.Maybe (fromJust)
 -- import           Data.List (sort)
--- import qualified ArM.KeyPair as KP
--- import           ArM.Types.Character 
 import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Resources
