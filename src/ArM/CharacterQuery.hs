@@ -10,7 +10,8 @@
 -- Queries to build JSON files describing separate blocks of the
 -- Character Sheet.  The input for all the functions is a Character Record
 -- as stored in `CharacterMap`.  
--- 
+--
+-- Only queries on the character sheet are defined in this module.
 --
 -----------------------------------------------------------------------------
 module ArM.CharacterQuery ( getTraitList
