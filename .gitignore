@@ -25,3 +25,4 @@ t
 .*.swp
 prof.*
 __pycache__
+log
