@@ -10,8 +10,11 @@
 -- Types to handle Advancement
 --
 -----------------------------------------------------------------------------
-module ArM.Types.Advancement where
--- ( getPregameAdvancements , getIngameAdvancements , getAllAdvancements) 
+module ArM.Types.Advancement ( Advancement(..)
+                             , getPregameAdvancements
+                             , getIngameAdvancements
+                             , getAllAdvancements
+                             ) where
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -95,15 +98,7 @@ sno = seasonNo . season
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =  
          ( listToRDFGraph  . fst . runBlank ( advToArcListM cs ) )
-         ("charsheet",1)
-
-advToArcList :: Advancement -> [RDFTriple]
-advToArcList adv = ys2
-    where ms = keyvalueToArcList (rdfid adv) (contents adv)
-          xs1 =  map traitContents (traits adv)
-          xs2 =  map traitContents (items adv)
-          ys1 = foldr (++) ms xs1
-          ys2 = foldr (++) ys1 xs2
+         ("advancement",1)
 
 advToArcListM :: Advancement -> BlankState [RDFTriple]
 advToArcListM adv = do
@@ -233,9 +228,6 @@ addToTrait t (c,s,p,o)
                triple = arc s p o
                f Nothing = ""
                f (Just x) = x
-
-
-
 
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]

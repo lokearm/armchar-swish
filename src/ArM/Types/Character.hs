@@ -32,6 +32,7 @@ module ArM.Types.Character ( Character(..)
                            , advanceCharacter
                            , getInitialCS
                            , makeCGraph
+                           , extractBaseCharacterGraph 
                            ) where
 
 import Swish.RDF.Graph as G
@@ -108,6 +109,13 @@ query c = listToRDFGraph
    [ arc c (G.Var "property") (G.Var "value")
    , arc (G.Var "property") typeRes armCharacterProperty
    , arc (G.Var "property") labelRes  (G.Var "label") ]
+
+extractBaseCharacterGraph :: RDFGraph -> RDFLabel -> RDFGraph 
+extractBaseCharacterGraph g c = listToRDFGraph
+                              $ map f $  Q.rdfQueryFind (query c) g
+   where f vb = arc c (fromJust $ vbMap vb (G.Var "property"))
+                      (fromJust $ vbMap vb (G.Var "value"))
+
 
 -- | 
 -- = Character Sheet

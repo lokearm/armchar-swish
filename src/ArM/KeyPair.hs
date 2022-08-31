@@ -42,12 +42,10 @@ import qualified Swish.RDF.VarBinding as VB
 import Swish.VarBinding  (vbMap)
 import Data.Maybe  (fromJust)
 import Data.List (sort)
--- import ArM.Resources
 import Data.Aeson
 import Data.Aeson.Key
 import Data.Aeson.Types (Parser)
 import qualified Data.Aeson.KeyMap as KM
--- import Swish.Namespace (ScopedName)
 import ArM.Types.RDF
 
 import ArM.Trace
@@ -199,7 +197,6 @@ pairToKeyValue (x,y) = do
     case k of
         Left k' -> return $ KeyValuePair k' v
         Right s -> trace "Fail in pairToKeyValue" $ fail s
-
     where k = stringToRDFLabel $ toString x
 
 -- | Convert `KeyValuePair` to `RDFTriple`

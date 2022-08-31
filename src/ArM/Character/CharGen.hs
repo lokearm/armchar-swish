@@ -10,7 +10,11 @@
 -- Types to handle characters as stored in web server memory.
 --
 -----------------------------------------------------------------------------
-module ArM.Character.CharGen where
+module ArM.Character.CharGen ( CharGen(..)
+                             , CharStage(..)
+                             , makeCharGen
+                             , findSeason
+                             , putAdvancement ) where
 
 import Swish.RDF.Graph as G
 import ArM.KeyPair()
@@ -23,6 +27,9 @@ import Data.List (sort)
 
 import ArM.Trace
 
+-- |
+-- = Data Types
+
 -- ^ A `CharStage` object represents a character's state of development
 -- at one particular point on the in-game timeline. 
 data CharStage = CharStage 
@@ -34,12 +41,35 @@ data CharStage = CharStage
        -- ^ The character sheet as an RDF Graph
      }  deriving (Eq,Show)
 
+-- | A `CharGen` object represents a character's development over a
+-- series of stages.  It contains a list of CharStage objects which
+-- in turn contains the Character Sheet for each point in time, as
+-- well as the raw data used in calculation and the character name
+-- for display purposes.
+data CharGen = CharGen 
+      { charID :: RDFLabel      -- ^ Character ID 
+      , charName :: String      -- ^ Character Name (for display purpose)
+      , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
+      , charGraph :: RDFGraph   -- ^ Augmented graph with inference
+      , baseGraph :: RDFGraph   -- ^ Graph containing only the character 
+      , baseSheet :: CharacterSheet 
+        -- ^ Character Sheet at the start of the process
+      , charSheets :: [CharStage]  
+        -- ^ List of development stages, most recent first
+      }  deriving (Eq)
+
+-- |
+-- = Search and Insert
+
+-- | Find the Character Stage at a given time.
 findSeason :: [CharStage] -> CharTime -> Maybe CharStage
 findSeason [] _ = Nothing
 findSeason (x:xs) t | timeOf x == t = Just x
                     | timeOf x < t = Nothing
                     | otherwise  = findSeason xs t
 
+-- | Insert a new advancement object.  If an advancement
+-- already exists at the same time, it will be replaced.
 putAdvancement :: RDFGraph  -- ^ Schema Graph
                -> RDFGraph  -- ^ Resource Graph
                -> CharGen -> Advancement -> CharGen
@@ -48,18 +78,14 @@ putAdvancement schema res1 cg adv = trace "TCG.putAdvancement" $
         , rawGraph = g
         , charGraph = makeGraph  g schema res1
         }
-                         -- $ trace (show cs0) 
-                         -- $ trace "Base character sheet above"
-                         -- $ trace (show adv) 
-                         -- $ trace "Advancement above"
-                         -- $ trace (show csl) 
-                         -- $ trace "computed arguments to putSeason"
        where cs0 = baseSheet cg
              csl = charSheets cg
              csl1 = putSeason schema cs0 csl adv 
              g = foldl addGraphs (baseGraph cg) 
                $ map ( makeRDFGraph . advancement ) csl1
 
+-- | Insert a new advancement object into a list of CharStage objects.
+-- This is an auxiliary to `putAdvancement`.
 putSeason :: RDFGraph
           -> CharacterSheet
           -> [CharStage] 
@@ -83,7 +109,10 @@ putSeason schema cs (x:xs) a
               x' = trace ("x' = makeCharStage " ++ show atime ++ show xtime) 
                  $ makeCharStage schema (f xs') (advancement x)
 
-makeCharStage :: RDFGraph -> CharacterSheet -> Advancement -> CharStage
+-- | Make a CharStage object by applying a given Advancement to a
+-- given CharacterSheet
+makeCharStage :: RDFGraph -- ^ Shema Graph
+              -> CharacterSheet -> Advancement -> CharStage
 makeCharStage schema cs0 adv = CharStage 
               { advancement = adv
               , sheetObject = cs
@@ -91,22 +120,9 @@ makeCharStage schema cs0 adv = CharStage
               where cs = advanceCharacter cs0 adv 
              
 
--- ^ A `CharGen` object represents a character's development over a
--- series of stages.  It contains a list of CharStage objects which
--- in turn contains the Character Sheet for each point in time, as
--- well as the raw data used in calculation and the character name
--- for display purposes.
-data CharGen = CharGen 
-      { charID :: RDFLabel      -- ^ Character ID 
-      , charName :: String      -- ^ Character Name (for display purpose)
-      , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
-      , charGraph :: RDFGraph   -- ^ Augmented graph with inference
-      , baseGraph :: RDFGraph   -- ^ Graph containing only the character 
-      , baseSheet :: CharacterSheet 
-        -- ^ Character Sheet at the start of the process
-      , charSheets :: [CharStage]  
-        -- ^ List of development stages, most recent first
-      }  deriving (Eq)
+
+-- |
+-- = Keys 
 
 -- The `CharacterKey` type is used to index character sheets and
 -- `CharStage` objects when these are stored in maps.
@@ -137,6 +153,7 @@ instance HasTime CharStage where
 
 -- |
 -- = Making Character Sheets
+
 makeCharGen :: G.RDFGraph  -- ^ Schema graph
            -> G.RDFGraph  -- ^ Resource graph
            -> G.RDFGraph  -- ^ Raw character graph
@@ -146,7 +163,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , charName = ""
              , charGraph = g1
              , rawGraph = g0
-             , baseGraph = emptyGraph -- TODO
+             , baseGraph = extractBaseCharacterGraph g0 clab
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
