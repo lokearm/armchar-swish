@@ -83,9 +83,13 @@ putAdvancement schema res1 cg adv = trace "TCG.putAdvancement"
 
 updateBaseGraph :: RDFGraph -> RDFGraph -> CharGen -> CharGen
 updateBaseGraph schema res1 cg = cg { rawGraph = g
-                                    , charGraph = makeGraph  g schema res1 }
+                                    , charGraph = g1
+                                    , baseGraph = bg
+                                    , baseSheet = getInitialCS bg }
        where g = foldl addGraphs (baseGraph cg) 
                $ map ( makeRDFGraph . advancement ) $ charSheets cg
+             g1 = makeGraph  g schema res1 
+             bg = extractBaseCharacterGraph g1 $ charID cg
 
 putCharacter :: RDFGraph   -- ^ Schema Graph
              -> RDFGraph   -- ^ Resource Graph
@@ -93,15 +97,15 @@ putCharacter :: RDFGraph   -- ^ Schema Graph
              -> RDFGraph   -- ^ New graph of Character Metadata
              -> CharGen    -- ^ Updated CharGen object
 putCharacter schema res1 cg chgraph = cg1 { charSheets = csl1 }
-       where cs0 = baseSheet cg
+       where cg1 = updateBaseGraph schema res1 $ cg { baseGraph = chgraph }
              csl = charSheets cg
+             cs0 = baseSheet cg1
              csl1 = trace ("csl1 " ++ (show $ length csl1')) 
                   $ trace ("as " ++ (show $ length as))
                   $ trace (show $ head as)
                   $ csl1'
              csl1' = makeCS schema as cs0 
              as = reverse $ map advancement csl
-             cg1 = updateBaseGraph schema res1 $ cg { baseGraph = chgraph }
 
 -- | Insert a new advancement object into a list of CharStage objects.
 -- This is an auxiliary to `putAdvancement`.
