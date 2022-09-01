@@ -29,6 +29,7 @@
 -----------------------------------------------------------------------------
 module ArM.Types.Character ( Character(..)
                            , CharacterSheet(..)
+                           , getCharacter
                            , advanceCharacter
                            , getInitialCS
                            , makeCGraph

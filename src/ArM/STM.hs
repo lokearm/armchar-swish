@@ -62,7 +62,7 @@ import qualified GHC.Conc as STM
 import           Control.Monad.IO.Class (liftIO)
 import qualified Control.Concurrent.STM.Map as M
 import qualified Swish.RDF.Graph as G
--- import           Data.Maybe (fromJust)
+import           Data.Maybe (fromJust)
 
 -- import qualified ArM.Character as C
 import           ArM.Types.RDF (makeRDFGraph,fromRDFGraph)
@@ -307,5 +307,9 @@ cleanCharacter st ch = do
          schema <- STM.readTVar $ schemaGraph st 
          return $ RP.persistChar schema chgraph
 
+getCharacter :: MapState -> G.RDFLabel -> IO TC.Character
+getCharacter st label = fmap fromJust (lookupCharIO st (show label))
+                      >>= return . TC.getCharacter . TCG.charGraph 
+
 getCast :: MapState -> IO [TC.Character]
-getCast _ = return []
+getCast st = STM.readTVarIO (charList st) >>= mapM (getCharacter st)
