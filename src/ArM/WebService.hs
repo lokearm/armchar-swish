@@ -60,13 +60,9 @@ stateScotty stateVar = do
         middleware simpleCors
 
   -- GET
-        -- Top level graphs
+        -- Debug targets
         get "/" $ do     
           text $ "Test a get call\n"
-        get "/saga" $ do     
-          saga <- liftIO $ STM.getSaga stateVar 
-          -- printGraph saga
-          json saga
         get "/schema" $ do     
           schema <- liftIO $ STM.getSchemaGraph stateVar
           printGraph schema
@@ -113,6 +109,14 @@ stateScotty stateVar = do
                let ts = zip t1 t2
                let as = map ( TCG.advancement ) g
                text $ T.pack $ showw $ zip ts as
+
+        -- Saga and Cast
+        get "/saga" $ do     
+          saga <- liftIO $ STM.getSaga stateVar 
+          json saga
+        get "/cast" $ do     
+          cast <- liftIO $ STM.getCast stateVar 
+          json cast
 
         -- Advancement lists
         get "/show/adv/:char" $ do     

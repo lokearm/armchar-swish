@@ -46,6 +46,9 @@ defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  , sagaGraph = emptyGraph
                  }
 
+{-
+ - This was an atempt to include cast.
+ - Now we make a separate API call for cast instead.
 instance ToJSON Saga where 
     toJSON saga = object (x1:x2:x3:[])
        where x1 = (fromString "sagaID") .= (toJSON (sagaID saga))
@@ -57,6 +60,7 @@ kpFromRDF = fromRDFGraph
 
 getCharacters :: Saga -> [Character]
 getCharacters _ = []
+-}
 
 
 instance FromRDFGraph Saga where 
@@ -65,13 +69,11 @@ instance FromRDFGraph Saga where
                  , sagaGraph = g
                  }
 
-{-
 instance ToJSON Saga where 
     toJSON c = toJSON $ p x xs
         where x = KeyValuePair (armRes "sagaID") $ sagaID c
               xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
               p y (KeyPairList ys) = KeyPairList (y:ys) 
--}
 
 -- | Get the labels of all sagas in a given graph.
 sagaFromGraph :: RDFGraph -> [RDFLabel]

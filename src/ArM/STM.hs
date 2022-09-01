@@ -53,6 +53,7 @@ module ArM.STM ( ArM.STM.lookup
                , putCharacter
                , putCharGraph 
                , MapState(..)
+               , getCast
                ) where
 
 import Prelude hiding (lookup)
@@ -305,3 +306,6 @@ cleanCharacter st ch = do
          let chgraph = makeRDFGraph ch
          schema <- STM.readTVar $ schemaGraph st 
          return $ RP.persistChar schema chgraph
+
+getCast :: MapState -> IO [TC.Character]
+getCast _ = return []
