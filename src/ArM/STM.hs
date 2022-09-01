@@ -189,29 +189,29 @@ getResourceGraph st =  STM.readTVarIO (resourceGraph st)
 
 -- | Return the sheet for a given character, season, and year (as RDFGraph).
 lookupCharIO :: MapState          -- ^ Memory state
-       -> String            -- ^ Character ID
+       -> G.RDFLabel                -- ^ Character ID
        -> IO (Maybe TCG.CharGen)
 lookupCharIO m = STM.atomically . lookupChar m
 lookupChar :: MapState          -- ^ Memory state
-       -> String            -- ^ Character ID
+       -> G.RDFLabel            -- ^ Character ID
        -> STM.STM (Maybe TCG.CharGen)
-lookupChar st char = M.lookup (strace $ show (armcharRes char)) cmap 
+lookupChar st char = M.lookup (strace $ show char) cmap 
          where cmap = cgMap st
 
 
 -- | Return the sheet for a given character, season, and year (as RDFGraph).
 lookupIO :: MapState          -- ^ Memory state
-       -> String            -- ^ Character ID
+       -> G.RDFLabel            -- ^ Character ID
        -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> IO (Maybe G.RDFGraph)
 lookupIO m c t  = STM.atomically $ lookup m c t
 lookup :: MapState          -- ^ Memory state
-       -> String            -- ^ Character ID
+       -> G.RDFLabel            -- ^ Character ID
        -> TS.CharTime       -- ^ Season/Year or Development Stage
        -> STM.STM (Maybe G.RDFGraph)
 lookup st char t = do
           let cmap = cgMap st
-          let k = strace $ show (armcharRes char)
+          let k = strace $ show char
           cg <- M.lookup k cmap 
           case (cg) of
              Nothing -> return $ trace "lookup: character not found" Nothing
@@ -260,7 +260,7 @@ putAdvancement st adv =
          let cgm = cgMap st 
              clab = TA.advChar adv in
          STM.atomically $ do
-             cgen <- M.lookup (show clab) cgm
+             cgen <- lookupChar st clab 
 
              case (cgen) of
                 Nothing -> return $ Right $ "No such character: " ++ show clab
@@ -281,7 +281,7 @@ putCharacter st char =
          let cgm = cgMap st 
              clab = TC.characterID char in
          STM.atomically $ do
-             cgen <- M.lookup (show clab) cgm
+             cgen <- lookupChar st clab 
              case (cgen) of
                 Nothing -> return $ Right $ "No such character: " ++ show clab
                 Just cgen0 -> do
@@ -308,8 +308,11 @@ cleanCharacter st ch = do
          return $ RP.persistChar schema chgraph
 
 getCharacter :: MapState -> G.RDFLabel -> IO TC.Character
-getCharacter st label = fmap fromJust (lookupCharIO st (show label))
-                      >>= return . TC.getCharacter . TCG.charGraph 
+getCharacter st label = do
+               g <- lookupCharIO st  label
+               case (g) of
+                   Nothing -> error $ "No such character: " ++ show label
+                   Just g1 -> (return . TC.getCharacter . TCG.charGraph) g1
 
 getCast :: MapState -> IO [TC.Character]
 getCast st = STM.readTVarIO (charList st) >>= mapM (getCharacter st)

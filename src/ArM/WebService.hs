@@ -36,7 +36,7 @@ import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Season as TS
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.CharacterQuery as CQ
-import ArM.Resources()
+import ArM.Resources
 import qualified Data.Aeson as Aeson
 
 import qualified ArM.STM as STM
@@ -71,19 +71,19 @@ stateScotty stateVar = do
           printGraph res
         get "/raw/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> printGraph $ TCG.rawGraph cg1
         get "/graph/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> printGraph $ TCG.charGraph cg1
         get "/graph/base/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> do
@@ -91,7 +91,7 @@ stateScotty stateVar = do
                printGraph cs
         get "/show/base/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> do
@@ -99,7 +99,7 @@ stateScotty stateVar = do
                text $ T.pack $ show cs
         get "/show/chargen/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> do
@@ -121,7 +121,7 @@ stateScotty stateVar = do
         -- Advancement lists
         get "/show/adv/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> do
@@ -130,7 +130,7 @@ stateScotty stateVar = do
                text $ T.pack $ show $ sort $ TA.getIngameAdvancements g clab
         get "/adv/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> do
@@ -139,7 +139,7 @@ stateScotty stateVar = do
                json $ sort $ TA.getIngameAdvancements g clab
         get "/pregameadvancement/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> do
@@ -150,7 +150,7 @@ stateScotty stateVar = do
         -- Character Sheet
         get "/char/:char" $ do     
           char <- param "char"
-          cg <- liftIO $ STM.lookupCharIO stateVar char
+          cg <- liftIO $ STM.lookupCharIO stateVar (armcharRes char)
           case (cg) of
              Nothing -> notfound404
              Just cg1 -> do
@@ -227,7 +227,7 @@ getCSGraph stateVar = do
           (char, year, season) <- getParam
           let t = TS.defaultCharTime { TS.charYear = Just $ read year, 
                                     TS.charSeason = season }
-          liftIO $ STM.lookupIO stateVar char t
+          liftIO $ STM.lookupIO stateVar (armcharRes char)  t
 
 -- | Get the HTTP/GET parameters selecting a character sheet and
 -- print diagnostic output.
