@@ -20,12 +20,14 @@ import qualified Swish.RDF.Query as Q
 -- import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
 import           Data.Aeson
+import           Data.Aeson.Key
 -- import           Data.Maybe (fromJust)
 -- import           Data.List (sort)
 import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Resources
 import           ArM.KeyPair
+import           ArM.Types.Character
 
 data Saga = Saga { sagaID :: RDFLabel
                  , sagaTitle :: String
@@ -44,17 +46,32 @@ defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  , sagaGraph = emptyGraph
                  }
 
+instance ToJSON Saga where 
+    toJSON saga = object (x1:x2:x3:[])
+       where x1 = (fromString "sagaID") .= (toJSON (sagaID saga))
+             x2 = (fromString "sagaCast") .= (toJSON (getCharacters saga))
+             x3 = (fromString "sagaDetails") .= toJSON (kpFromRDF (sagaGraph saga) (sagaID saga))
+
+kpFromRDF :: RDFGraph -> RDFLabel -> KeyPairList
+kpFromRDF = fromRDFGraph
+
+getCharacters :: Saga -> [Character]
+getCharacters _ = []
+
+
 instance FromRDFGraph Saga where 
    fromRDFGraph g label = defaultSaga
                  { sagaID = label
                  , sagaGraph = g
                  }
 
+{-
 instance ToJSON Saga where 
     toJSON c = toJSON $ p x xs
         where x = KeyValuePair (armRes "sagaID") $ sagaID c
               xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
               p y (KeyPairList ys) = KeyPairList (y:ys) 
+-}
 
 -- | Get the labels of all sagas in a given graph.
 sagaFromGraph :: RDFGraph -> [RDFLabel]

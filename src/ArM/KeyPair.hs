@@ -211,3 +211,4 @@ instance FromRDFGraph KeyPairList where
    fromRDFGraph g label = KeyPairList $ map keypairFromBinding 
                         $  Q.rdfQueryFind query g
        where query = listToRDFGraph [ arc label (G.Var "property") (G.Var "value") ]
+
