@@ -25,6 +25,14 @@ module Main where
 -- Software Transactional Memory
 import ArM.STM
 
+-- Web service
+import qualified Web.Scotty  as S
+import ArM.WebService (stateScotty)
+
+-- Authentication
+-- import qualified Network.Wai.Middleware.HttpAuth as HA
+import Data.SecureMem -- for constant-time comparison
+
 -- Timer
 import ArM.Time
 
@@ -32,6 +40,11 @@ import ArM.Time
 
 -- | The `authf` function validates the password in the Wai middleware
 -- authf u p = return $ u == "user" && secureMemFromByteString p == password
+
+-- | Encoded password string.  This is for testing.  
+-- For production this has to be handled more securely.
+password :: SecureMem
+password = secureMemFromByteString "ElksRun" 
 
 -- | Saga File
 sagaFile :: String
@@ -42,4 +55,6 @@ main = do
      putStrLn "Starting: armchar-swish  ..."
      printTime
      stateVar <- loadSaga sagaFile
-     putStrLn "Not implemented"
+     putStrLn "Starting Scotty"
+     S.scotty 3000 $ stateScotty stateVar
+     -- HA.middleware $ basicAuth authf "armchar"
