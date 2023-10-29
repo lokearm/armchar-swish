@@ -64,6 +64,7 @@ common deps
 
 executable armchar-cli
   import: deps
+  other-modules:       ArM.CharGraph
   main-is:             Main.hs
   ghc-options:
     -O2
