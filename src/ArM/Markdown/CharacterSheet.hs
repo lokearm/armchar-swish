@@ -104,12 +104,20 @@ tuttishow (KeyPairList ls) = show ls
 -- debugArts :: RDFGraph -> [String]
 -- debugArts = map tuttishow . getArts
 
-mdSort = sortOn (mdSortKey . fst)
+mdSort :: [(String, b)] -> [(String, b)]
+mdSort = sortOn mds . filter (\ x -> mds x > 0)
+   where mds = mdSortKey . fst
 
 mdSortKey :: String -> Int
 mdSortKey "Name" = 10
 mdSortKey "Season" = 11
 mdSortKey "Year" = 12
 mdSortKey "Player" = 20
-mdSortKey "Born" = 30
+mdSortKey "Birth Year" = 30
+mdSortKey "Age" = 40
+mdSortKey "Gender" = 50
+mdSortKey "Covenant" = 60
+mdSortKey "Alma Mater" = 70
+mdSortKey "Nationality" = 80
+mdSortKey "Character Type" = 0
 mdSortKey _ = 2^(30 :: Int)
