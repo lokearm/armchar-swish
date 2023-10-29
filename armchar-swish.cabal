@@ -65,6 +65,8 @@ common deps
 executable armchar-cli
   import: deps
   other-modules:       ArM.CharGraph
+                     , ArM.Markdown.CharacterSheet
+                     , ArM.TraitQuery
   main-is:             Main.hs
   ghc-options:
     -O2

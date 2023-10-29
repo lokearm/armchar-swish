@@ -21,13 +21,28 @@ module Main where
 
 -- Timer
 import ArM.Time
+import ArM.CharGraph
+import ArM.Markdown.CharacterSheet
+import ArM.Character.CharGen
+-- import ArM.Types.Character
 
 -- | Saga File
 sagaFile :: String
 sagaFile = "Test/saga.ttl"
+charFile :: String
+charFile = "Test/cieran.ttl"
 
 main :: IO ()
 main = do 
      putStrLn "Starting: armchar-swish  ..."
      printTime
-     putStrLn "Not implemented"
+     sagaobject <- loadSaga sagaFile
+     chargen <- loadChar sagaobject charFile
+     let char = head $ charSheets chargen
+     let chargraph = sheetGraph char
+     mapM_ putStrLn $ printMetaData  chargraph
+     mapM_ putStrLn $ printVirtues  chargraph
+     mapM_ putStrLn $ printFlaws chargraph
+     mapM_ putStrLn $ printAbilities chargraph
+     mapM_ putStrLn $ printArts chargraph
+     -- mapM_ putStrLn $ debugArts chargraph
