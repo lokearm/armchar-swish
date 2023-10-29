@@ -41,8 +41,7 @@ main = do
      let char = head $ charSheets chargen
      let chargraph = sheetGraph char
      mapM_ putStrLn $ printMetaData  chargraph
-     mapM_ putStrLn $ printVirtues  chargraph
-     mapM_ putStrLn $ printFlaws chargraph
+     mapM_ putStrLn $ printVF  chargraph
      mapM_ putStrLn $ printAbilities chargraph
      mapM_ putStrLn $ printArts chargraph
      -- mapM_ putStrLn $ debugArts chargraph

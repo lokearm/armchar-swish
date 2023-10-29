@@ -26,6 +26,10 @@ import           ArM.KeyPair
 import ArM.Resources
 import ArM.Rules.Aux
 
+getVirtueTraits :: G.RDFGraph -> [Trait]
+getVirtueTraits = (map parseTrait) . getVirtues
+getFlawTraits :: G.RDFGraph -> [Trait]
+getFlawTraits = (map parseTrait) . getFlaws
 getAbilityTraits :: G.RDFGraph -> [Trait]
 getAbilityTraits = (map parseTrait) . getAbilities
 getArtTraits :: G.RDFGraph -> [Trait]
@@ -39,13 +43,15 @@ data Trait = Trait {
   traitLabel :: Maybe String,
   traitSpeciality :: Maybe String,
   traitXP :: Maybe Int,
-  traitScore :: Maybe Int
+  traitScore :: Maybe Int,
+  traitDetail :: Maybe String
 }
 defaultTrait = Trait {
   traitLabel = Nothing,
   traitSpeciality = Nothing,
   traitXP = Nothing,
-  traitScore = Nothing
+  traitScore = Nothing,
+  traitDetail = Nothing
 }
 
 
@@ -59,12 +65,14 @@ labRes = armRes "hasLabel"
 specRes  = armRes "hasSpeciality"
 scoreRes = armRes "hasScore"
 xpRes    = armRes "hasXP"
+detailRes    = armRes "hasDetail"
 parsePair :: KeyValuePair -> Trait -> Trait
 parsePair (KeyValuePair res  x) t 
     | res == labRes   = t { traitLabel = G.fromRDFLabel x }
     | res == specRes  = t { traitSpeciality = G.fromRDFLabel x }
     | res == scoreRes = t { traitScore = G.fromRDFLabel x }
     | res == xpRes    = t { traitXP = G.fromRDFLabel x }
+    | res == detailRes    = t { traitDetail = G.fromRDFLabel x }
 parsePair _ t = t 
 
 

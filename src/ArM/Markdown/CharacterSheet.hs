@@ -45,14 +45,22 @@ import           ArM.CharacterQuery
 
 
 printVirtues :: RDFGraph -> [String]
-printVirtues = printVirtues' . getVirtues
-printVirtues' :: [KeyPairList] -> [String]
-printVirtues' = ("## Virtues":) . ("":) . map tuttishow
+printVirtues = map printVFLine . getVirtueTraits
 
 printFlaws :: RDFGraph -> [String]
-printFlaws = printFlaws' . getFlaws
-printFlaws' :: [KeyPairList] -> [String]
-printFlaws' = ("## Flaws":) . ("":) . map tuttishow
+printFlaws = map printVFLine. getFlawTraits
+
+printVF :: RDFGraph -> [String]
+printVF g = "## Virtues and Flaws":"":(printVirtues g ++ printFlaws g)
+
+
+printVFLine :: Trait -> String
+printVFLine t = "+ " ++ f1 t ++ f3 t ++ " (" ++ f2 t ++ ")"
+   where vfDetail Nothing = "" 
+         vfDetail (Just s) = ": " ++ s
+         f3 = vfDetail . traitDetail
+         f1 = ss . traitLabel
+         f2 = si . traitScore
 
 
 printArts :: RDFGraph -> [String]
