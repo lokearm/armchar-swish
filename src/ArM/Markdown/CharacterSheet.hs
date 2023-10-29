@@ -21,6 +21,7 @@ import ArM.KeyPair()
 import           ArM.KeyPair
 import           ArM.TraitQuery
 import           ArM.CharacterQuery
+import Data.List(sortOn)
 
 -- |
 -- = Data Types
@@ -91,9 +92,9 @@ printAbilities' = ("## Abilities":) . ("":) .
              map printAbilityLine
 
 printMetaData :: RDFGraph -> [String]
-printMetaData = printMetaData' . getMetaData
-printMetaData' :: KeyPairList -> [String]
-printMetaData' x = [tuttishow x]
+printMetaData = (map printMD ) . mdSort . getMetaDataTuples
+printMD :: (String,String) -> String
+printMD (x, y) = x ++ "\n: " ++ y
 
 tuttishow :: KeyPairList -> String
 tuttishow (KeyPairList ls) = show ls
@@ -102,3 +103,13 @@ tuttishow (KeyPairList ls) = show ls
 -- Debug
 -- debugArts :: RDFGraph -> [String]
 -- debugArts = map tuttishow . getArts
+
+mdSort = sortOn (mdSortKey . fst)
+
+mdSortKey :: String -> Int
+mdSortKey "Name" = 10
+mdSortKey "Season" = 11
+mdSortKey "Year" = 12
+mdSortKey "Player" = 20
+mdSortKey "Born" = 30
+mdSortKey _ = 2^(30 :: Int)

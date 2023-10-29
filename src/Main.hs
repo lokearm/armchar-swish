@@ -2,18 +2,10 @@
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Main
--- Copyright   :  (c) 2022: Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- Copyright   :  (c) 2023: Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
---
--- This is the main module for the armchar web server.
--- This includes some wiring to reduce inter-dependencies between
--- other modules, and some configuration options which may later be
--- moved to data files or command line parameters.
---
--- * The data structure is loaded by the `getRawGraph` function
---   defined in `ArM.Load`
 --
 -----------------------------------------------------------------------------
 
@@ -41,7 +33,13 @@ main = do
      let char = head $ charSheets chargen
      let chargraph = sheetGraph char
      mapM_ putStrLn $ printMetaData  chargraph
+
+     putStrLn ""
      mapM_ putStrLn $ printVF  chargraph
+
+     putStrLn ""
      mapM_ putStrLn $ printAbilities chargraph
+     putStrLn ""
      mapM_ putStrLn $ printArts chargraph
+     putStrLn ""
      -- mapM_ putStrLn $ debugArts chargraph

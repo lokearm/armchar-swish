@@ -26,7 +26,10 @@ module ArM.CharacterQuery ( getTraitList
                           , getItemList
                           , getCombat
                           , getMetaData
+                          , getMetaDataTuples
                           ) where
+
+import Data.Maybe (fromJust)
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -80,3 +83,15 @@ arcs = listToRDFGraph
 -- The given graph must contain one CharacterSheet only.
 getMetaData :: G.RDFGraph -> KeyPairList
 getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind arcs
+
+getMetaDataTuples :: G.RDFGraph -> [(String, String)]
+getMetaDataTuples = map ( mdPair . metadataFromBinding ) . Q.rdfQueryFind arcs
+
+mdPair (_,x,y) = (label2string x, label2string y)
+fromRDFLabel :: G.RDFLabel -> (Maybe Int, Maybe String)
+fromRDFLabel lab = (G.fromRDFLabel lab,G.fromRDFLabel lab)
+label2string :: Maybe G.RDFLabel -> String
+label2string = f . fromRDFLabel . fromJust
+    where f (Nothing,Nothing) = "Error"
+          f (Just x,Nothing) = show x
+          f (Nothing,Just x) = x
