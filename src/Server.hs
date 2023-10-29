@@ -23,11 +23,11 @@
 module Main where
 
 -- Software Transactional Memory
-import ArM.STM
+import ArM.Server.STM
 
 -- Web service
 import qualified Web.Scotty  as S
-import ArM.WebService (stateScotty)
+import ArM.Server.WebService (stateScotty)
 
 -- Authentication
 -- import qualified Network.Wai.Middleware.HttpAuth as HA

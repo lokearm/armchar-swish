@@ -73,8 +73,8 @@ executable armchar-cli
 
 executable armchar-swish
   import: deps
-  other-modules:       ArM.WebService
-                       , ArM.STM
+  other-modules:       ArM.Server.WebService
+                       , ArM.Server.STM
   build-depends:       securemem >= 0.1.10
                        , scotty >= 0.12
                        , wai-extra >= 3.1

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.WebService
+-- Module      :  ArM.Server.WebService
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -16,7 +16,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.WebService (stateScotty) where
+module ArM.Server.WebService (stateScotty) where
 
 import Web.Scotty  as S
 import Network.HTTP.Types
@@ -39,7 +39,7 @@ import qualified ArM.CharacterQuery as CQ
 import ArM.Resources
 import qualified Data.Aeson as Aeson
 
-import qualified ArM.STM as STM
+import qualified ArM.Server.STM as STM
 
 import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 import Network.Wai.Middleware.Cors (simpleCors)

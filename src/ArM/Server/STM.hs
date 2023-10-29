@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.STM
+-- Module      :  ArM.Server.STM
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -39,10 +39,10 @@
 -- graph,
 --
 -----------------------------------------------------------------------------
-module ArM.STM ( ArM.STM.lookup
-               , ArM.STM.lookupIO
-               , ArM.STM.lookupChar
-               , ArM.STM.lookupCharIO
+module ArM.Server.STM ( ArM.Server.STM.lookup
+               , ArM.Server.STM.lookupIO
+               , ArM.Server.STM.lookupChar
+               , ArM.Server.STM.lookupCharIO
                , loadSaga
                , getStateGraph
                , getSaga
