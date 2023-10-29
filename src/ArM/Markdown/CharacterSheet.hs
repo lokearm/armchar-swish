@@ -83,9 +83,9 @@ printAbilities' = ("## Abilities":) . ("":) .
              map printAbilityLine
 
 printMetaData :: RDFGraph -> [String]
-printMetaData = printMetaData' . getMetaData
-printMetaData' :: KeyPairList -> [String]
-printMetaData' x = [tuttishow x]
+printMetaData = (map printMD ) . getMetaDataTuples
+printMD :: (String,String) -> String
+printMD (x, y) = x ++ "\n: " ++ y
 
 tuttishow :: KeyPairList -> String
 tuttishow (KeyPairList ls) = show ls

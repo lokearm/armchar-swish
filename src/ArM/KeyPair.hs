@@ -35,6 +35,7 @@ module ArM.KeyPair ( keypairFromBinding
                    , idVar
                    , valueVar
                    , labelVar
+                   , metadataFromBinding
                    ) where
 
 import Swish.RDF.Graph as G
