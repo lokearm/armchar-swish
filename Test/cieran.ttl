@@ -36,8 +36,8 @@ armchar:cieran arm:characterClass arm:Magus ;
 	       arm:hasGender "Male" ;
                arm:hasBirthYear 1192 ;
 	       arm:hasPlayer "George" ;
-               arm:hasOtherTrait [ a arm:Size ; arm:hasScore 0 ] ;
-               arm:hasOtherTrait [ a arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ] ;
+               arm:hasOtherTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ] ;
+               arm:hasOtherTrait [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ] ;
 	       arm:hasProfession "Rusticus (magus ex Miscellanea)" ;
 	       arm:hasNationality "Irish" ;
                arm:hasAlmaMater "Stonehenge" ;
@@ -58,6 +58,8 @@ armchar:contestedlands a arm:Saga ;
 
 :zeroadv arm:advanceCharacter armchar:cieran ;
    arm:advancementClass arm:BaseAdvancement ; 
+   arm:advanceTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ],
+      [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ] ;
    arm:hasHouseVirtue 
     [ arm:traitClass armr:craftmagic  ],
     [ arm:traitClass armr:spellfoci  ],

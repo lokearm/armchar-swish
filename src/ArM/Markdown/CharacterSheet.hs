@@ -91,10 +91,9 @@ printMD :: (String,String) -> String
 printMD (x, y) = x ++ "\n: " ++ y
 
 printMisc :: RDFGraph -> [String]
-printMisc g = [ "Size", ": " ++ show size, "Confidence", ": " ++ lf cs  ]
-    where size = getSize g
-          cnf = getConf g
-          cs = map confFormat cnf
+printMisc g = [ "Size", ": " ++ lf size, "Confidence", ": " ++ lf cnf  ]
+    where size = map maybeFormat $ getSize g
+          cnf = map confFormat $ getConf g
           lf [] = "-"
           lf (x:[]) = x
           lf xs = intercalate ", " xs

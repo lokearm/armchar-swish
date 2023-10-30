@@ -11,6 +11,8 @@
 
 module Main where
 
+import System.IO -- for file IO
+
 -- Timer
 import ArM.Time
 import ArM.CharGraph
@@ -23,6 +25,8 @@ sagaFile :: String
 sagaFile = "Test/saga.ttl"
 charFile :: String
 charFile = "Test/cieran.ttl"
+outFile :: String
+outFile = "test.md"
 
 main :: IO ()
 main = do 
@@ -32,17 +36,24 @@ main = do
      chargen <- loadChar sagaobject charFile
      let char = head $ charSheets chargen
      let chargraph = sheetGraph char
-     mapM_ putStrLn $ printMetaData  chargraph
-     mapM_ putStrLn $ printMisc  chargraph
 
-     putStrLn ""
-     mapM_ putStrLn $ printVF  chargraph
+     handle <- openFile outFile WriteMode
 
-     putStrLn ""
-     mapM_ putStrLn $ printAbilities chargraph
-     putStrLn ""
-     mapM_ putStrLn $ printArts chargraph
-     putStrLn ""
-     mapM_ putStrLn $ printSpells chargraph
+     let p = hPutStrLn handle
+
+     mapM_ p $ printMetaData  chargraph
+     mapM_ p $ printMisc  chargraph
+
+     p ""
+     mapM_ p $ printVF  chargraph
+
+     p ""
+     mapM_ p $ printAbilities chargraph
+     p ""
+     mapM_ p $ printArts chargraph
+     p ""
+     mapM_ p $ printSpells chargraph
+     hClose handle
 
      mapM_ putStrLn $ debugSpells chargraph
+     return ()
