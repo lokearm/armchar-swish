@@ -24,7 +24,7 @@ import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Types.RDF
 import ArM.Types.Advancement
-import Data.List (sort,reverse)
+import Data.List (sort)
 
 import ArM.Trace
 

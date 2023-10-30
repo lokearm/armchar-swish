@@ -124,7 +124,7 @@ combatRules =
       [ arc sVar (armRes "hasCombatOption")  cVar
       , arc sVar typeRes (armRes "CharacterSheet")
       , arc cVar (armRes "skillClass") tVar
-      , arc sVar (armRes "hasTrait") oVar
+      , arc sVar htRes oVar
       , arc oVar typeRes tVar ]
       [ arc cVar (armRes "hasSkill") oVar ]
 -- Ability analogous to Weapon (possession) above
@@ -395,7 +395,7 @@ applyRule f g = g `addGraphs` f g
 getBonuses :: RDFGraph -> RDFGraph
 getBonuses = listToRDFGraph . arcSum "hasTotalBonus" . sort . map f . Q.rdfQueryFind q
    where q = listToRDFGraph 
-             [ arc character (armRes "hasTrait") trait
+             [ arc character htRes trait
              , arc trait typeRes tVar
              , arc character (armRes "hasBonus") bonus
              , arc bonus (armRes "bonusTo") tVar
