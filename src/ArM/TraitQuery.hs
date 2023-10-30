@@ -35,6 +35,9 @@ getAbilityTraits = (map parseTrait) . getAbilities
 getArtTraits :: G.RDFGraph -> [Trait]
 getArtTraits = (map parseTrait) . getArts
 
+getSpellTraits :: G.RDFGraph -> [Trait]
+getSpellTraits = (map parseTrait) . getSpells
+
 -- getCombat :: G.RDFGraph -> [Trait]
 -- getCombat = getTraitList $ armRes "hasCombatOption"
 
@@ -75,8 +78,3 @@ parsePair (KeyValuePair res  x) t
     | res == detailRes    = t { traitDetail = G.fromRDFLabel x }
 parsePair _ t = t 
 
-
-ss (Just s) = s
-ss Nothing = "-"
-si (Just s) = show s
-si Nothing = "-"

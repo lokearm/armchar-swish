@@ -23,27 +23,6 @@ import           ArM.TraitQuery
 import           ArM.CharacterQuery
 import Data.List(sortOn)
 
--- |
--- = Data Types
-
--- ^ A `CharStage` object represents a character's state of development
--- at one particular point on the in-game timeline. 
--- data CharStage = CharStage 
--- { advancement :: Advancement  ^ The advancement leading to the stage
--- , sheetObject :: CharacterSheet     ^ The resulting character sheet
--- , sheetGraph :: RDFGraph ^ The character sheet as an RDF Graph
---      }  deriving (Eq,Show)
-
--- data CharacterSheet = CharacterSheet {
--- csID :: RDFLabel, ^ Character ID (i.e. same ID for every season)
--- sheetID :: Maybe RDFLabel,  ^ ID of the Character Sheet, usually Nothing suggesting a blank node
--- csTime :: CharTime,  -- ^ Current Year
--- born     :: Int,      -- ^ Year of Birth
--- csItems :: [Trait],    -- ^ List of possessions (weapons, equipment)
--- csTraits :: [Trait],  -- ^ List of traits (abilities, spells, etc.)
--- csMetadata :: KeyPairList ^ Metadata, i.e. data which are not traits or items.
--- }  deriving (Eq)
-
 
 printVirtues :: RDFGraph -> [String]
 printVirtues = map printVFLine . getVirtueTraits
@@ -91,6 +70,17 @@ printAbilities' = ("## Abilities":) . ("":) .
              ("| :-     \t | :-        \t |   -: \t| -:\t|":) .
              map printAbilityLine
 
+printSpells :: RDFGraph -> [String]
+printSpells t = "## Spells":"":f t
+   where f = map printSpellLine . getSpellTraits
+printSpellLine :: Trait -> String
+printSpellLine t = "+ " ++ f1 t ++ f3 t ++ " *Casting Score " ++ f2 t ++ "*"
+   where vfDetail Nothing = "" 
+         vfDetail (Just s) = " [" ++ s ++ "]"
+         f3 = vfDetail . traitDetail
+         f1 = ss . traitLabel
+         f2 = si . traitScore
+
 printMetaData :: RDFGraph -> [String]
 printMetaData = (map printMD ) . mdSort . getMetaDataTuples
 printMD :: (String,String) -> String
@@ -121,3 +111,10 @@ mdSortKey "Alma Mater" = 70
 mdSortKey "Nationality" = 80
 mdSortKey "Character Type" = 0
 mdSortKey _ = 2^(30 :: Int)
+
+ss :: Maybe String -> String
+ss (Just s) = s
+ss Nothing = "-"
+si :: Maybe Int -> String
+si (Just s) = show s
+si Nothing = "-"
