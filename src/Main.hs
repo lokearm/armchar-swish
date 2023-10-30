@@ -33,6 +33,7 @@ main = do
      let char = head $ charSheets chargen
      let chargraph = sheetGraph char
      mapM_ putStrLn $ printMetaData  chargraph
+     mapM_ putStrLn $ printMisc  chargraph
 
      putStrLn ""
      mapM_ putStrLn $ printVF  chargraph

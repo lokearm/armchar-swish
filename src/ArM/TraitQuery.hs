@@ -16,10 +16,15 @@
 -----------------------------------------------------------------------------
 module ArM.TraitQuery where
 
+import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.Graph as G
 import           ArM.CharacterQuery 
 import           ArM.KeyPair 
 import           ArM.Resources 
+import           ArM.Rules.Aux 
+
+import Data.Maybe (fromJust)
+import Swish.VarBinding  (vbMap)
 
 getVirtueTraits :: G.RDFGraph -> [Trait]
 getVirtueTraits = (map parseTrait) . getVirtues
@@ -61,6 +66,21 @@ parseTrait (KeyPairList pl) = parseTrait' pl defaultTrait
 parseTrait' :: [KeyValuePair] -> Trait -> Trait
 parseTrait' [] t = t
 parseTrait' (x:xs) t = parseTrait' xs (parsePair x t)
+
+getSize :: G.RDFGraph -> [Maybe Int]
+getSize g = map value (find g)
+       where find = Q.rdfQueryFind $ listToRDFGraph [ G.arc idVar (armRes "hasSize") valueVar ]
+             value f = G.fromRDFLabel $ fromJust $ vbMap f (G.Var "value")
+getConf :: G.RDFGraph -> [(Maybe Int,Maybe Int)]
+getConf g = map v find
+       where find = Q.rdfQueryFind confGraph g
+             f = G.fromRDFLabel . fromJust 
+	     v x = (f $ vbMap x valueVar,f $ vbMap x pVar)
+confGraph = listToRDFGraph [ G.arc idVar (armRes "hasTrait" ) tVar 
+			   , G.arc tVar (typeRes) (armRes "Confidence")
+			   , G.arc tVar (armRes "hasScore" ) valueVar
+			   , G.arc tVar (armRes "hasPoints" ) pVar
+                           ]
 
 labRes :: G.RDFLabel
 labRes = armRes "hasLabel"

@@ -21,7 +21,7 @@ import ArM.KeyPair()
 import           ArM.KeyPair
 import           ArM.TraitQuery
 import           ArM.CharacterQuery
-import Data.List(sortOn)
+import Data.List(sortOn,intercalate)
 
 
 printVirtues :: RDFGraph -> [String]
@@ -89,6 +89,21 @@ printMetaData :: RDFGraph -> [String]
 printMetaData = (map printMD ) . mdSort . getMetaDataTuples
 printMD :: (String,String) -> String
 printMD (x, y) = x ++ "\n: " ++ y
+
+printMisc :: RDFGraph -> [String]
+printMisc g = [ "Size", ": " ++ show size, "Confidence", ": " ++ lf cs  ]
+    where size = getSize g
+          cnf = getConf g
+          cs = map confFormat cnf
+          lf [] = "-"
+          lf (x:[]) = x
+          lf xs = intercalate ", " xs
+confFormat :: (Maybe Int, Maybe Int) -> String
+confFormat (x,y) = maybeFormat x ++ " (" ++ maybeFormat y ++ ")"
+maybeFormat :: (Show a) => Maybe a -> String
+maybeFormat Nothing = "-"
+maybeFormat (Just x) = show x
+
 
 tuttishow :: KeyPairList -> String
 tuttishow (KeyPairList ls) = show ls
