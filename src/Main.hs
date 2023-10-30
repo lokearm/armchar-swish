@@ -55,5 +55,5 @@ main = do
      mapM_ p $ printSpells chargraph
      hClose handle
 
-     mapM_ putStrLn $ debugSpells chargraph
+     -- mapM_ putStrLn $ debugSpells chargraph
      return ()

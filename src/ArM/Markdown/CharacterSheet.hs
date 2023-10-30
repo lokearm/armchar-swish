@@ -110,8 +110,8 @@ tuttishow (KeyPairList ls) = show ls
 -- printArtLine :: KeyPairList -> String
 
 -- Debug
-debugSpells :: RDFGraph -> [String]
-debugSpells = map tuttishow . getSpells
+-- debugSpells :: RDFGraph -> [String]
+-- debugSpells = map tuttishow . getSpells
 
 mdSort :: [(String, b)] -> [(String, b)]
 mdSort = sortOn mds . filter (\ x -> mds x > 0)
