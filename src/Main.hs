@@ -43,4 +43,5 @@ main = do
      mapM_ putStrLn $ printArts chargraph
      putStrLn ""
      mapM_ putStrLn $ printSpells chargraph
-     -- mapM_ putStrLn $ debugArts chargraph
+
+     mapM_ putStrLn $ debugSpells chargraph

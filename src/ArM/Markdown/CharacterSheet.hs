@@ -74,12 +74,16 @@ printSpells :: RDFGraph -> [String]
 printSpells t = "## Spells":"":f t
    where f = map printSpellLine . getSpellTraits
 printSpellLine :: Trait -> String
-printSpellLine t = "+ " ++ f1 t ++ f3 t ++ " *Casting Score " ++ f2 t ++ "*"
+printSpellLine t = "+ " ++ f1 t ++ f3 t ++ " *Casting Score* " ++ f2 t ++ 
+      "; *Mastery* "
+      ++ f4 t ++ " (" ++ f5 t ++ ")"
    where vfDetail Nothing = "" 
          vfDetail (Just s) = " [" ++ s ++ "]"
          f3 = vfDetail . traitDetail
          f1 = ss . traitLabel
-         f2 = si . traitScore
+         f4 = si . traitScore
+         f5 = si . traitXP
+         f2 = si . traitCastingScore
 
 printMetaData :: RDFGraph -> [String]
 printMetaData = (map printMD ) . mdSort . getMetaDataTuples
@@ -91,8 +95,8 @@ tuttishow (KeyPairList ls) = show ls
 -- printArtLine :: KeyPairList -> String
 
 -- Debug
--- debugArts :: RDFGraph -> [String]
--- debugArts = map tuttishow . getArts
+debugSpells :: RDFGraph -> [String]
+debugSpells = map tuttishow . getSpells
 
 mdSort :: [(String, b)] -> [(String, b)]
 mdSort = sortOn mds . filter (\ x -> mds x > 0)

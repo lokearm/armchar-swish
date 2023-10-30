@@ -16,15 +16,10 @@
 -----------------------------------------------------------------------------
 module ArM.TraitQuery where
 
-import           Swish.VarBinding (vbMap)
-import qualified Swish.RDF.VarBinding as VB 
 import qualified Swish.RDF.Graph as G
-import qualified Swish.RDF.Query as Q
-import           ArM.Resources 
 import           ArM.CharacterQuery 
 import           ArM.KeyPair 
-import ArM.Resources
-import ArM.Rules.Aux
+import           ArM.Resources 
 
 getVirtueTraits :: G.RDFGraph -> [Trait]
 getVirtueTraits = (map parseTrait) . getVirtues
@@ -47,14 +42,17 @@ data Trait = Trait {
   traitSpeciality :: Maybe String,
   traitXP :: Maybe Int,
   traitScore :: Maybe Int,
-  traitDetail :: Maybe String
+  traitDetail :: Maybe String,
+  traitCastingScore :: Maybe Int
 }
+defaultTrait :: Trait
 defaultTrait = Trait {
   traitLabel = Nothing,
   traitSpeciality = Nothing,
   traitXP = Nothing,
   traitScore = Nothing,
-  traitDetail = Nothing
+  traitDetail = Nothing,
+  traitCastingScore = Nothing
 }
 
 
@@ -64,11 +62,19 @@ parseTrait' :: [KeyValuePair] -> Trait -> Trait
 parseTrait' [] t = t
 parseTrait' (x:xs) t = parseTrait' xs (parsePair x t)
 
+labRes :: G.RDFLabel
 labRes = armRes "hasLabel"
+specRes  :: G.RDFLabel
 specRes  = armRes "hasSpeciality"
+scoreRes :: G.RDFLabel
 scoreRes = armRes "hasScore"
+xpRes    :: G.RDFLabel
 xpRes    = armRes "hasXP"
+castingRes   :: G.RDFLabel
+castingRes   = armRes "hasCastingScore"
+detailRes    :: G.RDFLabel
 detailRes    = armRes "hasDetail"
+
 parsePair :: KeyValuePair -> Trait -> Trait
 parsePair (KeyValuePair res  x) t 
     | res == labRes   = t { traitLabel = G.fromRDFLabel x }
@@ -76,5 +82,6 @@ parsePair (KeyValuePair res  x) t
     | res == scoreRes = t { traitScore = G.fromRDFLabel x }
     | res == xpRes    = t { traitXP = G.fromRDFLabel x }
     | res == detailRes    = t { traitDetail = G.fromRDFLabel x }
+    | res == castingRes   = t { traitCastingScore = G.fromRDFLabel x }
 parsePair _ t = t 
 
