@@ -74,8 +74,9 @@ printSpells :: RDFGraph -> [String]
 printSpells t = "## Spells":"":f t
    where f = map printSpellLine . getSpellTraits
 printSpellLine :: Trait -> String
-printSpellLine t = "+ " ++ f1 t ++ f3 t ++ " *Casting Score* " ++ f2 t ++ 
-      "; *Mastery* "
+printSpellLine t = "+ " ++ tefoString t ++ " " ++ f1 t 
+                        ++ f3 t ++ " *Casting Score* " ++ f2 t 
+                        ++ "; *Mastery* "
       ++ f4 t ++ " (" ++ f5 t ++ ")"
    where vfDetail Nothing = "" 
          vfDetail (Just s) = " [" ++ s ++ "]"

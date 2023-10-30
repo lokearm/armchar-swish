@@ -48,7 +48,10 @@ data Trait = Trait {
   traitXP :: Maybe Int,
   traitScore :: Maybe Int,
   traitDetail :: Maybe String,
-  traitCastingScore :: Maybe Int
+  traitCastingScore :: Maybe Int,
+  traitForm :: Maybe String,
+  traitTech :: Maybe String,
+  traitLevel :: Maybe Int
 }
 defaultTrait :: Trait
 defaultTrait = Trait {
@@ -57,7 +60,10 @@ defaultTrait = Trait {
   traitXP = Nothing,
   traitScore = Nothing,
   traitDetail = Nothing,
-  traitCastingScore = Nothing
+  traitCastingScore = Nothing,
+  traitForm = Nothing,
+  traitTech = Nothing,
+  traitLevel = Nothing
 }
 
 
@@ -111,5 +117,24 @@ parsePair (KeyValuePair res  x) t
     | res == xpRes    = t { traitXP = G.fromRDFLabel x }
     | res == detailRes    = t { traitDetail = G.fromRDFLabel x }
     | res == castingRes   = t { traitCastingScore = G.fromRDFLabel x }
+    | res == (armRes "hasFormString")   = t { traitForm = G.fromRDFLabel x }
+    | res == (armRes "hasTechniqueString")   = t { traitTech = G.fromRDFLabel x }
+    | res == (armRes "hasLevel")   = t { traitLevel = G.fromRDFLabel x }
 parsePair _ t = t 
 
+tefoString :: Trait -> String
+tefoString t = tt (traitTech t) ++ tt (traitForm t) ++ (fJi $ traitLevel t)
+   where tt = take 2 . fJ
+         fJ Nothing = "Xx"
+         fJ (Just x) = x
+         fJi Nothing = "X"
+         fJi (Just x) = show x
+         
+
+{-
+ - Spells
+ - KeyValuePair arm:hasTargetString "Individual",
+ - KeyValuePair arm:hasRangeString "Touch",
+ - KeyValuePair arm:hasDurationString "Sun",
+ - KeyValuePair arm:hasDescription "The target becomes completely undetectable to normal sight, regardless of what he does, but still casts a shadow.  (Base 4, +1 Touch, +2 Sun, +1 changing image)",KeyValuePair arm:hasCastingScore 19]
+-}
