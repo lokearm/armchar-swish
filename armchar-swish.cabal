@@ -62,6 +62,17 @@ common deps
   hs-source-dirs:      . , ./src
   default-language:    Haskell2010
 
+executable armchar-debug
+  import: deps
+  other-modules:       ArM.CharGraph
+                     , ArM.Markdown.CharacterSheet
+                     , ArM.TraitQuery
+  main-is:             Debug.hs
+  ghc-options:
+    -O2
+    -Wall
+    -threaded
+    "-with-rtsopts=-N -s -h -i0.1"
 executable armchar-cli
   import: deps
   other-modules:       ArM.CharGraph
