@@ -68,18 +68,26 @@ parseTrait' [] t = t
 parseTrait' (x:xs) t = parseTrait' xs (parsePair x t)
 
 getSize :: G.RDFGraph -> [Maybe Int]
-getSize g = map value (find g)
-       where find = Q.rdfQueryFind $ listToRDFGraph [ G.arc idVar (armRes "hasSize") valueVar ]
-             value f = G.fromRDFLabel $ fromJust $ vbMap f (G.Var "value")
+getSize g = map v find 
+       where find = Q.rdfQueryFind sizeGraph g
+             f = G.fromRDFLabel . fromJust 
+             v x = f $ vbMap x valueVar
 getConf :: G.RDFGraph -> [(Maybe Int,Maybe Int)]
 getConf g = map v find
        where find = Q.rdfQueryFind confGraph g
              f = G.fromRDFLabel . fromJust 
-	     v x = (f $ vbMap x valueVar,f $ vbMap x pVar)
+             v x = (f $ vbMap x valueVar,f $ vbMap x pVar)
+
+sizeGraph :: G.RDFGraph
+sizeGraph = listToRDFGraph [ G.arc idVar (armRes "hasTrait" ) tVar 
+                           , G.arc tVar (typeRes) (armRes "Size")
+                           , G.arc tVar (armRes "hasScore" ) valueVar
+                           ]
+confGraph :: G.RDFGraph
 confGraph = listToRDFGraph [ G.arc idVar (armRes "hasTrait" ) tVar 
-			   , G.arc tVar (typeRes) (armRes "Confidence")
-			   , G.arc tVar (armRes "hasScore" ) valueVar
-			   , G.arc tVar (armRes "hasPoints" ) pVar
+                           , G.arc tVar (typeRes) (armRes "Confidence")
+                           , G.arc tVar (armRes "hasScore" ) valueVar
+                           , G.arc tVar (armRes "hasPoints" ) pVar
                            ]
 
 labRes :: G.RDFLabel
