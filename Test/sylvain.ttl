@@ -18,6 +18,7 @@
 # Metadata.  Defined for character, copied to character sheet
 armchar:sylvain arm:characterClass arm:Magus ; 
                arm:hasName "Sylvain" ;
+               arm:hasHermeticName "Silvanus of Merinita" ;
 	       arm:hasGender "Male" ;
                arm:hasBirthYear 1192 ;
 	       arm:hasPlayer "George" ;
@@ -26,6 +27,8 @@ armchar:sylvain arm:characterClass arm:Magus ;
                arm:hasAlmaMater "Provence" ;
                arm:hasCovenant armchar:diednecovenant ;
                arm:hasSaga armchar:diedne .
+Personality Traits
+: Stubborn +1, Pious +1, Curious +3, Compassionate +6 
 
 :zeroadv arm:advanceCharacter armchar:sylvain ;
    arm:advancementClass arm:BaseAdvancement ; 
@@ -34,17 +37,27 @@ armchar:sylvain arm:characterClass arm:Magus ;
    arm:hasHouseVirtue 
     [ arm:traitClass armr:faeriemagic  ] ;
    arm:buyVirtueFlaw
-    [ arm:traitClass armr:elementalist ],
+    [ arm:traitClass armr:theGift ],
+    [ arm:traitClass armr:hermeticMagus ],
+    [ arm:traitClass armr:elementalalmagic ],
     [ arm:traitClass armr:skilledParens ],
     [ arm:traitClass armr:diednemagic ],
-    [ arm:traitClass armr:puissantAbility ; 
-      arm:grantsTrait [ arm:bonusTo armr:forestlore ] ],
+    [ arm:traitClass armr:secondaryinsight ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Wind" ],
 
-    [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
-    [ arm:traitClass armr:meddlerMajor ; a arm:majorFlaw ],
-    [ arm:traitClass armr:pagain ],
-    [ arm:traitClass armr:carefree ; a armr:minorFlaw ] ;
+    [ arm:traitClass armr:affinityWithAbility ; 
+      arm:grantsTrait [ arm:bonusTo armr:forestlore ] ],
+    [ arm:traitClass armr:puissantAbility ; 
+      arm:grantsTrait [ arm:bonusTo armr:forestlore ] ],
+
+    [ arm:traitClass armr:deleterioscircumstances ; arm:hasDetail "Hearing Church Bells" ],
+    [ arm:traitClass armr:compassionateMajor ; a arm:majorFlaw ],
+    [ arm:traitClass armr:minorPersonalityFlaw ;
+      arm:hasLabel "Curious (custom, similar to reckless)" ],
+    [ arm:traitClass armr:pagan ],
+    [ arm:traitClass armr:smallframe ],
+    [ arm:traitClass armr:motionsickness ; a armr:minorFlaw ] ;
+
    arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore 2 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
     [ arm:traitClass armr:com ; arm:hasScore 1 ], [ arm:traitClass armr:pre ; arm:hasScore 1 ],
@@ -64,8 +77,8 @@ armchar:sylvain arm:characterClass arm:Magus ;
 :lateradv arm:advanceCharacter armchar:sylvain ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
   arm:advanceTrait 
-      [ arm:traitClass armr:hunt ;  arm:addedXP 5  ],
-      [ arm:traitClass armr:intrigue ;  arm:addedXP 5  ],
+      [ arm:traitClass armr:hunt ;  arm:addedXP 5 ; arm:hasSpeciality "Woodlands"  ],
+      [ arm:traitClass armr:intrigue ;  arm:addedXP 5 ; arm:hasSpeciality "Hermetic Politics"  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
         arm:addedXP 15  ],
       [ arm:traitClass armr:craft-cooking ; arm:hasSpeciality "Cookies" ; arm:addedXP 30  ],
@@ -99,17 +112,10 @@ armchar:sylvain arm:characterClass arm:Magus ;
    [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ],
    [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Auram" ],
    [ arm:traitClass armr:finesse ; arm:addedXP 5 ; arm:hasSpeciality "Auram" ],
-   [ arm:traitClass armr:PeCo20Wound ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:ReCo5Spasms ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:CrIg15Lamp ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:PeIm20Veil ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:CrIm10Clarity ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:MuIm10Aura ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:PeMe10Trust ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:ReMe15Arrow ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:ReMe5Touch ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:PeTe20Obliteration  ; arm:hasTotalXP 5 ],
-   [ arm:traitClass armr:PeTe20End  ; arm:hasTotalXP 5 ] 
+
+   [ arm:traitClass armr:InAu15Whispering  ],
+   [ arm:traitClass armr:InVi20PiercingFaerie  ],
+   [ arm:traitClass armr:PeVi5Demons  ],
       ;
   arm:changePossession
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 1 ;
@@ -118,36 +124,9 @@ armchar:sylvain arm:characterClass arm:Magus ;
        ] .
 
 
-
-Hermetic Name
-: Silvanus of Merinita
-
-Personality Traits
-: Stubborn +1, Pious +1, Curious +3, Compassionate +6 
-
 Laboratory
 : [Sylvain-Lab](Sylvain-Lab)
 
-# Virtues and Flaws
-
-+ Hermetic Magus (0), the Gift (0)
-+ Faerie Magic (0 - house virtue),
-+ Forest Lore; Puissant and Affinity with Forest Lore (3) 
-+ Diedne Magic (1), 
-+ Skilled Parens (1),
-+ Secondary Insight (1),
-+ Minor Magical Focus: Wind (1)
-+ Elemental Magic (3)
-
-+ Dark Secret (0)
-+ Pagan (-3 - Story Flaw), 
-+ Compassionate (-3 - Major Personality)
-+ Curious (-1 - Minor Personality) 
-    + [Custom, in the «Curiosity killed the cat»,
-      similar to the canon reckless] 
-+ Deleterious Circumstances [Hearing Church Bells] (-1)
-+ Small Frame (-1),
-+ Motion Sickness (-1)
 
 # Abilities
 
@@ -173,13 +152,9 @@ Laboratory
 
 # Spells
 
-+ InAu15 Whispering Winds 
-+ InVi20 Piercing the Faerie Veil
 + ReVi20 Opening the Intangible Tunnel (AC/Diam/Ind) 
   [custom variant; may be an equivalent canon variant with a different name]
 + CrAu30 Wings of the Soaring Wind
 + CrAu30 Pull of the Skybound Winds
 + ReAu30 Clouds of Thunderous Might
-+ PeVi5 Demon's Eternal Oblivion
-+ **Sum** 150 levels
 

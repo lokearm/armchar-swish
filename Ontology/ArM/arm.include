@@ -54,6 +54,10 @@ arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentPrope
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Name" .
+arm:hasHermeticName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   xsd:string ;
+        rdfs:label    "Hermetic Name" .
 arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
