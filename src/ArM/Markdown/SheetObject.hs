@@ -14,7 +14,11 @@
 -- Only queries on the character sheet are defined in this module.
 --
 -----------------------------------------------------------------------------
-module ArM.TraitQuery where
+module ArM.Markdown.SheetObject ( getSheetObject
+                                , SheetObject(..)
+                                , Trait(..)
+                                , tefoString
+                                ) where
 
 import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.Graph as G
@@ -29,21 +33,41 @@ import Swish.VarBinding  (vbMap)
 
 getCharTraits :: G.RDFGraph -> [Trait]
 getCharTraits = sortOn traitOrder . (map parseTrait) . getCharacteristics
+getPTraits :: G.RDFGraph -> [Trait]
+getPTraits = sortOn traitOrder . (map parseTrait) . getPTs
 
-getVirtueTraits :: G.RDFGraph -> [Trait]
-getVirtueTraits = (map parseTrait) . getVirtues
-getFlawTraits :: G.RDFGraph -> [Trait]
-getFlawTraits = (map parseTrait) . getFlaws
 getAbilityTraits :: G.RDFGraph -> [Trait]
 getAbilityTraits = (map parseTrait) . getAbilities
-getArtTraits :: G.RDFGraph -> [Trait]
-getArtTraits = (map parseTrait) . getArts
-
-getSpellTraits :: G.RDFGraph -> [Trait]
-getSpellTraits = (map parseTrait) . getSpells
 
 -- getCombat :: G.RDFGraph -> [Trait]
 -- getCombat = getTraitList $ armRes "hasCombatOption"
+
+getSheetObject :: G.RDFGraph -> SheetObject
+getSheetObject g = SheetObject {
+    metadata = mdSort $ getMetaDataTuples g,
+    abilities = getAbilityTraits g,
+    arts = map parseTrait $ getArts g,
+    spells = map parseTrait $ getSpells g,
+    characteristics = getCharTraits g,
+    ptraits = getPTraits g,
+    virtues = map parseTrait $ getVirtues g,
+    flaws = map parseTrait $ getFlaws g,
+    size = getSize g,
+    cnf = getConf g
+}
+
+data SheetObject = SheetObject {
+    metadata :: [(String,String)],
+    abilities :: [Trait],
+    arts :: [Trait],
+    spells :: [Trait],
+    characteristics :: [Trait],
+    ptraits :: [Trait],
+    virtues :: [Trait],
+    flaws :: [Trait],
+    size :: [Maybe Int],
+    cnf :: [(Maybe Int,Maybe Int)]
+}
 
 
 data Trait = Trait {
@@ -130,6 +154,23 @@ tefoString t = tt (traitTech t) ++ tt (traitForm t) ++ (fJi $ traitLevel t)
          fJi Nothing = "X"
          fJi (Just x) = show x
          
+mdSort :: [(String, b)] -> [(String, b)]
+mdSort = sortOn mds . filter (\ x -> mds x > 0)
+   where mds = mdSortKey . fst
+
+mdSortKey :: String -> Int
+mdSortKey "Name" = 10
+mdSortKey "Season" = 11
+mdSortKey "Year" = 12
+mdSortKey "Player" = 20
+mdSortKey "Birth Year" = 30
+mdSortKey "Age" = 40
+mdSortKey "Gender" = 50
+mdSortKey "Covenant" = 60
+mdSortKey "Alma Mater" = 70
+mdSortKey "Nationality" = 80
+mdSortKey "Character Type" = 0
+mdSortKey _ = 2^(30 :: Int)
 
 {-
  - Spells

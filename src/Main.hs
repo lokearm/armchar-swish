@@ -18,6 +18,7 @@ import ArM.Time
 import ArM.CharGraph
 import ArM.Markdown.CharacterSheet
 import ArM.Character.CharGen
+import ArM.Markdown.SheetObject
 -- import ArM.Types.Character
 
 -- | Saga File
@@ -41,19 +42,7 @@ main = do
 
      let p = hPutStrLn handle
 
-     mapM_ p $ printMetaData  chargraph
-     mapM_ p $ printChar  chargraph
-     mapM_ p $ printMisc  chargraph
-
-     p ""
-     mapM_ p $ printVF  chargraph
-
-     p ""
-     mapM_ p $ printAbilities chargraph
-     p ""
-     mapM_ p $ printArts chargraph
-     p ""
-     mapM_ p $ printSpells chargraph
+     mapM_ p $ printSheetObject  $ getSheetObject chargraph
      hClose handle
 
      return ()
