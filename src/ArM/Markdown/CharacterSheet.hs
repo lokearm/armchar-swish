@@ -24,6 +24,15 @@ import           ArM.CharacterQuery
 import Data.List(sortOn,intercalate)
 
 
+printChar :: RDFGraph -> [String]
+printChar g = [ "Characteristics", f g ]
+   where p x = fJ (traitAbbr x) ++ " " ++ (fI $ traitScore x)
+         fJ Nothing = "???"
+         fJ (Just x) = x
+         fI Nothing = "???"
+         fI (Just x) = show x
+         f = (':':) . (' ':) . intercalate ", " . map p . getCharTraits
+
 printVirtues :: RDFGraph -> [String]
 printVirtues = map printVFLine . getVirtueTraits
 
@@ -110,8 +119,8 @@ tuttishow (KeyPairList ls) = show ls
 -- printArtLine :: KeyPairList -> String
 
 -- Debug
--- debugSpells :: RDFGraph -> [String]
--- debugSpells = map tuttishow . getSpells
+debugChar :: RDFGraph -> [String]
+debugChar = map tuttishow . getCharacteristics
 
 mdSort :: [(String, b)] -> [(String, b)]
 mdSort = sortOn mds . filter (\ x -> mds x > 0)

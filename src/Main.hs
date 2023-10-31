@@ -42,6 +42,7 @@ main = do
      let p = hPutStrLn handle
 
      mapM_ p $ printMetaData  chargraph
+     mapM_ p $ printChar  chargraph
      mapM_ p $ printMisc  chargraph
 
      p ""
@@ -55,5 +56,4 @@ main = do
      mapM_ p $ printSpells chargraph
      hClose handle
 
-     -- mapM_ putStrLn $ debugSpells chargraph
      return ()

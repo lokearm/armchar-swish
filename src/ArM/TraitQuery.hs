@@ -22,9 +22,13 @@ import           ArM.CharacterQuery
 import           ArM.KeyPair 
 import           ArM.Resources 
 import           ArM.Rules.Aux 
+import Data.List(sortOn)
 
 import Data.Maybe (fromJust)
 import Swish.VarBinding  (vbMap)
+
+getCharTraits :: G.RDFGraph -> [Trait]
+getCharTraits = sortOn traitOrder . (map parseTrait) . getCharacteristics
 
 getVirtueTraits :: G.RDFGraph -> [Trait]
 getVirtueTraits = (map parseTrait) . getVirtues
@@ -44,6 +48,7 @@ getSpellTraits = (map parseTrait) . getSpells
 
 data Trait = Trait {
   traitLabel :: Maybe String,
+  traitAbbr :: Maybe String,
   traitSpeciality :: Maybe String,
   traitXP :: Maybe Int,
   traitScore :: Maybe Int,
@@ -51,11 +56,13 @@ data Trait = Trait {
   traitCastingScore :: Maybe Int,
   traitForm :: Maybe String,
   traitTech :: Maybe String,
-  traitLevel :: Maybe Int
+  traitLevel :: Maybe Int,
+  traitOrder :: Maybe Int
 }
 defaultTrait :: Trait
 defaultTrait = Trait {
   traitLabel = Nothing,
+  traitAbbr = Nothing,
   traitSpeciality = Nothing,
   traitXP = Nothing,
   traitScore = Nothing,
@@ -63,7 +70,8 @@ defaultTrait = Trait {
   traitCastingScore = Nothing,
   traitForm = Nothing,
   traitTech = Nothing,
-  traitLevel = Nothing
+  traitLevel = Nothing,
+  traitOrder = Nothing
 }
 
 
@@ -96,30 +104,22 @@ confGraph = listToRDFGraph [ G.arc idVar (armRes "hasTrait" ) tVar
                            , G.arc tVar (armRes "hasPoints" ) pVar
                            ]
 
-labRes :: G.RDFLabel
-labRes = armRes "hasLabel"
-specRes  :: G.RDFLabel
-specRes  = armRes "hasSpeciality"
-scoreRes :: G.RDFLabel
-scoreRes = armRes "hasScore"
-xpRes    :: G.RDFLabel
-xpRes    = armRes "hasXP"
-castingRes   :: G.RDFLabel
-castingRes   = armRes "hasCastingScore"
-detailRes    :: G.RDFLabel
-detailRes    = armRes "hasDetail"
+
+
 
 parsePair :: KeyValuePair -> Trait -> Trait
 parsePair (KeyValuePair res  x) t 
-    | res == labRes   = t { traitLabel = G.fromRDFLabel x }
-    | res == specRes  = t { traitSpeciality = G.fromRDFLabel x }
-    | res == scoreRes = t { traitScore = G.fromRDFLabel x }
-    | res == xpRes    = t { traitXP = G.fromRDFLabel x }
-    | res == detailRes    = t { traitDetail = G.fromRDFLabel x }
-    | res == castingRes   = t { traitCastingScore = G.fromRDFLabel x }
+    | res == (armRes "hasLabel")      = t { traitLabel = G.fromRDFLabel x }
+    | res == (armRes "hasSpeciality") = t { traitSpeciality = G.fromRDFLabel x }
+    | res == (armRes "hasScore")      = t { traitScore = G.fromRDFLabel x }
+    | res == (armRes "hasXP")         = t { traitXP = G.fromRDFLabel x }
+    | res == (armRes "hasDetail")     = t { traitDetail = G.fromRDFLabel x }
+    | res == (armRes "hasCastingScore") = t { traitCastingScore = G.fromRDFLabel x }
     | res == (armRes "hasFormString")   = t { traitForm = G.fromRDFLabel x }
-    | res == (armRes "hasTechniqueString")   = t { traitTech = G.fromRDFLabel x }
-    | res == (armRes "hasLevel")   = t { traitLevel = G.fromRDFLabel x }
+    | res == (armRes "hasTechniqueString") = t { traitTech = G.fromRDFLabel x }
+    | res == (armRes "hasLevel")           = t { traitLevel = G.fromRDFLabel x }
+    | res == (armRes "hasOrder")           = t { traitOrder = G.fromRDFLabel x }
+    | res == (armRes "hasAbbreviation")    = t { traitAbbr = G.fromRDFLabel x }
 parsePair _ t = t 
 
 tefoString :: Trait -> String
