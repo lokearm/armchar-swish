@@ -21,24 +21,52 @@ import ArM.Character.CharGen
 import ArM.Markdown.SheetObject
 -- import ArM.Types.Character
 
--- | Saga File
-sagaFile :: String
-sagaFile = "Test/saga.ttl"
-charFile :: String
-charFile = "Test/cieran.ttl"
-outFile :: String
-outFile = "test.md"
+import System.Environment
+import System.Console.GetOpt
+
+data Options = Options {
+  sagaFile :: String,
+  charFile :: String,
+  outFile  :: String
+}
+defaultOptions :: Options
+defaultOptions = Options {
+  sagaFile = "Test/saga.ttl",
+  charFile = "Test/cieran.ttl",
+  outFile  = "test.md"
+}
+
+
+
+
+options :: [ OptDescr (Options -> IO Options) ]
+options =
+    [ Option ['o']     ["output"]  (ReqArg 
+            (\arg opt -> return opt { outFile = arg })
+            "FILE") "output file"
+    , Option ['c']     ["character"] (ReqArg 
+            (\arg opt -> return opt { charFile = arg })
+            "FILE") "character file"
+    , Option ['s']     ["character"] (ReqArg 
+            (\arg opt -> return opt { sagaFile = arg })
+            "FILE") "saga file"
+    ]
+
 
 main :: IO ()
 main = do 
      putStrLn "Starting: armchar-swish  ..."
      printTime
-     sagaobject <- loadSaga sagaFile
-     chargen <- loadChar sagaobject charFile
+     args <- getArgs
+     let (opt,arg,err) = getOpt RequireOrder options args
+     opts <- foldl (>>=) (return defaultOptions) opt
+
+     sagaobject <- loadSaga $ sagaFile opts
+     chargen <- loadChar sagaobject $ charFile opts
      let char = head $ charSheets chargen
      let chargraph = sheetGraph char
 
-     handle <- openFile outFile WriteMode
+     handle <- openFile (outFile opts) WriteMode
 
      let p = hPutStrLn handle
 

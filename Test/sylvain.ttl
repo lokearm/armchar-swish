@@ -22,13 +22,11 @@ armchar:sylvain arm:characterClass arm:Magus ;
 	       arm:hasGender "Male" ;
                arm:hasBirthYear 1192 ;
 	       arm:hasPlayer "George" ;
-	       arm:hasProfession "Elementalist Magus, follower of Meriniota and Diedne" ;
+	       arm:hasProfession "Elementalist Magus, follower of Merinita and Diedne" ;
 	       arm:hasNationality "Provençal" ;
                arm:hasAlmaMater "Provence" ;
                arm:hasCovenant armchar:diednecovenant ;
                arm:hasSaga armchar:diedne .
-Personality Traits
-: Stubborn +1, Pious +1, Curious +3, Compassionate +6 
 
 :zeroadv arm:advanceCharacter armchar:sylvain ;
    arm:advancementClass arm:BaseAdvancement ; 
@@ -64,7 +62,9 @@ Personality Traits
     [ arm:traitClass armr:str ; arm:hasScore -2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
     [ arm:traitClass armr:dex ; arm:hasScore -1 ], [ arm:traitClass armr:qik ; arm:hasScore -1 ],
     [ arm:traitClass armr:occitan ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ],
-    [ arm:traitClass armr:personality-villager ; arm:hasFixedScore 2 ] .
+    [ arm:traitClass arm:PersonalityTrait ; arm:Label "Curious" ;  arm:hasFixedScore 3 ],
+    [ arm:traitClass arm:PersonalityTrait ; arm:Label "Pious" ;  arm:hasFixedScore 1 ],
+    [ arm:traitClass arm:PersonalityTrait ; arm:Label "Stubborn" ;  arm:hasFixedScore 1 ] .
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:sylvain ;
@@ -115,46 +115,11 @@ Personality Traits
 
    [ arm:traitClass armr:InAu15Whispering  ],
    [ arm:traitClass armr:InVi20PiercingFaerie  ],
-   [ arm:traitClass armr:PeVi5Demons  ],
-      ;
+   [ arm:traitClass armr:PeVi5Demons  ] ;
   arm:changePossession
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 1 ;
        arm:instanceLabel "Snares" ;
-       arm:hasDescription "A reasonable set of snares for hunting and survival" ;
+       arm:hasDescription "A reasonable set of snares for hunting and survival" 
        ] .
 
-
-Laboratory
-: [Sylvain-Lab](Sylvain-Lab)
-
-
-# Abilities
-
-| Ability            | Spec.           | Start | XP | Score | xp | Remark |
-|--------------------|-----------------| :-    |----|----|----|----|
-| Concentration      | Spells            |  15 | | 2 | |  15/45 LL |
-| Hunt               | Track             |   5 | | 1 | |  5/45 LL |
-| Intrigue           | Making Allies     |   5 | | 1 | |  5/45 LL |
-| Craft: Wood        | Figurines         |   - | | - | |  5/45 LL |
-| Latin              | Hermetic          | 50  | | 4 |   |  50/240 App |
-| Artes Liberales    | Ceremonial casting |  5 | | 1 |   |  5/240 App |
-| Philosophia        | Ceremonial casting |  5 | | 1 |   |  5/240 App |
-| Merinita Cult Lore | Self Initiation   | 15  | | 2 |   |  15/240 App |
-| Penetration        | Auram             |  5  | | 1 |   |  5/240 App |
-| Finesse            | Auram             |  5  | | 1 |   |  5/240 App |
-| Parma Magica       | Mentem            |  5  | | 1 | - |  5/240 App |
-| Magic Theory       | Spells            | 30  | | 3 |   | 30/240 App |
-| Faerie Magic       | Spells            |  5  | | 1 |   |  5/240 App |
-| Forest Lore        |                   | 33x1½=50  | | 4+2 | | 20/45 LL 13/240 App |
-
-
-- elementalist mechanics
-
-# Spells
-
-+ ReVi20 Opening the Intangible Tunnel (AC/Diam/Ind) 
-  [custom variant; may be an equivalent canon variant with a different name]
-+ CrAu30 Wings of the Soaring Wind
-+ CrAu30 Pull of the Skybound Winds
-+ ReAu30 Clouds of Thunderous Might
 
