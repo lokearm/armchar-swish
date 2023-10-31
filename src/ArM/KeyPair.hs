@@ -51,7 +51,7 @@ import qualified Data.Aeson.KeyMap as KM
 import ArM.Types.RDF
 import ArM.Rules.Aux
 
-import ArM.Trace
+import ArM.Debug.NoTrace
 
 -- |
 -- = Data Types

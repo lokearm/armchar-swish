@@ -14,7 +14,7 @@ module Main where
 import System.IO -- for file IO
 
 -- Timer
-import ArM.Time
+import ArM.Debug.Time
 import ArM.CharGraph
 import ArM.Markdown.CharacterSheet
 import ArM.Character.CharGen

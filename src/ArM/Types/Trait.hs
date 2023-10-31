@@ -37,7 +37,7 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.NoTrace
+import ArM.Debug.NoTrace
 
 -- | 
 -- = Trait

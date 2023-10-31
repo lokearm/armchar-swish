@@ -20,8 +20,9 @@ extra-source-files:  CHANGELOG.md, README.md
 common deps
   -- documentation:       True
   other-modules:       ArM.Rules
-                       , ArM.Trace
-                       , ArM.NoTrace
+                       , ArM.Debug.Trace
+                       , ArM.Debug.NoTrace
+                       , ArM.Debug.Time
                        , ArM.Internal.Aux
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
@@ -35,7 +36,6 @@ common deps
                        , ArM.BlankNode
                        , ArM.CharacterQuery
                        , ArM.KeyPair
-                       , ArM.Time
                        , ArM.Types.Character
                        , ArM.Types.Advancement
                        , ArM.Types.Trait

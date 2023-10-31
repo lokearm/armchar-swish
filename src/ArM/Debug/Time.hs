@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Time
+-- Module      :  ArM.Debug.Time
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -11,7 +11,8 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Time where
+module ArM.Debug.Time where
+
 import Numeric
 import System.CPUTime
 

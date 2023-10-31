@@ -1,25 +1,23 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Trace
+-- Module      :  ArM.Debug.NoTrace
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- This module exports `Debug.Trace.trace` and adds a few convenience
--- functions for debug tracing.
--- To turn off the debug trace, `ArM.NoTrace` can be imported instead
--- of this one.
+-- This module defines the same functions as `ArM.Trace` to be identity
+-- functions; thus the debug trace can be turned off simply by importing
+-- this module instead of `ArM.Trace`, leaving the debug code in place.
 --
 -----------------------------------------------------------------------------
 
-module ArM.Trace where
+module ArM.Debug.NoTrace where
 
-import qualified Debug.Trace as T
 
 trace :: String -> a -> a
-trace = T.trace
+trace _ y = y
 ttrace :: Show a => a -> a
-ttrace x = trace (show x) x
+ttrace x = x
 strace :: String -> String
-strace x = trace  x x
+strace x = x

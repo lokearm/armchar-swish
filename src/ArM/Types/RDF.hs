@@ -28,7 +28,7 @@ import Network.URI (parseURI)
 import Swish.RDF.Vocabulary.XSD (xsdInteger)
 import Control.Monad (mzero)
 
-import ArM.Trace
+import ArM.Debug.NoTrace
 
 -- | A `KVP` holds a prefixed ID for RDF serialisation.
 -- In JSON this appears as an object with only the `prefixedid` attribute.
