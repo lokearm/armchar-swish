@@ -20,14 +20,12 @@ import qualified Swish.RDF.Query as Q
 -- import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
 import           Data.Aeson
-import           Data.Aeson.Key
 -- import           Data.Maybe (fromJust)
 -- import           Data.List (sort)
 import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Resources
 import           ArM.KeyPair
-import           ArM.Types.Character
 
 data Saga = Saga { sagaID :: RDFLabel
                  , sagaTitle :: String

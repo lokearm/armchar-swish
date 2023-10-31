@@ -20,10 +20,13 @@ printSheetObject :: SheetObject -> [String]
 printSheetObject ob = (map printMD $ metadata ob) 
                   ++ [ "Personality traits",
                        (f $ map p1 $ ptraits ob),
+                       "",
                        "Characteristics",
                        (f $ map p2 $ characteristics ob),
+                       "",
                        "Size",
                        ": " ++ (lf $ map maybeFormat $ size ob),
+                       "",
                        "Confidence",
                        ": " ++ (lf $ map confFormat $ cnf ob),
                        "",
@@ -68,7 +71,7 @@ printSpellLine t = "+ " ++ tefoString t ++ " " ++ f1 t
          f2 = si . traitCastingScore
 
 printMD :: (String,String) -> String
-printMD (x, y) = x ++ "\n: " ++ y
+printMD (x, y) = x ++ "\n: " ++ y ++ "\n"
 
 confFormat :: (Maybe Int, Maybe Int) -> String
 confFormat (x,y) = maybeFormat x ++ " (" ++ maybeFormat y ++ ")"

@@ -14,14 +14,12 @@ module ArM.CharGraph
                , MapState(..)
                ) where
 
+import           ArM.Types.RDF (fromRDFGraph)
+
 import qualified Swish.RDF.Graph as G
 
 import qualified Data.Map as Map
 
-import           ArM.Types.RDF (makeRDFGraph,fromRDFGraph)
-import qualified ArM.Types.Season as TS
-import qualified ArM.Types.Character as TC
-import qualified ArM.Types.Advancement as TA
 import qualified ArM.Character.CharGen as TCG
 import qualified ArM.Types.Saga as TS
 import qualified ArM.Rules as R

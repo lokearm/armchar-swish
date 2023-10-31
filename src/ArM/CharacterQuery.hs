@@ -87,6 +87,7 @@ getMetaData = KeyPairList . toKeyPairList . map arcFromBinding . Q.rdfQueryFind 
 getMetaDataTuples :: G.RDFGraph -> [(String, String)]
 getMetaDataTuples = map ( mdPair . metadataFromBinding ) . Q.rdfQueryFind arcs
 
+mdPair :: (a, Maybe G.RDFLabel, Maybe G.RDFLabel) -> (String,String)
 mdPair (_,x,y) = (label2string x, label2string y)
 fromRDFLabel :: G.RDFLabel -> (Maybe Int, Maybe String)
 fromRDFLabel lab = (G.fromRDFLabel lab,G.fromRDFLabel lab)
@@ -95,3 +96,4 @@ label2string = f . fromRDFLabel . fromJust
     where f (Nothing,Nothing) = "Error"
           f (Just x,Nothing) = show x
           f (Nothing,Just x) = x
+          f _ = error "Fallthrough case should not happen"

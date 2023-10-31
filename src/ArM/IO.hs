@@ -14,7 +14,6 @@
 module ArM.IO (readGraph) where
 
 import           ArM.Resources (baseURI)
-import           System.IO (IO)
 import           Swish.RDF.Graph (emptyGraph,RDFGraph)
 import qualified Data.Text.Lazy.IO as DTLIO
 import           Swish.RDF.Parser.Turtle (parseTurtle)
