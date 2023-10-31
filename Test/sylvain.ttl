@@ -1,0 +1,185 @@
+# Test file: Character Sheet for armchar-swish
+#
+# See comments in cieran.ttl
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix arm: <https://hg.schaathun.net/armchar/schema#> .
+@prefix armr: <https://hg.schaathun.net/armchar/resources#> .
+@prefix armchar: <https://hg.schaathun.net/armchar/character/> .
+@prefix : <https://hg.schaathun.net/armchar/character/sylvain#> .
+
+# Identifier for the sheet (graph) itself.  Not used at present.
+<https://hg.schaathun.net/armcharacter/sylvain> a owl:Ontology ;
+     dc:creator "George" ;
+     rdfs:comment "This is a magus for the Diedne saga in Provence." .
+
+# Metadata.  Defined for character, copied to character sheet
+armchar:sylvain arm:characterClass arm:Magus ; 
+               arm:hasName "Sylvain" ;
+	       arm:hasGender "Male" ;
+               arm:hasBirthYear 1192 ;
+	       arm:hasPlayer "George" ;
+	       arm:hasProfession "Elementalist Magus, follower of Meriniota and Diedne" ;
+	       arm:hasNationality "Provençal" ;
+               arm:hasAlmaMater "Provence" ;
+               arm:hasCovenant armchar:diednecovenant ;
+               arm:hasSaga armchar:diedne .
+
+:zeroadv arm:advanceCharacter armchar:sylvain ;
+   arm:advancementClass arm:BaseAdvancement ; 
+   arm:advanceTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ],
+      [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ] ;
+   arm:hasHouseVirtue 
+    [ arm:traitClass armr:faeriemagic  ] ;
+   arm:buyVirtueFlaw
+    [ arm:traitClass armr:elementalist ],
+    [ arm:traitClass armr:skilledParens ],
+    [ arm:traitClass armr:diednemagic ],
+    [ arm:traitClass armr:puissantAbility ; 
+      arm:grantsTrait [ arm:bonusTo armr:forestlore ] ],
+    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Wind" ],
+
+    [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
+    [ arm:traitClass armr:meddlerMajor ; a arm:majorFlaw ],
+    [ arm:traitClass armr:pagain ],
+    [ arm:traitClass armr:carefree ; a armr:minorFlaw ] ;
+   arm:advanceTrait 
+    [ arm:traitClass armr:int ; arm:hasScore 2 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
+    [ arm:traitClass armr:com ; arm:hasScore 1 ], [ arm:traitClass armr:pre ; arm:hasScore 1 ],
+    [ arm:traitClass armr:str ; arm:hasScore -2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
+    [ arm:traitClass armr:dex ; arm:hasScore -1 ], [ arm:traitClass armr:qik ; arm:hasScore -1 ],
+    [ arm:traitClass armr:occitan ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ],
+    [ arm:traitClass armr:personality-villager ; arm:hasFixedScore 2 ] .
+
+# Pre-game Advancement
+:earlyadv arm:advanceCharacter armchar:sylvain ;
+   arm:advancementClass arm:EarlyChildhoodAdvancement ; 
+   arm:advanceTrait 
+   [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
+   [ arm:traitClass armr:stealth ; arm:hasSpeciality "Woodlands" ;  arm:addedXP 15  ],
+   [ arm:traitClass armr:survival ; arm:hasSpeciality "Woodlands" ; arm:addedXP 15  ] .
+
+:lateradv arm:advanceCharacter armchar:sylvain ;
+  arm:advancementClass arm:LaterLifeAdvancement ; 
+  arm:advanceTrait 
+      [ arm:traitClass armr:hunt ;  arm:addedXP 5  ],
+      [ arm:traitClass armr:intrigue ;  arm:addedXP 5  ],
+      [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
+        arm:addedXP 15  ],
+      [ arm:traitClass armr:craft-cooking ; arm:hasSpeciality "Cookies" ; arm:addedXP 30  ],
+      [ arm:traitClass armr:craft-fletching ; arm:hasSpeciality "Arrows" ; arm:addedXP 30  ],
+      [ arm:traitClass armr:hermeslore ; arm:hasSpeciality "Hibernia" ;
+        arm:addedXP 5  ] .
+:apprenticeadv arm:advanceCharacter armchar:sylvain ;
+  arm:advancementClass arm:ApprenticeshipAdvancement ; 
+  arm:advanceTrait 
+      [ arm:traitClass armr:creo ; arm:addedXP 21 ],
+      [ arm:traitClass armr:intellego ; arm:addedXP 21 ],
+      [ arm:traitClass armr:muto ; arm:addedXP 15 ],
+      [ arm:traitClass armr:perdo ; arm:addedXP 15 ],
+      [ arm:traitClass armr:rego ; arm:addedXP 21 ],
+      [ arm:traitClass armr:animal ; arm:addedXP 0 ],
+      [ arm:traitClass armr:aquam ; arm:addedXP 3 ],
+      [ arm:traitClass armr:auram ; arm:addedXP 45 ],
+      [ arm:traitClass armr:corpus ; arm:addedXP 0 ],
+      [ arm:traitClass armr:herbam ; arm:addedXP 0 ],
+      [ arm:traitClass armr:ignem ; arm:addedXP 3 ],
+      [ arm:traitClass armr:imaginem ; arm:addedXP 0 ],
+      [ arm:traitClass armr:mentem ; arm:addedXP 1 ],
+      [ arm:traitClass armr:terram ; arm:addedXP 3 ],
+      [ arm:traitClass armr:vim ; arm:addedXP 15 ],
+    [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
+    [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
+    [ arm:traitClass armr:latin ; arm:addedXP 50 ; arm:hasSpeciality "Hermetic Usage" ],
+   [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
+   [ arm:traitClass armr:hermescode ; arm:addedXP 5 ; arm:hasSpeciality "Stonehenge" ],
+   [ arm:traitClass armr:infernallore ; arm:addedXP 0 ; arm:hasSpeciality "Undead" ],
+   [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ],
+   [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Auram" ],
+   [ arm:traitClass armr:finesse ; arm:addedXP 5 ; arm:hasSpeciality "Auram" ],
+   [ arm:traitClass armr:PeCo20Wound ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:ReCo5Spasms ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:CrIg15Lamp ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:PeIm20Veil ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:CrIm10Clarity ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:MuIm10Aura ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:PeMe10Trust ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:ReMe15Arrow ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:ReMe5Touch ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:PeTe20Obliteration  ; arm:hasTotalXP 5 ],
+   [ arm:traitClass armr:PeTe20End  ; arm:hasTotalXP 5 ] 
+      ;
+  arm:changePossession
+     [ arm:traitClass arm:Equipment ; arm:hasQuantity 1 ;
+       arm:instanceLabel "Snares" ;
+       arm:hasDescription "A reasonable set of snares for hunting and survival" ;
+       ] .
+
+
+
+Hermetic Name
+: Silvanus of Merinita
+
+Personality Traits
+: Stubborn +1, Pious +1, Curious +3, Compassionate +6 
+
+Laboratory
+: [Sylvain-Lab](Sylvain-Lab)
+
+# Virtues and Flaws
+
++ Hermetic Magus (0), the Gift (0)
++ Faerie Magic (0 - house virtue),
++ Forest Lore; Puissant and Affinity with Forest Lore (3) 
++ Diedne Magic (1), 
++ Skilled Parens (1),
++ Secondary Insight (1),
++ Minor Magical Focus: Wind (1)
++ Elemental Magic (3)
+
++ Dark Secret (0)
++ Pagan (-3 - Story Flaw), 
++ Compassionate (-3 - Major Personality)
++ Curious (-1 - Minor Personality) 
+    + [Custom, in the «Curiosity killed the cat»,
+      similar to the canon reckless] 
++ Deleterious Circumstances [Hearing Church Bells] (-1)
++ Small Frame (-1),
++ Motion Sickness (-1)
+
+# Abilities
+
+| Ability            | Spec.           | Start | XP | Score | xp | Remark |
+|--------------------|-----------------| :-    |----|----|----|----|
+| Concentration      | Spells            |  15 | | 2 | |  15/45 LL |
+| Hunt               | Track             |   5 | | 1 | |  5/45 LL |
+| Intrigue           | Making Allies     |   5 | | 1 | |  5/45 LL |
+| Craft: Wood        | Figurines         |   - | | - | |  5/45 LL |
+| Latin              | Hermetic          | 50  | | 4 |   |  50/240 App |
+| Artes Liberales    | Ceremonial casting |  5 | | 1 |   |  5/240 App |
+| Philosophia        | Ceremonial casting |  5 | | 1 |   |  5/240 App |
+| Merinita Cult Lore | Self Initiation   | 15  | | 2 |   |  15/240 App |
+| Penetration        | Auram             |  5  | | 1 |   |  5/240 App |
+| Finesse            | Auram             |  5  | | 1 |   |  5/240 App |
+| Parma Magica       | Mentem            |  5  | | 1 | - |  5/240 App |
+| Magic Theory       | Spells            | 30  | | 3 |   | 30/240 App |
+| Faerie Magic       | Spells            |  5  | | 1 |   |  5/240 App |
+| Forest Lore        |                   | 33x1½=50  | | 4+2 | | 20/45 LL 13/240 App |
+
+
+- elementalist mechanics
+
+# Spells
+
++ InAu15 Whispering Winds 
++ InVi20 Piercing the Faerie Veil
++ ReVi20 Opening the Intangible Tunnel (AC/Diam/Ind) 
+  [custom variant; may be an equivalent canon variant with a different name]
++ CrAu30 Wings of the Soaring Wind
++ CrAu30 Pull of the Skybound Winds
++ ReAu30 Clouds of Thunderous Might
++ PeVi5 Demon's Eternal Oblivion
++ **Sum** 150 levels
+

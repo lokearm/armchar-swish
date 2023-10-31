@@ -27,4 +27,5 @@ prof.*
 __pycache__
 log
 test.md
+*.pdf
 test

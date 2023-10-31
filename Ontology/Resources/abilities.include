@@ -26,6 +26,9 @@ armr:english  rdfs:subClassOf armr:livinglanguage ;
 armr:irish  rdfs:subClassOf armr:livinglanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Living Language: Irish" .
+armr:occitan  rdfs:subClassOf armr:livinglanguage ;
+                   a arm:LeafTraitClass ;
+                   arm:hasLabel "Living Language: Occitan" .
 armr:gaelic  rdfs:subClassOf armr:livinglanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Living Language: Gaelic" .

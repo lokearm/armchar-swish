@@ -1,0 +1,18 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix arm: <https://hg.schaathun.net/armchar/schema#> .
+@prefix armr: <https://hg.schaathun.net/armchar/resources#> .
+@prefix armchar: <https://hg.schaathun.net/armchar/character/> .
+@prefix : <https://hg.schaathun.net/armchar/character/cieran#> .
+
+
+armchar:diednecovenant  a arm:Covenant ; 
+               arm:hasLabel "Diedne Covenant" ;
+	       arm:hasSetting "Provence" ;
+               arm:hasSaga armchar:diedne .
+armchar:diedne a arm:Saga ; 
+      arm:hasName "Contested Lands" ;
+      arm:hasSchemaFile "Ontology/arm.ttl" ;
+      arm:hasResourceFile "Ontology/resources.ttl" ;
+      arm:hasCharacterFile "Test/sylvain.ttl" .
