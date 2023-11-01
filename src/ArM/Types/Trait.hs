@@ -37,7 +37,7 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Debug.NoTrace
+import ArM.Debug.Trace
 
 -- | 
 -- = Trait
@@ -80,9 +80,10 @@ instance Ord Trait where
                | traitClass x > traitClass y = GT
                -- | not (isRepeatableTrait x) = EQ
                -- | not (isRepeatableTrait y) = EQ
-               | instanceLabel x < instanceLabel y = LT
-               | instanceLabel x > instanceLabel y = GT
+               | instanceLabel x < instanceLabel y = trace l LT
+               | instanceLabel x > instanceLabel y = trace l GT
                | otherwise = EQ
+               where l = "sort " ++ show (instanceLabel x, instanceLabel y)
 
 instance ToJSON Trait where 
     toJSON t = toJSON $ KeyPairList $ toKeyPairList $ traitContents t 

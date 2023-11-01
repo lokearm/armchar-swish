@@ -51,7 +51,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
     [ arm:traitClass armr:deleterioscircumstances ; arm:hasDetail "Hearing Church Bells" ],
     [ arm:traitClass armr:compassionateMajor ; a arm:majorFlaw ],
     [ arm:traitClass armr:minorPersonalityFlaw ;
-      arm:hasLabel "Curious (custom, similar to reckless)" ],
+      arm:instanceLabel "Curious (custom, similar to reckless)" ],
     [ arm:traitClass armr:pagan ],
     [ arm:traitClass armr:smallframe ],
     [ arm:traitClass armr:motionsickness ; a armr:minorFlaw ] ;
@@ -62,9 +62,9 @@ armchar:sylvain arm:characterClass arm:Magus ;
     [ arm:traitClass armr:str ; arm:hasScore -2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
     [ arm:traitClass armr:dex ; arm:hasScore -1 ], [ arm:traitClass armr:qik ; arm:hasScore -1 ],
     [ arm:traitClass armr:occitan ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:Label "Curious" ;  arm:hasFixedScore 3 ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:Label "Pious" ;  arm:hasFixedScore 1 ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:Label "Stubborn" ;  arm:hasFixedScore 1 ] .
+    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Curious" ;  arm:hasFixedScore 3 ],
+    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Pious" ;  arm:hasFixedScore 1 ],
+    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Stubborn" ;  arm:hasFixedScore 1 ] .
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:sylvain ;

@@ -134,6 +134,7 @@ confGraph = listToRDFGraph [ G.arc idVar (armRes "hasTrait" ) tVar
 parsePair :: KeyValuePair -> Trait -> Trait
 parsePair (KeyValuePair res  x) t 
     | res == (armRes "hasLabel")      = t { traitLabel = G.fromRDFLabel x }
+    | res == (armRes "instanceLabel") = t { traitLabel = G.fromRDFLabel x }
     | res == (armRes "hasSpeciality") = t { traitSpeciality = G.fromRDFLabel x }
     | res == (armRes "hasScore")      = t { traitScore = G.fromRDFLabel x }
     | res == (armRes "hasXP")         = t { traitXP = G.fromRDFLabel x }

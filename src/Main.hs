@@ -58,7 +58,7 @@ main = do
      putStrLn "Starting: armchar-swish  ..."
      printTime
      args <- getArgs
-     let (opt,arg,err) = getOpt RequireOrder options args
+     let (opt,_,_) = getOpt RequireOrder options args
      opts <- foldl (>>=) (return defaultOptions) opt
 
      sagaobject <- loadSaga $ sagaFile opts
