@@ -45,7 +45,7 @@ import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
 import Network.Wai.Middleware.Cors (simpleCors)
 
 import System.CPUTime
-import ArM.Time
+import ArM.Debug.Time
 
 -- TEST
 -- import qualified ArM.Rules.Persistence as RP

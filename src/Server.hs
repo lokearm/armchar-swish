@@ -34,7 +34,7 @@ import ArM.Server.WebService (stateScotty)
 import Data.SecureMem -- for constant-time comparison
 
 -- Timer
-import ArM.Time
+import ArM.Debug.Time
 
 -- Authentication
 

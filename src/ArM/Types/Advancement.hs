@@ -16,7 +16,7 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -199,13 +199,13 @@ splitTrait' :: ([Trait],[ProtoTrait]) -> ([Trait],[ProtoTrait])
 splitTrait' (ts,[]) = (ts,[])
 splitTrait' ([],x:xs) = splitTrait' (mkTrait x:[],xs) 
 splitTrait' (t:ts,x:xs) 
-    | traitID t == id = splitTrait' (t':ts,xs) 
+    | traitID t == tid = splitTrait' (t':ts,xs) 
     | otherwise       = trace (show t) $ splitTrait' (mkTrait x:t:ts,xs) 
        where t' = addToTrait t x
-             (_,id,_,_) = x
+             (_,tid,_,_) = x
 mkTrait :: ProtoTrait -> Trait
 mkTrait (a,b,c,d) = defaultTrait { traitClass = a,
-			 traitID = b,
+                         traitID = b,
                          traitContents = [ arc b c d ] }
 
 traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph

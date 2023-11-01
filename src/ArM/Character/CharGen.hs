@@ -26,7 +26,7 @@ import ArM.Types.RDF
 import ArM.Types.Advancement
 import Data.List (sort)
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 -- |
 -- = Data Types

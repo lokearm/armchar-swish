@@ -16,6 +16,19 @@ armr:ReAu30Clouds a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasLevel     30 ;
     arm:hasLabel       "Clouds of Thunderous Might" .
 
+armr:CrAu30Wings  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:creo ;
+    arm:hasForm      armr:auram ;
+    arm:hasLevel     30 ;
+    arm:hasLabel       "Wings of the Soaring Wind" .
+
+armr:CrAu30Pull  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:creo ;
+    arm:hasForm      armr:auram ;
+    arm:hasLevel     30 ;
+    arm:hasLabel       "Pull of the Skybound Winds" .
+
+
 armr:MuCo25Shape a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasLabel "Shape of the Woodland Prowler" ;
     arm:hasLevel 25 ;
@@ -193,3 +206,14 @@ armr:InVi20PiercingMagical  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasForm      armr:vim ;
     arm:hasLevel     20 ;
     arm:hasLabel       "Piercing the Magical  Veil" .
+
+
+armr:ReVi20Opening a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:rego ;
+    arm:hasForm      armr:vim ;
+    arm:hasLevel     20 ;
+    arm:hasLabel       "Opening the Intangible Tunnel [custom variant]" ;
+    arm:hasRange     arm:Rac ;
+    arm:hasDuration  arm:Ddiam ;
+    arm:hasTarget    arm:Tind .
+

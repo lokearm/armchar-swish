@@ -115,8 +115,11 @@ armchar:sylvain arm:characterClass arm:Magus ;
 
    [ arm:traitClass armr:InAu15Whispering  ],
    [ arm:traitClass armr:InVi20PiercingFaerie  ],
-   [ arm:traitClass armr:PeVi5Demons  ] ;
-   [ arm:traitClass armr:ReAu30Clouds ] ;
+   [ arm:traitClass armr:PeVi5Demons  ],
+   [ arm:traitClass armr:ReAu30Clouds ],
+   [ arm:traitClass armr:ReVi20Opening ],
+   [ arm:traitClass armr:CrAu30Wings ],
+   [ arm:traitClass armr:CrAu30Pull ] ;
   arm:changePossession
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 1 ;
        arm:instanceLabel "Snares" ;
