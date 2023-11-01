@@ -82,7 +82,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
         arm:addedXP 15  ],
       [ arm:traitClass armr:craft-cooking ; arm:hasSpeciality "Cookies" ; arm:addedXP 30  ],
-      [ arm:traitClass armr:craft-fletching ; arm:hasSpeciality "Arrows" ; arm:addedXP 30  ],
+      [ arm:traitClass armr:forestlore ; arm:addedXP 30  ],
       [ arm:traitClass armr:hermeslore ; arm:hasSpeciality "Hibernia" ;
         arm:addedXP 5  ] .
 :apprenticeadv arm:advanceCharacter armchar:sylvain ;
