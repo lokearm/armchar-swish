@@ -189,8 +189,8 @@ csToArcListM cs = do
           x <- getSheetIDM $ sheetID cs
           tsm <- fixBlanksM $ csTraits cs
           ism <- fixBlanksM $ csItems $ trace ("#tsm = " ++ show (length tsm)) cs
-          let ht = map ( \ y -> arc x htRes (fromJust $ traitID y) ) tsm
-          let hi = map ( \ y -> arc x (armRes "hasPossession") (fromJust $ traitID y) ) ism
+          let ht = map ( \ y -> arc x htRes (traitID y) ) tsm
+          let hi = map ( \ y -> arc x (armRes "hasPossession") (traitID y) ) ism
           let ts =  map traitContents tsm
           let is =  map traitContents ism
           let metadata = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)

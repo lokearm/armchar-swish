@@ -9,6 +9,13 @@ armr:InAu15Whispering a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTarget    arm:Tind ;
     arm:hasDescription "The winds bear their tidings to your ears, allowing you to hear words spoken by any group of people within your line of sight, provided no solid barrier (including glass) intervenes. This spell is an adaptation of an effect known to Bjornaer the Founder, and fits poorly into the normal framework of Hermetic magic.  (Unique spell)" .
 
+
+armr:ReAu30Clouds a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:rego ;
+    arm:hasForm      armr:auram ;
+    arm:hasLevel     30 ;
+    arm:hasLabel       "Clouds of Thunderous Might" .
+
 armr:MuCo25Shape a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasLabel "Shape of the Woodland Prowler" ;
     arm:hasLevel 25 ;
@@ -186,4 +193,3 @@ armr:InVi20PiercingMagical  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasForm      armr:vim ;
     arm:hasLevel     20 ;
     arm:hasLabel       "Piercing the Magical  Veil" .
-

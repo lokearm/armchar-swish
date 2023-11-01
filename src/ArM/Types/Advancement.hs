@@ -109,8 +109,8 @@ advToArcListM adv = do
        let x = rdfid adv
        let xs1 =  map traitContents tsm
        let xs2 =  map traitContents ism
-       let ht = map ( \ y -> arc x (armRes "advanceTrait") (fromJust $ traitID y) ) tsm
-       let hi = map ( \ y -> arc x (armRes "changePossession") (fromJust $ traitID y) ) ism
+       let ht = map ( \ y -> arc x (armRes "advanceTrait") (traitID y) ) tsm
+       let hi = map ( \ y -> arc x (armRes "changePossession") (traitID y) ) ism
        let ys1 = foldr (++) (ms++hi++ht) xs1
        return $ foldr (++) ys1 xs2
     where ms = keyvalueToArcList (rdfid adv) (contents adv)
@@ -199,12 +199,13 @@ splitTrait' :: ([Trait],[ProtoTrait]) -> ([Trait],[ProtoTrait])
 splitTrait' (ts,[]) = (ts,[])
 splitTrait' ([],x:xs) = splitTrait' (mkTrait x:[],xs) 
 splitTrait' (t:ts,x:xs) 
-    | traitClass t == c = splitTrait' (t':ts,xs) 
-    | otherwise         = trace (show t) $ splitTrait' (mkTrait x:t:ts,xs) 
+    | traitID t == id = splitTrait' (t':ts,xs) 
+    | otherwise       = trace (show t) $ splitTrait' (mkTrait x:t:ts,xs) 
        where t' = addToTrait t x
-             (c,_,_,_) = x
+             (_,id,_,_) = x
 mkTrait :: ProtoTrait -> Trait
 mkTrait (a,b,c,d) = defaultTrait { traitClass = a,
+			 traitID = b,
                          traitContents = [ arc b c d ] }
 
 traitqgraph :: RDFLabel -> RDFLabel -> RDFGraph

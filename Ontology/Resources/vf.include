@@ -553,10 +553,14 @@ armr:avaricious    rdfs:subClassOf  armr:minorPersonalityFlaw ;
 armr:compassionateMajor rdfs:subClassOf  
                  armr:majorPersonalityFlaw ; arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-compassionate,
+		                   arm:hasFixedScore 6 ] ;
                  arm:hasLabel "Compassionate (major)" .
 armr:compassionate rdfs:subClassOf  
                  armr:minorPersonalityFlaw ; arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-compassionate,
+		                   arm:hasFixedScore 3 ] ;
                  arm:hasLabel "Compassionate" .
 armr:drivenMajor      rdfs:subClassOf  armr:majorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;

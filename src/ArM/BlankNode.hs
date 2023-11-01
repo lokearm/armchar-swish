@@ -51,4 +51,4 @@ fixBlankNodeM t
         b <- getBlank
         return $ t { traitContents = map ( replaceBlank b ) 
                       $ traitContents t }
-     where key = fromJust $ traitID t
+     where key = traitID t

@@ -11,3 +11,6 @@ armr:personality-carefree   rdfs:subClassOf arm:PersonalityTrait ;
 armr:personality-meddler    rdfs:subClassOf arm:PersonalityTrait ;
                            a arm:LeafTraitClass ;
                            arm:hasLabel "Meddler" .
+armr:personality-compassionate    rdfs:subClassOf arm:PersonalityTrait ;
+                           a arm:LeafTraitClass ;
+                           arm:hasLabel "Compassionate" .

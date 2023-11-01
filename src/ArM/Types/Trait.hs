@@ -22,7 +22,6 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Types.Trait ( Trait(..)
-                       , traitID
                        , defaultTrait
                        , advanceTraitList
                        ) where
@@ -50,6 +49,7 @@ import ArM.Debug.NoTrace
 -- A blank node is only created when it is written into an RDFGraph.
 data Trait = Trait {
     traitClass :: RDFLabel,
+    traitID :: RDFLabel,
     instanceLabel :: String,
     isRepeatableTrait :: Bool,
     traitContents :: [RDFTriple]
@@ -57,16 +57,11 @@ data Trait = Trait {
 defaultTrait :: Trait
 defaultTrait = Trait {
     traitClass = noSuchTrait,
+    traitID = noSuchTrait,
     instanceLabel = "",
     isRepeatableTrait = False,
     traitContents = []
    } 
-
--- | Get the ID (RDFLabel) of a trait if possible.
-traitID :: Trait -> Maybe RDFLabel
-traitID = f . traitContents
-   where f [] = Nothing
-         f (x:_) = Just $ arcSubj x
 
 instance Show Trait where
    show a = "**" ++ show (traitClass a) ++ "** (" ++ show (instanceLabel a) ++")\n" 
