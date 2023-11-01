@@ -12,6 +12,18 @@ armr:arealore-munster  rdfs:subClassOf armr:arealore ;
                    arm:hasLabel "Area Lore: Munster" .
 armr:organisationlore  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "(Organisation) Lore" .
+armr:merinitalore  rdfs:subClassOf armr:organisationlore ;
+                   a arm:LeafTraitClass ;
+   arm:hasLabel "Merinita Cult Lore" .
+armr:criamonlore  rdfs:subClassOf armr:organisationlore ;
+                   a arm:LeafTraitClass ;
+   arm:hasLabel "Criamon Cult Lore" .
+armr:bjornarlore  rdfs:subClassOf armr:organisationlore ;
+                   a arm:LeafTraitClass ;
+   arm:hasLabel "Bjornar Cult Lore" .
+armr:verditiuslore  rdfs:subClassOf armr:organisationlore ;
+                   a arm:LeafTraitClass ;
+   arm:hasLabel "Verditius Cult Lore" .
 armr:hermeslore  rdfs:subClassOf armr:organisationlore ;
                    a arm:LeafTraitClass ;
    arm:hasLabel "Order of Hermes Lore" .

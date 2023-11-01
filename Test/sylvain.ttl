@@ -81,10 +81,9 @@ armchar:sylvain arm:characterClass arm:Magus ;
       [ arm:traitClass armr:intrigue ;  arm:addedXP 5 ; arm:hasSpeciality "Hermetic Politics"  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Concentration" ;
         arm:addedXP 15  ],
-      [ arm:traitClass armr:craft-cooking ; arm:hasSpeciality "Cookies" ; arm:addedXP 30  ],
-      [ arm:traitClass armr:forestlore ; arm:addedXP 30  ],
-      [ arm:traitClass armr:hermeslore ; arm:hasSpeciality "Hibernia" ;
-        arm:addedXP 5  ] .
+
+      [ arm:traitClass armr:forestlore ; arm:addedXP 20  ]
+      .
 :apprenticeadv arm:advanceCharacter armchar:sylvain ;
   arm:advancementClass arm:ApprenticeshipAdvancement ; 
   arm:advanceTrait 
@@ -100,18 +99,20 @@ armchar:sylvain arm:characterClass arm:Magus ;
       [ arm:traitClass armr:herbam ; arm:addedXP 0 ],
       [ arm:traitClass armr:ignem ; arm:addedXP 3 ],
       [ arm:traitClass armr:imaginem ; arm:addedXP 0 ],
-      [ arm:traitClass armr:mentem ; arm:addedXP 1 ],
+      [ arm:traitClass armr:mentem ; arm:addedXP 0 ],
       [ arm:traitClass armr:terram ; arm:addedXP 3 ],
       [ arm:traitClass armr:vim ; arm:addedXP 15 ],
+      [ arm:traitClass armr:forestlore ; arm:addedXP 13  ],
     [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
     [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
     [ arm:traitClass armr:latin ; arm:addedXP 50 ; arm:hasSpeciality "Hermetic Usage" ],
-   [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
-   [ arm:traitClass armr:hermescode ; arm:addedXP 5 ; arm:hasSpeciality "Stonehenge" ],
-   [ arm:traitClass armr:infernallore ; arm:addedXP 0 ; arm:hasSpeciality "Undead" ],
-   [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ],
    [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Auram" ],
    [ arm:traitClass armr:finesse ; arm:addedXP 5 ; arm:hasSpeciality "Auram" ],
+   [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
+
+   [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Spells" ],
+   [ arm:traitClass armr:faeriemagic ; arm:addedXP  5 ; arm:hasSpeciality "Spells" ],
+   [ arm:traitClass armr:merinitalore ; arm:addedXP  5 ; arm:hasSpeciality "Spells" ],
 
    [ arm:traitClass armr:InAu15Whispering  ],
    [ arm:traitClass armr:InVi20PiercingFaerie  ],
