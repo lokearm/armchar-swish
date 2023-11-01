@@ -26,7 +26,8 @@ armchar:sylvain arm:characterClass arm:Magus ;
 	       arm:hasNationality "Provençal" ;
                arm:hasAlmaMater "Provence" ;
                arm:hasCovenant armchar:diednecovenant ;
-               arm:hasSaga armchar:diedne .
+               arm:hasSaga armchar:diedne ;
+               arm:hasLink "[Laboratory](Sylvain-Lab)" .
 
 :zeroadv arm:advanceCharacter armchar:sylvain ;
    arm:advancementClass arm:BaseAdvancement ; 
