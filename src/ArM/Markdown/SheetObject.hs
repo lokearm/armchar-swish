@@ -17,7 +17,7 @@
 module ArM.Markdown.SheetObject ( getSheetObject
                                 , SheetObject(..)
                                 , Trait(..)
-				, traitLabel
+                                , traitLabel
                                 , tefoString
                                 ) where
 
@@ -32,10 +32,9 @@ import Data.List(sortOn)
 import Data.Maybe (fromJust)
 import Swish.VarBinding  (vbMap)
 
-getCharTraits :: G.RDFGraph -> [Trait]
-getCharTraits = sortOn traitOrder . (map parseTrait) . getCharacteristics
-getPTraits :: G.RDFGraph -> [Trait]
-getPTraits = sortOn traitOrder . (map parseTrait) . getPTs
+
+sortparsed :: [KeyPairList] -> [Trait] 
+sortparsed = sortOn traitOrder . (map parseTrait) 
 
 getAbilityTraits :: G.RDFGraph -> [Trait]
 getAbilityTraits = (map parseTrait) . getAbilities
@@ -47,10 +46,10 @@ getSheetObject :: G.RDFGraph -> SheetObject
 getSheetObject g = SheetObject {
     metadata = mdSort $ getMetaDataTuples g,
     abilities = getAbilityTraits g,
-    arts = map parseTrait $ getArts g,
+    arts = sortparsed $ getArts g,
     spells = map parseTrait $ getSpells g,
-    characteristics = getCharTraits g,
-    ptraits = getPTraits g,
+    characteristics = sortparsed $ getCharacteristics g,
+    ptraits = sortparsed $ getPTs g,
     virtues = map parseTrait $ getVirtues g,
     flaws = map parseTrait $ getFlaws g,
     size = getSize g,
