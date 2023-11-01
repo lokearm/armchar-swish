@@ -1,9 +1,16 @@
 # armchar-swish
 
-ArM character server implementation using Haskell and Swish.
+ArM character generator implemented in declarative programming
+using Haskell and Swish.
 Still in early stages of construction.
 
-There is a very crude client included, intended mainly for testing.
+The focus in this repository is a command line tool generating
+markdown sheets from an RDF graph (turtle files).
+
+There is also a server implementation, serving JSON files generated
+from the RDF graph, and a very crude client indended to test the
+server.  Development on this client/server system is currently on 
+halt.
 
 ## Design notes
 
@@ -15,7 +22,18 @@ There is a very crude client included, intended mainly for testing.
 + [Ontology](Ontology/README.md)
 + [Jena versus Swish](docs/Swish-vs-Jena.md)
 
-## Testing
+## Command line tool
+
+```
+( cd Ontology ; make )
+cabal run armchar-cli -c characterfile.ttl -s sagafile.ttl -o charactersheet.md
+```
+
+There are test files in the `Test` directory.  Please note that the
+saga files depend on ontology files and relative paths.  The commands must
+be run from the root of the repository.
+
+## Testing the Server
 
 The easiest way to run the program is via cabal:
 ```
