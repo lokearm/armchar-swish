@@ -17,6 +17,7 @@
 module ArM.Markdown.SheetObject ( getSheetObject
                                 , SheetObject(..)
                                 , Trait(..)
+				, traitLabel
                                 , tefoString
                                 ) where
 
@@ -70,8 +71,15 @@ data SheetObject = SheetObject {
 }
 
 
+traitLabel :: Trait -> Maybe String
+traitLabel  t
+  | traitLabel2 t == Nothing = traitLabel1 t
+  | traitLabel2 t == (Just "") = traitLabel1 t
+  | otherwise = traitLabel2 t
+
 data Trait = Trait {
-  traitLabel :: Maybe String,
+  traitLabel1 :: Maybe String,
+  traitLabel2 :: Maybe String,
   traitAbbr :: Maybe String,
   traitSpeciality :: Maybe String,
   traitXP :: Maybe Int,
@@ -85,7 +93,8 @@ data Trait = Trait {
 }
 defaultTrait :: Trait
 defaultTrait = Trait {
-  traitLabel = Nothing,
+  traitLabel1 = Nothing,
+  traitLabel2 = Nothing,
   traitAbbr = Nothing,
   traitSpeciality = Nothing,
   traitXP = Nothing,
@@ -133,8 +142,8 @@ confGraph = listToRDFGraph [ G.arc idVar (armRes "hasTrait" ) tVar
 
 parsePair :: KeyValuePair -> Trait -> Trait
 parsePair (KeyValuePair res  x) t 
-    | res == (armRes "hasLabel")      = t { traitLabel = G.fromRDFLabel x }
-    | res == (armRes "instanceLabel") = t { traitLabel = G.fromRDFLabel x }
+    | res == (armRes "hasLabel")      = t { traitLabel1 = G.fromRDFLabel x }
+    | res == (armRes "instanceLabel") = t { traitLabel2 = G.fromRDFLabel x }
     | res == (armRes "hasSpeciality") = t { traitSpeciality = G.fromRDFLabel x }
     | res == (armRes "hasScore")      = t { traitScore = G.fromRDFLabel x }
     | res == (armRes "hasXP")         = t { traitXP = G.fromRDFLabel x }

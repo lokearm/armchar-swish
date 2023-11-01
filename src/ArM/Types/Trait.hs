@@ -37,7 +37,7 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 -- | 
 -- = Trait
@@ -69,7 +69,7 @@ traitID = f . traitContents
          f (x:_) = Just $ arcSubj x
 
 instance Show Trait where
-   show a = "**" ++ show (traitClass a) ++ "**\n" 
+   show a = "**" ++ show (traitClass a) ++ "** (" ++ show (instanceLabel a) ++")\n" 
                  ++ sc (traitContents a) 
                  ++ "\n"
       where 
@@ -140,7 +140,7 @@ advanceTriples (x:xs) (y:ys)
 -- XP need to be recalculated.  This auxiliary is applied
 -- by two different functions to do this.
 fixTrait :: Trait -> Trait
-fixTrait trait = trace "fixTrait" $ trait {
+fixTrait trait =  trait {
        traitContents = sort $ calculateXP $ traitContents trait
     }
 

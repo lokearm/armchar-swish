@@ -16,6 +16,8 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
+import ArM.Debug.Trace
+
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import Data.Maybe
@@ -198,7 +200,7 @@ splitTrait' (ts,[]) = (ts,[])
 splitTrait' ([],x:xs) = splitTrait' (mkTrait x:[],xs) 
 splitTrait' (t:ts,x:xs) 
     | traitClass t == c = splitTrait' (t':ts,xs) 
-    | otherwise         = splitTrait' (mkTrait x:t:ts,xs) 
+    | otherwise         = trace (show t) $ splitTrait' (mkTrait x:t:ts,xs) 
        where t' = addToTrait t x
              (c,_,_,_) = x
 mkTrait :: ProtoTrait -> Trait
@@ -215,17 +217,17 @@ addToTrait :: Trait -> ProtoTrait -> Trait
 addToTrait t (c,s,p,o) 
       | traitClass t /= c = error "traitClass mismatch in addToTrait"
       | p == armRes "instanceLabel" 
-             = t { instanceLabel = lab o
+             = trace "> instanceLabel" $ t { instanceLabel = ttrace $ lab o
                  , traitContents = triple:traitContents t }
       | p == typeRes && o == armRes "RepeatableTrait" 
-                        = t { isRepeatableTrait = True
+                        = trace "> repeatable" $ t { isRepeatableTrait = True
                             , traitContents = triple:traitContents t }
       | p == typeRes && o == armRes "Equipment" 
-                        = t { isRepeatableTrait = True
+                        = trace "> Equipment" $ t { isRepeatableTrait = True
                             , traitContents = triple:traitContents t }
       | otherwise = t { traitContents = triple:traitContents t }
          where lab = f . rdfToString 
-               triple = arc s p o
+               triple = ttrace $ arc s p o
                f Nothing = ""
                f (Just x) = x
 
