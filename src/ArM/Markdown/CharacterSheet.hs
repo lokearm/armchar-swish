@@ -16,6 +16,8 @@ module ArM.Markdown.CharacterSheet ( printSheetObject ) where
 import ArM.Markdown.SheetObject
 import Data.List(intercalate)
 
+import Text.Printf
+
 printSheetObject :: SheetObject -> [String]
 printSheetObject ob = (map printMD $ metadata ob) 
                   ++ [ "Personality traits",
@@ -36,14 +38,12 @@ printSheetObject ob = (map printMD $ metadata ob)
                   ++ (map printVFLine $ virtues ob)
                   ++ (map printVFLine $ flaws ob)
                   ++ [ "", "# Abilities", "",
-                       "| Ability\t | Speciality\t | Score\t| XP\t| Bonus\t| Effective\t|",
-                       "| :-     \t | :-        \t |   -: \t| -:\t|   -: \t|       -: \t|"
+                       pAb "Ability" "Speciality" "Score" "XP" "Bonus" "Effective",
+                       pAb ":-" ":-" "-:" "-:" "-:" "-:"
                        ]
                   ++ (map printAbilityLine $ abilities ob)
-                  ++ [ "", "# Arts", "",
-                       "| Art\t | Score\t | XP\t| Bonus\t| Effective\t|",
-                       "| :- \t |    -:\t | -:\t|   -: \t|       -: \t|"
-                       ]
+                  ++ [ "", "# Arts", "" ]
+                  ++ artHeader
                   ++ (map printArtLine $ arts ob)
                   ++ [ "", "# Spells", "" ]
                   ++ (map printSpellLine $ spells ob)
@@ -86,30 +86,32 @@ printVFLine t = "+ " ++ f1 t ++ f3 t ++ " (" ++ f2 t ++ ")"
          vfDetail (Just s) = ": " ++ s
          f3 = vfDetail . traitDetail
          f1 = ss . traitLabel
-         f2 = si . traitScore
+         f2 = si . traitTotalScore
 
 
 
+artHeader :: [String]
+artHeader = [ 
+  pArt "Art" "Score" "XP" "Bonus" "Effective",
+  pArt ":-" "-:" "-:" "-:" "-:" ]
+pArt :: String -> String -> String -> String -> String -> String
+pArt = printf "| %-10s | %5s | %4s | %5s | %9s |" 
+pAb :: String -> String -> String -> String -> String -> String -> String
+pAb = printf "| %-20s | %-15s | %5s | %4s | %5s | %9s |" 
 printArtLine :: Trait -> String
-printArtLine t = "| " ++ (ss $ traitLabel t) ++ "\t | " 
-                         ++ (si $ traitScore t) ++ "\t| "
-                         ++ (si $ traitXP  t) ++ "\t|"
-                         ++ (si $ traitBonus  t) ++ "\t|"
-                         ++ (si $ traitTotalScore  t) ++ "\t|"
+printArtLine t = pArt
+          (ss $ traitLabel t) 
+          (si $ traitScore t) 
+          (si $ traitXP  t) 
+          (sp $ traitBonus  t) 
+          (si $ traitTotalScore  t)
 printAbilityLine :: Trait -> String
-printAbilityLine t = "| " ++ (ss $ traitLabel t) ++ "\t | " 
-                         ++ (ss $ traitSpeciality t) ++ "\t | "
-                         ++ (si $ traitScore t) ++ "\t| "
-                         ++ (si $ traitXP  t) ++ "\t|"
-                         ++ (si $ traitBonus  t) ++ "\t|"
-                         ++ (si $ traitTotalScore  t) ++ "\t|"
-
-
-
-
-
-
-
+printAbilityLine t = pAb (ss $ traitLabel t) 
+                         (ss $ traitSpeciality t) 
+                         (si $ traitScore t) 
+                         (si $ traitXP  t) 
+                         (si $ traitBonus  t) 
+                         (si $ traitTotalScore  t) 
 
 ss :: Maybe String -> String
 ss (Just s) = s
@@ -117,3 +119,6 @@ ss Nothing = "-"
 si :: Maybe Int -> String
 si (Just s) = show s
 si Nothing = "-"
+sp :: Maybe Int -> String
+sp (Just s) = printf "%5i+"  s
+sp Nothing = "    -"
