@@ -68,8 +68,8 @@ armchar:contestedlands a arm:Saga ;
     [ arm:traitClass armr:strongFaerieBlood ; arm:hasDetail "Ettin Blood, +1 to Stamina" ],
     [ arm:traitClass armr:flawlessMagic ],
     [ arm:traitClass armr:skilledParens ],
-    [ arm:traitClass armr:puissantAbility ; 
-      arm:grantsTrait [ arm:bonusTo armr:magictheory ] ],
+    [ arm:traitClass armr:puissantArt ; 
+      arm:grantsTrait [ arm:bonusTo armr:intellego ] ],
     [ arm:traitClass armr:affinityWithArt ; arm:hasDetail "Imaginem" ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Magical Arrows" ],
     [ arm:traitClass armr:meddlerMajor ; a arm:majorFlaw ],
@@ -114,7 +114,7 @@ armchar:contestedlands a arm:Saga ;
   arm:advancementClass arm:ApprenticeshipAdvancement ; 
   arm:advanceTrait 
       [ arm:traitClass armr:creo ; arm:addedXP 21 ],
-      [ arm:traitClass armr:intellego ; arm:addedXP 0 ],
+      [ arm:traitClass armr:intellego ; arm:addedXP 15 ],
       [ arm:traitClass armr:muto ; arm:addedXP 0 ],
       [ arm:traitClass armr:perdo ; arm:addedXP 36 ],
       [ arm:traitClass armr:rego ; arm:addedXP 36 ],

@@ -83,12 +83,14 @@ data Trait = Trait {
   traitSpeciality :: Maybe String,
   traitXP :: Maybe Int,
   traitScore :: Maybe Int,
+  traitTotalScore :: Maybe Int,
   traitDetail :: Maybe String,
   traitCastingScore :: Maybe Int,
   traitForm :: Maybe String,
   traitTech :: Maybe String,
   traitLevel :: Maybe Int,
-  traitOrder :: Maybe Int
+  traitOrder :: Maybe Int,
+  traitBonus :: Maybe Int
 }
 defaultTrait :: Trait
 defaultTrait = Trait {
@@ -98,12 +100,14 @@ defaultTrait = Trait {
   traitSpeciality = Nothing,
   traitXP = Nothing,
   traitScore = Nothing,
+  traitTotalScore = Nothing,
   traitDetail = Nothing,
   traitCastingScore = Nothing,
   traitForm = Nothing,
   traitTech = Nothing,
   traitLevel = Nothing,
-  traitOrder = Nothing
+  traitOrder = Nothing,
+  traitBonus = Nothing
 }
 
 
@@ -144,7 +148,8 @@ parsePair (KeyValuePair res  x) t
     | res == (armRes "hasLabel")      = t { traitLabel1 = G.fromRDFLabel x }
     | res == (armRes "instanceLabel") = t { traitLabel2 = G.fromRDFLabel x }
     | res == (armRes "hasSpeciality") = t { traitSpeciality = G.fromRDFLabel x }
-    | res == (armRes "hasScore")      = t { traitScore = G.fromRDFLabel x }
+    | res == (armRes "hasScore")      = t { traitTotalScore = G.fromRDFLabel x }
+    | res == (armRes "hasXPScore")      = t { traitScore = G.fromRDFLabel x }
     | res == (armRes "hasXP")         = t { traitXP = G.fromRDFLabel x }
     | res == (armRes "hasDetail")     = t { traitDetail = G.fromRDFLabel x }
     | res == (armRes "hasCastingScore") = t { traitCastingScore = G.fromRDFLabel x }
@@ -153,6 +158,7 @@ parsePair (KeyValuePair res  x) t
     | res == (armRes "hasLevel")           = t { traitLevel = G.fromRDFLabel x }
     | res == (armRes "hasOrder")           = t { traitOrder = G.fromRDFLabel x }
     | res == (armRes "hasAbbreviation")    = t { traitAbbr = G.fromRDFLabel x }
+    | res == (armRes "hasTotalBonus")      = t { traitBonus = G.fromRDFLabel x }
 parsePair _ t = t 
 
 tefoString :: Trait -> String

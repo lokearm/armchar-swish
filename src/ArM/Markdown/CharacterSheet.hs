@@ -36,24 +36,24 @@ printSheetObject ob = (map printMD $ metadata ob)
                   ++ (map printVFLine $ virtues ob)
                   ++ (map printVFLine $ flaws ob)
                   ++ [ "", "# Abilities", "",
-                       "| Ability\t | Speciality\t | Score\t| XP\t|",
-                       "| :-     \t | :-        \t |   -: \t| -:\t|"
+                       "| Ability\t | Speciality\t | Score\t| XP\t| Bonus\t| Effective\t|",
+                       "| :-     \t | :-        \t |   -: \t| -:\t|   -: \t|       -: \t|"
                        ]
                   ++ (map printAbilityLine $ abilities ob)
                   ++ [ "", "# Arts", "",
-                       "| Art\t | Score\t | XP |",
-                       "| :- \t |    -:\t | -: |" 
+                       "| Art\t | Score\t | XP\t| Bonus\t| Effective\t|",
+                       "| :- \t |    -:\t | -:\t|   -: \t|       -: \t|"
                        ]
                   ++ (map printArtLine $ arts ob)
                   ++ [ "", "# Spells", "" ]
                   ++ (map printSpellLine $ spells ob)
-   where p1 x = fJ (traitLabel x) ++ " " ++ (fI $ traitScore x)
+   where p1 x = fJ (traitLabel x) ++ " " ++ (fI $ traitTotalScore x)
          fJ Nothing = "???"
          fJ (Just x) = x
          fI Nothing = "???"
          fI (Just x) = show x
          f = (':':) . (' ':) . intercalate ", "  
-         p2 x = fJ (traitAbbr x) ++ " " ++ (fI $ traitScore x)
+         p2 x = fJ (traitAbbr x) ++ " " ++ (fI $ traitTotalScore x)
          lf [] = "-"
          lf xs = intercalate ", " xs
 
@@ -94,11 +94,15 @@ printArtLine :: Trait -> String
 printArtLine t = "| " ++ (ss $ traitLabel t) ++ "\t | " 
                          ++ (si $ traitScore t) ++ "\t| "
                          ++ (si $ traitXP  t) ++ "\t|"
+                         ++ (si $ traitBonus  t) ++ "\t|"
+                         ++ (si $ traitTotalScore  t) ++ "\t|"
 printAbilityLine :: Trait -> String
 printAbilityLine t = "| " ++ (ss $ traitLabel t) ++ "\t | " 
                          ++ (ss $ traitSpeciality t) ++ "\t | "
                          ++ (si $ traitScore t) ++ "\t| "
                          ++ (si $ traitXP  t) ++ "\t|"
+                         ++ (si $ traitBonus  t) ++ "\t|"
+                         ++ (si $ traitTotalScore  t) ++ "\t|"
 
 
 
