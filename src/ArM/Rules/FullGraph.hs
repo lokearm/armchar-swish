@@ -113,13 +113,13 @@ bonus1rule = makeCRule  "bonus1rule"
 bonus2rule :: RDFRule
 bonus2rule = makeCRule  "bonus2rule" 
      [ arc sVar (armRes "grantsTrait") oVar,
-       arc oVar (armRes "hasLabel") (Var "label") ]
+       arc oVar (armRes "hasDetail") (Var "label") ]
      [ arc sVar (armRes "hasDetail") (Var "label") ]
 bonus3rule :: RDFRule
 bonus3rule = makeCRule  "bonus3rule" 
      [ arc sVar (armRes "bonusTo") oVar,
        arc oVar (armRes "hasLabel") (Var "label") ]
-     [ arc sVar (armRes "hasLabel") (Var "label") ]
+     [ arc sVar (armRes "hasDetail") (Var "label") ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule :: RDFRule
