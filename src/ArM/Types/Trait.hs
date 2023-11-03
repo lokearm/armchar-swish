@@ -113,11 +113,10 @@ advanceTraitList (x:xs) (y:ys)
 -- has to be pre-sorted, which is not unfortunately.
 advanceTrait :: Trait -> Trait -> Trait 
 advanceTrait trait adv = trace ("advanceTrait " ++ tid trait ++ " " ++ tid adv) $
-  fixTrait $ trait { traitContents = map fixSubj 
+  fixTrait $ trait { traitContents = map (fixSubj $ traitID trait)
            $ advanceTriples ( traitContents trait ) 
                             ( sort $ traitContents adv ) }
-      where fixSubj x = arc ( armRes "unnamedBlankNode" ) 
-                            ( arcPred x ) ( arcObj x )
+      where fixSubj lab x = arc lab ( arcPred x ) ( arcObj x )
             tid = show . traitID
 
 -- | Merge two lists of trait statements.  If a subject/property
