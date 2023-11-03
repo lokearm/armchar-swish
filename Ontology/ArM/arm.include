@@ -89,6 +89,10 @@ arm:hasCovenant a  owl:ObjectProperty ;
         rdfs:range   arm:Covenant .
 
 # Character Properties
+arm:hasLink a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
+        rdfs:domain  arm:GeneralCharacter ;
+        rdfs:range   xsd:string ;
+        rdfs:label    "Link" .
 arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
