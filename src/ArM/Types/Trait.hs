@@ -89,8 +89,6 @@ instance FromJSON Trait where
        where f1 (KeyPairList x ) = defaultTrait { traitContents = map f2 x }
              f2 (KeyValuePair x y) = arc (armRes "unnamedBlankNode") x y
 
---
-
 -- |
 -- = Trait Advancement
 

@@ -38,9 +38,9 @@ armchar:sylvain arm:characterClass arm:Magus ;
    arm:buyVirtueFlaw
     [ arm:traitClass armr:theGift ],
     [ arm:traitClass armr:hermeticMagus ],
-    [ arm:traitClass armr:elementalalmagic ],
+    [ arm:traitClass armr:elementalalMagic ],
     [ arm:traitClass armr:skilledParens ],
-    [ arm:traitClass armr:diednemagic ],
+    [ arm:traitClass armr:diedneMagic ],
     [ arm:traitClass armr:secondaryinsight ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Wind" ],
 
