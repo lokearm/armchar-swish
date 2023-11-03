@@ -40,7 +40,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
     [ arm:traitClass armr:hermeticMagus ],
     [ arm:traitClass armr:elementalalMagic ],
     [ arm:traitClass armr:skilledParens ],
-    [ arm:traitClass armr:diedneMagic ],
+    [ arm:traitClass armr:diedneMagic ; arm:hasFixedScore 1 ],
     [ arm:traitClass armr:secondaryinsight ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Wind" ],
 

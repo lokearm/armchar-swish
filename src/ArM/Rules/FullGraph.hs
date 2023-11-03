@@ -38,7 +38,7 @@ import Swish.RDF.Ruleset (RDFRule)
 prepareGraph :: RDFGraph -> RDFGraph
 prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
-                               bonus1rule, 
+                               bonus1rule, bonus2rule, bonus3rule, 
                                spectraitRule, rRule, pRule ]
              . applyRDFS
 
@@ -110,6 +110,16 @@ bonus1rule = makeCRule  "bonus1rule"
        arc sVar typeRes tVar, 
        arc tVar (armRes "grantsBonusScore") (Var "score") ]
      [ arc oVar (armRes "hasScore") (Var "score") ]
+bonus2rule :: RDFRule
+bonus2rule = makeCRule  "bonus2rule" 
+     [ arc sVar (armRes "grantsTrait") oVar,
+       arc oVar (armRes "hasLabel") (Var "label") ]
+     [ arc sVar (armRes "hasDetail") (Var "label") ]
+bonus3rule :: RDFRule
+bonus3rule = makeCRule  "bonus3rule" 
+     [ arc sVar (armRes "bonusTo") oVar,
+       arc oVar (armRes "hasLabel") (Var "label") ]
+     [ arc sVar (armRes "hasLabel") (Var "label") ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule :: RDFRule
