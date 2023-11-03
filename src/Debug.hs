@@ -15,9 +15,9 @@ import ArM.CharGraph
 import ArM.Character.CharGen
 
 sagaFile :: String
-sagaFile = "Test/saga.ttl"
+sagaFile = "Test/diedne.ttl"
 charFile :: String
-charFile = "Test/cieran.ttl"
+charFile = "Test/sylvain.ttl"
 
 main :: IO ()
 main = do 
