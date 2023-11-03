@@ -38,7 +38,7 @@ armr:mercurianMagic             rdfs:subClassOf armr:majorHermeticVirtue ; arm:h
 armr:mythicBlood                rdfs:subClassOf armr:majorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
                          a arm:LeafTraitClass ;
                             arm:hasLabel "Mythic Blood" .
-armr:secondaryInsight           rdfs:subClassOf armr:majorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
+armr:secondaryInsight           rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
                          a arm:LeafTraitClass ;
                             arm:hasLabel "Secondary Insight" .
 
@@ -609,11 +609,35 @@ armr:carefree  rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Carefree" .
+armr:pagan  rdfs:subClassOf  armr:majorStoryFlaw ;
+                       arm:hasReference   "e.g. [HoH:TL]" ;
+                       a arm:LeafTraitClass ;
+                       arm:hasLabel "Pagan" .
 armr:mistakenIdentity  rdfs:subClassOf  armr:majorStoryFlaw ;
     arm:hasDescription   "Someone, who looks exactly like you and whom you and your companions will most likely never meet, lives near you, and is responsible for an ongoing variety of violent, illegal, obscene, or embarrassing acts. You often have to explain who you are, and sometimes have to deal with the consequences of the other person’s acts." ;
                        arm:hasReference   "[ArM5]" ;
                        a arm:LeafTraitClass ;
                        arm:hasLabel "Mistaken Identity" .
+
+armr:smallFrame    rdfs:subClassOf   armr:minorGeneralFlaw ; arm:hasReference   "[ArM5:59]" ;
+    arm:hasDescription   "You are of a lighter-than-average build.  Your Size is reduced to –1. This means that the severity of wounds you take increases in four point increments, rather than five point. (See page 171). You cannot take this Flaw and Giant Blood, Large, or Dwarf." ;
+                         a arm:LeafTraitClass ;
+                  arm:hasLabel "Small Frame" .
+
+armr:motionSickness    rdfs:subClassOf   armr:minorGeneralFlaw ; arm:hasReference   "[ArM5:56]" ;
+    arm:hasDescription   "Riding a horse, in a cart, or sailing on a ship makes you violently ill. When not traveling on foot, you suffer double the fatigue loss on long journeys specified on page 185, with a minimum loss of two Fatigue levels. Violent jostling over a period of a few hours could conceivably lead to unconsciousness." ;
+                         a arm:LeafTraitClass ;
+                  arm:hasLabel "Motion Sickness" .
+
+armr:forestloreVirtue    rdfs:subClassOf   armr:minorHermeticVirtue ; arm:hasReference   "[GoF]" ;
+                  a arm:LeafTraitClass ;
+                  arm:grantsTrait [ arm:traitClass armr:forestlore ] ;
+                  arm:hasLabel "Forest Lore" .
+
+armr:deleteriousCircumstances    rdfs:subClassOf   armr:minorHermeticFlaw ; arm:hasReference   "[ArM5:53]" ;
+    arm:hasDescription   "All your magic totals are halved under certain uncommon circumstances. This can be your state, such as sitting or wet, the target of the magic, such as wild animals or iron, or the place where you are casting the magic, such as a city or high up a mountain." ;
+                  a arm:LeafTraitClass ;
+                  arm:hasLabel "Deleterious Circumstances" .
 
 # [HoH:S]
 armr:craftmagic  rdfs:subClassOf  armr:majorSupernaturalVirtue ;

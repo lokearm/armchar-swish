@@ -38,24 +38,25 @@ armchar:sylvain arm:characterClass arm:Magus ;
    arm:buyVirtueFlaw
     [ arm:traitClass armr:theGift ],
     [ arm:traitClass armr:hermeticMagus ],
-    [ arm:traitClass armr:elementalalMagic ],
+    [ arm:traitClass armr:elementalMagic ],
     [ arm:traitClass armr:skilledParens ],
     [ arm:traitClass armr:diedneMagic ; arm:hasFixedScore 1 ],
-    [ arm:traitClass armr:secondaryinsight ],
+    [ arm:traitClass armr:secondaryInsight ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Wind" ],
 
+    [ arm:traitClass armr:forestloreVirtue ],
     [ arm:traitClass armr:affinityWithAbility ; 
       arm:grantsTrait [ arm:bonusTo armr:forestlore ] ],
     [ arm:traitClass armr:puissantAbility ; 
       arm:grantsTrait [ arm:bonusTo armr:forestlore ] ],
 
-    [ arm:traitClass armr:deleterioscircumstances ; arm:hasDetail "Hearing Church Bells" ],
+    [ arm:traitClass armr:deleteriousCircumstances ; arm:hasDetail "Hearing Church Bells" ],
     [ arm:traitClass armr:compassionateMajor ; a arm:majorFlaw ],
     [ arm:traitClass armr:minorPersonalityFlaw ;
       arm:instanceLabel "Curious (custom, similar to reckless)" ],
     [ arm:traitClass armr:pagan ],
-    [ arm:traitClass armr:smallframe ],
-    [ arm:traitClass armr:motionsickness ; a armr:minorFlaw ] ;
+    [ arm:traitClass armr:smallFrame ],
+    [ arm:traitClass armr:motionSickness ; a armr:minorFlaw ] ;
 
    arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore 2 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
