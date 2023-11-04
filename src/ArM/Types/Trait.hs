@@ -139,7 +139,8 @@ fixTrait trait =  trait {
 -- |
 -- == Recalculation of XP (auxiliary functions
 
--- | Auxiliary for `fixTrait`
+-- | Auxiliary for `fixTrait`.
+--
 calculateXP :: [RDFTriple] -> [RDFTriple]
 calculateXP ts = trace ("calculateXP\n"++show ts) $ makeXParc xs ys 
    where (xs,ys) = getXPtriples ts
@@ -147,6 +148,9 @@ calculateXP ts = trace ("calculateXP\n"++show ts) $ makeXParc xs ys
          makeXParc ws zs = getXParc ws:zs
 
 -- | Auxiliary for `calculateXP`
+-- Take a list of XP related RDFTriple objects and add all the xp
+-- values together.  The return value is a new triple with
+-- the `hasTotalXP` property and the total XP as object (value).
 getXParc :: [RDFTriple] -> RDFTriple
 getXParc [] = error "getXParc should not be called on an empty list"
 getXParc (x:xs) = trace ("getXParc "++show xp) $
@@ -154,10 +158,12 @@ getXParc (x:xs) = trace ("getXParc "++show xp) $
    where xp = foldr (+) 0 $ map ( intFromRDF . arcObj ) (x:xs)
 
 -- | Auxiliary for `calculateXP`
+-- Split a list of RDFTriple objects into one list of triples
+-- relating to XP (hasTotalXP and addedXP) and one with the others.
 getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
 getXPtriples xs = trace "getXPtriples" $ getXPtriples' ([],xs)
 
--- | Auxiliary for `calculateXP`
+-- | Inner recursive function for `getXPtriplles` (auxiliary for `calculateXP`)
 getXPtriples' :: ([RDFTriple],[RDFTriple]) -> ([RDFTriple],[RDFTriple])
 getXPtriples' (xs,ys) | ys == [] = (xs,ys)
                       | p == armRes "hasTotalXP" =  (y:xs',ys')
