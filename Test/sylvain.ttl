@@ -104,7 +104,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
       [ arm:traitClass armr:mentem ; arm:addedXP 0 ],
       [ arm:traitClass armr:terram ; arm:addedXP 3 ],
       [ arm:traitClass armr:vim ; arm:addedXP 15 ],
-      [ arm:traitClass armr:forestlore ; arm:addedXP 13  ],
+      [ arm:traitClass armr:forestlore ; arm:addedXP 10  ],
     [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
     [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
     [ arm:traitClass armr:latin ; arm:instanceLabel "Dead Lang: Latin" ; arm:addedXP 50 ; arm:hasSpeciality "Hermetic Usage" ],
