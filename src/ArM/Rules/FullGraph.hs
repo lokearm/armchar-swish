@@ -36,7 +36,7 @@ import Swish.RDF.Ruleset (RDFRule)
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph :: RDFGraph -> RDFGraph
-prepareGraph = fwdApplyListR [ bonusXPrule ]
+prepareGraph = fwdApplyListR [ bonusXPrule, bonusXP, bonusXPtest ]
              . fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, bonus2rule, bonus3rule, 
@@ -117,7 +117,6 @@ bonusXPrule = makeCRule  "bonusXPrule"
      [ arc sVar (armRes "grantsTrait") oVar,
        arc sVar (armRes "grantsXPfactor") (Var "score") ]
      [ arc oVar (armRes "hasXPfactor") (Var "score") 
-     , arc oVar (armRes "fooBar") (Var "score")
      ]
 bonus2rule :: RDFRule
 bonus2rule = makeCRule  "bonus2rule" 
@@ -133,10 +132,19 @@ bonusXP :: RDFRule
 bonusXP = makeCRule  "bonusXP" 
      [ arc (Var "char") (armRes "hasTrait") (Var "trait")
      , arc (Var "trait") typeRes tVar
-     , arc (Var "char") (armRes "hasBonus") (Var "bonus")
+     , arc (Var "char") (armRes "hasTrait") (Var "bonus")
      , arc (Var "bonus") (armRes "bonusTo") tVar
      , arc (Var "bonus") (armRes "hasXPfactor") (Var "score") ]
      [ arc (Var "trait") (armRes "hasXPfactor") (Var "score") ]
+bonusXPtest :: RDFRule
+bonusXPtest = makeCRule  "bonusXPtest"
+     [ arc (Var "char") (armRes "hasTrait") (Var "trait")
+     , arc (Var "trait") typeRes tVar
+     , arc (Var "char") (armRes "hasTrait") (Var "bonus")
+     , arc (Var "bonus") (armRes "bonusTo") tVar
+     ]
+     [ arc (Var "trait") (armRes "fooBar") (litString "trait") 
+     , arc (Var "bonus") (armRes "fooBar") (litString "bonus") ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule :: RDFRule

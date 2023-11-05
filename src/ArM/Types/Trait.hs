@@ -151,7 +151,7 @@ getXPtriples' (tot,add,fac,ys) | ys == [] = (tot,add,fac,ys)
                       | p == armRes "addedXP" =  (tot',newadd,fac',ys')
                       | p == armRes "hasXPfactor" =
                          trace (show (tot',add',newfac) )
-                         (tot',add',newfac,ys')
+                         (tot',add',newfac,y:ys')
                       | otherwise             =  (tot',add',fac',y:ys')
     where (tot',add',fac',ys') = getXPtriples' (tot,add,fac,tail ys)
           p = arcPred y
