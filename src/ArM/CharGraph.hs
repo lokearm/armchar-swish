@@ -54,13 +54,13 @@ loadSaga fn = do
     let resFN = TS.getResourceFiles sid sgraph
     rs <- readAllFiles resFN
     -- 4. Augment graphs
-    let s0 = mergeGraphs ss
+    let rawSchema = mergeGraphs ss
     let res = mergeGraphs rs
-    let s1 = R.prepareSchema s0
-    let res1 = R.prepareResources $ res `G.merge` s1 
+    let schema = R.prepareSchema rawSchema
+    let res1 = R.prepareResources $ res `G.merge` schema 
     return MapState { saga = sob
                     , charList = []
-                    , schemaGraph = s1
+                    , schemaGraph = schema
                     , resourceGraph = res1
                     , schemaRawGraph = ss
                     , resourceRawGraph = rs
@@ -68,7 +68,7 @@ loadSaga fn = do
                     }
 
 loadChar :: MapState -> String -> IO TCG.CharGen
-loadChar st fn = readGraph fn >>= ( return . TCG.makeCharGen schema1 res1 )
-    where schema1 = schemaGraph st
+loadChar st fn = readGraph fn >>= ( return . TCG.makeCharGen schema res1 )
+    where schema = schemaGraph st
           res1 = resourceGraph st
 

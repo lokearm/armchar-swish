@@ -24,6 +24,7 @@ import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Types.RDF
 import ArM.Types.Advancement
+import qualified ArM.Rules.Record as R
 import Data.List (sort)
 
 import ArM.Debug.NoTrace
@@ -142,6 +143,8 @@ makeCharStage schema cs0 adv = CharStage
               , sheetGraph = makeCGraph schema cs }
               where cs = advanceCharacter cs0 adv 
              
+makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
+makeCGraph schema = R.prepareRecord schema . makeRDFGraph
 
 
 -- |
@@ -178,9 +181,9 @@ instance HasTime CharStage where
 -- = Making Character Sheets
 
 makeCharGen :: G.RDFGraph  -- ^ Schema graph
-           -> G.RDFGraph  -- ^ Resource graph
-           -> G.RDFGraph  -- ^ Raw character graph
-           -> CharGen         -- ^ Resulting datastructure
+           -> G.RDFGraph   -- ^ Resource graph
+           -> G.RDFGraph   -- ^ Raw character graph
+           -> CharGen      -- ^ Resulting datastructure
 makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen 
              { charID = clab
              , charName = ""

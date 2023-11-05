@@ -32,7 +32,6 @@ module ArM.Types.Character ( Character(..)
                            , getCharacter
                            , advanceCharacter
                            , getInitialCS
-                           , makeCGraph
                            , extractBaseCharacterGraph 
                            ) where
 
@@ -42,7 +41,6 @@ import           Swish.VarBinding  (vbMap)
 import           Data.List (sort)
 import           Data.Maybe (fromJust)
 
-import qualified ArM.Rules.Record as R
 import ArM.KeyPair
 import ArM.Resources
 import ArM.BlankNode
@@ -216,9 +214,7 @@ instance HasTime CharacterSheet where
 
 -- |
 -- = Advancement 
---
-makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
-makeCGraph schema = R.prepareRecord schema . makeRDFGraph
+
 
 -- | apply a given Advancement to a given CharacterSheet
 advanceCharacter :: CharacterSheet -> Advancement -> CharacterSheet 
