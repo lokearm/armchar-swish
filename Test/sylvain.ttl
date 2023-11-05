@@ -63,7 +63,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
     [ arm:traitClass armr:com ; arm:hasScore 1 ], [ arm:traitClass armr:pre ; arm:hasScore 1 ],
     [ arm:traitClass armr:str ; arm:hasScore -2 ], [ arm:traitClass armr:sta ; arm:hasScore 3 ],
     [ arm:traitClass armr:dex ; arm:hasScore -1 ], [ arm:traitClass armr:qik ; arm:hasScore -1 ],
-    [ arm:traitClass armr:occitan ; arm:instanceLabel "L Lang: Occitan" ; arm:hasSpeciality "Leinster" ; arm:hasTotalXP 75  ],
+    [ arm:traitClass armr:occitan ; arm:instanceLabel "L Lang: Occitan" ; arm:hasSpeciality "[local]" ; arm:hasTotalXP 75  ],
     [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Curious" ;  arm:hasFixedScore 3 ],
     [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Pious" ;  arm:hasFixedScore 1 ],
     [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Stubborn" ;  arm:hasFixedScore 1 ] .

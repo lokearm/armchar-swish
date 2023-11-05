@@ -142,35 +142,30 @@ fixTrait trait =  trait {
 -- | Auxiliary for `fixTrait`.
 --
 calculateXP :: [RDFTriple] -> [RDFTriple]
-calculateXP ts = trace ("calculateXP\n"++show ts) $ makeXParc xs ys 
-   where (xs,ys) = getXPtriples ts
-         makeXParc [] zs = zs
-         makeXParc ws zs = getXParc ws:zs
-
--- | Auxiliary for `calculateXP`
--- Take a list of XP related RDFTriple objects and add all the xp
--- values together.  The return value is a new triple with
--- the `hasTotalXP` property and the total XP as object (value).
-getXParc :: [RDFTriple] -> RDFTriple
-getXParc [] = error "getXParc should not be called on an empty list"
-getXParc (x:xs) = trace ("getXParc "++show xp) $
-                  arc (arcSubj x) (armRes "hasTotalXP") (litInt xp)
-   where xp = foldr (+) 0 $ map ( intFromRDF . arcObj ) (x:xs)
+calculateXP ts = trace ("calculateXP\n"++show ts) $ xp:ys 
+   where (tot,add,fac,ys) = getXPtriples ts
+         newtot = round $ (fromIntegral tot) + (fromIntegral add)*fac
+         sub = arcSubj $ head ts
+         xp = arc sub (armRes "hasTotalXP") (litInt newtot)
 
 -- | Auxiliary for `calculateXP`
 -- Split a list of RDFTriple objects into one list of triples
 -- relating to XP (hasTotalXP and addedXP) and one with the others.
-getXPtriples :: [RDFTriple] -> ([RDFTriple],[RDFTriple])
-getXPtriples xs = trace "getXPtriples" $ getXPtriples' ([],xs)
+getXPtriples :: [RDFTriple] -> (Int,Int,Float,[RDFTriple])
+getXPtriples xs = trace "getXPtriples" $ getXPtriples' (0,0,1,xs)
 
 -- | Inner recursive function for `getXPtriplles` (auxiliary for `calculateXP`)
-getXPtriples' :: ([RDFTriple],[RDFTriple]) -> ([RDFTriple],[RDFTriple])
-getXPtriples' (xs,ys) | ys == [] = (xs,ys)
-                      | p == armRes "hasTotalXP" =  (y:xs',ys')
-                      | p == armRes "addedXP" =  (y:xs',ys')
-                      | otherwise             =  (xs',y:ys')
-    where (xs',ys') = getXPtriples' (xs,tail ys)
+getXPtriples' :: (Int,Int,Float,[RDFTriple]) -> (Int,Int,Float,[RDFTriple])
+getXPtriples' (tot,add,fac,ys) | ys == [] = (tot,add,fac,ys)
+                      | p == armRes "hasTotalXP" =  (newtot,add',fac',ys')
+                      | p == armRes "addedXP" =  (tot',newadd,fac',ys')
+                      | p == armRes "xpFactor" =  (tot',add',newfac,ys')
+                      | otherwise             =  (tot',add',fac',y:ys')
+    where (tot',add',fac',ys') = getXPtriples' (tot,add,fac,tail ys)
           p = arcPred y
+          newfac = floatFromRDF $ arcObj y
+          newtot = tot' + ( intFromRDF $ arcObj y )
+          newadd = add' + ( intFromRDF $ arcObj y )
           y = head ys
 
 {-

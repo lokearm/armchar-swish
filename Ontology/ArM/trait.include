@@ -66,6 +66,10 @@ arm:hasXPScore  a   owl:DatatypeProperty, arm:TraitProperty, arm:ScoreContributi
         rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
+arm:xpFactor  a   owl:DatatypeProperty, arm:TraitProperty ;
+        rdfs:label   "XP Factor" ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   xsd:float .
 arm:hasScore  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;

@@ -112,10 +112,21 @@ litString :: String -> RDFLabel
 litString i = Lit (T.pack i) 
 -- litString i = TypedLit (T.pack i) xsdString
 
+rdfToFloat :: RDFLabel -> Maybe Float
+rdfToFloat = fromRDFLabel
 rdfToInt :: RDFLabel -> Maybe Int
 rdfToInt = fromRDFLabel
 rdfToString :: RDFLabel -> Maybe String
 rdfToString = fromRDFLabel
+
+floatFromRDF :: RDFLabel -> Float
+floatFromRDF x = fi i
+   where i = rdfToFloat x
+         s = rdfToString x
+         fi Nothing = fs s
+         fi (Just y) = y
+         fs Nothing = 0
+         fs (Just y) = read y
 
 intFromRDF :: RDFLabel -> Int
 intFromRDF x = fi i

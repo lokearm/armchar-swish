@@ -21,7 +21,7 @@ import Swish.RDF.Graph (RDFLabel(..),RDFTriple,arc,arcObj,arcPred)
 import Control.Monad.State.Lazy
 import ArM.Types.Trait
 import ArM.Resources
-import Data.Maybe (fromJust)
+-- import Data.Maybe (fromJust)
 
 type BlankState = State (String,Int) 
 

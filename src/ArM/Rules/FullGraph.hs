@@ -36,9 +36,11 @@ import Swish.RDF.Ruleset (RDFRule)
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph :: RDFGraph -> RDFGraph
-prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
+prepareGraph = fwdApplyListR [ bonusXPrule, bonusXP ]
+             . fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, bonus2rule, bonus3rule, 
+                               bonusXPrule, bonusXP,
                                spectraitRule, rRule, pRule ]
              . applyRDFS
 
@@ -107,9 +109,13 @@ advancevfgrantRule2 = makeCRule  "advancevfgrantRule2"
 bonus1rule :: RDFRule
 bonus1rule = makeCRule  "bonus1rule" 
      [ arc sVar (armRes "grantsTrait") oVar,
-       arc sVar typeRes tVar, 
-       arc tVar (armRes "grantsBonusScore") (Var "score") ]
+       arc sVar (armRes "grantsBonusScore") (Var "score") ]
      [ arc oVar (armRes "hasScore") (Var "score") ]
+bonusXPrule :: RDFRule
+bonusXPrule = makeCRule  "bonusXPrule" 
+     [ arc sVar (armRes "grantsTrait") oVar,
+       arc sVar (armRes "grantsXPfactor") (Var "score") ]
+     [ arc oVar (armRes "xpFactor") (Var "score") ]
 bonus2rule :: RDFRule
 bonus2rule = makeCRule  "bonus2rule" 
      [ arc sVar (armRes "grantsTrait") oVar,
@@ -120,6 +126,15 @@ bonus3rule = makeCRule  "bonus3rule"
      [ arc sVar (armRes "bonusTo") oVar,
        arc oVar (armRes "hasLabel") (Var "label") ]
      [ arc sVar (armRes "hasDetail") (Var "label") ]
+bonusXP :: RDFRule
+bonusXP = makeCRule  "bonusXP" 
+     [ arc (Var "char") (armRes "advanceTrait") (Var "trait")
+     , arc (Var "trait") typeRes tVar
+     , arc (Var "char") (armRes "hasBonus") (Var "bonus")
+     , arc (Var "bonus") (armRes "bonusTo") tVar
+     -- , arc (Var "trait") (armRes "addedXP") (Var "score") 
+     , arc (Var "bonus") (armRes "xpFactor") (Var "score") ]
+     [ arc (Var "trait") (armRes "xpFactor") (Var "score") ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule :: RDFRule
