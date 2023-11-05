@@ -193,7 +193,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }
-     where as = trace ( "makeCharGen (adv)" ++ show clab) $ sort $ getAllAdvancements g1 $ clab
+     where as = sort $ getAllAdvancements g1 $ clab
            cs0 = getInitialCS g1
            clab = csID cs0
            g1 = makeGraph  g0 schema res1
