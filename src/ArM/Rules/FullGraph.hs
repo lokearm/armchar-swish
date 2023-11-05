@@ -110,12 +110,15 @@ bonus1rule :: RDFRule
 bonus1rule = makeCRule  "bonus1rule" 
      [ arc sVar (armRes "grantsTrait") oVar,
        arc sVar (armRes "grantsBonusScore") (Var "score") ]
-     [ arc oVar (armRes "hasScore") (Var "score") ]
+     [ arc oVar (armRes "hasScore") (Var "score")
+     ]
 bonusXPrule :: RDFRule
 bonusXPrule = makeCRule  "bonusXPrule" 
      [ arc sVar (armRes "grantsTrait") oVar,
        arc sVar (armRes "grantsXPfactor") (Var "score") ]
-     [ arc oVar (armRes "xpFactor") (Var "score") ]
+     [ arc oVar (armRes "hasXPfactor") (Var "score") 
+     , arc oVar (armRes "fooBar") (Var "score")
+     ]
 bonus2rule :: RDFRule
 bonus2rule = makeCRule  "bonus2rule" 
      [ arc sVar (armRes "grantsTrait") oVar,
@@ -132,9 +135,8 @@ bonusXP = makeCRule  "bonusXP"
      , arc (Var "trait") typeRes tVar
      , arc (Var "char") (armRes "hasBonus") (Var "bonus")
      , arc (Var "bonus") (armRes "bonusTo") tVar
-     -- , arc (Var "trait") (armRes "addedXP") (Var "score") 
-     , arc (Var "bonus") (armRes "xpFactor") (Var "score") ]
-     [ arc (Var "trait") (armRes "xpFactor") (Var "score") ]
+     , arc (Var "bonus") (armRes "hasXPfactor") (Var "score") ]
+     [ arc (Var "trait") (armRes "hasXPfactor") (Var "score") ]
 
 -- | Add indices used for sorting advancements
 advancementindexRule :: RDFRule

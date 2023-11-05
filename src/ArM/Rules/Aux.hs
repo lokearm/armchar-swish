@@ -25,8 +25,6 @@ import Swish.VarBinding (varBindingId)
 
 import Control.Parallel.Strategies
 
-
-
 -- | Simple forward application of a rule
 -- When this results in multiple graphs, these are added together
 -- usign 'addGraphs' (via 'foldGraphs')

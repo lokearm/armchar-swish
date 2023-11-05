@@ -108,7 +108,7 @@ armr:adeptLaboratoryStudent   rdfs:subClassOf armr:minorHermeticVirtue ;
                                arm:hasLabel "Adept Laboratory Student" .
 armr:affinityWithArt   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
      arm:hasDescription  "Your Study Totals for one Hermetic Art are increased by one half, rounded up. At character creation, any experience points you put into that Art are also increased by one half (rounded up), and you may exceed the normal recommended limits. You may take this Virtue twice, for two different Arts." ;
-		        arm:grantsXPfactor 1.5 ;
+		        arm:grantsXPfactor "1.5"^^xsd:float ;
                               a arm:LeafTraitClass ;
                           arm:hasLabel "Affinity with Art" .
 armr:cautiousSorcerer   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference   "[ArM5]" ;
@@ -273,7 +273,7 @@ armr:minorGeneralVirtue rdfs:subClassOf arm:minorVirtue ;
                     arm:hasLabel "Minor General Virtue" .
 armr:affinityWithAbility    rdfs:subClassOf armr:minorGeneralVirtue ; arm:hasReference   "[ArM5]" ;
                             a arm:LeafTraitClass ;
-		        arm:grantsXPfactor 1.5 ;
+		        arm:grantsXPfactor "1.5"^^xsd:float ;
                         arm:hasLabel "Affinity with Ability" .
 armr:aptStudent    rdfs:subClassOf armr:minorGeneralVirtue ; arm:hasReference   "[ArM5]" ;
                             a arm:LeafTraitClass ;

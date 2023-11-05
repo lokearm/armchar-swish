@@ -36,7 +36,7 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Debug.NoTrace
+import ArM.Debug.Trace
 
 -- | 
 -- = Trait
@@ -73,12 +73,9 @@ instance Show Trait where
 instance Ord Trait where
    compare x y | traitClass x < traitClass y = LT
                | traitClass x > traitClass y = GT
-               -- | not (isRepeatableTrait x) = EQ
-               -- | not (isRepeatableTrait y) = EQ
-               | instanceLabel x < instanceLabel y = trace l LT
-               | instanceLabel x > instanceLabel y = trace l GT
+               | instanceLabel x < instanceLabel y = LT
+               | instanceLabel x > instanceLabel y = GT
                | otherwise = EQ
-               where l = "sort " ++ show (instanceLabel x, instanceLabel y)
 
 instance ToJSON Trait where 
     toJSON t = toJSON $ KeyPairList $ toKeyPairList $ traitContents t 
@@ -110,12 +107,11 @@ advanceTraitList (x:xs) (y:ys)
 -- and are sorted prior to processing.  The character sheet's OTOH
 -- has to be pre-sorted, which is not unfortunately.
 advanceTrait :: Trait -> Trait -> Trait 
-advanceTrait trait adv = trace ("advanceTrait " ++ tid trait ++ " " ++ tid adv) $
-  fixTrait $ trait { traitContents = map (fixSubj $ traitID trait)
+advanceTrait trait adv = fixTrait
+           $ trait { traitContents = map (fixSubj $ traitID trait)
            $ advanceTriples ( traitContents trait ) 
                             ( sort $ traitContents adv ) }
       where fixSubj lab x = arc lab ( arcPred x ) ( arcObj x )
-            tid = show . traitID
 
 -- | Merge two lists of trait statements.  If a subject/property
 -- pair is found in both lists, it is taken only from the former.
@@ -142,31 +138,27 @@ fixTrait trait =  trait {
 -- | Auxiliary for `fixTrait`.
 --
 calculateXP :: [RDFTriple] -> [RDFTriple]
-calculateXP ts = trace ("calculateXP\n"++show ts) $ xp:ys 
-   where (tot,add,fac,ys) = getXPtriples ts
+calculateXP ts = trace ("calculateXP" ++ show (tot,add,fac)) $ xp:ys 
+   where (tot,add,fac,ys) = getXPtriples' (0,0,1,ts)
          newtot = round $ (fromIntegral tot) + (fromIntegral add)*fac
          sub = arcSubj $ head ts
          xp = arc sub (armRes "hasTotalXP") (litInt newtot)
-
--- | Auxiliary for `calculateXP`
--- Split a list of RDFTriple objects into one list of triples
--- relating to XP (hasTotalXP and addedXP) and one with the others.
-getXPtriples :: [RDFTriple] -> (Int,Int,Float,[RDFTriple])
-getXPtriples xs = trace "getXPtriples" $ getXPtriples' (0,0,1,xs)
 
 -- | Inner recursive function for `getXPtriplles` (auxiliary for `calculateXP`)
 getXPtriples' :: (Int,Int,Float,[RDFTriple]) -> (Int,Int,Float,[RDFTriple])
 getXPtriples' (tot,add,fac,ys) | ys == [] = (tot,add,fac,ys)
                       | p == armRes "hasTotalXP" =  (newtot,add',fac',ys')
                       | p == armRes "addedXP" =  (tot',newadd,fac',ys')
-                      | p == armRes "xpFactor" =  (tot',add',newfac,ys')
+                      | p == armRes "hasXPfactor" =
+                         trace (show (tot',add',newfac) )
+                         (tot',add',newfac,ys')
                       | otherwise             =  (tot',add',fac',y:ys')
     where (tot',add',fac',ys') = getXPtriples' (tot,add,fac,tail ys)
           p = arcPred y
           newfac = floatFromRDF $ arcObj y
           newtot = tot' + ( intFromRDF $ arcObj y )
           newadd = add' + ( intFromRDF $ arcObj y )
-          y = head ys
+          y = ttrace $ head ys
 
 {-
 xpSum :: [RDFTriple]  -- ^ Input list

@@ -66,7 +66,7 @@ arm:hasXPScore  a   owl:DatatypeProperty, arm:TraitProperty, arm:ScoreContributi
         rdfs:label   "Score" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
-arm:xpFactor  a   owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasXPfactor  a   owl:DatatypeProperty, arm:TraitProperty ;
         rdfs:label   "XP Factor" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:float .
@@ -173,7 +173,7 @@ arm:bonusTo  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
 
 arm:grantsXPfactor  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
         rdfs:comment "The multiplier for XP granted by puissant and linguist virtues." ;
-        rdfs:label   "XP Facrtor" ;
+        rdfs:label   "XP Factor" ;
         rdfs:domain  arm:Class ;
         rdfs:range   xsd:float .
 arm:grantsBonusScore  a   owl:ObjectProperty, arm:TraitProperty, arm:ViewProperty ;
