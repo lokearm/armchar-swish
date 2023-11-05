@@ -28,3 +28,6 @@ main = do
      let chargraph = sheetGraph char
 
      putStrLn $ show chargraph
+     putStrLn "ADVANCEMENTS"
+
+     putStrLn $ show $ map advancement $ charSheets chargen

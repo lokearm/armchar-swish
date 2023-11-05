@@ -36,11 +36,11 @@ import Swish.RDF.Ruleset (RDFRule)
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph :: RDFGraph -> RDFGraph
-prepareGraph = fwdApplyListR [ bonusXPrule, bonusXP ]
+prepareGraph = fwdApplyListR [ bonusXPrule ]
              . fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, bonus2rule, bonus3rule, 
-                               bonusXPrule, bonusXP,
+                               bonusXPrule,
                                spectraitRule, rRule, pRule ]
              . applyRDFS
 
@@ -131,7 +131,7 @@ bonus3rule = makeCRule  "bonus3rule"
      [ arc sVar (armRes "hasDetail") (Var "label") ]
 bonusXP :: RDFRule
 bonusXP = makeCRule  "bonusXP" 
-     [ arc (Var "char") (armRes "advanceTrait") (Var "trait")
+     [ arc (Var "char") (armRes "hasTrait") (Var "trait")
      , arc (Var "trait") typeRes tVar
      , arc (Var "char") (armRes "hasBonus") (Var "bonus")
      , arc (Var "bonus") (armRes "bonusTo") tVar
