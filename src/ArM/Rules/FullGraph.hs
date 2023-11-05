@@ -36,8 +36,7 @@ import Swish.RDF.Ruleset (RDFRule)
 -- This is expensive, and may need caution.
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph :: RDFGraph -> RDFGraph
-prepareGraph = fwdApplyListR [ bonusXPrule, bonusXP, bonusXPtest ]
-             . fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
+prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, bonus2rule, bonus3rule, 
                                bonusXPrule,
