@@ -33,6 +33,14 @@ armchar:sylvain arm:characterClass arm:Magus ;
    arm:advancementClass arm:BaseAdvancement ; 
    arm:advanceTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ],
       [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ] ;
+   arm:hasCombatOption 
+    [ arm:skillClass armr:brawl ;
+      arm:weaponClass armr:Dagger
+    ] ,
+    [ arm:skillClass armr:singleweapon ;
+      arm:weaponClass armr:Club
+    ]
+    ;
    arm:hasHouseVirtue 
     [ arm:traitClass armr:faeriemagic  ] ;
    arm:buyVirtueFlaw

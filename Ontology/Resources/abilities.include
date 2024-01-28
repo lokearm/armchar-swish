@@ -124,6 +124,12 @@ armr:bows  rdfs:subClassOf arm:MartialAbility ;
 armr:thrown  rdfs:subClassOf arm:MartialAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Thrown Weapon" .
+armr:singleweapon  rdfs:subClassOf arm:MartialAbility ;
+                     a arm:LeafTraitClass ;
+                     arm:hasLabel "Single Weapon" .
+armr:greatweapon  rdfs:subClassOf arm:MartialAbility ;
+                     a arm:LeafTraitClass ;
+                     arm:hasLabel "Great Weapon" .
 # Supernatural Abilities
 arm:SupernaturalAbility  rdfs:subClassOf arm:Ability .
 armr:forestlore  rdfs:subClassOf arm:SupernaturalAbility ;
