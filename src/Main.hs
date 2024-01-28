@@ -27,13 +27,15 @@ import System.Console.GetOpt
 data Options = Options {
   sagaFile :: String,
   charFile :: String,
-  outFile  :: String
+  outFile  :: String,
+  debugFile  :: Maybe String
 }
 defaultOptions :: Options
 defaultOptions = Options {
   sagaFile = "Test/saga.ttl",
   charFile = "Test/cieran.ttl",
-  outFile  = "test.md"
+  outFile  = "test.md",
+  debugFile  = Nothing
 }
 
 
@@ -50,7 +52,14 @@ options =
     , Option ['s']     ["saga"] (ReqArg 
             (\arg opt -> return opt { sagaFile = arg })
             "FILE") "saga file"
+    , Option ['O']     ["debug-output"] (ReqArg 
+            (\arg opt -> return opt { debugFile = Just arg })
+            "FILE") "saga file"
     ]
+
+getMaybeHandle :: Maybe String -> IO Handle
+getMaybeHandle Nothing = return stdout
+getMaybeHandle (Just f) = openFile f WriteMode
 
 
 main :: IO ()
@@ -72,5 +81,10 @@ main = do
 
      mapM_ p $ printSheetObject  $ getSheetObject chargraph
      hClose handle
+
+     -- putStr $ show chargraph
+     h2 <- getMaybeHandle $ debugFile opts
+     hPutStrLn h2 $ show chargraph
+     hClose h2
 
      return ()
