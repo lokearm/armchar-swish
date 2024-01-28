@@ -1,37 +1,7 @@
-# armchar-swish
-
-ArM character generator implemented in declarative programming
-using Haskell and Swish.
-Still in early stages of construction.
-
-The focus in this repository is a command line tool generating
-markdown sheets from an RDF graph (turtle files).
-
-There is also a server implementation, serving JSON files generated
-from the RDF graph, and a very crude client indended to test the
-server.  Development on this client/server system is currently on 
-halt.
-
-## Design notes
-
-+ [Design Notes](docs/DesignNotes.md)
-+ Business [Logic](docs/Logic.md)
-+ [Data Types](docs/DataTypes.md)
-+ [Tests](docs/Tests.md) showing current features of the web API
-+ [Data Structure](docs/DataStructure.md) 
-+ [Ontology](Ontology/README.md)
-+ [Jena versus Swish](docs/Swish-vs-Jena.md)
-
-## Command line tool
-
-```
-( cd Ontology ; make )
-cabal run armchar-cli -- -c Test/sylvain.ttl -s Test/saga.ttl -o charactersheet.md
-```
-
-There are test files in the `Test` directory.  Please note that the
-saga files depend on ontology files and relative paths.  The commands must
-be run from the root of the repository.
+---
+title: Testing the Web Server
+tags: #webserver
+---
 
 ## Testing the Server
 
@@ -136,17 +106,7 @@ simple `put.sh` script to test updating of advancements API, and
 
 ## TODO
 
-Handle multiple characters and file output.
-
-### Project 2.  Managing a covenant/saga
-
-1.  Library resources
-    - link books to advancements
-    - check for conflicts
-2.  Joint advancement log (view)
-3.  Other shared resources
-4.  Finances
-    - low maintenance covenfolk
++ [ ] Handle multiple characters and file output.  #webserver/backlog
 
 ## References
 
