@@ -47,7 +47,7 @@ options =
     , Option ['c']     ["character"] (ReqArg 
             (\arg opt -> return opt { charFile = arg })
             "FILE") "character file"
-    , Option ['s']     ["character"] (ReqArg 
+    , Option ['s']     ["saga"] (ReqArg 
             (\arg opt -> return opt { sagaFile = arg })
             "FILE") "saga file"
     ]

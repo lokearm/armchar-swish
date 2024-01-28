@@ -3,6 +3,11 @@ title: Testing the Web Server
 tags: #webserver
 ---
 
+## Design notes
+
++ see also [[index]]
++ [[Tests]] showing current features of the web API
+
 ## Testing the Server
 
 The easiest way to run the program is via cabal:
