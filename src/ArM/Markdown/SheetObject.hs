@@ -1,17 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.CharacterQuery
+-- Module      :  ArM.SheetObject
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Queries to build JSON files describing separate blocks of the
--- Character Sheet.  The input for all the functions is a Character Record
--- as stored in `CharacterMap`.  
---
--- Only queries on the character sheet are defined in this module.
 --
 -----------------------------------------------------------------------------
 module ArM.Markdown.SheetObject ( getSheetObject
@@ -39,9 +34,6 @@ sortparsed = sortOn traitOrder . (map parseTrait)
 getAbilityTraits :: G.RDFGraph -> [Trait]
 getAbilityTraits = (map parseTrait) . getAbilities
 
--- getCombat :: G.RDFGraph -> [Trait]
--- getCombat = getTraitList $ armRes "hasCombatOption"
-
 getSheetObject :: G.RDFGraph -> SheetObject
 getSheetObject g = SheetObject {
     metadata = mdSort $ getMetaDataTuples g,
@@ -52,6 +44,7 @@ getSheetObject g = SheetObject {
     ptraits = sortparsed $ getPTs g,
     virtues = map parseTrait $ getVirtues g,
     flaws = map parseTrait $ getFlaws g,
+    combat = map parseTrait $ getCombat g,
     size = getSize g,
     cnf = getConf g
 }
@@ -65,6 +58,7 @@ data SheetObject = SheetObject {
     ptraits :: [Trait],
     virtues :: [Trait],
     flaws :: [Trait],
+    combat :: [Trait],
     size :: [Maybe Int],
     cnf :: [(Maybe Int,Maybe Int)]
 }

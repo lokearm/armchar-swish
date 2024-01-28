@@ -47,6 +47,8 @@ printSheetObject ob = (map printMD $ metadata ob)
                   ++ (map printArtLine $ arts ob)
                   ++ [ "", "# Spells", "" ]
                   ++ (map printSpellLine $ spells ob)
+                  ++ [ "", "# Combat", "" ]
+                  ++ (map printCombat $ combat ob)
    where p1 x = fJ (traitLabel x) ++ " " ++ (fI $ traitTotalScore x)
          fJ Nothing = "???"
          fJ (Just x) = x
@@ -112,6 +114,12 @@ printAbilityLine t = pAb (ss $ traitLabel t)
                          (si $ traitXP  t) 
                          (si $ traitBonus  t) 
                          (si $ traitTotalScore  t) 
+printCombat c :: Trait -> String
+printCombat c = f1 (traitLabel1 c) ++ f2 (traitLabel2 c)
+  where f1 Nothing = "???"
+        f1 (Just s) = s
+        f2 Nothing = ""
+        f2 (Just s) = "[" ++ s ++ "]"
 
 ss :: Maybe String -> String
 ss (Just s) = s
