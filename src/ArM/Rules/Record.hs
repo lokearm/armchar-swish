@@ -128,6 +128,12 @@ combatRules =
       , arc oVar typeRes tVar ]
       [ arc cVar (armRes "hasSkill") oVar ]
 -- Ability analogous to Weapon (possession) above
+    , makeCRule "combatlabel"
+      [ arc sVar (armRes "hasCombatOption")  cVar
+      , arc cVar (armRes "hasWeapon") tVar
+      , arc tVar (armRes "hasLabel") (Var "label")
+      ]
+      [ arc cVar (armRes "hasLabel") (Var "label") ]
     ]
 
 -- | Rules to add relevant constituentstats to each combat option.
