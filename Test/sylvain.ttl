@@ -32,12 +32,13 @@ armchar:sylvain arm:characterClass arm:Magus ;
 :zeroadv arm:advanceCharacter armchar:sylvain ;
    arm:advancementClass arm:BaseAdvancement ; 
    arm:advanceTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ],
-      [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ] ;
-   arm:hasCombatOption 
-    [ arm:skillClass armr:brawl ;
+      [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
+    [ arm:traitClass arm:CombatOption ;
+      arm:skillClass armr:brawl ;
       arm:weaponClass armr:Dagger
     ] ,
-    [ arm:skillClass armr:singleweapon ;
+    [ arm:traitClass arm:CombatOption ;
+      arm:skillClass armr:singleweapon ;
       arm:weaponClass armr:Club
     ]
     ;

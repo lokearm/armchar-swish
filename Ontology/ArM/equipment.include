@@ -15,7 +15,7 @@ arm:Vis rdfs:subClassOf arm:StockItem .
 arm:hasCombatOption a owl:ObjectProperty, arm:CharacterProperty ;
      rdfs:label "Combat Option" ;
      rdfs:range arm:CombatOption ;
-     rdfs:subPropertyOf  arm:CharacterProperty .
+     rdfs:subPropertyOf  arm:CharacterProperty , arm:hasTrait .
 arm:hasPossession a owl:ObjectProperty, arm:CharacterProperty ;
      rdfs:label "hasPossession" ;
     rdfs:domain arm:CharacterSheet ;

@@ -2,9 +2,19 @@
 	"nodes":[
 		{"id":"70b82bd73494abb9","x":-540,"y":-240,"width":250,"height":60,"color":"1","type":"text","text":"Trait"},
 		{"id":"f2d4af1fecfad9e2","x":-80,"y":-240,"width":250,"height":60,"color":"1","type":"text","text":"Possession"},
-		{"id":"8b27f1ab49d20d74","x":-530,"y":-52,"width":250,"height":60,"color":"1","type":"text","text":"CombatOption"}
+		{"id":"6542e04c562d850a","x":-235,"y":-48,"width":250,"height":60,"color":"1","type":"text","text":"Weapon"},
+		{"id":"2604e12cb3932b61","x":380,"y":-48,"width":250,"height":60,"color":"1","type":"text","text":"StockItem"},
+		{"id":"29591b3818a4a362","x":80,"y":-48,"width":250,"height":60,"color":"1","type":"text","text":"Equipment"},
+		{"id":"d029063f6201beee","x":380,"y":120,"width":250,"height":60,"color":"1","type":"text","text":"Vis"},
+		{"id":"13dfa66a5742479d","x":-80,"y":120,"width":250,"height":60,"color":"2","type":"text","text":"StandardItem"},
+		{"id":"8b27f1ab49d20d74","x":-540,"y":-48,"width":250,"height":60,"color":"1","type":"text","text":"CombatOption"}
 	],
 	"edges":[
-		{"id":"d96702e2d4bcf4c5","fromNode":"70b82bd73494abb9","fromSide":"bottom","toNode":"8b27f1ab49d20d74","toSide":"top"}
+		{"id":"d96702e2d4bcf4c5","fromNode":"70b82bd73494abb9","fromSide":"bottom","toNode":"8b27f1ab49d20d74","toSide":"top"},
+		{"id":"06de1a522d92e0c1","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"6542e04c562d850a","toSide":"top"},
+		{"id":"716d3ed2fbd19c3d","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"29591b3818a4a362","toSide":"top"},
+		{"id":"1846bdc30b5cdba1","fromNode":"2604e12cb3932b61","fromSide":"bottom","toNode":"d029063f6201beee","toSide":"top"},
+		{"id":"35ff5ca0703470ba","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"2604e12cb3932b61","toSide":"top"},
+		{"id":"c9e8dc7aa293b034","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"13dfa66a5742479d","toSide":"top"}
 	]
 }
