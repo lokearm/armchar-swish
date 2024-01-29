@@ -26,14 +26,11 @@
             "id": "ba45ef4f47854eb6",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas",
-                "viewState": {
-                  "x": 46.49999999999957,
-                  "y": -13.019999999998694,
-                  "zoom": 0
-                }
+                "file": "CLI Design.md",
+                "mode": "source",
+                "source": false
               }
             }
           },
@@ -46,7 +43,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -112,7 +109,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas",
+                "file": "CLI Design.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -129,7 +126,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas",
+                "file": "CLI Design.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -152,7 +149,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas"
+                "file": "CLI Design.md"
               }
             }
           }
@@ -174,10 +171,10 @@
       "card-board:CardBoard": false
     }
   },
-  "active": "58c43e053e14870a",
+  "active": "ba45ef4f47854eb6",
   "lastOpenFiles": [
-    "CLI Design.md",
     "Traits and Possessions in RDF.canvas",
+    "CLI Design.md",
     "Traits and Possessions.md",
     "DesignNotes.md",
     "CLI Workflow.canvas",

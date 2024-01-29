@@ -31,6 +31,8 @@ armchar:sylvain arm:characterClass arm:Magus ;
 
 :zeroadv arm:advanceCharacter armchar:sylvain ;
    arm:advancementClass arm:BaseAdvancement ; 
+   arm:changePossession 
+     [ arm:traitClass armr:Dagger ; arm:hasQuantity 1 ] ;
    arm:advanceTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ],
       [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
     [ arm:traitClass arm:CombatOption ;
