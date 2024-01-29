@@ -28,11 +28,11 @@
             "state": {
               "type": "canvas",
               "state": {
-                "file": "CLI Workflow.canvas",
+                "file": "Traits and Possessions in RDF.canvas",
                 "viewState": {
-                  "x": 719.283817427386,
-                  "y": 1000.4730290456433,
-                  "zoom": -0.5909364017657892
+                  "x": 46.49999999999957,
+                  "y": 150.66000000000102,
+                  "zoom": 0
                 }
               }
             }
@@ -104,7 +104,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CLI Workflow.canvas",
+                "file": "Traits and Possessions in RDF.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -121,7 +121,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "CLI Workflow.canvas",
+                "file": "Traits and Possessions in RDF.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -144,7 +144,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CLI Workflow.canvas"
+                "file": "Traits and Possessions in RDF.canvas"
               }
             }
           }
@@ -168,11 +168,13 @@
   },
   "active": "ba45ef4f47854eb6",
   "lastOpenFiles": [
+    "CLI Design.md",
+    "Traits and Possessions in RDF.canvas",
+    "Traits and Possessions.md",
+    "DesignNotes.md",
+    "CLI Workflow.canvas",
     "index.md",
     "Logic.md",
-    "CLI Design.md",
-    "CLI Workflow.canvas",
-    "DesignNotes.md",
     "Swish-vs-Jena.md",
     "DataTypes.md",
     "index.md~",

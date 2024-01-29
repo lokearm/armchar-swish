@@ -1,7 +1,9 @@
 {
 	"nodes":[
+		{"id":"37e3f7fe62abb743","type":"group","x":980,"y":740,"width":1120,"height":760,"label":"ArM.Types"},
 		{"id":"3fb9464bc4e8d8cf","type":"group","x":410,"y":-200,"width":1200,"height":620,"label":"ArM.Character"},
-		{"id":"37e3f7fe62abb743","x":980,"y":740,"width":290,"height":240,"type":"group","label":"ArM.Types"},
+		{"id":"72e5bc3745fafa29","x":1230,"y":1120,"width":450,"height":280,"type":"group","label":"ArM.Types.Advancement"},
+		{"id":"2cec7722029b08ee","x":1620,"y":800,"width":290,"height":210,"type":"group","label":"ArM.Types.Trait"},
 		{"id":"60cbc0a7e1c56078","type":"group","x":120,"y":500,"width":290,"height":200,"label":"ArM.Markdown"},
 		{"id":"0d05fd1650bceb5c","type":"group","x":840,"y":-500,"width":290,"height":198,"label":"Legend"},
 		{"id":"65b97e622de2a29f","type":"text","text":"`Main.hs`","x":-740,"y":-320,"width":250,"height":60},
@@ -12,16 +14,19 @@
 		{"id":"b8248f3f68fbed5a","type":"text","text":"Character Ontology\nDefines advancement","x":120,"y":-120,"width":250,"height":60},
 		{"id":"6d1f22ebac837424","type":"text","text":"Function","x":860,"y":-382,"width":250,"height":60,"color":"3"},
 		{"id":"384a9949fb8d8000","type":"text","text":"Data Type (defined)","x":860,"y":-480,"width":250,"height":60,"color":"1"},
-		{"id":"58072df5dcfa7046","type":"text","text":"`printSheetObject`\n","x":140,"y":620,"width":250,"height":60,"color":"3"},
-		{"id":"199360b8bbe1494f","type":"text","text":"`Markdown.SheetObject`","x":140,"y":520,"width":250,"height":60,"color":"1"},
-		{"id":"a700e212b6c1087f","type":"text","text":"Markdown output","x":140,"y":760,"width":250,"height":60},
-		{"id":"e81b3535f5fa2dc7","type":"text","text":"RDF Graph","x":790,"y":320,"width":250,"height":60},
-		{"id":"c6396636d885e9db","type":"text","text":"CharacterSheet","x":1330,"y":320,"width":250,"height":60,"color":"1"},
 		{"id":"a422f6f62b08daf1","type":"text","text":"TCG.CharGen","x":430,"y":40,"width":250,"height":60,"color":"1"},
 		{"id":"61a269bc83f77da8","type":"text","text":"CharStage","x":1295,"y":40,"width":250,"height":60,"color":"1"},
 		{"id":"8eb9f9cf35458c5f","type":"text","text":"List of CharStage Objects","x":870,"y":40,"width":250,"height":60},
-		{"id":"fa8d014cb32a73b7","x":1000,"y":760,"width":250,"height":60,"type":"text","text":"Trait"},
-		{"id":"7d7e89e428c060b9","x":1000,"y":900,"width":250,"height":60,"type":"text","text":"Character"}
+		{"id":"58072df5dcfa7046","type":"text","text":"`printSheetObject`\n","x":140,"y":620,"width":250,"height":60,"color":"3"},
+		{"id":"199360b8bbe1494f","type":"text","text":"`Markdown.SheetObject`","x":140,"y":520,"width":250,"height":60,"color":"1"},
+		{"id":"a700e212b6c1087f","type":"text","text":"Markdown output","x":140,"y":760,"width":250,"height":60},
+		{"id":"7d7e89e428c060b9","type":"text","text":"Character","x":1000,"y":900,"width":250,"height":60},
+		{"id":"e81b3535f5fa2dc7","type":"text","text":"RDF Graph","x":790,"y":320,"width":250,"height":60},
+		{"id":"c6396636d885e9db","type":"text","text":"CharacterSheet","x":1330,"y":320,"width":250,"height":60,"color":"1"},
+		{"id":"60c1c890c45f2201","x":1250,"y":1140,"width":250,"height":60,"type":"text","text":"Advancement"},
+		{"id":"1e50a3e71c85a40f","x":1250,"y":1320,"width":250,"height":60,"type":"text","text":"ProteAdvancement"},
+		{"id":"fa8d014cb32a73b7","type":"text","text":"Trait","x":1640,"y":820,"width":250,"height":60,"color":"1"},
+		{"id":"a474952175d812a2","x":1640,"y":930,"width":250,"height":60,"color":"3","type":"text","text":"advanceTraitList"}
 	],
 	"edges":[
 		{"id":"988a3efb1b02bf7f","fromNode":"65b97e622de2a29f","fromSide":"right","toNode":"cb974dfe367b05c2","toSide":"left"},

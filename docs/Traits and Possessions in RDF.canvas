@@ -1,0 +1,10 @@
+{
+	"nodes":[
+		{"id":"70b82bd73494abb9","x":-540,"y":-240,"width":250,"height":60,"color":"1","type":"text","text":"Trait"},
+		{"id":"f2d4af1fecfad9e2","x":-80,"y":-240,"width":250,"height":60,"color":"1","type":"text","text":"Possession"},
+		{"id":"8b27f1ab49d20d74","x":-530,"y":-52,"width":250,"height":60,"color":"1","type":"text","text":"CombatOption"}
+	],
+	"edges":[
+		{"id":"d96702e2d4bcf4c5","fromNode":"70b82bd73494abb9","fromSide":"bottom","toNode":"8b27f1ab49d20d74","toSide":"top"}
+	]
+}
