@@ -35,7 +35,7 @@
             }
           },
           {
-            "id": "58c43e053e14870a",
+            "id": "47053bbe32a5635b",
             "type": "leaf",
             "state": {
               "type": "card-board-view",
@@ -173,9 +173,9 @@
   },
   "active": "ba45ef4f47854eb6",
   "lastOpenFiles": [
+    "Traits and Possessions.md",
     "Traits and Possessions in RDF.canvas",
     "CLI Design.md",
-    "Traits and Possessions.md",
     "DesignNotes.md",
     "CLI Workflow.canvas",
     "index.md",
