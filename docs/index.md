@@ -16,7 +16,7 @@ markdown sheets from an RDF graph (turtle files).
 + [[Covenant]] Support
 + [ ] Calculate Lab Totals    #cli/backlog
 + [ ] Calculate Combat Totals    #cli/backlog
-+ [ ] Add Header to Markdown output    #cli/backlog
++ [x] Add Header to Markdown output    #cli/backlog @completed(2024-01-31T15:56:40+01:00)
 
 ## Design notes
 

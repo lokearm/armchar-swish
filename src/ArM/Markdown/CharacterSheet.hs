@@ -18,8 +18,16 @@ import Data.List(intercalate)
 
 import Text.Printf
 
+getHeader :: SheetObject -> String
+getHeader ob = "# " ++ name
+   where md = metadata ob
+         name = fst $ f ("",md)
+         f (n,((x,y):xs)) | x == "Name" = (y,[])
+                          | otherwise = f (n,xs)
+         f (n,[]) = (n,[])
 printSheetObject :: SheetObject -> [String]
-printSheetObject ob = (map printMD $ metadata ob) 
+printSheetObject ob = [ getHeader  ob , "" ]
+                  ++ (map printMD $ metadata ob) 
                   ++ [ "Personality traits",
                        (f $ map p1 $ ptraits ob),
                        "",
