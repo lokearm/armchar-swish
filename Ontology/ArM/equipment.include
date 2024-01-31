@@ -9,7 +9,10 @@ arm:StandardItem rdfs:subClassOf arm:Possession ;
    owl:disjointFrom arm:UniqueItem, arm:StockItem .
 
 arm:Equipment rdfs:subClassOf arm:Possession .
-arm:Weapon rdfs:subClassOf arm:Possession .
+
+arm:GeneralWeapn a owl:Class ; rdfs:subClassOf arm:Object .
+arm:Weapon rdfs:subClassOf arm:Possession, arm:GeneralWeapon .
+arm:NaturalWeapon rdfs:subClassOf arm:GeneralWeapon .
 arm:Vis rdfs:subClassOf arm:StockItem .
 
 arm:hasCombatOption a owl:ObjectProperty, arm:CharacterProperty ;
