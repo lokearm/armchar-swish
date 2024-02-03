@@ -15,7 +15,7 @@ import System.IO -- for file IO
 
 -- Timer
 import ArM.Debug.Time
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 import ArM.Types.MapState
 import ArM.Markdown.CharacterSheet
 import ArM.Character.CharGen
@@ -65,7 +65,7 @@ getMaybeHandle (Just f) = openFile f WriteMode
 
 main :: IO ()
 main = do 
-     putStrLn $ trace "Debugging" "Starting: armchar-swish  ..."
+     putStrLn "Starting: armchar-swish  ..."
      printTime
      args <- getArgs
      let (opt,_,_) = getOpt RequireOrder options args
