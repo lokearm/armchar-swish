@@ -12,6 +12,7 @@
 -----------------------------------------------------------------------------
 module ArM.Character.CharGen ( CharGen(..)
                              , CharStage(..)
+                             , sheetGraph
                              , makeCharGen
                              , findSeason
                              , putCharacter
@@ -25,6 +26,7 @@ import ArM.Types.Season
 import ArM.Types.RDF
 import ArM.Types.Advancement
 import ArM.Rules.Record (prepareRecord)
+import ArM.Rules.SheetCalculation (calculateSheet)
 import Data.List (sort)
 
 import ArM.Debug.NoTrace
@@ -39,9 +41,12 @@ data CharStage = CharStage
        -- ^ The advancement leading to the stage
      , sheetObject :: CharacterSheet     
        -- ^ The resulting character sheet
-     , sheetGraph :: RDFGraph 
+     , sheetRawGraph :: RDFGraph 
        -- ^ The character sheet as an RDF Graph
      }  deriving (Eq,Show)
+
+sheetGraph :: CharStage -> RDFGraph
+sheetGraph = calculateSheet . sheetRawGraph
 
 -- | A `CharGen` object represents a character's development over a
 -- series of stages.  It contains a list of CharStage objects which
@@ -140,7 +145,7 @@ makeCharStage :: RDFGraph -- ^ Shema Graph
 makeCharStage schema cs0 adv = CharStage 
               { advancement = adv
               , sheetObject = cs
-              , sheetGraph = makeCGraph schema cs }
+              , sheetRawGraph = makeCGraph schema cs }
               where cs = advanceCharacter cs0 adv 
              
 makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
