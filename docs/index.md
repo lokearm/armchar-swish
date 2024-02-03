@@ -13,7 +13,7 @@ markdown sheets from an RDF graph (turtle files).
 
 ## TODO Lists
 
-+ [[Covenant]] Support
++ [ ] [[Covenant]] Support #kanban/backlog 
 + [ ] Calculate Lab Totals    #cli/backlog
 + [x] Calculate Combat Totals    #cli/backlog @completed(2024-02-03T18:38:11+01:00)
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
