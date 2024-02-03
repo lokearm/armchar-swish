@@ -18,7 +18,12 @@ markdown sheets from an RDF graph (turtle files).
 + [x] Calculate Combat Totals    #cli/backlog @completed(2024-02-03T18:38:11+01:00)
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
 + [ ] Make a grog example and output  #cli/selected 
-+ [ ] Add equipment to output   #cli/selected 
++ [x] Add equipment to output   #cli/selected 
++ [ ] Revise equipment list  #cli/selected 
+	+ [ ] Quantity, Load etc.
+	+ [ ] Sort equipment list
+	+ [ ] More detailed description
+	+ [ ] Review Ontology and use of classes
 + [x] Add Header to Markdown output    #cli/backlog @completed(2024-01-31T15:56:40+01:00)
 
 ## Design notes
