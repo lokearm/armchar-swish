@@ -13,8 +13,9 @@
 	+ CharStage type
 	+ CharGen type
 	+ **Rule inferences used** `makeGraph`  and `prepareRecord`
-+ [ ] which rules are used to build CharGen?
++ [x] which rules are used to build CharGen?
 + ArM.Types.SheetObject
 	+ SheetObject type holds all the data, completely calculated, to make a sheet at a given point in time.
+	+ **Rule inference used** `calculateSheet`
 + ArM.MarkDown.CharacterSheet
 	+ This module produces markdown output from SheetObject instances.

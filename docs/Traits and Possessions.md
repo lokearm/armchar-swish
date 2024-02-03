@@ -13,5 +13,5 @@
 	+ [ ] Infer combat option from weapon (this requires a blind node)
 	+ [ ] Default skill score of 0 when unskilled
 	+ [ ] Mark unskilled specially
-+ [ ] Add class for Natual Weapons #cli/backlog
++ [ ] Add class for Natural Weapons #cli/backlog
 + [ ] Clean up subclasses of Possession #cli/backlog

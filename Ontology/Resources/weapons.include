@@ -1,6 +1,40 @@
 
+Dodge Brawl 0 n/a 0 n/a n/a 0 n/a
+Fist Brawl 0 0 0 0 n/a 0 n/a
+Kick Brawl –1 0 –1 +3 n/a 0 n/a
+
+armr:Dodge rdfs:subClassOf arm:NaturalWeapon ;
+     rdfs:subClassOf arm:MissileWeapon ;
+     arm:hasSkill armr:brawl ;
+     arm:hasLabel  "Dodge" ;
+     arm:hasWeaponInit 0 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponLoad 0 ;
+     arm:hasCost "n/a" .
+armr:Fist rdfs:subClassOf arm:NaturalWeapon ;
+     rdfs:subClassOf arm:MissileWeapon ;
+     arm:hasSkill armr:brawl ;
+     arm:hasLabel  "Fist" ;
+     arm:hasWeaponInit 0 ;
+     arm:hasWeaponAtk 0 ;
+     arm:hasWeaponDfn 0 ;
+     arm:hasWeaponDam 0 ;
+     arm:hasWeaponLoad 0 ;
+     arm:hasCost "n/a" .
+armr:Kick rdfs:subClassOf arm:NaturalWeapon ;
+     rdfs:subClassOf arm:MissileWeapon ;
+     arm:hasSkill armr:brawl ;
+     arm:hasLabel  "Kick" ;
+     arm:hasWeaponInit -1 ;
+     arm:hasWeaponAtk 0 ;
+     arm:hasWeaponDfn -1 ;
+     arm:hasWeaponDam +3 ;
+     arm:hasWeaponLoad 0 ;
+     arm:hasCost "n/a" .
+
 armr:Longbow rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MissileWeapon ;
+     arm:hasSkill armr:bows ;
      arm:hasLabel  "Longbow" ;
      arm:hasWeaponInit -2 ;
      arm:hasWeaponAtk +4 ;
@@ -12,6 +46,7 @@ armr:Longbow rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Exp." .
 armr:Shortbow rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MissileWeapon ;
+     arm:hasSkill armr:bows ;
      arm:hasLabel  "Shortbow" ;
      arm:hasWeaponInit -1 ;
      arm:hasWeaponAtk +3 ;
@@ -24,6 +59,7 @@ armr:Shortbow rdfs:subClassOf arm:Weapon ;
 
 armr:Dagger rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
+     arm:hasSkill armr:brawl ;
      arm:hasLabel  "Dagger" ;
      arm:hasWeaponInit 0 ;
      arm:hasWeaponAtk +2 ;
@@ -34,6 +70,7 @@ armr:Dagger rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Inexp." .
 armr:Knife rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
+     arm:hasSkill armr:brawl ;
      arm:hasLabel  "Knife" ;
      arm:hasWeaponInit 0 ;
      arm:hasWeaponAtk +1 ;
@@ -45,6 +82,7 @@ armr:Knife rdfs:subClassOf arm:Weapon ;
 
 armr:Club rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
+     arm:hasSkill armr:singleweapon ;
      arm:hasLabel  "Club" ;
      arm:hasWeaponInit 1 ;
      arm:hasWeaponAtk +2 ;
@@ -55,6 +93,7 @@ armr:Club rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Inexp." .
 armr:Hatchet rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
+     arm:hasSkill armr:singleweapon ;
      arm:hasLabel  "Hatchet" ;
      arm:hasWeaponInit 0 ;
      arm:hasWeaponAtk +3 ;
@@ -66,6 +105,7 @@ armr:Hatchet rdfs:subClassOf arm:Weapon ;
 
 armr:Axe rdfs:subClassOf arm:Weapon ;
      rdfs:subClassOf arm:MeleeWeapon ;
+     arm:hasSkill armr:singleweapon ;
      arm:hasLabel  "Axe" ;
      arm:hasWeaponInit 1 ;
      arm:hasWeaponAtk +4 ;
