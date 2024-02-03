@@ -56,24 +56,6 @@
           }
         ],
         "currentTab": 3
-      },
-      {
-        "id": "e3e79e1fc05a1848",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "d92530783cda4f2b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "index.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          }
-        ]
       }
     ],
     "direction": "vertical"
@@ -140,7 +122,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "index.md",
+                "file": "Data Model.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -157,7 +139,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "index.md",
+                "file": "Data Model.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -180,7 +162,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "index.md"
+                "file": "Data Model.canvas"
               }
             }
           }
@@ -202,12 +184,12 @@
       "card-board:CardBoard": false
     }
   },
-  "active": "d92530783cda4f2b",
+  "active": "a5072ad78b1d3592",
   "lastOpenFiles": [
+    "index.md",
     "Backend Modules.md",
     "Traits and Possessions in RDF.canvas",
     "Traits and Possessions.md",
-    "index.md",
     "CLI Design.md",
     "Data Model.canvas",
     "Types.MapState.md",

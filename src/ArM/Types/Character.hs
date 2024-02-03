@@ -53,7 +53,7 @@ import ArM.Types.Trait
 import Data.Aeson
 import Data.Aeson.Key
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 -- | 
 -- = Character

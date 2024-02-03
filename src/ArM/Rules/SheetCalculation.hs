@@ -33,6 +33,7 @@ import Data.Maybe (fromJust)
 import Data.List (sort)
 
 import Control.Parallel.Strategies
+import ArM.Debug.Trace
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
@@ -49,7 +50,9 @@ calculateSheet = addCastingScores . addCombatStats . addScores
 -- 3. calculate the total combat scores (init/atk/dfn/dam)
 addCombatStats :: RDFGraph -> RDFGraph
 addCombatStats = calculateCombatStats
-               . fwdApplyListR ( combatScoreRules ++ combatRules )
+               . fwdApplyListR combatScoreRules 
+               . addDefaultSkill
+               . fwdApplyListR ( combatRules ++ combatSkillRules)
 
 combatRules :: [RDFRule]
 combatRules = 
@@ -82,6 +85,21 @@ combatRules =
       [ arc cVar (armRes "hasLabel") (Var "label") ]
     ]
 
+combatSkillRules :: [RDFRule]
+combatSkillRules = 
+    [ makeCRule "combat-skillscore-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasSkill") oVar
+      , arc oVar  (armRes "hasEffectiveScore")  (Var "score") ]
+      [ arc cVar (armRes "hasSkillScore") (Var "score") ]
+    ]
+--     makeCRule "combatskill"
+--       [ arc sVar (armRes "hasCombatOption")  cVar
+--       , arc cVar (armRes "hasSkill") (Var "skill")
+--       ]
+--       [ arc sVar (armRes "hasSkill") (Var "skill") ]
+--    ]
+
 -- | Rules to add relevant constituentstats to each combat option.
 -- This is a preparatory step before calculating the actual combat stats. 
 combatScoreRules :: [RDFRule]
@@ -93,11 +111,6 @@ combatScoreRules =
       , arc pVar typeRes (armRes "WeaponProperty")
       ]
       [ arc cVar pVar (Var "value") ]
-  , makeCRule "combat-skillscore-rule"
-      [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasSkill") oVar
-      , arc oVar (armRes "hasScore") (Var "score") ]
-      [ arc cVar (armRes "hasSkillScore") (Var "score") ]
   , makeCRule "combat-atk-rule"
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasWeapon") oVar
@@ -372,3 +385,35 @@ arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
          x' = arc (arcSubj x) (armRes s) (arcObj x)
          y' = arc (arcSubj x) (armRes s) (litInt t)
 
+
+-- | Add zero skills
+addDefaultSkill :: RDFGraph -> RDFGraph
+addDefaultSkill g = addGraphs g $ g1 g
+   where g1 = listToRDFGraph . map f . ttrace . defaultSkillPairs 
+         f (l,i) = arc l (armRes "hasSkillScore") (litInt i)
+
+defaultSkillPairs :: RDFGraph -> [ (RDFLabel, Int) ]
+defaultSkillPairs g = f cs co
+    where
+        co = sort $ getCombatOptions g
+        cs = sort $ getCombatOptionSkills g
+        f (x:xs) (y:ys) | fst x < y = trace ("scored" ++ show (fst x)) $ f xs (y:ys)
+                        | fst x > y = trace ("default" ++ show y) $ (y,0):f (x:xs) (ys)
+                        | otherwise = trace ("equal" ++ show y) $ f xs ys
+        f _ []  = []
+        f [] ys  = [ (y,0) | y <- ys ]
+getCombatOptions :: RDFGraph -> [ RDFLabel ]
+getCombatOptions = map f . Q.rdfQueryFind q
+   where q = listToRDFGraph 
+             [ arc coVar typeRes (armRes "CombatOption") ]
+         f vb = (fromJust $ vbMap vb coVar)
+         coVar = Var "co"
+getCombatOptionSkills :: RDFGraph -> [ (RDFLabel, Int) ]
+getCombatOptionSkills = map f . Q.rdfQueryFind q
+   where q = listToRDFGraph 
+             [ arc coVar typeRes (armRes "CombatOption") 
+             , arc coVar (armRes "hasSkillScore")  scoreVar ]
+         f vb = ( (fromJust $ vbMap vb coVar),
+                  intFromRDF (fromJust $ vbMap vb scoreVar) )
+         coVar = Var "co"
+         scoreVar = Var "score"
