@@ -32,9 +32,9 @@ import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS
 import Data.Maybe (fromJust)
-import Data.List (sort)
+-- import Data.List (sort)
 
-import Control.Parallel.Strategies
+-- import Control.Parallel.Strategies
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
