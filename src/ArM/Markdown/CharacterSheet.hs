@@ -123,7 +123,12 @@ printAbilityLine t = pAb (ss $ traitLabel t)
                          (si $ traitBonus  t) 
                          (si $ traitTotalScore  t) 
 printCombat :: Trait -> String
-printCombat c = "+ " ++ f1 (traitLabel1 c) ++ f2 (traitLabel2 c)
+printCombat c = "+ " ++ f1 (traitLabel1 c) ++ f2 (traitLabel2 c) ++ ": "
+     ++ "Init " ++ (si $ traitInit c)
+     ++ "; Atk " ++ (si $ traitAtk c)
+     ++ "; Dfn " ++ (si $ traitDfn c)
+     ++ "; Dam " ++ (si $ traitDam c)
+     ++ "; Range " ++ (si $ traitRange c)
   where f1 Nothing = "???"
         f1 (Just s) = s
         f2 Nothing = ""
