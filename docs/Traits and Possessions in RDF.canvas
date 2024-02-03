@@ -1,7 +1,6 @@
 {
 	"nodes":[
-		{"id":"eb209e1dac2e3367","type":"text","text":"Ability","x":-300,"y":-620,"width":250,"height":60},
-		{"id":"671dc60679d43ff8","type":"text","text":"NaturalWeapon","x":-360,"y":-240,"width":250,"height":60,"color":"1"},
+		{"id":"7bac5f35b622fab5","type":"group","x":-865,"y":160,"width":835,"height":360,"label":"Tentative separation"},
 		{"id":"f2d4af1fecfad9e2","type":"text","text":"Possession","x":75,"y":-240,"width":250,"height":60,"color":"1"},
 		{"id":"13dfa66a5742479d","type":"text","text":"StandardItem","x":75,"y":120,"width":250,"height":60,"color":"2"},
 		{"id":"29591b3818a4a362","type":"text","text":"Equipment","x":235,"y":-48,"width":250,"height":60,"color":"1"},
@@ -10,7 +9,12 @@
 		{"id":"6542e04c562d850a","type":"text","text":"Weapon","x":-80,"y":-48,"width":250,"height":60,"color":"1"},
 		{"id":"70b82bd73494abb9","type":"text","text":"Trait","x":-720,"y":-240,"width":250,"height":60,"color":"1"},
 		{"id":"8b27f1ab49d20d74","type":"text","text":"CombatOption","x":-720,"y":-440,"width":250,"height":60,"color":"1"},
-		{"id":"25c0c8f8beeda291","type":"text","text":"General Weapon","x":-175,"y":-440,"width":250,"height":60,"color":"1"}
+		{"id":"25c0c8f8beeda291","type":"text","text":"General Weapon","x":-175,"y":-440,"width":250,"height":60,"color":"1"},
+		{"id":"671dc60679d43ff8","type":"text","text":"NaturalWeapon","x":-400,"y":-48,"width":250,"height":60,"color":"1"},
+		{"id":"eb209e1dac2e3367","type":"text","text":"Ability","x":-550,"y":60,"width":250,"height":60},
+		{"id":"a4d4fcd68796e2a6","type":"text","text":"Weapon","x":-845,"y":300,"width":250,"height":60},
+		{"id":"0e46650f0e3e1a43","type":"text","text":"CombatOption","x":-550,"y":240,"width":250,"height":60},
+		{"id":"1d57170bce15906f","type":"text","text":"WeopnItem","x":-300,"y":420,"width":250,"height":60}
 	],
 	"edges":[
 		{"id":"06de1a522d92e0c1","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"6542e04c562d850a","toSide":"top"},
@@ -18,10 +22,15 @@
 		{"id":"1846bdc30b5cdba1","fromNode":"2604e12cb3932b61","fromSide":"bottom","toNode":"d029063f6201beee","toSide":"top"},
 		{"id":"35ff5ca0703470ba","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"2604e12cb3932b61","toSide":"top"},
 		{"id":"c9e8dc7aa293b034","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"13dfa66a5742479d","toSide":"top"},
-		{"id":"170462e9d08b02b2","fromNode":"8b27f1ab49d20d74","fromSide":"right","toNode":"25c0c8f8beeda291","toSide":"left","label":"hasWeapon\n(multiple?)"},
-		{"id":"e7807ff9eed5073c","fromNode":"8b27f1ab49d20d74","fromSide":"right","toNode":"eb209e1dac2e3367","toSide":"left","label":"hasSkill"},
+		{"id":"170462e9d08b02b2","fromNode":"8b27f1ab49d20d74","fromSide":"right","toNode":"25c0c8f8beeda291","toSide":"left","label":"hasWeapon\n(multiple)"},
+		{"id":"e7807ff9eed5073c","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"eb209e1dac2e3367","toSide":"left","label":"hasSkill"},
 		{"id":"9060d593b79e2881","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"6542e04c562d850a","toSide":"top"},
 		{"id":"046e6adc4618659e","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"671dc60679d43ff8","toSide":"top"},
-		{"id":"d96702e2d4bcf4c5","fromNode":"70b82bd73494abb9","fromSide":"top","toNode":"8b27f1ab49d20d74","toSide":"bottom"}
+		{"id":"d96702e2d4bcf4c5","fromNode":"70b82bd73494abb9","fromSide":"top","toNode":"8b27f1ab49d20d74","toSide":"bottom"},
+		{"id":"dbdddb9fd4ca7af1","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"a4d4fcd68796e2a6","toSide":"top"},
+		{"id":"bbf2c3acf7151076","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"1d57170bce15906f","toSide":"top"},
+		{"id":"a63f1b57dcaac89d","fromNode":"1d57170bce15906f","fromSide":"left","toNode":"a4d4fcd68796e2a6","toSide":"right","label":"implements"},
+		{"id":"0565f63a6e2396bd","fromNode":"0e46650f0e3e1a43","fromSide":"right","toNode":"1d57170bce15906f","toSide":"top","label":"uses"},
+		{"id":"a91b84fa2a5edec7","fromNode":"0e46650f0e3e1a43","fromSide":"top","toNode":"eb209e1dac2e3367","toSide":"bottom","label":"uses"}
 	]
 }
