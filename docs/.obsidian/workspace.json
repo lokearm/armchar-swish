@@ -58,21 +58,18 @@
         "currentTab": 3
       },
       {
-        "id": "7d599db0738234b7",
+        "id": "e3e79e1fc05a1848",
         "type": "tabs",
         "children": [
           {
-            "id": "48997601f0bcc3b1",
+            "id": "d92530783cda4f2b",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas",
-                "viewState": {
-                  "x": 131.44697943444731,
-                  "y": 484.502493573265,
-                  "zoom": -1.0894249504108076
-                }
+                "file": "index.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -143,7 +140,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas",
+                "file": "index.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -160,7 +157,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas",
+                "file": "index.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -183,7 +180,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Traits and Possessions in RDF.canvas"
+                "file": "index.md"
               }
             }
           }
@@ -205,50 +202,11 @@
       "card-board:CardBoard": false
     }
   },
-  "floating": {
-    "id": "3d3a061a0a9d2d60",
-    "type": "floating",
-    "children": [
-      {
-        "id": "0877875a4b7714cb",
-        "type": "window",
-        "children": [
-          {
-            "id": "dc0d64745034e2e9",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "2489d8d354e9ace5",
-                "type": "leaf",
-                "state": {
-                  "type": "canvas",
-                  "state": {
-                    "file": "Traits and Possessions in RDF.canvas",
-                    "viewState": {
-                      "x": 54.788110900608615,
-                      "y": 35.70058541253675,
-                      "zoom": -0.83918409519088
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        ],
-        "direction": "vertical",
-        "x": 448,
-        "y": 213,
-        "width": 1024,
-        "height": 800,
-        "maximize": true,
-        "zoom": 2.5
-      }
-    ]
-  },
-  "active": "2489d8d354e9ace5",
+  "active": "d92530783cda4f2b",
   "lastOpenFiles": [
-    "Traits and Possessions.md",
     "Backend Modules.md",
+    "Traits and Possessions in RDF.canvas",
+    "Traits and Possessions.md",
     "index.md",
     "CLI Design.md",
     "Data Model.canvas",
@@ -260,7 +218,6 @@
     "Logic.md",
     "Untitled.canvas",
     "Data Model.md",
-    "Traits and Possessions in RDF.canvas",
     "Swish-vs-Jena.md",
     "DataTypes.md",
     "index.md~",
