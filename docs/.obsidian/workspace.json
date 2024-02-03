@@ -13,11 +13,11 @@
             "state": {
               "type": "canvas",
               "state": {
-                "file": "CLI Workflow.canvas",
+                "file": "Data Model.canvas",
                 "viewState": {
-                  "x": 388.0045852063845,
-                  "y": 265.42469239451316,
-                  "zoom": -0.4
+                  "x": 0,
+                  "y": -144.09022766113284,
+                  "zoom": 0
                 }
               }
             }
@@ -42,8 +42,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -110,7 +109,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CLI Design.md",
+                "file": "Data Model.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +126,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "CLI Design.md",
+                "file": "Data Model.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +149,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CLI Design.md"
+                "file": "Data Model.canvas"
               }
             }
           }
@@ -172,21 +171,24 @@
       "card-board:CardBoard": false
     }
   },
-  "active": "7a03494d31effaa5",
+  "active": "04a8536ad921bebe",
   "lastOpenFiles": [
-    "Traits and Possessions.md",
-    "CLI Design.md",
-    "Traits and Possessions in RDF.canvas",
-    "DesignNotes.md",
-    "CLI Workflow.canvas",
     "index.md",
+    "Data Model.canvas",
+    "Untitled.canvas",
+    "Data Model.md",
+    "DesignNotes.md",
+    "Webserver.md",
+    "DataStructure.md",
+    "CLI Workflow.canvas",
+    "CLI Design.md",
+    "Traits and Possessions.md",
+    "Traits and Possessions in RDF.canvas",
     "Logic.md",
     "Swish-vs-Jena.md",
     "DataTypes.md",
     "index.md~",
     "Tests.md",
-    "Webserver.md~",
-    "Webserver.md",
-    "DataStructure.md"
+    "Webserver.md~"
   ]
 }

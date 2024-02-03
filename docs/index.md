@@ -20,12 +20,12 @@ markdown sheets from an RDF graph (turtle files).
 
 ## Design notes
 
++ [[Data Model.canvas|Data Model]]
 + [[CLI Design]]
 	+ [[CLI Workflow.canvas|CLI Workflow]]
 + [[DesignNotes]]
 + Business [[Logic]]
 + [[DataTypes]]
-+ [[DataStructure]] 
 + [[Ontology]]
 + [[Swish-vs-Jena]]
 
