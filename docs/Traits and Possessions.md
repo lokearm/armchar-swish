@@ -14,7 +14,7 @@
 + [ ] Fix the inference rules for Combat Option #cli/selected
 	+ [x]  Record skill with weapon
 	+ [ ] Infer combat option from weapon (this requires a blind node)
-	+ [ ] Default skill score of 0 when unskilled
+	+ [x] Default skill score of 0 when unskilled @completed(2024-02-03T18:31:10+01:00)
 	+ [ ] Mark unskilled specially
 + [x] Add class for Natural Weapons #cli/backlog
 + [ ] Clean up subclasses of Possession #cli/backlog

@@ -105,5 +105,5 @@ Confidence
 
 # Combat
 
-+ Club
-+ Dagger
++ Club: Init 0; Atk 1; Dfn 0; Dam 1; Range -
++ Dagger: Init -1; Atk 1; Dfn -1; Dam 1; Range -

@@ -15,7 +15,7 @@ markdown sheets from an RDF graph (turtle files).
 
 + [[Covenant]] Support
 + [ ] Calculate Lab Totals    #cli/backlog
-+ [ ] Calculate Combat Totals    #cli/backlog
++ [x] Calculate Combat Totals    #cli/backlog @completed(2024-02-03T18:38:11+01:00)
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
 + [ ] Make a grog example and output
 + [ ] Add equipment to output
