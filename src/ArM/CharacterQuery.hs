@@ -23,7 +23,7 @@ module ArM.CharacterQuery ( getTraitList
                           , getReputations
                           , getSpells
                           , getCharacteristics
-                          , getItemList
+                          , getPossessions
                           , getCombat
                           , getMetaData
                           , getMetaDataTuples
@@ -53,8 +53,8 @@ getSpells :: G.RDFGraph -> [KeyPairList]
 getSpells = getTraitList $ armRes "hasSpell"
 getCharacteristics :: G.RDFGraph -> [KeyPairList]
 getCharacteristics = getTraitList $ armRes "hasCharacteristic"
-getItemList :: G.RDFGraph -> [KeyPairList]
-getItemList = getTraitList $ armRes "hasPossession"
+getPossessions :: G.RDFGraph -> [KeyPairList]
+getPossessions = getTraitList $ armRes "hasPossession"
 
 getCombat :: G.RDFGraph -> [KeyPairList]
 getCombat = getTraitList $ armRes "hasCombatOption"

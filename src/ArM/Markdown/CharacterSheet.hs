@@ -57,6 +57,8 @@ printSheetObject ob = [ getHeader  ob , "" ]
                   ++ (map printSpellLine $ spells ob)
                   ++ [ "", "# Combat", "" ]
                   ++ (map printCombat $ combat ob)
+                  ++ [ "", "# Equipment", "" ]
+                  ++ (map printEquipment $ equipment ob)
    where p1 x = fJ (traitLabel x) ++ " " ++ (fI $ traitTotalScore x)
          fJ Nothing = "???"
          fJ (Just x) = x
@@ -90,6 +92,9 @@ maybeFormat Nothing = "-"
 maybeFormat (Just x) = show x
 
 
+printEquipment :: Trait -> String
+printEquipment t = "+ " ++ f1 t 
+   where f1 = ss . traitLabel
 printVFLine :: Trait -> String
 printVFLine t = "+ " ++ f1 t ++ f3 t ++ " (" ++ f2 t ++ ")"
    where vfDetail Nothing = "" 
