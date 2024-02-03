@@ -24,7 +24,7 @@ import ArM.Types.Character
 import ArM.Types.Season
 import ArM.Types.RDF
 import ArM.Types.Advancement
-import qualified ArM.Rules.Record as R
+import ArM.Rules.Record (prepareRecord)
 import Data.List (sort)
 
 import ArM.Debug.NoTrace
@@ -144,7 +144,7 @@ makeCharStage schema cs0 adv = CharStage
               where cs = advanceCharacter cs0 adv 
              
 makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
-makeCGraph schema = R.prepareRecord schema . makeRDFGraph
+makeCGraph schema = prepareRecord schema . makeRDFGraph
 
 
 -- |

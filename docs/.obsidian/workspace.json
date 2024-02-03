@@ -15,8 +15,8 @@
               "state": {
                 "file": "Data Model.canvas",
                 "viewState": {
-                  "x": 141.8233148956297,
-                  "y": 68.8430853271489,
+                  "x": 830.0233148956304,
+                  "y": -501.99031661987226,
                   "zoom": 0
                 }
               }
@@ -54,8 +54,7 @@
               }
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -122,7 +121,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Backend Modules.md",
+                "file": "Data Model.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -139,7 +138,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Backend Modules.md",
+                "file": "Data Model.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -162,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Backend Modules.md"
+                "file": "Data Model.canvas"
               }
             }
           }
@@ -184,14 +183,14 @@
       "card-board:CardBoard": false
     }
   },
-  "active": "4317d76fe8a4a88f",
+  "active": "04a8536ad921bebe",
   "lastOpenFiles": [
-    "index.md",
-    "Data Model.canvas",
     "Backend Modules.md",
+    "CLI Design.md",
+    "Data Model.canvas",
+    "index.md",
     "Types.MapState.md",
     "CLI Workflow.canvas",
-    "CLI Design.md",
     "DesignNotes.md",
     "Webserver.md",
     "DataStructure.md",
