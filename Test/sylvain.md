@@ -28,7 +28,7 @@ Profession
 : Elementalist Magus, follower of Merinita and Diedne
 
 Personality traits
-: Compassionate ???, Stubborn ???, Pious ???, Curious ???
+: Compassionate 6, Stubborn 1, Pious 1, Curious 3
 
 Characteristics
 : Int 2, Per 1, Com 1, Pre 1, Str -2, Sta 3, Dex -1, Qik -1
@@ -42,7 +42,7 @@ Confidence
 # Virtues and Flaws
 
 + The Gift (-)
-+ Diedne Magic (3)
++ Diedne Magic (1)
 + Skilled Parens (1)
 + Elemental Magic (3)
 + Puissant (Ability): Forest Lore (1)
@@ -61,49 +61,49 @@ Confidence
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
 | :-                   | :-              |    -: |   -: |    -: |        -: |
-| Forest Lore          | -               |     3 |    5 |     - |         - |
-| Merinita Cult Lore   | Spells          |     1 |    0 |     - |         - |
-| Magic Theory         | Spells          |     3 |    0 |     - |         - |
-| Parma Magica         | Mentem          |     1 |    0 |     - |         - |
-| Finesse              | Auram           |     1 |    0 |     - |         - |
-| Penetration          | Auram           |     1 |    0 |     - |         - |
-| Dead Lang: Latin     | Hermetic Usage  |     4 |    0 |     - |         - |
-| Concentration        | Spell Conc.     |     2 |    0 |     - |         - |
-| Stealth              | Woodlands       |     2 |    0 |     - |         - |
-| Awareness            | searching       |     2 |    0 |     - |         - |
-| L Lang: Occitan      | [local]         |     5 |    0 |     - |         - |
+| Forest Lore          | -               |     3 |    5 |     2 |         5 |
+| Merinita Cult Lore   | Spells          |     1 |    0 |     - |         1 |
+| Magic Theory         | Spells          |     3 |    0 |     - |         3 |
+| Parma Magica         | Mentem          |     1 |    0 |     - |         1 |
+| Finesse              | Auram           |     1 |    0 |     - |         1 |
+| Penetration          | Auram           |     1 |    0 |     - |         1 |
+| Dead Lang: Latin     | Hermetic Usage  |     4 |    0 |     - |         4 |
+| Concentration        | Spell Conc.     |     2 |    0 |     - |         2 |
+| Stealth              | Woodlands       |     2 |    0 |     - |         2 |
+| Awareness            | searching       |     2 |    0 |     - |         2 |
+| L Lang: Occitan      | [local]         |     5 |    0 |     - |         5 |
 
 # Arts
 
 | Art        | Score |   XP | Bonus | Effective |
 | :-         |    -: |   -: |    -: |        -: |
-| Creo       |     6 |    0 |     - |         - |
-| Intellego  |     6 |    0 |     - |         - |
-| Muto       |     5 |    0 |     - |         - |
-| Perdo      |     5 |    0 |     - |         - |
-| Rego       |     6 |    0 |     - |         - |
-| Animal     |     0 |    0 |     - |         - |
-| Aquam      |     2 |    0 |     - |         - |
-| Auram      |     9 |    0 |     - |         - |
-| Corpus     |     0 |    0 |     - |         - |
-| Herbam     |     0 |    0 |     - |         - |
-| Ignem      |     2 |    0 |     - |         - |
-| Imaginem   |     0 |    0 |     - |         - |
-| Mentem     |     0 |    0 |     - |         - |
-| Terram     |     2 |    0 |     - |         - |
-| Vim        |     5 |    0 |     - |         - |
+| Creo       |     6 |    0 |     - |         6 |
+| Intellego  |     6 |    0 |     - |         6 |
+| Muto       |     5 |    0 |     - |         5 |
+| Perdo      |     5 |    0 |     - |         5 |
+| Rego       |     6 |    0 |     - |         6 |
+| Animal     |     0 |    0 |     - |         0 |
+| Aquam      |     2 |    0 |     - |         2 |
+| Auram      |     9 |    0 |     - |         9 |
+| Corpus     |     0 |    0 |     - |         0 |
+| Herbam     |     0 |    0 |     - |         0 |
+| Ignem      |     2 |    0 |     - |         2 |
+| Imaginem   |     0 |    0 |     - |         0 |
+| Mentem     |     0 |    0 |     - |         0 |
+| Terram     |     2 |    0 |     - |         2 |
+| Vim        |     5 |    0 |     - |         5 |
 
 # Spells
 
-+ CrAu30 Pull of the Skybound Winds *Casting Score* -; *Mastery* 0 (0)
-+ CrAu30 Wings of the Soaring Wind *Casting Score* -; *Mastery* 0 (0)
-+ ReVi20 Opening the Intangible Tunnel [custom variant] *Casting Score* -; *Mastery* 0 (0)
-+ ReAu30 Clouds of Thunderous Might *Casting Score* -; *Mastery* 0 (0)
-+ PeVi5 Demon's Eternal Oblivion *Casting Score* -; *Mastery* 0 (0)
-+ InVi20 Piercing the Faerie Veil *Casting Score* -; *Mastery* 0 (0)
-+ InAu15 Whispering Winds *Casting Score* -; *Mastery* 0 (0)
++ CrAu30 Pull of the Skybound Winds *Casting Score* 13; *Mastery* 0 (0)
++ CrAu30 Wings of the Soaring Wind *Casting Score* 13; *Mastery* 0 (0)
++ ReVi20 Opening the Intangible Tunnel [custom variant] *Casting Score* 9; *Mastery* 0 (0)
++ ReAu30 Clouds of Thunderous Might *Casting Score* 13; *Mastery* 0 (0)
++ PeVi5 Demon's Eternal Oblivion *Casting Score* 8; *Mastery* 0 (0)
++ InVi20 Piercing the Faerie Veil *Casting Score* 9; *Mastery* 0 (0)
++ InAu15 Whispering Winds *Casting Score* 13; *Mastery* 0 (0)
 
 # Combat
 
-+ ???
-+ ???
++ Club
++ Dagger
