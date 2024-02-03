@@ -21,6 +21,7 @@ markdown sheets from an RDF graph (turtle files).
 ## Design notes
 
 + [[Data Model.canvas|Data Model]]
++ [[Backend Modules]]
 + [[CLI Design]]
 	+ [[CLI Workflow.canvas|CLI Workflow]]
 + [[DesignNotes]]

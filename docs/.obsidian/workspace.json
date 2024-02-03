@@ -15,8 +15,8 @@
               "state": {
                 "file": "Data Model.canvas",
                 "viewState": {
-                  "x": 0,
-                  "y": -144.09022766113284,
+                  "x": 141.8233148956297,
+                  "y": 68.8430853271489,
                   "zoom": 0
                 }
               }
@@ -41,8 +41,24 @@
               "type": "card-board-view",
               "state": {}
             }
+          },
+          {
+            "id": "4317d76fe8a4a88f",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Data Model.canvas",
+                "viewState": {
+                  "x": -63.02000000000011,
+                  "y": 75,
+                  "zoom": 0
+                }
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -171,20 +187,22 @@
       "card-board:CardBoard": false
     }
   },
-  "active": "04a8536ad921bebe",
+  "active": "4317d76fe8a4a88f",
   "lastOpenFiles": [
     "index.md",
-    "Data Model.canvas",
-    "Untitled.canvas",
-    "Data Model.md",
+    "Backend Modules.md",
+    "Types.MapState.md",
+    "CLI Workflow.canvas",
+    "CLI Design.md",
     "DesignNotes.md",
     "Webserver.md",
     "DataStructure.md",
-    "CLI Workflow.canvas",
-    "CLI Design.md",
+    "Logic.md",
+    "Data Model.canvas",
+    "Untitled.canvas",
+    "Data Model.md",
     "Traits and Possessions.md",
     "Traits and Possessions in RDF.canvas",
-    "Logic.md",
     "Swish-vs-Jena.md",
     "DataTypes.md",
     "index.md~",

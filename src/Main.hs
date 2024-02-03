@@ -15,7 +15,7 @@ import System.IO -- for file IO
 
 -- Timer
 import ArM.Debug.Time
-import ArM.CharGraph
+import ArM.Types.MapState
 import ArM.Markdown.CharacterSheet
 import ArM.Character.CharGen
 import ArM.Markdown.SheetObject
