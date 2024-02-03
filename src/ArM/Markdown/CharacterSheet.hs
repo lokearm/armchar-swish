@@ -13,7 +13,7 @@
 module ArM.Markdown.CharacterSheet ( printSheetObject ) where
 
 
-import ArM.Markdown.SheetObject
+import ArM.Types.SheetObject
 import Data.List(intercalate)
 
 import Text.Printf

@@ -18,7 +18,7 @@ import ArM.Debug.Time
 import ArM.Types.MapState
 import ArM.Markdown.CharacterSheet
 import ArM.Character.CharGen
-import ArM.Markdown.SheetObject
+import ArM.Types.SheetObject
 -- import ArM.Types.Character
 
 import System.Environment

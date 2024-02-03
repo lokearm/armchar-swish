@@ -9,7 +9,7 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Markdown.SheetObject ( getSheetObject
+module ArM.Types.SheetObject ( getSheetObject
                                 , SheetObject(..)
                                 , Trait(..)
                                 , traitLabel
