@@ -53,9 +53,21 @@
               "type": "card-board-view",
               "state": {}
             }
+          },
+          {
+            "id": "70ada09656907444",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "index.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -122,7 +134,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Data Model.canvas",
+                "file": "index.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -139,7 +151,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Data Model.canvas",
+                "file": "index.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -162,7 +174,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Data Model.canvas"
+                "file": "index.md"
               }
             }
           }
@@ -184,14 +196,14 @@
       "card-board:CardBoard": false
     }
   },
-  "active": "a5072ad78b1d3592",
+  "active": "70ada09656907444",
   "lastOpenFiles": [
+    "Traits and Possessions.md",
+    "Data Model.canvas",
     "index.md",
     "Backend Modules.md",
     "Traits and Possessions in RDF.canvas",
-    "Traits and Possessions.md",
     "CLI Design.md",
-    "Data Model.canvas",
     "Types.MapState.md",
     "CLI Workflow.canvas",
     "DesignNotes.md",
