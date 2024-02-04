@@ -1,8 +1,4 @@
 
-Dodge Brawl 0 n/a 0 n/a n/a 0 n/a
-Fist Brawl 0 0 0 0 n/a 0 n/a
-Kick Brawl –1 0 –1 +3 n/a 0 n/a
-
 armr:Dodge rdfs:subClassOf arm:NaturalWeapon ;
      rdfs:subClassOf arm:MissileWeapon ;
      arm:hasSkill armr:brawl ;

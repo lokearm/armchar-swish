@@ -30,27 +30,14 @@ armchar:andres arm:characterClass arm:Magus ;
    arm:advancementClass arm:BaseAdvancement ; 
    arm:changePossession 
      [ arm:traitClass armr:Knife ; arm:hasQuantity 1 ],
+     [ arm:traitClass armr:Axe ; arm:hasQuantity 1 ],
      [ arm:traitClass armr:Shortbow ; arm:hasQuantity 1 ] ;
-     [ arm:traitClass armr:Shortbow ; arm:hasQuantity 1 ] ;
-   arm:advanceTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ],
+   arm:advanceTrait 
+      [ arm:traitClass arm:Size ; arm:hasScore 0 ],
       [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
-    [ arm:traitClass arm:CombatOption ;
-      arm:skillClass armr:brawl ;
-      arm:weaponClass armr:Knife
-    ] ,
-    [ arm:traitClass arm:CombatOption ;
-      arm:skillClass armr:brawl ;
-      arm:weaponClass armr:Dodge
-    ] ,
-    [ arm:traitClass arm:CombatOption ;
-      arm:skillClass armr:brawl ;
-      arm:weaponClass armr:Fist
-    ] ,
-    [ arm:traitClass arm:CombatOption ;
-      arm:skillClass armr:brawl ;
-      arm:weaponClass armr:Fist
-    ]
-    ;
+      [ arm:traitClass armr:Dodge ],
+      [ arm:traitClass armr:Kick ],
+      [ arm:traitClass armr:Fist ] ;
    arm:hasHouseVirtue 
     [ arm:traitClass armr:faeriemagic  ] ;
    arm:buyVirtueFlaw

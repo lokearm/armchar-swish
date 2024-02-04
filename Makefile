@@ -2,8 +2,8 @@ all: charactersheet.pdf charactersheet.html
 
 .force:
 
-charactersheet.md: .force
-	cabal run armchar-cli -- -c Test/sylvain.ttl -s Test/saga.ttl -o charactersheet.md -O charactersheet.triples
+%.md: Test/%.ttl .force
+	cabal run armchar-cli -- -c $< -s Test/saga.ttl -o $@ -O $*.triples
 
 %.pdf: %.md
 	pandoc -o $@ $<

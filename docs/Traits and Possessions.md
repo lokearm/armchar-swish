@@ -18,5 +18,6 @@
 + [ ] Mark unskilled combat option specially  #cli/backlog 
 + [x] Add class for Natural Weapons #cli/backlog
 + [ ] Clean up subclasses of Possession #cli/backlog
++ [ ] Is it necessary to treat Possession and Trait separately?  Can we use Traitlike instead?
 + [ ] Do we want to separate Weapon with stats from Weapon as equipment?  #kanban/backlog 
 	+ This would allow us to link one piece of weaponry with different weapons using different skills
