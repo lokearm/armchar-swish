@@ -22,6 +22,7 @@ markdown sheets from an RDF graph (turtle files).
 	+ [[DesignNotes]]
 	+ Business [[Logic]]
 	+ [[Swish-vs-Jena]]
+	+ [[Traits and Possessions in RDF.canvas|Traits and Possessions in RDF]]
 + [[DataTypes]]
 	+ This is written with reference to the web server, but some parts may still be informative wrt CLI
 + [[Ontology]]

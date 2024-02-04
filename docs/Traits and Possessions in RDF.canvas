@@ -7,14 +7,15 @@
 		{"id":"2604e12cb3932b61","type":"text","text":"StockItem","x":535,"y":-48,"width":250,"height":60,"color":"1"},
 		{"id":"d029063f6201beee","type":"text","text":"Vis","x":535,"y":120,"width":250,"height":60,"color":"1"},
 		{"id":"6542e04c562d850a","type":"text","text":"Weapon","x":-80,"y":-48,"width":250,"height":60,"color":"1"},
-		{"id":"70b82bd73494abb9","type":"text","text":"Trait","x":-720,"y":-240,"width":250,"height":60,"color":"1"},
 		{"id":"8b27f1ab49d20d74","type":"text","text":"CombatOption","x":-720,"y":-440,"width":250,"height":60,"color":"1"},
 		{"id":"25c0c8f8beeda291","type":"text","text":"General Weapon","x":-175,"y":-440,"width":250,"height":60,"color":"1"},
 		{"id":"671dc60679d43ff8","type":"text","text":"NaturalWeapon","x":-400,"y":-48,"width":250,"height":60,"color":"1"},
 		{"id":"eb209e1dac2e3367","type":"text","text":"Ability","x":-550,"y":60,"width":250,"height":60},
 		{"id":"a4d4fcd68796e2a6","type":"text","text":"Weapon","x":-845,"y":300,"width":250,"height":60},
 		{"id":"0e46650f0e3e1a43","type":"text","text":"CombatOption","x":-550,"y":240,"width":250,"height":60},
-		{"id":"1d57170bce15906f","type":"text","text":"WeopnItem","x":-300,"y":420,"width":250,"height":60}
+		{"id":"1d57170bce15906f","type":"text","text":"WeopnItem","x":-300,"y":420,"width":250,"height":60},
+		{"id":"af02248b96f2598b","x":-205,"y":-640,"width":250,"height":60,"color":"1","type":"text","text":"Traitlike"},
+		{"id":"70b82bd73494abb9","type":"text","text":"Trait","x":-595,"y":-610,"width":250,"height":60,"color":"1"}
 	],
 	"edges":[
 		{"id":"06de1a522d92e0c1","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"6542e04c562d850a","toSide":"top"},
@@ -26,11 +27,13 @@
 		{"id":"e7807ff9eed5073c","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"eb209e1dac2e3367","toSide":"left","label":"hasSkill"},
 		{"id":"9060d593b79e2881","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"6542e04c562d850a","toSide":"top"},
 		{"id":"046e6adc4618659e","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"671dc60679d43ff8","toSide":"top"},
-		{"id":"d96702e2d4bcf4c5","fromNode":"70b82bd73494abb9","fromSide":"top","toNode":"8b27f1ab49d20d74","toSide":"bottom"},
+		{"id":"d96702e2d4bcf4c5","fromNode":"70b82bd73494abb9","fromSide":"bottom","toNode":"8b27f1ab49d20d74","toSide":"top"},
 		{"id":"dbdddb9fd4ca7af1","fromNode":"25c0c8f8beeda291","fromSide":"bottom","toNode":"a4d4fcd68796e2a6","toSide":"top"},
 		{"id":"bbf2c3acf7151076","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"1d57170bce15906f","toSide":"top"},
 		{"id":"a63f1b57dcaac89d","fromNode":"1d57170bce15906f","fromSide":"left","toNode":"a4d4fcd68796e2a6","toSide":"right","label":"implements"},
 		{"id":"0565f63a6e2396bd","fromNode":"0e46650f0e3e1a43","fromSide":"right","toNode":"1d57170bce15906f","toSide":"top","label":"uses"},
-		{"id":"a91b84fa2a5edec7","fromNode":"0e46650f0e3e1a43","fromSide":"top","toNode":"eb209e1dac2e3367","toSide":"bottom","label":"uses"}
+		{"id":"a91b84fa2a5edec7","fromNode":"0e46650f0e3e1a43","fromSide":"top","toNode":"eb209e1dac2e3367","toSide":"bottom","label":"uses"},
+		{"id":"d29cda3f5d920015","fromNode":"af02248b96f2598b","fromSide":"bottom","toNode":"f2d4af1fecfad9e2","toSide":"top"},
+		{"id":"1cc6463ccdec8d49","fromNode":"af02248b96f2598b","fromSide":"bottom","toNode":"70b82bd73494abb9","toSide":"top"}
 	]
 }

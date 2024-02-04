@@ -1,6 +1,19 @@
-arm:Trait a owl:Class ; rdfs:subClassOf arm:Object .
-arm:TraitProperty a owl:Property ; rdfs:subPropertyOf arm:ViewProperty ;
-   rdfs:comment "These properties should be passed to the client for display."  .
+
+arm:Traitlike a owl:Class ; rdfs:subClassOf arm:Object .
+
+arm:Trait a owl:Class ; rdfs:subClassOf arm:Traitlike .
+arm:Possession a owl:Class ; rdfs:subClassOf arm:Traitlike .
+
+arm:hasTraitlike  a   owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterSheet ;
+        rdfs:range   arm:Traitlike .
+arm:hasTrait  rdfs:subPropertyOf   arm:hasTraitlike ;
+        rdfs:domain  arm:CharacterSheet ;
+        rdfs:range   arm:Trait .
+arm:hasPossession rdfs:subPropertyOf   arm:hasTraitlike ;
+     rdfs:label "hasPossession" ;
+    rdfs:domain arm:CharacterSheet ;
+    rdfs:range arm:Possession .
 
 # Special kinds of traits
 
@@ -104,9 +117,6 @@ arm:local rdfs:label "Local" .
 
 # Subproperties of hasTrait
 
-arm:hasTrait  a   owl:ObjectProperty ;
-        rdfs:domain  arm:CharacterSheet ;
-        rdfs:range   arm:Trait .
 arm:hasOtherTrait  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:OtherTrait .
