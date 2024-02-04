@@ -15,6 +15,10 @@ arm:hasPossession rdfs:subPropertyOf   arm:hasTraitlike ;
     rdfs:domain arm:CharacterSheet ;
     rdfs:range arm:Possession .
 
+arm:GeneralWeapon a owl:Class ; rdfs:subClassOf arm:Traitlike .
+arm:Weapon rdfs:subClassOf arm:Possession, arm:GeneralWeapon .
+arm:NaturalWeapon rdfs:subClassOf arm:Trait, arm:GeneralWeapon .
+
 # Special kinds of traits
 
 arm:isSpecialTrait a owl:ObjectProperty ;

@@ -35,6 +35,7 @@ import Data.List (sort)
 import Control.Parallel.Strategies
 import ArM.Debug.Trace
 
+
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
 calculateSheet :: RDFGraph -> RDFGraph
@@ -53,6 +54,26 @@ addCombatStats = calculateCombatStats
                . fwdApplyListR combatScoreRules 
                . addDefaultSkill
                . fwdApplyListR ( combatRules ++ combatSkillRules)
+           . addCombatOptions
+
+addCombatOptions :: RDFGraph -> RDFGraph
+addCombatOptions g = ( foldl merge g . map getCOgraph . getWeapons ) g
+
+
+getWeapons :: RDFGraph -> [ (RDFLabel,RDFLabel) ]
+getWeapons = map f . Q.rdfQueryFind q
+   where q = listToRDFGraph 
+             [ arc cVar (armRes "hasTraitlike") wVar,
+               arc wVar typeRes (armRes "GeneralWeapon") ]
+         f vb = (fromJust $ vbMap vb cVar, fromJust $ vbMap vb wVar)
+         wVar = Var "weapon"
+getCOgraph :: (RDFLabel,RDFLabel) -> RDFGraph
+getCOgraph (c,w) = trace (show w) $ listToRDFGraph 
+                 [ arc c (armRes "hasCombatOption")  n
+                 , arc n typeRes (armRes "CombatOption")
+                 , arc n (armRes "hasWeapon") w
+                 ]
+         where n = Blank "newnode"
 
 combatRules :: [RDFRule]
 combatRules = 

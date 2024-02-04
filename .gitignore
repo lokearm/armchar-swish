@@ -31,3 +31,5 @@ test.md
 test
 *.log
 charactersheet.*
+*.diff
+*.triples
