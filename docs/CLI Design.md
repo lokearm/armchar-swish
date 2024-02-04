@@ -22,7 +22,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] Add vis to sample character and have it work
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
-+ [ ] #bug  SkillScore 0 on all CombatOptions #cli/selected 
++ [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [ ] Support shield and weapon as combat option #cli/selected 
 
 

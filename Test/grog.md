@@ -52,12 +52,12 @@ Confidence
 
 # Combat
 
-+ Fist: Init 2; Atk 2; Dfn 2; Dam 2; Range -
-+ Kick: Init 1; Atk 2; Dfn 1; Dam 5; Range -
-+ Dodge: Init 2; Atk -; Dfn 2; Dam -; Range -
-+ Shortbow: Init 1; Atk 5; Dfn 2; Dam 8; Range -
-+ Axe: Init 3; Atk 6; Dfn 2; Dam 8; Range -
-+ Knife: Init 2; Atk 3; Dfn 2; Dam 4; Range -
++ Fist: Init 2; Atk 5; Dfn 5; Dam 2; Range -
++ Kick: Init 1; Atk 5; Dfn 4; Dam 5; Range -
++ Dodge: Init 2; Atk -; Dfn 5; Dam -; Range -
++ Shortbow: Init 1; Atk 12; Dfn 9; Dam 8; Range 15
++ Axe: Init 3; Atk 10; Dfn 6; Dam 8; Range -
++ Knife: Init 2; Atk 6; Dfn 5; Dam 4; Range -
 
 # Equipment
 

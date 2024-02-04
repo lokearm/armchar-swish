@@ -175,7 +175,7 @@ parsePair (KeyValuePair res  x) t
     | res == (armRes "hasAtk")      = t { traitAtk = G.fromRDFLabel x }
     | res == (armRes "hasDfn")      = t { traitDfn = G.fromRDFLabel x }
     | res == (armRes "hasDam")      = t { traitDam = G.fromRDFLabel x }
-    | res == (armRes "hasRange")      = t { traitRange = G.fromRDFLabel x }
+    | res == (armRes "hasWeaponRange")      = t { traitRange = G.fromRDFLabel x }
     | res == (armRes "hasLoad")      = t { traitLoad = G.fromRDFLabel x }
     | res == (armRes "hasStr")      = t { traitStr = G.fromRDFLabel x }
 parsePair _ t = t 

@@ -138,6 +138,11 @@ combatScoreRules =
       , arc cVar (armRes "hasWeapon") oVar
       , arc oVar (armRes "hasWeaponInit") (Var "score") ]
       [ arc cVar (armRes "hasWeaponInit") (Var "score") ]
+  , makeCRule "combat-rng-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasWeapon") oVar
+      , arc oVar (armRes "hasWeaponRange") (Var "score") ]
+      [ arc cVar (armRes "hasWeaponRange") (Var "score") ]
   , makeCRule "combat-qik-rule"
       [ arc sVar (armRes "hasCombatOption")  cVar
       , arc sVar (armRes "hasCharacteristic")  tVar
