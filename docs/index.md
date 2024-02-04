@@ -11,25 +11,6 @@ using Haskell and Swish.  Still in early stages of construction.
 The focus in this repository is a command line tool generating
 markdown sheets from an RDF graph (turtle files).
 
-## TODO Lists
-
-+ [ ] [[Covenant]] Support #kanban/backlog 
-+ [ ] Calculate Lab Totals    #cli/backlog
-+ [x] Calculate Combat Totals    #cli/backlog @completed(2024-02-03T18:38:11+01:00)
-+ [ ] Generate Character Sheets at different points in time #cli/backlog 
-	+ [ ] Show season on Markdown sheet
-+ [ ] Make a grog example and output  #cli/selected 
-	+ [ ] Make archer grog with 20 arrows
-+ [x] Add equipment to output   #cli/selected 
-+ [ ] Revise equipment list  #cli/selected 
-	+ [ ] Quantity, Load etc.
-	+ [ ] Sort equipment list
-	+ [ ] More detailed description
-	+ [ ] Review Ontology and use of classes
-	+ [ ] Add vis to sample character and have it work
-+ [x] Add Header to Markdown output    #cli/backlog @completed(2024-01-31T15:56:40+01:00)
-+ [ ] #bug Labels do not appear for natural weapons  #cli/selected 
-
 ## Design notes
 
 + [[CLI Design]].  The following pages are not necessarily exclusive to CLI, but have been written in that context and are up to date.

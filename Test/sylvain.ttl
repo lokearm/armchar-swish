@@ -33,18 +33,16 @@ armchar:sylvain arm:characterClass arm:Magus ;
    arm:advancementClass arm:BaseAdvancement ; 
    arm:changePossession 
      [ arm:traitClass armr:Knife ; arm:hasQuantity 1 ] ;
-   arm:advanceTrait [ arm:traitClass arm:Size ; arm:hasScore 0 ],
-      [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
+   arm:advanceTrait 
+    [ arm:traitClass arm:Size ; arm:hasScore 0 ],
+    [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
     [ arm:traitClass arm:CombatOption ;
-      arm:skillClass armr:brawl ;
       arm:weaponClass armr:Knife
     ] ,
     [ arm:traitClass arm:CombatOption ;
-      arm:skillClass armr:brawl ;
       arm:weaponClass armr:Dodge
     ] ,
     [ arm:traitClass arm:CombatOption ;
-      arm:skillClass armr:brawl ;
       arm:weaponClass armr:Fist
     ]
     ;
