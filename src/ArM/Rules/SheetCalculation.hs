@@ -35,6 +35,7 @@ import Data.List (sort)
 import Control.Parallel.Strategies
 import ArM.Debug.Trace
 
+import ArM.BlankNode
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
@@ -54,10 +55,12 @@ addCombatStats = calculateCombatStats
                . fwdApplyListR combatScoreRules 
                . addDefaultSkill
                . fwdApplyListR ( combatRules ++ combatSkillRules)
-           . addCombatOptions
+               . addCombatOptions
 
 addCombatOptions :: RDFGraph -> RDFGraph
-addCombatOptions g = ( foldl merge g . map getCOgraph . getWeapons ) g
+addCombatOptions g = addGraphs g $ listToRDFGraph g1
+    where m = getCOgraph $ getWeapons g
+          g1 = fst $ runBlank m ( "combatoptions", 1 )
 
 
 getWeapons :: RDFGraph -> [ (RDFLabel,RDFLabel) ]
@@ -67,13 +70,15 @@ getWeapons = map f . Q.rdfQueryFind q
                arc wVar typeRes (armRes "GeneralWeapon") ]
          f vb = (fromJust $ vbMap vb cVar, fromJust $ vbMap vb wVar)
          wVar = Var "weapon"
-getCOgraph :: (RDFLabel,RDFLabel) -> RDFGraph
-getCOgraph (c,w) = trace (show w) $ listToRDFGraph 
-                 [ arc c (armRes "hasCombatOption")  n
-                 , arc n typeRes (armRes "CombatOption")
-                 , arc n (armRes "hasWeapon") w
-                 ]
-         where n = Blank "newnode"
+getCOgraph :: [ (RDFLabel,RDFLabel) ] -> BlankState [RDFTriple]
+getCOgraph [] = return []
+getCOgraph ((c,w):xs) = do
+           n <- getBlank
+           s <- getCOgraph xs
+           return $
+                 arc c (armRes "hasCombatOption") n:
+                 arc n typeRes (armRes "CombatOption"):
+                 arc n (armRes "hasWeapon") w:s
 
 combatRules :: [RDFRule]
 combatRules = 
