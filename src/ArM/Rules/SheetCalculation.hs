@@ -87,8 +87,8 @@ combatRules =
       , arc (Var "sheet") typeRes (armRes "CharacterSheet")
       , arc cVar (armRes "hasWeapon") (Var "weapon")
       , arc (Var "weapon") (armRes "hasSkill") (Var "skillclass")
-      , arc (Var "sheet") (armRes "hasSkill") (Var "skill")
-      , arc (Var "skill")  typeRes (Var "skillClass") ]
+      , arc (Var "sheet") (armRes "hasAbility") (Var "skill")
+      , arc (Var "skill")  typeRes (Var "skillclass") ]
       [ arc cVar (armRes "hasSkill") (Var "skill") ]
     , makeCRule "combatlabel"
       [ arc sVar (armRes "hasCombatOption")  cVar
@@ -103,15 +103,9 @@ combatSkillRules =
     [ makeCRule "combat-skillscore-rule"
       [ arc cVar typeRes (armRes "CombatOption")
       , arc cVar (armRes "hasSkill") oVar
-      , arc oVar  (armRes "hasEffectiveScore")  (Var "score") ]
+      , arc oVar  (armRes "hasScore")  (Var "score") ]
       [ arc cVar (armRes "hasSkillScore") (Var "score") ]
     ]
---     makeCRule "combatskill"
---       [ arc sVar (armRes "hasCombatOption")  cVar
---       , arc cVar (armRes "hasSkill") (Var "skill")
---       ]
---       [ arc sVar (armRes "hasSkill") (Var "skill") ]
---    ]
 
 -- | Rules to add relevant constituentstats to each combat option.
 -- This is a preparatory step before calculating the actual combat stats. 
