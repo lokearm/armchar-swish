@@ -41,15 +41,15 @@ Confidence
 
 # Virtues and Flaws
 
++ Elemental Magic (3)
 + The Gift (-)
++ Secondary Insight (1)
 + Diedne Magic (1)
 + Skilled Parens (1)
-+ Elemental Magic (3)
 + Puissant (Ability): Forest Lore (1)
 + Affinity with Ability: Forest Lore (1)
 + Forest Lore (1)
 + Minor Magical Focus: Wind (1)
-+ Secondary Insight (1)
 + Motion Sickness (-1)
 + Small Frame (-1)
 + Pagan (-3)
@@ -72,7 +72,6 @@ Confidence
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
 | Awareness            | searching       |     2 |    0 |     - |         2 |
 | L Lang: Occitan      | [local]         |     5 |    0 |     - |         5 |
-
 # Arts
 
 | Art        | Score |   XP | Bonus | Effective |
@@ -92,7 +91,6 @@ Confidence
 | Mentem     |     0 |    0 |     - |         0 |
 | Terram     |     2 |    0 |     - |         2 |
 | Vim        |     5 |    0 |     - |         5 |
-
 # Spells
 
 + CrAu30 Pull of the Skybound Winds *Casting Score* 13; *Mastery* 0 (0)
@@ -105,5 +103,11 @@ Confidence
 
 # Combat
 
-+ Club: Init 0; Atk 1; Dfn 0; Dam 1; Range -
-+ Dagger: Init -1; Atk 1; Dfn -1; Dam 1; Range -
++ Fist: Init -1; Atk -1; Dfn -1; Dam -2; Range -
++ Dodge: Init -1; Atk -; Dfn -1; Dam -; Range -
++ Knife: Init -1; Atk 0; Dfn -1; Dam 0; Range -
+
+# Equipment
+
++ Knife
++ Snares

@@ -52,9 +52,10 @@ calculateSheet = addCastingScores . addCombatStats . addScores
 -- 3. calculate the total combat scores (init/atk/dfn/dam)
 addCombatStats :: RDFGraph -> RDFGraph
 addCombatStats = calculateCombatStats
-               . fwdApplyListR combatScoreRules 
+               . fwdApplyList combatScoreRules 
                . addDefaultSkill
-               . fwdApplyListR ( combatRules ++ combatSkillRules)
+               . fwdApplyList combatSkillRules
+               . fwdApplyListR combatRules 
                . addCombatOptions
 
 addCombatOptions :: RDFGraph -> RDFGraph

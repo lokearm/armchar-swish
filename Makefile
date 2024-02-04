@@ -1,4 +1,5 @@
 all: grog.md sylvain.md
+diff: grog.diff sylvain.diff
 formats: charactersheet.pdf charactersheet.html
 
 .force:
