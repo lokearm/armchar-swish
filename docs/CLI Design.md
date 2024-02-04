@@ -22,8 +22,9 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] Add vis to sample character and have it work
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
-+ [ ] Handle skill specialisations in combat stats #cli/backlog 
 + [ ] #bug  SkillScore 0 on all CombatOptions #cli/selected 
++ [ ] Support shield and weapon as combat option #cli/selected 
+
 
 
 # Wishlist
@@ -33,6 +34,9 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Calculate Lab Totals    #cli/backlog
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
 	+ [ ] Show season on Markdown sheet
++ [ ] Handle skill specialisations in combat stats #cli/backlog 
++ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
+	+ Alphabetical ordering?  Or something cleverer?
 
 # Roadmap
 
