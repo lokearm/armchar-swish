@@ -36,15 +36,8 @@ armchar:sylvain arm:characterClass arm:Magus ;
    arm:advanceTrait 
     [ arm:traitClass arm:Size ; arm:hasScore 0 ],
     [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
-    [ arm:traitClass arm:CombatOption ;
-      arm:weaponClass armr:Knife
-    ] ,
-    [ arm:traitClass arm:CombatOption ;
-      arm:weaponClass armr:Dodge
-    ] ,
-    [ arm:traitClass arm:CombatOption ;
-      arm:weaponClass armr:Fist
-    ]
+    [ arm:traitClass armr:Dodge ] ,
+    [ arm:traitClass armr:Fist ]
     ;
    arm:hasHouseVirtue 
     [ arm:traitClass armr:faeriemagic  ] ;
