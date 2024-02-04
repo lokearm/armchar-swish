@@ -22,10 +22,6 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] Add vis to sample character and have it work
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
-+ [ ] Distinguish between Grog/Companion and Magus #cli/selected 
-	+ [ ] Need to flag character type in haskell objects
-	+ [ ] Different output in Markdown
-	+ [ ] Or drop headers when a section is empty
 
 
 # Wishlist
@@ -39,3 +35,10 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 # Roadmap
 
 + [ ] [[Covenant]] Support #kanban/backlog 
+
+# Considerations
+
++ [ ] Consider distinction between Grog/Companion and Magus #kanban/backlog 
+	+ [ ] handle differently in Haskell?
+	+ [x] Different output in Markdown
+	+ [x] Or drop headers when a section is empty
