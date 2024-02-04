@@ -22,6 +22,10 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] Add vis to sample character and have it work
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
++ [ ] Distinguish between Grog/Companion and Magus #cli/selected 
+	+ [ ] Need to flag character type in haskell objects
+	+ [ ] Different output in Markdown
+	+ [ ] Or drop headers when a section is empty
 
 
 # Wishlist

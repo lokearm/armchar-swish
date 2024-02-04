@@ -1,4 +1,5 @@
-all: charactersheet.pdf charactersheet.html
+all: grog.md sylvain.md
+formats: charactersheet.pdf charactersheet.html
 
 .force:
 

@@ -50,11 +50,8 @@ printSheetObject ob = [ getHeader  ob , "" ]
                        pAb ":-" ":-" "-:" "-:" "-:" "-:"
                        ]
                   ++ (map printAbilityLine $ abilities ob)
-                  ++ [ "", "# Arts", "" ]
-                  ++ artHeader
-                  ++ (map printArtLine $ arts ob)
-                  ++ [ "", "# Spells", "" ]
-                  ++ (map printSpellLine $ spells ob)
+                  ++ printArts ob
+                  ++ printSpells ob
                   ++ [ "", "# Combat", "" ]
                   ++ (map printCombat $ combat ob)
                   ++ [ "", "# Equipment", "" ]
@@ -68,6 +65,17 @@ printSheetObject ob = [ getHeader  ob , "" ]
          p2 x = fJ (traitAbbr x) ++ " " ++ (fI $ traitTotalScore x)
          lf [] = "-"
          lf xs = intercalate ", " xs
+
+printArts :: SheetObject -> [String]
+printArts = p . arts
+    where
+       p [] = []
+       p xs = [ "# Arts", "" ] ++ artHeader ++ (map printArtLine xs)
+printSpells :: SheetObject -> [String]
+printSpells = p . spells
+    where
+       p [] = []
+       p xs = [ "# Spells", "" ] ++ (map printSpellLine xs)
 
 printSpellLine :: Trait -> String
 printSpellLine t = "+ " ++ tefoString t ++ " " ++ f1 t 
