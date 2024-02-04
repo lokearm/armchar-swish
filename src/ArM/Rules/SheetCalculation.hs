@@ -80,30 +80,16 @@ getCOgraph ((c,w):xs) = do
                  arc c (armRes "hasCombatOption") n:
                  arc n typeRes (armRes "CombatOption"):
                  arc n (armRes "hasWeapon") w:s
-
 combatRules :: [RDFRule]
 combatRules = 
     [ makeCRule "combat1rule"
-      [ arc sVar (armRes "hasCombatOption")  cVar
-      , arc sVar typeRes (armRes "CharacterSheet")
-      , arc cVar (armRes "weaponClass") tVar
-      , arc sVar (armRes "hasPossession") oVar
-      , arc oVar typeRes tVar ]
-      [ arc cVar (armRes "hasWeapon") oVar ]
--- 1.
--- CharacterSheet has CombatOption
--- CombatOption has WeaponClass
--- Weapon is WeaponClass
--- CharacterSheet has Weapon
--- => CombatOption has Weapon
-    , makeCRule "combat2rule"
-      [ arc sVar (armRes "hasCombatOption")  cVar
-      , arc sVar typeRes (armRes "CharacterSheet")
-      , arc cVar (armRes "skillClass") tVar
-      , arc sVar htRes oVar
-      , arc oVar typeRes tVar ]
-      [ arc cVar (armRes "hasSkill") oVar ]
--- Ability analogous to Weapon (possession) above
+      [ arc (Var "sheet") (armRes "hasCombatOption")  cVar
+      , arc (Var "sheet") typeRes (armRes "CharacterSheet")
+      , arc cVar (armRes "hasWeapon") (Var "weapon")
+      , arc (Var "weapon") (armRes "hasSkill") (Var "skillclass")
+      , arc (Var "sheet") (armRes "hasSkill") (Var "skill")
+      , arc (Var "skill")  typeRes (Var "skillClass") ]
+      [ arc cVar (armRes "hasSkill") (Var "skill") ]
     , makeCRule "combatlabel"
       [ arc sVar (armRes "hasCombatOption")  cVar
       , arc cVar (armRes "hasWeapon") tVar
