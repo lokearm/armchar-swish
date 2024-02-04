@@ -11,9 +11,9 @@ title: CLI Design
 
 The first version of CLI will solve one simple problem; take a character description in turtle and produce a character sheet in Markdown.
 
-+ [ ] #bug Labels do not appear for natural weapons  #cli/selected 
-	+ [ ] New property/subclass to process Natural Weapons as Traits
-	+ [ ] Infer Combat Option from Trait or Possession
++ [x] #bug Labels do not appear for natural weapons  #cli/selected 
+	+ [x] New property/subclass to process Natural Weapons as Traits
+	+ [x] Infer Combat Option from Trait or Possession
 + [ ] Revise equipment list  #cli/selected 
 	+ [ ] Quantity, Load etc.
 	+ [ ] Sort equipment list
@@ -22,6 +22,8 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] Add vis to sample character and have it work
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
++ [ ] Handle skill specialisations in combat stats #cli/backlog 
++ [ ] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 
 
 # Wishlist
