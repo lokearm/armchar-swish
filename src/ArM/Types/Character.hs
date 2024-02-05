@@ -131,7 +131,6 @@ data CharacterSheet = CharacterSheet {
       -- ^ ID of the Character Sheet, usually Nothing suggesting a blank node
       csTime :: CharTime,  -- ^ Current Year
       born     :: Int,      -- ^ Year of Birth
-      csItems :: [Trait],    -- ^ List of possessions (weapons, equipment)
       csTraits :: [Trait],  -- ^ List of traits (abilities, spells, etc.)
       csMetadata :: KeyPairList
       -- ^ Metadata, i.e. data which are not traits or items.
@@ -149,7 +148,6 @@ defaultCS = CharacterSheet {
          sheetID = Nothing,
          csTime = defaultCharTime,
          born = 0,
-         csItems = [],
          csTraits = [],
          csMetadata = KeyPairList []
        }  
@@ -186,17 +184,13 @@ csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
           x <- getSheetIDM $ sheetID cs
           tsm <- fixBlanksM $ csTraits cs
-          ism <- fixBlanksM $ csItems $ trace ("#tsm = " ++ show (length tsm)) cs
           let ht = map ( \ y -> arc x htRes (traitID y) ) tsm
-          let hi = map ( \ y -> arc x (armRes "hasPossession") (traitID y) ) ism
           let ts =  map traitContents tsm
-          let is =  map traitContents ism
           let metadata = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
-          let ms = metadata ++ hi ++ ht 
+          let ms = metadata ++ ht 
           let ct = arc x (armRes "ïsCharacter") (csID cs)
           let ct1 = arc x typeRes csRes 
-          let ms1 = foldr (++) ms ts
-          return $ ct1:ct:foldr (++) ms1 is
+          return $ ct1:ct:foldr (++) ms ts
 
 getSheetIDM :: Maybe RDFLabel -> BlankState RDFLabel
 getSheetIDM Nothing = getBlank
@@ -222,7 +216,6 @@ advanceCharacter cs adv =
      cs { sheetID = Nothing
         , csTime = nextCharTime $ advTime adv
         , csTraits = advanceTraitList (csTraits cs) (sort $ traits adv)
-        , csItems = advanceTraitList (csItems cs) (items adv)
      }
 
 -- |

@@ -31,10 +31,9 @@ armchar:marcus arm:characterClass arm:Magus ;
 
 :zeroadv arm:advanceCharacter armchar:marcus ;
    arm:advancementClass arm:BaseAdvancement ; 
-   arm:changePossession 
-     [ arm:traitClass armr:Dagger ; arm:hasQuantity 1 ],
-     [ arm:traitClass armr:Knife ; arm:hasQuantity 1 ] ;
    arm:advanceTrait 
+     [ arm:traitClass armr:Dagger ; arm:hasQuantity 1 ],
+     [ arm:traitClass armr:Knife ; arm:hasQuantity 1 ],
     [ arm:traitClass arm:Size ; arm:hasScore 0 ],
     [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
     [ arm:traitClass armr:Dodge ] ,
@@ -120,8 +119,7 @@ armchar:marcus arm:characterClass arm:Magus ;
    [ arm:traitClass armr:ReAu30Clouds ],
    [ arm:traitClass armr:ReVi20Opening ],
    [ arm:traitClass armr:CrAu30Wings ],
-   [ arm:traitClass armr:CrAu30Pull ] ;
-  arm:changePossession
+   [ arm:traitClass armr:CrAu30Pull ],
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 1 ;
        arm:instanceLabel "Snares" ;
        arm:hasDescription "A reasonable set of snares for hunting and survival" 
@@ -132,10 +130,9 @@ armchar:marcus arm:characterClass arm:Magus ;
   arm:atSeason "Spring" ;
   arm:inYear   1220 ;
   arm:hasAdvancementDescription "Story" ;
-   arm:changePossession 
-     [ arm:traitClass armr:Dagger ; arm:addQuantity 1 ],
-     [ arm:traitClass armr:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 4 ] ;
   arm:advanceTrait 
+     [ arm:traitClass armr:Dagger ; arm:addQuantity 1 ],
+     [ arm:traitClass armr:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 4 ],
     [ arm:traitClass armr:parmamagica ; arm:addedXP 5  ],
     [ arm:traitClass armr:finesse ; arm:addedXP 5  ] .
 
@@ -144,7 +141,6 @@ armchar:marcus arm:characterClass arm:Magus ;
   arm:atSeason "Summer" ;
   arm:inYear   1220 ;
   arm:hasAdvancementDescription "Story" ;
-   arm:changePossession 
-     [ arm:traitClass armr:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 2 ] ;
   arm:advanceTrait 
+     [ arm:traitClass armr:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 2 ],
     [ arm:traitClass armr:parmamagica ; arm:addedXP 5  ] .

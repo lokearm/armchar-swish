@@ -28,12 +28,11 @@ armchar:andres arm:characterClass arm:Grog ;
 
 :zeroadv arm:advanceCharacter armchar:andres ;
    arm:advancementClass arm:BaseAdvancement ; 
-   arm:changePossession 
+   arm:advanceTrait 
      [ arm:traitClass armr:Arrow ; arm:hasQuantity 20 ],
      [ arm:traitClass armr:Knife ; arm:hasQuantity 1 ],
      [ arm:traitClass armr:Axe ; arm:hasQuantity 1 ],
-     [ arm:traitClass armr:Shortbow ; arm:hasQuantity 1 ] ;
-   arm:advanceTrait 
+     [ arm:traitClass armr:Shortbow ; arm:hasQuantity 1 ],
       [ arm:traitClass arm:Size ; arm:hasScore 0 ],
       [ arm:traitClass armr:Dodge ],
       [ arm:traitClass armr:Kick ],
