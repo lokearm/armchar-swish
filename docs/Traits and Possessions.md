@@ -1,12 +1,53 @@
 
 
-+ Common Framework for Possession (Equipment) and Trait
++ Common Framework for Possessions and Trait
 	+ same function `advanceTraitList`
-+ CombatOption is currently neither
-	+ CombatOption should be a trait because it can be added or removed
-	+ it never changes directly
-	+ the details are always inferred from other traits
-+ [[Traits and Possessions in RDF.canvas|Traits and Possessions in RDF]]
++ The `Traitlike` class generalises some features which is common for every character aspect which changes over time
+	+ Some features, called metadata, are defined as constant at character level.
++ Some features distinguish between Traits and Possessions
+	+ [[Traits and Possessions in RDF.canvas|Traits and Possessions in RDF]]
++ [ ] Is it necessary to treat Possession and Trait separately?  Can we use Traitlike instead?  #kanban/backlog 
++ Traits include
+	+ Abilities
+	+ Spells
+	+ Arts
+	+ CombatOption 
+	+ Natural Weapns
++ Possessions include
+	+ Equipment (including regular weapons)
+	+ Vis
++ Attributes (common)
+	+ label and description (see below)
++ Possession attributes
+	+ quantity for StockItem
+	+ art for Vis
++ [ ] Consider other attributes #cli/backlog 
+	+ [ ] Comment
+	+ [ ] Origin
++ Attributes for traits
+	+ Specialty
++ [ ] link specialities to other traitlike classes (e.g. weapon) #cli/backlog 
+
+
++ [ ] Mark unskilled combat option specially  #cli/backlog 
++ [ ] Do we want to separate Weapon with stats from Weapon as equipment?  #kanban/backlog 
+	+ This would allow us to link one piece of weaponry with different weapons using different skills
+
+# Label  and Description
+
++ All traits and possessions have label and description
++ The label is a short string, suitable for listing
++ The description is a longer description
++ Label and description can be defined both at class and instance level
++ Class level description (`hasDescription` and `hasLabel`) are generic
+	+ inherited by every instance
++ Instance level description (`instaceDescription` and `instanceLabel`) are more specific
+
+
+
+
+# History of Development
+
 + [x] How do we deal with multipurpose weapons?   #cli/selected
 	+  e.g. throwing axe used as hatchet
 	+ lance used as two-handed long spear
@@ -15,9 +56,5 @@
 	+ [x]  Record skill with weapon
 	+ [x] Default skill score of 0 when unskilled @completed(2024-02-03T18:31:10+01:00)
 + [x] Infer combat option from weapon (this requires a blind node) #cli/backlog  @completed(2024-02-04T21:26:14+01:00)
-+ [ ] Mark unskilled combat option specially  #cli/backlog 
 + [x] Add class for Natural Weapons #cli/backlog
-+ [ ] Clean up subclasses of Possession #cli/backlog
-+ [ ] Is it necessary to treat Possession and Trait separately?  Can we use Traitlike instead?
-+ [ ] Do we want to separate Weapon with stats from Weapon as equipment?  #kanban/backlog 
-	+ This would allow us to link one piece of weaponry with different weapons using different skills
++ [x] Clean up subclasses of Possession #cli/backlog

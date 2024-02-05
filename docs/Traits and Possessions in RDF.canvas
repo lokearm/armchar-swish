@@ -1,24 +1,24 @@
 {
 	"nodes":[
 		{"id":"7bac5f35b622fab5","type":"group","x":-865,"y":160,"width":835,"height":360,"label":"Tentative separation"},
-		{"id":"f2d4af1fecfad9e2","type":"text","text":"Possession","x":75,"y":-240,"width":250,"height":60,"color":"1"},
-		{"id":"13dfa66a5742479d","type":"text","text":"StandardItem","x":75,"y":120,"width":250,"height":60,"color":"2"},
-		{"id":"29591b3818a4a362","type":"text","text":"Equipment","x":235,"y":-48,"width":250,"height":60,"color":"1"},
-		{"id":"2604e12cb3932b61","type":"text","text":"StockItem","x":535,"y":-48,"width":250,"height":60,"color":"1"},
-		{"id":"d029063f6201beee","type":"text","text":"Vis","x":535,"y":120,"width":250,"height":60,"color":"1"},
-		{"id":"6542e04c562d850a","type":"text","text":"Weapon","x":-80,"y":-48,"width":250,"height":60,"color":"1"},
 		{"id":"8b27f1ab49d20d74","type":"text","text":"CombatOption","x":-720,"y":-440,"width":250,"height":60,"color":"1"},
 		{"id":"25c0c8f8beeda291","type":"text","text":"General Weapon","x":-175,"y":-440,"width":250,"height":60,"color":"1"},
 		{"id":"671dc60679d43ff8","type":"text","text":"NaturalWeapon","x":-400,"y":-48,"width":250,"height":60,"color":"1"},
+		{"id":"af02248b96f2598b","type":"text","text":"Traitlike","x":-205,"y":-640,"width":250,"height":60,"color":"1"},
+		{"id":"70b82bd73494abb9","type":"text","text":"Trait","x":-595,"y":-610,"width":250,"height":60,"color":"1"},
+		{"id":"d029063f6201beee","type":"text","text":"Vis","x":535,"y":120,"width":250,"height":60,"color":"1"},
 		{"id":"eb209e1dac2e3367","type":"text","text":"Ability","x":-550,"y":60,"width":250,"height":60},
 		{"id":"a4d4fcd68796e2a6","type":"text","text":"Weapon","x":-845,"y":300,"width":250,"height":60},
 		{"id":"0e46650f0e3e1a43","type":"text","text":"CombatOption","x":-550,"y":240,"width":250,"height":60},
 		{"id":"1d57170bce15906f","type":"text","text":"WeopnItem","x":-300,"y":420,"width":250,"height":60},
-		{"id":"af02248b96f2598b","x":-205,"y":-640,"width":250,"height":60,"color":"1","type":"text","text":"Traitlike"},
-		{"id":"70b82bd73494abb9","type":"text","text":"Trait","x":-595,"y":-610,"width":250,"height":60,"color":"1"}
+		{"id":"f2d4af1fecfad9e2","type":"text","text":"Possession","x":170,"y":-340,"width":250,"height":60,"color":"1"},
+		{"id":"6542e04c562d850a","type":"text","text":"Weapon","x":-240,"y":30,"width":250,"height":60,"color":"1"},
+		{"id":"29591b3818a4a362","type":"text","text":"Equipment","x":-50,"y":-200,"width":250,"height":60,"color":"1"},
+		{"id":"13dfa66a5742479d","type":"text","text":"UniqueItem","x":240,"y":-48,"width":250,"height":60,"color":"1"},
+		{"id":"2604e12cb3932b61","type":"text","text":"StockItem","x":700,"y":-48,"width":250,"height":60,"color":"1"}
 	],
 	"edges":[
-		{"id":"06de1a522d92e0c1","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"6542e04c562d850a","toSide":"top"},
+		{"id":"06de1a522d92e0c1","fromNode":"29591b3818a4a362","fromSide":"bottom","toNode":"6542e04c562d850a","toSide":"top"},
 		{"id":"716d3ed2fbd19c3d","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"29591b3818a4a362","toSide":"top"},
 		{"id":"1846bdc30b5cdba1","fromNode":"2604e12cb3932b61","fromSide":"bottom","toNode":"d029063f6201beee","toSide":"top"},
 		{"id":"35ff5ca0703470ba","fromNode":"f2d4af1fecfad9e2","fromSide":"bottom","toNode":"2604e12cb3932b61","toSide":"top"},
@@ -34,6 +34,8 @@
 		{"id":"0565f63a6e2396bd","fromNode":"0e46650f0e3e1a43","fromSide":"right","toNode":"1d57170bce15906f","toSide":"top","label":"uses"},
 		{"id":"a91b84fa2a5edec7","fromNode":"0e46650f0e3e1a43","fromSide":"top","toNode":"eb209e1dac2e3367","toSide":"bottom","label":"uses"},
 		{"id":"d29cda3f5d920015","fromNode":"af02248b96f2598b","fromSide":"bottom","toNode":"f2d4af1fecfad9e2","toSide":"top"},
-		{"id":"1cc6463ccdec8d49","fromNode":"af02248b96f2598b","fromSide":"bottom","toNode":"70b82bd73494abb9","toSide":"top"}
+		{"id":"1cc6463ccdec8d49","fromNode":"af02248b96f2598b","fromSide":"bottom","toNode":"70b82bd73494abb9","toSide":"top"},
+		{"id":"473cd559bced9c19","fromNode":"29591b3818a4a362","fromSide":"bottom","toNode":"d029063f6201beee","toSide":"left","toEnd":"none","color":"2","label":"disjoint"},
+		{"id":"c65aea31a705fde3","fromNode":"13dfa66a5742479d","fromSide":"right","toNode":"2604e12cb3932b61","toSide":"left","toEnd":"none","color":"2","label":"disjoint"}
 	]
 }

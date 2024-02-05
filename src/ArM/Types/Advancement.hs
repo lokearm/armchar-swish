@@ -177,17 +177,17 @@ fixAdv g adv = adv { traits = traitsFromRDF advid g,
         where advid = rdfid adv
 
 itemsFromRDF :: RDFLabel -> RDFGraph -> [Trait]
-itemsFromRDF advid g = itFromRDF True "changePossession" advid g
+itemsFromRDF = itFromRDF "changePossession" 
 traitsFromRDF :: RDFLabel -> RDFGraph -> [Trait]
-traitsFromRDF advid g = itFromRDF False "advanceTrait" advid g
+traitsFromRDF = itFromRDF "advanceTrait" 
 
-itFromRDF :: Bool -> String -> RDFLabel -> RDFGraph -> [Trait]
-itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ Q.rdfQueryFind q g 
+itFromRDF :: String -> RDFLabel -> RDFGraph -> [Trait]
+itFromRDF s advid g = splitTrait $ sort $ map vb2tt  $ Q.rdfQueryFind q g 
     where q = traitqgraph (armRes s) advid
 
 type ProtoTrait = (RDFLabel, RDFLabel, RDFLabel,RDFLabel)
-vb2tt :: Bool -> VB.RDFVarBinding -> ProtoTrait
-vb2tt _ vb = ( fromJust $ vbMap vb (Var "class")
+vb2tt :: VB.RDFVarBinding -> ProtoTrait
+vb2tt vb = ( fromJust $ vbMap vb (Var "class")
              , (fromJust $ vbMap vb (Var "id")) 
              , (fromJust $ vbMap vb (Var "property"))
              , (fromJust $ vbMap vb (Var "value")) 
