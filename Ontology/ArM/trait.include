@@ -4,12 +4,9 @@ arm:Traitlike a owl:Class ; rdfs:subClassOf arm:Object .
 arm:Trait a owl:Class ; rdfs:subClassOf arm:Traitlike .
 arm:Possession a owl:Class ; rdfs:subClassOf arm:Traitlike .
 
-arm:hasTraitlike  a   owl:ObjectProperty ;
+arm:hasTrait  a   owl:ObjectProperty ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Traitlike .
-arm:hasTrait  rdfs:subPropertyOf   arm:hasTraitlike ;
-        rdfs:domain  arm:CharacterSheet ;
-        rdfs:range   arm:Trait .
 arm:hasPossession rdfs:subPropertyOf   arm:hasTraitlike ;
      rdfs:label "hasPossession" ;
     rdfs:domain arm:CharacterSheet ;

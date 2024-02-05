@@ -45,7 +45,8 @@ getSheetObject g = SheetObject {
     virtues = map parseTrait $ getVirtues g,
     flaws = map parseTrait $ getFlaws g,
     combat = map parseTrait $ getCombat g,
-    equipment = map parseTrait $ getPossessions g,
+    equipment = map parseTrait $ getEquipment g,
+    vis = map parseTrait $ getVis g,
     size = getSize g,
     cnf = getConf g
 }
@@ -61,6 +62,7 @@ data SheetObject = SheetObject {
     flaws :: [Trait],
     combat :: [Trait],
     equipment :: [Trait],
+    vis :: [Trait],
     size :: [Maybe Int],
     cnf :: [(Maybe Int,Maybe Int)]
 }

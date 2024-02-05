@@ -48,12 +48,8 @@ prepareRecord schema = fwdApplyList traitRules
 -- |
 -- = Trait sub properties
 
-
-traitRules :: [RDFRule]
-traitRules = traitRules1 ++ traitRules2
--- | Rules to infer subproperties of arm:hasTrait
-traitRules1 :: [RDFRule]
-traitRules1 = map mkr [ "Ability"
+traitTypeStrings :: [String]
+traitTypeStrings = [ "Ability"
                      , "Virtue"
                      , "Flaw"
                      , "PersonalityTrait"
@@ -63,33 +59,23 @@ traitRules1 = map mkr [ "Ability"
                      , "CombatOption"
                      , "Bonus"
                      , "OtherTrait"
-                     , "Characteristic" ]
+                     , "Characteristic" 
+                     , "Equipment" 
+                     , "Vis" 
+                     ]
+
+traitRules :: [RDFRule]
+traitRules = traitRules1 
+-- | Rules to infer subproperties of arm:hasTrait
+traitRules1 :: [RDFRule]
+traitRules1 = map mkr traitTypeStrings
     where mkr s = mkr' ("has" ++ s ++ "Rule")
                        (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
           mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs1 t p
--- | Rules to infer arm:hasTrait from subproperties
-traitRules2 :: [RDFRule]
-traitRules2 = map mkr [ "Ability"
-                     , "Virtue"
-                     , "Flaw"
-                     , "PersonalityTrait"
-                     , "Reputation"
-                     , "Spell"
-                     , "Art"
-                     , "CombatOption"
-                     , "Bonus"
-                     , "OtherTrait"
-                     , "Characteristic" ]
-    where mkr s = mkr' ("has" ++ s ++ "IRule")
-                       (Res $ makeSN s) (Res $ makeSN $ "has" ++ s)
-          mkr' s t p = makeCRule s g1 g2 where (g1,g2) = arcs2 t p
 
 arcs1 :: RDFLabel -> RDFLabel -> ([RDFTriple],[RDFTriple])
 arcs1 t p = ( [ arc cVar htRes tVar, arc tVar typeRes t ],
              [ arc cVar p tVar ] ) 
-arcs2 :: RDFLabel -> RDFLabel -> ([RDFTriple],[RDFTriple])
-arcs2 t p = ( [ arc cVar p tVar, arc tVar typeRes t ],
-             [ arc cVar htRes tVar ] ) 
 
 -- |
 -- = Recalculate Scores and XP

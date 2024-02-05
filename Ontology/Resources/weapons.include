@@ -1,6 +1,5 @@
 
 armr:Dodge rdfs:subClassOf arm:NaturalWeapon ;
-     rdfs:subClassOf arm:MissileWeapon ;
      arm:hasSkill armr:brawl ;
      arm:hasLabel  "Dodge" ;
      arm:hasWeaponInit 0 ;
@@ -8,7 +7,6 @@ armr:Dodge rdfs:subClassOf arm:NaturalWeapon ;
      arm:hasWeaponLoad 0 ;
      arm:hasCost "n/a" .
 armr:Fist rdfs:subClassOf arm:NaturalWeapon ;
-     rdfs:subClassOf arm:MissileWeapon ;
      arm:hasSkill armr:brawl ;
      arm:hasLabel  "Fist" ;
      arm:hasWeaponInit 0 ;
@@ -18,7 +16,6 @@ armr:Fist rdfs:subClassOf arm:NaturalWeapon ;
      arm:hasWeaponLoad 0 ;
      arm:hasCost "n/a" .
 armr:Kick rdfs:subClassOf arm:NaturalWeapon ;
-     rdfs:subClassOf arm:MissileWeapon ;
      arm:hasSkill armr:brawl ;
      arm:hasLabel  "Kick" ;
      arm:hasWeaponInit -1 ;

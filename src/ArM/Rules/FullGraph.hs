@@ -11,8 +11,7 @@
 -- Rules used include
 -- 1.  String properties are added to avoid having to handle simple objects
 --     at the client.
--- 2.  Infer Trait and Possession properties from their class
---     (via the `arm:traitClass` property).
+-- 2.  Infer Trait properties from their class --     (via the `arm:traitClass` property).
 -- 3.  Infer cost (score) of virtues and flaws.
 -- 4.  Infer that advancements advance traits granted by virtues and flaws
 -- 5.  Infer special traits.
@@ -40,7 +39,7 @@ prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRul
              . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
                                bonus1rule, bonus2rule, bonus3rule, 
                                bonusXPrule,
-                               spectraitRule, rRule, pRule ]
+                               spectraitRule, rRule ]
              . applyRDFS
 
 
@@ -49,12 +48,6 @@ rRule = makeCRule "rRule" l1 l2
     where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
                arc tVar pVar oVar,
                arc pVar typeRes ( armRes  "TraitProperty" )  ]
-          l2 = [arc sVar pVar oVar]
-pRule :: RDFRule
-pRule = makeCRule "pRule" l1 l2
-    where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
-               arc tVar pVar oVar,
-               arc pVar typeRes ( armRes  "PossessionProperty" )  ]
           l2 = [arc sVar pVar oVar]
 
 

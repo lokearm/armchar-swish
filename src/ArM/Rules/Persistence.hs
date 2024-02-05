@@ -44,14 +44,6 @@ persistRules =
     [ arc sVar (armRes "advanceTrait") tVar
     , arc tVar pVar oVar
     ]
-  , makeCRule "persistItemRule" 
-    [ arc sVar (armRes "changePossession") tVar
-    , arc tVar pVar oVar
-    , arc pVar typeRes armPersistentProperty 
-    ]
-    [ arc sVar (armRes "changePossession") tVar
-    , arc tVar pVar oVar
-    ]
   ]
 p2 :: RDFLabel -> RDFRule
 p2 k = makeCRule "persistedRule" 
@@ -67,14 +59,6 @@ persistedRules k =
     , arc pVar typeRes armPersistentProperty 
     ]
     [ arc k (armRes "advanceTrait") tVar
-    , arc tVar pVar oVar
-    ]
-  , makeCRule "persistedTraitRule" 
-    [ arc k (armRes "changePossession") tVar
-    , arc tVar pVar oVar
-    , arc pVar typeRes armPersistentProperty 
-    ]
-    [ arc k (armRes "changePossession") tVar
     , arc tVar pVar oVar
     ]
   ]
