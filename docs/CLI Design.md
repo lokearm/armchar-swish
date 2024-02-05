@@ -17,7 +17,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [ ] Revise equipment list  #cli/selected 
 	+ [ ] Sort equipment list
 	+ [ ] More detailed description
-	+ [ ] Review Ontology and use of classes
+	+ [x] Review Ontology and use of classes
 	+ [ ] Add vis to sample character and have it work
 	+ [x] check and fix addQuantity
 	+ [ ] display Quantity

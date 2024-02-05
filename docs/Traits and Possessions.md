@@ -6,7 +6,7 @@
 	+ Some features, called metadata, are defined as constant at character level.
 + Some features distinguish between Traits and Possessions
 	+ [[Traits and Possessions in RDF.canvas|Traits and Possessions in RDF]]
-+ [ ] Is it necessary to treat Possession and Trait separately?  Can we use Traitlike instead?  #kanban/backlog 
++ [x] Is it necessary to treat Possession and Trait separately?  Can we use Traitlike instead?  #kanban/backlog 
 + Traits include
 	+ Abilities
 	+ Spells
