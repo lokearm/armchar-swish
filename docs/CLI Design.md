@@ -15,11 +15,15 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] New property/subclass to process Natural Weapons as Traits
 	+ [x] Infer Combat Option from Trait or Possession
 + [ ] Revise equipment list  #cli/selected 
-	+ [ ] Quantity, Load etc.
 	+ [ ] Sort equipment list
 	+ [ ] More detailed description
 	+ [ ] Review Ontology and use of classes
 	+ [ ] Add vis to sample character and have it work
+	+ [x] check and fix addQuantity
+	+ [ ] display Quantity
+	+ [ ] display load
+	+ [ ] check other things that may require display
++ [ ] #bug add quantities of same type of item
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
