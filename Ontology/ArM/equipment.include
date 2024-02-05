@@ -21,26 +21,26 @@ arm:hasWeapon a owl:ObjectProperty, arm:CharacterProperty ;
     rdfs:range arm:Weapon .
 
 arm:addQuantity a owl:DatatypeProperty,
-                  arm:PossessionProperty,
+                  arm:TraitProperty,
                   arm:PersistentProperty ;
     rdfs:label "Added Quantity" ;
     rdfs:domain arm:StockItem  ;
     rdfs:range xsd:int .
 arm:removeQuantity a owl:DatatypeProperty,
-                  arm:PossessionProperty,
+                  arm:TraitProperty,
                   arm:PersistentProperty ;
     rdfs:label "Removed Quantity" ;
     rdfs:domain arm:StockItem  ;
     rdfs:range xsd:int .
 arm:hasQuantity a owl:DatatypeProperty,
-                  arm:PossessionProperty,
+                  arm:TraitProperty,
                   arm:PersistentProperty ;
     rdfs:label "Quantity" ;
     rdfs:domain arm:StockItem  ;
     rdfs:range xsd:int .
 
 arm:hasOrigin a owl:DatatypeProperty,
-                arm:PossessionProperty, 
+                arm:TraitProperty, 
                 arm:PersistentProperty ;
     rdfs:label "Origin" ;
     rdfs:domain arm:Possession  ;
@@ -56,40 +56,39 @@ arm:MeleeWeapon rdfs:subClassOf arm:Weapon .
 arm:MissileWeapon rdfs:subClassOf arm:Weapon .
 arm:ThrownWeapon rdfs:subClassOf arm:Weapon .
 
-arm:hasWeaponInit a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasWeaponInit a owl:DatatypeProperty, arm:TraitProperty ;
     rdfs:label "Weapon Init Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponAtk a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasWeaponAtk a owl:DatatypeProperty, arm:TraitProperty ;
     rdfs:label "Weapon Attack Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponDfn a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasWeaponDfn a owl:DatatypeProperty, arm:TraitProperty ;
     rdfs:label "Weapon Defence Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponDam a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasWeaponDam a owl:DatatypeProperty, arm:TraitProperty ;
     rdfs:label "Weapon Damage Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponRange a owl:DatatypeProperty, arm:PossessionProperty, arm:WeaponProperty ;
+arm:hasWeaponRange a owl:DatatypeProperty, arm:TraitProperty, arm:WeaponProperty ;
     rdfs:label "Weapon Range" ;
     rdfs:domain arm:MissileWeapon ;
     rdfs:range xsd:int .
-arm:hasWeaponStr a owl:DatatypeProperty, arm:PossessionProperty, arm:WeaponProperty ;
+arm:hasWeaponStr a owl:DatatypeProperty, arm:TraitProperty, arm:WeaponProperty ;
     rdfs:label "Strength Requirement" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponLoad a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasWeaponLoad a owl:DatatypeProperty, arm:TraitProperty ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasCost a owl:DatatypeProperty, arm:PossessionProperty ;
+arm:hasCost a owl:DatatypeProperty, arm:TraitProperty ;
     arm:hasDescription  "The cost is a string, typically either inexpensive, standard, or expensive, as used in cannon weapons tables." ;
     rdfs:domain arm:Possession ;
     rdfs:range xsd:string .
 
-arm:PossessionProperty rdfs:subClassOf arm:ViewProperty .
-arm:WeaponProperty rdfs:subClassOf arm:PossessionProperty, arm:TraitProperty ;
+arm:WeaponProperty rdfs:subClassOf arm:TraitProperty ;
    rdfs:comment "These are properties which should be copied from weapon to combat option." .
 
 # 3. Combat options

@@ -1,4 +1,6 @@
 
+armr:Arrow rdfs:subClassOf arm:Equipment ;
+     arm:hasLabel  "Arrow" .
 armr:Dodge rdfs:subClassOf arm:NaturalWeapon ;
      arm:hasSkill armr:brawl ;
      arm:hasLabel  "Dodge" ;

@@ -62,6 +62,7 @@ traitTypeStrings = [ "Ability"
                      , "Characteristic" 
                      , "Equipment" 
                      , "Vis" 
+                     , "Weapon" 
                      ]
 
 traitRules :: [RDFRule]

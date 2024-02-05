@@ -64,4 +64,4 @@ Confidence
 + Shortbow
 + Axe
 + Knife
-+ -
++ Arrow

@@ -67,7 +67,7 @@ addCombatOptions g = addGraphs g $ listToRDFGraph g1
 getWeapons :: RDFGraph -> [ (RDFLabel,RDFLabel) ]
 getWeapons = map f . Q.rdfQueryFind q
    where q = listToRDFGraph 
-             [ arc cVar (armRes "hasTraitlike") wVar,
+             [ arc cVar (armRes "hasTrait") wVar,
                arc wVar typeRes (armRes "GeneralWeapon") ]
          f vb = (fromJust $ vbMap vb cVar, fromJust $ vbMap vb wVar)
          wVar = Var "weapon"

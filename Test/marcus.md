@@ -113,12 +113,9 @@ Confidence
 + Dodge: Init -1; Atk -; Dfn -1; Dam -; Range -
 + Knife: Init -1; Atk 0; Dfn -1; Dam 0; Range -
 + Dagger: Init -1; Atk 1; Dfn -1; Dam 1; Range -
-+ Dagger: Init -1; Atk 1; Dfn -1; Dam 1; Range -
 
 # Equipment
 
 + Knife
-+ Dagger
-+ -
 + Dagger
 + Snares
