@@ -109,5 +109,7 @@ Confidence
 
 # Equipment
 
-+ Knife
-+ Snares
++ Knife (1)
++ Snares (1)
+
+

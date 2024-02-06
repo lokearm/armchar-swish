@@ -116,6 +116,8 @@ Confidence
 
 # Equipment
 
-+ Knife
-+ Dagger
-+ Snares
++ Knife (1)
++ Dagger (1)
++ Snares (1)
+
+

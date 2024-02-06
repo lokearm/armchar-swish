@@ -33,3 +33,6 @@ test
 charactersheet.*
 *.diff
 *.triples
+grog.md
+sylvain.md
+marcus.md

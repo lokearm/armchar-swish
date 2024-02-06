@@ -61,7 +61,9 @@ Confidence
 
 # Equipment
 
-+ Shortbow
-+ Axe
-+ Knife
-+ Arrow
++ Shortbow (1)
++ Axe (1)
++ Knife (1)
++ Arrow (20)
+
+
