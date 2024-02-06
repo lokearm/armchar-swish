@@ -21,8 +21,10 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Add vis to sample character and have it work
 	+ [x] check and fix addQuantity
 	+ [x] display Quantity
-	+ [ ] display load
-	+ [ ] check other things that may require display
+	+ [x] check other things that may require 
++ [ ] Test non-standardised items of equipment  #cli/selected 
+	+ [ ] Does quantities keep them separate?
+	+ [ ] Do they display correctly?
 + [ ] Test removal of quantities  #cli/selected 
 	+ [x] Basic removal
 	+ [ ] What happens when quantity is reduced to zero?
@@ -47,10 +49,15 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 
 + [ ] Calculate Lab Totals    #cli/backlog
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
-	+ [ ] Show season on Markdown sheet
++ [x] Show season on Markdown sheet
++ [ ] Show age on pre-game characters #cli/backlog 
 + [ ] Handle skill specialisations in combat stats #cli/backlog 
 + [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
 	+ Alphabetical ordering?  Or something cleverer?
++ [ ] Equipment load #cli/backlog 
+	+ [ ] load per item
+	+ [ ] total load (multiplied by quantity) per line
+	+ [ ] aggregate load and encumbrance
 
 # Roadmap
 
