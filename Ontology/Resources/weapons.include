@@ -113,7 +113,7 @@ armr:Axe rdfs:subClassOf arm:Weapon ;
 
 
 armr:Buckler rdfs:subClassOf arm:Weapon ;
-     rdfs:subClassOf arm:MeleeWeapon ;
+     rdfs:subClassOf arm:Shield ;
      arm:hasSkill armr:singleweapon ;
      arm:hasLabel  "Buckler Shield" ;
      arm:hasWeaponInit 0 ;
@@ -125,7 +125,7 @@ armr:Buckler rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Std." .
 
 armr:RoundShield rdfs:subClassOf arm:Weapon ;
-     rdfs:subClassOf arm:MeleeWeapon ;
+     rdfs:subClassOf arm:Shield ;
      arm:hasSkill armr:singleweapon ;
      arm:hasLabel  "Round Shield" ;
      arm:hasWeaponInit 0 ;
@@ -137,7 +137,7 @@ armr:RoundShield rdfs:subClassOf arm:Weapon ;
      arm:hasCost "Inexp." .
 
 armr:HeaterShield rdfs:subClassOf arm:Weapon ;
-     rdfs:subClassOf arm:MeleeWeapon ;
+     rdfs:subClassOf arm:Shield ;
      arm:hasSkill armr:singleweapon ;
      arm:hasLabel  "Heater Shield" ;
      arm:hasWeaponInit 0 ;

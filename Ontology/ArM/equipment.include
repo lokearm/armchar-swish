@@ -58,6 +58,7 @@ arm:artLabel a owl:DatatypeProperty , arm:TraitProperty, arm:ViewProperty ;
 
 # 2. Weapons
 arm:MeleeWeapon rdfs:subClassOf arm:Weapon .
+arm:Shield rdfs:subClassOf arm:Weapon .
 arm:MissileWeapon rdfs:subClassOf arm:Weapon .
 arm:ThrownWeapon rdfs:subClassOf arm:Weapon .
 
@@ -109,11 +110,19 @@ arm:hasSkill a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:label "Skill Instance" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Trait .
-arm:weaponClass a owl:ObjectProperty, arm:TraitProperty ;
+arm:hasWeaponClass a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:label "Weapon Class" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
-arm:hasWeapon a owl:ObjectProperty, arm:TraitProperty ;
+arm:hasShieldClass a owl:ObjectProperty, arm:TraitProperty ;
+    rdfs:label "Weapon Class" ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range arm:Class .
+arm:hasCombatShield a owl:ObjectProperty, arm:TraitProperty ;
+    rdfs:label "Weapon Instance" ;
+    rdfs:domain arm:CombatOption  ;
+    rdfs:range arm:Shield .
+arm:hasCombatWeapon a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:label "Weapon Instance" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Weapon .

@@ -97,7 +97,7 @@ armchar:andrew arm:characterClass arm:Grog ;
   arm:advanceTrait 
      [ arm:traitClass armr:RoundShield ; arm:hasQuantity 1 ],
      [ arm:traitClass arm:CombatOption ;
-       arm:hasWeaponClass  armr:RoundShield ; 
+       arm:hasShieldClass  armr:RoundShield ; 
        arm:hasWeaponClass  armr:Axe  ;
        arm:instanceLabel "Axe and Shield" 
        ],

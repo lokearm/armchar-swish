@@ -80,20 +80,36 @@ getCOgraph ((c,w):xs) = do
            return $
                  arc c (armRes "hasCombatOption") n:
                  arc n typeRes (armRes "CombatOption"):
-                 arc n (armRes "hasWeapon") w:s
+                 arc n (armRes "hasCombatWeapon") w:s
 combatRules :: [RDFRule]
 combatRules = 
-    [ makeCRule "combat1rule"
+    [ makeCRule "combatweaponrule"
       [ arc (Var "sheet") (armRes "hasCombatOption")  cVar
       , arc (Var "sheet") typeRes (armRes "CharacterSheet")
-      , arc cVar (armRes "hasWeapon") (Var "weapon")
+      , arc cVar (armRes "hasWeaponClass") tVar
+      , arc (Var "sheet") (armRes "hasWeapon")  (Var "weapon")
+      , arc (Var "weapon") typeRes  tVar
+      ]
+      [ arc cVar (armRes "hasCombatWeapon") (Var "weapon") ]
+    , makeCRule "combatshieldrule"
+      [ arc (Var "sheet") (armRes "hasCombatOption")  cVar
+      , arc (Var "sheet") typeRes (armRes "CharacterSheet")
+      , arc cVar (armRes "hasShieldClass") tVar
+      , arc (Var "sheet") (armRes "hasWeapon")  (Var "weapon")
+      , arc (Var "weapon") typeRes  tVar
+      ]
+      [ arc cVar (armRes "hasCombatShield") (Var "weapon") ]
+    , makeCRule "combat1rule"
+      [ arc (Var "sheet") (armRes "hasCombatOption")  cVar
+      , arc (Var "sheet") typeRes (armRes "CharacterSheet")
+      , arc cVar (armRes "hasCombatWeapon") (Var "weapon")
       , arc (Var "weapon") (armRes "hasSkill") (Var "skillclass")
       , arc (Var "sheet") (armRes "hasAbility") (Var "skill")
       , arc (Var "skill")  typeRes (Var "skillclass") ]
       [ arc cVar (armRes "hasSkill") (Var "skill") ]
     , makeCRule "combatlabel"
       [ arc sVar (armRes "hasCombatOption")  cVar
-      , arc cVar (armRes "hasWeapon") tVar
+      , arc cVar (armRes "hasCombatWeapon") tVar
       , arc tVar (armRes "hasLabel") (Var "label")
       ]
       [ arc cVar (armRes "hasLabel") (Var "label") ]
@@ -114,34 +130,39 @@ combatScoreRules :: [RDFRule]
 combatScoreRules =
   [ makeCRule "combat-property-rule"
       [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeapon") oVar
+      , arc cVar (armRes "hasCombatWeapon") oVar
       , arc oVar pVar (Var "value")
       , arc pVar typeRes (armRes "WeaponProperty")
       ]
       [ arc cVar pVar (Var "value") ]
   , makeCRule "combat-atk-rule"
       [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeapon") oVar
+      , arc cVar (armRes "hasCombatWeapon") oVar
       , arc oVar (armRes "hasWeaponAtk") (Var "score") ]
       [ arc cVar (armRes "hasWeaponAtk") (Var "score") ]
   , makeCRule "combat-dfn-rule"
       [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeapon") oVar
+      , arc cVar (armRes "hasCombatWeapon") oVar
       , arc oVar (armRes "hasWeaponDfn") (Var "score") ]
       [ arc cVar (armRes "hasWeaponDfn") (Var "score") ]
+  , makeCRule "combat-dfn-shield-rule"
+      [ arc cVar typeRes (armRes "CombatOption")
+      , arc cVar (armRes "hasCombatShield") oVar
+      , arc oVar (armRes "hasWeaponDfn") (Var "score") ]
+      [ arc cVar (armRes "hasShieldDfn") (Var "score") ]
   , makeCRule "combat-dam-rule"
       [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeapon") oVar
+      , arc cVar (armRes "hasCombatWeapon") oVar
       , arc oVar (armRes "hasWeaponDam") (Var "score") ]
       [ arc cVar (armRes "hasWeaponDam") (Var "score") ]
   , makeCRule "combat-init-rule"
       [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeapon") oVar
+      , arc cVar (armRes "hasCombatWeapon") oVar
       , arc oVar (armRes "hasWeaponInit") (Var "score") ]
       [ arc cVar (armRes "hasWeaponInit") (Var "score") ]
   , makeCRule "combat-rng-rule"
       [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeapon") oVar
+      , arc cVar (armRes "hasCombatWeapon") oVar
       , arc oVar (armRes "hasWeaponRange") (Var "score") ]
       [ arc cVar (armRes "hasWeaponRange") (Var "score") ]
   , makeCRule "combat-qik-rule"
