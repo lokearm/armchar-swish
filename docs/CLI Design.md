@@ -27,6 +27,8 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] `Types/Trait` need to recalculate `hasQuantity` upon advancement
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
++ [ ] Format vis display #cli/selected 
+	+ [ ] Define and format label
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [ ] Support shield and weapon as combat option #cli/selected 
 
