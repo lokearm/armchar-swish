@@ -36,8 +36,6 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Debug.Trace
-
 -- | 
 -- = Trait
 
@@ -160,7 +158,7 @@ getXPtriples' (tot,add,fac,ys) | ys == [] = (tot,add,fac,ys)
 -- | Auxiliary for `fixTrait`.
 --
 calculateQ :: [RDFTriple] -> [RDFTriple]
-calculateQ ts = trace ("calculateQ" ++ show (tot,add)) $ xp:ys 
+calculateQ ts = xp:ys 
    where (tot,add,ys) = getQtriples' (0,0,ts)
          newtot = (fromIntegral tot) + (fromIntegral add)
          sub = arcSubj $ head ts
@@ -178,7 +176,7 @@ getQtriples' (tot,add,ys) | ys == [] = (tot,add,ys)
           newtot = tot' + ( intFromRDF $ arcObj y )
           newadd = add' + ( intFromRDF $ arcObj y )
           newrm = add' - ( intFromRDF $ arcObj y )
-          y = ttrace $ head ys
+          y = head ys
 
 {-
 xpSum :: [RDFTriple]  -- ^ Input list

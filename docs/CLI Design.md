@@ -18,18 +18,23 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] Sort equipment list
 	+ [ ] More detailed description
 	+ [x] Review Ontology and use of classes
-	+ [ ] Add vis to sample character and have it work
+	+ [x] Add vis to sample character and have it work
 	+ [x] check and fix addQuantity
 	+ [x] display Quantity
 	+ [ ] display load
 	+ [ ] check other things that may require display
-+ [ ] #bug add quantities of same type of item
-	+ [ ] `Types/Trait` need to recalculate `hasQuantity` upon advancement
++ [ ] Test removal of quantities  #cli/selected 
+	+ [ ] Basic removal
+	+ [ ] What happens when quantity is reduced to zero?
+	+ [ ] Virtues/Flaws taken more than once
++ [x] #bug add quantities of same type of item
+	+ [x] `Types/Trait` need to recalculate `hasQuantity` upon advancement
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
-+ [ ] Format vis display #cli/selected 
+	+ [ ] Test removal of arrows
++ [x] Format vis display #cli/selected 
 	+ [x] Define and format label
-	+ [ ] Fix quantity summation (separate task) and validate the vis display
+	+ [x] Fix quantity summation (separate task) and validate the vis display
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [ ] Support shield and weapon as combat option #cli/selected 
 

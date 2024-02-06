@@ -117,11 +117,11 @@ Confidence
 # Equipment
 
 + Knife (1)
-+ Dagger (1)
++ Dagger (2)
 + Snares (1)
 
 
 # Vis
 
-+ -
++ 4p Creo
 

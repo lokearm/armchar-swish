@@ -2,6 +2,10 @@ all: grog.md sylvain.md
 diff: grog.diff sylvain.diff marcus.diff
 formats: charactersheet.pdf charactersheet.html
 
+marcus.md:
+sylvain.md:
+grog.md:
+
 .force:
 
 O=Ontology/resources.ttl Ontology/arm.ttl
