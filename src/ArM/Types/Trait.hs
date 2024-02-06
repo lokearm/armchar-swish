@@ -36,7 +36,7 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Debug.NoTrace
+import ArM.Debug.Trace
 
 -- | 
 -- = Trait
@@ -128,9 +128,8 @@ advanceTriples (x:xs) (y:ys)
 -- XP need to be recalculated.  This auxiliary is applied
 -- by two different functions to do this.
 fixTrait :: Trait -> Trait
-fixTrait trait =  trait {
-       traitContents = sort $ calculateXP $ traitContents trait
-    }
+fixTrait trait =  trait { traitContents = recalc trait }
+    where recalc = sort . calculateQ . sort . calculateXP . traitContents 
 
 -- |
 -- == Recalculation of XP (auxiliary functions
@@ -138,7 +137,7 @@ fixTrait trait =  trait {
 -- | Auxiliary for `fixTrait`.
 --
 calculateXP :: [RDFTriple] -> [RDFTriple]
-calculateXP ts = trace ("calculateXP" ++ show (tot,add,fac)) $ xp:ys 
+calculateXP ts = xp:ys 
    where (tot,add,fac,ys) = getXPtriples' (0,0,1,ts)
          newtot = round $ (fromIntegral tot) + (fromIntegral add)*fac
          sub = arcSubj $ head ts
@@ -149,16 +148,14 @@ getXPtriples' :: (Int,Int,Float,[RDFTriple]) -> (Int,Int,Float,[RDFTriple])
 getXPtriples' (tot,add,fac,ys) | ys == [] = (tot,add,fac,ys)
                       | p == armRes "hasTotalXP" =  (newtot,add',fac',ys')
                       | p == armRes "addedXP" =  (tot',newadd,fac',ys')
-                      | p == armRes "hasXPfactor" =
-                         trace (show (tot',add',newfac) )
-                         (tot',add',newfac,y:ys')
+                      | p == armRes "hasXPfactor" = (tot',add',newfac,y:ys')
                       | otherwise             =  (tot',add',fac',y:ys')
     where (tot',add',fac',ys') = getXPtriples' (tot,add,fac,tail ys)
           p = arcPred y
           newfac = floatFromRDF $ arcObj y
           newtot = tot' + ( intFromRDF $ arcObj y )
           newadd = add' + ( intFromRDF $ arcObj y )
-          y = ttrace $ head ys
+          y = head ys
 
 -- | Auxiliary for `fixTrait`.
 --
@@ -167,7 +164,7 @@ calculateQ ts = trace ("calculateQ" ++ show (tot,add)) $ xp:ys
    where (tot,add,ys) = getQtriples' (0,0,ts)
          newtot = (fromIntegral tot) + (fromIntegral add)
          sub = arcSubj $ head ts
-         xp = arc sub (armRes "hasTotalXP") (litInt newtot)
+         xp = arc sub (armRes "hasQuantity") (litInt newtot)
 
 -- | Inner recursive function for `getQtriplles` (auxiliary for `calculateQ`)
 getQtriples' :: (Int,Int,[RDFTriple]) -> (Int,Int,[RDFTriple])
