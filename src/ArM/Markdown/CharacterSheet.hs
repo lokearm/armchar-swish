@@ -109,8 +109,9 @@ printEquipmentLine t = "+ " ++ f1 t ++ f2 t
          s2 Nothing = ""
          s2 (Just x) = " (" ++ show x ++ ")"
 printVisLine :: Trait -> String
-printVisLine t = "+ " ++ f2 t  ++ f1 t
-   where f1 = dashShow . traitLabel
+printVisLine t = "+ " ++ f2 t  ++ f1  (traitArt t) t
+   where f1 Nothing x =  (dashShow . traitLabel) x
+         f1 (Just x) _ =  x
          f2 = s2 . traitQuantity
          s2 Nothing = ""
          s2 (Just x) = show x ++ "p "

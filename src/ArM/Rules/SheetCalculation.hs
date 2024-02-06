@@ -52,10 +52,11 @@ calculateSheet = addCastingScores . addCombatStats . addScores
 -- 3. calculate the total combat scores (init/atk/dfn/dam)
 addCombatStats :: RDFGraph -> RDFGraph
 addCombatStats = calculateCombatStats
+               -- . fwdApplyList labelRules 
                . fwdApplyList combatScoreRules 
                . addDefaultSkill
                . fwdApplyList combatSkillRules
-               . fwdApplyListR combatRules 
+               . fwdApplyList combatRules 
                . addCombatOptions
 
 addCombatOptions :: RDFGraph -> RDFGraph
@@ -429,3 +430,9 @@ getCombatOptionSkills = map f . Q.rdfQueryFind q
                   intFromRDF (fromJust $ vbMap vb scoreVar) )
          coVar = Var "co"
          scoreVar = Var "score"
+
+-- | 
+-- = Labels
+
+-- labelRules = []
+

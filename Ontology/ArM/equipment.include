@@ -48,8 +48,13 @@ arm:hasOrigin a owl:DatatypeProperty,
 
 # 1. Vis
 arm:isVisOfArt a owl:ObjectProperty ;
+    arm:hasStringProperty arm:artLabel ;
     rdfs:domain arm:Vis ;
     rdfs:range arm:ArtClass .
+arm:artLabel a owl:DatatypeProperty , arm:TraitProperty, arm:ViewProperty ;
+    rdfs:label "Art" ;
+    rdfs:domain arm:Vis ;
+    rdfs:range xsd:string .
 
 # 2. Weapons
 arm:MeleeWeapon rdfs:subClassOf arm:Weapon .
