@@ -67,6 +67,8 @@ Confidence
 + Shortbow: Init 1; Atk 12; Dfn 9; Dam 8; Range 15
 + Axe: Init 3; Atk 10; Dfn 6; Dam 8; Range -
 + Knife: Init 2; Atk 6; Dfn 5; Dam 4; Range -
++ Round Shield: Init 2; Atk 6; Dfn 8; Dam 2; Range -
++ Axe and Shield: Init 3; Atk 10; Dfn 8; Dam 8; Range -
 
 # Equipment
 
@@ -74,5 +76,6 @@ Confidence
 + Axe (1)
 + Knife (1)
 + Arrow (23)
++ Round Shield (1)
 
 

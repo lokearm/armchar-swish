@@ -34,7 +34,6 @@ import Data.Maybe (fromJust)
 import Data.List (sort)
 
 import Control.Parallel.Strategies
-import ArM.Debug.NoTrace
 
 import ArM.BlankNode
 
@@ -53,9 +52,7 @@ calculateSheet = addCastingScores . addCombatStats . addScores
 -- 3. calculate the total combat scores (init/atk/dfn/dam)
 addCombatStats :: RDFGraph -> RDFGraph
 addCombatStats = calculateCombatStats
-               -- . fwdApplyList labelRules 
                . fwdApplyList combatScoreRules 
-               . addDefaultSkill
                . fwdApplyList combatSkillRules
                . fwdApplyList combatRules2
                . fwdApplyList combatRules 
@@ -191,81 +188,7 @@ combatScoreRules =
       [ arc cVar (armRes "hasStr") (Var "score") ]
   ]
 
---
--- E.g. Atk
--- CombatOption has Skill, Skill has Score
--- CombatOption has Weapon, Skill hasAtk Score
--- Character has CombatOption, Character has Dex, Dex has  Score
--- ADD all the scores
--- => CombatOption hasAtk Score
 
--- 3. (foreach)
--- Character has Weapon
--- Weapon has Skill
--- => Character has NEW CombatOption
--- CombatOption has Skill
--- NB. New blank nodes.
-
--- | Query to get constituent scores for Init Score
-initQuery :: RDFGraph
-initQuery = listToRDFGraph 
-      [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeaponInit") (Var "weapon") 
-      , arc cVar (armRes "hasQik") (Var "char") ]
--- | Query to get constituent scores for Attack Score
-atkQuery :: RDFGraph
-atkQuery = listToRDFGraph 
-      [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasSkillScore") (Var "skill") 
-      , arc cVar (armRes "hasWeaponAtk") (Var "weapon") 
-      , arc cVar (armRes "hasDex") (Var "char") ]
--- | Query to get constituent scores for Defence Score
-dfnQuery :: RDFGraph
-dfnQuery = listToRDFGraph 
-      [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasSkillScore") (Var "skill") 
-      , arc cVar (armRes "hasWeaponDfn") (Var "weapon") 
-      , arc cVar (armRes "hasQik") (Var "char") ]
--- | Query to get constituent scores for Damage Score
-damQuery :: RDFGraph
-damQuery = listToRDFGraph 
-      [ arc cVar typeRes (armRes "CombatOption")
-      , arc cVar (armRes "hasWeaponDam") (Var "weapon") 
-      , arc cVar (armRes "hasStr") (Var "char") ]
-
--- | Function constructing Attack/Defence Scores.
-addAtkDfn :: String -- ^ Either "hasAtk" or "hasDfn"
-      -> RDFGraph -- ^ Either `atkQuery` or `dfnQuery`
-      -> RDFGraph -- ^ The graph of character data
-      -> [RDFTriple] -- ^ List of new triples; should be one per CombatOption
-addAtkDfn p q = map f . Q.rdfQueryFind q
-           where f vb = calc p (fromJust $ vbMap vb cVar) $ ss vb
-                 ss vb = map vbToInt [ vbMap vb (Var "weapon"),
-                        vbMap vb (Var "skill") ,
-                        vbMap vb (Var "char") ]
--- | Function constructing Init/Damage Scores.
-addDamInit :: String -- ^ Either "hasInit" or "hasDam"
-      -> RDFGraph -- ^ Either `initQuery` or `damQuery`
-      -> RDFGraph -- ^ The graph of character data
-      -> [RDFTriple] -- ^ List of new triples; should be one per CombatOption
-addDamInit p q = map f . Q.rdfQueryFind q
-           where f vb = calc p (fromJust $ vbMap vb cVar) $ ss vb
-                 ss vb = map vbToInt [ vbMap vb (Var "weapon"),
-                        vbMap vb (Var "char") ]
--- | Calculate an arc giving a CombatOption score.
--- This is an auxiliary for `addDamInit` and `addAtkDfn`
-calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple 
-calc p idvar vb = arc idvar (armRes p) (litInt $ score vb)
-    where score xs = foldl (+) 0 $ ff xs
-
-addfunctions :: [ RDFGraph -> [RDFTriple] ]
-addfunctions = [ addDamInit "hasDam" damQuery
-               , addDamInit "hasInit"  initQuery
-               , addAtkDfn  "hasAtk"  atkQuery
-               , addAtkDfn  "hasDfn"  dfnQuery ]
-oldcalculateCombatStats :: RDFGraph -> RDFGraph
-oldcalculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
-    where fs = parMap rpar ( \ f -> f g ) addfunctions 
 
 calculateCombatStats :: RDFGraph -> RDFGraph
 calculateCombatStats g = foldl addGraphs g fs 
@@ -273,10 +196,6 @@ calculateCombatStats g = foldl addGraphs g fs
           tl = getCombatStatList g
           f = listToRDFGraph . processCombatStats
 
-ff :: [Maybe Int] -> [Int]
-ff [] = [] 
-ff (Nothing:xs) = ff xs
-ff (Just x:xs) = x:ff xs
 
 
 getCombatStatList :: RDFGraph -> [[RDFTriple]]
@@ -481,35 +400,16 @@ arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
          y' = arc (arcSubj x) (armRes s) (litInt t)
 
 
--- | Add zero skills
-addDefaultSkill :: RDFGraph -> RDFGraph
-addDefaultSkill g = addGraphs g $ g1 g
-   where g1 = listToRDFGraph . map f . ttrace . defaultSkillPairs 
-         f (l,i) = arc l (armRes "hasSkillScore") (litInt i)
 
-defaultSkillPairs :: RDFGraph -> [ (RDFLabel, Int) ]
-defaultSkillPairs g = f cs co
-    where
-        co = sort $ getCombatOptions g
-        cs = sort $ getCombatOptionSkills g
-        f (x:xs) (y:ys) | fst x < y = trace ("scored" ++ show (fst x)) $ f xs (y:ys)
-                        | fst x > y = trace ("default" ++ show y) $ (y,0):f (x:xs) (ys)
-                        | otherwise = trace ("equal" ++ show y) $ f xs ys
-        f _ []  = []
-        f [] ys  = [ (y,0) | y <- ys ]
-getCombatOptions :: RDFGraph -> [ RDFLabel ]
-getCombatOptions = map f . Q.rdfQueryFind q
-   where q = listToRDFGraph 
-             [ arc coVar typeRes (armRes "CombatOption") ]
-         f vb = (fromJust $ vbMap vb coVar)
-         coVar = Var "co"
-getCombatOptionSkills :: RDFGraph -> [ (RDFLabel, Int) ]
-getCombatOptionSkills = map f . Q.rdfQueryFind q
-   where q = listToRDFGraph 
-             [ arc coVar typeRes (armRes "CombatOption") 
-             , arc coVar (armRes "hasSkillScore")  scoreVar ]
-         f vb = ( (fromJust $ vbMap vb coVar),
-                  intFromRDF (fromJust $ vbMap vb scoreVar) )
-         coVar = Var "co"
-         scoreVar = Var "score"
+-- |
+-- = Auxiliaries
 
+-- | Calculate an arc giving a CombatOption score.
+-- This is an auxiliary for `addDamInit` and `addAtkDfn`
+calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple 
+calc p idvar vb = arc idvar (armRes p) (litInt $ score vb)
+    where score xs = foldl (+) 0 $ ff xs
+ff :: [Maybe Int] -> [Int]
+ff [] = [] 
+ff (Nothing:xs) = ff xs
+ff (Just x:xs) = x:ff xs

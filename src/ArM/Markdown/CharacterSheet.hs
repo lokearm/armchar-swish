@@ -152,7 +152,7 @@ printAbilityLine t = pAb (dashShow $ traitLabel t)
                          (dashShow $ traitBonus  t) 
                          (dashShow $ traitTotalScore  t) 
 printCombat :: Trait -> String
-printCombat c = "+ " ++ f1 (traitLabel1 c) ++ f2 (traitLabel2 c) ++ ": "
+printCombat c = "+ " ++ f1 (traitLabel c) ++ ": "
      ++ "Init " ++ (dashShow $ traitInit c)
      ++ "; Atk " ++ (dashShow $ traitAtk c)
      ++ "; Dfn " ++ (dashShow $ traitDfn c)
@@ -160,8 +160,6 @@ printCombat c = "+ " ++ f1 (traitLabel1 c) ++ f2 (traitLabel2 c) ++ ": "
      ++ "; Range " ++ (dashShow $ traitRange c)
   where f1 Nothing = "???"
         f1 (Just s) = s
-        f2 Nothing = ""
-        f2 (Just s) = "[" ++ s ++ "]"
 
 class Show a => DashShow a where
    dashShow :: Maybe a -> String

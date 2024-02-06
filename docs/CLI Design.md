@@ -39,7 +39,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Define and format label
 	+ [x] Fix quantity summation (separate task) and validate the vis display
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
-+ [ ] Support shield and weapon as combat option #cli/selected 
++ [x] Support shield and weapon as combat option #cli/selected 
 
 # Usage Notes
 
