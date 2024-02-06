@@ -24,6 +24,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] display load
 	+ [ ] check other things that may require display
 + [ ] #bug add quantities of same type of item
+	+ [ ] `Types/Trait` need to recalculate `hasQuantity` upon advancement
 + [ ] Make a grog example and output  #cli/selected 
 	+ [ ] Make archer grog with 20 arrows
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
@@ -45,6 +46,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 # Roadmap
 
 + [ ] [[Covenant]] Support #kanban/backlog 
++ [ ] Advancement log (new output format)  #cli/backlog 
 
 # Considerations
 

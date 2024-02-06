@@ -54,8 +54,8 @@ printSheetObject ob = [ getHeader  ob , "" ]
                   ++ printSpells ob
                   ++ [ "", "# Combat", "" ]
                   ++ (map printCombat $ combat ob)
-                  ++ [ "", "# Equipment", "" ]
-                  ++ (map printEquipment $ equipment ob)
+                  ++ printEquipment ob
+                  ++ printVis ob
    where p1 x = fJ (traitLabel x) ++ " " ++ (fI $ traitTotalScore x)
          fJ Nothing = "???"
          fJ (Just x) = x
@@ -100,9 +100,23 @@ maybeFormat Nothing = "-"
 maybeFormat (Just x) = show x
 
 
-printEquipment :: Trait -> String
-printEquipment t = "+ " ++ f1 t 
+printEquipment :: SheetObject -> [String]
+printEquipment = p . equipment
+    where
+       p [] = []
+       p xs = [ "# Equipment", "" ] ++ (map printEquipmentLine xs) ++ [ "" ]
+printEquipmentLine :: Trait -> String
+printEquipmentLine t = "+ " ++ f1 t 
    where f1 = ss . traitLabel
+printVisLine :: Trait -> String
+printVisLine t = "+ " ++ f1 t 
+   where f1 = ss . traitLabel
+printVis :: SheetObject -> [String]
+printVis = p . vis
+    where
+       p [] = []
+       p xs = [ "# Vis", "" ] ++ (map printVisLine xs) ++ [ "" ]
+
 printVFLine :: Trait -> String
 printVFLine t = "+ " ++ f1 t ++ f3 t ++ " (" ++ f2 t ++ ")"
    where vfDetail Nothing = "" 
