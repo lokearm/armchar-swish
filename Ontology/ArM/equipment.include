@@ -90,15 +90,15 @@ arm:hasWeaponStr a owl:DatatypeProperty, arm:TraitProperty, arm:WeaponProperty ;
     rdfs:label "Strength Requirement" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasQik a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasQik a owl:DatatypeProperty, arm:WeaponProperty ;
     rdfs:label "Quickness" ;
     rdfs:domain arm:CombatOption ;
     rdfs:range xsd:int .
-arm:hasDex a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasDex a owl:DatatypeProperty, arm:WeaponProperty ;
     rdfs:label "Dexterity" ;
     rdfs:domain arm:CombatOption ;
     rdfs:range xsd:int .
-arm:hasStr a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasStr a owl:DatatypeProperty, arm:WeaponProperty ;
     rdfs:label "Strengh" ;
     rdfs:domain arm:CombatOption ;
     rdfs:range xsd:int .

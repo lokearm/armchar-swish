@@ -57,6 +57,7 @@ addCombatStats = calculateCombatStats
                . fwdApplyList combatScoreRules 
                . addDefaultSkill
                . fwdApplyList combatSkillRules
+               . fwdApplyList combatRules2
                . fwdApplyList combatRules 
                . addCombatOptions
 
@@ -100,14 +101,6 @@ combatRules =
       , arc (Var "weapon") typeRes  tVar
       ]
       [ arc cVar (armRes "hasCombatShield") (Var "weapon") ]
-    , makeCRule "combat1rule"
-      [ arc (Var "sheet") (armRes "hasCombatOption")  cVar
-      , arc (Var "sheet") typeRes (armRes "CharacterSheet")
-      , arc cVar (armRes "hasCombatWeapon") (Var "weapon")
-      , arc (Var "weapon") (armRes "hasSkill") (Var "skillclass")
-      , arc (Var "sheet") (armRes "hasAbility") (Var "skill")
-      , arc (Var "skill")  typeRes (Var "skillclass") ]
-      [ arc cVar (armRes "hasSkill") (Var "skill") ]
     , makeCRule "combatlabel"
       [ arc sVar (armRes "hasCombatOption")  cVar
       , arc cVar (armRes "hasCombatWeapon") tVar
@@ -115,6 +108,18 @@ combatRules =
       ]
       [ arc cVar (armRes "hasLabel") (Var "label") ]
     ]
+
+combatRules2 :: [RDFRule]
+combatRules2 = 
+    [ makeCRule "combat1rule"
+      [ arc (Var "sheet") (armRes "hasCombatOption")  cVar
+      , arc (Var "sheet") typeRes (armRes "CharacterSheet")
+      , arc cVar (armRes "hasCombatWeapon") (Var "weapon")
+      , arc (Var "weapon") (armRes "hasSkill") (Var "skillclass")
+      , arc (Var "sheet") (armRes "hasAbility") (Var "skill")
+      , arc (Var "skill")  typeRes (Var "skillclass") ]
+      [ arc cVar (armRes "hasSkill") (Var "skill") ]
+      ]
 
 combatSkillRules :: [RDFRule]
 combatSkillRules = 
@@ -258,14 +263,69 @@ addfunctions = [ addDamInit "hasDam" damQuery
                , addDamInit "hasInit"  initQuery
                , addAtkDfn  "hasAtk"  atkQuery
                , addAtkDfn  "hasDfn"  dfnQuery ]
-calculateCombatStats :: RDFGraph -> RDFGraph
-calculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
+oldcalculateCombatStats :: RDFGraph -> RDFGraph
+oldcalculateCombatStats g = foldl addGraphs g $ map listToRDFGraph fs 
     where fs = parMap rpar ( \ f -> f g ) addfunctions 
+
+calculateCombatStats :: RDFGraph -> RDFGraph
+calculateCombatStats g = foldl addGraphs g fs 
+    where fs = parMap rpar f tl
+          tl = getCombatStatList g
+          f = listToRDFGraph . processCombatStats
 
 ff :: [Maybe Int] -> [Int]
 ff [] = [] 
 ff (Nothing:xs) = ff xs
 ff (Just x:xs) = x:ff xs
+
+
+getCombatStatList :: RDFGraph -> [[RDFTriple]]
+getCombatStatList = arcListSplit . map arcFromBinding . Q.rdfQueryFind q
+   where q = listToRDFGraph 
+             [ arc idVar typeRes (armRes "CombatOption")
+             , arc idVar propertyVar valueVar                 
+             , arc propertyVar typeRes (armRes "WeaponProperty")
+             ]             
+
+data CombatStats = CombatStats {
+    canAtk :: Bool,
+    coAtk :: Int, 
+    coDfn :: Int,
+    coDam :: Int,
+    coInit :: Int }
+defaultCombatStats :: CombatStats 
+defaultCombatStats = CombatStats {
+    canAtk = False,
+    coAtk = 0,
+    coDfn = 0,
+    coDam = 0,
+    coInit = 0 }
+processCombatStats :: [RDFTriple] -> [RDFTriple]
+processCombatStats xs = p2 (canAtk cs) 
+    where cs = fst $ processCombatStats' (defaultCombatStats,xs)
+          co = arcSubj $ head xs
+          p1 = arc co (armRes "hasDfn") (litInt $ coDfn cs):
+               arc co (armRes "hasInit") (litInt $ coInit cs): []
+          p2 False = p1
+          p2 True = arc co (armRes "hasAtk") (litInt $ coAtk cs):
+                    arc co (armRes "hasDam") (litInt $ coDam cs):p1
+processCombatStats' :: (CombatStats,[RDFTriple]) -> (CombatStats,[RDFTriple])
+processCombatStats' (cs,[]) = (cs,[])
+processCombatStats' (cs,x:xs) 
+   | p == armRes "hasWeaponInit" = (cs' { coInit = coInit cs' + v}, xs')
+   | p == armRes "hasWeaponInit" = (cs' { coInit = coInit cs' + v}, xs')
+   | p == armRes "hasWeaponAtk"  = (cs' { canAtk = True, coAtk = coAtk cs' + v}, xs')
+   | p == armRes "hasDex"        = (cs' { coAtk = coAtk cs' + v}, xs')
+   | p == armRes "hasWeaponDfn"  = (cs' { coDfn = coDfn cs' + v}, xs')
+   | p == armRes "hasShieldDfn"  = (cs' { coDfn = coDfn cs' + v}, xs')
+   | p == armRes "hasQik"        = (cs' { coDfn = coDfn cs' + v, coInit = coInit cs' + v} , xs')
+   | p == armRes "hasStr"        = (cs' { coDam = coDam cs' + v}, xs' )
+   | p == armRes "hasWeaponDam"  = (cs' { coDam = coDam cs' + v}, xs')
+   | p == armRes "hasSkillScore" = (cs' { coDfn = coDfn cs' + v, coAtk = coAtk cs' + v} , xs')
+   | otherwise                   = (cs', xs')
+    where (cs',xs') = processCombatStats' (cs,xs) 
+          p = arcPred x
+          v = fromJust $ rdfToInt $ arcObj x
 
 
 -- |
@@ -452,54 +512,4 @@ getCombatOptionSkills = map f . Q.rdfQueryFind q
                   intFromRDF (fromJust $ vbMap vb scoreVar) )
          coVar = Var "co"
          scoreVar = Var "score"
-
--- | 
--- = Labels
-
--- labelRules = []
-
-
-
-getCombatStatList :: RDFGraph -> [[RDFTriple]]
-getCombatStatList = arcListSplit . map arcFromBinding . Q.rdfQueryFind q
-   where q = listToRDFGraph 
-             [ arc idVar typeRes (armRes "CombatOption")
-             , arc idVar propertyVar valueVar                 
-             , arc propertyVar typeRes (armRes "WeaponProperty")
-             ]             
-
-data CombatStats = CombatStats {
-    coAtk :: Int, 
-    coDfn :: Int,
-    coDam :: Int,
-    coInit :: Int }
-defaultCombatStats :: CombatStats 
-defaultCombatStats = CombatStats {
-    coAtk = 0,
-    coDfn = 0,
-    coDam = 0,
-    coInit = 0 }
-processCombatStats :: [RDFTriple] -> [RDFTriple]
-processCombatStats xs = arc co (armRes "hasAtk") (litInt $ coAtk cs):
-                        arc co (armRes "hasDfn") (litInt $ coDfn cs):
-                        arc co (armRes "hasDam") (litInt $ coDam cs): 
-                        arc co (armRes "hasInit") (litInt $ coInit cs): []
-    where cs = fst $ processCombatStats' (defaultCombatStats,xs)
-          co = arcSubj $ head xs
-processCombatStats' :: (CombatStats,[RDFTriple]) -> (CombatStats,[RDFTriple])
-processCombatStats' (cs,[]) = (cs,[])
-processCombatStats' (cs,x:xs) 
-   | p == armRes "hasWeaponInit"   = (cs' { coInit = coInit cs' + v} , xs')
-   | p == armRes "hasWeaponInit"   = (cs' { coInit = coInit cs' + v} , xs')
-   | p == armRes "hasWeaponAtk"   = (cs' { coAtk = coAtk cs' + v} , xs')
-   | p == armRes "hasDex"   = (cs' { coAtk = coAtk cs' + v} , xs')
-   | p == armRes "hasWeaponDfn"   = (cs' { coDfn = coDfn cs' + v} , xs')
-   | p == armRes "hasQik"   = (cs' { coDfn = coDfn cs' + v, coInit = coInit cs' + v} , xs')
-   | p == armRes "hasStr"   = (cs' { coDam = coDam cs' + v}, xs' )
-   | p == armRes "hasWeaponDam"   = (cs' { coDam = coDam cs' + v} , xs')
-   | p == armRes "hasSkillScore"   = (cs' { coDfn = coDfn cs' + v, coAtk = coAtk cs' + v} , xs')
-   | otherwise                    = (cs', xs')
-    where (cs',xs') = processCombatStats' (cs,xs) 
-          p = arcPred x
-          v = fromJust $ rdfToInt $ arcObj x
 
