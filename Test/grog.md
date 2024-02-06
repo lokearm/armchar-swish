@@ -3,11 +3,20 @@
 Name
 : Andrew
 
+Season
+: Autumn
+
+Year
+: 1220
+
 Player
 : George
 
 Birth Year
 : 1200
+
+Age
+: 20
 
 Gender
 : Male
@@ -42,12 +51,12 @@ Confidence
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
 | :-                   | :-              |    -: |   -: |    -: |        -: |
 | (Area) Lore          | Hunting grounds |     3 |    0 |     - |         3 |
-| Brawl                | Axe             |     3 |    0 |     - |         3 |
+| Brawl                | Axe             |     3 |    5 |     - |         3 |
 | Thrown Weapon        | Axe             |     3 |    0 |     - |         3 |
-| Single Weapon        | Axe             |     4 |    0 |     - |         4 |
+| Single Weapon        | Axe             |     4 |    5 |     - |         4 |
 | Bows                 | Shortbow        |     5 |    0 |     2 |         7 |
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
-| Awareness            | searching       |     2 |    0 |     - |         2 |
+| Awareness            | searching       |     2 |    2 |     - |         2 |
 | L Lang: English      | [local]         |     5 |    0 |     - |         5 |
 
 # Combat
@@ -64,6 +73,6 @@ Confidence
 + Shortbow (1)
 + Axe (1)
 + Knife (1)
-+ Arrow (20)
++ Arrow (23)
 
 

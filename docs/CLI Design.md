@@ -24,14 +24,15 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] display load
 	+ [ ] check other things that may require display
 + [ ] Test removal of quantities  #cli/selected 
-	+ [ ] Basic removal
+	+ [x] Basic removal
 	+ [ ] What happens when quantity is reduced to zero?
 	+ [ ] Virtues/Flaws taken more than once
 + [x] #bug add quantities of same type of item
 	+ [x] `Types/Trait` need to recalculate `hasQuantity` upon advancement
 + [ ] Make a grog example and output  #cli/selected 
-	+ [ ] Make archer grog with 20 arrows
-	+ [ ] Test removal of arrows
+	+ [x] Make archer grog with 20 arrows
+	+ [x] Test removal of arrows
+	+ [ ] Make Andrew (grog.ttl) rules compliant
 + [x] Format vis display #cli/selected 
 	+ [x] Define and format label
 	+ [x] Fix quantity summation (separate task) and validate the vis display

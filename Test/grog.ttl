@@ -8,15 +8,15 @@
 @prefix arm: <https://hg.schaathun.net/armchar/schema#> .
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
 @prefix armchar: <https://hg.schaathun.net/armchar/character/> .
-@prefix : <https://hg.schaathun.net/armchar/character/andres#> .
+@prefix : <https://hg.schaathun.net/armchar/character/andrew#> .
 
 # Identifier for the sheet (graph) itself.  Not used at present.
-<https://hg.schaathun.net/armcharacter/andres> a owl:Ontology ;
+<https://hg.schaathun.net/armcharacter/andrew> a owl:Ontology ;
      dc:creator "George" ;
      rdfs:comment "This is a sample grog to test armchar." .
 
 # Metadata.  Defined for character, copied to character sheet
-armchar:andres arm:characterClass arm:Grog ; 
+armchar:andrew arm:characterClass arm:Grog ; 
                arm:hasName "Andrew" ;
 	       arm:hasGender "Male" ;
                arm:hasBirthYear 1200 ;
@@ -26,7 +26,7 @@ armchar:andres arm:characterClass arm:Grog ;
                arm:hasCovenant armchar:diednecovenant ;
                arm:hasSaga armchar:diedne .
 
-:zeroadv arm:advanceCharacter armchar:andres ;
+:zeroadv arm:advanceCharacter armchar:andrew ;
    arm:advancementClass arm:BaseAdvancement ; 
    arm:advanceTrait 
      [ arm:traitClass armr:Arrow ; arm:hasQuantity 20 ],
@@ -58,14 +58,14 @@ armchar:andres arm:characterClass arm:Grog ;
     [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Loyal" ;  arm:hasFixedScore 1 ] .
 
 # Pre-game Advancement
-:earlyadv arm:advanceCharacter armchar:andres ;
+:earlyadv arm:advanceCharacter armchar:andrew ;
    arm:advancementClass arm:EarlyChildhoodAdvancement ; 
    arm:advanceTrait 
    [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
    [ arm:traitClass armr:stealth ; arm:hasSpeciality "Woodlands" ;  arm:addedXP 15  ],
    [ arm:traitClass armr:survival ; arm:hasSpeciality "Woodlands" ; arm:addedXP 15  ] .
 
-:lateradv arm:advanceCharacter armchar:andres ;
+:lateradv arm:advanceCharacter armchar:andrew ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
   arm:advanceTrait 
       [ arm:traitClass armr:hunt ;  arm:addedXP 5 ; arm:hasSpeciality "Woodlands"  ],
@@ -80,3 +80,21 @@ armchar:andres arm:characterClass arm:Grog ;
       [ arm:traitClass armr:norman ;  arm:addedXP 5 ]
       .
 
+
+:spring1220 arm:advanceCharacter armchar:andrew ;
+  arm:advancementClass arm:IngameAdvancement ; 
+  arm:atSeason "Spring" ;
+  arm:inYear   1220 ;
+  arm:hasAdvancementDescription "Story" ;
+  arm:advanceTrait 
+     [ arm:traitClass armr:Arrow ; arm:addQuantity 10 ; arm:removeQuantity 7 ],
+    [ arm:traitClass armr:brawl ; arm:addedXP 5  ],
+    [ arm:traitClass armr:singleweapon ; arm:addedXP 5  ] .
+
+:summer1220 arm:advanceCharacter armchar:andrew ;
+  arm:advancementClass arm:IngameAdvancement ; 
+  arm:atSeason "Summer" ;
+  arm:inYear   1220 ;
+  arm:hasAdvancementDescription "Work/Exposure" ;
+  arm:advanceTrait 
+    [ arm:traitClass armr:awareness ; arm:addedXP 2  ] .
