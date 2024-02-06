@@ -117,7 +117,7 @@ Confidence
 # Equipment
 
 + Knife (1)
-+ Dagger (2)
++ Dagger (2) (Plain steel dagger)
 + Snares (1)
 
 
