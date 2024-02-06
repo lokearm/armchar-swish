@@ -71,6 +71,7 @@ main = do
      let (opt,_,_) = getOpt RequireOrder options args
      opts <- foldl (>>=) (return defaultOptions) opt
 
+     printTime
      sagaobject <- loadSaga $ sagaFile opts
      chargen <- loadChar sagaobject $ charFile opts
      let char = head $ charSheets chargen
@@ -83,6 +84,7 @@ main = do
      mapM_ p $ printSheetObject  $ getSheetObject chargraph
      hClose handle
 
+     printTime
      -- putStr $ show chargraph
      h2 <- getMaybeHandle $ debugFile opts
      hPutStrLn h2 $ show chargraph

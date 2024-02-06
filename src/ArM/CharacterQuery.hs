@@ -102,4 +102,4 @@ label2string = f . fromRDFLabel . fromJust
     where f (Nothing,Nothing) = "Error"
           f (Just x,Nothing) = show x
           f (Nothing,Just x) = x
-          f _ = error "Fallthrough case should not happen"
+          f _ = error "label2string: Fallthrough case should not happen"
