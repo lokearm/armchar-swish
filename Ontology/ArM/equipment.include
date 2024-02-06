@@ -74,6 +74,10 @@ arm:hasWeaponDfn a owl:DatatypeProperty, arm:TraitProperty ;
     rdfs:label "Weapon Defence Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
+arm:hasShieldDfn a owl:DatatypeProperty, arm:TraitProperty ;
+    rdfs:label "Shield Defence Bonus" ;
+    rdfs:domain arm:Weapon ;
+    rdfs:range xsd:int .
 arm:hasWeaponDam a owl:DatatypeProperty, arm:TraitProperty ;
     rdfs:label "Weapon Damage Bonus" ;
     rdfs:domain arm:Weapon ;
