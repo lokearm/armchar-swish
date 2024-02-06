@@ -142,5 +142,5 @@ armchar:marcus arm:characterClass arm:Magus ;
   arm:inYear   1220 ;
   arm:hasAdvancementDescription "Story" ;
   arm:advanceTrait 
-     [ arm:traitClass armr:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 2 ],
+    [ arm:traitClass arm:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 2 ],
     [ arm:traitClass armr:parmamagica ; arm:addedXP 5  ] .

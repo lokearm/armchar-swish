@@ -3,11 +3,20 @@
 Name
 : Sylvain
 
+Season
+: Summer
+
+Year
+: 1220
+
 Player
 : George
 
 Birth Year
 : 1192
+
+Age
+: 28
 
 Gender
 : Male
@@ -88,7 +97,7 @@ Confidence
 | Herbam     |     0 |    0 |     - |         0 |
 | Ignem      |     2 |    0 |     - |         2 |
 | Imaginem   |     0 |    0 |     - |         0 |
-| Mentem     |     0 |    0 |     - |         0 |
+| Mentem     |     1 |    1 |     - |         1 |
 | Terram     |     2 |    0 |     - |         2 |
 | Vim        |     5 |    0 |     - |         5 |
 # Spells
@@ -110,6 +119,7 @@ Confidence
 # Equipment
 
 + Knife (1)
-+ Snares (1)
++ Magical ring (1)
++ Snares (0)
 
 
