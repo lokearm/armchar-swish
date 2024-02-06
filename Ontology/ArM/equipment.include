@@ -62,23 +62,23 @@ arm:Shield rdfs:subClassOf arm:Weapon .
 arm:MissileWeapon rdfs:subClassOf arm:Weapon .
 arm:ThrownWeapon rdfs:subClassOf arm:Weapon .
 
-arm:hasWeaponInit a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasWeaponInit a owl:DatatypeProperty, arm:WeaponProperty ;
     rdfs:label "Weapon Init Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponAtk a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasWeaponAtk a owl:DatatypeProperty, arm:WeaponProperty ;
     rdfs:label "Weapon Attack Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponDfn a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasWeaponDfn a owl:DatatypeProperty, arm:WeaponProperty ;
     rdfs:label "Weapon Defence Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasShieldDfn a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasShieldDfn a owl:DatatypeProperty, arm:TraitProperty, arm:WeaponProperty  ;
     rdfs:label "Shield Defence Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponDam a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasWeaponDam a owl:DatatypeProperty, arm:TraitProperty, arm:WeaponProperty  ;
     rdfs:label "Weapon Damage Bonus" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
@@ -90,7 +90,19 @@ arm:hasWeaponStr a owl:DatatypeProperty, arm:TraitProperty, arm:WeaponProperty ;
     rdfs:label "Strength Requirement" ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
-arm:hasWeaponLoad a owl:DatatypeProperty, arm:TraitProperty ;
+arm:hasQik a owl:DatatypeProperty, arm:TraitProperty ;
+    rdfs:label "Quickness" ;
+    rdfs:domain arm:CombatOption ;
+    rdfs:range xsd:int .
+arm:hasDex a owl:DatatypeProperty, arm:TraitProperty ;
+    rdfs:label "Dexterity" ;
+    rdfs:domain arm:CombatOption ;
+    rdfs:range xsd:int .
+arm:hasStr a owl:DatatypeProperty, arm:TraitProperty ;
+    rdfs:label "Strengh" ;
+    rdfs:domain arm:CombatOption ;
+    rdfs:range xsd:int .
+arm:hasWeaponLoad a owl:DatatypeProperty, arm:WeaponProperty ;
     rdfs:domain arm:Weapon ;
     rdfs:range xsd:int .
 arm:hasCost a owl:DatatypeProperty, arm:TraitProperty ;
@@ -110,7 +122,7 @@ arm:skillClass a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:label "Skill Class" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Class .
-arm:hasSkill a owl:ObjectProperty, arm:TraitProperty ;
+arm:hasSkill a owl:ObjectProperty, arm:TraitProperty, arm:WeaponProperty ;
     rdfs:label "Skill Instance" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Trait .
@@ -130,7 +142,7 @@ arm:hasCombatWeapon a owl:ObjectProperty, arm:TraitProperty ;
     rdfs:label "Weapon Instance" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range arm:Weapon .
-arm:hasSkillScore a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
+arm:hasSkillScore a owl:DatatypeProperty, arm:CalculatedProperty, arm:WeaponProperty ;
     rdfs:label "Skill Score" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .

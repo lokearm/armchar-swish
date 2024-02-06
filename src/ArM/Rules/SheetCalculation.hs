@@ -28,6 +28,7 @@ import Swish.RDF.Graph
 -- import Swish.RDF.Vocabulary.XSD
 import Swish.RDF.Ruleset (RDFRule)
 import ArM.Resources
+import ArM.KeyPair
 import ArM.Rules.Aux
 import Data.Maybe (fromJust)
 import Data.List (sort)
@@ -456,4 +457,49 @@ getCombatOptionSkills = map f . Q.rdfQueryFind q
 -- = Labels
 
 -- labelRules = []
+
+
+
+getCombatStatList :: RDFGraph -> [[RDFTriple]]
+getCombatStatList = arcListSplit . map arcFromBinding . Q.rdfQueryFind q
+   where q = listToRDFGraph 
+             [ arc idVar typeRes (armRes "CombatOption")
+             , arc idVar propertyVar valueVar                 
+             , arc propertyVar typeRes (armRes "WeaponProperty")
+             ]             
+
+data CombatStats = CombatStats {
+    coAtk :: Int, 
+    coDfn :: Int,
+    coDam :: Int,
+    coInit :: Int }
+defaultCombatStats :: CombatStats 
+defaultCombatStats = CombatStats {
+    coAtk = 0,
+    coDfn = 0,
+    coDam = 0,
+    coInit = 0 }
+processCombatStats :: [RDFTriple] -> [RDFTriple]
+processCombatStats xs = arc co (armRes "hasAtk") (litInt $ coAtk cs):
+                        arc co (armRes "hasDfn") (litInt $ coDfn cs):
+                        arc co (armRes "hasDam") (litInt $ coDam cs): 
+                        arc co (armRes "hasInit") (litInt $ coInit cs): []
+    where cs = fst $ processCombatStats' (defaultCombatStats,xs)
+          co = arcSubj $ head xs
+processCombatStats' :: (CombatStats,[RDFTriple]) -> (CombatStats,[RDFTriple])
+processCombatStats' (cs,[]) = (cs,[])
+processCombatStats' (cs,x:xs) 
+   | p == armRes "hasWeaponInit"   = (cs' { coInit = coInit cs' + v} , xs')
+   | p == armRes "hasWeaponInit"   = (cs' { coInit = coInit cs' + v} , xs')
+   | p == armRes "hasWeaponAtk"   = (cs' { coAtk = coAtk cs' + v} , xs')
+   | p == armRes "hasDex"   = (cs' { coAtk = coAtk cs' + v} , xs')
+   | p == armRes "hasWeaponDfn"   = (cs' { coDfn = coDfn cs' + v} , xs')
+   | p == armRes "hasQik"   = (cs' { coDfn = coDfn cs' + v, coInit = coInit cs' + v} , xs')
+   | p == armRes "hasStr"   = (cs' { coDam = coDam cs' + v}, xs' )
+   | p == armRes "hasWeaponDam"   = (cs' { coDam = coDam cs' + v} , xs')
+   | p == armRes "hasSkillScore"   = (cs' { coDfn = coDfn cs' + v, coAtk = coAtk cs' + v} , xs')
+   | otherwise                    = (cs', xs')
+    where (cs',xs') = processCombatStats' (cs,xs) 
+          p = arcPred x
+          v = fromJust $ rdfToInt $ arcObj x
 
