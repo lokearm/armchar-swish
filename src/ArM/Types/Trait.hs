@@ -160,6 +160,29 @@ getXPtriples' (tot,add,fac,ys) | ys == [] = (tot,add,fac,ys)
           newadd = add' + ( intFromRDF $ arcObj y )
           y = ttrace $ head ys
 
+-- | Auxiliary for `fixTrait`.
+--
+calculateQ :: [RDFTriple] -> [RDFTriple]
+calculateQ ts = trace ("calculateQ" ++ show (tot,add)) $ xp:ys 
+   where (tot,add,ys) = getQtriples' (0,0,ts)
+         newtot = (fromIntegral tot) + (fromIntegral add)
+         sub = arcSubj $ head ts
+         xp = arc sub (armRes "hasTotalXP") (litInt newtot)
+
+-- | Inner recursive function for `getQtriplles` (auxiliary for `calculateQ`)
+getQtriples' :: (Int,Int,[RDFTriple]) -> (Int,Int,[RDFTriple])
+getQtriples' (tot,add,ys) | ys == [] = (tot,add,ys)
+                      | p == armRes "hasQuantity" =  (newtot,add',ys')
+                      | p == armRes "addQuantity" =  (tot',newadd,ys')
+                      | p == armRes "removeQuantity" =  (tot',newrm,ys')
+                      | otherwise             =  (tot',add',y:ys')
+    where (tot',add',ys') = getQtriples' (tot,add,tail ys)
+          p = arcPred y
+          newtot = tot' + ( intFromRDF $ arcObj y )
+          newadd = add' + ( intFromRDF $ arcObj y )
+          newrm = add' - ( intFromRDF $ arcObj y )
+          y = ttrace $ head ys
+
 {-
 xpSum :: [RDFTriple]  -- ^ Input list
       -> RDFTriple  -- ^ New arc
