@@ -22,6 +22,7 @@ arm:StockItem rdfs:subClassOf arm:Possession ;
 # Some kinds of possessions may need special treatment (e.g. vis) the rest is equipment
 arm:Equipment rdfs:subClassOf arm:Possession .
 arm:Vis rdfs:subClassOf arm:StockItem ;
+   arm:hasLabel "Vis" ;
    owl:disjointFrom arm:Equipment .
 
 # Weapons may be traits (natural weapons) or equipment (other weapons)
