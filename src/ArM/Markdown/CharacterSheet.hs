@@ -103,13 +103,11 @@ printEquipment = p . equipment
        p [] = []
        p xs = [ "# Equipment", "" ] ++ (map printEquipmentLine xs) ++ [ "" ]
 printEquipmentLine :: Trait -> String
-printEquipmentLine t = "+ " ++ f1 t ++ f2 t
+printEquipmentLine t = "+ " ++ f1 t ++ f2 t ++ pShow (traitDetail t)
    where f1 = dashShow . traitLabel
-         f2 = s2 . traitQuantity
-         s2 Nothing = ""
-         s2 (Just x) = " (" ++ show x ++ ")"
+         f2 = pShow . traitQuantity
 printVisLine :: Trait -> String
-printVisLine t = "+ " ++ f2 t  ++ f1  (traitArt t) t
+printVisLine t = "+ " ++ f2 t  ++ f1  (traitArt t) t ++ pShow (traitDetail t)
    where f1 Nothing x =  (dashShow . traitLabel) x
          f1 (Just x) _ =  x
          f2 = s2 . traitQuantity
@@ -119,7 +117,8 @@ printVis :: SheetObject -> [String]
 printVis = p . vis
     where
        p [] = []
-       p xs = [ "# Vis", "" ] ++ (map printVisLine xs) ++ [ "" ]
+       p xs = "# Vis":"": p' xs  ++ [ "" ]
+       p' = map printVisLine 
 
 printVFLine :: Trait -> String
 printVFLine t = "+ " ++ f1 t ++ f3 t ++ " (" ++ f2 t ++ ")"
@@ -168,7 +167,12 @@ class Show a => DashShow a where
    dashShow :: Maybe a -> String
    dashShow Nothing = "-"
    dashShow (Just x) = show x
+   pShow :: Maybe a -> String
+   pShow Nothing = ""
+   pShow (Just x) = " (" ++ show x ++ ")"
 instance DashShow Int 
 instance DashShow String where
    dashShow Nothing = "-"
    dashShow (Just x) = x
+   pShow Nothing = ""
+   pShow (Just x) = " (" ++ x ++ ")"

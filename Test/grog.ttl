@@ -33,19 +33,17 @@ armchar:andrew arm:characterClass arm:Grog ;
      [ arm:traitClass armr:Knife ; arm:hasQuantity 1 ],
      [ arm:traitClass armr:Axe ; arm:hasQuantity 1 ],
      [ arm:traitClass armr:Shortbow ; arm:hasQuantity 1 ],
-      [ arm:traitClass arm:Size ; arm:hasScore 0 ],
-      [ arm:traitClass armr:Dodge ],
-      [ arm:traitClass armr:Kick ],
-      [ arm:traitClass armr:Fist ] ;
-   arm:hasHouseVirtue 
-    [ arm:traitClass armr:faeriemagic  ] ;
+     [ arm:traitClass arm:Size ; arm:hasScore 0 ],
+     [ arm:traitClass armr:Dodge ],
+     [ arm:traitClass armr:Kick ],
+     [ arm:traitClass armr:Fist ] ;
    arm:buyVirtueFlaw
     [ arm:traitClass armr:warrior ],
     [ arm:traitClass armr:puissantAbility ; 
       arm:grantsTrait [ arm:bonusTo armr:bows ] ],
 
     [ arm:traitClass armr:compassionate ],
-    [ arm:traitClass armr:pagan ] ;
+    [ arm:traitClass armr:brandedcriminal ] ;
 
    arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore  0 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],

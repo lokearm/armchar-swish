@@ -517,6 +517,11 @@ armr:minorHermeticFlaw  rdfs:subClassOf   arm:minorFlaw ;
                     arm:hasLabel "Minor Hermetic Flaw" .
 
 
+armr:brandedcriminal  rdfs:subClassOf   armr:minorsocialStatusFlaw ;
+          arm:hasReference   "[ArM5:52]" ;
+	  arm:hasLabel "Branded Criminal" ; a arm:LeafTraitClass ;
+	  arm:hasDescription "As punishment for some crime in your past, a mark has been burned into your cheek.  This adversely affects your ability to function in society. You may not take the Wealthy Virtue, but you may take Martial Abilities at character creation. You may choose not to take such abilities, if your crime was not violent." .
+
 armr:weakEnchanter  rdfs:subClassOf   armr:minorHermeticFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Weak Enchanter" ; a arm:LeafTraitClass .
                  
 armr:weakMagic  rdfs:subClassOf   armr:minorHermeticFlaw ; arm:hasReference   "[ArM5]" ; arm:hasLabel "Weak Magic" ; a arm:LeafTraitClass .

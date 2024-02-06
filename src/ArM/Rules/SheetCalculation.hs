@@ -33,7 +33,7 @@ import Data.Maybe (fromJust)
 import Data.List (sort)
 
 import Control.Parallel.Strategies
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 import ArM.BlankNode
 

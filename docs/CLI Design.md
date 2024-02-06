@@ -14,9 +14,9 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [x] #bug Labels do not appear for natural weapons  #cli/selected 
 	+ [x] New property/subclass to process Natural Weapons as Traits
 	+ [x] Infer Combat Option from Trait or Possession
-+ [ ] Revise equipment list  #cli/selected 
-	+ [ ] Sort equipment list
-	+ [ ] More detailed description
++ [x] Revise equipment list  #cli/selected 
+	+ [x] Sort equipment list (postponed)
+	+ [x] More detailed description
 	+ [x] Review Ontology and use of classes
 	+ [x] Add vis to sample character and have it work
 	+ [x] check and fix addQuantity
@@ -28,31 +28,38 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [x] Test removal of quantities  #cli/selected 
 	+ [x] Basic removal
 	+ [x] What happens when quantity is reduced to zero?
-+ [ ] Virtues/Flaws taken more than once #cli/backlog 
++ [ ] Virtues/Flaws taken more than once #cli/selected 
 + [x] #bug add quantities of same type of item
 	+ [x] `Types/Trait` need to recalculate `hasQuantity` upon advancement
-+ [ ] Make a grog example and output  #cli/selected 
++ [x] Make a grog example and output  #cli/selected 
 	+ [x] Make archer grog with 20 arrows
 	+ [x] Test removal of arrows
-	+ [ ] Make Andrew (grog.ttl) rules compliant
+	+ [x] Make Andrew (grog.ttl) rules compliant
 + [x] Format vis display #cli/selected 
 	+ [x] Define and format label
 	+ [x] Fix quantity summation (separate task) and validate the vis display
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [ ] Support shield and weapon as combat option #cli/selected 
 
+# Usage Notes
 
++ Equipment
+	+ One can use a generic class, e.g. `arm:Equipment` and set `arm:hasLabel`.
+	+ Different labels will be treated as different items
+	+ Labels must be unique, adding a new item with the same label and a different detail (`arm:hasDetail`) will simply change the detail and quantity of the existing item
 
 # Wishlist
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
+
 
 + [ ] Calculate Lab Totals    #cli/backlog
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
 + [x] Show season on Markdown sheet
 + [ ] Show age on pre-game characters #cli/backlog 
 + [ ] Handle skill specialisations in combat stats #cli/backlog 
-+ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
++ [ ] Review ordering of items #cli/backlog 
+	+ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
 	+ Alphabetical ordering?  Or something cleverer?
 + [ ] Equipment load #cli/backlog 
 	+ [ ] load per item
@@ -64,6 +71,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 
 + [ ] [[Covenant]] Support #kanban/backlog 
 + [ ] Advancement log (new output format)  #cli/backlog 
++ [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
 # Considerations
 

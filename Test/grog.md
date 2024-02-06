@@ -41,10 +41,10 @@ Confidence
 
 # Virtues and Flaws
 
-+ Puissant (Ability): Bows (1)
 + Warrior (1)
-+ Pagan (-3)
++ Puissant (Ability): Bows (1)
 + Compassionate (-1)
++ Branded Criminal (-1)
 
 # Abilities
 
