@@ -96,6 +96,7 @@ data Trait = Trait {
   traitStr :: Maybe Int,
   traitRange :: Maybe Int,
   traitLoad :: Maybe Int,
+  traitQuantity :: Maybe Int,
   traitCost :: Maybe String
 }
 defaultTrait :: Trait
@@ -121,6 +122,7 @@ defaultTrait = Trait {
   traitRange = Nothing,
   traitStr = Nothing,
   traitLoad = Nothing,
+  traitQuantity = Nothing,
   traitCost = Nothing
 }
 
@@ -179,6 +181,7 @@ parsePair (KeyValuePair res  x) t
     | res == (armRes "hasDam")      = t { traitDam = G.fromRDFLabel x }
     | res == (armRes "hasWeaponRange")      = t { traitRange = G.fromRDFLabel x }
     | res == (armRes "hasLoad")      = t { traitLoad = G.fromRDFLabel x }
+    | res == (armRes "hasQuantity")      = t { traitQuantity = G.fromRDFLabel x }
     | res == (armRes "hasStr")      = t { traitStr = G.fromRDFLabel x }
 parsePair _ t = t 
 

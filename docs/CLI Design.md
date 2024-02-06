@@ -20,7 +20,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Review Ontology and use of classes
 	+ [ ] Add vis to sample character and have it work
 	+ [x] check and fix addQuantity
-	+ [ ] display Quantity
+	+ [x] display Quantity
 	+ [ ] display load
 	+ [ ] check other things that may require display
 + [ ] #bug add quantities of same type of item
