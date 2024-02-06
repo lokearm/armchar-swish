@@ -134,3 +134,16 @@ armchar:sylvain arm:characterClass arm:Magus ;
        ] .
 
 
+:spring1220 arm:advanceCharacter armchar:sylvain ;
+  arm:advancementClass arm:IngameAdvancement ; 
+  arm:atSeason "Spring" ;
+  arm:inYear   1220 ;
+  arm:hasAdvancementDescription "Lab work/exposure" ;
+  arm:advanceTrait 
+    [ arm:traitClass armr:mentem ; arm:addedXP 2  ],
+     [ arm:traitClass arm:Equipment ; arm:addQuantity 1 ;
+       arm:instanceLabel "Magical ring" ;
+       ],
+     [ arm:traitClass arm:Equipment ; arm:removeQuantity 1 ;
+       arm:instanceLabel "Snares" ;
+       ] .

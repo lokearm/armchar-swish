@@ -22,13 +22,13 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] check and fix addQuantity
 	+ [x] display Quantity
 	+ [x] check other things that may require 
-+ [ ] Test non-standardised items of equipment  #cli/selected 
-	+ [ ] Does quantities keep them separate?
-	+ [ ] Do they display correctly?
-+ [ ] Test removal of quantities  #cli/selected 
++ [x] Test non-standardised items of equipment  #cli/selected 
+	+ [x] Does quantities keep them separate?
+	+ [x] Do they display correctly?
++ [x] Test removal of quantities  #cli/selected 
 	+ [x] Basic removal
-	+ [ ] What happens when quantity is reduced to zero?
-	+ [ ] Virtues/Flaws taken more than once
+	+ [x] What happens when quantity is reduced to zero?
++ [ ] Virtues/Flaws taken more than once #cli/backlog 
 + [x] #bug add quantities of same type of item
 	+ [x] `Types/Trait` need to recalculate `hasQuantity` upon advancement
 + [ ] Make a grog example and output  #cli/selected 
@@ -58,6 +58,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] load per item
 	+ [ ] total load (multiplied by quantity) per line
 	+ [ ] aggregate load and encumbrance
++ [ ] Current year and season on one line #cli/backlog 
 
 # Roadmap
 
@@ -70,3 +71,4 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] handle differently in Haskell?
 	+ [x] Different output in Markdown
 	+ [x] Or drop headers when a section is empty
++ [ ] Remove items with zero quantity #cli/backlog 
