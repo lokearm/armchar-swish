@@ -95,4 +95,10 @@ armchar:andrew arm:characterClass arm:Grog ;
   arm:inYear   1220 ;
   arm:hasAdvancementDescription "Work/Exposure" ;
   arm:advanceTrait 
+     [ arm:traitClass armr:RoundShield ; arm:hasQuantity 1 ],
+     [ arm:traitClass arm:CombatOption ;
+       arm:hasWeaponClass  armr:RoundShield ; 
+       arm:hasWeaponClass  armr:Axe  ;
+       arm:instanceLabel "Axe and Shield" 
+       ],
     [ arm:traitClass armr:awareness ; arm:addedXP 2  ] .
