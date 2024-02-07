@@ -35,6 +35,7 @@ import ArM.Rules.Aux
 import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
+import ArM.Debug.Trace
 
 -- | 
 -- = Trait
@@ -128,7 +129,7 @@ advanceTriples (x:xs) (y:ys)
 -- XP need to be recalculated.  This auxiliary is applied
 -- by two different functions to do this.
 fixTrait :: Trait -> Trait
-fixTrait trait =  trait { traitContents = recalc trait }
+fixTrait trait =  trace ( instanceLabel trait ) ( trait { traitContents = recalc trait } )
     where recalc = calculateQ trait . calculateXP trait . traitContents 
 
 -- |
