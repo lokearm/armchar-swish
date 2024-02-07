@@ -52,6 +52,9 @@ The first version of CLI will solve one simple problem; take a character descrip
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
++ [ ] new TraitProperty hasArt
+	+ [ ] introduce for puissant/affinity
+	+ [ ] replace isVisOfArt
 + [ ] Advancement by reading #cli/backlog 
 	+ [ ] Covenant as a character
 	+ [ ] Covenant hasBook property to define library
