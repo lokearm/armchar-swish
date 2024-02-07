@@ -50,7 +50,6 @@ data Advancement = Advancement
     , rdfid :: RDFLabel
     , contents :: [KeyValuePair]
     , traits :: [Trait]
-    , items :: [Trait]
    } deriving Eq
 
 advSortIndex :: Advancement -> Int
@@ -69,13 +68,11 @@ defaultAdvancement = Advancement
                 , contents = []
                 , advTime = defaultCharTime
                 , traits = []
-                , items = []
                 }
 instance Show Advancement where
    show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ show (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
-                 ++ show (items a) 
                  ++ "\nSort Index: " ++ show (advSortIndex a) 
                  ++ "\nSeason No: " ++ show (sno a) 
                  ++ "\n"
@@ -105,14 +102,11 @@ instance ToRDFGraph Advancement where
 advToArcListM :: Advancement -> BlankState [RDFTriple]
 advToArcListM adv = do
        tsm <- fixBlanksM $ traits adv
-       ism <- fixBlanksM $ items adv
        let x = rdfid adv
        let xs1 =  map traitContents tsm
-       let xs2 =  map traitContents ism
        let ht = map ( \ y -> arc x (armRes "advanceTrait") (traitID y) ) tsm
-       let hi = map ( \ y -> arc x (armRes "changePossession") (traitID y) ) ism
-       let ys1 = foldr (++) (ms++hi++ht) xs1
-       return $ foldr (++) ys1 xs2
+       let ys1 = foldr (++) (ms++ht) xs1
+       return $ ys1 
     where ms = keyvalueToArcList (rdfid adv) (contents adv)
 
 
@@ -123,14 +117,12 @@ data ProtoAdvancement = ProtoAdvancement {
     advancementcharacter :: RDFLabel,
     advancementid :: RDFLabel,
     advancementcontents :: KeyPairList,
-    advancementtraits :: [Trait],
-    advancementitems :: [Trait]
+    advancementtraits :: [Trait]
    } deriving Show
 
 instance ToJSON Advancement where 
-    toJSON cs = object (c:s:x:z:y:[])
+    toJSON cs = object (c:s:x:y:[])
        where x = (fromString "advancementtraits") .= (toJSON (traits cs))
-             z = (fromString "advancementitems") .= (toJSON (items cs))
              y = (fromString "advancementcontents") .= KeyPairList (contents cs)
              c = (fromString "advancementid") .= toJSON (rdfid cs)
              s = (fromString "advancementcharacter") .= toJSON (advChar cs)
@@ -142,7 +134,6 @@ instance FromJSON ProtoAdvancement where
                                            <*> v .: "advancementid"
                                            <*> v .: "advancementcontents"
                                            <*> v .: "advancementtraits"
-                                           <*> v .: "advancementitems"
    -- NOTE.  The ordering of the fields in parseJSON above has to
    -- match the ordering in the Algebraic Datatyep.
    parseJSON _ = error "Non-exhaustive pattern when parsing ProtoAdvancement from JSON."
@@ -150,7 +141,6 @@ fromProtoAdvancement :: ProtoAdvancement -> Advancement
 fromProtoAdvancement adv = defaultAdvancement 
                      { rdfid = advancementid adv
                      , traits = advancementtraits adv
-                     , items = advancementitems adv
                      , advChar = advancementcharacter adv
                      , advTime = tm
                      , contents = ys
@@ -172,22 +162,16 @@ parseTime ain (xin:xs) = parseTime (f ain xin) xs
 
 -- | Auxiliary for 'fixAdvancements'
 fixAdv :: RDFGraph -> Advancement -> Advancement
-fixAdv g adv = adv { traits = traitsFromRDF advid g,
-                 items = itemsFromRDF advid g }
+fixAdv g adv = adv { traits = traitsFromRDF advid g }
         where advid = rdfid adv
 
-itemsFromRDF :: RDFLabel -> RDFGraph -> [Trait]
-itemsFromRDF advid g = itFromRDF True "changePossession" advid g
 traitsFromRDF :: RDFLabel -> RDFGraph -> [Trait]
-traitsFromRDF advid g = itFromRDF False "advanceTrait" advid g
-
-itFromRDF :: Bool -> String -> RDFLabel -> RDFGraph -> [Trait]
-itFromRDF b s advid g = splitTrait $ sort $ map (vb2tt b) $ Q.rdfQueryFind q g 
-    where q = traitqgraph (armRes s) advid
+traitsFromRDF advid g = splitTrait $ sort $ map vb2tt  $ Q.rdfQueryFind q g 
+    where q = traitqgraph (armRes "advanceTrait") advid
 
 type ProtoTrait = (RDFLabel, RDFLabel, RDFLabel,RDFLabel)
-vb2tt :: Bool -> VB.RDFVarBinding -> ProtoTrait
-vb2tt _ vb = ( fromJust $ vbMap vb (Var "class")
+vb2tt :: VB.RDFVarBinding -> ProtoTrait
+vb2tt vb = ( fromJust $ vbMap vb (Var "class")
              , (fromJust $ vbMap vb (Var "id")) 
              , (fromJust $ vbMap vb (Var "property"))
              , (fromJust $ vbMap vb (Var "value")) 
@@ -220,11 +204,11 @@ addToTrait t (c,s,p,o)
       | p == armRes "instanceLabel" 
              = trace "> instanceLabel" $ t { instanceLabel = ttrace $ lab o
                  , traitContents = triple:traitContents t }
-      | p == typeRes && o == armRes "RepeatableTrait" 
-                        = trace "> repeatable" $ t { isRepeatableTrait = True
+      | p == typeRes && o == armRes "CountableTrait" 
+                        = trace "> CountableTrait" $ t { traitCountable = True
                             , traitContents = triple:traitContents t }
-      | p == typeRes && o == armRes "Equipment" 
-                        = trace "> Equipment" $ t { isRepeatableTrait = True
+      | p == typeRes && o == armRes "XPTrait" 
+                        = trace "> XPTrait" $ t { traitXP = True
                             , traitContents = triple:traitContents t }
       | otherwise = t { traitContents = triple:traitContents t }
          where lab = f . rdfToString 

@@ -15,10 +15,11 @@ import System.IO -- for file IO
 
 -- Timer
 import ArM.Debug.Time
-import ArM.CharGraph
+-- import ArM.Debug.Trace
+import ArM.Types.MapState
 import ArM.Markdown.CharacterSheet
 import ArM.Character.CharGen
-import ArM.Markdown.SheetObject
+import ArM.Types.SheetObject
 -- import ArM.Types.Character
 
 import System.Environment
@@ -70,6 +71,7 @@ main = do
      let (opt,_,_) = getOpt RequireOrder options args
      opts <- foldl (>>=) (return defaultOptions) opt
 
+     printTime
      sagaobject <- loadSaga $ sagaFile opts
      chargen <- loadChar sagaobject $ charFile opts
      let char = head $ charSheets chargen
@@ -82,6 +84,7 @@ main = do
      mapM_ p $ printSheetObject  $ getSheetObject chargraph
      hClose handle
 
+     printTime
      -- putStr $ show chargraph
      h2 <- getMaybeHandle $ debugFile opts
      hPutStrLn h2 $ show chargraph

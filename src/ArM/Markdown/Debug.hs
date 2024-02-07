@@ -4,7 +4,7 @@ module ArM.Markdown.Debug where
 import Swish.RDF.Graph as G
 import ArM.KeyPair()
 import           ArM.KeyPair
-import           ArM.Markdown.SheetObject
+import           ArM.Types.SheetObject
 import           ArM.CharacterQuery
 import Data.List(sortOn,intercalate)
 

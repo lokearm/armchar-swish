@@ -31,6 +31,7 @@ common deps
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
                        , ArM.Rules.Record
+                       , ArM.Rules.SheetCalculation
                        , ArM.Resources
                        , ArM.IO
                        , ArM.BlankNode
@@ -64,9 +65,9 @@ common deps
 
 executable armchar-debug
   import: deps
-  other-modules:       ArM.CharGraph
+  other-modules:       ArM.Types.MapState
                      , ArM.Markdown.CharacterSheet
-                     , ArM.Markdown.SheetObject
+                     , ArM.Types.SheetObject
   main-is:             Debug.hs
   ghc-options:
     -O2
@@ -75,9 +76,9 @@ executable armchar-debug
     "-with-rtsopts=-N -s -h -i0.1"
 executable armchar-cli
   import: deps
-  other-modules:       ArM.CharGraph
+  other-modules:       ArM.Types.MapState
                      , ArM.Markdown.CharacterSheet
-                     , ArM.Markdown.SheetObject
+                     , ArM.Types.SheetObject
   main-is:             Main.hs
   ghc-options:
     -O2

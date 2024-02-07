@@ -1,11 +1,25 @@
-all: charactersheet.pdf charactersheet.html
+all: grog.md sylvain.md
+diff: grog.diff sylvain.diff marcus.diff
+formats: charactersheet.pdf charactersheet.html
+
+marcus.md:
+sylvain.md:
+grog.md:
 
 .force:
 
-charactersheet.md: .force
-	cabal run armchar-cli -- -c Test/sylvain.ttl -s Test/saga.ttl -o charactersheet.md -O charactersheet.triples
+O=Ontology/resources.ttl Ontology/arm.ttl
+
+%.md: Test/%.ttl .force $O
+	cabal run armchar-cli -- -c $< -s Test/saga.ttl -o $@ -O $*.triples
 
 %.pdf: %.md
 	pandoc -o $@ $<
 %.html: %.md
 	pandoc -o $@ $<
+
+Ontology/%.ttl: .force
+	( cd Ontology ; $(MAKE) $*.ttl )
+
+%.diff: %.md
+	diff $< Test/$< | tee $@

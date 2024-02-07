@@ -36,8 +36,6 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Debug.Trace
-
 -- | 
 -- = Trait
 
@@ -48,18 +46,20 @@ import ArM.Debug.Trace
 -- When new traits are created, `traitID` is set to nothing?
 -- A blank node is only created when it is written into an RDFGraph.
 data Trait = Trait {
+    traitCountable :: Bool,
+    traitXP :: Bool,
     traitClass :: RDFLabel,
     traitID :: RDFLabel,
     instanceLabel :: String,
-    isRepeatableTrait :: Bool,
     traitContents :: [RDFTriple]
    } deriving (Eq)
 defaultTrait :: Trait
 defaultTrait = Trait {
+    traitCountable = False,
+    traitXP = False,
     traitClass = noSuchTrait,
     traitID = noSuchTrait,
     instanceLabel = "",
-    isRepeatableTrait = False,
     traitContents = []
    } 
 
@@ -128,17 +128,19 @@ advanceTriples (x:xs) (y:ys)
 -- XP need to be recalculated.  This auxiliary is applied
 -- by two different functions to do this.
 fixTrait :: Trait -> Trait
-fixTrait trait =  trait {
-       traitContents = sort $ calculateXP $ traitContents trait
-    }
+fixTrait trait =  trait { traitContents = recalc trait }
+    where recalc = calculateQ trait . calculateXP trait . traitContents 
 
 -- |
 -- == Recalculation of XP (auxiliary functions
 
 -- | Auxiliary for `fixTrait`.
 --
-calculateXP :: [RDFTriple] -> [RDFTriple]
-calculateXP ts = trace ("calculateXP" ++ show (tot,add,fac)) $ xp:ys 
+calculateXP :: Trait -> [RDFTriple] -> [RDFTriple]
+calculateXP t ts | traitXP t  = ( sort . calculateXP' ) ts
+calculateXP _ ts | otherwise          = ts
+calculateXP' :: [RDFTriple] -> [RDFTriple]
+calculateXP' ts = xp:ys 
    where (tot,add,fac,ys) = getXPtriples' (0,0,1,ts)
          newtot = round $ (fromIntegral tot) + (fromIntegral add)*fac
          sub = arcSubj $ head ts
@@ -149,16 +151,40 @@ getXPtriples' :: (Int,Int,Float,[RDFTriple]) -> (Int,Int,Float,[RDFTriple])
 getXPtriples' (tot,add,fac,ys) | ys == [] = (tot,add,fac,ys)
                       | p == armRes "hasTotalXP" =  (newtot,add',fac',ys')
                       | p == armRes "addedXP" =  (tot',newadd,fac',ys')
-                      | p == armRes "hasXPfactor" =
-                         trace (show (tot',add',newfac) )
-                         (tot',add',newfac,y:ys')
+                      | p == armRes "hasXPfactor" = (tot',add',newfac,y:ys')
                       | otherwise             =  (tot',add',fac',y:ys')
     where (tot',add',fac',ys') = getXPtriples' (tot,add,fac,tail ys)
           p = arcPred y
           newfac = floatFromRDF $ arcObj y
           newtot = tot' + ( intFromRDF $ arcObj y )
           newadd = add' + ( intFromRDF $ arcObj y )
-          y = ttrace $ head ys
+          y = head ys
+
+-- | Auxiliary for `fixTrait`.
+--
+calculateQ :: Trait -> [RDFTriple] -> [RDFTriple]
+calculateQ t ts | traitCountable t  = ( sort . calculateQ' ) ts
+calculateQ _ ts | otherwise          = ts
+calculateQ' :: [RDFTriple] -> [RDFTriple]
+calculateQ' ts = xp:ys 
+   where (tot,add,ys) = getQtriples' (0,0,ts)
+         newtot = (fromIntegral tot) + (fromIntegral add)
+         sub = arcSubj $ head ts
+         xp = arc sub (armRes "hasQuantity") (litInt newtot)
+
+-- | Inner recursive function for `getQtriplles` (auxiliary for `calculateQ`)
+getQtriples' :: (Int,Int,[RDFTriple]) -> (Int,Int,[RDFTriple])
+getQtriples' (tot,add,ys) | ys == [] = (tot,add,ys)
+                      | p == armRes "hasQuantity" =  (newtot,add',ys')
+                      | p == armRes "addQuantity" =  (tot',newadd,ys')
+                      | p == armRes "removeQuantity" =  (tot',newrm,ys')
+                      | otherwise             =  (tot',add',y:ys')
+    where (tot',add',ys') = getQtriples' (tot,add,tail ys)
+          p = arcPred y
+          newtot = tot' + ( intFromRDF $ arcObj y )
+          newadd = add' + ( intFromRDF $ arcObj y )
+          newrm = add' - ( intFromRDF $ arcObj y )
+          y = head ys
 
 {-
 xpSum :: [RDFTriple]  -- ^ Input list

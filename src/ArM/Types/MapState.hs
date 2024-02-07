@@ -8,7 +8,7 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.CharGraph 
+module ArM.Types.MapState
                ( loadSaga
                , loadChar
                , MapState(..)
