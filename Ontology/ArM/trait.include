@@ -1,6 +1,34 @@
-arm:Trait a owl:Class ; rdfs:subClassOf arm:Object .
-arm:TraitProperty a owl:Property ; rdfs:subPropertyOf arm:ViewProperty ;
-   rdfs:comment "These properties should be passed to the client for display."  .
+# Traitlike covers Trait and Possession
+arm:Traitlike a owl:Class ; rdfs:subClassOf arm:Object .
+
+arm:Trait a owl:Class ; rdfs:subClassOf arm:Traitlike .
+arm:Possession a owl:Class ; rdfs:subClassOf arm:Traitlike .
+
+arm:hasTrait  a   owl:ObjectProperty ;
+        rdfs:domain  arm:CharacterSheet ;
+        rdfs:range   arm:Traitlike .
+arm:hasPossession rdfs:subPropertyOf   arm:hasTraitlike ;
+     rdfs:label "hasPossession" ;
+    rdfs:domain arm:CharacterSheet ;
+    rdfs:range arm:Possession .
+
+# Possessions may be unique or stock
+arm:UniqueItem rdfs:subClassOf arm:Possession ;
+   rdfs:comment "A unique item can be a weapon or piece of equipment.  The notable feature is that it is one of a kind, and the item may have a reputation of its own." .
+arm:StockItem rdfs:subClassOf arm:Possession ;
+   rdfs:comment "A stock item can be a weapon, piece of equipment, or vis.  Typically a character has a stock of several items, which tend to be expendable, like ammunition." ;
+   owl:disjointFrom arm:UniqueItem .
+
+# Some kinds of possessions may need special treatment (e.g. vis) the rest is equipment
+arm:Equipment rdfs:subClassOf arm:Possession .
+arm:Vis rdfs:subClassOf arm:StockItem ;
+   arm:hasLabel "Vis" ;
+   owl:disjointFrom arm:Equipment .
+
+# Weapons may be traits (natural weapons) or equipment (other weapons)
+arm:GeneralWeapon a owl:Class ; rdfs:subClassOf arm:Traitlike .
+arm:Weapon rdfs:subClassOf arm:Equipment, arm:GeneralWeapon .
+arm:NaturalWeapon rdfs:subClassOf arm:Trait, arm:GeneralWeapon .
 
 # Special kinds of traits
 
@@ -104,9 +132,6 @@ arm:local rdfs:label "Local" .
 
 # Subproperties of hasTrait
 
-arm:hasTrait  a   owl:ObjectProperty ;
-        rdfs:domain  arm:CharacterSheet ;
-        rdfs:range   arm:Trait .
 arm:hasOtherTrait  rdfs:subPropertyOf   arm:hasTrait ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:OtherTrait .

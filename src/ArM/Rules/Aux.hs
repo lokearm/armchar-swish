@@ -134,3 +134,7 @@ intFromRDF x = fi i
          fi (Just y) = y
          fs Nothing = 0
          fs (Just y) = read y
+
+vbToInt :: Maybe RDFLabel -> Maybe Int
+vbToInt Nothing = Nothing
+vbToInt (Just x) = Just $ intFromRDF x

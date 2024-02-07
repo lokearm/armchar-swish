@@ -3,10 +3,12 @@ title: Testing the Web Server
 tags: #webserver
 ---
 
+
 ## Design notes
 
 + see also [[index]]
 + [[Tests]] showing current features of the web API
++ [[DataStructure]] 
 
 ## Testing the Server
 

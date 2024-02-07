@@ -11,23 +11,21 @@ using Haskell and Swish.  Still in early stages of construction.
 The focus in this repository is a command line tool generating
 markdown sheets from an RDF graph (turtle files).
 
-## TODO Lists
-
-+ [[Covenant]] Support
-+ [ ] Calculate Lab Totals    #cli/backlog
-+ [ ] Calculate Combat Totals    #cli/backlog
-+ [x] Add Header to Markdown output    #cli/backlog @completed(2024-01-31T15:56:40+01:00)
-
 ## Design notes
 
-+ [[CLI Design]]
-	+ [[CLI Workflow.canvas|CLI Workflow]]
-+ [[DesignNotes]]
-+ Business [[Logic]]
++ [[CLI Design]].  The following pages are not necessarily exclusive to CLI, but have been written in that context and are up to date.
+	+ [[Design Notes]]
+	+ [[Backend Modules]]
+	+ [[CLI Data Model.canvas|CLI Data Model]]  including the Markdown output.  This is accurate and fairly complete as of 2024-02-03
+	+ [[CLI Workflow.canvas|CLI Workflow]] 
+		+ This is rather crude, but contains some more low level detail than the above.
++ Basic principls, common for all user interfaces.
+	+ Business [[Logic]]
+	+ [[Swish-vs-Jena]]
+	+ [[Traits and Possessions in RDF.canvas|Traits and Possessions in RDF]]
 + [[DataTypes]]
-+ [[DataStructure]] 
+	+ This is written with reference to the web server, but some parts may still be informative wrt CLI
 + [[Ontology]]
-+ [[Swish-vs-Jena]]
 
 ## Command line tool
 

@@ -9,7 +9,7 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Markdown.SheetObject ( getSheetObject
+module ArM.Types.SheetObject ( getSheetObject
                                 , SheetObject(..)
                                 , Trait(..)
                                 , traitLabel
@@ -45,6 +45,8 @@ getSheetObject g = SheetObject {
     virtues = map parseTrait $ getVirtues g,
     flaws = map parseTrait $ getFlaws g,
     combat = map parseTrait $ getCombat g,
+    equipment = map parseTrait $ getEquipment g,
+    vis = map parseTrait $ getVis g,
     size = getSize g,
     cnf = getConf g
 }
@@ -59,6 +61,8 @@ data SheetObject = SheetObject {
     virtues :: [Trait],
     flaws :: [Trait],
     combat :: [Trait],
+    equipment :: [Trait],
+    vis :: [Trait],
     size :: [Maybe Int],
     cnf :: [(Maybe Int,Maybe Int)]
 }
@@ -84,7 +88,17 @@ data Trait = Trait {
   traitTech :: Maybe String,
   traitLevel :: Maybe Int,
   traitOrder :: Maybe Int,
-  traitBonus :: Maybe Int
+  traitBonus :: Maybe Int,
+  traitInit :: Maybe Int,
+  traitAtk :: Maybe Int,
+  traitDfn :: Maybe Int,
+  traitDam :: Maybe Int,
+  traitStr :: Maybe Int,
+  traitRange :: Maybe Int,
+  traitLoad :: Maybe Int,
+  traitQuantity :: Maybe Int,
+  traitArt :: Maybe String,
+  traitCost :: Maybe String
 }
 defaultTrait :: Trait
 defaultTrait = Trait {
@@ -101,7 +115,17 @@ defaultTrait = Trait {
   traitTech = Nothing,
   traitLevel = Nothing,
   traitOrder = Nothing,
-  traitBonus = Nothing
+  traitBonus = Nothing,
+  traitInit = Nothing,
+  traitAtk = Nothing,
+  traitDfn = Nothing,
+  traitDam = Nothing,
+  traitRange = Nothing,
+  traitStr = Nothing,
+  traitLoad = Nothing,
+  traitQuantity = Nothing,
+  traitArt = Nothing,
+  traitCost = Nothing
 }
 
 
@@ -153,6 +177,15 @@ parsePair (KeyValuePair res  x) t
     | res == (armRes "hasOrder")           = t { traitOrder = G.fromRDFLabel x }
     | res == (armRes "hasAbbreviation")    = t { traitAbbr = G.fromRDFLabel x }
     | res == (armRes "hasTotalBonus")      = t { traitBonus = G.fromRDFLabel x }
+    | res == (armRes "hasInit")      = t { traitInit = G.fromRDFLabel x }
+    | res == (armRes "hasAtk")      = t { traitAtk = G.fromRDFLabel x }
+    | res == (armRes "hasDfn")      = t { traitDfn = G.fromRDFLabel x }
+    | res == (armRes "hasDam")      = t { traitDam = G.fromRDFLabel x }
+    | res == (armRes "hasWeaponRange")      = t { traitRange = G.fromRDFLabel x }
+    | res == (armRes "hasLoad")      = t { traitLoad = G.fromRDFLabel x }
+    | res == (armRes "hasQuantity")      = t { traitQuantity = G.fromRDFLabel x }
+    | res == (armRes "artLabel")      = t { traitArt = G.fromRDFLabel x }
+    | res == (armRes "hasStr")      = t { traitStr = G.fromRDFLabel x }
 parsePair _ t = t 
 
 tefoString :: Trait -> String

@@ -137,9 +137,14 @@ arm:hasInitialSheet  a   owl:ObjectProperty ;
         rdfs:domain   arm:Character .
 
 
-arm:hasDescription a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentProperty ;
+arm:hasDescription a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:label  "Description" ;
-	rdfs:comment "Description of the trait." ;
+	rdfs:comment "Common description of any instance of the class.  This is used on most kind of classes in the ArM ontology." ;
+        rdfs:domain owl:Class ;
+        rdfs:range   xsd:string .
+arm:instanceDescription a owl:DatatypeProperty, arm:PersistentProperty ;
+        rdfs:label  "Description" ;
+	rdfs:comment "Particular description of an instance of any class (e.g. trait, equipmnent)." ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
 arm:hasLabel a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
