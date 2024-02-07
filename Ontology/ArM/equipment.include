@@ -1,20 +1,4 @@
 
-arm:Possession a owl:Class ; rdfs:subClassOf arm:Object .
-arm:UniqueItem rdfs:subClassOf arm:Possession ;
-   rdfs:comment "A unique item can be a weapon or piece of equipment.  The notable feature is that it is one of a kind, and the item may have a reputation of its own." .
-arm:StockItem rdfs:subClassOf arm:Possession, arm:CountableTrait ;
-   rdfs:comment "A stock item can be a weapon, piece of equipment, or vis.  Typically a character has a stock of several items, which tend to be expendable, like ammunition." .
-arm:StandardItem rdfs:subClassOf arm:Possession ;
-   rdfs:comment "A standard item can be a weapon, piece of equipment, or vis.  It is not unique, but characters do not normally have them in large numbers." ;
-   owl:disjointFrom arm:UniqueItem, arm:StockItem .
-
-arm:Equipment rdfs:subClassOf arm:Possession .
-
-arm:GeneralWeapn a owl:Class ; rdfs:subClassOf arm:Object .
-arm:Weapon rdfs:subClassOf arm:Possession, arm:GeneralWeapon .
-arm:NaturalWeapon rdfs:subClassOf arm:GeneralWeapon .
-arm:Vis rdfs:subClassOf arm:StockItem .
-
 arm:hasCombatOption a owl:ObjectProperty, arm:CharacterProperty ;
      rdfs:label "Combat Option" ;
      rdfs:range arm:CombatOption ;

@@ -132,7 +132,8 @@ armchar:marcus arm:characterClass arm:Magus ;
   arm:hasAdvancementDescription "Story" ;
   arm:advanceTrait 
      [ arm:traitClass armr:Dagger ; arm:addQuantity 1 ; arm:hasDetail "Plain steel dagger" ],
-     [ arm:traitClass arm:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 4 ],
+     [ arm:traitClass arm:Vis ; arm:isVisOfArt armr:creo ; arm:hasQuantity 4 ; 
+       arm:instanceLabel "Marbles" ; a arm:CountableTrait ],
     [ arm:traitClass armr:parmamagica ; arm:addedXP 5  ],
     [ arm:traitClass armr:finesse ; arm:addedXP 5  ] .
 
@@ -142,5 +143,6 @@ armchar:marcus arm:characterClass arm:Magus ;
   arm:inYear   1220 ;
   arm:hasAdvancementDescription "Story" ;
   arm:advanceTrait 
-    [ arm:traitClass arm:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 2 ],
+    [ arm:traitClass arm:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 2 ;
+       arm:instanceLabel "Marbles" ; a arm:CountableTrait ],
     [ arm:traitClass armr:parmamagica ; arm:addedXP 5  ] .

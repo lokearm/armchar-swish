@@ -16,7 +16,7 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
-import ArM.Debug.NoTrace
+import ArM.Debug.Trace
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -184,7 +184,7 @@ splitTrait' (ts,[]) = (ts,[])
 splitTrait' ([],x:xs) = splitTrait' (mkTrait x:[],xs) 
 splitTrait' (t:ts,x:xs) 
     | traitID t == tid = splitTrait' (t':ts,xs) 
-    | otherwise       = trace (show t) $ splitTrait' (mkTrait x:t:ts,xs) 
+    | otherwise       = splitTrait' (mkTrait x:t:ts,xs) 
        where t' = addToTrait t x
              (_,tid,_,_) = x
 mkTrait :: ProtoTrait -> Trait
@@ -202,19 +202,20 @@ addToTrait :: Trait -> ProtoTrait -> Trait
 addToTrait t (c,s,p,o) 
       | traitClass t /= c = error "traitClass mismatch in addToTrait"
       | p == armRes "instanceLabel" 
-             = trace "> instanceLabel" $ t { instanceLabel = ttrace $ lab o
+             = trace ("> instanceLabel " ++ dbg) $ t { instanceLabel = ttrace $ lab o
                  , traitContents = triple:traitContents t }
       | p == typeRes && o == armRes "CountableTrait" 
-                        = trace "> CountableTrait" $ t { traitCountable = True
+                        = trace ("> CountableTrait " ++ dbg) $ t { traitCountable = True
                             , traitContents = triple:traitContents t }
-      | p == typeRes && o == armRes "XPTrait" 
-                        = trace "> XPTrait" $ t { traitXP = True
+      | p == typeRes && o == armRes "GeneralXPTrait" 
+                        = trace ("> XPTrait " ++ dbg) $ t { traitXP = True
                             , traitContents = triple:traitContents t }
-      | otherwise = t { traitContents = triple:traitContents t }
+      | otherwise = trace dbg $ t { traitContents = triple:traitContents t }
          where lab = f . rdfToString 
-               triple = ttrace $ arc s p o
+               triple = arc s p o
                f Nothing = ""
                f (Just x) = x
+               dbg = show (c,s,p,o)
 
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]

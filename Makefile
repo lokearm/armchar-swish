@@ -1,4 +1,6 @@
-all: grog.md sylvain.md
+all:  diff
+
+md: grog.md sylvain.md
 diff: grog.diff sylvain.diff marcus.diff
 formats: charactersheet.pdf charactersheet.html
 

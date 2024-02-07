@@ -36,9 +36,9 @@ rdfsRules = [
 rdfstypeRules :: [RDFRule]
 rdfstypeRules = [
     makeCRule "subclasstypeRule"
-      [ arc sVar (Res rdfType) tVar 
+      [ arc sVar typeRes tVar 
       , arc tVar (Res rdfsSubClassOf) cVar ]
-      [ arc sVar (Res rdfType) cVar ]
+      [ arc sVar typeRes cVar ]
     , makeCRule "subpropinstanceRule" 
       [ arc sVar pVar oVar 
       , arc pVar (Res rdfsSubPropertyOf) (Var "p2") ] 

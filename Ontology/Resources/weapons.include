@@ -1,5 +1,5 @@
 
-armr:Arrow rdfs:subClassOf arm:Equipment ;
+armr:Arrow rdfs:subClassOf arm:StockItem, arm:Equipment ;
      arm:hasLabel  "Arrow" .
 armr:Dodge rdfs:subClassOf arm:NaturalWeapon ;
      arm:hasSkill armr:brawl ;

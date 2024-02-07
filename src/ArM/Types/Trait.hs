@@ -36,7 +36,7 @@ import ArM.Types.RDF()
 
 import Control.Parallel.Strategies (parMap,rpar)
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 -- | 
 -- = Trait
@@ -130,7 +130,7 @@ advanceTriples (x:xs) (y:ys)
 -- XP need to be recalculated.  This auxiliary is applied
 -- by two different functions to do this.
 fixTrait :: Trait -> Trait
-fixTrait trait =  trace ( instanceLabel trait ) 
+fixTrait trait =  trace ( instanceLabel trait ++ (show $ traitXP trait) ++ (show $ traitCountable trait) ) 
                   ( trait { traitContents = recalc trait } )
     where recalc = calculateQ trait . calculateXP trait . traitContents 
 
@@ -141,13 +141,13 @@ fixTrait trait =  trace ( instanceLabel trait )
 --
 calculateXP :: Trait -> [RDFTriple] -> [RDFTriple]
 calculateXP t ts | traitXP t  = ( sort . calculateXP' ) ts
-calculateXP _ ts | otherwise          = ts
+calculateXP _ ts | otherwise  = ts
 calculateXP' :: [RDFTriple] -> [RDFTriple]
 calculateXP' ts = xp:ys 
   where (tot,add,fac,ys) = getXPtriples' (0,0,1,ts)
-         newtot = round $ (fromIntegral tot) + (fromIntegral add)*fac
-         sub = arcSubj $ head ts
-         xp = arc sub (armRes "hasTotalXP") (litInt newtot)
+        newtot = round $ (fromIntegral tot) + (fromIntegral add)*fac
+        sub = arcSubj $ head ts
+        xp = arc sub (armRes "hasTotalXP") (litInt newtot)
 
 -- | Inner recursive function for `getXPtriplles` (auxiliary for `calculateXP`)
 getXPtriples' :: (Int,Int,Float,[RDFTriple]) -> (Int,Int,Float,[RDFTriple])
@@ -189,15 +189,3 @@ getQtriples' (tot,add,ys) | ys == [] = (tot,add,ys)
           newrm = add' - ( intFromRDF $ arcObj y )
           y = head ys
 
-{-
-xpSum :: [RDFTriple]  -- ^ Input list
-      -> RDFTriple  -- ^ New arc
-xpSum [] = error "xpSum called on empty list"
-xpSum (x:[]) = arc (arcSubj x) (armRes "hasTotalXP") (arcObj x)
-xpSum (x:y:xs) | arcSubj x /= arcSubj y = error "Subject mismatch in xpSum."
-               | otherwise = xpSum (y':xs)
-   where f = intFromRDF . arcObj
-         t = f x + f y
-         y' = arc (arcSubj x) p (litInt t)
-         p = armRes "hasTotalXP"
--}
