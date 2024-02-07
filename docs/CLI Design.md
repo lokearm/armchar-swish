@@ -52,6 +52,9 @@ The first version of CLI will solve one simple problem; take a character descrip
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
++ [ ] Validate chargen and advancement #cli/backlog 
+	+ [ ] Advancement log (new output format)  #cli/backlog 
+	+ [ ] Flag discrepancies in the log
 + [ ] Advancement by reading #cli/backlog 
 	+ [ ] Covenant as a character
 	+ [ ] Covenant hasBook property to define library
@@ -79,7 +82,6 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 # Roadmap
 
 + [ ] [[Covenant]] Support #kanban/backlog 
-+ [ ] Advancement log (new output format)  #cli/backlog 
 + [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
 # Considerations
