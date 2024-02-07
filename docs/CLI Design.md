@@ -52,7 +52,13 @@ The first version of CLI will solve one simple problem; take a character descrip
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
-
++ [ ] Advancement by reading #cli/backlog 
+	+ [ ] Covenant as a character
+	+ [ ] Covenant hasBook property to define library
+	+ [ ] Book as RDF resources with stats
+	+ [ ] Advancement readsBook property
+	+ [ ] Deduce XP gain from book
+	+ [ ] Implement and debug relevant virtues
 + [ ] Calculate Lab Totals    #cli/backlog
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
 + [x] Show season on Markdown sheet
@@ -65,7 +71,10 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] load per item
 	+ [ ] total load (multiplied by quantity) per line
 	+ [ ] aggregate load and encumbrance
-+ [ ] Current year and season on one line #cli/backlog 
++ [ ] Current year and season on one line on output character sheet   #cli/backlog 
++ [ ] Allow Unique pieces of Equipment (incl. Weapons)
++ [ ] Code review and simplification
++ [ ] Ontology review and simplification
 
 # Roadmap
 
