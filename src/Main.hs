@@ -25,6 +25,8 @@ import ArM.Types.SheetObject
 import System.Environment
 import System.Console.GetOpt
 
+import Swish.RDF.Graph (RDFGraph)
+
 data Options = Options {
   sagaFile :: String,
   charFile :: String,
@@ -63,6 +65,13 @@ getMaybeHandle Nothing = return stdout
 getMaybeHandle (Just f) = openFile f WriteMode
 
 
+writeSheet :: String -> RDFGraph -> IO ()
+writeSheet fn cg = do
+     handle <- openFile fn WriteMode
+     let p = hPutStrLn handle
+     mapM_ p $ printSheetObject  $ getSheetObject cg
+     hClose handle
+
 main :: IO ()
 main = do 
      putStrLn "Starting: armchar-swish  ..."
@@ -77,15 +86,9 @@ main = do
      let char = head $ charSheets chargen
      let chargraph = sheetGraph char
 
-     handle <- openFile (outFile opts) WriteMode
-
-     let p = hPutStrLn handle
-
-     mapM_ p $ printSheetObject  $ getSheetObject chargraph
-     hClose handle
-
+     writeSheet (outFile opts) chargraph
      printTime
-     -- putStr $ show chargraph
+
      h2 <- getMaybeHandle $ debugFile opts
      hPutStrLn h2 $ show chargraph
      hClose h2
