@@ -22,5 +22,5 @@ printAdvancementLog :: [Advancement] -> [String]
 printAdvancementLog = intercalate [] . map printAdvancement
 
 printAdvancement :: Advancement -> [String]
-printAdvancement _ = []
+printAdvancement ad = [ "+ " ++ show $ advTime ad ]
 
