@@ -24,9 +24,11 @@
 + [x] BlankNode
     + Simple monad to create distinct blank nodes
 + [ ] Character.CharGen
++ [x] Character.Update
+	+ Used only for the server
 + [ ] CharacterQuery
     + [ ] Rename to Character.Query?
-+ [x] Debug.*
++ [x] `Debug.*`
     + Simple functions to print diagnostic output
 + [x] Internal.Aux
     + Implements `uniqueSort` 
@@ -39,12 +41,23 @@
     + Simple definitions of RDF resources.  
     + Some are important.
     + Some are barely used and could be expanded for each use 
-+ [ ] Rules.*
++ [ ] `Rules.*`
 + [ ] Rules
     + wrapper for most submodules under Rules
-+ Server.*
++ `Server.*`
     + This is the WebServer, not currently developed
-+ Types.*
++ `Types.*`
+    + [ ] Types/Advancement.hs
+    + [ ] Types/Character.hs
+        + Used to construct CharGen objects
+    + [ ] Types/MapState.hs
+    + [ ] Types/RDF.hs
+    + [ ] Types/Saga.hs
+    + [ ] Types/Season.hs
+    + [ ] Types/SheetObject.hs
+        + Used for the final stage before outputing Character Sheets
+    + [ ] Types/Trait.hs
+
 
 + [ ] Should more things be moved under Internal?
     + [ ] IO

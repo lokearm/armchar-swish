@@ -67,6 +67,7 @@ executable armchar-debug
   import: deps
   other-modules:       ArM.Types.MapState
                      , ArM.Markdown.CharacterSheet
+                     , ArM.Markdown.AdvancementLog
                      , ArM.Types.SheetObject
   main-is:             Debug.hs
   ghc-options:
@@ -78,6 +79,7 @@ executable armchar-cli
   import: deps
   other-modules:       ArM.Types.MapState
                      , ArM.Markdown.CharacterSheet
+                     , ArM.Markdown.AdvancementLog
                      , ArM.Types.SheetObject
   main-is:             Main.hs
   ghc-options:

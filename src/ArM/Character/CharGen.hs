@@ -82,6 +82,7 @@ makeCharStage schema cs0 adv = CharStage
               , sheetRawGraph = makeCGraph schema cs }
               where cs = advanceCharacter cs0 adv 
              
+-- | auxiliary to `makeCharStage`
 makeCGraph :: RDFGraph -> CharacterSheet -> RDFGraph
 makeCGraph schema = prepareRecord schema . makeRDFGraph
 
