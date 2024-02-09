@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Main
@@ -18,6 +17,7 @@ import ArM.Debug.Time
 -- import ArM.Debug.Trace
 import ArM.Types.MapState
 import ArM.Markdown.CharacterSheet
+import ArM.Markdown.AdvancementLog
 import ArM.Character.CharGen
 import ArM.Types.SheetObject
 -- import ArM.Types.Character
@@ -27,18 +27,25 @@ import System.Console.GetOpt
 
 import Swish.RDF.Graph (RDFGraph)
 
+import Data.Maybe (fromJust)
+
+
 data Options = Options {
   sagaFile :: String,
   charFile :: String,
   outFile  :: String,
-  debugFile  :: Maybe String
+  debugFile  :: Maybe String,
+  outputDir  :: Maybe String,
+  advancementFile  :: Maybe String
 }
 defaultOptions :: Options
 defaultOptions = Options {
   sagaFile = "Test/saga.ttl",
   charFile = "Test/cieran.ttl",
   outFile  = "test.md",
-  debugFile  = Nothing
+  debugFile  = Nothing,
+  outputDir  = Nothing,
+  advancementFile  = Nothing
 }
 
 
@@ -57,7 +64,13 @@ options =
             "FILE") "saga file"
     , Option ['O']     ["debug-output"] (ReqArg 
             (\arg opt -> return opt { debugFile = Just arg })
-            "FILE") "saga file"
+            "FILE") "debug output"
+    , Option ['D']     ["output-directory"] (ReqArg 
+            (\arg opt -> return opt { outputDir = Just arg })
+            "FILE") "output directory"
+    , Option ['A']     ["advancement-file"] (ReqArg 
+            (\arg opt -> return opt { advancementFile = Just arg })
+            "FILE") "output directory"
     ]
 
 getMaybeHandle :: Maybe String -> IO Handle
@@ -71,6 +84,23 @@ writeSheet fn cg = do
      let p = hPutStrLn handle
      mapM_ p $ printSheetObject  $ getSheetObject cg
      hClose handle
+writeAdv :: Maybe String -> CharGen -> IO ()
+writeAdv Nothing _ = return ()
+writeAdv (Just fn) cg = do
+     handle <- openFile fn WriteMode
+     let p = hPutStrLn handle
+     mapM_ p $ printAdvancementLog  as
+     hClose handle
+     where as = map advancement $ charSheets cg
+
+dirOpts :: Options -> Options
+dirOpts opt | outputDir opt == Nothing = opt
+      | otherwise = opt {
+          outFile = d ++ "/character.md",
+          debugFile = Just $ d ++ "/character.triples",
+          advancementFile = Just $ d ++ "/advancement.md"
+       }
+       where d = fromJust $ outputDir opt
 
 main :: IO ()
 main = do 
@@ -78,7 +108,9 @@ main = do
      printTime
      args <- getArgs
      let (opt,_,_) = getOpt RequireOrder options args
-     opts <- foldl (>>=) (return defaultOptions) opt
+     opt0 <- foldl (>>=) (return defaultOptions) opt
+
+     let opts = dirOpts opt0
 
      printTime
      sagaobject <- loadSaga $ sagaFile opts
@@ -87,6 +119,8 @@ main = do
      let chargraph = sheetGraph char
 
      writeSheet (outFile opts) chargraph
+     printTime
+     writeAdv (advancementFile opts) chargen
      printTime
 
      h2 <- getMaybeHandle $ debugFile opts
