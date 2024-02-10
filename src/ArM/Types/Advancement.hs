@@ -48,6 +48,7 @@ data Advancement = Advancement
     { advChar  :: RDFLabel
     , advTime  :: CharTime
     , rdfid    :: RDFLabel
+    , advXP          :: Maybe Int
     , advType        :: Maybe String
     , advLabel       :: Maybe String
     , advDescription :: Maybe String
@@ -68,6 +69,7 @@ defaultAdvancement :: Advancement
 defaultAdvancement = Advancement 
                 { advChar = armRes "noSuchCharacter"
                 , rdfid = noSuchAdvancement
+                , advXP         = Nothing
                 , advType       = Nothing
                 , advLabel       = Nothing
                 , advDescription = Nothing
@@ -280,6 +282,8 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advTime = t { charYear = rdfToInt  ob } }
      | p == (armRes "atSeason") =
              toAdvancement' xs $ adv { advTime = t { charSeason = fs $ rdfToString  ob } }
+     | p == (armRes "awardsXP") =
+             toAdvancement' xs $ adv { advXP = (rdfToInt  ob) }
      | p == (armRes "hasAdvancementIndex") =
              toAdvancement' xs $ adv { advTime = t { advancementIndex = fi (rdfToInt  ob) } }
      | p == (armRes "instanceLabel") =

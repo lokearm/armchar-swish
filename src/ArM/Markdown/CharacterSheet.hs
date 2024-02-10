@@ -11,7 +11,7 @@
 -- Types to handle characters as stored in web server memory.
 --
 -----------------------------------------------------------------------------
-module ArM.Markdown.CharacterSheet ( printSheetObject ) where
+module ArM.Markdown.CharacterSheet ( printSheetObject, DashShow(..) ) where
 
 
 import ArM.Types.SheetObject
