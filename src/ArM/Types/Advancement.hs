@@ -45,11 +45,11 @@ import           Swish.VarBinding  (vbMap)
 -- TraitAdvancements are represented as a list of `Trait`s.
 -- Other properties are listed as 'contents'.
 data Advancement = Advancement 
-    { advChar :: RDFLabel
-    , advTime :: CharTime
-    , rdfid :: RDFLabel
+    { advChar  :: RDFLabel
+    , advTime  :: CharTime
+    , rdfid    :: RDFLabel
     , contents :: [KeyValuePair]
-    , traits :: [Trait]
+    , traits   :: [Trait]
    } deriving Eq
 
 advSortIndex :: Advancement -> Int

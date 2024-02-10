@@ -130,9 +130,9 @@ advanceTriples (x:xs) (y:ys)
 -- XP need to be recalculated.  This auxiliary is applied
 -- by two different functions to do this.
 fixTrait :: Trait -> Trait
-fixTrait trait =  trace ( instanceLabel trait ++ (show $ traitXP trait) ++ (show $ traitCountable trait) ) 
-                  ( trait { traitContents = recalc trait } )
+fixTrait trait =  trace dbg ( trait { traitContents = recalc trait } )
     where recalc = calculateQ trait . calculateXP trait . traitContents 
+          dbg = instanceLabel trait ++ (show $ traitXP trait) ++ (show $ traitCountable trait) 
 
 -- |
 -- == Recalculation of XP (auxiliary functions
