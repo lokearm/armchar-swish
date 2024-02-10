@@ -82,6 +82,9 @@ executable armchar-debug
 executable armchar-cli
   import: cli-deps
   main-is:             Main.hs
+  ghc-prof-options:
+    -prof
+    -fprof-auto
   ghc-options:
     -O2
     -Wall

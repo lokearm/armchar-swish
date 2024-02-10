@@ -138,7 +138,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
   arm:advancementClass arm:IngameAdvancement ; 
   arm:atSeason "Spring" ;
   arm:inYear   1220 ;
-  arm:hasAdvancementDescription "Lab work/exposure" ;
+  arm:instanceDescription "Lab work/exposure" ;
   arm:advanceTrait 
     [ arm:traitClass armr:mentem ; arm:addedXP 2  ],
      [ arm:traitClass arm:Equipment ; arm:addQuantity 1 ;

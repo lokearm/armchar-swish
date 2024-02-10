@@ -83,7 +83,7 @@ armchar:andrew arm:characterClass arm:Grog ;
   arm:advancementClass arm:IngameAdvancement ; 
   arm:atSeason "Spring" ;
   arm:inYear   1220 ;
-  arm:hasAdvancementDescription "Story" ;
+  arm:instanceDescription "Story" ;
   arm:advanceTrait 
      [ arm:traitClass armr:Arrow ; arm:addQuantity 10 ; arm:removeQuantity 7 ],
     [ arm:traitClass armr:brawl ; arm:addedXP 5  ],
@@ -93,7 +93,7 @@ armchar:andrew arm:characterClass arm:Grog ;
   arm:advancementClass arm:IngameAdvancement ; 
   arm:atSeason "Summer" ;
   arm:inYear   1220 ;
-  arm:hasAdvancementDescription "Work/Exposure" ;
+  arm:instanceDescription "Work/Exposure" ;
   arm:advanceTrait 
      [ arm:traitClass armr:RoundShield ; arm:hasQuantity 1 ],
      [ arm:traitClass arm:CombatOption ;

@@ -33,16 +33,6 @@
 + [ ] Do we want to separate Weapon with stats from Weapon as equipment?  #kanban/backlog 
 	+ This would allow us to link one piece of weaponry with different weapons using different skills
 
-# Label  and Description
-
-+ All traits and possessions have label and description
-+ The label is a short string, suitable for listing
-+ The description is a longer description
-+ Label and description can be defined both at class and instance level
-+ Class level description (`hasDescription` and `hasLabel`) are generic
-	+ inherited by every instance
-+ Instance level description (`instaceDescription` and `instanceLabel`) are more specific
-
 
 
 
