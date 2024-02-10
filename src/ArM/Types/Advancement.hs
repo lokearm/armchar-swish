@@ -16,7 +16,7 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
-import ArM.Debug.NoTrace
+import ArM.Debug.Trace
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -208,7 +208,7 @@ addToTrait :: Trait -> ProtoTrait -> Trait
 addToTrait t (c,s,p,o) 
       | traitClass t /= c = error "traitClass mismatch in addToTrait"
       | p == armRes "instanceLabel" 
-             = trace ("> instanceLabel " ++ dbg) $ t { instanceLabel = ttrace $ lab o
+             = trace ("> instanceLabel " ++ dbg) $ t { instanceLabel = lab o
                  , traitContents = triple:traitContents t }
       | p == typeRes && o == armRes "CountableTrait" 
                         = trace ("> CountableTrait " ++ dbg) $ t { traitCountable = True
@@ -216,7 +216,7 @@ addToTrait t (c,s,p,o)
       | p == typeRes && o == armRes "GeneralXPTrait" 
                         = trace ("> XPTrait " ++ dbg) $ t { traitXP = True
                             , traitContents = triple:traitContents t }
-      | otherwise = trace dbg $ t { traitContents = triple:traitContents t }
+      | otherwise = t { traitContents = triple:traitContents t }
          where lab = f . rdfToString 
                triple = arc s p o
                f Nothing = ""
@@ -236,11 +236,6 @@ getIngameAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
 getAllAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
 getAllAdvancements g c = getAdvancements g $ queryGraph inGameAdv c
    where inGameAdv = armRes  "CharacterAdvancement"
--- getAllAdvancements g c = map ( \ x -> x { advChar = c } ) 
-          -- $ getAdvancements g $ listToRDFGraph  
-          -- [ arc (Var "id") (Var "property") (Var "value")
-          -- , arc (Var "id") (armRes  "advanceCharacter") c
-          -- , arc (Var "property") labelRes (Var "label") ]
 
 -- | Query graph to find a advancements of a given type (RDF class)
 -- for a given character.
@@ -248,10 +243,10 @@ queryGraph :: RDFLabel -- ^ Label for the advancement type
            -> RDFLabel -- ^ Label for the character to be advanced
            -> RDFGraph -- ^ Resulting graph
 queryGraph c = listToRDFGraph  . f c
-   where f c1 c2 = [ arc (Var "id") typeRes c1,
-            arc (Var "id") (Var "property") (Var "value"),
-            arc (Var "id") (armRes  "advanceCharacter") c2,
-            arc (Var "property") labelRes (Var "label") ]
+   where f c1 c2 = [ arc (Var "id") typeRes c1
+            , arc (Var "id") (Var "property") (Var "value")
+            , arc (Var "id") (armRes  "advanceCharacter") c2
+            , arc (Var "property") resRdfsLabel (Var "label") ]
 
 -- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
 getAdvancements :: RDFGraph -> RDFGraph -> [Advancement]
@@ -268,7 +263,7 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [RDFTriple] -> Advancement
-toAdvancement xs = toAdvancement' ys df
+toAdvancement xs = trace (show $ ys) $ toAdvancement' ys df
          where ys = toKeyPairList xs 
                df = defaultAdvancement 
                  { rdfid = getkey xs
@@ -279,8 +274,10 @@ toAdvancement xs = toAdvancement' ys df
 toAdvancement' :: [KeyValuePair] -> Advancement -> Advancement
 toAdvancement' [] adv = adv
 toAdvancement' (KeyValuePair p ob:xs)  adv
-     | p == (armRes "advanceCharacter") = toAdvancement' xs $ adv { advChar = ob }
-     | p == (armRes "inYear") = toAdvancement' xs $ adv { advTime = t { charYear = rdfToInt  ob } }
+     | p == (armRes "advanceCharacter") = 
+             toAdvancement' xs $ adv { advChar = ob }
+     | p == (armRes "inYear") = 
+             toAdvancement' xs $ adv { advTime = t { charYear = rdfToInt  ob } }
      | p == (armRes "atSeason") =
              toAdvancement' xs $ adv { advTime = t { charSeason = fs $ rdfToString  ob } }
      | p == (armRes "hasAdvancementIndex") =
@@ -289,11 +286,12 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advLabel = rdfToString  ob }
      | p == (armRes "instanceDescription") =
              toAdvancement' xs $ adv { advDescription = rdfToString  ob } 
-     | p == (armRes "advancementTypeString") =
+     | p == (armRes "hasAdvancementTypeString") = trace ("S "++dbg) $
              toAdvancement' xs $ adv { advType = rdfToString  ob } 
-     | otherwise = toAdvancement' xs adv 
+     | otherwise = trace dbg $ toAdvancement' xs adv 
      where fs Nothing = "" 
            fs (Just x) = x
            fi Nothing = 0 
            fi (Just x) = x
            t = advTime adv
+           dbg = "toAdv " ++ show (p,ob)

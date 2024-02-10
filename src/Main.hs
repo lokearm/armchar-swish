@@ -118,6 +118,8 @@ main = do
      let char = head $ charSheets chargen
      let chargraph = sheetGraph char
 
+     -- putStrLn $ show $ charGraph chargen
+
      writeSheet (outFile opts) chargraph
      printTime
      writeAdv (advancementFile opts) chargen

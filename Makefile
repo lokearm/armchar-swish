@@ -15,6 +15,9 @@ O=Ontology/resources.ttl Ontology/arm.ttl
 %.md: Test/%.ttl .force $O
 	cabal run armchar-cli -- -c $< -s Test/saga.ttl -o $@ -O $*.triples
 
+%: Test/%.ttl .force $O
+	cabal run armchar-cli -- -c $< -s Test/saga.ttl -D $@
+
 %.pdf: %.md
 	pandoc -o $@ $<
 %.html: %.md
