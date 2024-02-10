@@ -29,6 +29,8 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Basic removal
 	+ [x] What happens when quantity is reduced to zero?
 + [ ] Virtues/Flaws taken more than once #cli/selected 
+	+ [ ] Test a character with Silent Magic twice
+	+ [ ] Test a character with two different Art affinities
 + [x] #bug add quantities of same type of item
 	+ [x] `Types/Trait` need to recalculate `hasQuantity` upon advancement
 + [x] Make a grog example and output  #cli/selected 
