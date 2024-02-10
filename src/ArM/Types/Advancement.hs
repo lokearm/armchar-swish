@@ -16,7 +16,7 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
