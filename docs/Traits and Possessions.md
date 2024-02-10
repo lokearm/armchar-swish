@@ -33,6 +33,9 @@
 + [ ] Do we want to separate Weapon with stats from Weapon as equipment?  #kanban/backlog 
 	+ This would allow us to link one piece of weaponry with different weapons using different skills
 
++ In **Haskell** there are two `Trait` types.
+	+ `ArM.Types.Trait.Trait` is used for the application of advancements when the character graphs are constructed and augmented
+	+ `ArM.Types.SheetObject.Trait` is used when the character sheets are read from RDFGraphs to produce output for play.
 
 
 
