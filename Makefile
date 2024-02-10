@@ -25,3 +25,6 @@ Ontology/%.ttl: .force
 
 %.diff: %.md
 	diff $< Test/$< | tee $@
+
+wc:
+	find src -name "*.hs" | xargs wc

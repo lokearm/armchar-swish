@@ -44,10 +44,6 @@ arm:inYear a   owl:DatatypeProperty, arm:PersistentProperty, arm:ViewProperty ;
         rdfs:range   xsd:int ;
         rdfs:label   "Year" .
 
-arm:hasAdvancementDescription a owl:DatatypeProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   xsd:string ;
-        rdfs:label   "Description" .
 arm:awardsXP a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:int ;
@@ -64,10 +60,6 @@ arm:Reading  arm:hasLabel "Reading" ; a arm:AdvancementType .
 
 # Trait Advancement
 
-arm:changePossession a owl:ObjectProperty, arm:PersistentProperty ;
-        rdfs:label  "Possession to Change" ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:Possession .
 arm:advanceTrait a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:label  "Trait to Advance" ;
         rdfs:domain  arm:CharacterAdvancement ;
@@ -77,15 +69,6 @@ arm:advancementClass  a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   owl:Class ;
         rdfs:label   "Advancement Type" .
-arm:traitClass a owl:ObjectProperty, arm:PersistentProperty ;
-        arm:hasStringProperty arm:traitClassString ;
-        rdfs:domain  arm:Trait ;
-        rdfs:range   owl:Class ;
-        rdfs:label   "Trait ID" .
-arm:traitClassString a owl:DatatypeProperty, arm:ViewProperty ;
-        rdfs:domain  arm:Trait ;
-        rdfs:range   xsd:string ;
-        rdfs:label   "Trait to Advance" .
 arm:hasHouseVirtue rdfs:subPropertyOf arm:advanceTrait .
 arm:buyVirtueFlaw rdfs:subPropertyOf arm:advanceTrait .
 

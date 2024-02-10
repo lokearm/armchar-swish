@@ -16,7 +16,7 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -45,11 +45,14 @@ import           Swish.VarBinding  (vbMap)
 -- TraitAdvancements are represented as a list of `Trait`s.
 -- Other properties are listed as 'contents'.
 data Advancement = Advancement 
-    { advChar :: RDFLabel
-    , advTime :: CharTime
-    , rdfid :: RDFLabel
+    { advChar  :: RDFLabel
+    , advTime  :: CharTime
+    , rdfid    :: RDFLabel
+    , advType        :: Maybe String
+    , advLabel       :: Maybe String
+    , advDescription :: Maybe String
     , contents :: [KeyValuePair]
-    , traits :: [Trait]
+    , traits   :: [Trait]
    } deriving Eq
 
 advSortIndex :: Advancement -> Int
@@ -65,6 +68,9 @@ defaultAdvancement :: Advancement
 defaultAdvancement = Advancement 
                 { advChar = armRes "noSuchCharacter"
                 , rdfid = noSuchAdvancement
+                , advType       = Nothing
+                , advLabel       = Nothing
+                , advDescription = Nothing
                 , contents = []
                 , advTime = defaultCharTime
                 , traits = []
@@ -262,14 +268,32 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [RDFTriple] -> Advancement
-toAdvancement xs = defaultAdvancement 
-                 { rdfid = getkey xs
-                 , advChar = fm $ getProperty (armRes "advanceCharacter") ys 
-                 , advTime = parseTime defaultCharTime ys 
-                 , contents = ys }
+toAdvancement xs = toAdvancement' ys df
          where ys = toKeyPairList xs 
+               df = defaultAdvancement 
+                 { rdfid = getkey xs
+                 , contents = ys }
                getkey [] = noSuchAdvancement
                getkey (x:_) = arcSubj x
-               fm Nothing = armRes "noSuchCharacter"
-               fm (Just x) = x
 
+toAdvancement' :: [KeyValuePair] -> Advancement -> Advancement
+toAdvancement' [] adv = adv
+toAdvancement' (KeyValuePair p ob:xs)  adv
+     | p == (armRes "advanceCharacter") = toAdvancement' xs $ adv { advChar = ob }
+     | p == (armRes "inYear") = toAdvancement' xs $ adv { advTime = t { charYear = rdfToInt  ob } }
+     | p == (armRes "atSeason") =
+             toAdvancement' xs $ adv { advTime = t { charSeason = fs $ rdfToString  ob } }
+     | p == (armRes "hasAdvancementIndex") =
+             toAdvancement' xs $ adv { advTime = t { advancementIndex = fi (rdfToInt  ob) } }
+     | p == (armRes "instanceLabel") =
+             toAdvancement' xs $ adv { advLabel = rdfToString  ob }
+     | p == (armRes "instanceDescription") =
+             toAdvancement' xs $ adv { advDescription = rdfToString  ob } 
+     | p == (armRes "advancementTypeString") =
+             toAdvancement' xs $ adv { advType = rdfToString  ob } 
+     | otherwise = toAdvancement' xs adv 
+     where fs Nothing = "" 
+           fs (Just x) = x
+           fi Nothing = 0 
+           fi (Just x) = x
+           t = advTime adv

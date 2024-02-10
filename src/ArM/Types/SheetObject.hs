@@ -214,10 +214,3 @@ mdSortKey "Nationality" = 80
 mdSortKey "Character Type" = 0
 mdSortKey _ = 2^(30 :: Int)
 
-{-
- - Spells
- - KeyValuePair arm:hasTargetString "Individual",
- - KeyValuePair arm:hasRangeString "Touch",
- - KeyValuePair arm:hasDurationString "Sun",
- - KeyValuePair arm:hasDescription "The target becomes completely undetectable to normal sight, regardless of what he does, but still casts a shadow.  (Base 4, +1 Touch, +2 Sun, +1 changing image)",KeyValuePair arm:hasCastingScore 19]
--}

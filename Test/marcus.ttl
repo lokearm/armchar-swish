@@ -131,9 +131,11 @@ armchar:marcus arm:characterClass arm:Magus ;
 
 :spring1220 arm:advanceCharacter armchar:marcus ;
   arm:advancementClass arm:IngameAdvancement ; 
+  arm:hasAdvancementType   arm:Adventure ;
   arm:atSeason "Spring" ;
   arm:inYear   1220 ;
-  arm:hasAdvancementDescription "Story" ;
+  arm:instanceLabel "Into the faerie forest" ;
+  arm:instanceDescription "Quest with Will the Bard and Clarissa of Criamon" ;
   arm:advanceTrait 
      [ arm:traitClass armr:Dagger ; arm:addQuantity 1 ; arm:hasDetail "Plain steel dagger" ],
      [ arm:traitClass arm:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 4 ; 
@@ -142,10 +144,12 @@ armchar:marcus arm:characterClass arm:Magus ;
     [ arm:traitClass armr:finesse ; arm:addedXP 5  ] .
 
 :summer1220 arm:advanceCharacter armchar:marcus ;
+  arm:hasAdvancementType   arm:Adventure ;
   arm:advancementClass arm:IngameAdvancement ; 
   arm:atSeason "Summer" ;
   arm:inYear   1220 ;
-  arm:hasAdvancementDescription "Story" ;
+  arm:instanceLabel "Montpellier" ;
+  arm:instanceDescription "Had to talk to the bishop." ;
   arm:advanceTrait 
     [ arm:traitClass arm:Vis ; arm:isVisOfArt armr:creo ; arm:addQuantity 2 ;
        arm:instanceLabel "Marbles" ],
