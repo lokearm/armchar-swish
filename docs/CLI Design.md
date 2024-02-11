@@ -54,7 +54,9 @@ The first version of CLI will solve one simple problem; take a character descrip
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
-+ [ ] new TraitProperty hasArt
++ [ ] quantity when advancing possessions #cli/backlog 
++ [ ] art on vis when changing with advancement #cli/backlog 
++ [ ] new TraitProperty hasArt #cli/backlog 
 	+ [ ] introduce for puissant/affinity
 	+ [ ] replace isVisOfArt
 + [ ] Advancement by reading #cli/backlog 
@@ -77,9 +79,9 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] total load (multiplied by quantity) per line
 	+ [ ] aggregate load and encumbrance
 + [ ] Current year and season on one line on output character sheet   #cli/backlog 
-+ [ ] Allow Unique pieces of Equipment (incl. Weapons)
-+ [ ] Code review and simplification
-+ [ ] Ontology review and simplification
++ [ ] Allow Unique pieces of Equipment (incl. Weapons)  #cli/backlog 
++ [ ] Code review and simplification  #cli/backlog 
++ [ ] Ontology review and simplification  #cli/backlog 
 
 # Roadmap
 

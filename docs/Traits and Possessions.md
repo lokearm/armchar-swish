@@ -28,7 +28,6 @@
 	+ Specialty
 + [ ] link specialities to other traitlike classes (e.g. weapon) #cli/backlog 
 
-
 + [ ] Mark unskilled combat option specially  #cli/backlog 
 + [ ] Do we want to separate Weapon with stats from Weapon as equipment?  #kanban/backlog 
 	+ This would allow us to link one piece of weaponry with different weapons using different skills

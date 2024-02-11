@@ -32,95 +32,12 @@ arm:hasSetting a   owl:DatatypeProperty ;
         rdfs:domain  arm:Saga ;
         rdfs:range   xsd:string .
 
-# Covenant and Character
-arm:GeneralCharacter a owl:Class ; rdfs:subClassOf arm:Object ;
-    rdfs:comment "A GeneralCharacter is an umbrella concept for all resources representing characters.  This is crude, and most references to a GeneralCharacter are probably concerned with only a subset." .
-arm:Covenant a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
-    rdfs:comment "A Covenant represents a covenant independently of its statistics (sheet) at a given point in time." .
-arm:Character a owl:Class ; rdfs:subClassOf   arm:GeneralCharacter ;
-    rdfs:comment "A Character represents a player character or NPC independently of its statistics (sheet) at a given point in time." .
-arm:Magus a owl:Class ;
-    arm:hasLabel "Magus" ;
-    rdfs:subClassOf arm:Character .
-arm:Companion a owl:Class ;
-    arm:hasLabel "Companion" ;
-    rdfs:subClassOf arm:Character .
-arm:Grog a owl:Class ;
-    arm:hasLabel "Grog" ;
-    rdfs:subClassOf arm:Character .
-
-# Covenant and Character - Shared Properties
-arm:hasName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Name" .
-arm:hasHermeticName a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Hermetic Name" .
-arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Covenant" .
-arm:hasSaga a   owl:ObjectProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   arm:Saga ;
-        arm:hasStringProperty arm:hasSagaTitle .
-arm:characterClass a   owl:ObjectProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   owl:Class ;
-        rdfs:label "Character Type" ;
-        arm:hasStringProperty arm:characterClassString .
-arm:characterClassString a   owl:DatatypeProperty, arm:ViewProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label "Character Type" .
-arm:hasTribunal a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty  ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Tribunal" .
-arm:hasFoundingYear a   owl:DatatypeProperty, arm:CharacterProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:int .
 
 # Covenant Properties
 arm:hasCovenant a  owl:ObjectProperty ;
         rdfs:domain  arm:Saga ;
         rdfs:range   arm:Covenant .
 
-# Character Properties
-arm:hasLink a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Link" .
-arm:hasPlayer a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Player" .
-arm:hasGender a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Gender" .
-arm:hasProfession a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Profession" .
-arm:hasNationality a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Nationality" .
-arm:hasAlmaMater a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:string ;
-        rdfs:label    "Alma Mater" .
-arm:hasBirthYear a   owl:DatatypeProperty, arm:CharacterProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:GeneralCharacter ;
-        rdfs:range   xsd:int ;
-        rdfs:label    "Birth Year" .
-arm:hasAge a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
-        rdfs:domain  arm:CharacterSheet ;
-        rdfs:range   xsd:int ;
-        rdfs:label    "Age" .
 
 # Character Sheet 
 arm:CharacterSheet a owl:Class ;
@@ -131,11 +48,8 @@ arm:isCharacter a   owl:ObjectProperty, arm:ViewProperty ;
         rdfs:label   "Character ID" ;
         rdfs:domain  arm:CharacterSheet ;
         rdfs:range   arm:Character .
-arm:hasInitialSheet  a   owl:ObjectProperty ;
-        rdfs:comment "TODO: What is this for?" ;
-        rdfs:range    arm:CharacterSheet ;
-        rdfs:domain   arm:Character .
 
+#  Label and Description are generic properties for all objects and classes
 
 arm:hasDescription a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:label  "Description" ;

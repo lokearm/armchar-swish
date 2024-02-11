@@ -1,3 +1,4 @@
+# Validated 24-02-10 
 
 arm:SpellClass rdfs:subClassOf arm:LeafTraitClass .
 arm:Spell rdfs:subClassOf arm:XPTrait .
@@ -119,14 +120,5 @@ arm:hasMasteryOptionString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewPr
              rdfs:range xsd:string .
 
 arm:hasTeFo a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
-             rdfs:domain arm:SpellClass ;
-             rdfs:range xsd:string .
-arm:hasRangeString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
-             rdfs:domain arm:SpellClass ;
-             rdfs:range xsd:string .
-arm:hasDurationString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
-             rdfs:domain arm:SpellClass ;
-             rdfs:range xsd:string .
-arm:hasTargetString a owl:DatatypeProperty, arm:TraitProperty, arm:ViewProperty ;
              rdfs:domain arm:SpellClass ;
              rdfs:range xsd:string .

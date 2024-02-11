@@ -15,4 +15,6 @@ armchar:diedne a arm:Saga ;
       arm:hasName "Contested Lands" ;
       arm:hasSchemaFile "Ontology/arm.ttl" ;
       arm:hasResourceFile "Ontology/resources.ttl" ;
-      arm:hasCharacterFile "Test/sylvain.ttl" .
+      arm:hasCharacterFile "Test/sylvain.ttl",
+                           "Test/grog.ttl",
+                           "Test/marcus.ttl" .
