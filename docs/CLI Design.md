@@ -64,12 +64,18 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] replace isVisOfArt
 + [ ] Advancement by reading #cli/backlog 
 	+ [ ] Covenant as a character
-	+ [ ] Covenant hasBook property to define library
-	+ [ ] Book as RDF resources with stats
+	+ [x] Covenant hasBook property to define library
+	+ [x] Book as RDF resources with stats
 	+ [ ] Advancement readsBook property
 	+ [ ] Deduce XP gain from book
 	+ [ ] Implement and debug relevant virtues
-+ [ ] Calculate Lab Totals    #cli/backlog
+		+ [ ] book reader
+		+ [ ] study bonus
+		+ [ ] affinity
++ [ ] Lab work advancement type #cli/backlog 
+	+ [ ] Calculate Lab Totals    #cli/backlog
+	+ [ ] Validate lab total
+	+ [ ] infer exposure
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
 + [x] Show season on Markdown sheet
 + [ ] Show age on pre-game characters #cli/backlog 
