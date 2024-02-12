@@ -28,9 +28,6 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [x] Test removal of quantities  #cli/selected 
 	+ [x] Basic removal
 	+ [x] What happens when quantity is reduced to zero?
-+ [ ] Virtues/Flaws taken more than once #cli/selected 
-	+ [ ] Test a character with Silent Magic twice
-	+ [ ] Test a character with two different Art affinities
 + [x] #bug add quantities of same type of item
 	+ [x] `Types/Trait` need to recalculate `hasQuantity` upon advancement
 + [x] Make a grog example and output  #cli/selected 
@@ -43,6 +40,10 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [x] Support shield and weapon as combat option #cli/selected 
 
++ [ ] Virtues/Flaws taken more than once #cli/selected 
+	+ [ ] Test a character with Silent Magic twice
+	+ [ ] Test a character with two different Art affinities
+
 # Usage Notes
 
 + Equipment
@@ -54,8 +55,10 @@ The first version of CLI will solve one simple problem; take a character descrip
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
++ [ ] Covenant markdown output #cli/backlog 
++ [ ] Generate every character from saga resource #cli/backlog 
 + [ ] quantity when advancing possessions #cli/backlog 
-+ [ ] art on vis when changing with advancement #cli/backlog 
++ [ ] art on vis in advancement log #cli/backlog 
 + [ ] new TraitProperty hasArt #cli/backlog 
 	+ [ ] introduce for puissant/affinity
 	+ [ ] replace isVisOfArt
@@ -71,6 +74,8 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [x] Show season on Markdown sheet
 + [ ] Show age on pre-game characters #cli/backlog 
 + [ ] Handle skill specialisations in combat stats #cli/backlog 
+	+ [ ] make a string property
+	+ [ ] hasSpeciality should refer to an ability/art
 + [ ] Review ordering of items #cli/backlog 
 	+ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
 	+ Alphabetical ordering?  Or something cleverer?

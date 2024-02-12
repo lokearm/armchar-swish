@@ -161,3 +161,38 @@ arm:hasDam a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
     rdfs:label "Damage Bonus" ;
     rdfs:domain arm:CombatOption  ;
     rdfs:range xsd:int .
+
+
+# 4. Books
+
+arm:Book rdfs:subClassOf arm:Equipment ;
+   rdfs:label "Book" ;
+   rdfs:comment "A book is handled as equipment, but usually owned by a covenant." .
+arm:Tractatus rdfs:subClassOf arm:Book ;
+   rdfs:label "Tractatus" .
+arm:Summa rdfs:subClassOf arm:Book ;
+   rdfs:label "Summa" ;
+   owl:disjointFrom arm:Tractatus .
+
+arm:hasTitle a owl:DatatypeProperty ;
+   rdfs:domain  owl:Book ;
+   rdfs:range xsd:string .
+arm:hasAuthor a owl:ObjectProperty ;
+   arm:hasStringProperty arm:hasAuthorString ;
+   rdfs:domain  owl:Book ;
+   rdfs:range xsd:Character .
+arm:hasAuthorString a owl:DatatypeProperty ;
+   rdfs:domain  owl:Book ;
+   rdfs:range xsd:string .
+arm:hasQuality a owl:DatatypeProperty ;
+   rdfs:domain  owl:Book ;
+   rdfs:range xsd:int .
+arm:hasBookLevel a owl:DatatypeProperty ;
+   rdfs:domain  owl:Book ;
+   rdfs:range xsd:int .
+arm:appliesTo a owl:ObjectProperty ;
+   rdfs:domain  owl:Book ;
+   rdfs:range  owl:Class .
+
+arm:hasBook rdfs:subPropertyOf arm:hasEquipment ;
+        rdfs:range   arm:Book .

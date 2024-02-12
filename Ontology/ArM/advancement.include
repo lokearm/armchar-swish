@@ -23,8 +23,9 @@ arm:hasAdvancementIndex  a owl:DatatypeProperty ;
  
 arm:advanceCharacter a owl:ObjectProperty, arm:ImmutableProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:Character ;
-        rdfs:label   "Character to Advance" .
+        rdfs:range   arm:GeneralCharacter ;
+        rdfs:label   "Character to Advance" ;
+        rdfs:comment   "Also applies to a covenant as a character" .
 
 arm:hasAdvancement a owl:ObjectProperty, arm:ImmutableProperty ;
 	owl:inverseOf  arm:advanceCharacter  .
