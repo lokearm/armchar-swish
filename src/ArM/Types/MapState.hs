@@ -11,6 +11,7 @@
 module ArM.Types.MapState
                ( loadSaga
                , loadChar
+               , loadChars
                , MapState(..)
                ) where
 
@@ -24,6 +25,7 @@ import qualified ArM.Character.CharGen as TCG
 import qualified ArM.Types.Saga as TS
 import qualified ArM.Rules as R
 import           ArM.IO
+
 
 readAllFiles :: [String] -> IO [G.RDFGraph]
 readAllFiles = mapM readGraph
@@ -71,4 +73,20 @@ loadChar :: MapState -> String -> IO TCG.CharGen
 loadChar st fn = readGraph fn >>= ( return . TCG.makeCharGen schema res1 )
     where schema = schemaGraph st
           res1 = resourceGraph st
+
+getCharFiles :: MapState -> [String]
+getCharFiles = TS.characterFiles . saga
+   -- where q = listToRDFGraph [ arc (G.Var "s") (G.Var "hasCharacterFile") (G.Var "f") ]
+         -- r = Q.rdfQueryFind q $  g
+
+loadChars :: MapState -> IO MapState
+loadChars st = do
+      cs <- mapM (loadChar st) fs
+      let cns = map TCG.charID cs
+      let ss = map show cns
+      let ps = zip ss cs
+      return $ st { charList = cns, cgMap = foldl ins m ps }
+      where m = cgMap st 
+            fs = getCharFiles st
+            ins c (x,y) = Map.insert x y c
 

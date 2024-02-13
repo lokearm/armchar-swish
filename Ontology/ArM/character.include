@@ -31,7 +31,7 @@ arm:hasCovenant a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewPropert
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   arm:Covenant ;
         rdfs:label    "Covenant" ;
-	arm:hasStringProperty arm:hasCovenantname.
+	arm:hasStringProperty arm:hasCovenantName.
 arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
