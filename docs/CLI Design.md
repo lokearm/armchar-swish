@@ -60,9 +60,10 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Generate every character from saga resource #cli/backlog 
 + [ ] quantity when advancing possessions #cli/backlog 
 + [ ] art on vis in advancement log #cli/backlog 
-+ [ ] new TraitProperty hasArt #cli/backlog 
-	+ [ ] introduce for puissant/affinity
-	+ [ ] replace isVisOfArt
++ [ ] new TraitProperty hasTrait - do we want to generalise existing properties? #cli/backlog 
+	+ [ ]  puissant/affinity (bonusTo)
+	+ [ ] Vis (isVisOfArt)
+	+ [ ] book (appliesTo)
 + [ ] Advancement by reading #cli/backlog 
 	+ [ ] Covenant as a character
 	+ [x] Covenant hasBook property to define library
@@ -82,7 +83,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Show age on pre-game characters #cli/backlog 
 + [ ] Handle skill specialisations in combat stats #cli/backlog 
 	+ [ ] make a string property
-	+ [ ] hasSpeciality should refer to an ability/art
+	+ [ ] hasSpeciality should refer to a class (weapon/ability/art)
 + [ ] Review ordering of items #cli/backlog 
 	+ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
 	+ Alphabetical ordering?  Or something cleverer?
@@ -94,11 +95,12 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Allow Unique pieces of Equipment (incl. Weapons)  #cli/backlog 
 + [ ] Code review and simplification  #cli/backlog 
 + [ ] Ontology review and simplification  #cli/backlog 
++ [ ] queries account for 91% of the run time; review to see if some calls can be simplified #cli/backlog 
 
 # Roadmap
 
 + [ ] [[Covenant]] Support #kanban/backlog 
-+ [ ] Advancement log (new output format)  #cli/backlog 
++ [x] Advancement log (new output format)  #cli/backlog 
 + [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
 # Considerations
