@@ -27,11 +27,11 @@ arm:hasHermeticName a   owl:DatatypeProperty, arm:CharacterProperty, arm:Persist
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
         rdfs:label    "Hermetic Name" .
-arm:hasCovenant a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
+arm:hasCovenant a   owl:DatatypeProperty, arm:CharacterProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   arm:Covenant ;
-        rdfs:label    "Covenant" ;
-	arm:hasStringProperty arm:hasCovenantname.
+        rdfs:label    "Covenant (link)" ;
+	arm:hasStringProperty arm:hasCovenantName .
 arm:hasCovenantName a   owl:DatatypeProperty, arm:CharacterProperty, arm:ViewProperty ;
         rdfs:domain  arm:GeneralCharacter ;
         rdfs:range   xsd:string ;
