@@ -6,7 +6,6 @@ title: CLI Design
 + [[Traits and Possessions]]
 
 
-
 # CLI version 1.0
 
 The first version of CLI will solve one simple problem; take a character description in turtle and produce a character sheet in Markdown.
