@@ -11,17 +11,18 @@
 -- top level object of the data model
 --
 -----------------------------------------------------------------------------
-module ArM.Types.Saga where
+module ArM.Types.Saga ( Saga(..)
+                      , defaultSaga
+                      , sagaFromRDF
+                      ) where
 
 import ArM.Internal.Aux
 
 import           Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
--- import qualified Swish.RDF.VarBinding as VB 
 import           Swish.VarBinding  (vbMap)
+
 import           Data.Aeson
--- import           Data.Maybe (fromJust)
--- import           Data.List (sort)
 import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Resources
@@ -29,7 +30,7 @@ import           ArM.KeyPair
 
 data Saga = Saga { sagaID :: RDFLabel
                  , sagaTitle :: String
-                 , schemaFile :: String
+                 , schemaFiles :: [String]
                  , resourceFiles :: [String]
                  , characterFiles :: [String]
                  , sagaGraph :: RDFGraph
@@ -38,7 +39,7 @@ data Saga = Saga { sagaID :: RDFLabel
 defaultSaga :: Saga 
 defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  , sagaTitle = "No Title"
-                 , schemaFile = "/dev/null"
+                 , schemaFiles = []
                  , resourceFiles = []
                  , characterFiles = []
                  , sagaGraph = emptyGraph
@@ -62,10 +63,23 @@ getCharacters _ = []
 
 
 instance FromRDFGraph Saga where 
-   fromRDFGraph g label = defaultSaga
+   fromRDFGraph g label = fixSaga $ defaultSaga
                  { sagaID = label
                  , sagaGraph = g
                  }
+
+sagaFromRDF :: RDFGraph -> Saga
+sagaFromRDF g = fromRDFGraph g sid
+    where sid = head $ sagaFromGraph g
+
+
+fixSaga :: Saga -> Saga
+fixSaga s = s { schemaFiles = getSchemaFiles sid g
+              , resourceFiles = getResourceFiles sid g 
+              , characterFiles = getCharacterFiles sid g 
+              }
+          where g = sagaGraph s
+                sid = sagaID s
 
 instance ToJSON Saga where 
     toJSON c = toJSON $ p x xs
@@ -96,6 +110,7 @@ getSchemaFiles = getFiles "hasSchemaFile"
 getCharacterFiles :: RDFLabel -> RDFGraph -> [String]
 getCharacterFiles = getFiles "hasCharacterFile"
 
+{-
 getSagaTitle :: RDFLabel -> RDFGraph -> String
 getSagaTitle s = f1 . map rdfToString . f 
                    . map (`vbMap` (Var "label")) . parsegraph 
@@ -107,3 +122,4 @@ getSagaTitle s = f1 . map rdfToString . f
           f1 (Just x:_) = x
           parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
           a = arc s (armRes "hasLabel") (Var "label") 
+-}

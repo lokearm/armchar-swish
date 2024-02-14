@@ -15,8 +15,6 @@ module ArM.Types.MapState
                , MapState(..)
                ) where
 
-import           ArM.Types.RDF (fromRDFGraph)
-
 import qualified Swish.RDF.Graph as G
 
 import qualified Data.Map as Map
@@ -47,14 +45,11 @@ loadSaga :: String -> IO MapState
 loadSaga fn = do
     -- 1. Load Saga
     sgraph <- readGraph fn
-    let sid = head $ TS.sagaFromGraph sgraph
-    let sob = fromRDFGraph sgraph sid :: TS.Saga
+    let sob = TS.sagaFromRDF sgraph 
     -- 2. Load Schema
-    let schemaFN = TS.getSchemaFiles sid sgraph
-    ss <- readAllFiles schemaFN
+    ss <- readAllFiles $ TS.schemaFiles sob
     -- 3. Load resources
-    let resFN = TS.getResourceFiles sid sgraph
-    rs <- readAllFiles resFN
+    rs <- readAllFiles $ TS.resourceFiles sob
     -- 4. Augment graphs
     let rawSchema = mergeGraphs ss
     let res = mergeGraphs rs
