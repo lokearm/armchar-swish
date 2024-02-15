@@ -37,7 +37,7 @@ import Swish.RDF.Ruleset (RDFRule)
 prepareGraph :: RDFGraph -> RDFGraph
 prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
              . fwdApplyList [ bonus1rule, bonus2rule, bonusXPrule ]
-             . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2 ]
+             . fwdApplyList [ advancevfgrantRule,advancevfgrantRule2 ]
                                -- spectraitRule,
              . fwdApplyList  [ bonus3rule, rRule ]
              . applyRDFS
