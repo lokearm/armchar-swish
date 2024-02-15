@@ -19,7 +19,8 @@ O=Ontology/resources.ttl Ontology/arm.ttl
 	cabal run armchar-cli -- -c $< -s Test/diedne.ttl -D $@
 
 prof.md: Test/marcus.ttl 
-	cabal run armchar-cli --enable-profiling --profiling-detail=exported-functions -- -c $< -s Test/diedne.ttl -o $@ +RTS -p
+	cabal run armchar-cli --enable-profiling -- -c $< -s Test/diedne.ttl -o $@ +RTS -p
+	# --profiling-detail=exported-functions 
 
 %.pdf: %.md
 	pandoc -o $@ $<
