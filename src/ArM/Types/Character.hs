@@ -189,7 +189,7 @@ csToArcListM cs = do
           let metadata = keyvalueToArcList x (fromKeyPairList $ csMetadata cs)
           let ms = metadata ++ ht 
           let ct = arc x (armRes "ïsCharacter") (csID cs)
-          let ct1 = arc x typeRes csRes 
+          let ct1 = arc x typeRes (armRes "CharacterSheet")
           return $ ct1:ct:foldr (++) ms ts
 
 getSheetIDM :: Maybe RDFLabel -> BlankState RDFLabel
