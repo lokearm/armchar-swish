@@ -79,7 +79,7 @@ executable armchar-debug
     -Wall
     -threaded
     "-with-rtsopts=-N -s -h -i0.1"
-executable armchar-cli
+executable cli
   import: cli-deps
   main-is:             Main.hs
   ghc-prof-options:
