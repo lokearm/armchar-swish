@@ -143,5 +143,7 @@ main' opts | otherwise = do
 
 writeCG :: TCG.CharGen -> IO ()
 writeCG cg = trace ("Writing " ++ fn) $ writeSheet fn g
+     >> writeAdv fn2 cg
      where g = (TCG.sheetGraph . head . TCG.charSheets) cg
            fn = TCG.charFile cg ++ ".md"
+           fn2 = Just $ TCG.charFile cg ++ "-advancement.md"
