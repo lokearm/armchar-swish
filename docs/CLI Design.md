@@ -95,6 +95,16 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Code review and simplification  #cli/backlog 
 + [ ] Ontology review and simplification  #cli/backlog 
 + [ ] queries account for 91% of the run time; review to see if some calls can be simplified #cli/backlog 
++ [ ] Validate and complete characters
+	+ [ ] Sylvain
+	+ [ ] Marcus
+	+ [ ] Grog
+- [ ] affinity mechanics
+    + xp-factor - analogous to bonus
+    +  applied
++ [ ] elementalist mechanics
+    - ad hoc
+    - create extra advancement resource
 
 # Roadmap
 
