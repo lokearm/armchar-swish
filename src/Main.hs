@@ -11,28 +11,20 @@
 module Main where
 
 import System.IO -- for file IO
-
--- Timer
-import ArM.Debug.Time
--- import ArM.Debug.Trace
-import ArM.Types.MapState
-import ArM.Markdown.CharacterSheet
-import ArM.Markdown.AdvancementLog
-import ArM.Character.CharGen
-import ArM.Types.SheetObject
--- import ArM.Types.Character
-
 import System.Environment
 import System.Console.GetOpt
 
-import Swish.RDF.Graph (RDFGraph)
+import ArM.Debug.Time
+import ArM.Markdown.IO
+import ArM.Types.MapState
+import qualified ArM.Character.CharGen as TCG
 
 import Data.Maybe (fromJust)
 
 
 data Options = Options {
   sagaFile :: String,
-  charFile :: String,
+  charFile :: Maybe String,
   outFile  :: String,
   debugFile  :: Maybe String,
   outputDir  :: Maybe String,
@@ -41,7 +33,7 @@ data Options = Options {
 defaultOptions :: Options
 defaultOptions = Options {
   sagaFile = "Test/saga.ttl",
-  charFile = "Test/cieran.ttl",
+  charFile = Nothing,
   outFile  = "test.md",
   debugFile  = Nothing,
   outputDir  = Nothing,
@@ -56,42 +48,26 @@ options =
     [ Option ['o']     ["output"]  (ReqArg 
             (\arg opt -> return opt { outFile = arg })
             "FILE") "output file"
-    , Option ['c']     ["character"] (ReqArg 
+    , Option ['c']     ["character"] (OptArg 
             (\arg opt -> return opt { charFile = arg })
             "FILE") "character file"
     , Option ['s']     ["saga"] (ReqArg 
             (\arg opt -> return opt { sagaFile = arg })
             "FILE") "saga file"
-    , Option ['O']     ["debug-output"] (ReqArg 
-            (\arg opt -> return opt { debugFile = Just arg })
+    , Option ['O']     ["debug-output"] (OptArg 
+            (\arg opt -> return opt { debugFile = arg })
             "FILE") "debug output"
-    , Option ['D']     ["output-directory"] (ReqArg 
-            (\arg opt -> return opt { outputDir = Just arg })
+    , Option ['D']     ["output-directory"] (OptArg 
+            (\arg opt -> return opt { outputDir = arg })
             "FILE") "output directory"
-    , Option ['A']     ["advancement-file"] (ReqArg 
-            (\arg opt -> return opt { advancementFile = Just arg })
+    , Option ['A']     ["advancement-file"] (OptArg 
+            (\arg opt -> return opt { advancementFile = arg })
             "FILE") "output directory"
     ]
 
 getMaybeHandle :: Maybe String -> IO Handle
 getMaybeHandle Nothing = return stdout
 getMaybeHandle (Just f) = openFile f WriteMode
-
-
-writeSheet :: String -> RDFGraph -> IO ()
-writeSheet fn cg = do
-     handle <- openFile fn WriteMode
-     let p = hPutStrLn handle
-     mapM_ p $ printSheetObject  $ getSheetObject cg
-     hClose handle
-writeAdv :: Maybe String -> CharGen -> IO ()
-writeAdv Nothing _ = return ()
-writeAdv (Just fn) cg = do
-     handle <- openFile fn WriteMode
-     let p = hPutStrLn handle
-     mapM_ p $ printAdvancementLog  as
-     hClose handle
-     where as = map advancement $ charSheets cg
 
 dirOpts :: Options -> Options
 dirOpts opt | outputDir opt == Nothing = opt
@@ -110,13 +86,23 @@ main = do
      let (opt,_,_) = getOpt RequireOrder options args
      opt0 <- foldl (>>=) (return defaultOptions) opt
 
-     let opts = dirOpts opt0
+     main' $ dirOpts opt0
 
+main' :: Options -> IO ()
+main' opts | charFile opts == Nothing = do 
+     st0 <- loadSaga $ sagaFile opts
+     st1 <- loadChars st0
+     let cs = foldr (:) [] $  cgMap st1
+     _ <- mapM writeCG cs
+     writeSaga (sagaFile opts ++ ".md") st1
+
+     return ()
+main' opts | otherwise = do 
      printTime
      sagaobject <- loadSaga $ sagaFile opts
-     chargen <- loadChar sagaobject $ charFile opts
-     let char = head $ charSheets chargen
-     let chargraph = sheetGraph char
+     chargen <- loadChar sagaobject $ fromJust $ charFile opts
+     let char = head $ TCG.charSheets chargen
+     let chargraph = TCG.sheetGraph char
 
      -- putStrLn $ show $ charGraph chargen
 

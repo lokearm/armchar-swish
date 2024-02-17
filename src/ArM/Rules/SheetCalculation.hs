@@ -30,7 +30,7 @@ import Swish.RDF.Ruleset (RDFRule)
 import ArM.Resources
 import ArM.KeyPair
 import ArM.Rules.Aux
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust,catMaybes)
 import Data.List (sort)
 
 import Control.Parallel.Strategies
@@ -260,7 +260,7 @@ processCombatStats' (cs,x:xs)
 addCastingScores :: RDFGraph -> RDFGraph
 addCastingScores = calculateCastingScores
                . addSpellArtScores
-               . fwdApplyListR castingScoreRules
+               . fwdApplyList castingScoreRules
 
 -- | These rules add hasFormScore and hasTechScore properties
 -- for all the arts used by the spell, including requisites.
@@ -408,8 +408,4 @@ arcSum s (x:y:xs) | arcSubj x /= arcSubj y = x':arcSum s (y:xs)
 -- This is an auxiliary for `addDamInit` and `addAtkDfn`
 calc :: String -> RDFLabel -> [Maybe Int] -> RDFTriple 
 calc p idvar vb = arc idvar (armRes p) (litInt $ score vb)
-    where score xs = foldl (+) 0 $ ff xs
-ff :: [Maybe Int] -> [Int]
-ff [] = [] 
-ff (Nothing:xs) = ff xs
-ff (Just x:xs) = x:ff xs
+    where score xs = foldl (+) 0 $ catMaybes xs

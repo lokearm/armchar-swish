@@ -65,7 +65,9 @@ loadSaga fn = do
                     }
 
 loadChar :: MapState -> String -> IO TCG.CharGen
-loadChar st fn = readGraph fn >>= ( return . TCG.makeCharGen schema res1 )
+loadChar st fn = do
+    g <- readGraph fn 
+    return $ (TCG.makeCharGen schema res1 g) { TCG.charFile = fn }  
     where schema = schemaGraph st
           res1 = resourceGraph st
 

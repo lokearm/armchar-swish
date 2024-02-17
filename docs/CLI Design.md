@@ -6,7 +6,6 @@ title: CLI Design
 + [[Traits and Possessions]]
 
 
-
 # CLI version 1.0
 
 The first version of CLI will solve one simple problem; take a character description in turtle and produce a character sheet in Markdown.
@@ -40,6 +39,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [x] Support shield and weapon as combat option #cli/selected 
 
++ [ ] Covenant markdown output #cli/selected 
 + [ ] Virtues/Flaws taken more than once #cli/selected 
 	+ [ ] Test a character with Silent Magic twice
 	+ [ ] Test a character with two different Art affinities
@@ -56,8 +56,8 @@ The first version of CLI will solve one simple problem; take a character descrip
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
-+ [ ] Covenant markdown output #cli/backlog 
-+ [ ] Generate every character from saga resource #cli/backlog 
+
++ [x] Generate every character from saga resource #cli/backlog 
 + [ ] quantity when advancing possessions #cli/backlog 
 + [ ] art on vis in advancement log #cli/backlog 
 + [ ] new TraitProperty hasTrait - do we want to generalise existing properties? #cli/backlog 
@@ -96,6 +96,16 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Code review and simplification  #cli/backlog 
 + [ ] Ontology review and simplification  #cli/backlog 
 + [ ] queries account for 91% of the run time; review to see if some calls can be simplified #cli/backlog 
++ [ ] Validate and complete characters
+	+ [ ] Sylvain
+	+ [ ] Marcus
+	+ [ ] Grog
+- [ ] affinity mechanics
+    + xp-factor - analogous to bonus
+    +  applied
++ [ ] elementalist mechanics
+    - ad hoc
+    - create extra advancement resource
 
 # Roadmap
 

@@ -2,7 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Character.CharGen
+-- Module      :  ArM.Markdown.CharacterSheet
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --

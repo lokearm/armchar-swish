@@ -54,6 +54,7 @@ sheetGraph = calculateSheet . sheetRawGraph
 -- for display purposes.
 data CharGen = CharGen 
       { charID :: RDFLabel      -- ^ Character ID 
+      , charFile :: String      -- ^ Character Name (for display purpose)
       , charName :: String      -- ^ Character Name (for display purpose)
       , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
       , charGraph :: RDFGraph   -- ^ Augmented graph with inference
@@ -126,6 +127,7 @@ makeCharGen :: G.RDFGraph  -- ^ Schema graph
            -> CharGen      -- ^ Resulting datastructure
 makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen 
              { charID = clab
+             , charFile = "/dev/null"
              , charName = ""
              , charGraph = g1
              , rawGraph = g0

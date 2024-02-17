@@ -51,11 +51,12 @@ Confidence
 # Virtues and Flaws
 
 + The Gift (-)
++ Affinity with Art: Imaginem (1)
 + Hermetic Prestige (0)
-+ Secondary Insight (1)
 + Skilled Parens (1)
 + Elemental Magic (3)
 + Minor Magical Focus: Wind (1)
++ Secondary Insight (1)
 + Motion Sickness (-1)
 + Small Frame (-1)
 + Pagan (-3)

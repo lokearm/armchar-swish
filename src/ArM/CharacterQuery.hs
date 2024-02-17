@@ -78,7 +78,7 @@ getTraitList p = map ( KeyPairList . toKeyPairList ) . arcListSplit
 
 arcs :: G.RDFGraph
 arcs = listToRDFGraph 
-   [ G.arc idVar typeRes csRes                          -- type CharacterSheet
+   [ G.arc idVar typeRes (armRes "CharacterSheet")     -- type CharacterSheet
    , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
    , G.arc idVar propertyVar valueVar                   -- triple of interest
    , G.arc propertyVar labelRes labelVar ]             -- property label
