@@ -119,6 +119,7 @@ main' opts | charFile opts == Nothing = do
      st1 <- loadChars st0
      let cs = foldr (:) [] $  cgMap st1
      _ <- mapM writeCG cs
+     writeSaga (sagaFile opts ++ ".md") st1
 
      return ()
 main' opts | otherwise = do 
@@ -140,6 +141,9 @@ main' opts | otherwise = do
      hClose h2
 
      return ()
+
+writeSaga :: String -> MapState -> IO ()
+writeSaga _ _ = return ()
 
 writeCG :: TCG.CharGen -> IO ()
 writeCG cg = trace ("Writing " ++ fn) $ writeSheet fn g
