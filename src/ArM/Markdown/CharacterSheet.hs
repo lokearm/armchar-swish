@@ -31,7 +31,7 @@ getHeader ob = "# " ++ name
 printCovenantSheet :: SheetObject -> [String]
 printCovenantSheet ob = [ getHeader  ob , "" ]
                   ++ (map printMD $ metadata ob) 
-                  ++ printVF ob
+                  ++ printVF "Boons and Hooks" ob
                   ++ printEquipment ob
                   ++ printLibrary ob
                   ++ printVis ob
@@ -48,7 +48,7 @@ printSheetObject ob = [ getHeader  ob , "" ]
                        ": " ++ (lf $ map confFormat $ cnf ob),
                        ""
                        ]
-                  ++ printVF ob
+                  ++ printVF "Virtues and Flaws" ob
                   ++ printAb ob
                   ++ printArts ob
                   ++ printSpells ob
@@ -82,11 +82,11 @@ printChar = p .  characteristics
        p xs = [ "Characteristics", (listContents $ map p1 xs), "" ]
        p1 x = qShow (traitAbbr x) ++ " " ++ (dashShow $ traitTotalScore x)
 
-printVF :: SheetObject -> [String]
-printVF ob = p $ virtues ob ++ flaws ob
+printVF :: String -> SheetObject -> [String]
+printVF h ob = p $ virtues ob ++ flaws ob
     where
        p [] = []
-       p xs = [ "# Virtues and Flaws", "" ] ++ map printVFLine  xs
+       p xs = [ '#':' ':h, "" ] ++ map printVFLine  xs
 
 printAb :: SheetObject -> [String]
 printAb = p . abilities

@@ -50,8 +50,8 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [ ] [[Covenant]] Support #cli/selected 
 	+ [x] Suppress size and confidence
 	+ [x] Make separate section for Library
-	+ [ ] Infer labels for books
-	+ [ ] Display all stats for books
+	+ [x] Infer labels for books (labels not used)
+	+ [x] Display all stats for books
 	+ [ ] Show virtues and flaws as boons and hooks on covenants
 + [ ] Support Grimoire (Lab Tests)
 + [ ] Make resource listings, as reference catalogue #kanban/backlog 
