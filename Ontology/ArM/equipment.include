@@ -175,24 +175,35 @@ arm:Summa rdfs:subClassOf arm:Book ;
    owl:disjointFrom arm:Tractatus .
 
 arm:hasTitle a owl:DatatypeProperty ;
+   rdfs:label  "Title" ;
    rdfs:domain  owl:Book ;
    rdfs:range xsd:string .
 arm:hasAuthor a owl:ObjectProperty ;
    arm:hasStringProperty arm:hasAuthorString ;
+   rdfs:label  "Author (ID)" ;
    rdfs:domain  owl:Book ;
    rdfs:range xsd:Character .
 arm:hasAuthorString a owl:DatatypeProperty ;
+   rdfs:label  "Author" ;
    rdfs:domain  owl:Book ;
    rdfs:range xsd:string .
 arm:hasQuality a owl:DatatypeProperty ;
+   rdfs:label  "Quality" ;
    rdfs:domain  owl:Book ;
    rdfs:range xsd:int .
 arm:hasBookLevel a owl:DatatypeProperty ;
+   rdfs:label  "Level" ;
    rdfs:domain  owl:Book ;
    rdfs:range xsd:int .
 arm:appliesTo a owl:ObjectProperty ;
+   rdfs:label  "Trait" ;
    rdfs:domain  owl:Book ;
-   rdfs:range  owl:Class .
+   rdfs:range  owl:Class ;
+   arm:hasStringProperty arm:hasTraitString .
+arm:hasTraitString a owl:DataTypeProperty ;
+   rdfs:label  "Topic" ;
+   rdfs:domain  owl:Book ;
+   rdfs:range  xsd:string .
 
 arm:hasBook rdfs:subPropertyOf arm:hasPossession ;
         rdfs:range   arm:Book .

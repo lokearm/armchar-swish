@@ -131,7 +131,7 @@ printLibrary :: SheetObject -> [String]
 printLibrary = p . library
     where
        p [] = []
-       p xs = [ "# Library", "" ] ++ (map printEquipmentLine xs) ++ [ "" ]
+       p xs = [ "# Library", "" ] ++ (map (('+':) . (' ':) . show) xs) ++ [ "" ]
 printEquipment :: SheetObject -> [String]
 printEquipment = p . equipment
     where

@@ -40,6 +40,7 @@ common deps
                        , ArM.Types.Character
                        , ArM.Types.Advancement
                        , ArM.Types.Trait
+                       , ArM.Types.Book
                        , ArM.Types.RDF
                        , ArM.Types.Season
                        , ArM.Character.CharGen

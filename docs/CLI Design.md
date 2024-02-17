@@ -53,6 +53,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [ ] Infer labels for books
 	+ [ ] Display all stats for books
 	+ [ ] Show virtues and flaws as boons and hooks on covenants
++ [ ] Support Grimoire (Lab Tests)
 + [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
 # Usage Notes
