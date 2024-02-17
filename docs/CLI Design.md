@@ -41,19 +41,18 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [x] Generate every character from saga resource #cli/backlog 
 + [x] Show season on Markdown sheet
 + [x] Advancement log (new output format)  #cli/backlog 
-
-+ [ ] Covenant markdown output #cli/selected 
-+ [ ] Virtues/Flaws taken more than once #cli/selected 
-	+ [ ] Test a character with Silent Magic twice
-	+ [ ] Test a character with two different Art affinities
-+ [ ] Covenant name does not show because the covenant data is not included when inferring character data  #cli/selected #bug 
-+ [ ] [[Covenant]] Support #cli/selected 
++ [x] [[Covenant]] Support #cli/selected 
++ [x] Covenant markdown output #cli/selected 
 	+ [x] Suppress size and confidence
 	+ [x] Make separate section for Library
 	+ [x] Infer labels for books (labels not used)
 	+ [x] Display all stats for books
-	+ [ ] Show virtues and flaws as boons and hooks on covenants
-+ [ ] Support Grimoire (Lab Tests)
+	+ [x] Show virtues and flaws as boons and hooks on covenants
++ [ ] Virtues/Flaws taken more than once #cli/selected 
+	+ [ ] Test a character with Silent Magic twice
+	+ [ ] Test a character with two different Art affinities
++ [ ] Covenant name does not show because the covenant data is not included when inferring character data  #cli/selected #bug 
++ [ ] Support Grimoire (Lab Texts)
 + [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
 # Usage Notes

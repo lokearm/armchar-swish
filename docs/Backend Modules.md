@@ -1,4 +1,5 @@
 
+This is partly out of date 2024-02-17, as some modules have been added.
 
 + Types.MapState (used by CLI, not by Webserver)
 	+ MapState type holds all the data loaded from disk
