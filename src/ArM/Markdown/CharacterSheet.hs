@@ -17,7 +17,7 @@ module ArM.Markdown.CharacterSheet ( printCovenantSheet
 
 
 import ArM.Types.SheetObject
-import Data.List(intercalate)
+import Data.List(intercalate,sort)
 
 import Text.Printf
 
@@ -128,7 +128,7 @@ confFormat :: (Maybe Int, Maybe Int) -> String
 confFormat (x,y) = dashShow x ++ " (" ++ dashShow y ++ ")"
 
 printLibrary :: SheetObject -> [String]
-printLibrary = p . library
+printLibrary = p . sort . library
     where
        p [] = []
        p xs = [ "# Library", "" ] ++ (map (('+':) . (' ':) . show) xs) ++ [ "" ]

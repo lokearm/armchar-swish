@@ -78,8 +78,8 @@ parseBook' (x:xs) t = parseBook' xs (parsePair x t)
 
 parsePair :: KeyValuePair -> Book -> Book
 parsePair (KeyValuePair res  x) t 
-    | res == (armRes "hasTrait")      = t { bookTrait = G.fromRDFLabel x }
-    | res == (armRes "hasLevel")      = t { bookLevel = G.fromRDFLabel x }
+    | res == (armRes "hasTraitString")  = t { bookTrait = G.fromRDFLabel x }
+    | res == (armRes "hasLevel")        = t { bookLevel = G.fromRDFLabel x }
     | res == (armRes "hasQuality")      = t { bookQuality = G.fromRDFLabel x }
     | res == (armRes "hasAuthorString") = t { bookAuthor = G.fromRDFLabel x }
     | res == (armRes "hasTitle")      = t { bookTitle = G.fromRDFLabel x }
