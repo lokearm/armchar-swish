@@ -69,6 +69,7 @@ common cli-deps
   other-modules:       ArM.Types.MapState
                      , ArM.Markdown.CharacterSheet
                      , ArM.Markdown.AdvancementLog
+                     , ArM.Markdown.IO
                      , ArM.Types.SheetObject
 
 executable armchar-debug

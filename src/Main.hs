@@ -11,22 +11,13 @@
 module Main where
 
 import System.IO -- for file IO
-
--- Timer
-import ArM.Debug.Time
-import ArM.Debug.Trace
--- import ArM.Debug.Trace
-import ArM.Types.MapState
-import ArM.Markdown.CharacterSheet
-import ArM.Markdown.AdvancementLog
-import qualified ArM.Character.CharGen as TCG
-import ArM.Types.SheetObject
--- import ArM.Types.Character
-
 import System.Environment
 import System.Console.GetOpt
 
-import Swish.RDF.Graph (RDFGraph)
+import ArM.Debug.Time
+import ArM.Markdown.IO
+import ArM.Types.MapState
+import qualified ArM.Character.CharGen as TCG
 
 import Data.Maybe (fromJust)
 
@@ -78,22 +69,6 @@ getMaybeHandle :: Maybe String -> IO Handle
 getMaybeHandle Nothing = return stdout
 getMaybeHandle (Just f) = openFile f WriteMode
 
-
-writeSheet :: String -> RDFGraph -> IO ()
-writeSheet fn cg = do
-     handle <- openFile fn WriteMode
-     let p = hPutStrLn handle
-     mapM_ p $ printSheetObject  $ getSheetObject cg
-     hClose handle
-writeAdv :: Maybe String -> TCG.CharGen -> IO ()
-writeAdv Nothing _ = return ()
-writeAdv (Just fn) cg = do
-     handle <- openFile fn WriteMode
-     let p = hPutStrLn handle
-     mapM_ p $ printAdvancementLog  as
-     hClose handle
-     where as = map TCG.advancement $ TCG.charSheets cg
-
 dirOpts :: Options -> Options
 dirOpts opt | outputDir opt == Nothing = opt
       | otherwise = opt {
@@ -141,13 +116,3 @@ main' opts | otherwise = do
      hClose h2
 
      return ()
-
-writeSaga :: String -> MapState -> IO ()
-writeSaga _ _ = return ()
-
-writeCG :: TCG.CharGen -> IO ()
-writeCG cg = trace ("Writing " ++ fn) $ writeSheet fn g
-     >> writeAdv fn2 cg
-     where g = (TCG.sheetGraph . head . TCG.charSheets) cg
-           fn = TCG.charFile cg ++ ".md"
-           fn2 = Just $ TCG.charFile cg ++ "-advancement.md"
