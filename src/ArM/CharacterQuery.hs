@@ -26,6 +26,7 @@ module ArM.CharacterQuery ( getTraitList
                           , getPossessions
                           , getVis
                           , getEquipment
+                          , getBooks
                           , getCombat
                           , getMetaData
                           , getMetaDataTuples
@@ -59,6 +60,8 @@ getPossessions :: G.RDFGraph -> [KeyPairList]
 getPossessions = getTraitList $ armRes "hasPossession"
 getEquipment :: G.RDFGraph -> [KeyPairList]
 getEquipment = getTraitList $ armRes "hasEquipment"
+getBooks :: G.RDFGraph -> [KeyPairList]
+getBooks = getTraitList $ armRes "hasBook"
 getVis :: G.RDFGraph -> [KeyPairList]
 getVis = getTraitList $ armRes "hasVis"
 

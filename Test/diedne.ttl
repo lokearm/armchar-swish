@@ -5,39 +5,44 @@
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
 @prefix : <https://hg.schaathun.net/armchar/character/> .
 
-
-:diednecovenant  a arm:Covenant ; 
-      arm:hasName "Diedne Covenant" ;
-      arm:hasSetting "Provence" ;
-      arm:hasSaga :diedne ;
-      arm:hasBook :creoL15Q15, :corpusL17Q12, :mtL5Q12 .
-      
-:creoL15Q15 a arm:Summa ;
-   arm:hasLevel  15 ;
-   arm:hasQuality 15 ;
-   arm:hasTitle  "Wonders from Nothing" ;
-   arm:hasAuthorString "Elias ex Tremere" ;
-   arm:appliesTo  armr:creo .
-
-:corpusL17Q12 a arm:Summa ;
-   arm:hasLevel  17 ;
-   arm:hasQuality 12 ;
-   arm:hasTitle  "Corpus" ;
-   arm:hasAuthorString "Balder of Bonisagus" ;
-   arm:appliesTo  armr:corpus .
-
-:mtL5Q12  a arm:Summa ;
-   arm:hasLevel  5 ;
-   arm:hasQuality 12 ;
-   arm:hasTitle  "Art after Bonisagus" ;
-   arm:hasAuthorString "Balder of Bonisagus" ;
-   arm:appliesTo  armr:magictheory .
-
 :diedne a arm:Saga ; 
-      arm:hasName "Contested Lands" ;
+      arm:hasName "Dummy Saga for ArMChar" ;
+      arm:hasDescription "This saga is only for testing the armchar-cli system." ;
       arm:hasSchemaFile "Ontology/arm.ttl" ;
       arm:hasResourceFile "Ontology/resources.ttl" ;
       arm:hasCharacterFile "Test/sylvain.ttl",
                            "Test/grog.ttl",
                            "Test/marcus.ttl" .
 
+:diednecovenant  a arm:Covenant ; 
+      arm:hasName "Diedne Covenant" ;
+      arm:hasSetting "Provence" ;
+      arm:hasSaga :diedne .
+
+:zeroadv arm:advanceCharacter :diednecovenant ;
+   arm:advancementClass arm:BaseAdvancement ; 
+   arm:advanceTrait :creoL15Q15, :corpusL17Q12, :mtL5Q12 .
+      
+:creoL15Q15 arm:traitClass arm:Summa ;
+   arm:hasQuantity 1 ;
+   arm:hasLevel  15 ;
+   arm:hasQuality 15 ;
+   arm:hasTitle  "Wonders from Nothing" ;
+   arm:hasAuthorString "Elias ex Tremere" ;
+   arm:appliesTo  armr:creo .
+
+:corpusL17Q12 arm:traitClass arm:Summa ;
+   arm:hasQuantity 1 ;
+   arm:hasLevel  17 ;
+   arm:hasQuality 12 ;
+   arm:hasTitle  "Corpus" ;
+   arm:hasAuthorString "Balder of Bonisagus" ;
+   arm:appliesTo  armr:corpus .
+
+:mtL5Q12  arm:traitClass arm:Summa ;
+   arm:hasQuantity 1 ;
+   arm:hasLevel  5 ;
+   arm:hasQuality 12 ;
+   arm:hasTitle  "Art after Bonisagus" ;
+   arm:hasAuthorString "Balder of Bonisagus" ;
+   arm:appliesTo  armr:magictheory .

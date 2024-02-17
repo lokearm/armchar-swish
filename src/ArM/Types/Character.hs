@@ -233,7 +233,7 @@ characterFromGraph = uniqueSort . f . map (`vbMap` cVar)
 -- The function assumes that the give Graph contains definitions for a
 -- single character resource.
 getInitialCS :: RDFGraph -- ^ RDFGraph containing the character
-    -> CharacterSheet  -- ^ Empty charactersheet (age 0) for the character
+      -> CharacterSheet  -- ^ Empty charactersheet (age 0) for the character
 getInitialCS = getInitialCharacter . getCharacter
    where getInitialCharacter c = defaultCS {
             csID = characterID c,

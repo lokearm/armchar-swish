@@ -94,7 +94,11 @@ main' opts | charFile opts == Nothing = do
      st1 <- loadChars st0
      let cs = foldr (:) [] $  cgMap st1
      _ <- mapM writeCG cs
-     writeSaga (sagaFile opts ++ ".md") st1
+     writeSaga (sagaFile opts ++ ".md") (saga st1) 
+
+     let cov = covenant st1
+     writeCovenant (sagaFile opts ++ "-covenant.md") cov
+     writeAdv (Just $ sagaFile opts ++ "-advancement.md") cov
 
      return ()
 main' opts | otherwise = do 

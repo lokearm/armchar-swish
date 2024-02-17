@@ -33,6 +33,7 @@ mergeGraphs (x:xs) = foldr G.merge x xs
 
 data MapState = MapState 
               { saga :: TS.Saga
+              , covenant :: TCG.CharGen
               , charList :: [G.RDFLabel]
               , schemaGraph :: G.RDFGraph
               , resourceGraph :: G.RDFGraph
@@ -41,6 +42,8 @@ data MapState = MapState
               , cgMap :: Map.Map String TCG.CharGen
               }
 
+-- ^ Load a saga from an RDF file and instantiate a MapState
+-- The file should define both a covenant resoruce and a saga resource
 loadSaga :: String -> IO MapState
 loadSaga fn = do
     -- 1. Load Saga
@@ -56,6 +59,7 @@ loadSaga fn = do
     let schema = R.prepareSchema rawSchema
     let res1 = R.prepareResources $ res `G.merge` schema 
     return MapState { saga = sob
+                    , covenant = TCG.makeCharGen schema res1 sgraph
                     , charList = []
                     , schemaGraph = schema
                     , resourceGraph = res1
@@ -64,18 +68,21 @@ loadSaga fn = do
                     , cgMap = Map.empty
                     }
 
-loadChar :: MapState -> String -> IO TCG.CharGen
+-- | Load a single character from file.
+loadChar :: MapState  -- ^ MapState defining schema and resources
+           -> String  -- ^ filename
+	   -> IO TCG.CharGen
 loadChar st fn = do
     g <- readGraph fn 
     return $ (TCG.makeCharGen schema res1 g) { TCG.charFile = fn }  
     where schema = schemaGraph st
           res1 = resourceGraph st
 
+-- | Get the character files associate with the saga
 getCharFiles :: MapState -> [String]
 getCharFiles = TS.characterFiles . saga
-   -- where q = listToRDFGraph [ arc (G.Var "s") (G.Var "hasCharacterFile") (G.Var "f") ]
-         -- r = Q.rdfQueryFind q $  g
 
+-- | Load all associated characters into a MapState object
 loadChars :: MapState -> IO MapState
 loadChars st = do
       cs <- mapM (loadChar st) fs

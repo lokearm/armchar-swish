@@ -38,12 +38,22 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Fix quantity summation (separate task) and validate the vis display
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [x] Support shield and weapon as combat option #cli/selected 
++ [x] Generate every character from saga resource #cli/backlog 
++ [x] Show season on Markdown sheet
++ [x] Advancement log (new output format)  #cli/backlog 
 
 + [ ] Covenant markdown output #cli/selected 
 + [ ] Virtues/Flaws taken more than once #cli/selected 
 	+ [ ] Test a character with Silent Magic twice
 	+ [ ] Test a character with two different Art affinities
 + [ ] Covenant name does not show because the covenant data is not included when inferring character data  #cli/selected #bug 
++ [ ] [[Covenant]] Support #cli/selected 
+	+ [x] Suppress size and confidence
+	+ [ ] Make separate section for Library
+	+ [ ] Infer labels for books
+	+ [ ] Display all stats for books
+	+ [ ] Show virtues and flaws as boons and hooks on covenants
++ [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
 # Usage Notes
 
@@ -52,12 +62,14 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ Different labels will be treated as different items
 	+ Labels must be unique, adding a new item with the same label and a different detail (`arm:hasDetail`) will simply change the detail and quantity of the existing item
 
-# Wishlist
+# Roadmap
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
 
-+ [x] Generate every character from saga resource #cli/backlog 
++ [ ] Saga printout #cli/backlog 
+	+ [ ] Display links to other files
+	+ [ ] Display Saga Title
 + [ ] quantity when advancing possessions #cli/backlog 
 + [ ] art on vis in advancement log #cli/backlog 
 + [ ] new TraitProperty hasTrait - do we want to generalise existing properties? #cli/backlog 
@@ -65,7 +77,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] Vis (isVisOfArt)
 	+ [ ] book (appliesTo)
 + [ ] Advancement by reading #cli/backlog 
-	+ [ ] Covenant as a character
+	+ [x] Covenant as a character
 	+ [x] Covenant hasBook property to define library
 	+ [x] Book as RDF resources with stats
 	+ [ ] Advancement readsBook property
@@ -79,7 +91,6 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] Validate lab total
 	+ [ ] infer exposure
 + [ ] Generate Character Sheets at different points in time #cli/backlog 
-+ [x] Show season on Markdown sheet
 + [ ] Show age on pre-game characters #cli/backlog 
 + [ ] Handle skill specialisations in combat stats #cli/backlog 
 	+ [ ] make a string property
@@ -96,22 +107,18 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Code review and simplification  #cli/backlog 
 + [ ] Ontology review and simplification  #cli/backlog 
 + [ ] queries account for 91% of the run time; review to see if some calls can be simplified #cli/backlog 
-+ [ ] Validate and complete characters
++ [ ] Validate and complete characters #cli/backlog 
 	+ [ ] Sylvain
 	+ [ ] Marcus
 	+ [ ] Grog
-- [ ] affinity mechanics
+- [ ] affinity mechanics #cli/selected 
     + xp-factor - analogous to bonus
     +  applied
-+ [ ] elementalist mechanics
++ [ ] elementalist mechanics  #cli/backlog 
     - ad hoc
     - create extra advancement resource
 
-# Roadmap
 
-+ [ ] [[Covenant]] Support #kanban/backlog 
-+ [x] Advancement log (new output format)  #cli/backlog 
-+ [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
 # Considerations
 
