@@ -100,6 +100,10 @@ main' opts | charFile opts == Nothing = do
      writeCovenant (sagaFile opts ++ "-covenant.md") cov
      writeAdv (Just $ sagaFile opts ++ "-advancement.md") cov
 
+     h2 <- getMaybeHandle $ debugFile opts
+     hPutStrLn h2 $ show $ head $ TCG.charSheets cov
+     hClose h2
+
      return ()
 main' opts | otherwise = do 
      printTime

@@ -71,7 +71,7 @@ loadSaga fn = do
 -- | Load a single character from file.
 loadChar :: MapState  -- ^ MapState defining schema and resources
            -> String  -- ^ filename
-	   -> IO TCG.CharGen
+           -> IO TCG.CharGen
 loadChar st fn = do
     g <- readGraph fn 
     return $ (TCG.makeCharGen schema res1 g) { TCG.charFile = fn }  

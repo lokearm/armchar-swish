@@ -165,7 +165,7 @@ arm:hasDam a owl:DatatypeProperty, arm:CalculatedProperty, arm:TraitProperty ;
 
 # 4. Books
 
-arm:Book rdfs:subClassOf arm:Equipment ;
+arm:Book rdfs:subClassOf arm:Possession ;
    rdfs:label "Book" ;
    rdfs:comment "A book is handled as equipment, but usually owned by a covenant." .
 arm:Tractatus rdfs:subClassOf arm:Book ;
@@ -194,5 +194,5 @@ arm:appliesTo a owl:ObjectProperty ;
    rdfs:domain  owl:Book ;
    rdfs:range  owl:Class .
 
-arm:hasBook rdfs:subPropertyOf arm:hasEquipment ;
+arm:hasBook rdfs:subPropertyOf arm:hasPossession ;
         rdfs:range   arm:Book .

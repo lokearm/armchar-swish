@@ -49,7 +49,7 @@ The first version of CLI will solve one simple problem; take a character descrip
 + [ ] Covenant name does not show because the covenant data is not included when inferring character data  #cli/selected #bug 
 + [ ] [[Covenant]] Support #cli/selected 
 	+ [x] Suppress size and confidence
-	+ [ ] Make separate section for Library
+	+ [x] Make separate section for Library
 	+ [ ] Infer labels for books
 	+ [ ] Display all stats for books
 	+ [ ] Show virtues and flaws as boons and hooks on covenants

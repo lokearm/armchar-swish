@@ -61,6 +61,7 @@ traitTypeStrings = [ "Ability"
                      , "OtherTrait"
                      , "Characteristic" 
                      , "Equipment" 
+                     , "Book" 
                      , "Vis" 
                      , "Weapon" 
                      ]
