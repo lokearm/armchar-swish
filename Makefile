@@ -13,10 +13,12 @@ grog.md:
 O=Ontology/resources.ttl Ontology/arm.ttl
 
 %.md: Test/%.ttl .force $O
-	cabal run armchar-cli -- -c $< -s Test/saga.ttl -o $@ -O $*.triples
+	cabal run armchar-cli -- -c $< -s Test/diedne.ttl -o $@ -O $*.triples
 
 %: Test/%.ttl .force $O
-	cabal run armchar-cli -- -c $< -s Test/saga.ttl -D $@
+	cabal run armchar-cli -- -c $< -s Test/diedne.ttl -D $@
+prof: Test/marcus.ttl .force 
+	cabal run prof -- -c $< -s Test/diedne.ttl -D $@
 
 %.pdf: %.md
 	pandoc -o $@ $<

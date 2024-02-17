@@ -109,6 +109,7 @@ executable armchar-swish
 
 executable prof
   import: cli-deps
+  profiling-detail: 3
   main-is:             Main.hs
   ghc-options:
     -O2

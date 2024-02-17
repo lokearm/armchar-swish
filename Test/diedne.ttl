@@ -9,7 +9,7 @@
 :diednecovenant  a arm:Covenant ; 
       arm:hasName "Diedne Covenant" ;
       arm:hasSetting "Provence" ;
-      arm:hasSaga armchar:diedne ;
+      arm:hasSaga :diedne ;
       arm:hasBook :creoL15Q15, :corpusL17Q12, :mtL5Q12 .
       
 :creoL15Q15 a arm:Summa ;
