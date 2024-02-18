@@ -13,6 +13,7 @@ markdown sheets from an RDF graph (turtle files).
 
 ## Design notes
 
++ [[Profiling]]
 + [[CLI Design]].  The following pages are not necessarily exclusive to CLI, but have been written in that context and are up to date.
 	+ [[Loading RDF Graphs]]
 	+ [[Design Notes]]
