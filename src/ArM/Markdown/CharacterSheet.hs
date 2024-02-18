@@ -16,7 +16,7 @@ module ArM.Markdown.CharacterSheet ( printCovenantSheet
                                    , DashShow(..) ) where
 
 
-import ArM.Types.SheetObject
+import ArM.Sheet.SheetObject
 import Data.List(intercalate,sort)
 
 import Text.Printf

@@ -6,6 +6,95 @@ title: CLI Design
 + [[Traits and Possessions]]
 
 
+
+# Usage Notes
+
++ Equipment
+	+ One can use a generic class, e.g. `arm:Equipment` and set `arm:hasLabel`.
+	+ Different labels will be treated as different items
+	+ Labels must be unique, adding a new item with the same label and a different detail (`arm:hasDetail`) will simply change the detail and quantity of the existing item
+
+# Roadmap
+
+This is not prioritised in version 1.0, but low-hanging fruits may still be included.
+
++ [ ] [[Advancement]] by reading #cli/backlog 
+	+ [x] Covenant as a character
+	+ [x] Covenant hasBook property to define library
+	+ [x] Book as RDF resources with stats
+	+ [ ] Advancement readsBook property
+	+ [ ] Deduce XP gain from book
+	+ [ ] Implement and debug relevant virtues
+		+ [ ] book reader
+		+ [ ] study bonus
+		+ [ ] affinity
++ [ ] Lab work advancement type #cli/backlog 
+	+ [ ] Calculate Lab Totals    #cli/backlog
+	+ [ ] Validate lab total
+	+ [ ] infer exposure
++ [ ] Generate Character Sheets at different points in time #cli/backlog 
++ [ ] Validate and complete characters #cli/backlog 
+	+ [ ] Sylvain
+	+ [ ] Marcus
+	+ [ ] Grog
+
+## Non-essential Features
+
++ [ ] Saga printout #cli/backlog 
+	+ [ ] Display links to other files
+	+ [ ] Display Saga Title
++ [ ] Show age on pre-game characters #cli/backlog 
++ [ ] Make resource listings, as reference catalogue #kanban/backlog 
+
+## Completeness
+
+- [ ] affinity mechanics #cli/selected 
+    + xp-factor - analogous to bonus
+    +  applied
++ [ ] elementalist mechanics  #cli/backlog 
+    - ad hoc
+    - create extra advancement resource
++ [ ] Virtues/Flaws taken more than once #cli/selected 
+	+ [ ] Test a character with Silent Magic twice
+	+ [ ] Test a character with two different Art affinities
++ [ ] Support Grimoire (Lab Texts)
++ [ ] Equipment load #cli/backlog 
+	+ [ ] load per item
+	+ [ ] total load (multiplied by quantity) per line
+	+ [ ] aggregate load and encumbrance
+
+## Review
+
++ [ ] Code review and simplification  #cli/backlog 
++ [ ] Ontology review and simplification  #cli/backlog 
++ [ ] queries account for 91% of the run time; review to see if some calls can be simplified #cli/backlog 
++ [ ] new TraitProperty hasTrait - do we want to generalise existing properties? #cli/backlog 
+	+ [ ]  puissant/affinity (bonusTo)
+	+ [ ] Vis (isVisOfArt)
+	+ [ ] book (appliesTo)
++ [ ] Review ordering of items #cli/backlog 
+	+ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
+	+ Alphabetical ordering?  Or something cleverer?
++ [ ] Allow Unique pieces of Equipment (incl. Weapons)  #cli/backlog 
+
+## Petty Bugs
+
++ [ ] Current year and season on one line on output character sheet   #cli/backlog 
++ [ ] quantity when advancing possessions #cli/backlog 
++ [ ] art on vis in advancement log #cli/backlog 
++ [ ] Covenant name does not show because the covenant data is not included when inferring character data  #cli/selected #bug 
++ [ ] Handle skill specialisations in combat stats #cli/backlog 
+	+ [ ] make a string property
+	+ [ ] hasSpeciality should refer to a class (weapon/ability/art)
+
+# Considerations
+
++ [ ] Consider distinction between Grog/Companion and Magus #kanban/backlog 
+	+ [ ] handle differently in Haskell?
+	+ [x] Different output in Markdown
+	+ [x] Or drop headers when a section is empty
++ [ ] Remove items with zero quantity #cli/backlog 
+
 # CLI version 1.0
 
 The first version of CLI will solve one simple problem; take a character description in turtle and produce a character sheet in Markdown.
@@ -48,82 +137,3 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Infer labels for books (labels not used)
 	+ [x] Display all stats for books
 	+ [x] Show virtues and flaws as boons and hooks on covenants
-+ [ ] Virtues/Flaws taken more than once #cli/selected 
-	+ [ ] Test a character with Silent Magic twice
-	+ [ ] Test a character with two different Art affinities
-+ [ ] Covenant name does not show because the covenant data is not included when inferring character data  #cli/selected #bug 
-+ [ ] Support Grimoire (Lab Texts)
-+ [ ] Make resource listings, as reference catalogue #kanban/backlog 
-
-# Usage Notes
-
-+ Equipment
-	+ One can use a generic class, e.g. `arm:Equipment` and set `arm:hasLabel`.
-	+ Different labels will be treated as different items
-	+ Labels must be unique, adding a new item with the same label and a different detail (`arm:hasDetail`) will simply change the detail and quantity of the existing item
-
-# Roadmap
-
-This is not prioritised in version 1.0, but low-hanging fruits may still be included.
-
-
-+ [ ] Saga printout #cli/backlog 
-	+ [ ] Display links to other files
-	+ [ ] Display Saga Title
-+ [ ] quantity when advancing possessions #cli/backlog 
-+ [ ] art on vis in advancement log #cli/backlog 
-+ [ ] new TraitProperty hasTrait - do we want to generalise existing properties? #cli/backlog 
-	+ [ ]  puissant/affinity (bonusTo)
-	+ [ ] Vis (isVisOfArt)
-	+ [ ] book (appliesTo)
-+ [ ] Advancement by reading #cli/backlog 
-	+ [x] Covenant as a character
-	+ [x] Covenant hasBook property to define library
-	+ [x] Book as RDF resources with stats
-	+ [ ] Advancement readsBook property
-	+ [ ] Deduce XP gain from book
-	+ [ ] Implement and debug relevant virtues
-		+ [ ] book reader
-		+ [ ] study bonus
-		+ [ ] affinity
-+ [ ] Lab work advancement type #cli/backlog 
-	+ [ ] Calculate Lab Totals    #cli/backlog
-	+ [ ] Validate lab total
-	+ [ ] infer exposure
-+ [ ] Generate Character Sheets at different points in time #cli/backlog 
-+ [ ] Show age on pre-game characters #cli/backlog 
-+ [ ] Handle skill specialisations in combat stats #cli/backlog 
-	+ [ ] make a string property
-	+ [ ] hasSpeciality should refer to a class (weapon/ability/art)
-+ [ ] Review ordering of items #cli/backlog 
-	+ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
-	+ Alphabetical ordering?  Or something cleverer?
-+ [ ] Equipment load #cli/backlog 
-	+ [ ] load per item
-	+ [ ] total load (multiplied by quantity) per line
-	+ [ ] aggregate load and encumbrance
-+ [ ] Current year and season on one line on output character sheet   #cli/backlog 
-+ [ ] Allow Unique pieces of Equipment (incl. Weapons)  #cli/backlog 
-+ [ ] Code review and simplification  #cli/backlog 
-+ [ ] Ontology review and simplification  #cli/backlog 
-+ [ ] queries account for 91% of the run time; review to see if some calls can be simplified #cli/backlog 
-+ [ ] Validate and complete characters #cli/backlog 
-	+ [ ] Sylvain
-	+ [ ] Marcus
-	+ [ ] Grog
-- [ ] affinity mechanics #cli/selected 
-    + xp-factor - analogous to bonus
-    +  applied
-+ [ ] elementalist mechanics  #cli/backlog 
-    - ad hoc
-    - create extra advancement resource
-
-
-
-# Considerations
-
-+ [ ] Consider distinction between Grog/Companion and Magus #kanban/backlog 
-	+ [ ] handle differently in Haskell?
-	+ [x] Different output in Markdown
-	+ [x] Or drop headers when a section is empty
-+ [ ] Remove items with zero quantity #cli/backlog 

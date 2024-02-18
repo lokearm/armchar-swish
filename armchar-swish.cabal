@@ -40,10 +40,10 @@ common deps
                        , ArM.Types.Character
                        , ArM.Types.Advancement
                        , ArM.Types.Trait
-                       , ArM.Types.Book
+                       , ArM.Sheet.Book
                        , ArM.Types.RDF
                        , ArM.Types.Season
-                       , ArM.Character.CharGen
+                       , ArM.Types.CharGen
                        , ArM.Types.Saga
   -- other-extensions:
   build-depends:       base >=4.13 
@@ -71,7 +71,7 @@ common cli-deps
                      , ArM.Markdown.CharacterSheet
                      , ArM.Markdown.AdvancementLog
                      , ArM.Markdown.IO
-                     , ArM.Types.SheetObject
+                     , ArM.Sheet.SheetObject
 
 executable armchar-debug
   import: cli-deps

@@ -1,4 +1,24 @@
 
++ Advancement entails two computational tasks
+	+ Advancing the Character
+	+ Checking for resource conflicts
++ In both cases, resources from the covenant is required (e.g. library)
++ In the second case, advancements from all characters must be considered together
+
+## Collection of graphs
+
++ At present, the database is split into individual graphs
+	+ Character with advancement
+	+ Character Sheet at a given time, incorporating advancement
+	+ The Covenant is a Character with Character graph and Sheet graphs
+	+ Schema
+	+ Resources
+	+ saga (not used)
++ To avoid conflicts, traits are referenced by class, and the instance inferred
+	+ new instances are created if the values change
++ Resources in an advancement must be checked against current covenant sheet
+	+ scores must be changed against previous character sheet
+## Character Computation
 
 + `ArM.Types.Advancement` exports three functions
 	+ `getPregameAdvancements`

@@ -19,7 +19,7 @@ import qualified Swish.RDF.Graph as G
 
 import qualified Data.Map as Map
 
-import qualified ArM.Character.CharGen as TCG
+import qualified ArM.Types.CharGen as TCG
 import qualified ArM.Types.Saga as TS
 import qualified ArM.Rules as R
 import           ArM.IO

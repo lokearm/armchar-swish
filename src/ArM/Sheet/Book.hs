@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Types.Book
+-- Module      :  ArM.Sheet.Book
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Types.Book ( Book(..)
+module ArM.Sheet.Book ( Book(..)
                       , parseBook
                        ) where
 

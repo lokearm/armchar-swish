@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.SheetObject
+-- Module      :  ArM.Sheet.SheetObject
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -9,7 +9,7 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Types.SheetObject ( getSheetObject
+module ArM.Sheet.SheetObject ( getSheetObject
                                 , SheetObject(..)
                                 , Trait(..)
                                 , traitLabel
@@ -22,7 +22,7 @@ import           ArM.CharacterQuery
 import           ArM.KeyPair 
 import           ArM.Resources 
 import           ArM.Rules.Aux 
-import           ArM.Types.Book
+import           ArM.Sheet.Book
 import Data.List(sortOn)
 
 import Data.Maybe (fromJust)

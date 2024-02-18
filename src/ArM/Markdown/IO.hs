@@ -17,9 +17,9 @@ import System.IO -- for file IO
 
 import ArM.Debug.Trace
 
-import qualified ArM.Character.CharGen as TCG
+import qualified ArM.Types.CharGen as TCG
 import ArM.Types.Saga
-import ArM.Types.SheetObject
+import ArM.Sheet.SheetObject
 import ArM.Markdown.CharacterSheet
 import ArM.Markdown.AdvancementLog
 import Swish.RDF.Graph (RDFGraph)

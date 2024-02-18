@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Character.CharGen
+-- Module      :  ArM.Types.CharGen
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -10,7 +10,7 @@
 -- Types to handle characters as stored in web server memory.
 --
 -----------------------------------------------------------------------------
-module ArM.Character.CharGen ( CharGen(..)
+module ArM.Types.CharGen ( CharGen(..)
                              , CharStage(..)
                              , sheetGraph
                              , makeCharGen

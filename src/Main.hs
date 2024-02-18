@@ -17,7 +17,7 @@ import System.Console.GetOpt
 import ArM.Debug.Time
 import ArM.Markdown.IO
 import ArM.Types.MapState
-import qualified ArM.Character.CharGen as TCG
+import qualified ArM.Types.CharGen as TCG
 
 import Data.Maybe (fromJust)
 
@@ -39,8 +39,6 @@ defaultOptions = Options {
   outputDir  = Nothing,
   advancementFile  = Nothing
 }
-
-
 
 
 options :: [ OptDescr (Options -> IO Options) ]

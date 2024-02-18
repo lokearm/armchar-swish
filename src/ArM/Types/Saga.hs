@@ -45,22 +45,6 @@ defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  , sagaGraph = emptyGraph
                  }
 
-{-
- - This was an atempt to include cast.
- - Now we make a separate API call for cast instead.
-instance ToJSON Saga where 
-    toJSON saga = object (x1:x2:x3:[])
-       where x1 = (fromString "sagaID") .= (toJSON (sagaID saga))
-             x2 = (fromString "sagaCast") .= (toJSON (getCharacters saga))
-             x3 = (fromString "sagaDetails") .= toJSON (kpFromRDF (sagaGraph saga) (sagaID saga))
-
-kpFromRDF :: RDFGraph -> RDFLabel -> KeyPairList
-kpFromRDF = fromRDFGraph
-
-getCharacters :: Saga -> [Character]
-getCharacters _ = []
--}
-
 
 instance FromRDFGraph Saga where 
    fromRDFGraph g label = fixSaga $ defaultSaga
