@@ -56,14 +56,6 @@ data Advancement = Advancement
     , traits   :: [Trait]
    } deriving Eq
 
-advSortIndex :: Advancement -> Int
-advSortIndex = advancementIndex . advTime
-year :: Advancement -> Int
-year = f . hasYear 
-   where f Nothing = 0
-         f (Just y) = y
-season :: Advancement -> String
-season = charSeason . advTime
 
 defaultAdvancement :: Advancement 
 defaultAdvancement = Advancement 
@@ -88,6 +80,15 @@ instance Show Advancement where
          sc [] = ""
          sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
 
+advSortIndex :: Advancement -> Int
+advSortIndex = advancementIndex . advTime
+year :: Advancement -> Int
+year = f . hasYear 
+   where f Nothing = 0
+         f (Just y) = y
+season :: Advancement -> String
+season = charSeason . advTime
+
 instance HasTime Advancement where
     timeOf = advTime
 instance Ord Advancement where
@@ -98,14 +99,14 @@ instance Ord Advancement where
                | contents x < contents y = LT
                | contents x > contents y = GT
                | otherwise = EQ
-
-sno :: Advancement -> Int
-sno = seasonNo . season
-
 instance ToRDFGraph Advancement where
    makeRDFGraph cs =  
          ( listToRDFGraph  . fst . runBlank ( advToArcListM cs ) )
          ("advancement",1)
+
+sno :: Advancement -> Int
+sno = seasonNo . season
+
 
 advToArcListM :: Advancement -> BlankState [RDFTriple]
 advToArcListM adv = do
@@ -177,7 +178,7 @@ traitsFromRDF :: RDFLabel -> RDFGraph -> [Trait]
 traitsFromRDF advid g = splitTrait $ sort $ map vb2tt  $ Q.rdfQueryFind q g 
     where q = traitqgraph (armRes "advanceTrait") advid
 
-type ProtoTrait = (RDFLabel, RDFLabel, RDFLabel,RDFLabel)
+type ProtoTrait = (RDFLabel, RDFLabel, RDFLabel, RDFLabel)
 vb2tt :: VB.RDFVarBinding -> ProtoTrait
 vb2tt vb = ( fromJust $ vbMap vb (Var "class")
              , (fromJust $ vbMap vb (Var "id")) 
