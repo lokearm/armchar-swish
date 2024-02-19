@@ -52,11 +52,14 @@ instance FromRDFGraph Saga where
                  , sagaGraph = g
                  }
 
+-- | Return a saga object from an RDFGraph.
+-- The graph should contain one and only one saga.
 sagaFromRDF :: RDFGraph -> Saga
 sagaFromRDF g = fromRDFGraph g sid
     where sid = head $ sagaFromGraph g
 
 
+-- | Complete a saga object by extracting file names from the graph.
 fixSaga :: Saga -> Saga
 fixSaga s = s { schemaFiles = getSchemaFiles sid g
               , resourceFiles = getResourceFiles sid g 
@@ -64,12 +67,6 @@ fixSaga s = s { schemaFiles = getSchemaFiles sid g
               }
           where g = sagaGraph s
                 sid = sagaID s
-
-instance ToJSON Saga where 
-    toJSON c = toJSON $ p x xs
-        where x = KeyValuePair (armRes "sagaID") $ sagaID c
-              xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
-              p y (KeyPairList ys) = KeyPairList (y:ys) 
 
 -- | Get the labels of all sagas in a given graph.
 sagaFromGraph :: RDFGraph -> [RDFLabel]
@@ -94,16 +91,9 @@ getSchemaFiles = getFiles "hasSchemaFile"
 getCharacterFiles :: RDFLabel -> RDFGraph -> [String]
 getCharacterFiles = getFiles "hasCharacterFile"
 
-{-
-getSagaTitle :: RDFLabel -> RDFGraph -> String
-getSagaTitle s = f1 . map rdfToString . f 
-                   . map (`vbMap` (Var "label")) . parsegraph 
-    where f [] = []
-          f (Nothing:xs) = f xs
-          f (Just x:xs) = x:f xs
-          f1 [] = error "Saga has no title"
-          f1 (Nothing:_) = error "Saga title does not parse"
-          f1 (Just x:_) = x
-          parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
-          a = arc s (armRes "hasLabel") (Var "label") 
--}
+
+instance ToJSON Saga where 
+    toJSON c = toJSON $ p x xs
+        where x = KeyValuePair (armRes "sagaID") $ sagaID c
+              xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
+              p y (KeyPairList ys) = KeyPairList (y:ys) 
