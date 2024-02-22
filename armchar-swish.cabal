@@ -38,6 +38,7 @@ common deps
                        , ArM.CharacterQuery
                        , ArM.KeyPair
                        , ArM.Types.Character
+                       , ArM.Types.CharacterSheet
                        , ArM.Types.Advancement
                        , ArM.Types.Trait
                        , ArM.Sheet.Book

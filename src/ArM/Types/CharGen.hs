@@ -21,6 +21,7 @@ import Swish.RDF.Graph as G
 import ArM.KeyPair()
 import ArM.Rules (makeGraph)
 import ArM.Types.Character
+import ArM.Types.CharacterSheet
 import ArM.Types.Season
 import ArM.Types.RDF
 import ArM.Types.Advancement
