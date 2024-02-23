@@ -27,6 +27,7 @@ import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Resources
 import           ArM.KeyPair
+import Data.Maybe(catMaybes)
 
 data SagaFile = SagaFile { sagaID :: RDFLabel
                  , sagaTitle :: String
@@ -50,6 +51,7 @@ instance FromRDFGraph SagaFile where
    fromRDFGraph g label = fixSaga $ defaultSagaFile
                  { sagaID = label
                  , sagaGraph = g
+                 , sagaTitle = getTitle label g
                  }
 
 -- | Return a saga object from an RDFGraph.
@@ -76,13 +78,19 @@ sagaFromGraph = uniqueSort . f . map (`vbMap` cVar)
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
 
-getFiles :: String -> RDFLabel -> RDFGraph -> [String]
-getFiles ft s = f . map rdfToString . f 
-                   . map (`vbMap` (Var "file")) . parsegraph 
-    where f [] = []
+getTitle :: RDFLabel -> RDFGraph -> String
+getTitle s = f . map rdfToString . catMaybes 
+                   . map (`vbMap` (Var "tiitle")) . parsegraph 
+    where f [] = ""
           f (Nothing:xs) = f xs
-          f (Just x:xs) = x:f xs
+          f (Just x:_) = x
           parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
+          a = arc s (armRes "hasTitle") (Var "tiitle") 
+
+getFiles :: String -> RDFLabel -> RDFGraph -> [String]
+getFiles ft s = catMaybes . map rdfToString . catMaybes 
+                   . map (`vbMap` (Var "file")) . parsegraph 
+    where parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
           a = arc s (armRes ft) (Var "file") 
 getResourceFiles :: RDFLabel -> RDFGraph -> [String]
 getResourceFiles = getFiles "hasResourceFile"

@@ -16,7 +16,8 @@ import System.Console.GetOpt
 
 import ArM.Debug.Time
 import ArM.Markdown.IO
-import ArM.Types.MapState
+import ArM.Types.Saga
+import qualified ArM.Types.LoadedSaga as LS
 import qualified ArM.Types.CharGen as TCG
 
 import Data.Maybe (fromJust)
@@ -88,8 +89,8 @@ main = do
 
 main' :: Options -> IO ()
 main' opts | charFile opts == Nothing = do 
-     st0 <- loadSaga $ sagaFile opts
-     st1 <- loadChars st0
+     st0 <- LS.loadSagaChars $ sagaFile opts
+     let st1 = parseSaga st0
      let cs = foldr (:) [] $  cgMap st1
      _ <- mapM writeCG cs
      writeSaga (sagaFile opts ++ ".md") (saga st1) 
@@ -103,9 +104,11 @@ main' opts | charFile opts == Nothing = do
      hClose h2
 
      return ()
+main' _ | otherwise = error "Not implemented!" 
+{-
 main' opts | otherwise = do 
      printTime
-     sagaobject <- loadSaga $ sagaFile opts
+     sagaobject <- LS.loadSaga $ sagaFile opts
      chargen <- loadChar sagaobject $ fromJust $ charFile opts
      let char = head $ TCG.charSheets chargen
      let chargraph = TCG.sheetGraph char
@@ -122,3 +125,4 @@ main' opts | otherwise = do
      hClose h2
 
      return ()
+-}

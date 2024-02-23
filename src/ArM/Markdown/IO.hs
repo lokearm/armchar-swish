@@ -18,7 +18,7 @@ import System.IO -- for file IO
 import ArM.Debug.Trace
 
 import qualified ArM.Types.CharGen as TCG
-import ArM.Types.SagaFile
+import ArM.Types.LoadedSaga
 import ArM.Sheet.SheetObject
 import ArM.Markdown.CharacterSheet
 import ArM.Markdown.AdvancementLog
@@ -46,9 +46,9 @@ writeAdv (Just fn) cg = trace fn $ do
 
 -- | Write the saga and covenant to the given file
 writeSaga :: String       -- ^ Filename
-          -> SagaFile         -- ^ Saga 
+          -> LoadedSaga   -- ^ Saga 
           -> IO ()
-writeSaga fn saga = write fn [ '#':' ':sagaTitle saga ]
+writeSaga fn sob = write fn [ '#':' ':sagaTitle sob ]
 
 -- | Write a character sheet to a markdown file
 -- The filename is derived from the source turtle file as stored in the

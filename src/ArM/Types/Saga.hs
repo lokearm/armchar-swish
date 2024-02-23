@@ -10,8 +10,8 @@
 -----------------------------------------------------------------------------
 module ArM.Types.Saga
                ( Saga(..)
-               , loadSaga
-               -- , loadChar
+               , parseSaga
+               , loadChar
                -- , loadChars
                , schemaGraph
                , resourceGraph
@@ -46,8 +46,8 @@ resourceRawGraph = LS.resourceRawGraph . saga
 
 -- ^ Load a saga from an RDF file and instantiate a Saga
 -- The file should define both a covenant resoruce and a saga resource
-loadSaga :: LS.LoadedSaga -> Saga
-loadSaga sob = 
+parseSaga :: LS.LoadedSaga -> Saga
+parseSaga sob = 
     Saga { saga = sob
          , covenant = TCG.makeCharGen schema res1 g
          , charList = cns
@@ -63,7 +63,7 @@ loadSaga sob =
           ps = zip (map show cns) cs
 
 -- | Load a single character from file.
-loadChar :: LS.LoadedSaga  -- ^ MapState defining schema and resources
+loadChar :: LS.LoadedSaga  -- ^ Saga object with schema and resources
            -> String  -- ^ filename
            -> TCG.CharGen
 loadChar st fn = (TCG.makeCharGen schema res1 g) { TCG.charFile = fn }  

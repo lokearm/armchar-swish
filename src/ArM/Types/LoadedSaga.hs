@@ -13,7 +13,9 @@ module ArM.Types.LoadedSaga
                ( LoadedSaga(..)
                , loadSaga
                , loadChars
+               , loadSagaChars
                , sagaGraph
+               , sagaTitle
                ) where
 
 import qualified Swish.RDF.Graph as G
@@ -40,6 +42,16 @@ data LoadedSaga = LoadedSaga
               , cgMap :: Map.Map String G.RDFGraph
               }
 
+sagaTitle :: LoadedSaga -> String
+sagaTitle = TS.sagaTitle . saga
+sagaGraph :: LoadedSaga -> G.RDFGraph 
+sagaGraph = TS.sagaGraph . saga
+
+
+loadSagaChars :: String -> IO LoadedSaga
+loadSagaChars fn = loadSaga fn >>= loadChars
+
+
 -- ^ Load a saga from an RDF file and instantiate a LoadedSaga
 -- The file should define both a covenant resoruce and a saga resource
 loadSaga :: String -> IO LoadedSaga
@@ -64,9 +76,6 @@ loadSaga fn = do
                     , cgMap = Map.empty
                     }
 
-sagaGraph :: LoadedSaga -> G.RDFGraph 
-sagaGraph = TS.sagaGraph . saga
-
 -- | Load all associated characters into a LoadedSaga object
 loadChars :: LoadedSaga -> IO LoadedSaga
 loadChars s = mapM readGraph fs
@@ -74,4 +83,5 @@ loadChars s = mapM readGraph fs
       where m = cgMap s 
             fs = TS.characterFiles $ saga s
             ins c (x,y) = Map.insert x y c
+
 

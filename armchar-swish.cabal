@@ -70,8 +70,7 @@ common deps
 common cli-deps
   -- documentation:       True
   import: deps
-  other-modules:       ArM.Types.MapState
-                     , ArM.Markdown.CharacterSheet
+  other-modules:       ArM.Markdown.CharacterSheet
                      , ArM.Markdown.AdvancementLog
                      , ArM.Markdown.IO
                      , ArM.Sheet.SheetObject
