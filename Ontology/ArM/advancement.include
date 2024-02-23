@@ -10,6 +10,9 @@ arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:PregameAdvancement ;
 arm:LaterLifeAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Later Life" ;
    arm:hasAdvancementIndex  30 .
+arm:VirtueAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:hasLabel "Virtue XP" ;
+   arm:hasAdvancementIndex  35 .
 arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Apprenticeship" ;
    arm:hasAdvancementIndex  40 .
