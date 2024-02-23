@@ -2,18 +2,13 @@
 
 ## Steps of the loading process
 
-1. Load the MapState object
-	1. Load the Saga 
-		1. Load the graph from the saga file (`ArM.Types.MapState`)
-		2. Extract the Saga object from the RDF Graph (`ArM.Types.Saga`)
-	2. Extract the Covenant object from the same graph.  Note that the covenant is a character and uses largely the same functions.
-	3. Load the schema and resources as specified in the Saga object  (`ArM.Types.MapState`)
-		3. Augment the schema and resources using the inference rules
-	4. Construct the MapState object containing Saga, Schema, and Resources (`ArM.Types.MapState`)
-3. Load the character graphs as specified in the Saga object
-	1. Load Character objects using the FromRDF type class (`ArM.Types.Character`)
-	2. Apply advancements, building CharGen objects  (`ArM.Character.CharGen`)
-	3. Insert the CharGen objects in the MapState Map field 
+1. Load the SagaFile
+2. Load the LoadedSaga
+	1. This loads the scema and resources
+3. Load characters into the LoadedSaga
+4. Make the Saga object
+	1. parse the covenant graph and advance
+	2. parse character graphs and advance characters
 
 ## Present assumptions
 

@@ -2,14 +2,19 @@
 # Character Advancement
 arm:CharacterAdvancement a owl:Class .
 arm:BaseAdvancement rdfs:subClassOf arm:PregameAdvancement ;
+   arm:hasLabel "Base Character" ;
    arm:hasAdvancementIndex  10 .
 arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:PregameAdvancement ;
+   arm:hasLabel "Eearly Childhood" ;
    arm:hasAdvancementIndex  20 .
 arm:LaterLifeAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:hasLabel "Later Life" ;
    arm:hasAdvancementIndex  30 .
 arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:hasLabel "Apprenticeship" ;
    arm:hasAdvancementIndex  40 .
 arm:PGAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:hasLabel "P/G" ;
    arm:hasAdvancementIndex  50 .
 arm:PregameAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
 arm:IngameAdvancement  rdfs:subClassOf arm:CharacterAdvancement ;

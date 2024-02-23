@@ -6,7 +6,7 @@
 @prefix : <https://hg.schaathun.net/armchar/character/> .
 
 :diedne a arm:Saga ; 
-      arm:hasName "Dummy Saga for ArMChar" ;
+      arm:hasTitle "Dummy Saga for ArMChar" ;
       arm:hasDescription "This saga is only for testing the armchar-cli system." ;
       arm:hasSchemaFile "Ontology/arm.ttl" ;
       arm:hasResourceFile "Ontology/resources.ttl" ;

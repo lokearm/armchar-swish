@@ -17,6 +17,7 @@ module ArM.Types.SagaFile ( SagaFile(..)
                           ) where
 
 import ArM.Internal.Aux
+import ArM.Debug.Trace
 
 import           Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -51,7 +52,7 @@ instance FromRDFGraph SagaFile where
    fromRDFGraph g label = fixSaga $ defaultSagaFile
                  { sagaID = label
                  , sagaGraph = g
-                 , sagaTitle = getTitle label g
+                 , sagaTitle = ttrace $ getTitle label g
                  }
 
 -- | Return a saga object from an RDFGraph.
@@ -80,12 +81,12 @@ sagaFromGraph = uniqueSort . f . map (`vbMap` cVar)
 
 getTitle :: RDFLabel -> RDFGraph -> String
 getTitle s = f . map rdfToString . catMaybes 
-                   . map (`vbMap` (Var "tiitle")) . parsegraph 
-    where f [] = ""
+                   . map (`vbMap` (Var "title")) . parsegraph 
+    where f [] = "No title"
           f (Nothing:xs) = f xs
           f (Just x:_) = x
           parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
-          a = arc s (armRes "hasTitle") (Var "tiitle") 
+          a = arc s (armRes "hasTitle") (Var "title") 
 
 getFiles :: String -> RDFLabel -> RDFGraph -> [String]
 getFiles ft s = catMaybes . map rdfToString . catMaybes 

@@ -18,7 +18,7 @@ import ArM.Debug.Time
 import ArM.Markdown.IO
 import ArM.Types.Saga
 import qualified ArM.Types.LoadedSaga as LS
-import qualified ArM.Types.CharGen as TCG
+-- import qualified ArM.Types.CharGen as TCG
 
 import Data.Maybe (fromJust)
 
@@ -98,10 +98,6 @@ main' opts | charFile opts == Nothing = do
      let cov = covenant st1
      writeCovenant (sagaFile opts ++ "-covenant.md") cov
      writeAdv (Just $ sagaFile opts ++ "-advancement.md") cov
-
-     h2 <- getMaybeHandle $ debugFile opts
-     hPutStrLn h2 $ show $ head $ TCG.charSheets cov
-     hClose h2
 
      return ()
 main' _ | otherwise = error "Not implemented!" 

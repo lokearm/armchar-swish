@@ -42,7 +42,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 
 + [ ] Saga printout #cli/backlog 
 	+ [ ] Display links to other files
-	+ [ ] Display Saga Title
+	+ [x] Display Saga Title @completed(2024-02-23T17:05:44+01:00)
 + [ ] Show age on pre-game characters #cli/backlog 
 + [ ] Make resource listings, as reference catalogue #kanban/backlog 
 
