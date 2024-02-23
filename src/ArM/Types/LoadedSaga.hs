@@ -10,9 +10,10 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Types.LoadedSaga
-               ( loadSaga
+               ( LoadedSaga(..)
+               , loadSaga
                , loadChars
-               , LoadedSaga(..)
+               , sagaGraph
                ) where
 
 import qualified Swish.RDF.Graph as G
@@ -32,7 +33,6 @@ mergeGraphs (x:xs) = foldr G.merge x xs
 
 data LoadedSaga = LoadedSaga 
               { saga :: TS.Saga
-              , covenant :: TCG.CharGen
               , schemaGraph :: G.RDFGraph
               , resourceGraph :: G.RDFGraph
               , schemaRawGraph :: [G.RDFGraph]
@@ -40,7 +40,7 @@ data LoadedSaga = LoadedSaga
               , cgMap :: Map.Map String G.RDFGraph
               }
 
--- ^ Load a saga from an RDF file and instantiate a MapState
+-- ^ Load a saga from an RDF file and instantiate a LoadedSaga
 -- The file should define both a covenant resoruce and a saga resource
 loadSaga :: String -> IO LoadedSaga
 loadSaga fn = do
@@ -56,8 +56,7 @@ loadSaga fn = do
     let res = mergeGraphs rs
     let schema = R.prepareSchema rawSchema
     let res1 = R.prepareResources $ res `G.merge` schema 
-    return MapState { saga = sob
-                    , covenant = TCG.makeCharGen schema res1 sgraph
+    return LoadedSaga { saga = sob
                     , schemaGraph = schema
                     , resourceGraph = res1
                     , schemaRawGraph = ss
@@ -65,12 +64,14 @@ loadSaga fn = do
                     , cgMap = Map.empty
                     }
 
+sagaGraph :: LoadedSaga -> G.RDFGraph 
+sagaGraph = TS.sagaGraph . saga
 
--- | Load all associated characters into a MapState object
-loadChars :: LoadedSaga -> IO MapState
+-- | Load all associated characters into a LoadedSaga object
+loadChars :: LoadedSaga -> IO LoadedSaga
 loadChars s = mapM readGraph fs
-      >>= ( \ cs -> s { cgMap = foldl ins m $ zip ss cs } )
+      >>= ( \ cs -> return $ s { cgMap = foldl ins m $ zip fs cs } )
       where m = cgMap s 
-            fs = TS.characterFiles . saga s
+            fs = TS.characterFiles $ saga s
             ins c (x,y) = Map.insert x y c
 

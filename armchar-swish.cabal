@@ -46,6 +46,7 @@ common deps
                        , ArM.Types.Season
                        , ArM.Types.CharGen
                        , ArM.Types.Saga
+                       , ArM.Types.LoadedSaga
   -- other-extensions:
   build-depends:       base >=4.13 
                        , scientific >= 0.3.7
