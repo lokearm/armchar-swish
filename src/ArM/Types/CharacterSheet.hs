@@ -57,7 +57,7 @@ data CharacterSheet = CharacterSheet {
       sheetID :: Maybe RDFLabel,  
       -- ^ ID of the Character Sheet, usually Nothing suggesting a blank node
       csTime :: CharTime,  -- ^ Current Year
-      -- born     :: Int,      -- ^ Year of Birth
+      born     :: Int,      -- ^ Year of Birth
       csTraits :: [Trait],  -- ^ List of traits (abilities, spells, etc.)
       csMetadata :: KeyPairList
       -- ^ Metadata, i.e. data which are not traits or items.
@@ -74,7 +74,7 @@ defaultCS = CharacterSheet {
          csID = noSuchCharacter,
          sheetID = Nothing,
          csTime = defaultCharTime,
-         -- born = 0,
+         born = 0,
          csTraits = [],
          csMetadata = KeyPairList []
        }  
@@ -87,10 +87,6 @@ showSheetID = f . sheetID
 
 instance ToRDFGraph CharacterSheet where
    makeRDFGraph cs = 
-         ( listToRDFGraph  . fst . runBlank ( csToArcListM cs ) )
-         ("charsheet",1)
-{-
-   makeRDFGraph cs = trace msg $
          ( listToRDFGraph  . fst . runBlank ( csToArcListM cs' ) )
          ("charsheet",1)
       where cs' = cs { csMetadata = KeyPairList $ a xs }
@@ -108,9 +104,6 @@ instance ToRDFGraph CharacterSheet where
                             | otherwise = y - b
             age = age' (hasYear cs) (born cs)
             a = aAge age . aYear (hasYear cs) . aSeason (hasSeason cs)
-            msg = "makeRDFGraph for CharacterSheet (" ++ show traitcount ++ " traits)"
-            traitcount = length $ csTraits cs
--}
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do
@@ -158,6 +151,6 @@ getInitialCS :: RDFGraph -- ^ RDFGraph containing the character
 getInitialCS = getInitialCharacter . getCharacter
    where getInitialCharacter c = defaultCS {
             csID = characterID c,
-            -- born = getIntProperty (armRes "hasBirthYear") $ characterData c,
+            born = getIntProperty (armRes "hasBirthYear") $ characterData c,
             csMetadata = characterData  c
          }
