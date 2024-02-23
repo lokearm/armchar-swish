@@ -16,7 +16,7 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
-import ArM.Debug.NoTrace
+import ArM.Debug.Trace
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
@@ -175,7 +175,7 @@ fromProtoAdvancement adv = defaultAdvancement
                      { rdfid = advancementid adv
                      , traits = advancementtraits adv
                      , advChar = advancementcharacter adv
-                     , advTime = tm
+                     , advTime = trace (show tm) tm
                      , contents = ys
                  } where ys = fromKeyPairList $ advancementcontents adv
                          tm = parseTime TS.defaultCharTime ys
@@ -187,7 +187,9 @@ parseTime ain (xin:xs) = parseTime (f ain xin) xs
          | k == inYear = a { charYear = rdfToInt v }
          | k == atSeason = a { charSeason = fs (rdfToString v) }
          | k == hasAdvancementIndex = a { advancementIndex = fi (rdfToInt v) }
-         | otherwise = a
+         | k == (armRes "advancementClassString") = trace (fs (rdfToString v)) $ a { advancementStage = fs (rdfToString v) }
+         | k == (armRes "advancementClass") = trace (show v) $ a 
+         | otherwise =  a
          where fs Nothing = "" 
                fs (Just x) = x
                fi Nothing = 0 
@@ -235,20 +237,20 @@ addToTrait :: Trait -> ProtoTrait -> Trait
 addToTrait t (c,s,p,o) 
       | traitClass t /= c = error "traitClass mismatch in addToTrait"
       | p == armRes "instanceLabel" 
-             = trace ("> instanceLabel " ++ dbg) $ t { instanceLabel = lab o
+             = t { instanceLabel = lab o
                  , traitContents = triple:traitContents t }
       | p == typeRes && o == armRes "CountableTrait" 
-                        = trace ("> CountableTrait " ++ dbg) $ t { traitCountable = True
+                        = t { traitCountable = True
                             , traitContents = triple:traitContents t }
       | p == typeRes && o == armRes "GeneralXPTrait" 
-                        = trace ("> XPTrait " ++ dbg) $ t { traitXP = True
+                        = t { traitXP = True
                             , traitContents = triple:traitContents t }
       | otherwise = t { traitContents = triple:traitContents t }
          where lab = f . rdfToString 
                triple = arc s p o
                f Nothing = ""
                f (Just x) = x
-               dbg = show (c,s,p,o)
+               -- dbg = show (c,s,p,o)
 
 -- | Get a list of all Pregame Advancements of a character.
 getPregameAdvancements :: RDFGraph -> RDFLabel -> [Advancement]
@@ -290,7 +292,7 @@ fixAdvancements g adv = map (fixAdv g) adv
 
 -- | Make an Advancement object from a list of Quads
 toAdvancement :: [RDFTriple] -> Advancement
-toAdvancement xs = trace (show $ ys) $ toAdvancement' ys df
+toAdvancement xs = toAdvancement' ys df
          where ys = toKeyPairList xs 
                df = defaultAdvancement 
                  { rdfid = getkey xs
@@ -315,12 +317,12 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advLabel = rdfToString  ob }
      | p == (armRes "instanceDescription") =
              toAdvancement' xs $ adv { advDescription = rdfToString  ob } 
-     | p == (armRes "hasAdvancementTypeString") = trace ("S "++dbg) $
+     | p == (armRes "hasAdvancementTypeString") = 
              toAdvancement' xs $ adv { advType = rdfToString  ob } 
-     | otherwise = trace dbg $ toAdvancement' xs adv 
+     | otherwise = toAdvancement' xs adv 
      where fs Nothing = "" 
            fs (Just x) = x
            fi Nothing = 0 
            fi (Just x) = x
            t = advTime adv
-           dbg = "toAdv " ++ show (p,ob)
+           -- dbg = "toAdv " ++ show (p,ob)

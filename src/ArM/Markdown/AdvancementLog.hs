@@ -19,27 +19,28 @@ import ArM.Rules.Aux
 import ArM.Resources
 import ArM.Types.Trait
 import ArM.Types.Advancement
-import ArM.Types.Season
+-- import ArM.Types.Season
 import Data.List(intercalate)
-import Data.Maybe (fromJust,catMaybes)
+import Data.Maybe (catMaybes)
 import Swish.RDF
 
 
 printAdvancementLog :: [Advancement] -> [String]
 printAdvancementLog = intercalate [] . map printAdvancement . filterAdv
 
-advYear :: Advancement -> Maybe Int
-advYear = charYear . advTime 
+-- advYear :: Advancement -> Maybe Int
+-- advYear = charYear . advTime 
 
 filterAdv :: [Advancement] -> [Advancement]
+filterAdv = reverse
+{-
 filterAdv []  = []
 filterAdv (x:xs) | advYear x == Nothing = filterAdv xs 
 filterAdv (x:xs) | otherwise = x:filterAdv xs 
+-}
 
 printAdvancement :: Advancement -> [String]
-printAdvancement = printAdvancement' 
-printAdvancement' :: Advancement -> [String]
-printAdvancement' ad = catMaybes 
+printAdvancement ad = catMaybes 
                        [ Just $ "+ " ++ showSeason ad ++ ": " ++ fm (advType ad)
                        , f $ advLabel ad
                        , fi $ advXP ad
@@ -84,7 +85,8 @@ xpCount (Just x) (Just y) | otherwise = Just $
      "    + Spent " ++ show x ++ "xp of " ++ show y ++ "xp"
 
 showSeason :: Advancement -> String 
-showSeason a =  ( charSeason . advTime ) a ++ " " ++ ( show . fromJust . advYear ) a 
+showSeason =  show . advTime
+-- showSeason a =  ( charSeason . advTime ) a ++ " " ++ ( show . fromJust . advYear ) a 
 
 data PTrait = PTrait 
      { ptXP :: Maybe Int

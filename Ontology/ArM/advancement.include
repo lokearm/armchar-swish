@@ -80,6 +80,11 @@ arm:advancementClass  a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:subPropertyOf rdf:type ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   owl:Class ;
+        arm:hasStringProperty arm:advancementClassString ;
+        rdfs:label   "Advancement Type (Class)" .
+arm:advancementClassString  a owl:DatatypeProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   xsd:string ;
         rdfs:label   "Advancement Type" .
 arm:hasHouseVirtue rdfs:subPropertyOf arm:advanceTrait .
 arm:buyVirtueFlaw rdfs:subPropertyOf arm:advanceTrait .
