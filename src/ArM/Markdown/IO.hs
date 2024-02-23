@@ -56,9 +56,18 @@ writeSaga fn sob = write fn [ '#':' ':sagaTitle sob ]
 writeCG :: TCG.CharGen -> IO ()
 writeCG cg = trace ("Writing " ++ fn) $ writeSheet fn g
      >> writeAdv fn2 cg
+     >> writeDebug fn3 g
      where g = (TCG.sheetGraph . head . TCG.charSheets) cg
            fn = TCG.charFile cg ++ ".md"
+           fn3 = TCG.charFile cg ++ ".triples"
            fn2 = Just $ TCG.charFile cg ++ "-advancement.md"
+
+writeDebug :: String -> RDFGraph -> IO ()
+writeDebug fn cs = do
+     h2 <- openFile fn WriteMode
+     hPutStrLn h2 $ show cs
+     hClose h2
+
 
 -- | Write the Covenant to the given file
 writeCovenant :: String -- ^ filename
