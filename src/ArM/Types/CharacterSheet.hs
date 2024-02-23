@@ -30,7 +30,6 @@
 module ArM.Types.CharacterSheet ( CharacterSheet(..)
                            , advanceCharacter
                            , getInitialCS
-                           , extractBaseCharacterGraph 
                            ) where
 
 import Swish.RDF.Graph as G
