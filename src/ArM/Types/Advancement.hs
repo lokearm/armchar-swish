@@ -14,6 +14,7 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getPregameAdvancements
                              , getIngameAdvancements
                              , getAllAdvancements
+                             , countXP
                              ) where
 
 import ArM.Debug.NoTrace
@@ -21,7 +22,7 @@ import ArM.Debug.NoTrace
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import Data.Maybe
-import Data.List (sort)
+import Data.List (sort,intercalate)
 import ArM.Types.Season
 import ArM.KeyPair
 import ArM.Resources
@@ -48,6 +49,9 @@ data Advancement = Advancement
     { advChar  :: RDFLabel
     , advTime  :: CharTime
     , rdfid    :: RDFLabel
+    , spellLevels    :: Maybe Int
+    , advLevels      :: Maybe Int
+    , spentXP        :: Maybe Int
     , advXP          :: Maybe Int
     , advType        :: Maybe String
     , advLabel       :: Maybe String
@@ -61,6 +65,9 @@ defaultAdvancement :: Advancement
 defaultAdvancement = Advancement 
                 { advChar = armRes "noSuchCharacter"
                 , rdfid = noSuchAdvancement
+                , spellLevels    = Nothing
+                , advLevels      = Nothing
+                , spentXP        = Nothing
                 , advXP         = Nothing
                 , advType       = Nothing
                 , advLabel       = Nothing
@@ -79,6 +86,24 @@ instance Show Advancement where
       where 
          sc [] = ""
          sc (KeyValuePair x y:xs) = show x ++ ": " ++ show y ++ "\n" ++ sc xs
+
+countXP :: Advancement -> Advancement
+countXP adv = adv { spentXP = Just xp, spellLevels = Just lvl }
+    where (xp,lvl) = countXP' adv
+countXP' :: Advancement -> (Int,Int)
+countXP' = foldl tp (0,0) . getXP . intercalate [] . map traitContents . traits 
+
+tp :: (Int,Int) -> (Int,Int) -> (Int,Int)
+tp (x,y) (x',y') = (x+x',y+y')
+
+getXP :: [RDFTriple] -> [(Int,Int)]
+getXP [] = []
+getXP (x:xs) | arcPred x == (armRes "addedXP") = (i x,0):getXP xs
+             | arcPred x == (armRes "hasLevel") = (0,i x):getXP xs
+             | otherwise = getXP xs
+    where i = i' . rdfToInt . arcObj 
+          i' Nothing = 0 
+          i' (Just n) = n
 
 advSortIndex :: Advancement -> Int
 advSortIndex = advancementIndex . advTime
