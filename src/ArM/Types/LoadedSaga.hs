@@ -20,7 +20,7 @@ import qualified Swish.RDF.Graph as G
 
 import qualified Data.Map as Map
 
-import qualified ArM.Types.Saga as TS
+import qualified ArM.Types.SagaFile as TS
 import qualified ArM.Rules as R
 import           ArM.IO
 
@@ -32,7 +32,7 @@ mergeGraphs [] = G.emptyGraph
 mergeGraphs (x:xs) = foldr G.merge x xs
 
 data LoadedSaga = LoadedSaga 
-              { saga :: TS.Saga
+              { saga :: TS.SagaFile
               , schemaGraph :: G.RDFGraph
               , resourceGraph :: G.RDFGraph
               , schemaRawGraph :: [G.RDFGraph]

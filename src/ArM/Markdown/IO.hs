@@ -18,7 +18,7 @@ import System.IO -- for file IO
 import ArM.Debug.Trace
 
 import qualified ArM.Types.CharGen as TCG
-import ArM.Types.Saga
+import ArM.Types.SagaFile
 import ArM.Sheet.SheetObject
 import ArM.Markdown.CharacterSheet
 import ArM.Markdown.AdvancementLog
@@ -46,7 +46,7 @@ writeAdv (Just fn) cg = trace fn $ do
 
 -- | Write the saga and covenant to the given file
 writeSaga :: String       -- ^ Filename
-          -> Saga         -- ^ Saga 
+          -> SagaFile         -- ^ Saga 
           -> IO ()
 writeSaga fn saga = write fn [ '#':' ':sagaTitle saga ]
 

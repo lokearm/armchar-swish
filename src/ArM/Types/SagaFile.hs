@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Types.Saga
+-- Module      :  ArM.Types.SagaFile
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -11,10 +11,10 @@
 -- top level object of the data model
 --
 -----------------------------------------------------------------------------
-module ArM.Types.Saga ( Saga(..)
-                      , defaultSaga
-                      , sagaFromRDF
-                      ) where
+module ArM.Types.SagaFile ( SagaFile(..)
+                          , defaultSagaFile
+                          , sagaFromRDF
+                          ) where
 
 import ArM.Internal.Aux
 
@@ -28,7 +28,7 @@ import           ArM.Rules.Aux
 import           ArM.Resources
 import           ArM.KeyPair
 
-data Saga = Saga { sagaID :: RDFLabel
+data SagaFile = SagaFile { sagaID :: RDFLabel
                  , sagaTitle :: String
                  , schemaFiles :: [String]
                  , resourceFiles :: [String]
@@ -36,8 +36,8 @@ data Saga = Saga { sagaID :: RDFLabel
                  , sagaGraph :: RDFGraph
                  }
 
-defaultSaga :: Saga 
-defaultSaga = Saga { sagaID = armRes "noSuchSaga"
+defaultSagaFile :: SagaFile 
+defaultSagaFile = SagaFile { sagaID = armRes "noSuchSaga"
                  , sagaTitle = "No Title"
                  , schemaFiles = []
                  , resourceFiles = []
@@ -46,21 +46,21 @@ defaultSaga = Saga { sagaID = armRes "noSuchSaga"
                  }
 
 
-instance FromRDFGraph Saga where 
-   fromRDFGraph g label = fixSaga $ defaultSaga
+instance FromRDFGraph SagaFile where 
+   fromRDFGraph g label = fixSaga $ defaultSagaFile
                  { sagaID = label
                  , sagaGraph = g
                  }
 
 -- | Return a saga object from an RDFGraph.
 -- The graph should contain one and only one saga.
-sagaFromRDF :: RDFGraph -> Saga
+sagaFromRDF :: RDFGraph -> SagaFile
 sagaFromRDF g = fromRDFGraph g sid
     where sid = head $ sagaFromGraph g
 
 
 -- | Complete a saga object by extracting file names from the graph.
-fixSaga :: Saga -> Saga
+fixSaga :: SagaFile -> SagaFile
 fixSaga s = s { schemaFiles = getSchemaFiles sid g
               , resourceFiles = getResourceFiles sid g 
               , characterFiles = getCharacterFiles sid g 
@@ -92,7 +92,7 @@ getCharacterFiles :: RDFLabel -> RDFGraph -> [String]
 getCharacterFiles = getFiles "hasCharacterFile"
 
 
-instance ToJSON Saga where 
+instance ToJSON SagaFile where 
     toJSON c = toJSON $ p x xs
         where x = KeyValuePair (armRes "sagaID") $ sagaID c
               xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
