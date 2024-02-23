@@ -20,7 +20,7 @@ module ArM.Types.CharGen ( CharGen(..)
 import Swish.RDF.Graph as G
 import ArM.KeyPair()
 import ArM.Rules (makeGraph)
-import ArM.Types.Character
+-- import ArM.Types.Character
 import ArM.Types.CharacterSheet
 import ArM.Types.Season
 import ArM.Types.RDF
@@ -59,7 +59,7 @@ data CharGen = CharGen
       , charName :: String      -- ^ Character Name (for display purpose)
       , rawGraph :: RDFGraph    -- ^ Raw graph as stored on file
       , charGraph :: RDFGraph   -- ^ Augmented graph with inference
-      , baseGraph :: RDFGraph   -- ^ Graph containing only the character 
+      -- , baseGraph :: RDFGraph   -- ^ Graph containing only the character 
       , baseSheet :: CharacterSheet 
         -- ^ Character Sheet at the start of the process
       , charSheets :: [CharStage]  
@@ -132,7 +132,7 @@ makeCharGen schema res1 g0 = trace ("makeCharGen " ++ show clab) $ CharGen
              , charName = ""
              , charGraph = g1
              , rawGraph = g0
-             , baseGraph = extractBaseCharacterGraph g0 clab
+             -- , baseGraph = extractBaseCharacterGraph g0 clab
              , baseSheet = cs0
              , charSheets = makeCS schema as cs0
              }

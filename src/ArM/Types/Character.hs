@@ -28,14 +28,13 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Types.Character ( Character(..)
-                           , extractBaseCharacterGraph 
                            , getCharacter
                            ) where
 
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import           Swish.VarBinding  (vbMap)
-import           Data.Maybe (fromJust)
+-- import           Data.Maybe (fromJust)
 
 import ArM.KeyPair
 import ArM.Resources
@@ -105,11 +104,13 @@ query c = listToRDFGraph
    , arc (G.Var "property") typeRes armCharacterProperty
    , arc (G.Var "property") labelRes  (G.Var "label") ]
 
+{-
 extractBaseCharacterGraph :: RDFGraph -> RDFLabel -> RDFGraph 
 extractBaseCharacterGraph g c = listToRDFGraph
                               $ map f $  Q.rdfQueryFind (query c) g
    where f vb = arc c (fromJust $ vbMap vb (G.Var "property"))
                       (fromJust $ vbMap vb (G.Var "value"))
+-}
 
 -- |
 -- = Get Character from a graph
