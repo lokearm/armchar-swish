@@ -52,6 +52,9 @@ armr:gaelic  rdfs:subClassOf armr:livinglanguage ;
                    arm:hasLabel "Living Language: Gaelic" .
 armr:profession  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Profession" .
+armr:profession-scribe  rdfs:subClassOf armr:profession ;
+                   a arm:LeafTraitClass ;
+                   arm:hasLabel "Profession: Scribe" .
 armr:craft  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Craft" .
 armr:craft-sculptor  rdfs:subClassOf armr:craft ;

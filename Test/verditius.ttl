@@ -35,20 +35,17 @@ armchar:verditius arm:characterClass arm:Magus ;
      [ arm:traitClass arm:Size ; arm:hasScore 0 ],
      [ arm:traitClass arm:Confidence ; arm:hasScore 1 ; arm:hasPoints 3 ],
      [ arm:traitClass armr:Dodge ] ,
-     [ arm:traitClass armr:Fist ]
-    ;
+     [ arm:traitClass armr:Fist ] ;
    arm:hasHouseVirtue 
-    [ arm:traitClass armrverditiusMagic ] ;
+    [ arm:traitClass armr:verditiusMagic ] ;
    arm:buyVirtueFlaw
     [ arm:traitClass armr:affinityWithArt ; 
       arm:hasDetail "Imaginem" ],
-
     [ arm:traitClass armr:theGift ],
     [ arm:traitClass armr:hermeticMagus ],
     [ arm:traitClass armr:skilledParens ],
     [ arm:traitClass armr:secondaryInsight ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Moods" ],
-
     [ arm:traitClass armr:deleteriousCircumstances ;
       arm:hasDetail "Hearing Church Bells" ],
     [ arm:traitClass armr:greedyMajor ; a arm:majorFlaw ],
@@ -93,24 +90,28 @@ armchar:verditius arm:characterClass arm:Magus ;
       [ arm:traitClass armr:perdo ; arm:addedXP 15 ],
       [ arm:traitClass armr:rego ; arm:addedXP 21 ],
       [ arm:traitClass armr:animal ; arm:addedXP 0 ],
-      [ arm:traitClass armr:aquam ; arm:addedXP 3 ],
-      [ arm:traitClass armr:auram ; arm:addedXP 45 ],
+      [ arm:traitClass armr:aquam ; arm:addedXP 0 ],
+      [ arm:traitClass armr:auram ; arm:addedXP 0 ],
       [ arm:traitClass armr:corpus ; arm:addedXP 0 ],
       [ arm:traitClass armr:herbam ; arm:addedXP 0 ],
-      [ arm:traitClass armr:ignem ; arm:addedXP 3 ],
-      [ arm:traitClass armr:imaginem ; arm:addedXP 0 ],
-      [ arm:traitClass armr:mentem ; arm:addedXP 0 ],
-      [ arm:traitClass armr:terram ; arm:addedXP 3 ],
+      [ arm:traitClass armr:ignem ; arm:addedXP 0 ],
+      [ arm:traitClass armr:imaginem ; arm:addedXP 36 ],
+      [ arm:traitClass armr:mentem ; arm:addedXP 36 ],
+      [ arm:traitClass armr:terram ; arm:addedXP 0 ],
       [ arm:traitClass armr:vim ; arm:addedXP 15 ],
       [ arm:traitClass armr:forestlore ; arm:addedXP 10  ],
-    [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
-    [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
+    [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Items" ],
     [ arm:traitClass armr:latin ; arm:instanceLabel "Dead Lang: Latin" ; arm:addedXP 50 ; arm:hasSpeciality "Hermetic Usage" ],
-   [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
+    [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
+    [ arm:traitClass armr:profession-scribe ; arm:addedXP 5 ; arm:hasSpeciality "Hermetic Texts" ],
+    [ arm:traitClass armr:hermeslore ; arm:addedXP 5 ; arm:hasSpeciality "Expansion" ],
    [ arm:traitClass armr:finesse ; arm:addedXP 5 ; arm:hasSpeciality "Auram" ],
+   [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
+    [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
    [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
+   [ arm:traitClass armr:organisationlore ; arm:hasDetail "Home Covenant" ;
+     arm:addedXP 5 ; arm:hasSpeciality "Grogs" ],
 
-   [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Items" ],
    [ arm:traitClass armr:verditiuslore ; arm:addedXP  5 ; arm:hasSpeciality "Spells" ],
 
    [ arm:traitClass armr:InAu15Whispering  ],

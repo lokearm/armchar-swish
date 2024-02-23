@@ -28,6 +28,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 		+ [ ] book reader
 		+ [ ] study bonus
 		+ [ ] affinity
++ [ ] [[Advancement]] totals/validation #cli/selected 
 + [ ] Lab work advancement type #cli/backlog 
 	+ [ ] Calculate Lab Totals    #cli/backlog
 	+ [ ] Validate lab total
