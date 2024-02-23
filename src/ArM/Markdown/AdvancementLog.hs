@@ -44,6 +44,8 @@ printAdvancement' ad = catMaybes
                        , f $ advLabel ad
                        , fi $ advXP ad
                        , f $ advDescription ad
+                       , xpCount (spentXP ad) (advXP ad)
+                       , lvlCount (spellLevels ad) (advLevels ad)
                        , Just "    + Traits advanced"
                        ] ++
                        ( map ("        + "++) . map printTrait . traits ) ad
@@ -53,6 +55,33 @@ printAdvancement' ad = catMaybes
          fi (Just x) = Just $ "    + Source Quality " ++ show x
          fm Nothing = ""
          fm (Just x) = x
+lvlCount :: Maybe Int -> Maybe Int -> Maybe String
+lvlCount Nothing Nothing = Nothing
+lvlCount (Just 0) Nothing = Nothing
+lvlCount (Just 0) (Just 0) = Nothing
+lvlCount Nothing (Just y) = Just $
+     "    +  " ++ show y ++ " spell levels to spend"
+lvlCount (Just x) Nothing = Just $
+     "    + Gained " ++ show x ++ "levels of spells"
+lvlCount (Just x) (Just y) | x < y = Just $
+     "    + **Underspent** " ++ show x ++ " spell levels of " ++ show y ++ " levels possible"
+lvlCount (Just x) (Just y) | x > y = Just $
+     "    + **Overspent** " ++ show x ++ " spell levels of " ++ show y ++ " levels possible"
+lvlCount (Just x) (Just y) | otherwise = Just $
+     "    + Gained " ++ show x ++ " spell levels (of an allowance of " ++ show y ++ " levels)"
+
+xpCount :: Maybe Int -> Maybe Int -> Maybe String
+xpCount Nothing Nothing = Nothing
+xpCount Nothing (Just y) = Just $
+     "    + **Underspent**: " ++ show y ++ "xp to spend"
+xpCount (Just x) Nothing = Just $
+     "    + **Overspent**: No allowance, but " ++ show x ++ "xp spent"
+xpCount (Just x) (Just y) | x < y = Just $
+     "    + **Underspent** " ++ show x ++ "xp of " ++ show y ++ "xp"
+xpCount (Just x) (Just y) | x > y = Just $
+     "    + **Overspent** " ++ show x ++ "xp of " ++ show y ++ "xp"
+xpCount (Just x) (Just y) | otherwise = Just $
+     "    + Spent " ++ show x ++ "xp of " ++ show y ++ "xp"
 
 showSeason :: Advancement -> String 
 showSeason a =  ( charSeason . advTime ) a ++ " " ++ ( show . fromJust . advYear ) a 

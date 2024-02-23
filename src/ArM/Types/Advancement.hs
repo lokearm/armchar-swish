@@ -14,7 +14,6 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getPregameAdvancements
                              , getIngameAdvancements
                              , getAllAdvancements
-                             , countXP
                              ) where
 
 import ArM.Debug.NoTrace
@@ -278,7 +277,7 @@ queryGraph c = listToRDFGraph  . f c
 
 -- | Generic version of 'getIngameAdvancements' and 'getPregameAdvancements'
 getAdvancements :: RDFGraph -> RDFGraph -> [Advancement]
-getAdvancements g = fixAdvancements g . 
+getAdvancements g = map countXP . fixAdvancements g . 
                map toAdvancement . arcListSplit . getGenQuads g 
 
 -- | Auxiliary for 'getAdvancements'
