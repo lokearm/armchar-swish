@@ -79,7 +79,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 
 ## Petty Bugs
 
-+ [ ] Current year and season on one line on output character sheet   #cli/backlog 
++ [x] Current year and season on one line on output character sheet   #cli/backlog  @completed(2024-02-23T16:47:04+01:00)
 + [ ] quantity when advancing possessions #cli/backlog 
 + [ ] art on vis in advancement log #cli/backlog 
 + [ ] Covenant name does not show because the covenant data is not included when inferring character data  #cli/selected #bug 

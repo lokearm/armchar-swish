@@ -96,6 +96,7 @@ instance ToRDFGraph CharacterSheet where
                    | otherwise = KeyValuePair (armRes "hasAge") (litInt x):ys
             aYear Nothing ys   = ys
             aYear (Just x) ys  = KeyValuePair (armRes "inYear") (litInt x):ys
+            aTime t ys  = KeyValuePair (armRes "atTime") (litString $ show t):ys
             aSeason x ys  
                    | x == "" = ys
                    | otherwise = KeyValuePair (armRes "atSeason") (litString x):ys
@@ -103,7 +104,7 @@ instance ToRDFGraph CharacterSheet where
             age' (Just y) b | b == 0 = 0 
                             | otherwise = y - b
             age = age' (hasYear cs) (born cs)
-            a = aAge age . aYear (hasYear cs) . aSeason (hasSeason cs)
+            a = aAge age . aYear (hasYear cs) . aSeason (hasSeason cs) . aTime (timeOf cs)
 
 csToArcListM :: CharacterSheet -> BlankState [RDFTriple]
 csToArcListM cs = do

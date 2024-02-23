@@ -3,11 +3,8 @@
 Name
 : Marcus
 
-Season
-: Autumn
-
-Year
-: 1220
+Date
+: Autumn 1220
 
 Player
 : George
@@ -63,7 +60,6 @@ Confidence
 + Curious (custom, similar to reckless) (-1)
 + Compassionate (major) (-3)
 + Deleterious Circumstances: Hearing Church Bells (-1)
-
 # Abilities
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
@@ -107,7 +103,6 @@ Confidence
 + PeVi5 Demon's Eternal Oblivion *Casting Score* 8; *Mastery* 0 (0)
 + InVi20 Piercing the Faerie Veil *Casting Score* 9; *Mastery* 0 (0)
 + InAu15 Whispering Winds *Casting Score* 13; *Mastery* 0 (0)
-
 # Combat
 
 + Fist: Init -1; Atk -1; Dfn -1; Dam -2; Range -

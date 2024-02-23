@@ -205,8 +205,9 @@ mdSort = sortOn mds . filter (\ x -> mds x > 0)
 
 mdSortKey :: String -> Int
 mdSortKey "Name" = 10
-mdSortKey "Season" = 11
-mdSortKey "Year" = 12
+mdSortKey "Season" = 0
+mdSortKey "Year" = 0
+mdSortKey "Date" = 13
 mdSortKey "Player" = 20
 mdSortKey "Birth Year" = 30
 mdSortKey "Age" = 40

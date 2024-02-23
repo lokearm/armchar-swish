@@ -44,6 +44,9 @@ arm:atSeason a   owl:DatatypeProperty, arm:PersistentProperty, arm:ViewProperty 
 arm:inYear a   owl:DatatypeProperty, arm:PersistentProperty, arm:ViewProperty ;
         rdfs:range   xsd:int ;
         rdfs:label   "Year" .
+arm:atTime a   owl:DatatypeProperty, arm:ViewProperty ;
+        rdfs:range   xsd:string ;
+        rdfs:label   "Date" .
 
 arm:awardsXP a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
