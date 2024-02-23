@@ -57,9 +57,9 @@ armchar:verditius arm:characterClass arm:Magus ;
 
    arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
-    [ arm:traitClass armr:com ; arm:hasScore 2 ], [ arm:traitClass armr:pre ; arm:hasScore 1 ],
-    [ arm:traitClass armr:str ; arm:hasScore -2 ], [ arm:traitClass armr:sta ; arm:hasScore +1 ],
-    [ arm:traitClass armr:dex ; arm:hasScore -1 ], [ arm:traitClass armr:qik ; arm:hasScore -1 ],
+    [ arm:traitClass armr:com ; arm:hasScore +1 ], [ arm:traitClass armr:pre ; arm:hasScore 1 ],
+    [ arm:traitClass armr:str ; arm:hasScore +1 ], [ arm:traitClass armr:sta ; arm:hasScore +2 ],
+    [ arm:traitClass armr:dex ; arm:hasScore -2 ], [ arm:traitClass armr:qik ; arm:hasScore -2 ],
     [ arm:traitClass armr:occitan ; arm:instanceLabel "L Lang: High German" ; arm:hasSpeciality "Vaud" ; arm:hasTotalXP 75  ],
     [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Ambitious" ;  arm:hasFixedScore 2 ],
     [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Contemplative" ;  arm:hasFixedScore 3 ],
@@ -69,17 +69,20 @@ armchar:verditius arm:characterClass arm:Magus ;
 :earlyadv arm:advanceCharacter armchar:verditius ;
    arm:advancementClass arm:EarlyChildhoodAdvancement ; 
    arm:advanceTrait 
-   [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
-   [ arm:traitClass armr:stealth ; arm:hasSpeciality "Woodlands" ;  arm:addedXP 15  ],
-   [ arm:traitClass armr:survival ; arm:hasSpeciality "Woodlands" ; arm:addedXP 15  ] .
+   [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 5  ],
+   [ arm:traitClass armr:charm   ; arm:hasSpeciality "Traders" ; arm:addedXP 15  ] .
+   [ arm:traitClass armr:folkken ; arm:hasSpeciality "Townsfolk" ; arm:addedXP 15  ] .
+   [ arm:traitClass armr:english ; arm:hasSpeciality "East Anglia" ; arm:addedXP   5  ] .
+   [ arm:traitClass armr:westnorse ; arm:hasSpeciality "Norwegian" ; arm:addedXP 5  ] .
 
 :lateradv arm:advanceCharacter armchar:verditius ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
   arm:advanceTrait 
-      [ arm:traitClass armr:hunt ;  arm:addedXP 5 ; arm:hasSpeciality "Woodlands"  ],
-      [ arm:traitClass armr:intrigue ;  arm:addedXP 5 ; arm:hasSpeciality "Hermetic Politics"  ],
+      [ arm:traitClass armr:craft-sculptor ;  arm:addedXP 50 ; arm:hasSpeciality "Stone"  ],
+      [ arm:traitClass armr:bargain ;  arm:addedXP 5 ; arm:hasSpeciality "Own works"  ],
+      [ arm:traitClass armr:etiquette ;  arm:addedXP 5 ; arm:hasSpeciality "Townsfolk"  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Conc." ;
-        arm:addedXP 15  ]
+        arm:addedXP 5  ]
       .
 :apprenticeadv arm:advanceCharacter armchar:verditius ;
   arm:advancementClass arm:ApprenticeshipAdvancement ; 
