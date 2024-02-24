@@ -87,7 +87,7 @@ arm:awardsLevels a owl:DatatypeProperty, arm:PersistentProperty ;
 arm:classAwardsXP a owl:DatatypeProperty ;
         rdfs:domain  owl:Class ;
         rdfs:range   xsd:int ;
-        rdfs:label   "XP awarded" (general rule)" .
+        rdfs:label   "XP awarded (general rule)" .
 arm:classAwardsLevels a owl:DatatypeProperty ;
         rdfs:domain  owl:Class ;
         rdfs:range   xsd:int ;
