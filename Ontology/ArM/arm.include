@@ -18,6 +18,10 @@ arm:TraitProperty rdfs:subClassOf arm:InheritableProperty ;
 arm:InheritableProperty rdfs:subClassOf rdf:Property ;
    rdfs:comment "Inheritable properties are inferred on instances." .
 
+arm:armType rdfs:subPropertyOf rdf:type ;
+   rdfs:label "ArM Type" ;
+   rdfs:comment  "Non-transitive type declaration" .
+
 # Generic Object
 arm:Object a owl:Class .
 

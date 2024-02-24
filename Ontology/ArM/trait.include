@@ -241,6 +241,7 @@ arm:grantsTrait a owl:ObjectProperty ;
   rdfs:range   arm:Trait .
 
 arm:traitClass a owl:ObjectProperty, arm:PersistentProperty ;
+        rdfs:subPropertyOf   arm:armType ;
         arm:hasStringProperty arm:traitClassString ;
         rdfs:domain  arm:Trait ;
         rdfs:range   owl:Class ;

@@ -96,11 +96,15 @@ arm:classAwardsLevels a owl:DatatypeProperty ;
 
 arm:AdvancementType a owl:Class .
 arm:Exposure  arm:hasLabel "Exposure" ; a arm:AdvancementType .
+   arm:LabWork  arm:hasLabel "Lab Work" ; rdfs:subClassOf arm:Exposure .
+   arm:Teach  arm:hasLabel "Teaching a student" ; rdfs:subClassOf arm:Exposure .
+   arm:Train  arm:hasLabel "Training an apprentice" ; rdfs:subClassOf arm:Exposure .
 arm:Practice  arm:hasLabel "Practice" ; a arm:AdvancementType .
 arm:Adventure  arm:hasLabel "Adventure" ; a arm:AdvancementType .
 arm:Training  arm:hasLabel "Training" ; a arm:AdvancementType .
 arm:Teaching  arm:hasLabel "Teaching" ; a arm:AdvancementType .
 arm:Reading  arm:hasLabel "Reading" ; a arm:AdvancementType .
+arm:VisStudy  arm:hasLabel "Studying from Vis" ; a arm:AdvancementType .
 
 # Trait Advancement
 
@@ -109,7 +113,7 @@ arm:advanceTrait a owl:ObjectProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   arm:Trait .
 arm:advancementClass  a owl:ObjectProperty, arm:PersistentProperty ;
-        rdfs:subPropertyOf rdf:type ;
+        rdfs:subPropertyOf   arm:armType ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   owl:Class ;
         arm:hasStringProperty arm:advancementClassString ;

@@ -48,7 +48,7 @@ prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRul
 -- Introduced 24-02-24 
 inheritanceRule :: RDFRule
 inheritanceRule = makeCRule "inheritanceRule" l1 l2
-    where l1 = [ arc sVar typeRes tVar,
+    where l1 = [ arc sVar (armRes "armType") tVar,
                arc tVar pVar oVar,
                arc pVar typeRes ( armRes  "InheritableProperty" )  ]
 {-
