@@ -28,7 +28,14 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 		+ [ ] book reader
 		+ [ ] study bonus
 		+ [ ] affinity
-+ [ ] [[Advancement]] totals/validation #cli/selected 
++ [ ] Display character at gauntlet  #cli/selected 
++ [ ] [[Advancement]] totals in advancement log #cli/selected 
+	+ [x] calculate total
+	+ [ ] awards on pregame advancements
+	+ [ ] Implement Skilled Parens virtue
+	+ [ ] Implement Feral Upbringing
+	+ [ ] Implement Poor/Wealthy
++ [ ] [[Advancement]] validation #cli/backlog 
 + [ ] Lab work advancement type #cli/backlog 
 	+ [ ] Calculate Lab Totals    #cli/backlog
 	+ [ ] Validate lab total
@@ -58,7 +65,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Virtues/Flaws taken more than once #cli/selected 
 	+ [ ] Test a character with Silent Magic twice
 	+ [ ] Test a character with two different Art affinities
-+ [ ] Support Grimoire (Lab Texts)
++ [ ] Support Grimoire (Lab Texts) #cli/backlog 
 + [ ] Equipment load #cli/backlog 
 	+ [ ] load per item
 	+ [ ] total load (multiplied by quantity) per line
