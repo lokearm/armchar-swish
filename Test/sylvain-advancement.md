@@ -1,5 +1,5 @@
 # Advancement Log
-+ Spring 1220: 
++ Spring 1220: Lab Work
     + Lab work/exposure
     + **Overspent**: No allowance, but 2xp spent
     + Traits advanced

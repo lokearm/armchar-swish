@@ -1,5 +1,5 @@
 # Character Generation
-+ Base Character: 
++ Base Character
     + **Overspent**: No allowance, but 0xp spent
     + Traits advanced
         + ???
@@ -35,19 +35,19 @@
         + Fist
         + Dodge
         + Dagger
-+ Early Childhood: 
++ Early Childhood
     + **Overspent**: No allowance, but 45xp spent
     + Traits advanced
         + ??? (15 xp)
         + Stealth (15 xp)
         + Awareness (15 xp)
-+ Later Life: 
++ Later Life
     + **Overspent**: No allowance, but 25xp spent
     + Traits advanced
         + ??? (5 xp)
         + ??? (5 xp)
         + Concentration (15 xp)
-+ Apprenticeship: 
++ Apprenticeship
     + **Overspent**: No allowance, but 287xp spent
     + Gained 150levels of spells
     + Traits advanced

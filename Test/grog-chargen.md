@@ -1,5 +1,5 @@
 # Character Generation
-+ Base Character: 
++ Base Character
     + **Overspent**: No allowance, but 0xp spent
     + Traits advanced
         + ???
@@ -28,13 +28,13 @@
         + Dodge
         + Axe
         + Arrow
-+ Early Childhood: 
++ Early Childhood
     + **Overspent**: No allowance, but 45xp spent
     + Traits advanced
         + ??? (15 xp)
         + Stealth (15 xp)
         + Awareness (15 xp)
-+ Later Life: 
++ Later Life
     + **Overspent**: No allowance, but 275xp spent
     + Traits advanced
         + Thrown Weapon (30 xp)
