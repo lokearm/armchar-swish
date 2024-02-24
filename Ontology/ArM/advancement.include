@@ -5,7 +5,7 @@ arm:BaseAdvancement rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Base Character" ;
    arm:hasAdvancementIndex  10 .
 arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:PregameAdvancement ;
-   arm:hasLabel "Eearly Childhood" ;
+   arm:hasLabel "Early Childhood" ;
    arm:hasAdvancementIndex  20 .
 arm:LaterLifeAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Later Life" ;
