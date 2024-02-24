@@ -78,4 +78,5 @@ arm:instanceLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentPrope
         rdfs:range   xsd:string .
 arm:hasDetail  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:label   "Detail" ;
+        rdfs:comment  "Detail applies to ability classes such as area lore and craft, and to virtue classes such as puissant and affinity.  It is required in addition to the label to allow unique identification." ;
         rdfs:range   xsd:string .
