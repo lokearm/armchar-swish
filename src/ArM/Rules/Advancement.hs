@@ -33,3 +33,14 @@ prepareRecord :: RDFGraph -> RDFGraph -> RDFGraph
 prepareRecord schema = id
 
 -- set awardsXP
+rdfstypeRule :: RDFRule
+rdfstypeRule = 
+    makeCRule "modifierRuld"
+      [ arc mVar typeRes (armRes "Modifier") 
+      , arc mVar (armRes "hasProperty") pVar 
+      , arc mVar (armRes "hasClass") cVar 
+      , arc mVar (armRes "hasValue") oVar 
+      , arc sVar typeRes cVar
+      ]
+      [ arc sVar typeRes cVar ]
+    where mVar = (Var "m")

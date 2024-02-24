@@ -180,6 +180,12 @@ armr:sideEffect   rdfs:subClassOf armr:minorHermeticVirtue ; arm:hasReference   
                               a arm:LeafTraitClass ;
                           arm:hasLabel "Side Effect" .
 armr:skilledParens   rdfs:subClassOf armr:minorHermeticVirtue ;
+      arm:hasModifier [ arm:hasProperty arm:awardsXP ;
+                        arm:hasValue 300 ;
+			arm:hasClass ; arm:ApprenticeshipAdvancement ] ;
+      arm:hasModifier [ arm:hasProperty arm:awardsLevels ;
+                        arm:hasValue 150 ;
+			arm:hasClass ; arm:ApprenticeshipAdvancement ] ;
       arm:hasDescription   "Your parens was more powerful, and a better teacher, than is common. You gain an additional 60 experience points and 30 spell levels during apprenticeship. This Virtue has no effect on your study after apprenticeship, but you still have a close relationship with a powerful magus." ;
                      arm:hasReference   "[ArM5]" ;
                      a arm:LeafTraitClass ;

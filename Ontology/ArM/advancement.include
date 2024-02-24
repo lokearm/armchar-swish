@@ -1,19 +1,39 @@
 
+arm:Modifier a owl:Class ;
+   arm:hasLabel "Modifier" .
+arm:hasProperty a owl:ObjectProperty ;
+        rdfs:domain  arm:Modifier ;
+        rdfs:range   owl:Property ;
+        rdfs:label   "Inferred property" .
+arm:hasValue a rdf:Property ;
+        rdfs:domain  arm:Modifier ;
+        rdfs:label   "Inferred value" .
+arm:hasClass a rdf:Property ;
+        rdfs:domain  arm:Modifier ;
+        rdfs:range   arm:Class ;
+        rdfs:label   "Affected class" .
+arm:hasModifier a rdf:Property ;
+        rdfs:range   arm:Modifier ;
+        rdfs:label   "Rules modifier" .
 # Character Advancement
 arm:CharacterAdvancement a owl:Class .
 arm:BaseAdvancement rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Base Character" ;
    arm:hasAdvancementIndex  10 .
 arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:PregameAdvancement ;
+   arm:classAwardsXP 45 ;
    arm:hasLabel "Early Childhood" ;
    arm:hasAdvancementIndex  20 .
 arm:LaterLifeAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:classAwardsAnnualXP 15 ;
    arm:hasLabel "Later Life" ;
    arm:hasAdvancementIndex  30 .
 arm:VirtueAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Virtue XP" ;
    arm:hasAdvancementIndex  35 .
 arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:classAwardsXP 240 ;
+   arm:classAwardsLevels 120 ;
    arm:hasLabel "Apprenticeship" ;
    arm:hasAdvancementIndex  40 .
 arm:PGAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
@@ -60,6 +80,18 @@ arm:awardsXP a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:int ;
         rdfs:label   "XP awarded" .
+arm:awardsLevels a owl:DatatypeProperty, arm:PersistentProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   xsd:int ;
+        rdfs:label   "Spell levels awarded" .
+arm:classAwardsXP a owl:DatatypeProperty ;
+        rdfs:domain  owl:Class ;
+        rdfs:range   xsd:int ;
+        rdfs:label   "XP awarded" (general rule)" .
+arm:classAwardsLevels a owl:DatatypeProperty ;
+        rdfs:domain  owl:Class ;
+        rdfs:range   xsd:int ;
+        rdfs:label   "Spell levels awarded (general rule)" .
 
 
 arm:AdvancementType a owl:Class .
