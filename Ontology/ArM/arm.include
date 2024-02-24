@@ -76,3 +76,6 @@ arm:instanceLabel a owl:DatatypeProperty, arm:TraitProperty, arm:PersistentPrope
         rdfs:comment  "Object's whose label differs from the class should use instance label to distinguish. This is editable and persisted." ;
         rdfs:domain arm:Object ;
         rdfs:range   xsd:string .
+arm:hasDetail  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
+        rdfs:label   "Detail" ;
+        rdfs:range   xsd:string .

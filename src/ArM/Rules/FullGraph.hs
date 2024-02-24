@@ -39,12 +39,15 @@ prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRul
              . fwdApplyList [ bonus1rule, bonus2rule, bonusXPrule ]
              . fwdApplyList [ advancevfgrantRule,advancevfgrantRule2 ]
                                -- spectraitRule,
-             . fwdApplyList  [ bonus3rule, rRule ]
+             . fwdApplyList  [ bonus3rule, inheritanceRule ]
              . applyRDFS
 
 
-rRule :: RDFRule
-rRule = makeCRule "rRule" l1 l2
+-- | Rule to let instances inherit certain properties from their class.
+-- Related Ontology:  arm:InheritableProperty
+-- Introduced 24-02-24 
+inheritanceRule :: RDFRule
+inheritanceRule = makeCRule "inheritanceRule" l1 l2
     where l1 = [ arc sVar typeRes tVar,
                arc tVar pVar oVar,
                arc pVar typeRes ( armRes  "InheritableProperty" )  ]

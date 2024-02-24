@@ -113,9 +113,6 @@ arm:hasXP  a   owl:DatatypeProperty, arm:TraitProperty ;
 	rdfs:comment "XP towards next level" ;
         rdfs:domain  arm:Trait ;
         rdfs:range   xsd:int .
-arm:hasDetail  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
-        rdfs:label   "Detail" ;
-        rdfs:range   xsd:string .
 arm:hasSpeciality  a   owl:DatatypeProperty, arm:TraitProperty, arm:PeristentProperty ;
         rdfs:range   xsd:string ;
         rdfs:label   "Speciality" .
