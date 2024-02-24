@@ -135,7 +135,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
 
 
 :spring1220 arm:advanceCharacter armchar:sylvain ;
-  arm:advancementClass arm:IngameAdvancement ; 
+  arm:advancementClass arm:LabWork ; 
   arm:atSeason "Spring" ;
   arm:inYear   1220 ;
   arm:instanceDescription "Lab work/exposure" ;

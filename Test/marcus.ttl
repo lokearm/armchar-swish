@@ -130,8 +130,7 @@ armchar:marcus arm:characterClass arm:Magus ;
        ] .
 
 :spring1220 arm:advanceCharacter armchar:marcus ;
-  arm:advancementClass arm:IngameAdvancement ; 
-  arm:hasAdvancementType   arm:Adventure ;
+  arm:advancementClass arm:Adventure ;
   arm:atSeason "Spring" ;
   arm:inYear   1220 ;
   arm:instanceLabel "Into the faerie forest" ;
@@ -145,8 +144,7 @@ armchar:marcus arm:characterClass arm:Magus ;
     [ arm:traitClass armr:finesse ; arm:addedXP 5  ] .
 
 :summer1220 arm:advanceCharacter armchar:marcus ;
-  arm:hasAdvancementType   arm:Adventure ;
-  arm:advancementClass arm:IngameAdvancement ; 
+  arm:advancementClass arm:Adventure ;
   arm:atSeason "Summer" ;
   arm:inYear   1220 ;
   arm:instanceLabel "Montpellier" ;

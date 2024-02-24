@@ -2,22 +2,21 @@
 
 # In-game advancement
 :summer1217adv arm:advanceCharacter armchar:cieran ;
-  a arm:IngameAdvancement ; 
   arm:atSeason "Summer" ;
   arm:inYear   1217 ;
   arm:instanceDescription "Studies Herbam L6 Q21 +3" ;
   arm:advanceTrait [ arm:traitClass armr:herbam ; arm:addedXP 21 ]  ;
   arm:awardsXP 21 ;
-  arm:hasAdvancementType arm:Reading .
+  arm:hasAdvancementClass arm:Reading .
 
 :autumn1217adv arm:advanceCharacter armchar:cieran ;
+  arm:advancementClass arm:Reading ;
   a arm:IngameAdvancement ;
   arm:atSeason "Autumn" ;
   arm:inYear   1217 ;
   arm:instanceDescription "Studies Mentem L16 Q13 +3" ;
   arm:advanceTrait [ arm:traitClass armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
-  arm:hasAdvancementType arm:Reading ;
   arm:changePossession
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 2 ;
        arm:instanceLabel "Initiation scripts" ;
@@ -25,7 +24,6 @@
        ] .
 
 :winter1217adv arm:advanceCharacter armchar:cieran ;
-  a arm:IngameAdvancement ;
   arm:atSeason "Winter" ;
   arm:inYear   1217 ;
   arm:instanceDescription "Learn Spell" ;
@@ -33,7 +31,7 @@
                 [ arm:traitClass armr:MuCo25Shape ; arm:hasTotalXP 5 ;
 	          arm:hasMasteryOption armr:quietcasting-mastery	] ;
   arm:awardsXP 2 ;
-  arm:hasAdvancementType arm:Exposure .
+  arm:advancementClass arm:Exposure .
 
 :spring1218adv arm:advanceCharacter armchar:cieran ;
   a arm:IngameAdvancement ;
@@ -44,4 +42,4 @@
                    [ arm:traitClass armr:creo ; arm:addedXP 2 ],
                    [ arm:traitClass armr:personality-villager ; arm:hasFixedScore 3 ] ;
   arm:awardsXP 7 ;
-  arm:hasAdvancementType arm:Adventure .
+  arm:advancementClass arm:Adventure .

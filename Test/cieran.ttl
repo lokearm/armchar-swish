@@ -162,13 +162,12 @@ armchar:contestedlands a arm:Saga ;
 
 # In-game advancement
 :summer1217adv arm:advanceCharacter armchar:cieran ;
-  arm:advancementClass arm:IngameAdvancement ; 
   arm:atSeason "Summer" ;
   arm:inYear   1217 ;
   arm:instanceDescription "Studies Herbam L6 Q21 +3" ;
   arm:advanceTrait [ arm:traitClass armr:herbam ; arm:addedXP 21 ]  ;
   arm:awardsXP 21 ;
-  arm:hasAdvancementType arm:Reading .
+  arm:advancementClass arm:Reading .
 
 :autumn1217adv arm:advanceCharacter armchar:cieran ;
   arm:advancementClass arm:IngameAdvancement ;
@@ -177,7 +176,7 @@ armchar:contestedlands a arm:Saga ;
   arm:instanceDescription "Studies Mentem L16 Q13 +3" ;
   arm:advanceTrait [ arm:traitClass armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
-  arm:hasAdvancementType arm:Reading ;
+  arm:advancementClass arm:Reading ;
   arm:changePossession
      [ arm:traitClass arm:Equipment ; arm:hasQuantity 2 ;
        arm:instanceLabel "Initiation scripts" ;
@@ -185,7 +184,6 @@ armchar:contestedlands a arm:Saga ;
        ] .
 
 :winter1217adv arm:advanceCharacter armchar:cieran ;
-  arm:advancementClass arm:IngameAdvancement ;
   arm:atSeason "Winter" ;
   arm:inYear   1217 ;
   arm:instanceDescription "Learn Spell" ;
@@ -193,10 +191,9 @@ armchar:contestedlands a arm:Saga ;
                 [ arm:traitClass armr:MuCo25Shape ; arm:hasTotalXP 5 ;
 	          arm:hasMasteryOption armr:quietcasting-mastery	] ;
   arm:awardsXP 2 ;
-  arm:hasAdvancementType arm:Exposure .
+  arm:advancementType arm:Exposure .
 
 :spring1218adv arm:advanceCharacter armchar:cieran ;
-  arm:advancementClass arm:IngameAdvancement ;
   arm:atSeason "Spring" ;
   arm:inYear   1218 ;
   arm:instanceDescription "Story" ;
@@ -204,4 +201,4 @@ armchar:contestedlands a arm:Saga ;
                    [ arm:traitClass armr:creo ; arm:addedXP 2 ],
                    [ arm:traitClass armr:personality-villager ; arm:hasFixedScore 3 ] ;
   arm:awardsXP 7 ;
-  arm:hasAdvancementType arm:Adventure .
+  arm:advancementClass arm:Adventure .

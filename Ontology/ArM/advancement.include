@@ -57,15 +57,6 @@ arm:advanceCharacter a owl:ObjectProperty, arm:ImmutableProperty, arm:Persistent
 
 arm:hasAdvancement a owl:ObjectProperty, arm:ImmutableProperty ;
 	owl:inverseOf  arm:advanceCharacter  .
-arm:hasAdvancementTypeString   a owl:DatatypeProperty, arm:ViewProperty ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   xsd:string ;
-        rdfs:label   "Mode of Study" .
-arm:hasAdvancementType   a owl:ObjectProperty, arm:PersistentProperty ;
-        rdfs:domain  arm:CharacterAdvancement ;
-        rdfs:range   arm:AdvancementType ;
-        rdfs:label   "Study Mode" ;
-        arm:hasStringProperty arm:hasAdvancementTypeString .
 arm:atSeason a   owl:DatatypeProperty, arm:PersistentProperty, arm:ViewProperty ;
         rdfs:range   xsd:string ;
         rdfs:label   "Season" .
@@ -94,17 +85,16 @@ arm:classAwardsLevels a owl:DatatypeProperty ;
         rdfs:label   "Spell levels awarded (general rule)" .
 
 
-arm:AdvancementType a owl:Class .
-arm:Exposure  arm:hasLabel "Exposure" ; a arm:AdvancementType .
+arm:Exposure  arm:hasLabel "Exposure" ; rdfs:subClassOf arm:IngameAdvancement .
    arm:LabWork  arm:hasLabel "Lab Work" ; rdfs:subClassOf arm:Exposure .
    arm:Teach  arm:hasLabel "Teaching a student" ; rdfs:subClassOf arm:Exposure .
    arm:Train  arm:hasLabel "Training an apprentice" ; rdfs:subClassOf arm:Exposure .
-arm:Practice  arm:hasLabel "Practice" ; a arm:AdvancementType .
-arm:Adventure  arm:hasLabel "Adventure" ; a arm:AdvancementType .
-arm:Training  arm:hasLabel "Training" ; a arm:AdvancementType .
-arm:Teaching  arm:hasLabel "Teaching" ; a arm:AdvancementType .
-arm:Reading  arm:hasLabel "Reading" ; a arm:AdvancementType .
-arm:VisStudy  arm:hasLabel "Studying from Vis" ; a arm:AdvancementType .
+arm:Practice  arm:hasLabel "Practice" ;  rdfs:subClassOf arm:IngameAdvancement .
+arm:Adventure  arm:hasLabel "Adventure" ;  rdfs:subClassOf arm:IngameAdvancement .
+arm:Training  arm:hasLabel "Training" ;  rdfs:subClassOf arm:IngameAdvancement .
+arm:Teaching  arm:hasLabel "Teaching" ;  rdfs:subClassOf arm:IngameAdvancement .
+arm:Reading  arm:hasLabel "Reading" ;  rdfs:subClassOf arm:IngameAdvancement .
+arm:VisStudy  arm:hasLabel "Studying from Vis" ;  rdfs:subClassOf arm:IngameAdvancement .
 
 # Trait Advancement
 
