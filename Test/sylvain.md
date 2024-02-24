@@ -49,13 +49,13 @@ Confidence
 
 + Elemental Magic (3)
 + The Gift (-)
++ Forest Lore (1)
++ Minor Magical Focus: Wind (1)
 + Secondary Insight (1)
 + Diedne Magic (1)
 + Skilled Parens (1)
 + Puissant (Ability): Forest Lore (1)
 + Affinity with Ability: Forest Lore (1)
-+ Forest Lore (1)
-+ Minor Magical Focus: Wind (1)
 + Motion Sickness (-1)
 + Small Frame (-1)
 + Pagan (-3)
@@ -66,7 +66,6 @@ Confidence
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
 | :-                   | :-              |    -: |   -: |    -: |        -: |
-| Forest Lore          | -               |     3 |    5 |     2 |         5 |
 | Merinita Cult Lore   | Spells          |     1 |    0 |     - |         1 |
 | Magic Theory         | Spells          |     3 |    0 |     - |         3 |
 | Parma Magica         | Mentem          |     1 |    0 |     - |         1 |
@@ -77,6 +76,7 @@ Confidence
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
 | Awareness            | searching       |     2 |    0 |     - |         2 |
 | L Lang: Occitan      | [local]         |     5 |    0 |     - |         5 |
+| Forest Lore          | -               |     3 |    5 |     2 |         5 |
 # Arts
 
 | Art        | Score |   XP | Bonus | Effective |

@@ -40,8 +40,8 @@ Confidence
 
 + Warrior (1)
 + Puissant (Ability): Bows (1)
-+ Compassionate (-1)
 + Branded Criminal (-1)
++ Compassionate (-1)
 # Abilities
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |

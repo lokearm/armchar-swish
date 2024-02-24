@@ -19,7 +19,7 @@ import ArM.Rules.Aux
 import ArM.Resources
 import ArM.Types.Trait
 import ArM.Types.Advancement
--- import ArM.Types.Season
+import ArM.Types.Season
 import Data.List(intercalate)
 import Data.Maybe (catMaybes)
 import Swish.RDF
@@ -39,9 +39,16 @@ filterAdv (x:xs) | advYear x == Nothing = filterAdv xs
 filterAdv (x:xs) | otherwise = x:filterAdv xs 
 -}
 
+showAdType :: Advancement -> String
+showAdType ad | y ad == Nothing = "+ " ++ showSeason ad 
+              | otherwise = "+ " ++ showSeason ad ++ ": " ++ fm (advType ad)
+   where y = charYear . advTime
+         fm Nothing = ""
+         fm (Just x) = x
+
 printAdvancement :: Advancement -> [String]
 printAdvancement ad = catMaybes 
-                       [ Just $ "+ " ++ showSeason ad ++ ": " ++ fm (advType ad)
+                       [ Just $ showAdType ad
                        , f $ advLabel ad
                        , fi $ advXP ad
                        , f $ advDescription ad
@@ -54,8 +61,6 @@ printAdvancement ad = catMaybes
          f (Just x) = Just $  "    + " ++ x
          fi Nothing = Nothing
          fi (Just x) = Just $ "    + Source Quality " ++ show x
-         fm Nothing = ""
-         fm (Just x) = x
 lvlCount :: Maybe Int -> Maybe Int -> Maybe String
 lvlCount Nothing Nothing = Nothing
 lvlCount (Just 0) Nothing = Nothing

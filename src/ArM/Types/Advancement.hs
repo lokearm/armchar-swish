@@ -318,9 +318,7 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
      | p == (armRes "instanceDescription") =
              toAdvancement' xs $ adv { advDescription = rdfToString  ob } 
      | p == (armRes "advancementClassString") = trace (fs (rdfToString ob)) $
-        adv { advTime = t { advancementStage = fs (rdfToString ob) } }
-     | p == (armRes "hasAdvancementTypeString") = 
-             toAdvancement' xs $ adv { advType = rdfToString  ob } 
+        adv { advTime = t { advancementStage = fs (rdfToString ob) }, advType = rdfToString  ob }  
      | otherwise = toAdvancement' xs adv 
      where fs Nothing = "" 
            fs (Just x) = x
