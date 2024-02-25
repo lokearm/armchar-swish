@@ -43,7 +43,7 @@ arm:PregameAdvancement  rdfs:subClassOf arm:CharacterAdvancement .
 arm:IngameAdvancement  rdfs:subClassOf arm:CharacterAdvancement ;
    arm:hasAdvancementIndex  100 .
 
-arm:durationYears  a owl:DatatypeProperty ;
+arm:durationYears  a owl:DatatypeProperty, arm:InheritableProperty ;
         rdfs:domain   owl:Advancement ;
         rdfs:range   xsd:int ;
         arm:hasLabel   "Duration (Years)" ;

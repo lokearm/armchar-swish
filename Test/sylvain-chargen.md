@@ -6,8 +6,6 @@
         + Pious
         + Curious
         + Confidence
-        + ???
-        + ???
         + The Gift
         + Strength
         + Stamina
@@ -47,7 +45,7 @@
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life
-    + **Overspent**: No allowance, but 45xp spent
+    + **Overspent** 45xp of 0xp
     + Traits advanced
         + Intrigue (5 xp)
         + Hunt (5 xp)

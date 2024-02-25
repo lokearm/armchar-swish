@@ -5,7 +5,6 @@
         + Loyal
         + Brave
         + Compassionate
-        + ???
         + Warrior
         + Strength
         + Stamina
@@ -35,15 +34,15 @@
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life
-    + **Overspent**: No allowance, but 275xp spent
+    + **Overspent** 275xp of 0xp
     + Traits advanced
         + Thrown Weapon (30 xp)
         + Survival (15 xp)
         + Single Weapon (50 xp)
-        + ??? (5 xp)
-        + ??? (30 xp)
+        + Living Language: Norman (5 xp)
+        + Music (30 xp)
         + Hunt (5 xp)
-        + ??? (5 xp)
+        + Craft: Cooking (5 xp)
         + Brawl (30 xp)
         + Bows (75 xp)
         + (Area) Lore (30 xp)
