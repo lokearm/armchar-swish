@@ -96,6 +96,7 @@ showSeason =  show . advTime
 
 data PTrait = PTrait 
      { ptXP :: Maybe Int
+     , ptID :: String
      , label1 :: Maybe String
      , label2 :: Maybe String
      , ptDetail :: Maybe String
@@ -103,6 +104,7 @@ data PTrait = PTrait
 defaultPTrait :: PTrait 
 defaultPTrait = PTrait 
      { ptXP = Nothing
+     , ptID = ""
      , label1 = Nothing
      , label2 = Nothing
      , ptDetail = Nothing
@@ -111,12 +113,13 @@ defaultPTrait = PTrait
 
 ptLabel :: PTrait -> String
 ptLabel pt = f (label1 pt) (label2 pt) ++ pShow (ptDetail pt)
-   where f Nothing Nothing = "???"
+   where f Nothing Nothing = "??? " ++ ptID pt
          f Nothing (Just x) = x
          f (Just x) y = x ++ pShow y
 
 makePTrait :: [RDFTriple] -> PTrait
-makePTrait xs = makePTrait' xs defaultPTrait 
+makePTrait [] = defaultPTrait 
+makePTrait xs = makePTrait' xs defaultPTrait { ptID = show $ arcSubj $ head xs }
 
 makePTrait' :: [RDFTriple] -> PTrait -> PTrait
 makePTrait' [] pt = pt
