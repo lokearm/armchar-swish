@@ -135,41 +135,11 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Fix quantity summation (separate task) and validate the vis display
 + [x] #bug  SkillScore 0 on all CombatOptions #cli/selected 
 + [x] Support shield and weapon as combat option #cli/selected 
-
-# Wishlist
-
-This is not prioritised in version 1.0, but low-hanging fruits may still be included.
-
-+ [ ] Validate chargen and advancement #cli/backlog 
-	+ [ ] Advancement log (new output format)  #cli/backlog 
-	+ [ ] Flag discrepancies in the log
-+ [ ] Advancement by reading #cli/backlog 
-	+ [ ] Covenant as a character
-	+ [ ] Covenant hasBook property to define library
-	+ [ ] Book as RDF resources with stats
-	+ [ ] Advancement readsBook property
-	+ [ ] Deduce XP gain from book
-	+ [ ] Implement and debug relevant virtues
-+ [ ] Calculate Lab Totals    #cli/backlog
-+ [ ] Generate Character Sheets at different points in time #cli/backlog 
-+ [x] Show season on Markdown sheet
-+ [ ] Show age on pre-game characters #cli/backlog 
-+ [ ] Handle skill specialisations in combat stats #cli/backlog 
-+ [ ] Review ordering of items #cli/backlog 
-	+ [ ] #bug  Inconsistent ordering of virtues and flaws #cli/backlog 
-	+ Alphabetical ordering?  Or something cleverer?
-+ [ ] Equipment load #cli/backlog 
-	+ [ ] load per item
-	+ [ ] total load (multiplied by quantity) per line
-	+ [ ] aggregate load and encumbrance
-+ [ ] Current year and season on one line on output character sheet   #cli/backlog 
-+ [ ] Allow Unique pieces of Equipment (incl. Weapons)
-+ [ ] Code review and simplification
-+ [ ] Ontology review and simplification
-
 + [x] Generate every character from saga resource #cli/backlog 
 + [x] Show season on Markdown sheet
-+ [x] Advancement log (new output format)  #cli/backlog 
++ [x] Validate chargen and advancement #cli/backlog 
+	+ [x] Advancement log (new output format)  #cli/backlog 
+	+ [x] Flag discrepancies in the log
 + [x] [[Covenant]] Support #cli/selected 
 + [x] Covenant markdown output #cli/selected 
 	+ [x] Suppress size and confidence
