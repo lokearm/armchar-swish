@@ -87,6 +87,9 @@ armr:folkken  rdfs:subClassOf arm:GeneralAbility ;
 armr:stealth  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Stealth" .
+armr:survival  rdfs:subClassOf arm:GeneralAbility ;
+                     a arm:LeafTraitClass ;
+                     arm:hasLabel "Survival" .
 armr:conc  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Concentration" .

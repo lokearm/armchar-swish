@@ -38,7 +38,7 @@
     + Source Quality 45
     + Spent 45xp of 45xp
     + Traits advanced
-        + ??? (15 xp)
+        + Survival (15 xp)
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life

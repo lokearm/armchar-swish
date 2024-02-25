@@ -31,14 +31,14 @@
     + Source Quality 45
     + Spent 45xp of 45xp
     + Traits advanced
-        + ??? (15 xp)
+        + Survival (15 xp)
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life
     + **Overspent**: No allowance, but 275xp spent
     + Traits advanced
         + Thrown Weapon (30 xp)
-        + ??? (15 xp)
+        + Survival (15 xp)
         + Single Weapon (50 xp)
         + ??? (5 xp)
         + ??? (30 xp)

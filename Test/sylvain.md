@@ -74,6 +74,7 @@ Confidence
 | Penetration          | Auram           |     1 |    0 |     - |         1 |
 | Dead Lang: Latin     | Hermetic Usage  |     4 |    0 |     - |         4 |
 | Concentration        | Spell Conc.     |     2 |    0 |     - |         2 |
+| Survival             | Woodlands       |     2 |    0 |     - |         2 |
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
 | Awareness            | searching       |     2 |    0 |     - |         2 |
 | L Lang: Occitan      | [local]         |     5 |    0 |     - |         5 |

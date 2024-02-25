@@ -73,6 +73,7 @@ Confidence
 | Dead Lang: Latin     | Hermetic Usage  |     4 |    0 |     - |         4 |
 | Forest Lore          | -               |     1 |    5 |     - |         1 |
 | Concentration        | Spell Conc.     |     2 |    0 |     - |         2 |
+| Survival             | Woodlands       |     2 |    0 |     - |         2 |
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
 | Awareness            | searching       |     2 |    0 |     - |         2 |
 | L Lang: Occitan      | [local]         |     5 |    0 |     - |         5 |
