@@ -65,6 +65,7 @@ armchar:andrew arm:characterClass arm:Grog ;
 
 :lateradv arm:advanceCharacter armchar:andrew ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
+  arm:durationYears 18 ;
   arm:advanceTrait 
       [ arm:traitClass armr:hunt ;  arm:addedXP 5 ; arm:hasSpeciality "Woodlands"  ],
       [ arm:traitClass armr:bows ;  arm:addedXP 75 ; arm:hasSpeciality "Shortbow"  ],

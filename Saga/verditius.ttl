@@ -74,6 +74,7 @@ armchar:verditius arm:characterClass arm:Magus ;
 
 :lateradv arm:advanceCharacter armchar:verditius ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
+  arm:durationYears 5 ;
   arm:advanceTrait 
       [ arm:traitClass armr:craft-sculptor ;  arm:addedXP 50 ; arm:hasSpeciality "Stone"  ],
       [ arm:traitClass armr:bargain ;  arm:addedXP 5 ; arm:hasSpeciality "Own works"  ],
