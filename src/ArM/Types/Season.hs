@@ -18,7 +18,7 @@ data CharTime = CharTime
                 , charSeason :: String
                 , advancementStage :: String
                 , advancementIndex :: Int 
-                } deriving (Show)
+                } 
 defaultCharTime :: CharTime 
 defaultCharTime = CharTime 
                 { charYear = Nothing
@@ -26,6 +26,9 @@ defaultCharTime = CharTime
                 , advancementStage = ""
                 , advancementIndex = 0
                 } 
+instance Show CharTime where
+   show t | charYear t == Nothing = advancementStage t
+          | otherwise = charSeason t ++ " " ++ show (fromJust $ charYear t)
 instance Eq CharTime where
   (==) x y | charYear x /= charYear y = False
            | charYear x == Nothing 

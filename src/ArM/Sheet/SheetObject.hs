@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.SheetObject
+-- Module      :  ArM.Sheet.SheetObject
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -9,7 +9,7 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Types.SheetObject ( getSheetObject
+module ArM.Sheet.SheetObject ( getSheetObject
                                 , SheetObject(..)
                                 , Trait(..)
                                 , traitLabel
@@ -22,6 +22,7 @@ import           ArM.CharacterQuery
 import           ArM.KeyPair 
 import           ArM.Resources 
 import           ArM.Rules.Aux 
+import           ArM.Sheet.Book
 import Data.List(sortOn)
 
 import Data.Maybe (fromJust)
@@ -46,6 +47,7 @@ getSheetObject g = SheetObject {
     flaws = map parseTrait $ getFlaws g,
     combat = map parseTrait $ getCombat g,
     equipment = map parseTrait $ getEquipment g,
+    library = map parseBook $ getBooks g,
     vis = map parseTrait $ getVis g,
     size = getSize g,
     cnf = getConf g
@@ -62,6 +64,7 @@ data SheetObject = SheetObject {
     flaws :: [Trait],
     combat :: [Trait],
     equipment :: [Trait],
+    library :: [Book],
     vis :: [Trait],
     size :: [Maybe Int],
     cnf :: [(Maybe Int,Maybe Int)]
@@ -202,8 +205,9 @@ mdSort = sortOn mds . filter (\ x -> mds x > 0)
 
 mdSortKey :: String -> Int
 mdSortKey "Name" = 10
-mdSortKey "Season" = 11
-mdSortKey "Year" = 12
+mdSortKey "Season" = 0
+mdSortKey "Year" = 0
+mdSortKey "Date" = 13
 mdSortKey "Player" = 20
 mdSortKey "Birth Year" = 30
 mdSortKey "Age" = 40
@@ -214,10 +218,3 @@ mdSortKey "Nationality" = 80
 mdSortKey "Character Type" = 0
 mdSortKey _ = 2^(30 :: Int)
 
-{-
- - Spells
- - KeyValuePair arm:hasTargetString "Individual",
- - KeyValuePair arm:hasRangeString "Touch",
- - KeyValuePair arm:hasDurationString "Sun",
- - KeyValuePair arm:hasDescription "The target becomes completely undetectable to normal sight, regardless of what he does, but still casts a shadow.  (Base 4, +1 Touch, +2 Sun, +1 changing image)",KeyValuePair arm:hasCastingScore 19]
--}

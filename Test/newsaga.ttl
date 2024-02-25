@@ -1,0 +1,21 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix arm: <https://hg.schaathun.net/armchar/schema#> .
+@prefix armr: <https://hg.schaathun.net/armchar/resources#> .
+@prefix : <https://hg.schaathun.net/armchar/character/> .
+
+:diedne a arm:Saga ; 
+      arm:hasTitle "Bjørgvin Saga" ;
+      arm:hasDescription "New saga set in Bjørgvin with Callen as Alpha SG." ;
+      arm:hasSchemaFile "Ontology/arm.ttl" ;
+      arm:hasResourceFile "Ontology/resources.ttl" ;
+      arm:hasCharacterFile "Test/verditius.ttl" .
+
+:bergencovenant  a arm:Covenant ; 
+      arm:hasName "Bjørgvin" ;
+      arm:hasSetting "Bjørgvin" ;
+      arm:hasSaga :bergen .
+
+:zeroadv arm:advanceCharacter :bergencovenant ;
+   arm:advancementClass arm:BaseAdvancement .

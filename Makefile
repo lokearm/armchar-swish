@@ -13,7 +13,16 @@ grog.md:
 O=Ontology/resources.ttl Ontology/arm.ttl
 
 %.md: Test/%.ttl .force $O
-	cabal run armchar-cli -- -c $< -s Test/saga.ttl -o $@ -O $*.triples
+	cabal run cli -- -c $< -s Test/diedne.ttl -o $@ -O $*.triples
+
+%: Test/%.ttl .force $O
+	cabal run cli -- -c $< -s Test/diedne.ttl -D $@
+
+test: Test/marcus.ttl 
+	cabal run cli -- -s Test/diedne.ttl 
+prof: Test/marcus.ttl 
+	cabal run cli --enable-profiling -- -s Test/diedne.ttl +RTS -p
+	# --profiling-detail=exported-functions 
 
 %.pdf: %.md
 	pandoc -o $@ $<
@@ -23,5 +32,8 @@ O=Ontology/resources.ttl Ontology/arm.ttl
 Ontology/%.ttl: .force
 	( cd Ontology ; $(MAKE) $*.ttl )
 
-%.diff: %.md
-	diff $< Test/$< | tee $@
+diff: test
+	-sh diff.sh
+
+wc:
+	find src -name "*.hs" | xargs wc

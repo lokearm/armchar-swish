@@ -1,29 +1,31 @@
+
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.CharGraph
+-- Module      :  ArM.Types.LoadedSaga
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Types.MapState
-               ( loadSaga
-               , loadChar
-               , MapState(..)
+module ArM.Types.LoadedSaga
+               ( LoadedSaga(..)
+               , loadSaga
+               , loadChars
+               , loadSagaChars
+               , sagaGraph
+               , sagaTitle
                ) where
-
-import           ArM.Types.RDF (fromRDFGraph)
 
 import qualified Swish.RDF.Graph as G
 
 import qualified Data.Map as Map
 
-import qualified ArM.Character.CharGen as TCG
-import qualified ArM.Types.Saga as TS
+import qualified ArM.Types.SagaFile as TS
 import qualified ArM.Rules as R
 import           ArM.IO
+
 
 readAllFiles :: [String] -> IO [G.RDFGraph]
 readAllFiles = mapM readGraph
@@ -31,35 +33,42 @@ mergeGraphs :: [G.RDFGraph] -> G.RDFGraph
 mergeGraphs [] = G.emptyGraph
 mergeGraphs (x:xs) = foldr G.merge x xs
 
-data MapState = MapState 
-              { saga :: TS.Saga
-              , charList :: [G.RDFLabel]
+data LoadedSaga = LoadedSaga 
+              { saga :: TS.SagaFile
               , schemaGraph :: G.RDFGraph
               , resourceGraph :: G.RDFGraph
               , schemaRawGraph :: [G.RDFGraph]
               , resourceRawGraph :: [G.RDFGraph]
-              , cgMap :: Map.Map String TCG.CharGen
+              , cgMap :: Map.Map String G.RDFGraph
               }
 
-loadSaga :: String -> IO MapState
+sagaTitle :: LoadedSaga -> String
+sagaTitle = TS.sagaTitle . saga
+sagaGraph :: LoadedSaga -> G.RDFGraph 
+sagaGraph = TS.sagaGraph . saga
+
+
+loadSagaChars :: String -> IO LoadedSaga
+loadSagaChars fn = loadSaga fn >>= loadChars
+
+
+-- ^ Load a saga from an RDF file and instantiate a LoadedSaga
+-- The file should define both a covenant resoruce and a saga resource
+loadSaga :: String -> IO LoadedSaga
 loadSaga fn = do
     -- 1. Load Saga
     sgraph <- readGraph fn
-    let sid = head $ TS.sagaFromGraph sgraph
-    let sob = fromRDFGraph sgraph sid :: TS.Saga
+    let sob = TS.sagaFromRDF sgraph 
     -- 2. Load Schema
-    let schemaFN = TS.getSchemaFiles sid sgraph
-    ss <- readAllFiles schemaFN
+    ss <- readAllFiles $ TS.schemaFiles sob
     -- 3. Load resources
-    let resFN = TS.getResourceFiles sid sgraph
-    rs <- readAllFiles resFN
+    rs <- readAllFiles $ TS.resourceFiles sob
     -- 4. Augment graphs
     let rawSchema = mergeGraphs ss
     let res = mergeGraphs rs
     let schema = R.prepareSchema rawSchema
     let res1 = R.prepareResources $ res `G.merge` schema 
-    return MapState { saga = sob
-                    , charList = []
+    return LoadedSaga { saga = sob
                     , schemaGraph = schema
                     , resourceGraph = res1
                     , schemaRawGraph = ss
@@ -67,8 +76,12 @@ loadSaga fn = do
                     , cgMap = Map.empty
                     }
 
-loadChar :: MapState -> String -> IO TCG.CharGen
-loadChar st fn = readGraph fn >>= ( return . TCG.makeCharGen schema res1 )
-    where schema = schemaGraph st
-          res1 = resourceGraph st
+-- | Load all associated characters into a LoadedSaga object
+loadChars :: LoadedSaga -> IO LoadedSaga
+loadChars s = mapM readGraph fs
+      >>= ( \ cs -> return $ s { cgMap = foldl ins m $ zip fs cs } )
+      where m = cgMap s 
+            fs = TS.characterFiles $ saga s
+            ins c (x,y) = Map.insert x y c
+
 

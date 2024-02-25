@@ -5,7 +5,7 @@
   a arm:IngameAdvancement ; 
   arm:atSeason "Summer" ;
   arm:inYear   1217 ;
-  arm:hasAdvancementDescription "Studies Herbam L6 Q21 +3" ;
+  arm:instanceDescription "Studies Herbam L6 Q21 +3" ;
   arm:advanceTrait [ arm:traitClass armr:herbam ; arm:addedXP 21 ]  ;
   arm:awardsXP 21 ;
   arm:hasAdvancementType arm:Reading .
@@ -14,7 +14,7 @@
   a arm:IngameAdvancement ;
   arm:atSeason "Autumn" ;
   arm:inYear   1217 ;
-  arm:hasAdvancementDescription "Studies Mentem L16 Q13 +3" ;
+  arm:instanceDescription "Studies Mentem L16 Q13 +3" ;
   arm:advanceTrait [ arm:traitClass armr:mentem ; arm:addedXP 16 ] ;
   arm:awardsXP 16 ;
   arm:hasAdvancementType arm:Reading ;
@@ -28,7 +28,7 @@
   a arm:IngameAdvancement ;
   arm:atSeason "Winter" ;
   arm:inYear   1217 ;
-  arm:hasAdvancementDescription "Learn Spell" ;
+  arm:instanceDescription "Learn Spell" ;
   arm:advanceTrait [ arm:traitClass armr:magictheory ; arm:addedXP 2 ],
                 [ arm:traitClass armr:MuCo25Shape ; arm:hasTotalXP 5 ;
 	          arm:hasMasteryOption armr:quietcasting-mastery	] ;
@@ -39,7 +39,7 @@
   a arm:IngameAdvancement ;
   arm:atSeason "Spring" ;
   arm:inYear   1218 ;
-  arm:hasAdvancementDescription "Story" ;
+  arm:instanceDescription "Story" ;
   arm:advanceTrait [ arm:traitClass armr:awareness ; arm:addedXP 5 ],
                    [ arm:traitClass armr:creo ; arm:addedXP 2 ],
                    [ arm:traitClass armr:personality-villager ; arm:hasFixedScore 3 ] ;

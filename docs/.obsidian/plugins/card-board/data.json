@@ -57,6 +57,14 @@
             "tag": "namedTag",
             "data": {
               "collapsed": false,
+              "name": "Code Review",
+              "tag": "review/code"
+            }
+          },
+          {
+            "tag": "namedTag",
+            "data": {
+              "collapsed": false,
               "name": "backlog",
               "tag": "cli/backlog"
             }
@@ -73,7 +81,7 @@
             "tag": "completed",
             "data": {
               "collapsed": false,
-              "index": 2,
+              "index": 3,
               "limit": 10,
               "name": "Completed"
             }

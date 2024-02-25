@@ -26,6 +26,7 @@ module ArM.CharacterQuery ( getTraitList
                           , getPossessions
                           , getVis
                           , getEquipment
+                          , getBooks
                           , getCombat
                           , getMetaData
                           , getMetaDataTuples
@@ -59,6 +60,8 @@ getPossessions :: G.RDFGraph -> [KeyPairList]
 getPossessions = getTraitList $ armRes "hasPossession"
 getEquipment :: G.RDFGraph -> [KeyPairList]
 getEquipment = getTraitList $ armRes "hasEquipment"
+getBooks :: G.RDFGraph -> [KeyPairList]
+getBooks = getTraitList $ armRes "hasBook"
 getVis :: G.RDFGraph -> [KeyPairList]
 getVis = getTraitList $ armRes "hasVis"
 
@@ -78,7 +81,7 @@ getTraitList p = map ( KeyPairList . toKeyPairList ) . arcListSplit
 
 arcs :: G.RDFGraph
 arcs = listToRDFGraph 
-   [ G.arc idVar typeRes csRes                          -- type CharacterSheet
+   [ G.arc idVar typeRes (armRes "CharacterSheet")     -- type CharacterSheet
    , G.arc propertyVar typeRes (armRes "ViewProperty") -- property of interest
    , G.arc idVar propertyVar valueVar                   -- triple of interest
    , G.arc propertyVar labelRes labelVar ]             -- property label

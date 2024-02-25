@@ -38,12 +38,16 @@ common deps
                        , ArM.CharacterQuery
                        , ArM.KeyPair
                        , ArM.Types.Character
+                       , ArM.Types.CharacterSheet
                        , ArM.Types.Advancement
                        , ArM.Types.Trait
+                       , ArM.Sheet.Book
                        , ArM.Types.RDF
                        , ArM.Types.Season
-                       , ArM.Character.CharGen
+                       , ArM.Types.CharGen
                        , ArM.Types.Saga
+                       , ArM.Types.SagaFile
+                       , ArM.Types.LoadedSaga
   -- other-extensions:
   build-depends:       base >=4.13 
                        , scientific >= 0.3.7
@@ -63,23 +67,28 @@ common deps
   hs-source-dirs:      . , ./src
   default-language:    Haskell2010
 
-executable armchar-debug
+common cli-deps
+  -- documentation:       True
   import: deps
-  other-modules:       ArM.Types.MapState
-                     , ArM.Markdown.CharacterSheet
-                     , ArM.Types.SheetObject
+  other-modules:       ArM.Markdown.CharacterSheet
+                     , ArM.Markdown.AdvancementLog
+                     , ArM.Markdown.IO
+                     , ArM.Sheet.SheetObject
+
+executable armchar-debug
+  import: cli-deps
   main-is:             Debug.hs
   ghc-options:
     -O2
     -Wall
     -threaded
     "-with-rtsopts=-N -s -h -i0.1"
-executable armchar-cli
-  import: deps
-  other-modules:       ArM.Types.MapState
-                     , ArM.Markdown.CharacterSheet
-                     , ArM.Types.SheetObject
+executable cli
+  import: cli-deps
   main-is:             Main.hs
+  ghc-prof-options:
+    -prof
+    -fprof-auto
   ghc-options:
     -O2
     -Wall
@@ -103,14 +112,13 @@ executable armchar-swish
 
 
 executable prof
-  import: deps
+  import: cli-deps
+  profiling-detail: 3
   main-is:             Main.hs
   ghc-options:
     -O2
     -Wall
     -threaded
-    -prof
-    -fprof-auto
     "-with-rtsopts=-N -p -s -h -i0.1 -xc"
 
 executable tst

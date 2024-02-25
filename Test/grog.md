@@ -3,11 +3,8 @@
 Name
 : Andrew
 
-Season
-: Autumn
-
-Year
-: 1220
+Date
+: Autumn 1220
 
 Player
 : George
@@ -45,7 +42,6 @@ Confidence
 + Puissant (Ability): Bows (1)
 + Compassionate (-1)
 + Branded Criminal (-1)
-
 # Abilities
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
@@ -58,7 +54,6 @@ Confidence
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
 | Awareness            | searching       |     2 |    2 |     - |         2 |
 | L Lang: English      | [local]         |     5 |    0 |     - |         5 |
-
 # Combat
 
 + Fist: Init 2; Atk 5; Dfn 5; Dam 2; Range -

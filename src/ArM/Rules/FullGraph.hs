@@ -36,10 +36,10 @@ import Swish.RDF.Ruleset (RDFRule)
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph :: RDFGraph -> RDFGraph
 prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
-             . fwdApplyListR [ advancevfgrantRule,advancevfgrantRule2,
-                               bonus1rule, bonus2rule, bonus3rule, 
-                               bonusXPrule,
-                               spectraitRule, rRule ]
+             . fwdApplyList [ bonus1rule, bonus2rule, bonusXPrule ]
+             . fwdApplyList [ advancevfgrantRule,advancevfgrantRule2 ]
+                               -- spectraitRule,
+             . fwdApplyList  [ bonus3rule, rRule ]
              . applyRDFS
 
 
@@ -74,11 +74,13 @@ vfScoreRules =
        [ arc sVar (armRes "hasScore") (litInt (0)) ]
    ]
 
+{-
 spectraitRule :: RDFRule
 spectraitRule = makeCRule  "spectraitRule" 
       [ tArc
       , arc tVar typeRes ( armRes  "SpecialTraitClass" ) ] 
       [ arc sVar ( armRes  "isSpecialTrait" ) tVar ]
+-}
 
 
 -- | Add traits granted by an advanced traits class as other advanced traits.

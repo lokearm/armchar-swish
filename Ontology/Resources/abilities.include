@@ -32,6 +32,12 @@ armr:socplore  rdfs:subClassOf armr:organisationlore ;
    arm:hasLabel "Servants of the Common People Lore" .
 armr:livinglanguage  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Living Language" .
+armr:eastnorse  rdfs:subClassOf armr:livinglanguage ;
+                   a arm:LeafTraitClass ;
+                   arm:hasLabel "Living Language: East Norse" .
+armr:westnorse  rdfs:subClassOf armr:livinglanguage ;
+                   a arm:LeafTraitClass ;
+                   arm:hasLabel "Living Language: West Norse" .
 armr:english  rdfs:subClassOf armr:livinglanguage ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Living Language: English" .
@@ -46,8 +52,14 @@ armr:gaelic  rdfs:subClassOf armr:livinglanguage ;
                    arm:hasLabel "Living Language: Gaelic" .
 armr:profession  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Profession" .
+armr:profession-scribe  rdfs:subClassOf armr:profession ;
+                   a arm:LeafTraitClass ;
+                   arm:hasLabel "Profession: Scribe" .
 armr:craft  rdfs:subClassOf arm:GeneralAbility ;
    arm:hasLabel "Craft" .
+armr:craft-sculptor  rdfs:subClassOf armr:craft ;
+                   a arm:LeafTraitClass ;
+                   arm:hasLabel "Craft: Sculptor" .
 armr:craft-cooking  rdfs:subClassOf armr:craft ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Craft: Cooking" .

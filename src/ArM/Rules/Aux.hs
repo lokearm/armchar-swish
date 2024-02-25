@@ -81,8 +81,6 @@ gtRes :: RDFLabel
 gtRes = armRes "grantsTrait" 
 htRes :: RDFLabel
 htRes = armRes "hasTrait" 
-csRes :: RDFLabel
-csRes = armRes "CharacterSheet" 
 labelRes :: RDFLabel
 labelRes = (Res rdfsLabel)
 

@@ -243,3 +243,12 @@ arm:grantsTrait a owl:ObjectProperty ;
   rdfs:domain   arm:Virtue ;
   rdfs:range   arm:Trait .
 
+arm:traitClass a owl:ObjectProperty, arm:PersistentProperty ;
+        arm:hasStringProperty arm:traitClassString ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   owl:Class ;
+        rdfs:label   "Trait ID" .
+arm:traitClassString a owl:DatatypeProperty, arm:ViewProperty ;
+        rdfs:domain  arm:Trait ;
+        rdfs:range   xsd:string ;
+        rdfs:label   "Trait to Advance" .

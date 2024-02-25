@@ -7,103 +7,67 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Types and basic functions to handle sagas, that is the
--- top level object of the data model
---
 -----------------------------------------------------------------------------
-module ArM.Types.Saga where
+module ArM.Types.Saga
+               ( Saga(..)
+               , parseSaga
+               , loadChar
+               -- , loadChars
+               , schemaGraph
+               , resourceGraph
+               ) where
 
-import ArM.Internal.Aux
+import qualified Swish.RDF.Graph as G
 
-import           Swish.RDF.Graph as G
-import qualified Swish.RDF.Query as Q
--- import qualified Swish.RDF.VarBinding as VB 
-import           Swish.VarBinding  (vbMap)
-import           Data.Aeson
--- import           Data.Maybe (fromJust)
--- import           Data.List (sort)
-import           ArM.Types.RDF
-import           ArM.Rules.Aux
-import           ArM.Resources
-import           ArM.KeyPair
+import qualified Data.Map as Map
 
-data Saga = Saga { sagaID :: RDFLabel
-                 , sagaTitle :: String
-                 , schemaFile :: String
-                 , resourceFiles :: [String]
-                 , characterFiles :: [String]
-                 , sagaGraph :: RDFGraph
-                 }
+import qualified ArM.Types.CharGen as TCG
+import qualified ArM.Types.LoadedSaga as LS
+import Data.Maybe (fromJust)
 
-defaultSaga :: Saga 
-defaultSaga = Saga { sagaID = armRes "noSuchSaga"
-                 , sagaTitle = "No Title"
-                 , schemaFile = "/dev/null"
-                 , resourceFiles = []
-                 , characterFiles = []
-                 , sagaGraph = emptyGraph
-                 }
 
+data Saga = Saga 
+              { saga :: LS.LoadedSaga
+              , covenant :: TCG.CharGen
+              , charList :: [G.RDFLabel]
+              , cgMap :: Map.Map String TCG.CharGen
+              }
+
+schemaGraph :: Saga-> G.RDFGraph
+schemaGraph = LS.schemaGraph . saga
+resourceGraph :: Saga-> G.RDFGraph
+resourceGraph = LS.resourceGraph . saga
 {-
- - This was an atempt to include cast.
- - Now we make a separate API call for cast instead.
-instance ToJSON Saga where 
-    toJSON saga = object (x1:x2:x3:[])
-       where x1 = (fromString "sagaID") .= (toJSON (sagaID saga))
-             x2 = (fromString "sagaCast") .= (toJSON (getCharacters saga))
-             x3 = (fromString "sagaDetails") .= toJSON (kpFromRDF (sagaGraph saga) (sagaID saga))
-
-kpFromRDF :: RDFGraph -> RDFLabel -> KeyPairList
-kpFromRDF = fromRDFGraph
-
-getCharacters :: Saga -> [Character]
-getCharacters _ = []
+schemaRawGraph :: Saga-> [G.RDFGraph]
+schemaRawGraph = LS.schemaRawGraph . saga
+resourceRawGraph :: Saga-> [G.RDFGraph]
+resourceRawGraph = LS.resourceRawGraph . saga
 -}
 
+-- ^ Load a saga from an RDF file and instantiate a Saga
+-- The file should define both a covenant resoruce and a saga resource
+parseSaga :: LS.LoadedSaga -> Saga
+parseSaga sob = 
+    Saga { saga = sob
+         , covenant = TCG.makeCharGen schema res1 g
+         , charList = cns
+         , cgMap = foldl ins Map.empty ps 
+         }
+    where 
+          schema = LS.schemaGraph sob
+          res1 = LS.resourceGraph sob
+          g = LS.sagaGraph sob
+          ins c (x,y) = Map.insert x y c
+          cs = map (loadChar sob) $ Map.keys $ LS.cgMap sob
+          cns = map TCG.charID cs
+          ps = zip (map show cns) cs
 
-instance FromRDFGraph Saga where 
-   fromRDFGraph g label = defaultSaga
-                 { sagaID = label
-                 , sagaGraph = g
-                 }
+-- | Load a single character from file.
+loadChar :: LS.LoadedSaga  -- ^ Saga object with schema and resources
+           -> String  -- ^ filename
+           -> TCG.CharGen
+loadChar st fn = (TCG.makeCharGen schema res1 g) { TCG.charFile = fn }  
+    where schema = LS.schemaGraph st
+          res1 = LS.resourceGraph st
+          g = fromJust $ Map.lookup fn (LS.cgMap  st) 
 
-instance ToJSON Saga where 
-    toJSON c = toJSON $ p x xs
-        where x = KeyValuePair (armRes "sagaID") $ sagaID c
-              xs = fromRDFGraph ( sagaGraph c ) ( sagaID c )
-              p y (KeyPairList ys) = KeyPairList (y:ys) 
-
--- | Get the labels of all sagas in a given graph.
-sagaFromGraph :: RDFGraph -> [RDFLabel]
-sagaFromGraph = uniqueSort . f . map (`vbMap` cVar) 
-                . Q.rdfQueryFind ( listToRDFGraph  [ arc cVar typeRes (armRes "Saga") ] )
-    where f [] = []
-          f (Nothing:xs) = f xs
-          f (Just x:xs) = x:f xs
-
-getFiles :: String -> RDFLabel -> RDFGraph -> [String]
-getFiles ft s = f . map rdfToString . f 
-                   . map (`vbMap` (Var "file")) . parsegraph 
-    where f [] = []
-          f (Nothing:xs) = f xs
-          f (Just x:xs) = x:f xs
-          parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
-          a = arc s (armRes ft) (Var "file") 
-getResourceFiles :: RDFLabel -> RDFGraph -> [String]
-getResourceFiles = getFiles "hasResourceFile"
-getSchemaFiles :: RDFLabel -> RDFGraph -> [String]
-getSchemaFiles = getFiles "hasSchemaFile"
-getCharacterFiles :: RDFLabel -> RDFGraph -> [String]
-getCharacterFiles = getFiles "hasCharacterFile"
-
-getSagaTitle :: RDFLabel -> RDFGraph -> String
-getSagaTitle s = f1 . map rdfToString . f 
-                   . map (`vbMap` (Var "label")) . parsegraph 
-    where f [] = []
-          f (Nothing:xs) = f xs
-          f (Just x:xs) = x:f xs
-          f1 [] = error "Saga has no title"
-          f1 (Nothing:_) = error "Saga title does not parse"
-          f1 (Just x:_) = x
-          parsegraph = Q.rdfQueryFind $ listToRDFGraph  [ a ]
-          a = arc s (armRes "hasLabel") (Var "label") 

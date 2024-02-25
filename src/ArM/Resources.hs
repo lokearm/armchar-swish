@@ -108,4 +108,4 @@ armPersistentProperty = armRes "PersistentProperty"
 armCharacterProperty :: RDFLabel
 armCharacterProperty = armRes "CharacterProperty" 
 armCharacter :: RDFLabel
-armCharacter = armRes "Character" 
+armCharacter = armRes "GeneralCharacter" 

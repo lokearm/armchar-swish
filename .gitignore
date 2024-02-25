@@ -36,3 +36,8 @@ charactersheet.*
 grog.md
 sylvain.md
 marcus.md
+*.ps
+marcus
+prof0*
+output
+*.ttl*.md
