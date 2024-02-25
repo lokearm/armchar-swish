@@ -32,8 +32,9 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] [[Advancement]] totals in advancement log #cli/selected 
 	+ [x] calculate total
 	+ [x] awards on pregame advancements
-	+ [ ] XP on later life
-	+ [ ] duration on later life and age
+	+ [x] XP on later life
+	+ [x] duration on later life 
+	+ [ ] deduce age
 	+ [x] Implement Skilled Parens virtue
 	+ [ ] Implement Feral Upbringing
 	+ [x] Implement Poor/Wealthy

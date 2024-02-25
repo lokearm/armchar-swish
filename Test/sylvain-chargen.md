@@ -45,7 +45,7 @@
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life
-    + **Overspent** 45xp of 0xp
+    + Spent 45xp of 45xp
     + Traits advanced
         + Intrigue (5 xp)
         + Hunt (5 xp)

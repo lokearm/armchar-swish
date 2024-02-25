@@ -47,6 +47,7 @@ arm:durationYears  a owl:DatatypeProperty, arm:InheritableProperty ;
         rdfs:domain   owl:Advancement ;
         rdfs:range   xsd:int ;
         arm:hasLabel   "Duration (Years)" ;
+        rdfs:label      "Duration (Years)" ;
         rdfs:comment "Duration of the advancement stage in years." .
 arm:hasAdvancementIndex  a owl:DatatypeProperty ;
         rdfs:domain   owl:Class ;

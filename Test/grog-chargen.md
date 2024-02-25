@@ -34,7 +34,7 @@
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life
-    + **Overspent** 275xp of 0xp
+    + **Overspent** 275xp of 270xp
     + Traits advanced
         + Thrown Weapon (30 xp)
         + Survival (15 xp)

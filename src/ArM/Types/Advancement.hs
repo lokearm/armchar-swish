@@ -33,6 +33,8 @@ import Data.Aeson.Key
 import qualified Swish.RDF.VarBinding  as VB
 import           Swish.VarBinding  (vbMap)
 
+import ArM.Debug.Trace
+
 -- |
 -- = Character Advancement
 
@@ -81,6 +83,9 @@ instance Show Advancement where
    show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ show (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
+                 ++ "\nXP: " ++ show (advXP a) 
+                 ++ "\nAnnual XP: " ++ show (advAnnualXP a) 
+                 ++ "\nDuration: " ++ show (advDuration a) 
                  ++ "\nSort Index: " ++ show (advSortIndex a) 
                  ++ "\nSeason No: " ++ show (sno a) 
                  ++ "\n"
@@ -332,7 +337,7 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advDescription = rdfToString  ob } 
      | p == (armRes "advancementClassString") = 
         adv { advTime = t { advancementStage = fs (rdfToString ob) }, advType = rdfToString  ob }  
-     | otherwise = toAdvancement' xs adv 
+     | otherwise = trace (show p) $ toAdvancement' xs adv 
      where fs Nothing = "" 
            fs (Just x) = x
            fi Nothing = 0 
