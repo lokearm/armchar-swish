@@ -44,8 +44,8 @@
 + Later Life
     + **Overspent**: No allowance, but 25xp spent
     + Traits advanced
-        + ??? (5 xp)
-        + ??? (5 xp)
+        + Intrigue (5 xp)
+        + Hunt (5 xp)
         + Concentration (15 xp)
 + Apprenticeship
     + Source Quality 300

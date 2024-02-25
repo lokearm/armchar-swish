@@ -42,7 +42,7 @@
         + Single Weapon (50 xp)
         + ??? (5 xp)
         + ??? (30 xp)
-        + ??? (5 xp)
+        + Hunt (5 xp)
         + ??? (5 xp)
         + Brawl (30 xp)
         + Bows (75 xp)

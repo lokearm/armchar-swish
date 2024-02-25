@@ -49,8 +49,8 @@
 + Later Life
     + **Overspent**: No allowance, but 45xp spent
     + Traits advanced
-        + ??? (5 xp)
-        + ??? (5 xp)
+        + Intrigue (5 xp)
+        + Hunt (5 xp)
         + Forest Lore (20 xp)
         + Concentration (15 xp)
 + Apprenticeship
