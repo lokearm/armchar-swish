@@ -28,6 +28,7 @@ import Swish.RDF.Graph
 import ArM.Rules.Common
 import ArM.Resources
 import ArM.Rules.Aux
+import ArM.Rules.Advancement
 import ArM.Rules.RDFS
 import Swish.RDF.Ruleset (RDFRule)
 
@@ -36,10 +37,9 @@ import Swish.RDF.Ruleset (RDFRule)
 -- It will be applied every time the graph changes, and the graph is large
 prepareGraph :: RDFGraph -> RDFGraph
 prepareGraph = fwdApplyList (advancementindexRule:covenantRule:stringPropertyRule:vfScoreRules)
-             . fwdApplyList [ bonus1rule, bonus2rule, bonusXPrule ]
-             . fwdApplyList [ advancevfgrantRule,advancevfgrantRule2 ]
-                               -- spectraitRule,
-             . fwdApplyList  [ bonus3rule, inheritanceRule ]
+             . fwdApplyList [ mod2Rule, bonus1rule, bonus2rule, bonusXPrule ]
+             . fwdApplyList [ mod1Rule, advancevfgrantRule,advancevfgrantRule2 ]
+             . fwdApplyList  [  bonus3rule, inheritanceRule ]
              . applyRDFS
 
 
@@ -51,11 +51,6 @@ inheritanceRule = makeCRule "inheritanceRule" l1 l2
     where l1 = [ arc sVar (armRes "armType") tVar,
                arc tVar pVar oVar,
                arc pVar typeRes ( armRes  "InheritableProperty" )  ]
-{-
-    where l1 = [ arc sVar ( armRes  "traitClass" ) tVar,
-               arc tVar pVar oVar,
-               arc pVar typeRes ( armRes  "TraitProperty" )  ]
--}
           l2 = [arc sVar pVar oVar]
 
 
@@ -136,7 +131,6 @@ advancementindexRule :: RDFRule
 advancementindexRule = makeCRule "advancementindexRule" 
     [ tArc, arc tVar (armRes "hasAdvancementIndex") cVar ]
     [ arc sVar (armRes "hasAdvancementIndex") cVar ]
-
 
 covenantRule :: RDFRule
 covenantRule = makeCRule "covenantRule"

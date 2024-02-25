@@ -1,6 +1,5 @@
 # Character Generation
 + Base Character
-    + **Overspent**: No allowance, but 0xp spent
     + Traits advanced
         + ???
         + Loyal

@@ -12,7 +12,7 @@ arm:hasClass a rdf:Property ;
         rdfs:domain  arm:Modifier ;
         rdfs:range   arm:Class ;
         rdfs:label   "Affected class" .
-arm:hasModifier a rdf:Property, rdfs:subPropertyOf arm:InheritedProperty ;
+arm:hasModifier a arm:InheritableProperty ;
         rdfs:range   arm:Modifier ;
         rdfs:label   "Rules modifier" .
 # Character Advancement
@@ -75,11 +75,11 @@ arm:awardsLevels a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:int ;
         rdfs:label   "Spell levels awarded" .
-arm:classAwardsXP a owl:DatatypeProperty ;
+arm:classAwardsXP a owl:DatatypeProperty, arm:InheritableProperty ;
         rdfs:domain  owl:Class ;
         rdfs:range   xsd:int ;
         rdfs:label   "XP awarded (general rule)" .
-arm:classAwardsLevels a owl:DatatypeProperty ;
+arm:classAwardsLevels a owl:DatatypeProperty, arm:InheritableProperty ;
         rdfs:domain  owl:Class ;
         rdfs:range   xsd:int ;
         rdfs:label   "Spell levels awarded (general rule)" .

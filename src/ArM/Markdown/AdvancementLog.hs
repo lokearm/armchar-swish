@@ -68,7 +68,7 @@ lvlCount (Just 0) (Just 0) = Nothing
 lvlCount Nothing (Just y) = Just $
      "    +  " ++ show y ++ " spell levels to spend"
 lvlCount (Just x) Nothing = Just $
-     "    + Gained " ++ show x ++ "levels of spells"
+     "    + Gained " ++ show x ++ " levels of spells"
 lvlCount (Just x) (Just y) | x < y = Just $
      "    + **Underspent** " ++ show x ++ " spell levels of " ++ show y ++ " levels possible"
 lvlCount (Just x) (Just y) | x > y = Just $
@@ -78,6 +78,7 @@ lvlCount (Just x) (Just y) | otherwise = Just $
 
 xpCount :: Maybe Int -> Maybe Int -> Maybe String
 xpCount Nothing Nothing = Nothing
+xpCount (Just 0) Nothing = Nothing
 xpCount Nothing (Just y) = Just $
      "    + **Underspent**: " ++ show y ++ "xp to spend"
 xpCount (Just x) Nothing = Just $

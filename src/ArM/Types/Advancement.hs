@@ -16,8 +16,6 @@ module ArM.Types.Advancement ( Advancement(..)
                              , getAllAdvancements
                              ) where
 
-import ArM.Debug.Trace
-
 import Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
 import Data.Maybe
@@ -175,7 +173,7 @@ fromProtoAdvancement adv = defaultAdvancement
                      { rdfid = advancementid adv
                      , traits = advancementtraits adv
                      , advChar = advancementcharacter adv
-                     , advTime = trace (show tm) tm
+                     , advTime = tm
                      , contents = ys
                  } where ys = fromKeyPairList $ advancementcontents adv
                          tm = parseTime TS.defaultCharTime ys
@@ -187,8 +185,7 @@ parseTime ain (xin:xs) = parseTime (f ain xin) xs
          | k == inYear = a { charYear = rdfToInt v }
          | k == atSeason = a { charSeason = fs (rdfToString v) }
          | k == hasAdvancementIndex = a { advancementIndex = fi (rdfToInt v) }
-         | k == (armRes "advancementClassString") = trace (fs (rdfToString v)) $ a { advancementStage = fs (rdfToString v) }
-         | k == (armRes "advancementClass") = trace (show v) $ a 
+         | k == (armRes "advancementClassString") = a { advancementStage = fs (rdfToString v) }
          | otherwise =  a
          where fs Nothing = "" 
                fs (Just x) = x
@@ -317,7 +314,7 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advLabel = rdfToString  ob }
      | p == (armRes "instanceDescription") =
              toAdvancement' xs $ adv { advDescription = rdfToString  ob } 
-     | p == (armRes "advancementClassString") = trace (fs (rdfToString ob)) $
+     | p == (armRes "advancementClassString") = 
         adv { advTime = t { advancementStage = fs (rdfToString ob) }, advType = rdfToString  ob }  
      | otherwise = toAdvancement' xs adv 
      where fs Nothing = "" 

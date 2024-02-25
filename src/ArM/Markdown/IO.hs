@@ -77,7 +77,7 @@ writeCG :: TCG.CharGen -> IO ()
 writeCG cg = trace ("Writing " ++ fn) $ writeSheet fn g
      >> writeAdv fn2 cg
      >> writeGen fn4 cg
-     >> writeDebug fn3 g
+     >> (writeDebug fn3 $ TCG.charGraph cg)
      where g = (TCG.sheetGraph . head . TCG.charSheets) cg
            fn = TCG.charFile cg ++ ".md"
            fn3 = TCG.charFile cg ++ ".triples"

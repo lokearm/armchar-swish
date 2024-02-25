@@ -1,6 +1,5 @@
 # Character Generation
 + Base Character
-    + **Overspent**: No allowance, but 0xp spent
     + Traits advanced
         + ???
         + Stubborn
@@ -55,7 +54,7 @@
         + Concentration (15 xp)
 + Apprenticeship
     + **Overspent**: No allowance, but 287xp spent
-    + Gained 150levels of spells
+    + Gained 150 levels of spells
     + Traits advanced
         + Snares
         + Vim (15 xp)

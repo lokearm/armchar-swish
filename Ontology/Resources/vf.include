@@ -97,8 +97,18 @@ armr:waysOfTheLand    rdfs:subClassOf   armr:majorGeneralVirtue ; arm:hasReferen
                          a arm:LeafTraitClass ;
                   arm:hasLabel "Ways of the (Land)" .
 armr:wealthy          rdfs:subClassOf   armr:majorGeneralVirtue ; arm:hasReference   "[ArM5]" ;
+      arm:hasModifier [ arm:hasProperty arm:awardsAnnualXP ;
+                        arm:hasValue 20 ;
+			arm:hasClass arm:LaterLifeAdvancement ] ;
                          a arm:LeafTraitClass ;
                   arm:hasLabel "Wealthy" .
+armr:poor          rdfs:subClassOf   armr:majorGeneralFlaw ;
+      arm:hasReference   "[ArM5]" ;
+      arm:hasModifier [ arm:hasProperty arm:awardsAnnualXP ;
+                        arm:hasValue 10 ;
+			arm:hasClass arm:LaterLifeAdvancement ] ;
+                         a arm:LeafTraitClass ;
+                  arm:hasLabel "Poor" .
 
 armr:minorHermeticVirtue rdfs:subClassOf arm:minorVirtue ;
                          arm:hasLabel "Hermetic, Minor" .
