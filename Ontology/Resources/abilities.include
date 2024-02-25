@@ -84,6 +84,12 @@ armr:empathy  rdfs:subClassOf arm:GeneralAbility ;
 armr:folkken  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Folk Ken" .
+armr:intrigue  rdfs:subClassOf arm:GeneralAbility ;
+                     a arm:LeafTraitClass ;
+                     arm:hasLabel "Intrigue" .
+armr:hunt  rdfs:subClassOf arm:GeneralAbility ;
+                     a arm:LeafTraitClass ;
+                     arm:hasLabel "Hunt" .
 armr:stealth  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Stealth" .

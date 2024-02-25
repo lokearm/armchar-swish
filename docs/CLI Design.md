@@ -31,11 +31,17 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 + [ ] Display character at gauntlet  #cli/selected 
 + [ ] [[Advancement]] totals in advancement log #cli/selected 
 	+ [x] calculate total
-	+ [ ] awards on pregame advancements
-	+ [ ] Implement Skilled Parens virtue
+	+ [x] awards on pregame advancements
+	+ [ ] XP on later life
+	+ [ ] duration on later life and age
+	+ [x] Implement Skilled Parens virtue
 	+ [ ] Implement Feral Upbringing
-	+ [ ] Implement Poor/Wealthy
+	+ [x] Implement Poor/Wealthy
 + [ ] [[Advancement]] validation #cli/backlog 
+	+ [ ] XP validation
+	+ [ ] Spell level validation
+	+ [ ] Virtue/Flaw generation
+	+ [ ] Characteristics validation
 + [ ] Lab work advancement type #cli/backlog 
 	+ [ ] Calculate Lab Totals    #cli/backlog
 	+ [ ] Validate lab total
