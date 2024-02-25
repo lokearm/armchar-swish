@@ -306,6 +306,12 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advTime = t { charYear = rdfToInt  ob } }
      | p == (armRes "atSeason") =
              toAdvancement' xs $ adv { advTime = t { charSeason = fs $ rdfToString  ob } }
+     | p == (armRes "classAwardsLevels") && advXP adv == Nothing =
+             toAdvancement' xs $ adv { advLevels = (rdfToInt  ob) }
+     | p == (armRes "awardsLevels") =
+             toAdvancement' xs $ adv { advLevels = (rdfToInt  ob) }
+     | p == (armRes "classAwardsXP") && advXP adv == Nothing =
+             toAdvancement' xs $ adv { advXP = (rdfToInt  ob) }
      | p == (armRes "awardsXP") =
              toAdvancement' xs $ adv { advXP = (rdfToInt  ob) }
      | p == (armRes "hasAdvancementIndex") =
