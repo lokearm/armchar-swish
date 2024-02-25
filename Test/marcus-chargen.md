@@ -1,11 +1,11 @@
 # Character Generation
 + Base Character
     + Traits advanced
-        + ???
+        + Size
         + Stubborn
         + Contemplative
         + Ambitious
-        + ???
+        + Confidence
         + The Gift
         + Strength
         + Stamina

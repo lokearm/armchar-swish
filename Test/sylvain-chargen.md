@@ -1,11 +1,11 @@
 # Character Generation
 + Base Character
     + Traits advanced
-        + ???
+        + Size
         + Stubborn
         + Pious
         + Curious
-        + ???
+        + Confidence
         + ???
         + ???
         + The Gift

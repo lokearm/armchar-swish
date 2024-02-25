@@ -1,7 +1,7 @@
 # Character Generation
 + Base Character
     + Traits advanced
-        + ???
+        + Size
         + Loyal
         + Brave
         + Compassionate
