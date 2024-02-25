@@ -49,13 +49,13 @@ Confidence
 
 + Elemental Magic (3)
 + The Gift (-)
++ Affinity with Ability: Forest Lore (1)
 + Forest Lore (1)
 + Minor Magical Focus: Wind (1)
 + Secondary Insight (1)
 + Diedne Magic (1)
 + Skilled Parens (1)
 + Puissant (Ability): Forest Lore (1)
-+ Affinity with Ability: Forest Lore (1)
 + Motion Sickness (-1)
 + Small Frame (-1)
 + Pagan (-3)
@@ -66,6 +66,7 @@ Confidence
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
 | :-                   | :-              |    -: |   -: |    -: |        -: |
+| Faerie Magic         | Spells          |     1 |    0 |     - |         0 |
 | Merinita Cult Lore   | Spells          |     1 |    0 |     - |         1 |
 | Magic Theory         | Spells          |     3 |    0 |     - |         3 |
 | Parma Magica         | Mentem          |     1 |    0 |     - |         1 |

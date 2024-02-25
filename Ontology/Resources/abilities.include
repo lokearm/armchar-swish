@@ -147,6 +147,9 @@ arm:SupernaturalAbility  rdfs:subClassOf arm:Ability .
 armr:forestlore  rdfs:subClassOf arm:SupernaturalAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Forest Lore" .
+armr:faeriemagic  rdfs:subClassOf arm:SupernaturalAbility ;
+                   a arm:LeafTraitClass ;
+   arm:hasLabel "Faerie Magic" .
 armr:secondsightAb  rdfs:subClassOf arm:SupernaturalAbility ;
      arm:hasDescription "You are able to see through illusionary concealment and disguise, including invisibility, and can also see naturally invisible things such as spirits and the boundaries between regio levels. The Ease Factor to see through illusionary concealment is normally equal to 6 + the magnitude of the might of the creature responsible for the effect, or 6 + the magnitude of a Hermetic spell. In general, this Virtue allows you to see through Hermetic Imaginem concealment, but not other kinds. The Magic Ars Magica Fifth Edition Resistance, if any, of the concealed creature does not interfere with your Second Sight. If something is actually transformed, for example by a MuCo spell, you cannot determine the genuine form. The Ease Factor to see a naturally invisible thing is normally 9, and the Ease Factor for seeing regio levels is specified on page 189. All Second Sight rolls are Perception + Second Sight. Specialties: regiones, invisible things, illusory disguises, faeries, ghosts.  " ;
                      a arm:LeafTraitClass ;

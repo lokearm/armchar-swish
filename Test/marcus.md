@@ -54,17 +54,18 @@ Confidence
 + Secondary Insight (1)
 + Skilled Parens (1)
 + Elemental Magic (3)
++ Compassionate (major) (-3)
++ Deleterious Circumstances: Hearing Church Bells (-1)
 + Motion Sickness (-1)
 + Small Frame (-1)
 + Pagan (-3)
 + Curious (custom, similar to reckless) (-1)
-+ Compassionate (major) (-3)
-+ Deleterious Circumstances: Hearing Church Bells (-1)
 # Abilities
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
 | :-                   | :-              |    -: |   -: |    -: |        -: |
 | Merinita Cult Lore   | Spells          |     1 |    0 |     - |         1 |
+| Faerie Magic         | Spells          |     1 |    0 |     - |         1 |
 | Magic Theory         | Spells          |     3 |    0 |     - |         3 |
 | Parma Magica         | Mentem          |     2 |    0 |     - |         2 |
 | Finesse              | Auram           |     1 |    5 |     - |         1 |

@@ -35,7 +35,8 @@
         + Dodge
         + Dagger
 + Early Childhood
-    + **Overspent**: No allowance, but 45xp spent
+    + Source Quality 45
+    + Spent 45xp of 45xp
     + Traits advanced
         + ??? (15 xp)
         + Stealth (15 xp)
@@ -47,8 +48,9 @@
         + ??? (5 xp)
         + Concentration (15 xp)
 + Apprenticeship
-    + **Overspent**: No allowance, but 287xp spent
-    + Gained 150 levels of spells
+    + Source Quality 300
+    + **Underspent** 287xp of 300xp
+    + Gained 150 spell levels (of an allowance of 150 levels)
     + Traits advanced
         + Snares
         + Vim (15 xp)
@@ -69,7 +71,7 @@
         + Herbam (0 xp)
         + Forest Lore (10 xp)
         + Finesse (5 xp)
-        + ??? (5 xp)
+        + Faerie Magic (5 xp)
         + Creo (21 xp)
         + Corpus (0 xp)
         + Auram (45 xp)

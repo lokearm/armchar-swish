@@ -34,7 +34,7 @@ prepareAdvancements = fwdApplySimple mod2Rule
 
 mod1Rule :: RDFRule
 mod1Rule = 
-    makeCRule "modifierRuld"
+    makeCRule "mod1rule"
       [ arc adv typeRes (armRes "BaseAdvancement")
       , arc adv (armRes "advanceCharacter") cVar
       , arc adv (armRes "advanceTrait") trait
@@ -47,9 +47,9 @@ mod1Rule =
 
 mod2Rule :: RDFRule
 mod2Rule = 
-    makeCRule "modifierRuld"
+    makeCRule "mod2rule"
       [ arc cVar (armRes "hasModifier") mVar
-      , arc cVar (typeRes) (armRes "arm:Character")
+      , arc cVar (typeRes) (armRes "Character")
       , arc adv (armRes "advanceCharacter") cVar
       , arc mVar (armRes "hasProperty") (Var "prop") 
       , arc mVar (armRes "hasClass") (Var "class") 

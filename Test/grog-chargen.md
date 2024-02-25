@@ -28,7 +28,8 @@
         + Axe
         + Arrow
 + Early Childhood
-    + **Overspent**: No allowance, but 45xp spent
+    + Source Quality 45
+    + Spent 45xp of 45xp
     + Traits advanced
         + ??? (15 xp)
         + Stealth (15 xp)
