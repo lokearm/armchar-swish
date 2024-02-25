@@ -12,7 +12,7 @@ arm:hasClass a rdf:Property ;
         rdfs:domain  arm:Modifier ;
         rdfs:range   arm:Class ;
         rdfs:label   "Affected class" .
-arm:hasModifier a rdf:Property ;
+arm:hasModifier a rdf:Property, rdfs:subPropertyOf arm:InheritedProperty ;
         rdfs:range   arm:Modifier ;
         rdfs:label   "Rules modifier" .
 # Character Advancement

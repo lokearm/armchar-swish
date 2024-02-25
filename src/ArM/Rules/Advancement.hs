@@ -12,35 +12,31 @@
 
 module ArM.Rules.Advancement where
 
-import qualified Swish.RDF.Query as Q
-import Swish.VarBinding  (vbMap)
+-- import qualified Swish.RDF.Query as Q
 import Swish.RDF.Graph
--- import Swish.RDF.Vocabulary.RDF
--- import Swish.RDF.Vocabulary.XSD
 import Swish.RDF.Ruleset (RDFRule)
 import ArM.Resources
 import ArM.Rules.Aux
-import ArM.Rules.Common
-import ArM.Rules.RDFS
-import Data.Maybe (fromJust)
--- import Data.List (sort)
 
 -- import Control.Parallel.Strategies
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema
-prepareRecord :: RDFGraph -> RDFGraph -> RDFGraph
-prepareRecord schema = id
+-- prepareRecord :: RDFGraph -> RDFGraph -> RDFGraph
+-- prepareRecord schema = id
 
 -- set awardsXP
-rdfstypeRule :: RDFRule
-rdfstypeRule = 
+modRule :: RDFRule
+modRule = 
     makeCRule "modifierRuld"
       [ arc mVar typeRes (armRes "Modifier") 
-      , arc mVar (armRes "hasProperty") pVar 
-      , arc mVar (armRes "hasClass") cVar 
-      , arc mVar (armRes "hasValue") oVar 
-      , arc sVar typeRes cVar
+      , arc mVar (armRes "hasProperty") (Var "prop") 
+      , arc mVar (armRes "hasClass") (Var "class") 
+      , arc mVar (armRes "hasValue") (Var "obj") 
+      , arc cVar (armRes "hasTrait") tVar
+      , arc tVar (armRes "hasModifier") mVar
+      , arc (Var "adv") (armRes "advanceCharacter") cVar
+      , arc (Var "adv") typeRes (Var "class")
       ]
-      [ arc sVar typeRes cVar ]
+      [ arc (Var "adv") (Var "prop") (Var "obj") ]
     where mVar = (Var "m")

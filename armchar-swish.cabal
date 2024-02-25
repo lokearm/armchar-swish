@@ -24,6 +24,7 @@ common deps
                        , ArM.Debug.NoTrace
                        , ArM.Debug.Time
                        , ArM.Internal.Aux
+                       , ArM.Rules.Advancement
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
                        , ArM.Rules.Persistence
