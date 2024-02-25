@@ -38,10 +38,11 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [ ] Implement Feral Upbringing
 	+ [x] Implement Poor/Wealthy
 + [ ] labels on Size and Confidence (missing in advancement log) #cli/selected  #bug 
++ [ ] show RDFLabel in addition to question marks for missing labels #cli/selected 
 + [ ] [[Advancement]] validation #cli/backlog 
 	+ [ ] XP validation
 	+ [ ] Spell level validation
-	+ [ ] Virtue/Flaw generation
+	+ [ ] Virtue/Flaw balance/limit
 	+ [ ] Characteristics validation
 + [ ] Lab work advancement type #cli/backlog 
 	+ [ ] Calculate Lab Totals    #cli/backlog
