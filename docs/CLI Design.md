@@ -37,6 +37,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [x] Implement Skilled Parens virtue
 	+ [ ] Implement Feral Upbringing
 	+ [x] Implement Poor/Wealthy
++ [ ] labels on Size and Confidence (missing in advancement log) #cli/selected  #bug 
 + [ ] [[Advancement]] validation #cli/backlog 
 	+ [ ] XP validation
 	+ [ ] Spell level validation

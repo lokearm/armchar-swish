@@ -39,7 +39,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
     [ arm:traitClass armr:Fist ]
     ;
    arm:hasHouseVirtue 
-    [ arm:traitClass armr:faeriemagic  ] ;
+    [ arm:traitClass armr:faerieMagic  ] ;
    arm:buyVirtueFlaw
     [ arm:traitClass armr:theGift ],
     [ arm:traitClass armr:hermeticMagus ],
