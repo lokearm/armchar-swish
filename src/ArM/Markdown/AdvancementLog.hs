@@ -56,7 +56,7 @@ printAdvancement ad = catMaybes
                        , lvlCount (spellLevels ad) (advLevels ad)
                        , Just "    + Traits advanced"
                        ] ++
-                       ( map ("        + "++) . map printTrait . traits ) ad
+                       ( map ("        + "++) . map printTrait . filterTraits . traits ) ad
    where f Nothing = Nothing
          f (Just x) = Just $  "    + " ++ x
          fi Nothing = Nothing
@@ -128,6 +128,11 @@ makePTrait' (x:xs) pt
     | arcPred x == armRes "hasLabel" = makePTrait' xs $ pt { label2 = rdfToString (arcObj x) }
     | arcPred x == armRes "addedXP" = makePTrait' xs $ pt { ptXP = rdfToInt (arcObj x) }
     | otherwise = makePTrait' xs $ pt
+
+filterTraits :: [Trait] -> [Trait]
+filterTraits [] = []
+filterTraits (x:xs) | traitClass x == armRes "Bonus" = filterTraits xs
+                    | otherwise = x:filterTraits xs
 
 printTrait :: Trait -> String
 printTrait = printTrait' . makePTrait . traitContents

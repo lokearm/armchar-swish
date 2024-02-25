@@ -39,7 +39,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [x] Implement Poor/Wealthy
 + [x] labels on Size and Confidence (missing in advancement log) #cli/selected  #bug 
 + [x] show RDFLabel in addition to question marks for missing labels #cli/selected 
-+ [ ] Do not show bonus traitlike objects in the advancement log #cli/selected 
++ [x] Do not show bonus traitlike objects in the advancement log #cli/selected 
 + [ ] [[Advancement]] validation #cli/backlog 
 	+ [ ] XP validation
 	+ [ ] Spell level validation
