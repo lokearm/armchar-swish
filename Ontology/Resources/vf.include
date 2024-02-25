@@ -102,6 +102,16 @@ armr:wealthy          rdfs:subClassOf   armr:majorGeneralVirtue ; arm:hasReferen
 			arm:hasClass arm:LaterLifeAdvancement ] ;
                          a arm:LeafTraitClass ;
                   arm:hasLabel "Wealthy" .
+
+armr:feralupbringing          rdfs:subClassOf   armr:minorGeneralFlaw ;
+      arm:hasReference   "[ArM5]" ;
+      arm:hasModifier [ arm:hasProperty arm:awardsXP ;
+                        arm:hasValue 120 ;
+			arm:hasClass arm:EarlyChildhoodAdvancement ] ;
+                         a arm:LeafTraitClass ;
+                  arm:hasLabel "Feral Upbringing" .
+
+
 armr:poor          rdfs:subClassOf   armr:majorGeneralFlaw ;
       arm:hasReference   "[ArM5]" ;
       arm:hasModifier [ arm:hasProperty arm:awardsAnnualXP ;

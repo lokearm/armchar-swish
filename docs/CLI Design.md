@@ -36,7 +36,7 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 	+ [x] duration on later life 
 	+ [ ] deduce age
 	+ [x] Implement Skilled Parens virtue
-	+ [ ] Implement Feral Upbringing
+	+ [x] Implement Feral Upbringing
 	+ [x] Implement Poor/Wealthy
 + [x] labels on Size and Confidence (missing in advancement log) #cli/selected  #bug 
 + [x] show RDFLabel in addition to question marks for missing labels #cli/selected 

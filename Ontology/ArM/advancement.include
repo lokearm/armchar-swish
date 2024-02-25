@@ -21,6 +21,7 @@ arm:BaseAdvancement rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Base Character" ;
    arm:hasAdvancementIndex  10 .
 arm:EarlyChildhoodAdvancement rdfs:subClassOf arm:PregameAdvancement ;
+   arm:durationYears  5 ;
    arm:classAwardsXP 45 ;
    arm:hasLabel "Early Childhood" ;
    arm:hasAdvancementIndex  20 .
@@ -32,6 +33,7 @@ arm:VirtueAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
    arm:hasLabel "Virtue XP" ;
    arm:hasAdvancementIndex  35 .
 arm:ApprenticeshipAdvancement  rdfs:subClassOf arm:PregameAdvancement ;
+   arm:durationYears  15 ;
    arm:classAwardsXP 240 ;
    arm:classAwardsLevels 120 ;
    arm:hasLabel "Apprenticeship" ;
