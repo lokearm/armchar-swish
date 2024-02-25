@@ -21,8 +21,9 @@ import ArM.Types.Trait
 import ArM.Types.Advancement
 import ArM.Types.Season
 import Data.List(intercalate)
-import Data.Maybe (catMaybes)
+import Data.Maybe (catMaybes,fromJust)
 import Swish.RDF
+import ArM.Debug.Trace
 
 
 printAdvancementLog :: [Advancement] -> [String]
@@ -46,13 +47,23 @@ showAdType ad | y ad == Nothing = "+ " ++ showSeason ad
          fm Nothing = ""
          fm (Just x) = x
 
+xpaward :: Advancement -> Maybe Int
+xpaward adv = trace (show adv) (xpaward' adv)
+xpaward' :: Advancement -> Maybe Int
+xpaward' adv | advXP adv /= Nothing = advXP adv 
+            | advAnnualXP adv /= Nothing = Just $ (fromJust $ advAnnualXP adv)*f adv
+          | otherwise = Nothing
+    where f' Nothing = 0
+          f' (Just x) = x
+          f = f' . advDuration
+
 printAdvancement :: Advancement -> [String]
 printAdvancement ad = catMaybes 
                        [ Just $ showAdType ad
                        , f $ advLabel ad
                        , fi $ advXP ad
                        , f $ advDescription ad
-                       , xpCount (spentXP ad) (advXP ad)
+                       , xpCount (spentXP ad) (xpaward ad)
                        , lvlCount (spellLevels ad) (advLevels ad)
                        , Just "    + Traits advanced"
                        ] ++

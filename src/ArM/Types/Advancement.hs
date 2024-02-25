@@ -50,6 +50,8 @@ data Advancement = Advancement
     , advLevels      :: Maybe Int
     , spentXP        :: Maybe Int
     , advXP          :: Maybe Int
+    , advAnnualXP    :: Maybe Int
+    , advDuration    :: Maybe Int
     , advType        :: Maybe String
     , advLabel       :: Maybe String
     , advDescription :: Maybe String
@@ -66,6 +68,8 @@ defaultAdvancement = Advancement
                 , advLevels      = Nothing
                 , spentXP        = Nothing
                 , advXP         = Nothing
+                , advAnnualXP   = Nothing
+                , advDuration    = Nothing
                 , advType       = Nothing
                 , advLabel       = Nothing
                 , advDescription = Nothing
@@ -314,6 +318,12 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advXP = (rdfToInt  ob) }
      | p == (armRes "awardsXP") =
              toAdvancement' xs $ adv { advXP = (rdfToInt  ob) }
+     | p == (armRes "classAwardsAnnualXP") && advAnnualXP adv == Nothing =
+             toAdvancement' xs $ adv { advAnnualXP = (rdfToInt  ob) }
+     | p == (armRes "awardsAnnualXP") =
+             toAdvancement' xs $ adv { advAnnualXP = (rdfToInt  ob) }
+     | p == (armRes "durationYears") =
+             toAdvancement' xs $ adv { advDuration = (rdfToInt  ob) }
      | p == (armRes "hasAdvancementIndex") =
              toAdvancement' xs $ adv { advTime = t { advancementIndex = fi (rdfToInt  ob) } }
      | p == (armRes "instanceLabel") =

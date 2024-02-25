@@ -47,7 +47,7 @@ arm:durationYears  a owl:DatatypeProperty ;
         rdfs:domain   owl:Advancement ;
         rdfs:range   xsd:int ;
         arm:hasLabel   "Duration (Years)" ;
-        rdfs:comment "Duration of the advancement stage in years." ;
+        rdfs:comment "Duration of the advancement stage in years." .
 arm:hasAdvancementIndex  a owl:DatatypeProperty ;
         rdfs:domain   owl:Class ;
         rdfs:range   xsd:int ;
@@ -72,6 +72,10 @@ arm:atTime a   owl:DatatypeProperty, arm:ViewProperty ;
         rdfs:range   xsd:string ;
         rdfs:label   "Date" .
 
+arm:awardsAnnualXP a owl:DatatypeProperty, arm:PersistentProperty ;
+        rdfs:domain  arm:CharacterAdvancement ;
+        rdfs:range   xsd:int ;
+        rdfs:label   "XP awarded" .
 arm:awardsXP a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:int ;
@@ -80,6 +84,10 @@ arm:awardsLevels a owl:DatatypeProperty, arm:PersistentProperty ;
         rdfs:domain  arm:CharacterAdvancement ;
         rdfs:range   xsd:int ;
         rdfs:label   "Spell levels awarded" .
+arm:classAwardsAnnualXP a owl:DatatypeProperty, arm:InheritableProperty ;
+        rdfs:domain  owl:Class ;
+        rdfs:range   xsd:int ;
+        rdfs:label   "XP awarded (general rule)" .
 arm:classAwardsXP a owl:DatatypeProperty, arm:InheritableProperty ;
         rdfs:domain  owl:Class ;
         rdfs:range   xsd:int ;
