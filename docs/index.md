@@ -20,6 +20,7 @@ markdown sheets from an RDF graph (turtle files).
 	+ [[Backend Modules]]
 	+ [[CLI Data Model.canvas|CLI Data Model]]  including the Markdown output.  This is accurate and fairly complete as of 2024-02-03
 	+ [[CLI Workflow.canvas|CLI Workflow]] 
+		+ **Outdated**
 		+ This is rather crude, but contains some more low level detail than the above.
 	+ [[Advancement]]
 + Basic principls, common for all user interfaces.

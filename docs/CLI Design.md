@@ -18,6 +18,12 @@ title: CLI Design
 
 This is not prioritised in version 1.0, but low-hanging fruits may still be included.
 
++ [ ] Display character at gauntlet/game start  #cli/selected 
+	+ [ ] Deduce Age 
+	+ [ ] how do we deal with age and birth year and game start year
+	+ [ ] Persist game start state - faster startup
+	+ [ ] how do we deal with characters entering later in the game?
+	+ [ ] Do we have to import everything into one graph?  Could it even be faster?
 + [ ] [[Advancement]] by reading #cli/backlog 
 	+ [x] Covenant as a character
 	+ [x] Covenant hasBook property to define library
@@ -28,19 +34,6 @@ This is not prioritised in version 1.0, but low-hanging fruits may still be incl
 		+ [ ] book reader
 		+ [ ] study bonus
 		+ [ ] affinity
-+ [ ] Display character at gauntlet  #cli/selected 
-+ [ ] [[Advancement]] totals in advancement log #cli/selected 
-	+ [x] calculate total
-	+ [x] awards on pregame advancements
-	+ [x] XP on later life
-	+ [x] duration on later life 
-	+ [ ] deduce age
-	+ [x] Implement Skilled Parens virtue
-	+ [x] Implement Feral Upbringing
-	+ [x] Implement Poor/Wealthy
-+ [x] labels on Size and Confidence (missing in advancement log) #cli/selected  #bug 
-+ [x] show RDFLabel in addition to question marks for missing labels #cli/selected 
-+ [x] Do not show bonus traitlike objects in the advancement log #cli/selected 
 + [ ] Hierarchical sort traits in chargen log #cli/selected 
 + [ ] [[Advancement]] validation #cli/backlog 
 	+ [ ] XP validation
@@ -158,3 +151,14 @@ The first version of CLI will solve one simple problem; take a character descrip
 	+ [x] Infer labels for books (labels not used)
 	+ [x] Display all stats for books
 	+ [x] Show virtues and flaws as boons and hooks on covenants
++ [x] [[Advancement]] totals in advancement log #cli/selected 
+	+ [x] calculate total
+	+ [x] awards on pregame advancements
+	+ [x] XP on later life
+	+ [x] duration on later life 
+	+ [x] Implement Skilled Parens virtue
+	+ [x] Implement Feral Upbringing
+	+ [x] Implement Poor/Wealthy
++ [x] labels on Size and Confidence (missing in advancement log) #cli/selected  #bug 
++ [x] show RDFLabel in addition to question marks for missing labels #cli/selected 
++ [x] Do not show bonus traitlike objects in the advancement log #cli/selected 
