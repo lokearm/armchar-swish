@@ -59,7 +59,9 @@ instance FromRDFGraph SagaFile where
 -- The graph should contain one and only one saga.
 sagaFromRDF :: RDFGraph -> SagaFile
 sagaFromRDF g = fromRDFGraph g sid
-    where sid = head $ sagaFromGraph g
+    where sid = h $ sagaFromGraph g
+          h []  = error "No saga"
+	  h xs = head xs
 
 
 -- | Complete a saga object by extracting file names from the graph.

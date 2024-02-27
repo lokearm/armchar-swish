@@ -20,6 +20,8 @@ O=Ontology/resources.ttl Ontology/arm.ttl
 
 test: Test/marcus.ttl 
 	cabal run cli -- -s Test/diedne.ttl 
+saga: Saga/verditius.ttl 
+	cabal run cli -- -s Saga/newsaga.ttl 
 prof: Test/marcus.ttl 
 	cabal run cli --enable-profiling -- -s Test/diedne.ttl +RTS -p
 	# --profiling-detail=exported-functions 

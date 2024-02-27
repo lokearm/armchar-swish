@@ -5,12 +5,12 @@
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
 @prefix : <https://hg.schaathun.net/armchar/character/> .
 
-:diedne a arm:Saga ; 
+:bergen a arm:Saga ; 
       arm:hasTitle "Bjørgvin Saga" ;
       arm:hasDescription "New saga set in Bjørgvin with Callen as Alpha SG." ;
       arm:hasSchemaFile "Ontology/arm.ttl" ;
       arm:hasResourceFile "Ontology/resources.ttl" ;
-      arm:hasCharacterFile "Test/verditius.ttl" .
+      arm:hasCharacterFile "Saga/verditius.ttl" .
 
 :bergencovenant  a arm:Covenant ; 
       arm:hasName "Bjørgvin" ;

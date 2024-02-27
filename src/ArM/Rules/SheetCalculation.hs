@@ -220,6 +220,7 @@ defaultCombatStats = CombatStats {
     coDam = 0,
     coInit = 0 }
 processCombatStats :: [RDFTriple] -> [RDFTriple]
+processCombatStats [] = error "No combat stats"
 processCombatStats xs = p2 (canAtk cs) 
     where cs = fst $ processCombatStats' (defaultCombatStats,xs)
           co = arcSubj $ head xs
