@@ -67,9 +67,9 @@ armchar:verditius arm:characterClass arm:Magus ;
    arm:advancementClass arm:EarlyChildhoodAdvancement ; 
    arm:advanceTrait 
    [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 5  ],
-   [ arm:traitClass armr:charm   ; arm:hasSpeciality "Traders" ; arm:addedXP 15  ] .
-   [ arm:traitClass armr:folkken ; arm:hasSpeciality "Townsfolk" ; arm:addedXP 15  ] .
-   [ arm:traitClass armr:english ; arm:hasSpeciality "East Anglia" ; arm:addedXP   5  ] .
+   [ arm:traitClass armr:charm   ; arm:hasSpeciality "Traders" ; arm:addedXP 15  ] ,
+   [ arm:traitClass armr:folkken ; arm:hasSpeciality "Townsfolk" ; arm:addedXP 15  ] ,
+   [ arm:traitClass armr:english ; arm:hasSpeciality "East Anglia" ; arm:addedXP   5  ] ,
    [ arm:traitClass armr:westnorse ; arm:hasSpeciality "Norwegian" ; arm:addedXP 5  ] .
 
 :lateradv arm:advanceCharacter armchar:verditius ;

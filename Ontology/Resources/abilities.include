@@ -81,9 +81,15 @@ armr:brawl  rdfs:subClassOf arm:GeneralAbility ;
 armr:carouse  rdfs:subClassOf arm:GeneralAbility ;
                    a arm:LeafTraitClass ;
                    arm:hasLabel "Carouse" .
+armr:charm  rdfs:subClassOf arm:GeneralAbility ;
+                     a arm:LeafTraitClass ;
+                     arm:hasLabel "Charm" .
 armr:empathy  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Empathy" .
+armr:etiquette  rdfs:subClassOf arm:GeneralAbility ;
+                     a arm:LeafTraitClass ;
+                     arm:hasLabel "Etiquette" .
 armr:folkken  rdfs:subClassOf arm:GeneralAbility ;
                      a arm:LeafTraitClass ;
                      arm:hasLabel "Folk Ken" .

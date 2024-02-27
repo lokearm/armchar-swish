@@ -567,6 +567,10 @@ armr:ageQuickly  rdfs:subClassOf   armr:majorSupernaturalFlaw ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Age Quickly" .
 
+armr:greedyMajor  rdfs:subClassOf  armr:majorPersonalityFlaw ;
+                  arm:hasReference   "[ArM5]" ;
+                  a arm:LeafTraitClass ;
+                  arm:hasLabel "Greedy (major)" .
 armr:ambitiousMajor  rdfs:subClassOf  armr:majorPersonalityFlaw ;
                   arm:hasReference   "[ArM5]" ;
                   a arm:LeafTraitClass ;
