@@ -61,7 +61,7 @@ sagaFromRDF :: RDFGraph -> SagaFile
 sagaFromRDF g = fromRDFGraph g sid
     where sid = h $ sagaFromGraph g
           h []  = error "No saga"
-	  h xs = head xs
+          h xs = head xs
 
 
 -- | Complete a saga object by extracting file names from the graph.
