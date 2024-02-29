@@ -88,6 +88,8 @@ armchar:verditius arm:characterClass arm:Magus ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
   arm:durationYears 5 ;
   arm:advanceTrait 
+   [ arm:traitClass armr:organisationlore ; arm:instanceLabel "Home Covenant" ;
+     arm:addedXP 5 ; arm:hasSpeciality "Grogs" ],
       [ arm:traitClass armr:craft-sculptor ;  arm:addedXP 50 ; arm:hasSpeciality "Stone"  ],
       [ arm:traitClass armr:bargain ;  arm:addedXP 5 ; arm:hasSpeciality "Own works"  ],
       [ arm:traitClass armr:etiquette ;  arm:addedXP 5 ; arm:hasSpeciality "Townsfolk"  ],
@@ -112,7 +114,7 @@ armchar:verditius arm:characterClass arm:Magus ;
       [ arm:traitClass armr:mentem ; arm:addedXP 36 ],
       [ arm:traitClass armr:terram ; arm:addedXP 0 ],
       [ arm:traitClass armr:vim ; arm:addedXP 15 ],
-      [ arm:traitClass armr:forestlore ; arm:addedXP 10  ],
+
     [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Items" ],
     [ arm:traitClass armr:latin ; arm:instanceLabel "Dead Lang: Latin" ; arm:addedXP 50 ; arm:hasSpeciality "Hermetic Usage" ],
     [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
@@ -122,8 +124,6 @@ armchar:verditius arm:characterClass arm:Magus ;
    [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
     [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
    [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
-   [ arm:traitClass armr:organisationlore ; arm:instanceLabel "Home Covenant" ;
-     arm:addedXP 5 ; arm:hasSpeciality "Grogs" ],
 
    [ arm:traitClass armr:verditiuslore ; arm:addedXP  5 ; arm:hasSpeciality "Spells" ],
 
