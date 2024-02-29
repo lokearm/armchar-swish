@@ -49,9 +49,13 @@ printSheetObject ob = [ getHeader  ob , "" ]
                        ""
                        ]
                   ++ printVF "Virtues and Flaws" ob
+                  ++ [""]
                   ++ printAb ob
+                  ++ [""]
                   ++ printArts ob
+                  ++ [""]
                   ++ printSpells ob
+                  ++ [""]
                   ++ printCombat ob
                   ++ [""]
                   ++ printEquipment ob
@@ -83,7 +87,7 @@ printChar = p .  characteristics
        p1 x = qShow (traitAbbr x) ++ " " ++ (dashShow $ traitTotalScore x)
 
 printVF :: String -> SheetObject -> [String]
-printVF h ob = p $ virtues ob ++ flaws ob
+printVF h ob = p $ virtues ob ++ flaws ob 
     where
        p [] = []
        p xs = [ '#':' ':h, "" ] ++ map printVFLine  xs

@@ -44,17 +44,23 @@ armchar:verditius arm:characterClass arm:Magus ;
 
     [ arm:traitClass armr:secondaryInsight ],
     [ arm:traitClass armr:skilledParens ],
-    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Moods" ],
+    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Sculptures" ],
     [ arm:traitClass armr:lifeLinkedSpontaneousMagic ],
 
     [ arm:traitClass armr:greedyMajor ; a arm:majorFlaw ],
     [ arm:traitClass armr:minorPersonalityFlaw ;
-      arm:instanceLabel "Weakness for beautiful objects" ] ;
+      arm:instanceLabel "Weakness for beautiful objects" ],
+    [ arm:traitClass armr:minorStoryFlaw ;
+      arm:instanceLabel "Confraternity of Inga the Younger" ],
+    [ arm:traitClass armr:minorHermeticFlaw ;
+      arm:instanceLabel "Bound Casting Tools" ],
+    [ arm:traitClass armr:majorGeneralFlaw ;
+      arm:instanceLabel "Lame" ],
 
-    [ arm:traitClass armr:affinityWithArt ; 
+    [ arm:traitClass armr:affinityWithArt ;
       arm:hasDetail "Imaginem" ],
     [ arm:traitClass armr:deleteriousCircumstances ;
-      arm:hasDetail "Hearing Church Bells" ],
+      arm:hasDetail "Making small, handheld items" ] ;
 
    arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
@@ -114,7 +120,7 @@ armchar:verditius arm:characterClass arm:Magus ;
    [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
     [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
    [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
-   [ arm:traitClass armr:organisationlore ; arm:hasDetail "Home Covenant" ;
+   [ arm:traitClass armr:organisationlore ; arm:instanceLabel "Home Covenant" ;
      arm:addedXP 5 ; arm:hasSpeciality "Grogs" ],
 
    [ arm:traitClass armr:verditiuslore ; arm:addedXP  5 ; arm:hasSpeciality "Spells" ],
