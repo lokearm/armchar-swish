@@ -43,6 +43,7 @@ armchar:verditius arm:characterClass arm:Magus ;
     [ arm:traitClass armr:hermeticMagus ],
 
     [ arm:traitClass armr:secondaryInsight ],
+    [ arm:traitClass armr:inventiveGenius ],
     [ arm:traitClass armr:skilledParens ],
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Sculptures" ],
     [ arm:traitClass armr:lifeLinkedSpontaneousMagic ],
@@ -57,6 +58,7 @@ armchar:verditius arm:characterClass arm:Magus ;
     [ arm:traitClass armr:majorGeneralFlaw ;
       arm:instanceLabel "Lame" ],
 
+    [ arm:traitClass armr:inoffensiveToAnimals ],
     [ arm:traitClass armr:affinityWithArt ;
       arm:hasDetail "Imaginem" ],
     [ arm:traitClass armr:deleteriousCircumstances ;
