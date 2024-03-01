@@ -72,7 +72,7 @@ printCombat :: SheetObject -> [String]
 printCombat = p . combat
     where
        p [] = []
-       p xs = [ "# Combat", "" ] ++ map printCombatLine xs
+       p xs = [ "## Combat", "" ] ++ map printCombatLine xs
 printPtraits :: SheetObject -> [String]
 printPtraits = p . ptraits
     where
@@ -90,13 +90,13 @@ printVF :: String -> SheetObject -> [String]
 printVF h ob = p $ virtues ob ++ flaws ob 
     where
        p [] = []
-       p xs = [ '#':' ':h, "" ] ++ map printVFLine  xs
+       p xs = [ '##':' ':h, "" ] ++ map printVFLine  xs
 
 printAb :: SheetObject -> [String]
 printAb = p . abilities
     where
        p [] = []
-       p xs = [ "# Abilities", "",
+       p xs = [ "## Abilities", "",
                        pAb "Ability" "Speciality" "Score" "XP" "Bonus" "Effective",
                        pAb ":-" ":-" "-:" "-:" "-:" "-:"
                        ]
@@ -105,12 +105,12 @@ printArts :: SheetObject -> [String]
 printArts = p . arts
     where
        p [] = []
-       p xs = [ "# Arts", "" ] ++ artHeader ++ (map printArtLine xs)
+       p xs = [ "## Arts", "" ] ++ artHeader ++ (map printArtLine xs)
 printSpells :: SheetObject -> [String]
 printSpells = p . spells
     where
        p [] = []
-       p xs = [ "# Spells", "" ] ++ (map printSpellLine xs)
+       p xs = [ "## Spells", "" ] ++ (map printSpellLine xs)
 
 printSpellLine :: Trait -> String
 printSpellLine t = "+ " ++ tefoString t ++ " " ++ f1 t 
@@ -135,12 +135,12 @@ printLibrary :: SheetObject -> [String]
 printLibrary = p . sort . library
     where
        p [] = []
-       p xs = [ "# Library", "" ] ++ (map (('+':) . (' ':) . show) xs) ++ [ "" ]
+       p xs = [ "## Library", "" ] ++ (map (('+':) . (' ':) . show) xs) ++ [ "" ]
 printEquipment :: SheetObject -> [String]
 printEquipment = p . equipment
     where
        p [] = []
-       p xs = [ "# Equipment", "" ] ++ (map printEquipmentLine xs) ++ [ "" ]
+       p xs = [ "## Equipment", "" ] ++ (map printEquipmentLine xs) ++ [ "" ]
 printEquipmentLine :: Trait -> String
 printEquipmentLine t = "+ " ++ f1 t ++ f2 t ++ pShow (traitDetail t)
    where f1 = dashShow . traitLabel
@@ -156,7 +156,7 @@ printVis :: SheetObject -> [String]
 printVis = p . vis
     where
        p [] = []
-       p xs = "# Vis":"": p' xs  ++ [ "" ]
+       p xs = "## Vis":"": p' xs  ++ [ "" ]
        p' = map printVisLine 
 
 printVFLine :: Trait -> String

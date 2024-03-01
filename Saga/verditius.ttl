@@ -59,8 +59,10 @@ armchar:verditius arm:characterClass arm:Magus ;
       arm:instanceLabel "Lame" ],
 
     [ arm:traitClass armr:inoffensiveToAnimals ],
+    [ arm:traitClass armr:puissantAbility ;
+      arm:bonusTo armr:magictheory ],
     [ arm:traitClass armr:affinityWithArt ;
-      arm:hasDetail "Imaginem" ],
+      arm:bonusTo armr:imaginem ],
     [ arm:traitClass armr:deleteriousCircumstances ;
       arm:hasDetail "Making small, handheld items" ] ;
 
@@ -70,9 +72,8 @@ armchar:verditius arm:characterClass arm:Magus ;
     [ arm:traitClass armr:str ; arm:hasScore +1 ], [ arm:traitClass armr:sta ; arm:hasScore +2 ],
     [ arm:traitClass armr:dex ; arm:hasScore -2 ], [ arm:traitClass armr:qik ; arm:hasScore -2 ],
     [ arm:traitClass armr:occitan ; arm:instanceLabel "L Lang: High German" ; arm:hasSpeciality "Vaud" ; arm:hasTotalXP 75  ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Ambitious" ;  arm:hasFixedScore 2 ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Contemplative" ;  arm:hasFixedScore 3 ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Stubborn" ;  arm:hasFixedScore 1 ] .
+    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Ambitious" ;  arm:hasFixedScore 1 ],
+    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Problem solver" ;  arm:hasFixedScore 2 ] .
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:verditius ;
