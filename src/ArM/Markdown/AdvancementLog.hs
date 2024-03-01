@@ -65,7 +65,7 @@ printAdvancement ad = catMaybes
                        , f $ advDescription ad
                        , xpCount (spentXP ad) (xpaward ad)
                        , lvlCount (spellLevels ad) (advLevels ad)
-                       , Just "    + Traits advanced"
+                       , Just "    + Traits changed"
                        ] ++
                        ( map ("        + "++) . map printTrait . filterTraits . traits ) ad
    where f Nothing = Nothing

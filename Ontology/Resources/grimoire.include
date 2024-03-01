@@ -1,4 +1,7 @@
 
+
+# Auram
+
 armr:InAu15Whispering a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTechnique armr:intellego ;
     arm:hasForm      armr:auram ;
@@ -28,6 +31,7 @@ armr:CrAu30Pull  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasLevel     30 ;
     arm:hasLabel       "Pull of the Skybound Winds" .
 
+# Corpus
 
 armr:MuCo25Shape a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasLabel "Shape of the Woodland Prowler" ;
@@ -60,6 +64,7 @@ armr:ReCo5Spasms a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasDuration  arm:Dsun ;
     arm:hasTarget    arm:Tind .
 
+# Ignem
 
 armr:CrIg15Lamp a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTechnique armr:creo ;
@@ -69,6 +74,19 @@ armr:CrIg15Lamp a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasRange     arm:Rtouch ;
     arm:hasDuration  arm:Dsun ;
     arm:hasTarget    arm:Tind .
+
+# Imaginem
+
+armr:MuIm10auraBeguiling a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:muto ;
+    arm:hasForm      armr:imaginem ;
+    arm:hasLevel     10 ;
+    arm:hasLabel     "Aura of beguiling Appearance" ;
+    arm:hasRange     arm:Rtouch ;
+    arm:hasDuration  arm:Dsun ;
+    arm:hasTarget    arm:Tind ;
+    arm:hasDescription "This spell is a variant of Aura of Ennobled Presence, except that it causes the target to appear more friendly, conciliatory, and credible. The character gets a +3 on rolls to win trust and make friends. In a debate, the target receives a +3 to Defense Totals based on Charm. The social penalties caused by The Gift are not negated by this spell; the caster merely seems to be suspiciously over-friendly. (Base 3, +1 Touch, +2 Sun)" ;
+    arm:hasReference "[HoH:S:96]" .
 
 armr:PeIm20Veil a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTechnique armr:perdo ;
@@ -98,7 +116,32 @@ armr:MuIm10Aura a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasRange     arm:Rtouch ;
     arm:hasDuration  arm:Dsun ;
     arm:hasTarget    arm:Tind .
-    
+
+armr:ReIm10sidestep a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:rego ;
+    arm:hasForm      armr:imaginem ;
+    arm:hasLevel     10 ;
+    arm:hasLabel       "Wizard’s sidestep" ;
+    arm:hasRange     arm:Rper ;
+    arm:hasDuration  arm:Dsun ;
+    arm:hasTarget    arm:Tind ;
+    arm:hasDescription "Your image appears up to 1 pace from where you actually are, so attacks aimed there are likely to miss you. Whenever the image is successfully struck, it disappears and reappears in another spot. In combat, early attacks are aimed at the image, and so automatically miss you. Once the image has been hit once, you have a +9 bonus to Defense, as attackers must try to find you in a fairly large area. (Base 2, +2 Sun, +1 changing image, +1 moved image matches changes)" ;
+    arm:hasReference "[ArM5:147]" .
+
+# Mentem
+
+armr:CrMe20gossip a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:creo	 ;
+    arm:hasTechRequisite armr:rego	 ;
+    arm:hasForm      armr:mentem ;
+    arm:hasLevel      20 ;
+    arm:hasLabel       "Gossip of the Marketplace " ;
+    arm:hasRange     arm:Reye ;
+    arm:hasDuration  arm:Dsun ;
+    arm:hasTarget    arm:Tind ;
+    arm:hasDescription "Req: Rego Implants a piece of information in a target, who is then compelled to pass this information on to his friends until the duration expires. (Base 3, +1 Eye, +2 Sun, Rego requisite to compel gossiping, +2 complexity)" ;
+    arm:hasReference "[GoF:73]" .
+
 armr:PeMe10Trust a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTechnique armr:perdo	 ;
     arm:hasForm      armr:mentem ;
@@ -108,6 +151,14 @@ armr:PeMe10Trust a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasDuration  arm:Ddiam ;
     arm:hasTarget    arm:Tind .
 
+armr:ReMe10slumber a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:rego ;
+    arm:hasForm      armr:mentem ;
+    arm:hasLevel      10 ;
+    arm:hasLabel       "Call to Slumber" ;
+    arm:hasRange     arm:Rvoice ;
+    arm:hasDuration  arm:Dmom ;
+    arm:hasTarget    arm:Tind .
 armr:ReMe15Arrow a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTechnique armr:rego ;
     arm:hasForm      armr:mentem ;
@@ -124,6 +175,8 @@ armr:ReMe5Touch a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasRange     arm:Rtouch ;
     arm:hasDuration  arm:Dmom ;
     arm:hasTarget    arm:Tind .
+
+# Terram
 
 armr:InTe30Stone  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTechnique armr:intellego ;
@@ -150,6 +203,8 @@ armr:PeTe20End  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasRange     arm:Rtouch ;
     arm:hasDuration  arm:Dmom ;
     arm:hasTarget    arm:Tstr .
+
+# Vim
 
 armr:PeVi5Demons  a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasTechnique armr:perdo	 ;
@@ -216,4 +271,26 @@ armr:ReVi20Opening a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasRange     arm:Rac ;
     arm:hasDuration  arm:Ddiam ;
     arm:hasTarget    arm:Tind .
+
+armr:MuVi20Vigil a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:muto ;
+    arm:hasForm      armr:vim ;
+    arm:hasLevel     20 ;
+    arm:hasLabel       "Wizard's Vigil" ;
+    arm:hasRange     arm:Rvoice ;
+    arm:hasDuration  arm:Dsun ;
+    arm:hasTarget    arm:Tgroup ;
+    arm:hasDescription "This spell functions as Wizard’s Communion, except that the longer duration allows it to be used with Ritual spells. For the purposes of its effect, treat it as a Wizard’s Communion of two magnitudes lower. (Base Effect, +2 Sun) " ;
+    arm:hasReference "[ArM5:errata]" .
+
+armr:InVi20Detect a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:intellego ;
+    arm:hasForm      armr:vim ;
+    arm:hasLevel     20 ;
+    arm:hasLabel       "Detect the Gift" ;
+    arm:hasRange     arm:Rper ;
+    arm:hasDuration  arm:Dconc ;
+    arm:hasTarget    arm:Tvision ;
+    arm:hasDescription "Joia found the process of locating a suitable apprentice difficult, and after several near disasters when children she was hopeful of turned out to bewitched, faerie struck, influenced by demons, or in one case simply unbearably mad, she returned to the laboratory to create a spell that would confirm if a potential apprentice possessed The Gift. The child’s hair, Gifted or not, develops a subtle fragrance of flowers for a few hours after being touched. (Base 10, +1 Concentration, +1 Touch)" ;
+    arm:hasReference "[TtA:40]" .
 

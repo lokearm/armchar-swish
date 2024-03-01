@@ -60,6 +60,8 @@ armchar:verditius arm:characterClass arm:Magus ;
 
     [ arm:traitClass armr:inoffensiveToAnimals ],
     [ arm:traitClass armr:puissantAbility ;
+      arm:bonusTo armr:craft-sculptor ],
+    [ arm:traitClass armr:puissantAbility ;
       arm:bonusTo armr:magictheory ],
     [ arm:traitClass armr:affinityWithArt ;
       arm:bonusTo armr:imaginem ],
@@ -94,6 +96,10 @@ armchar:verditius arm:characterClass arm:Magus ;
       [ arm:traitClass armr:craft-sculptor ;  arm:addedXP 50 ; arm:hasSpeciality "Stone"  ],
       [ arm:traitClass armr:bargain ;  arm:addedXP 5 ; arm:hasSpeciality "Own works"  ],
       [ arm:traitClass armr:etiquette ;  arm:addedXP 5 ; arm:hasSpeciality "Townsfolk"  ],
+      [ arm:traitClass armr:arealore ;
+        arm:instaceLabel "North Sea Lore" ;
+        arm:addedXP 5 ;
+        arm:hasSpeciality "Prosperous clients"  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Conc." ;
         arm:addedXP 5  ]
       .
@@ -128,10 +134,25 @@ armchar:verditius arm:characterClass arm:Magus ;
 
    [ arm:traitClass armr:verditiuslore ; arm:addedXP  5 ; arm:hasSpeciality "Spells" ],
 
-   [ arm:traitClass armr:InAu15Whispering  ],
-   [ arm:traitClass armr:InVi20PiercingFaerie  ],
-   [ arm:traitClass armr:PeVi5Demons  ],
-   [ arm:traitClass armr:ReAu30Clouds ],
-   [ arm:traitClass armr:ReVi20Opening ],
-   [ arm:traitClass armr:CrAu30Wings ],
-   [ arm:traitClass armr:CrAu30Pull ] .
+   [ arm:traitClass armr:InVi20PiercingMagical  ],
+   [ arm:traitClass  arm:Spell ;
+      arm:hasTechnique armr:muto ;
+      arm:hasTechRequisite armr:rego ;
+      arm:hasForm      armr:terram ;
+      arm:hasLevel     10 ;
+      arm:hasLabel     "Crystal Dart" ],
+   [ arm:traitClass  arm:Spell ;
+      arm:hasTechnique armr:intellego ;
+      arm:hasForm      armr:vim ;
+      arm:hasLevel     15 ;
+      arm:hasRange     arm:Rper ;
+      arm:hasDuration  arm:Dsun ;
+      arm:hasTarget    arm:Tvision ;
+      arm:hasLabel       "Magical Sight of Vis (custom)" ],
+   [ arm:traitClass armr:MuIm10auraBeguiling ],
+   [ arm:traitClass armr:CrIg15Lamp ],
+   [ arm:traitClass armr:ReMe10slumber ],
+   [ arm:traitClass armr:ReIm10sidestep ],
+   [ arm:traitClass armr:CrMe20gossip ],
+   [ arm:traitClass armr:InVi20Detect ],
+   [ arm:traitClass armr:MuVi20Vigil ] .
