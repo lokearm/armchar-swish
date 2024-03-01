@@ -39,3 +39,10 @@ diff: test
 
 wc:
 	find src -name "*.hs" | xargs wc
+
+
+Saga/verditius.ttl.md: Saga/newsaga.ttl Saga/verditius.ttl
+	cabal run cli -- -s $<
+
+valentin.md: Saga/verditius-background.md Saga/verditius.ttl.md Saga/verditius.ttl-chargen.md
+	cat $^ > $@

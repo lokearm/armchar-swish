@@ -90,7 +90,7 @@ printVF :: String -> SheetObject -> [String]
 printVF h ob = p $ virtues ob ++ flaws ob 
     where
        p [] = []
-       p xs = [ '##':' ':h, "" ] ++ map printVFLine  xs
+       p xs = [ '#':'#':' ':h, "" ] ++ map printVFLine  xs
 
 printAb :: SheetObject -> [String]
 printAb = p . abilities

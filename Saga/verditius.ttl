@@ -63,8 +63,8 @@ armchar:verditius arm:characterClass arm:Magus ;
       arm:bonusTo armr:magictheory ],
     [ arm:traitClass armr:affinityWithArt ;
       arm:bonusTo armr:imaginem ],
-    [ arm:traitClass armr:deleteriousCircumstances ;
-      arm:hasDetail "Making small, handheld items" ] ;
+    [ arm:traitClass armr:minorHermeticFlaw ;
+      arm:instanceLabel "Cannot use handheld casting tools (custom restriction)." ] ;
 
    arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
