@@ -60,11 +60,11 @@ armchar:verditius arm:characterClass arm:Magus ;
 
     [ arm:traitClass armr:inoffensiveToAnimals ],
     [ arm:traitClass armr:puissantAbility ;
-      arm:bonusTo armr:craft-sculptor ],
+      arm:grantsTrait [ arm:bonusTo armr:craft-sculptor ] ],
     [ arm:traitClass armr:puissantAbility ;
-      arm:bonusTo armr:magictheory ],
+      arm:grantsTrait [ arm:bonusTo armr:magictheory ] ],
     [ arm:traitClass armr:affinityWithArt ;
-      arm:bonusTo armr:imaginem ],
+      arm:grantsTrait [ arm:bonusTo armr:imaginem ] ],
     [ arm:traitClass armr:minorHermeticFlaw ;
       arm:instanceLabel "Cannot use handheld casting tools (custom restriction)." ] ;
 

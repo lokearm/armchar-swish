@@ -10,8 +10,7 @@
       arm:hasDescription "New saga set in Bjørgvin with Callen as Alpha SG." ;
       arm:hasSchemaFile "Ontology/arm.ttl" ;
       arm:hasResourceFile "Ontology/resources.ttl" ;
-      arm:hasCharacterFile "Saga/verditius.ttl" .
-      arm:hasCharacterFile "Saga/tremere.ttl" .
+      arm:hasCharacterFile "Saga/verditius.ttl", "Saga/tremere.ttl" .
 
 :bergencovenant  a arm:Covenant ; 
       arm:hasName "Bjørgvin" ;
