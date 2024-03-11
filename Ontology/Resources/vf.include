@@ -646,6 +646,10 @@ armr:carefree  rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Carefree" .
+armr:curseOfVenus  rdfs:subClassOf  armr:majorStoryFlaw ;
+                       arm:hasReference   "[ArM5]" ;
+                       a arm:LeafTraitClass ;
+                       arm:hasLabel "Curse of Venus" .
 armr:pagan  rdfs:subClassOf  armr:majorStoryFlaw ;
                        arm:hasReference   "e.g. [HoH:TL]" ;
                        a arm:LeafTraitClass ;

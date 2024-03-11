@@ -8,15 +8,15 @@
 @prefix arm: <https://hg.schaathun.net/armchar/schema#> .
 @prefix armr: <https://hg.schaathun.net/armchar/resources#> .
 @prefix armchar: <https://hg.schaathun.net/armchar/character/> .
-@prefix : <https://hg.schaathun.net/armchar/character/verditius#> .
+@prefix : <https://hg.schaathun.net/armchar/character/tremere#> .
 
 # Identifier for the sheet (graph) itself.  Not used at present.
-<https://hg.schaathun.net/armcharacter/verditius> a owl:Ontology ;
+<https://hg.schaathun.net/armcharacter/tremere> a owl:Ontology ;
      dc:creator "George" ;
      rdfs:comment "This is a magus for the Bjørgvin saga." .
 
 # Metadata.  Defined for character, copied to character sheet
-armchar:verditius arm:characterClass arm:Magus ; 
+armchar:tremere arm:characterClass arm:Magus ; 
                arm:hasName "Valentin" ;
                arm:hasHermeticName "Valentinius of Verditius" ;
 	       arm:hasGender "Male" ;
@@ -28,7 +28,7 @@ armchar:verditius arm:characterClass arm:Magus ;
                arm:hasCovenant armchar:bergencovenant ;
                arm:hasSaga armchar:bergen .
 
-:zeroadv arm:advanceCharacter armchar:verditius ;
+:zeroadv arm:advanceCharacter armchar:tremere ;
    arm:advancementClass arm:BaseAdvancement ; 
    arm:advanceTrait 
      [ arm:traitClass armr:Knife ; arm:hasQuantity 1 ],
@@ -48,11 +48,9 @@ armchar:verditius arm:characterClass arm:Magus ;
     [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Sculptures" ],
     [ arm:traitClass armr:lifeLinkedSpontaneousMagic ],
 
-    [ arm:traitClass armr:greedyMajor ; a arm:majorFlaw ],
-    [ arm:traitClass armr:minorPersonalityFlaw ;
-      arm:instanceLabel "Weakness for beautiful objects" ],
-    [ arm:traitClass armr:minorStoryFlaw ;
-      arm:instanceLabel "Confraternity of Inga the Younger" ],
+    [ arm:traitClass armr:ambitiousMajor ; a arm:majorFlaw ],
+    [ arm:traitClass armr:compassionate ],
+    [ arm:traitClass armr:curseOfVenus ],
     [ arm:traitClass armr:minorHermeticFlaw ;
       arm:instanceLabel "Bound Casting Tools" ],
     [ arm:traitClass armr:majorGeneralFlaw ;
@@ -69,25 +67,24 @@ armchar:verditius arm:characterClass arm:Magus ;
       arm:instanceLabel "Cannot use handheld casting tools (custom restriction)." ] ;
 
    arm:advanceTrait 
-    [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
-    [ arm:traitClass armr:com ; arm:hasScore +1 ], [ arm:traitClass armr:pre ; arm:hasScore 1 ],
-    [ arm:traitClass armr:str ; arm:hasScore +1 ], [ arm:traitClass armr:sta ; arm:hasScore +2 ],
-    [ arm:traitClass armr:dex ; arm:hasScore -2 ], [ arm:traitClass armr:qik ; arm:hasScore -2 ],
-    [ arm:traitClass armr:occitan ; arm:instanceLabel "L Lang: High German" ; arm:hasSpeciality "Vaud" ; arm:hasTotalXP 75  ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Ambitious" ;  arm:hasFixedScore 1 ],
+    [ arm:traitClass armr:int ; arm:hasScore 2 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
+    [ arm:traitClass armr:com ; arm:hasScore +1 ], [ arm:traitClass armr:pre ; arm:hasScore 2 ],
+    [ arm:traitClass armr:str ; arm:hasScore -2 ], [ arm:traitClass armr:sta ; arm:hasScore +2 ],
+    [ arm:traitClass armr:dex ; arm:hasScore -2 ], [ arm:traitClass armr:qik ; arm:hasScore +2 ],
+    [ arm:traitClass armr:occitan ; arm:instanceLabel "L Lang: West Norse" ; arm:hasSpeciality "Norn" ; arm:hasTotalXP 75  ],
     [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Problem solver" ;  arm:hasFixedScore 2 ] .
 
 # Pre-game Advancement
-:earlyadv arm:advanceCharacter armchar:verditius ;
+:earlyadv arm:advanceCharacter armchar:tremere ;
    arm:advancementClass arm:EarlyChildhoodAdvancement ; 
    arm:advanceTrait 
-   [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 5  ],
-   [ arm:traitClass armr:charm   ; arm:hasSpeciality "Traders" ; arm:addedXP 15  ] ,
+   [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 15  ],
+   [ arm:traitClass armr:charm   ; arm:hasSpeciality "Traders" ; arm:addedXP 5  ] ,
    [ arm:traitClass armr:folkken ; arm:hasSpeciality "Townsfolk" ; arm:addedXP 15  ] ,
-   [ arm:traitClass armr:english ; arm:hasSpeciality "East Anglia" ; arm:addedXP   5  ] ,
-   [ arm:traitClass armr:westnorse ; arm:hasSpeciality "Norwegian" ; arm:addedXP 5  ] .
+   [ arm:traitClass armr:english ; arm:hasSpeciality "Scotish" ; arm:addedXP   5  ] ,
+   [ arm:traitClass armr:brawl ; arm:hasSpeciality "Norwegian" ; arm:addedXP 5  ] .
 
-:lateradv arm:advanceCharacter armchar:verditius ;
+:lateradv arm:advanceCharacter armchar:tremere ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
   arm:durationYears 5 ;
   arm:advanceTrait 
@@ -103,7 +100,7 @@ armchar:verditius arm:characterClass arm:Magus ;
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Conc." ;
         arm:addedXP 5  ]
       .
-:apprenticeadv arm:advanceCharacter armchar:verditius ;
+:apprenticeadv arm:advanceCharacter armchar:tremere ;
   arm:advancementClass arm:ApprenticeshipAdvancement ; 
   arm:advanceTrait 
       [ arm:traitClass armr:creo ; arm:addedXP 21 ],
