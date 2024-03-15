@@ -156,6 +156,7 @@ armchar:tremere arm:characterClass arm:Magus ;
   arm:instanceDescription "Two years P/G in Transylvania, one year making talisman and one year taught in the ways of the house." ;
   arm:awardsXP 30 ;
   arm:advanceTrait 
+     [ arm:traitClass arm:Warping ; arm:addedXP 2 ] ,
      [ arm:traitClass armr:organisationLore ; arm:instanceLabel "Tremere Lore" ;
        arm:addedXP 15 ] ,
      [ arm:traitClass armr:hermescode ; arm:hasSpeciality "Mundane Interference" ;
