@@ -574,10 +574,14 @@ armr:greedyMajor  rdfs:subClassOf  armr:majorPersonalityFlaw ;
 armr:ambitiousMajor  rdfs:subClassOf  armr:majorPersonalityFlaw ;
                   arm:hasReference   "[ArM5]" ;
                   a arm:LeafTraitClass ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-ambitious ;
+		                   arm:hasFixedScore 6 ] ;
                   arm:hasLabel "Ambitious (major)" .
 armr:ambitious     rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-ambitious ;
+		                   arm:hasFixedScore 3 ] ;
                arm:hasLabel "Ambitious" .
 armr:avariciousMajor rdfs:subClassOf  armr:majorPersonalityFlaw ;
                   arm:hasReference   "[ArM5]" ;

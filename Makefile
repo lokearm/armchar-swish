@@ -43,9 +43,16 @@ wc:
 
 Saga/verditius.ttl.md: Saga/newsaga.ttl Saga/verditius.ttl
 	cabal run cli -- -s $<
+Saga/tremere.ttl.md: Saga/newsaga.ttl Saga/tremere.ttl
+	cabal run cli -- -s $<
 
 valentin.md: Saga/verditius-background.md Saga/verditius.ttl.md Saga/verditius.ttl-chargen.md
 	cat $^ > $@
+torbjorn.md: Saga/tremere-background.md Saga/tremere.ttl.md Saga/tremere.ttl-chargen.md
+	cat $^ > $@
 
 %.html: %.md
+	pandoc -o $@ $<
+
+%.pdf: %.md
 	pandoc -o $@ $<

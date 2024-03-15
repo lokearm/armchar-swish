@@ -14,3 +14,6 @@ armr:personality-meddler    rdfs:subClassOf arm:PersonalityTrait ;
 armr:personality-compassionate    rdfs:subClassOf arm:PersonalityTrait ;
                            a arm:LeafTraitClass ;
                            arm:hasLabel "Compassionate" .
+armr:personality-ambitious    rdfs:subClassOf arm:PersonalityTrait ;
+                           a arm:LeafTraitClass ;
+                           arm:hasLabel "Ambitious" .

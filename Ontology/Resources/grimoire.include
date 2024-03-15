@@ -64,6 +64,15 @@ armr:ReCo5Spasms a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
     arm:hasDuration  arm:Dsun ;
     arm:hasTarget    arm:Tind .
 
+armr:ReCo30Seven a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
+    arm:hasTechnique armr:rego ;
+    arm:hasForm      armr:corpus ;
+    arm:hasLevel     30 ;
+    arm:hasLabel       "Seven-League Stride" ;
+    arm:hasRange     arm:Rper ;
+    arm:hasDuration  arm:Dmom ;
+    arm:hasTarget    arm:Tind .
+
 # Ignem
 
 armr:CrIg15Lamp a arm:SpellClass ; rdfs:subClassOf  arm:Spell ;
