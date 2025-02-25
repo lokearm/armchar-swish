@@ -19,21 +19,48 @@ extra-source-files:  CHANGELOG.md, README.md
 
 common deps
   -- documentation:       True
-  other-modules:       ArM.Rules
+  other-modules:       ArM.Debug.NoTrace
                        , ArM.Debug.Trace
-                       , ArM.Debug.NoTrace
                        , ArM.Debug.Time
+                       , ArM.Types.RDF
+                       , ArM.Resources
+  -- other-extensions:
+  build-depends:       base >=4.13 
+                       , scientific >= 0.3.7
+                       , swish >=0.10.1.0
+                       , text >= 1.2.4.0
+                       , network-uri >= 2.6.3.0
+                       , containers >= 0.6
+                       , aeson >= 2.2.0.3
+                       , aeson-pretty >= 0.8
+                       , mtl >= 2.2
+                       , bytestring >= 0.10.10
+                       , http-types >= 0.12
+                       , parallel >= 3.2
+                       , ttrie >= 0.1.2
+                       , unordered-containers >= 0.2.18
+                       , split >= 0.2.3
+                       , utf8-string >= 1.0.2
+  hs-source-dirs:      . , ./src
+  default-language:    Haskell2010
+
+common armchar-deps
+  import:    deps
+  other-modules:       ArM.Char.Character
+
+common swish-deps
+  import:    deps
+  other-modules:       ArM.Rules
+                       , ArM.Rules.Resource
                        , ArM.Internal.Aux
                        , ArM.Rules.Advancement
                        , ArM.Rules.Aux
                        , ArM.Rules.Common
                        , ArM.Rules.Persistence
-                       , ArM.Rules.Resource
                        , ArM.Rules.RDFS
                        , ArM.Rules.FullGraph
                        , ArM.Rules.Record
                        , ArM.Rules.SheetCalculation
-                       , ArM.Resources
                        , ArM.IO
                        , ArM.BlankNode
                        , ArM.CharacterQuery
@@ -43,34 +70,15 @@ common deps
                        , ArM.Types.Advancement
                        , ArM.Types.Trait
                        , ArM.Sheet.Book
-                       , ArM.Types.RDF
                        , ArM.Types.Season
                        , ArM.Types.CharGen
                        , ArM.Types.Saga
                        , ArM.Types.SagaFile
                        , ArM.Types.LoadedSaga
-  -- other-extensions:
-  build-depends:       base >=4.13 
-                       , scientific >= 0.3.7
-                       , swish >=0.10.1.0
-                       , text >= 1.2.4.0
-                       , network-uri >= 2.6.3.0
-                       , containers >= 0.6
-                       , aeson >= 2.0.3
-                       , aeson-pretty >= 0.8
-                       , mtl >= 2.2
-                       , bytestring >= 0.10.10
-                       , http-types >= 0.12
-                       , parallel >= 3.2
-                       , ttrie >= 0.1.2
-                       , unordered-containers >= 0.2.18
-                       , split >= 0.2.3
-  hs-source-dirs:      . , ./src
-  default-language:    Haskell2010
 
 common cli-deps
   -- documentation:       True
-  import: deps
+  import: swish-deps
   other-modules:       ArM.Markdown.CharacterSheet
                      , ArM.Markdown.AdvancementLog
                      , ArM.Markdown.IO
@@ -96,8 +104,17 @@ executable cli
     -threaded
     "-with-rtsopts=-N -s -h -i0.1"
 
+executable armchar
+  import:      armchar-deps
+  main-is:     ArmChar.hs
+  ghc-options:
+    -O2
+    -Wall
+    -threaded
+    "-with-rtsopts=-N -s -h -i0.1"
+
 executable armchar-swish
-  import: deps
+  import: swish-deps
   other-modules:       ArM.Server.WebService
                        , ArM.Server.STM
   build-depends:       securemem >= 0.1.10
@@ -123,7 +140,7 @@ executable prof
     "-with-rtsopts=-N -p -s -h -i0.1 -xc"
 
 executable tst
-  import: deps
+  import: swish-deps
   main-is:             Test.hs
   ghc-options:
     -O2

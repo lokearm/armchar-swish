@@ -5,7 +5,7 @@ using Haskell and Swish.  Still in early stages of construction.
 
 **Note** There are several concurrent approaches.
 + [[Webserver]] aiming for ReSTful support for a javascript client
-    + the client subdirectory contains a simply python client
+    + the client subdirectory contains a simple python client
 + The main line of development at the moment is a standalone CLI interface.
 
 The focus in this repository is a command line tool generating
