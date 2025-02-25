@@ -16,12 +16,13 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Char.Character ( Character(..)
+                          , defaultCharacter
                           , KeyPairList(..)
                           , KeyPair(..)
                           ) where
 
 import GHC.Generics
-import Swish.RDF.Graph (RDFLabel)
+-- import Swish.RDF.Graph (RDFLabel)
 -- import Data.Maybe (fromJust)
 import qualified Data.Text as T
 import Data.Aeson
@@ -29,8 +30,8 @@ import Data.Aeson.Key
 -- import Data.Aeson.Types (Parser)
 import qualified Data.Aeson.KeyMap as KM
 
-import ArM.Resources
-import ArM.Types.RDF
+-- import ArM.Resources
+-- import ArM.Types.RDF
 import ArM.Debug.Trace
 
 data KeyPair = KeyPair { key :: String,

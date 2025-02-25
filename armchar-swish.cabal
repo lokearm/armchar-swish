@@ -22,8 +22,6 @@ common deps
   other-modules:       ArM.Debug.NoTrace
                        , ArM.Debug.Trace
                        , ArM.Debug.Time
-                       , ArM.Types.RDF
-                       , ArM.Resources
   -- other-extensions:
   build-depends:       base >=4.13 
                        , scientific >= 0.3.7
@@ -75,6 +73,8 @@ common swish-deps
                        , ArM.Types.Saga
                        , ArM.Types.SagaFile
                        , ArM.Types.LoadedSaga
+                       , ArM.Types.RDF
+                       , ArM.Resources
 
 common cli-deps
   -- documentation:       True

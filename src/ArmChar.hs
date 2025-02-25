@@ -10,17 +10,15 @@
 
 module Main where
 
-import System.IO -- for file IO
 import System.Environment
 import System.Console.GetOpt
 
-import ArM.Resources
 import ArM.Debug.Time
 import ArM.Char.Character
 
 import qualified Data.Text as T
 import Data.Maybe (fromJust)
-import Data.Aeson (FromJSON,encode,decode,Result(..))
+import Data.Aeson (FromJSON,encode,decode)
 
 import Data.ByteString.Lazy.UTF8 (fromString)
 
@@ -90,13 +88,14 @@ kpl :: KeyPairList
 kpl = KeyPairList [ KeyPair "foo" (Left $ T.pack "test")
                   , KeyPair "bar" (Right 0)  ] 
 
+c :: Character 
 c = Character { charID = "Cieran", 
   charGlance = KeyPairList [ KeyPair "Name" (Left $ T.pack "Cieran") ],
    charData = KeyPairList [ KeyPair "Size" (Right 0) ] }
 
 main' :: Options -> IO ()
 main' opts | charFile opts == Nothing = do 
-     putStrLn $ show $encode c
+     putStrLn $ show $ encode c
      t <- LB.readFile "test.json"
      putStrLn $ show $ fromJust $ ( decode t  :: Maybe Character )
      return ()
