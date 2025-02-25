@@ -7,6 +7,29 @@
    },
    "charData" : {
       "Size" : 0
+   },
+   "baseAdvancement" : {
+      "newVF" : [
+         { "name": "Warrior",
+            "cost": +1
+         },
+         { "name": "Puissant",
+            "detail": "Creo",
+            "cost": +1
+         },
+      ],
+      "totalXP" : 50,
+      "abilityXP" : [
+           { "name" : "Bows", "spec" : "Longbow", "xp" : 50 }
+      ]
+   },
+   "earlyChildhood" : {
+      "totalXP" : 45,
+      "abilityXP" : [
+           { "name" : "Stealth", "spec" : "Indoors", "xp" : 15 },
+           { "name" : "Awareness", "spec" : "Alertness", "xp" : 15 },
+           { "name" : "Folk Ken", "spec" : "Villagers", "xp" : 15 }
+      ]
    }
 }
 
