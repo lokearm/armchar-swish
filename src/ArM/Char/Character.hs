@@ -103,3 +103,21 @@ pValue (x) = Left $ T.pack $ show x
 pairToJSON :: KeyPair -> (Key,Value)
 pairToJSON (KeyPair a (Right b)) = ((fromString a), (toJSON b))
 pairToJSON (KeyPair a (Left b)) = ((fromString a), (toJSON b))
+
+data Season = Spring | Summer | Autumn | Winter 
+   deriving (Show,Ord,Eq)
+data AdvancementType = Practice | Exposure | Adventure 
+                     | Teaching | Training | Reading | VisStudy
+   deriving (Show,Ord,Eq)
+data ExposureType = LabWork | Teach | Train 
+                  | Writing | Copying | OtherExposure | NoExposure
+   deriving (Show,Ord,Eq)
+
+data Advancement = PreGame { stage :: String }
+                 | Advancement { year :: Int,
+                               , season :: Season
+                               , type :: AdvancementType
+                               , exposureType :: ExposureType
+                               , totalXP :: Int
+                               }
+                 }
