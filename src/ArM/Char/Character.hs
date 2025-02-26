@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  ArM.Types.Character
@@ -71,8 +72,7 @@ data Character = Character {
          charID :: String
          , charGlance :: KeyPairList
          , charData :: KeyPairList
-         , baseAdvancement :: Advancement 
-         , earlyChildhood :: Advancement 
+         , pregameAdvancement :: [ Advancement ]
          , charAdvancement :: [ Advancement ]
        }  deriving (Eq,Generic)
 
@@ -106,8 +106,17 @@ instance ToJSON Character where
     -- For efficiency - Not required
     toEncoding = genericToEncoding defaultOptions
 
-instance FromJSON Character
+instance FromJSON Character where
+    parseJSON = withObject "Character" $ \v -> Character
+        <$> v .: "charID"
+        <*> v .: "charGlance"
+        <*> v .: "charData"
+        <*> fmap listNothing ( v .:? "pregameAdvancement" )
+        <*> fmap listNothing ( v .:? "charAdvancement" )
 
+listNothing :: Maybe [a] -> [a]
+listNothing Nothing = []
+listNothing (Just xs) = xs
 -- = Advancement
 
 data Season = Spring | Summer | Autumn | Winter 
