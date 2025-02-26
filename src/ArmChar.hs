@@ -85,13 +85,13 @@ decodeJSON :: FromJSON a => String -> Maybe a
 decodeJSON = decode . fromString
 
 kpl :: KeyPairList 
-kpl = KeyPairList [ KeyPair "foo" (Left $ T.pack "test")
-                  , KeyPair "bar" (Right 0)  ] 
+kpl = KeyPairList [ KeyPair "foo" (TextValue $ T.pack "test")
+                  , KeyPair "bar" (IntValue 0)  ] 
 
 c :: Character 
 c = Character { charID = "Cieran", 
-  charGlance = KeyPairList [ KeyPair "Name" (Left $ T.pack "Cieran") ],
-   charData = KeyPairList [ KeyPair "Size" (Right 0) ] }
+  charGlance = KeyPairList [ KeyPair "Name" (TextValue $ T.pack "Cieran") ],
+   charData = KeyPairList [ KeyPair "Size" (IntValue 0) ] }
 
 main' :: Options -> IO ()
 main' opts | charFile opts == Nothing = do 

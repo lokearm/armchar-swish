@@ -19,6 +19,7 @@ module ArM.Char.Character ( Character(..)
                           , defaultCharacter
                           , KeyPairList(..)
                           , KeyPair(..)
+                          , FieldValue(..)
                           ) where
 
 import GHC.Generics
@@ -34,26 +35,47 @@ import qualified Data.Aeson.KeyMap as KM
 -- import ArM.Types.RDF
 import ArM.Debug.Trace
 
-data KeyPair = KeyPair { key :: String,
-                         value :: Either T.Text Int }
+-- = KeyPairList
+
+data FieldValue = TextValue T.Text
+                | IntValue Int
+                | ObjectValue Value
+       deriving (Eq)
+data KeyPair = KeyPair { key :: String, value :: FieldValue }
        deriving (Eq)
 data KeyPairList = KeyPairList [ KeyPair ]
        deriving (Eq)
+
+instance FromJSON KeyPairList  where
+  parseJSON = withObject "KeyPairList" $ \obj ->
+    trace ( "parseJSON for KeyPairList " ++ show obj) $
+    return $ KeyPairList 
+           $ map ( \ (k,y) -> KeyPair (toString k) (pValue y) )
+           $ KM.toList obj
+instance ToJSON KeyPairList where 
+    toJSON (KeyPairList t) = object $ map pairToJSON t
+
+pValue :: Value -> FieldValue
+pValue (Number x) = IntValue $ round x
+pValue (String x) = TextValue x
+pValue (x) = ObjectValue x
+
+pairToJSON :: KeyPair -> (Key,Value)
+pairToJSON (KeyPair a (IntValue b)) = ((fromString a), (toJSON b))
+pairToJSON (KeyPair a (TextValue b)) = ((fromString a), (toJSON b))
+pairToJSON (KeyPair a (ObjectValue b)) = ((fromString a), (b))
+
+-- = Character
 
 data Character = Character {
          charID :: String
          , charGlance :: KeyPairList
          , charData :: KeyPairList
-         -- , charAdvancement :: [ Advancement ]
+         , baseAdvancement :: Advancement 
+         , earlyChildhood :: Advancement 
+         , charAdvancement :: [ Advancement ]
        }  deriving (Eq,Generic)
 
-instance Show KeyPair where
-   show (KeyPair x (Left y)) = x ++ ":\t" ++ show y ++ "\n"
-   show (KeyPair x (Right y)) = x ++ ":\t" ++ show y ++ "\n"
-instance Show KeyPairList where
-   show (KeyPairList xs) = ( foldl (++) "" $ map show xs )
-instance Show Character where
-   show c = ( show $ charGlance c ) ++ ( show $ charData c )
 
 
 defaultCharacter :: Character 
@@ -86,23 +108,7 @@ instance ToJSON Character where
 
 instance FromJSON Character
 
-instance FromJSON KeyPairList  where
-  parseJSON = withObject "KeyPairList" $ \obj ->
-    trace ( "parseJSON for KeyPairList " ++ show obj) $
-    return $ KeyPairList 
-           $ map ( \ (k,y) -> KeyPair (toString k) (pValue y) )
-           $ KM.toList obj
-instance ToJSON KeyPairList where 
-    toJSON (KeyPairList t) = object $ map pairToJSON t
-
-pValue :: Value -> Either T.Text Int
-pValue (Number x) = Right $ round x
-pValue (String x) = Left x
-pValue (x) = Left $ T.pack $ show x
-
-pairToJSON :: KeyPair -> (Key,Value)
-pairToJSON (KeyPair a (Right b)) = ((fromString a), (toJSON b))
-pairToJSON (KeyPair a (Left b)) = ((fromString a), (toJSON b))
+-- = Advancement
 
 data Season = Spring | Summer | Autumn | Winter 
    deriving (Show,Ord,Eq)
@@ -114,10 +120,28 @@ data ExposureType = LabWork | Teach | Train
    deriving (Show,Ord,Eq)
 
 data Advancement = PreGame { stage :: String }
-                 | Advancement { year :: Int,
-                               , season :: Season
-                               , type :: AdvancementType
-                               , exposureType :: ExposureType
-                               , totalXP :: Int
+                 | Advancement { season :: Maybe String
+                               , narrative :: Maybe String
+                               , mode :: Maybe String
+                               , totalXP :: Maybe Int
+                               , changes :: [ KeyPairList ]
                                }
-                 }
+   deriving (Eq,Generic,Show)
+
+instance ToJSON Advancement where
+    -- For efficiency - Not required
+    toEncoding = genericToEncoding defaultOptions
+
+instance FromJSON Advancement
+
+-- = Show Instances
+instance Show FieldValue where
+   show (IntValue x) = show x
+   show (TextValue x) = show x
+   show x = show x
+instance Show KeyPair where
+   show (KeyPair x  y) = x ++ ":\t" ++ show y ++ "\n"
+instance Show KeyPairList where
+   show (KeyPairList xs) = ( foldl (++) "" $ map show xs )
+instance Show Character where
+   show c = ( show $ charGlance c ) ++ ( show $ charData c )
