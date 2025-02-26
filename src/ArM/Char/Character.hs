@@ -82,25 +82,10 @@ defaultCharacter :: Character
 defaultCharacter = Character { charID = "N/A"
                              , charGlance = KeyPairList []
                              , charData = KeyPairList []
-                             -- , charAdvancement = [ ]
+                             , pregameAdvancement = [ ]
+                             , charAdvancement = [ ]
        }  
 
-{-
-instance ToJSON Character where 
-    toJSON c = toJSON $ p x xs
-        where x = KeyPair (armRes "isCharacter") $ charID c
-              xs = charData c 
-              p y (KeyPairList ys) = KeyPairList (y:ys) 
-
-instance FromJSON Character where 
-    parseJSON val = fmap kpToChar $ parseJSON val
-       where kpToChar (KeyPairList xs) = defaultCharacter {
-                      charID = fromJ $ getProperty (armRes "isCharacter") xs,
-                      charData = KeyPairList xs
-                      }
-             fromJ Nothing = noSuchCharacter
-             fromJ (Just x) = x
--}
 
 instance ToJSON Character where
     -- For efficiency - Not required
@@ -129,9 +114,9 @@ data ExposureType = LabWork | Teach | Train
    deriving (Show,Ord,Eq)
 
 data Advancement = PreGame { stage :: String }
-                 | Advancement { season :: Maybe String
+                 | Advancement { mode :: Maybe String
+                               , season :: Maybe String
                                , narrative :: Maybe String
-                               , mode :: Maybe String
                                , totalXP :: Maybe Int
                                , changes :: [ KeyPairList ]
                                }
@@ -141,7 +126,13 @@ instance ToJSON Advancement where
     -- For efficiency - Not required
     toEncoding = genericToEncoding defaultOptions
 
-instance FromJSON Advancement
+instance FromJSON Advancement where
+    parseJSON = withObject "Advancement" $ \v -> Advancement
+        <$> v .:? "mode"
+        <*> v .:? "season"
+        <*> v .:? "narrative"
+        <*> v .:? "totalXP"
+        <*> fmap listNothing ( v .:? "changes" )
 
 -- = Show Instances
 instance Show FieldValue where

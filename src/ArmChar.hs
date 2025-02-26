@@ -89,10 +89,9 @@ kpl = KeyPairList [ KeyPair "foo" (TextValue $ T.pack "test")
                   , KeyPair "bar" (IntValue 0)  ] 
 
 c :: Character 
-c = Character { charID = "Cieran", 
+c = defaultCharacter { charID = "Cieran", 
   charGlance = KeyPairList [ KeyPair "Name" (TextValue $ T.pack "Cieran") ],
-   charData = KeyPairList [ KeyPair "Size" (IntValue 0) ],
-   pregameAdvancement = [], charAdvancement = []
+   charData = KeyPairList [ KeyPair "Size" (IntValue 0) ]
    }
 
 main' :: Options -> IO ()

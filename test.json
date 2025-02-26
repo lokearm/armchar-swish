@@ -8,6 +8,41 @@
    "charData" : {
       "Size" : 0
    },
-   "pregameAdvancement" : []
+   "pregameAdvancement" : [
+      { "mode" : "Base Character"
+      , "changes" : [
+         { "virtue" : "Warrior"
+         , "cost" : +1
+         },
+         { "virtue" : "Puissant (art)"
+         , "detail" : "Creo"
+         , "cost" : +1
+         },
+         { "characteristic" : "Int"
+         , "score" : +1
+         },
+         { "characteristic" : "Per"
+         , "score" : +1
+         }
+      ] }
+      { "mode" : "Early Childhood"
+      , "totalXP" : 45
+      , "changes" : [
+         { "ability" : "Stealth"
+         , "speciality" : "Woodland"
+         , "addXP" : 15
+         },
+         { "ability" : "Awareness"
+         , "speciality" : "Good ears"
+         , "addXP" : 15
+         },
+         { "ability" : "Survival"
+         , "speciality" : "Woodland"
+         , "addXP" : 15
+         }
+      ] }
+
+
+   ]
 }
 
