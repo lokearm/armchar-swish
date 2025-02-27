@@ -16,15 +16,30 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Char.Trait ( ProtoTrait(..)
+                      , Trait(..)
                       , advanceTrait
+                      , processTrait
                        ) where
 
 import GHC.Generics
-import Data.List (sort)
+-- import Data.List (sort)
 import Data.Aeson
+import Data.Maybe (fromJust)
+
+maybeList :: Maybe [a] -> [a]
+maybeList Nothing = []
+maybeList (Just x) = x
+maybeString :: Maybe String -> String
+maybeString Nothing = ""
+maybeString (Just x) = x
+maybeInt :: Maybe Int -> Int
+maybeInt Nothing = 0
+maybeInt (Just x) = x
+maybeAdd :: Maybe Int -> Maybe Int -> Maybe Int
+maybeAdd x y = Just $ maybeInt x + maybeInt y
 
 -- | 
--- = Trait
+-- = ProtoTrait
 
 data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , virtue :: Maybe String
@@ -47,6 +62,8 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , aging :: Maybe Int
                              }
                              deriving (Ord,Eq,Show,Generic)
+
+
 updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait
 updateSpec a = u (spec a)
     where u Nothing t = t
@@ -57,13 +74,6 @@ updateScore a = u (score a)
           u (Just x) t = t { score = Just x }
 updateXP :: ProtoTrait -> ProtoTrait -> ProtoTrait
 updateXP a t = t { xp = maybeAdd (xp a) (xp t) }
-
-maybeInt :: Maybe Int -> Int
-maybeInt Nothing = 0
-maybeInt (Just x) = x
-maybeAdd :: Maybe Int -> Maybe Int -> Maybe Int
-maybeAdd x y = Just $ maybeInt x + maybeInt y
-
 updatePts :: ProtoTrait -> ProtoTrait -> ProtoTrait
 updatePts a t = t { points = maybeAdd ( points t ) ( points a ) }
 updateAging :: ProtoTrait -> ProtoTrait -> ProtoTrait
@@ -85,7 +95,6 @@ advanceTrait a
     | confidence a /= Nothing = updateScore a . updatePts a
     | other a /= Nothing = updatePts a
     | otherwise  = id
-
 
 instance ToJSON ProtoTrait 
 instance FromJSON ProtoTrait where
@@ -109,3 +118,55 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "points"
         <*> v .:?  "xp"
         <*> v .:?  "aging"
+
+-- | 
+-- = Trait
+
+data Trait = Ability { abilityName :: String, speciality :: Maybe String, abilityXP :: Int }
+           | Characteristic { characteristicName :: String, charScore :: Int, agingPoints :: Int }
+           | Art { artName :: String, artXP :: Int }
+           | Spell { spellName :: String, spellXP :: Int, masteryOptions :: [String] }
+           | PTrait { ptraitName :: String, pscore :: Int }
+           | Reputation { reputationName :: String, repLocale :: String,  repXP :: Int }
+           | VF { vfname :: String, vfcost :: Int }
+           | Confidence { cscore :: Int, cpoints :: Int }
+           | OtherTrait { trait :: String, pts :: Int }
+           deriving (Show, Ord, Eq)
+
+processTrait :: ProtoTrait -> Trait
+processTrait p
+    | ability p /= Nothing = 
+        Ability { abilityName = fromJust ( ability p ) 
+                , speciality = spec p
+                , abilityXP = maybeInt (xp p) }
+    | characteristic p /= Nothing =
+        Characteristic { characteristicName = fromJust ( characteristic p ) 
+                , charScore = maybeInt (score p)
+                , agingPoints = maybeInt (aging p) }
+    | art p /= Nothing = 
+        Art { artName = fromJust ( art p ) 
+            , artXP = maybeInt (xp p) }
+    | spell p /= Nothing =
+           Spell { spellName = fromJust (spell p)
+                 , spellXP = maybeInt (xp p) 
+                 , masteryOptions = maybeList (mastery p)
+                 }
+    | ptrait p /= Nothing = 
+           PTrait { ptraitName = fromJust (ptrait p)
+                  , pscore = maybeInt (score p)
+                  } 
+    | reputation p /= Nothing = 
+           Reputation { reputationName = fromJust (reputation p)
+                      , repLocale = maybeString (locale p)
+                      , repXP = maybeInt (xp p)
+                      }
+    | virtue p /= Nothing = 
+           VF { vfname = fromJust (virtue p), vfcost = maybeInt (cost p) }
+    | flaw p /= Nothing = 
+           VF { vfname = fromJust (flaw p), vfcost = maybeInt (cost p) }
+    | confidence p /= Nothing = 
+           Confidence { cscore = maybeInt (score p), cpoints = maybeInt (points p) }
+    | other p /= Nothing = 
+           OtherTrait { trait = fromJust (other p) 
+                      , pts = maybeInt ( points p ) }
+    | otherwise  = error "No Trait for this ProtoTrait" 
