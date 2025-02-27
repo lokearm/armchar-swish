@@ -37,6 +37,7 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , reputation :: Maybe String
                              , other :: Maybe String
                              , spec :: Maybe String
+                             , detail :: Maybe String
                              , locale :: Maybe String
                              , mastery :: Maybe [ String ]
                              , score :: Maybe Int
@@ -87,6 +88,24 @@ advanceTrait a
 
 
 instance ToJSON ProtoTrait 
-instance FromJSON ProtoTrait 
-
-
+instance FromJSON ProtoTrait where
+    parseJSON = withObject "ProtoTrait" $ \v -> ProtoTrait
+        <$> v .:?  "ability"
+        <*> v .:?  "virtue"
+        <*> v .:?  "flaw"
+        <*> v .:?  "characteristic"
+        <*> v .:?  "art"
+        <*> v .:?  "spell"
+        <*> v .:?  "ptrait"
+        <*> v .:?  "confidence"
+        <*> v .:?  "reputation"
+        <*> v .:?  "other"
+        <*> v .:?  "spec"
+        <*> v .:?  "detail"
+        <*> v .:?  "locale"
+        <*> v .:?  "mastery"
+        <*> v .:?  "score"
+        <*> v .:?  "cost"
+        <*> v .:?  "points"
+        <*> v .:?  "xp"
+        <*> v .:?  "aging"

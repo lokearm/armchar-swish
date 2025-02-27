@@ -32,9 +32,8 @@ import Data.Aeson.Key
 -- import Data.Aeson.Types (Parser)
 import qualified Data.Aeson.KeyMap as KM
 
--- import ArM.Resources
--- import ArM.Types.RDF
 import ArM.Debug.Trace
+import ArM.Char.Trait
 
 -- = KeyPairList
 
@@ -118,7 +117,7 @@ data Advancement = PreGame { stage :: String }
                                , season :: Maybe String
                                , narrative :: Maybe String
                                , totalXP :: Maybe Int
-                               , changes :: [ KeyPairList ]
+                               , changes :: [ ProtoTrait ]
                                }
    deriving (Eq,Generic,Show)
 
