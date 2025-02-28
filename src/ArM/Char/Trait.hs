@@ -74,6 +74,11 @@ key pt = ( ability pt, virtue pt, flaw pt, characteristic pt, art pt, spell pt
 
 (<:) :: ProtoTrait -> ProtoTrait -> Bool
 (<:) p1 p2 = key p1 < key p2
+class Ord ProtoTrait
+   sort = sortBy f
+      where f x y | x <: y = LT
+                  | y <: x = GT
+                  | otherwise = EQ
 
 
 updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait

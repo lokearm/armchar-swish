@@ -168,7 +168,7 @@ advanceCharacter' :: [ Advancement ] -> [ ( CharTime, [ ProtoTrait ] ) ]
 advanceCharacter' [] cs = cs
 advanceCharacter' (a:as) [] = advanceCharacter' as [ ( season a, changes a ) ] 
 advanceCharacter' (a:as) ((t,xs):cs) = 
-    advanceCharacter' (sort (<:) as) bs
+    advanceCharacter' (sort as) bs
        where bs = ( ( season a, advanceTraits (changes a) xs):(t,xs):cs ) 
 
 
