@@ -19,6 +19,8 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Trait(..)
                       , advanceTrait
                       , processTrait
+                      , key
+                      , (<:)
                        ) where
 
 import GHC.Generics
@@ -62,6 +64,16 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , aging :: Maybe Int
                              }
                              deriving (Ord,Eq,Show,Generic)
+
+key :: ProtoTrait -> ( Maybe String, Maybe String, Maybe String, Maybe String, Maybe String, Maybe String
+                             , Maybe String, Maybe String, Maybe String, Maybe String
+                             , Maybe String, Maybe String, Maybe Int )
+key pt = ( ability pt, virtue pt, flaw pt, characteristic pt, art pt, spell pt
+                             , ptrait pt , confidence pt , reputation pt , other pt
+                             , detail pt , locale pt , cost pt )
+
+(<:) :: ProtoTrait -> ProtoTrait -> Bool
+(<:) p1 p2 = key p1 < key p2
 
 
 updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait

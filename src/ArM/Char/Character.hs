@@ -145,3 +145,11 @@ instance Show KeyPairList where
    show (KeyPairList xs) = ( foldl (++) "" $ map show xs )
 instance Show Character where
    show c = ( show $ charGlance c ) ++ ( show $ charData c )
+
+advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
+advanceTraits [] ys = ys
+advanceTraits ys [] = ys
+advanceTraits (x:xs) (y:ys) 
+    | x <: y = x:advanceTraits xs (y:ys)
+    | y <: x = y:advanceTraits (x:xs) ys
+    | otherwise = advanceTrait x y:advanceTraits xs ys
