@@ -13,8 +13,6 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                            , computeCharacter
                            ) where
 
-import           Data.List (sort)
-
 import qualified ArM.Char.Character as C
 import qualified ArM.Char.Trait as T
 import ArM.Types.Season
