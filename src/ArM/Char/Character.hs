@@ -21,6 +21,7 @@ module ArM.Char.Character ( Character(..)
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
+                          , advanceCharacter
                           ) where
 
 import GHC.Generics
@@ -34,7 +35,9 @@ import qualified Data.Aeson.KeyMap as KM
 
 import ArM.Debug.Trace
 import ArM.Char.Trait
-import ArM.Types.Season
+-- import ArM.Types.Season
+
+type CharTime = Maybe String
 
 -- = KeyPairList
 
@@ -115,7 +118,7 @@ data ExposureType = LabWork | Teach | Train
 
 data Advancement = PreGame { stage :: String }
                  | Advancement { mode :: Maybe String
-                               , season :: Maybe String
+                               , season :: CharTime
                                , narrative :: Maybe String
                                , totalXP :: Maybe Int
                                , changes :: [ ProtoTrait ]
@@ -146,6 +149,8 @@ instance Show KeyPairList where
 instance Show Character where
    show c = ( show $ charGlance c ) ++ ( show $ charData c )
 
+-- = Advancement of Character
+
 advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
 advanceTraits [] ys = ys
 advanceTraits ys [] = ys
@@ -153,3 +158,15 @@ advanceTraits (x:xs) (y:ys)
     | x <: y = x:advanceTraits xs (y:ys)
     | y <: x = y:advanceTraits (x:xs) ys
     | otherwise = advanceTrait x y:advanceTraits xs ys
+
+advanceCharacter :: Character -> [ ( CharTime, [ ProtoTrait ] ) ]
+advanceCharacter c = advanceCharacter' (charAdvancement c)
+                   $ advanceCharacter' (pregameAdvancement c) []
+advanceCharacter' :: [ Advancement ] -> [ ( CharTime, [ ProtoTrait ] ) ] 
+                                    -> [ ( CharTime, [ ProtoTrait ] ) ]
+advanceCharacter' [] cs = cs
+advanceCharacter' (a:as) [] = advanceCharacter' as [ ( season a, changes a ) ] 
+advanceCharacter' (a:as) ((t,xs):cs) = 
+    advanceCharacter' as ( ( season a, advanceTraits (changes a) xs):(t,xs):cs ) 
+
+
