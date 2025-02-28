@@ -25,6 +25,7 @@ module ArM.Char.Character ( Character(..)
                           ) where
 
 import GHC.Generics
+import Data.List (sort)
 -- import Swish.RDF.Graph (RDFLabel)
 -- import Data.Maybe (fromJust)
 import qualified Data.Text as T
@@ -167,6 +168,8 @@ advanceCharacter' :: [ Advancement ] -> [ ( CharTime, [ ProtoTrait ] ) ]
 advanceCharacter' [] cs = cs
 advanceCharacter' (a:as) [] = advanceCharacter' as [ ( season a, changes a ) ] 
 advanceCharacter' (a:as) ((t,xs):cs) = 
-    advanceCharacter' as ( ( season a, advanceTraits (changes a) xs):(t,xs):cs ) 
+    advanceCharacter' (sort (<:) as) bs
+       where bs = ( ( season a, advanceTraits (changes a) xs):(t,xs):cs ) 
+
 
 
