@@ -9,51 +9,44 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Char.CharacterSheet ( CharacterSheet(..)
-                           , advanceCharacter
-                           , getInitialCS
+                           , defaultCS
+                           , computeCharacter
                            ) where
 
-import Swish.RDF.Graph as G
 import           Data.List (sort)
 
-import ArM.Char.Character
-import Data.Aeson
-import Data.Aeson.Key
+import qualified ArM.Char.Character as C
+import qualified ArM.Char.Trait as T
+import ArM.Types.Season
 
 
 -- | 
 -- = Character Sheet
 
-data CharacterSheet = CharacterSheet {
-         charID :: String
-         csTime :: CharTime,  -- ^ Current Year
-         , charGlance :: KeyPairList
-         , charData :: KeyPairList
-         , vf :: [ Trait ]
-         , characteristics :: [ Trait ]
-         , abilities :: [ Trait ]
-         , arts :: [ Trait ]
-         , spells :: [ Trait ]
-         , ptraits :: [ Trait ]
-         , reputations :: [ Trait ]
-         , confidence :: Trait 
-         , otherTraits :: [ Trait ]
+data CharacterSheet = CharacterSheet 
+         { csID :: String
+         , csTime :: CharTime  -- ^ Current Year
+         , charGlance :: C.KeyPairList
+         , charData :: C.KeyPairList
+         , vf :: [ T.Trait ]
+         , characteristics :: [ T.Trait ]
+         , abilities :: [ T.Trait ]
+         , arts :: [ T.Trait ]
+         , spells :: [ T.Trait ]
+         , ptraits :: [ T.Trait ]
+         , reputations :: [ T.Trait ]
+         , confidence :: T.Trait 
+         , otherTraits :: [ T.Trait ]
        }  deriving (Eq)
-      }  deriving (Eq)
 instance Show CharacterSheet where
     show cs = "**" ++ show (csID cs) ++ "**\n" 
-           ++ "-- " ++ ( showSheetID ) cs ++ "\n"
-           ++ "Traits:\n" ++ showw ( csTraits cs )
-           ++ "Metadata Triples:\n" ++ show ( csMetadata cs )
-        where showw [] = ""
-              showw (x:xs) = "  " ++ show x ++ "\n" ++ showw xs
+
 defaultCS :: CharacterSheet
 defaultCS = CharacterSheet {
          csID = "N/A"
-         , csTime = defaultCharTime,
-         . protoTraits = []
-         , charGlance = []
-         , charData = []
+         , csTime = defaultCharTime
+         , charGlance = C.KeyPairList []
+         , charData = C.KeyPairList []
          , vf = []
          , characteristics = []
          , abilities = []
@@ -61,11 +54,13 @@ defaultCS = CharacterSheet {
          , spells = []
          , ptraits = []
          , reputations = []
-         , confidence = Confidence { cscore = 1, cpoints = 3 }
+         , confidence = T.Confidence { T.cscore = 1, T.cpoints = 3 }
          , otherTraits = []
        }  
 
-
 instance HasTime CharacterSheet where
     timeOf = csTime
+
+computeCharacter :: C.Character -> CharacterSheet
+computeCharacter _ = defaultCS
 

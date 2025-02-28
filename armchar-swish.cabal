@@ -46,6 +46,8 @@ common armchar-deps
   import:    deps
   other-modules:       ArM.Char.Character
                        , ArM.Char.Trait
+                       , ArM.Char.CharacterSheet
+                       , ArM.Types.Season
 
 common swish-deps
   import:    deps

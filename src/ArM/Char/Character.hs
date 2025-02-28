@@ -34,7 +34,7 @@ import qualified Data.Aeson.KeyMap as KM
 
 import ArM.Debug.Trace
 import ArM.Char.Trait
-import ArM.Types.CharTime
+import ArM.Types.Season
 
 -- = KeyPairList
 
