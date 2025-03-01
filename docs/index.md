@@ -15,8 +15,7 @@ experimenting with different approaches.
 1. Using ontologies and swish
     1. [[Webserver]] Model
     1. [[CLI with Swish]]
-2. Using JSON datafiles
-
+2. [[CLI using JSON]]
 
 
 ## Technical Notes

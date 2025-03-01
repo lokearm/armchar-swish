@@ -21,11 +21,10 @@ import ArM.Types.Season
 -- | 
 -- = Character Sheet
 
-data CharacterSheet = CharacterSheet 
+
+data CharacterState = CharacterState 
          { csID :: String
          , csTime :: CharTime  -- ^ Current Year
-         , charGlance :: C.KeyPairList
-         , charData :: C.KeyPairList
          , vf :: [ T.Trait ]
          , characteristics :: [ T.Trait ]
          , abilities :: [ T.Trait ]
@@ -36,15 +35,21 @@ data CharacterSheet = CharacterSheet
          , confidence :: T.Trait 
          , otherTraits :: [ T.Trait ]
        }  deriving (Eq)
+instance Show CharacterState where
+    show cs = "**" ++ show (csID cs) ++ "**\n" 
+data CharacterSheet = CharacterSheet 
+         { charID :: String
+         , charGlance :: C.KeyPairList
+         , charData :: C.KeyPairList
+         , charState :: CharacterState
+       }  deriving (Eq)
 instance Show CharacterSheet where
     show cs = "**" ++ show (csID cs) ++ "**\n" 
 
-defaultCS :: CharacterSheet
-defaultCS = CharacterSheet {
+defaultCS :: CharacterState
+defaultCS = CharacterState {
          csID = "N/A"
          , csTime = defaultCharTime
-         , charGlance = C.KeyPairList []
-         , charData = C.KeyPairList []
          , vf = []
          , characteristics = []
          , abilities = []

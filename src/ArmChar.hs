@@ -90,8 +90,10 @@ kpl = KeyPairList [ KeyPair "foo" (TextValue $ T.pack "test")
 
 c :: Character 
 c = defaultCharacter { charID = "Cieran", 
-  charGlance = KeyPairList [ KeyPair "Name" (TextValue $ T.pack "Cieran") ],
-   charData = KeyPairList [ KeyPair "Size" (IntValue 0) ]
+   concept = defaultConcept {
+      charGlance = KeyPairList [ KeyPair "Name" (TextValue $ T.pack "Cieran") ],
+      charData = KeyPairList [ KeyPair "Size" (IntValue 0) ]
+   }
    }
 
 main' :: Options -> IO ()

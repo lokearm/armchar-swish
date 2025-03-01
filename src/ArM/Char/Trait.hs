@@ -151,7 +151,10 @@ data Trait = Ability { abilityName :: String, speciality :: Maybe String, abilit
            | VF { vfname :: String, vfcost :: Int }
            | Confidence { cscore :: Int, cpoints :: Int }
            | OtherTrait { trait :: String, pts :: Int }
-           deriving (Show, Ord, Eq)
+           deriving (Show, Ord, Eq, Generic)
+
+instance FromJSON Trait  
+instance ToJSON Trait 
 
 processTrait :: ProtoTrait -> Trait
 processTrait p

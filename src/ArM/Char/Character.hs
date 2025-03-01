@@ -18,6 +18,8 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Character ( Character(..)
                           , defaultCharacter
+                          , CharacterConcept(..)
+                          , defaultConcept
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
@@ -25,7 +27,6 @@ module ArM.Char.Character ( Character(..)
                           ) where
 
 import GHC.Generics
--- import Swish.RDF.Graph (RDFLabel)
 -- import Data.Maybe (fromJust)
 import qualified Data.Text as T
 import Data.Aeson
@@ -38,6 +39,10 @@ import ArM.Char.Trait
 -- import ArM.Types.Season
 
 type CharTime = Maybe String
+
+listNothing :: Maybe [a] -> [a]
+listNothing Nothing = []
+listNothing (Just xs) = xs
 
 -- = KeyPairList
 
@@ -69,22 +74,56 @@ pairToJSON (KeyPair a (IntValue b)) = ((fromString a), (toJSON b))
 pairToJSON (KeyPair a (TextValue b)) = ((fromString a), (toJSON b))
 pairToJSON (KeyPair a (ObjectValue b)) = ((fromString a), (b))
 
+-- = CharacterConcept
+
+data CharacterConcept = CharacterConcept 
+         { charGlance :: KeyPairList
+         , charData :: KeyPairList
+       }  deriving (Eq,Generic)
+
+defaultConcept :: CharacterConcept 
+defaultConcept = CharacterConcept { charGlance = KeyPairList []
+                                  , charData = KeyPairList []
+       }  
+
+instance ToJSON CharacterConcept where
+    -- For efficiency - Not required
+    toEncoding = genericToEncoding defaultOptions
+
+instance FromJSON CharacterConcept where
+    parseJSON = withObject "CharacterConcept" $ \v -> CharacterConcept
+        <$> v .: "charGlance"
+        <*> v .: "charData"
+
+data CharacterState = CharacterState 
+         { charTime :: CharTime
+         , traits :: [ Trait ]
+         }  deriving (Eq,Generic)
+
+instance ToJSON CharacterState where
+    -- For efficiency - Not required
+    toEncoding = genericToEncoding defaultOptions
+instance FromJSON CharacterState where
+    parseJSON = withObject "CharacterState" $ \v -> CharacterState
+        <$> v .: "charTime"
+        <*> fmap listNothing ( v .:? "traits" )
+
 -- = Character
 
-data Character = Character {
-         charID :: String
-         , charGlance :: KeyPairList
-         , charData :: KeyPairList
+data Character = Character 
+         { charID :: String
+         , concept :: CharacterConcept
+         , state :: Maybe CharacterState
          , pregameAdvancement :: [ Advancement ]
          , charAdvancement :: [ Advancement ]
-       }  deriving (Eq,Generic)
+         }  deriving (Eq,Generic)
 
 
 
 defaultCharacter :: Character 
 defaultCharacter = Character { charID = "N/A"
-                             , charGlance = KeyPairList []
-                             , charData = KeyPairList []
+                             , concept = defaultConcept
+                             , state = Nothing
                              , pregameAdvancement = [ ]
                              , charAdvancement = [ ]
        }  
@@ -97,14 +136,11 @@ instance ToJSON Character where
 instance FromJSON Character where
     parseJSON = withObject "Character" $ \v -> Character
         <$> v .: "charID"
-        <*> v .: "charGlance"
-        <*> v .: "charData"
+        <*> v .: "concept"
+        <*> v .:? "state"
         <*> fmap listNothing ( v .:? "pregameAdvancement" )
         <*> fmap listNothing ( v .:? "charAdvancement" )
 
-listNothing :: Maybe [a] -> [a]
-listNothing Nothing = []
-listNothing (Just xs) = xs
 -- = Advancement
 
 data Season = Spring | Summer | Autumn | Winter 
@@ -146,8 +182,10 @@ instance Show KeyPair where
    show (KeyPair x  y) = x ++ ":\t" ++ show y ++ "\n"
 instance Show KeyPairList where
    show (KeyPairList xs) = ( foldl (++) "" $ map show xs )
-instance Show Character where
+instance Show CharacterConcept where
    show c = ( show $ charGlance c ) ++ ( show $ charData c )
+instance Show Character where
+   show = show . concept 
 
 -- = Advancement of Character
 

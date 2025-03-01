@@ -1,12 +1,14 @@
 {
    "charID" : "Cieran",
-   "charGlance" : {
-      "Name" : "Cieran",
-      "Born" : 1195,
-      "Concept" : "Rusticanus Fletcher"
-   },
-   "charData" : {
-      "Size" : 0
+   "concept" : {
+      "charGlance" : {
+         "Name" : "Cieran",
+         "Born" : 1195,
+         "Concept" : "Rusticanus Fletcher"
+      },
+      "charData" : {
+         "Size" : 0
+      }
    },
    "pregameAdvancement" : [
       { "mode" : "Base Character"
