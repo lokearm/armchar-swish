@@ -104,7 +104,9 @@ main' :: Options -> IO ()
 main' opts | charFile opts == Nothing = do 
      putStrLn $ show $ encode c
      t <- LB.readFile "test.json"
-     putStrLn $ show $ fromJust $ ( decode t  :: Maybe Character )
-     putStrLns $ printMD $ fromJust $ ( decode t  :: Maybe Character )
+     let char = fromJust $ ( decode t  :: Maybe Character )
+     putStrLn $ show char
+     putStrLns $ printMD char
+     putStrLns $ printMD $ prepareCharacter char
      return ()
 main' _ | otherwise = error "Not implemented!" 

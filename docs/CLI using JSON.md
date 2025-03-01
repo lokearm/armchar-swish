@@ -24,18 +24,25 @@ aliases:
 	+ `Char.Markdown`
 		+ class and instnces for markdown output
 + Types
-	+ Persistent representation
+	+ Character
+		+ contains
+			+ CharacterConcept (permanent metadata)
+			+ CharacterState (current stats)
+			+ Pregame Advancement
+			+ Past Advancement (most recent first)
+			+ Future Advancement (next one first)
+		+ advancing a character moves an Advancement from future to past and updates the state accordingly
+		+ The character can be persisted at any stage of advancement
+		+ Prior states can be recovered by redoing calculations from scratch
+		+ Future states can be computed by advancing one Advancement at a time
+	+ Constituent types
 		+ `ProtoTrait` represents advancement of a trait
+		+ `Trait` represents a trait with computed scores
 		+ `Advancement` represents advancement of a character or covenant
 			+ includes a list of `ProtoTrait` advancing individual traits
 			+ includes a time (season) or a stage (pregame)
 			+ may include a narrative
 			+ may include appearance, if it changes
-		+ Character represents a character as stored on file (JSON)
-			+ glance (brief metadata)
-			+ metadata
-			+ pregameAdvancement
-			+ charAdvancement
 + CharacterState
 	+ metadata from Character
 	+ state of traits

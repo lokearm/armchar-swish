@@ -29,7 +29,7 @@ instance Markdown CharacterConcept where
    printMD c = ( printMD $ charGlance c ) ++ ( printMD $ charData c )
 instance Markdown Character where
    printMD c = ( printMD . concept ) c 
-            ++ maybeS (state c)
+            ++ maybeP (state c)
             ++ ("":"## Pregame Development":"":xf as)
             ++ ("":"## Past Advancement":"":xf bs)
             ++ ("":"## Future Advancement":"":xf cs)
@@ -37,15 +37,15 @@ instance Markdown Character where
              as = pregameAdvancement c
              bs = pastAdvancement c
              cs = futureAdvancement c
-             maybeS  Nothing = []
-             maybeS (Just xs) = ("## " ++ cts (charTime xs)):(pt xs)
+             maybeP  Nothing = []
+             maybeP (Just xs) = printMD xs
              pt = map ("    + "++) . foldl (++) [] . map printMD . traits 
              cts Nothing = "No date"
              cts (Just x) = x
 
 instance Markdown CharacterState where
    printMD c = ( "## " ++ show (charTime c) ):"":pt c
-       where pt = map ("    + "++) . foldl (++) [] . map printMD . traits 
+       where pt = map ("+ "++) . foldl (++) [] . map printMD . traits 
 instance Markdown Advancement where
    printMD a = f (season a) (mode a) $ fn (narrative a) $ pt a
       where xps | sx == Nothing = ""
