@@ -8,13 +8,6 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- The Character and CharacterSheet data types and corresponding functions.
---
--- This module provides the functions to get character sheets
--- from character data.
---
--- Pre-game character design has not yet been implemented.
---
 -----------------------------------------------------------------------------
 module ArM.Char.Character ( Character(..)
                           , defaultCharacter
@@ -23,7 +16,7 @@ module ArM.Char.Character ( Character(..)
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
-                          , advanceCharacter
+                          , prepareCharacter
                           ) where
 
 import GHC.Generics
@@ -95,18 +88,27 @@ instance FromJSON CharacterConcept where
         <$> v .: "charGlance"
         <*> v .: "charData"
 
+-- = CharacterState
+
 data CharacterState = CharacterState 
          { charTime :: CharTime
          , traits :: [ Trait ]
          , protoTraits :: [ ProtoTrait ]
          }  deriving (Eq,Generic)
 
+defaultCS :: CharacterState 
+defaultCS = CharacterState 
+         { charTime = Nothing
+         , traits = [ ]
+         , protoTraits = [ ]
+         }  
+
 instance ToJSON CharacterState where
     -- For efficiency - Not required
     toEncoding = genericToEncoding defaultOptions
 instance FromJSON CharacterState where
     parseJSON = withObject "CharacterState" $ \v -> CharacterState
-        <$> v .: "charTime"
+        <$> v .:? "charTime"
         <*> fmap listNothing ( v .:? "traits" )
         <*> fmap listNothing ( v .:? "protoTraits" )
 
@@ -115,7 +117,7 @@ instance FromJSON CharacterState where
 data Character = Character 
          { charID :: String
          , concept :: CharacterConcept
-         , state :: CharacterState
+         , state :: Maybe CharacterState
          , pregameAdvancement :: [ Advancement ]
          , pastAdvancement :: [ Advancement ]
          , futureAdvancement :: [ Advancement ]
@@ -127,7 +129,8 @@ defaultCharacter = Character { charID = "N/A"
                              , concept = defaultConcept
                              , state = Nothing
                              , pregameAdvancement = [ ]
-                             , charAdvancement = [ ]
+                             , pastAdvancement = [ ]
+                             , futureAdvancement = [ ]
        }  
 
 
@@ -139,28 +142,34 @@ instance FromJSON Character where
     parseJSON = withObject "Character" $ \v -> Character
         <$> v .: "charID"
         <*> v .: "concept"
-        <*> fmap prepareCharacter ( v .:? "state" )
+        <*> v .:? "state" 
         <*> fmap listNothing ( v .:? "pregameAdvancement" )
-        <*> fmap listNothing ( v .:? "charAdvancement" )
+        <*> fmap listNothing ( v .:? "pastAdvancement" )
+        <*> fmap listNothing ( v .:? "futureAdvancement" )
 
 
-advanceCharacterState :: 
-    ( CharacterState, [ Advancement ], [ Advancement ] ) ->
-    ( CharacterState, [ Advancement ], [ Advancement ] ) 
-advanceCharacterState (cs,[],ys) = (cs,[],ys)
-advanceCharacterState (cs,(x>xs),ys) = advanceCharacterState (cs',xs,(x:ys))
-   where cs' = advanceCS cs x
-advanceCS cs x = cs { traits = cx, protoTraits = nx }
-   where cx = computeCS nx
-         nx = advance
 
-computeCS :: [ ProtoTrait ] -> [ Trait ]
-computeCS = []
 
+-- | Compute the initial state if no state is recorded.
 prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
-            | otherwise = c
+            | otherwise = c { state = Just s }
+            where s = pregameBuild $ pregameAdvancement  c 
+
+-- | Process pregameAdvancement to compute initial CharacterState
+pregameBuild :: [ Advancement ] -> CharacterState
+pregameBuild as = defaultCS { charTime = Just "Game Start"
+                            , traits = computeCS bs
+                            , protoTraits = bs 
+                            }
+    where bs = pregameAdvance [] as
+computeCS :: [ ProtoTrait ] -> [ Trait ]
+computeCS = map processTrait
+pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ] 
+pregameAdvance xs [] = xs
+pregameAdvance xs (y:ys) = pregameAdvance ns ys
+   where ns = advanceTraits (changes y) xs
 
 -- = Advancement
 
@@ -218,6 +227,8 @@ advanceTraits (x:xs) (y:ys)
     | y <: x = y:advanceTraits (x:xs) ys
     | otherwise = advanceTrait x y:advanceTraits xs ys
 
+{-
+
 advanceCharacter :: Character -> [ ( CharTime, [ ProtoTrait ] ) ]
 advanceCharacter c = advanceCharacter' (charAdvancement c)
                    $ advanceCharacter' (pregameAdvancement c) []
@@ -231,4 +242,14 @@ advanceCharacter' (a:as) ((t,xs):cs) =
              ys = sortTraits $ changes a
 
 
-
+-}
+advanceCharacterState :: 
+    ( CharacterState, [ Advancement ], [ Advancement ] ) ->
+    ( CharacterState, [ Advancement ], [ Advancement ] ) 
+advanceCharacterState (cs,[],ys) = (cs,[],ys)
+advanceCharacterState (cs,(x:xs),ys) = advanceCharacterState (cs',xs,(x:ys))
+   where cs' = advanceCS cs x
+advanceCS :: CharacterState -> Advancement -> CharacterState 
+advanceCS cs x = cs { traits = cx, protoTraits = nx }
+   where cx = computeCS nx
+         nx = []
