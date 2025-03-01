@@ -1,5 +1,7 @@
 ---
 title: Data Structure
+tags:
+    - armchar/swish
 ---
 
 

@@ -1,5 +1,7 @@
 ---
 title: The Web API described in Tests
+tags:
+  - armchar/server
 ---
 
 One should also refer to the test scripts in `/client` to

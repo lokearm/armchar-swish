@@ -1,5 +1,8 @@
 ---
 title: CLI Design
+tags:
+  - review/code
+  - armchar/swish/cli
 ---
 
 + [[CLI Data Model.canvas|CLI Data Model]]

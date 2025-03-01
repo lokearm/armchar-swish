@@ -1,5 +1,7 @@
 ---
 title: Data Types
+tags:
+    - armchar/swish
 ---
 
 # Algebraic Data Types

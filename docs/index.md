@@ -1,3 +1,8 @@
+---
+tags:
+    - armchar-swish
+---
+
 # armchar-swish
 
 ArM character generator implemented in declarative programming
