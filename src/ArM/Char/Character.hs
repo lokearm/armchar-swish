@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Types.Character
+-- Module      :  ArM.Char.Character
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -13,10 +13,13 @@ module ArM.Char.Character ( Character(..)
                           , defaultCharacter
                           , CharacterConcept(..)
                           , defaultConcept
+                          , CharacterState(..)
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
                           , prepareCharacter
+                          , Advancement
+                          , computeCS
                           ) where
 
 import GHC.Generics
@@ -217,39 +220,3 @@ instance Show CharacterConcept where
 instance Show Character where
    show = show . concept 
 
--- = Advancement of Character
-
-advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
-advanceTraits [] ys = ys
-advanceTraits ys [] = ys
-advanceTraits (x:xs) (y:ys) 
-    | x <: y = x:advanceTraits xs (y:ys)
-    | y <: x = y:advanceTraits (x:xs) ys
-    | otherwise = advanceTrait x y:advanceTraits xs ys
-
-{-
-
-advanceCharacter :: Character -> [ ( CharTime, [ ProtoTrait ] ) ]
-advanceCharacter c = advanceCharacter' (charAdvancement c)
-                   $ advanceCharacter' (pregameAdvancement c) []
-advanceCharacter' :: [ Advancement ] -> [ ( CharTime, [ ProtoTrait ] ) ] 
-                                    -> [ ( CharTime, [ ProtoTrait ] ) ]
-advanceCharacter' [] cs = cs
-advanceCharacter' (a:as) [] = advanceCharacter' as [ ( season a, changes a ) ] 
-advanceCharacter' (a:as) ((t,xs):cs) = 
-    advanceCharacter' as bs
-       where bs = ( ( season a, advanceTraits ys xs):(t,xs):cs ) 
-             ys = sortTraits $ changes a
-
-
--}
-advanceCharacterState :: 
-    ( CharacterState, [ Advancement ], [ Advancement ] ) ->
-    ( CharacterState, [ Advancement ], [ Advancement ] ) 
-advanceCharacterState (cs,[],ys) = (cs,[],ys)
-advanceCharacterState (cs,(x:xs),ys) = advanceCharacterState (cs',xs,(x:ys))
-   where cs' = advanceCS cs x
-advanceCS :: CharacterState -> Advancement -> CharacterState 
-advanceCS cs x = cs { traits = cx, protoTraits = nx }
-   where cx = computeCS nx
-         nx = []

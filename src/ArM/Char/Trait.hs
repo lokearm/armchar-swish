@@ -18,6 +18,7 @@
 module ArM.Char.Trait ( ProtoTrait(..)
                       , Trait(..)
                       , advanceTrait
+                      , advanceTraits
                       , processTrait
                       , sortTraits
                       , key
@@ -193,3 +194,12 @@ processTrait p
            OtherTrait { trait = fromJust (other p) 
                       , pts = maybeInt ( points p ) }
     | otherwise  = error "No Trait for this ProtoTrait" 
+
+advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
+advanceTraits [] ys = ys
+advanceTraits ys [] = ys
+advanceTraits (x:xs) (y:ys) 
+    | x <: y = x:advanceTraits xs (y:ys)
+    | y <: x = y:advanceTraits (x:xs) ys
+    | otherwise = advanceTrait x y:advanceTraits xs ys
+

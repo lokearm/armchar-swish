@@ -15,6 +15,7 @@ import System.Console.GetOpt
 
 import ArM.Debug.Time
 import ArM.Char.Character
+import ArM.Char.Markdown
 
 import qualified Data.Text as T
 import Data.Maybe (fromJust)
@@ -95,11 +96,15 @@ c = defaultCharacter { charID = "Cieran",
       charData = KeyPairList [ KeyPair "Size" (IntValue 0) ]
    }
    }
+putStrLns :: [ String ] -> IO ()
+putStrLns [] = return ()
+putStrLns (x:xs) = putStrLn x >> putStrLns xs
 
 main' :: Options -> IO ()
 main' opts | charFile opts == Nothing = do 
      putStrLn $ show $ encode c
      t <- LB.readFile "test.json"
      putStrLn $ show $ fromJust $ ( decode t  :: Maybe Character )
+     putStrLns $ printMD $ fromJust $ ( decode t  :: Maybe Character )
      return ()
 main' _ | otherwise = error "Not implemented!" 
