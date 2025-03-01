@@ -15,7 +15,7 @@ import Data.Maybe (fromJust)
 import ArM.Char.Character 
 import ArM.Char.Trait
 
-class Show a => Markdown a where
+class Markdown a where
      printMD :: a -> [ String ]
 
 instance Markdown FieldValue where
@@ -36,6 +36,9 @@ instance Markdown Character where
              as = pregameAdvancement c
              bs = pastAdvancement c
              cs = futureAdvancement c
+instance Markdown CharacterState where
+   printMD c = ( "## " ++ show (charTime c) ):"":pt c
+       where pt = map ("    + "++) . foldl (++) [] . map printMD . traits 
 instance Markdown Advancement where
    printMD a = f (season a) (mode a) $ fn (narrative a) $ pt a
       where xps | sx == Nothing = ""
@@ -50,5 +53,7 @@ instance Markdown Advancement where
             f (Just x) Nothing xs = ("+ " ++ x ++ xps):xs
             f Nothing (Just x) xs = ("+ " ++ x ++ xps):xs
             f (Just x) (Just y) xs = ("+ " ++ x ++ xps):("    + " ++ y):xs
+instance Markdown Trait where
+   printMD c = [ show c ]
 instance Markdown ProtoTrait where
    printMD c = [ show c ]
