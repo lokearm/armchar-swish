@@ -98,6 +98,7 @@ instance FromJSON CharacterConcept where
 data CharacterState = CharacterState 
          { charTime :: CharTime
          , traits :: [ Trait ]
+         , protoTraits :: [ ProtoTrait ]
          }  deriving (Eq,Generic)
 
 instance ToJSON CharacterState where
@@ -107,17 +108,18 @@ instance FromJSON CharacterState where
     parseJSON = withObject "CharacterState" $ \v -> CharacterState
         <$> v .: "charTime"
         <*> fmap listNothing ( v .:? "traits" )
+        <*> fmap listNothing ( v .:? "protoTraits" )
 
 -- = Character
 
 data Character = Character 
          { charID :: String
          , concept :: CharacterConcept
-         , state :: Maybe CharacterState
+         , state :: CharacterState
          , pregameAdvancement :: [ Advancement ]
-         , charAdvancement :: [ Advancement ]
+         , pastAdvancement :: [ Advancement ]
+         , futureAdvancement :: [ Advancement ]
          }  deriving (Eq,Generic)
-
 
 
 defaultCharacter :: Character 
@@ -137,9 +139,28 @@ instance FromJSON Character where
     parseJSON = withObject "Character" $ \v -> Character
         <$> v .: "charID"
         <*> v .: "concept"
-        <*> v .:? "state"
+        <*> fmap prepareCharacter ( v .:? "state" )
         <*> fmap listNothing ( v .:? "pregameAdvancement" )
         <*> fmap listNothing ( v .:? "charAdvancement" )
+
+
+advanceCharacterState :: 
+    ( CharacterState, [ Advancement ], [ Advancement ] ) ->
+    ( CharacterState, [ Advancement ], [ Advancement ] ) 
+advanceCharacterState (cs,[],ys) = (cs,[],ys)
+advanceCharacterState (cs,(x>xs),ys) = advanceCharacterState (cs',xs,(x:ys))
+   where cs' = advanceCS cs x
+advanceCS cs x = cs { traits = cx, protoTraits = nx }
+   where cx = computeCS nx
+         nx = advance
+
+computeCS :: [ ProtoTrait ] -> [ Trait ]
+computeCS = []
+
+prepareCharacter :: Character -> Character
+prepareCharacter c 
+            | state c /= Nothing = c
+            | otherwise = c
 
 -- = Advancement
 
