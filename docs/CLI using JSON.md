@@ -9,6 +9,20 @@ aliases:
 + Also reuses some libraries from the swish model
 
 
++ Modules
+	+ `Char.Trait`
+		+ Trait
+		+ ProtoTrait
+	+ `Char.Character`
+		+ Character
+			+ CharacterConcept
+			+ CharacterState
+		+ Advancement
+		+ function to create a full starting character
+	+ `Char.Advancement`
+		+ functions for ingame advancement
+	+ `Char.Markdown`
+		+ class and instnces for markdown output
 + Types
 	+ Persistent representation
 		+ `ProtoTrait` represents advancement of a trait
