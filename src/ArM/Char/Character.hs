@@ -18,7 +18,7 @@ module ArM.Char.Character ( Character(..)
                           , KeyPair(..)
                           , FieldValue(..)
                           , prepareCharacter
-                          , Advancement
+                          , Advancement(..)
                           , computeCS
                           ) where
 
@@ -185,8 +185,7 @@ data ExposureType = LabWork | Teach | Train
                   | Writing | Copying | OtherExposure | NoExposure
    deriving (Show,Ord,Eq)
 
-data Advancement = PreGame { stage :: String }
-                 | Advancement { mode :: Maybe String
+data Advancement = Advancement { mode :: Maybe String
                                , season :: CharTime
                                , narrative :: Maybe String
                                , totalXP :: Maybe Int

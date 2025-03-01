@@ -8,12 +8,11 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Markdown where
+module ArM.Char.Markdown (printMD) where
 
 -- import Data.Maybe (fromJust)
-import qualified Data.Text as T
-
-import ArM.Char.Character
+import Data.Maybe (fromJust)
+import ArM.Char.Character 
 import ArM.Char.Trait
 
 class Show a => Markdown a where
@@ -29,4 +28,27 @@ instance Markdown KeyPairList where
 instance Markdown CharacterConcept where
    printMD c = ( printMD $ charGlance c ) ++ ( printMD $ charData c )
 instance Markdown Character where
-   printMD = printMD . concept 
+   printMD c = ( printMD . concept ) c 
+            ++ ("## Pregame Development":"":xf as)
+            ++ ("":"## Past Advancement":"":xf bs)
+            ++ ("":"## Future Advancement":"":xf cs)
+       where xf = foldl (++) [] . map printMD 
+             as = pregameAdvancement c
+             bs = pastAdvancement c
+             cs = futureAdvancement c
+instance Markdown Advancement where
+   printMD a = f (season a) (mode a) $ fn (narrative a) $ pt a
+      where xps | sx == Nothing = ""
+                | otherwise = " (" ++ ishow  sx ++ "xp)" 
+            sx = totalXP a
+            ishow = show . fromJust
+            pt = map ("    + "++) . foldl (++) [] . map printMD . changes 
+
+            fn Nothing xs = xs
+            fn (Just x) xs = ( "    + " ++ show ( x ) ) :xs
+            f Nothing Nothing xs = ("+ ?? " ++ xps):xs
+            f (Just x) Nothing xs = ("+ " ++ x ++ xps):xs
+            f Nothing (Just x) xs = ("+ " ++ x ++ xps):xs
+            f (Just x) (Just y) xs = ("+ " ++ x ++ xps):("    + " ++ y):xs
+instance Markdown ProtoTrait where
+   printMD c = [ show c ]
