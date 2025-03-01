@@ -1,7 +1,9 @@
 ---
 title: Testing the Web Server
-tags: 
-   - armchar/server
+tags:
+  - armchar/server
+aliases:
+  - "#armchar/server"
 ---
 
 
