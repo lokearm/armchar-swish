@@ -273,7 +273,7 @@ showAging p | Nothing == aging p = ""
             | otherwise = " (" ++ show  pt ++ " aging points)"
     where pt = maybeInt $ aging p
 showXP :: ProtoTrait -> String
-showXP p = " (" ++ show ( maybeInt (xp p) ) ++ ")"
+showXP p = " " ++ show ( maybeInt (xp p) ) ++ "xp"
 maybeShow :: Show a => Maybe a -> String
 maybeShow Nothing = ""
 maybeShow (Just x) = show x
@@ -282,7 +282,7 @@ instance Show ProtoTrait  where
    show p 
     | ability p /= Nothing = 
         "Ability: " ++ fromJust ( ability p )  ++ 
-        " [" ++ show ( spec p ) ++ "] (" ++ showXP p
+        " [" ++ show ( spec p ) ++ "]" ++ showXP p
     | characteristic p /= Nothing =
         "Characteristic: " ++ fromJust ( characteristic p )  ++
         " " ++ show ( maybeInt (score p) ) ++ showAging p 
