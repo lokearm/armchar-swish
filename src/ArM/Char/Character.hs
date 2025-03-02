@@ -159,8 +159,6 @@ instance FromJSON Character where
         <*> fmap listNothing ( v .:? "futureAdvancement" )
 
 
-
-
 -- | Compute the initial state if no state is recorded.
 prepareCharacter :: Character -> Character
 prepareCharacter c 
