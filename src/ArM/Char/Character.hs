@@ -223,7 +223,8 @@ instance Show KeyPair where
 instance Show KeyPairList where
    show (KeyPairList xs) = ( foldl (++) "" $ map show xs )
 instance Show CharacterConcept where
-   show c = ( show $ charGlance c ) ++ ( show $ charData c )
+   show c = fullConceptName c ++ "\n"
+         ++ ( show $ charGlance c ) ++ ( show $ charData c )
 instance Show Character where
    show = show . concept 
 
