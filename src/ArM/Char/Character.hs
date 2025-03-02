@@ -26,14 +26,11 @@ module ArM.Char.Character ( Character(..)
 
 import GHC.Generics
 import Data.Maybe (fromJust,isNothing)
-import qualified Data.Text as T
 import Data.Aeson
-import Data.Aeson.Key
 -- import Data.Aeson.Types (Parser)
-import qualified Data.Aeson.KeyMap as KM
 
-import ArM.Debug.Trace
 import ArM.Char.Trait
+import ArM.Char.Internal.KeyPair
 -- import ArM.Types.Season
 
 type CharTime = Maybe String
@@ -42,35 +39,6 @@ listNothing :: Maybe [a] -> [a]
 listNothing Nothing = []
 listNothing (Just xs) = xs
 
--- = KeyPairList
-
-data FieldValue = TextValue T.Text
-                | IntValue Int
-                | ObjectValue Value
-       deriving (Eq)
-data KeyPair = KeyPair { key :: String, value :: FieldValue }
-       deriving (Eq)
-data KeyPairList = KeyPairList [ KeyPair ]
-       deriving (Eq)
-
-instance FromJSON KeyPairList  where
-  parseJSON = withObject "KeyPairList" $ \obj ->
-    trace ( "parseJSON for KeyPairList " ++ show obj) $
-    return $ KeyPairList 
-           $ map ( \ (k,y) -> KeyPair (toString k) (pValue y) )
-           $ KM.toList obj
-instance ToJSON KeyPairList where 
-    toJSON (KeyPairList t) = object $ map pairToJSON t
-
-pValue :: Value -> FieldValue
-pValue (Number x) = IntValue $ round x
-pValue (String x) = TextValue x
-pValue (x) = ObjectValue x
-
-pairToJSON :: KeyPair -> (Key,Value)
-pairToJSON (KeyPair a (IntValue b)) = ((fromString a), (toJSON b))
-pairToJSON (KeyPair a (TextValue b)) = ((fromString a), (toJSON b))
-pairToJSON (KeyPair a (ObjectValue b)) = ((fromString a), (b))
 
 -- = CharacterConcept
 
@@ -107,6 +75,7 @@ data CharacterState = CharacterState
          , abilityList :: [ Ability ]
          , artList :: [ Art ]
          , spellList :: [ Spell ]
+         , reputationList :: [ Reputation ]
          , traits :: [ Trait ]
          , protoTraits :: [ ProtoTrait ]
          }  deriving (Eq,Generic)
@@ -118,6 +87,7 @@ defaultCS = CharacterState
          , abilityList = [ ]
          , artList = [ ]
          , spellList = [ ]
+         , reputationList = []
          , traits = [ ]
          , protoTraits = [ ]
          }  
@@ -132,6 +102,7 @@ instance FromJSON CharacterState where
         <*> fmap listNothing ( v .:? "abilityList" )
         <*> fmap listNothing ( v .:? "artList" )
         <*> fmap listNothing ( v .:? "spellList" )
+        <*> fmap listNothing ( v .:? "reputationList" )
         <*> fmap listNothing ( v .:? "traits" )
         <*> fmap listNothing ( v .:? "protoTraits" )
 
@@ -192,12 +163,14 @@ filterCS cs = cs { vfList = x1
                  , abilityList = x2
                  , artList = x3
                  , spellList = x4
-                 , traits = y4
+                 , reputationList = x5
+                 , traits = y5
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1
                  (x3,y3) = filterTrait y2
                  (x4,y4) = filterTrait y3
+                 (x5,y5) = filterTrait y4
 
 class TraitType t where
     filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
@@ -221,6 +194,9 @@ instance TraitType Art where
     getTrait _ = Nothing
 instance TraitType Spell where
     getTrait (SpellTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Reputation where
+    getTrait (ReputationTrait x) = Just x
     getTrait _ = Nothing
 
 
@@ -263,14 +239,6 @@ instance FromJSON Advancement where
         <*> fmap listNothing ( v .:? "changes" )
 
 -- = Show Instances
-instance Show FieldValue where
-   show (IntValue x) = show x
-   show (TextValue x) = show x
-   show x = show x
-instance Show KeyPair where
-   show (KeyPair x  y) = x ++ ":\t" ++ show y ++ "\n"
-instance Show KeyPairList where
-   show (KeyPairList xs) = ( foldl (++) "" $ map show xs )
 instance Show CharacterConcept where
    show c = fullConceptName c ++ "\n"
          ++ ( show $ charGlance c ) ++ ( show $ charData c )

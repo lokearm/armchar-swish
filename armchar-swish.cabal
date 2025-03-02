@@ -47,6 +47,7 @@ common deps
 common armchar-deps
   import:    deps
   other-modules:       ArM.Char.Character
+                       , ArM.Char.Internal.KeyPair
                        , ArM.Char.Trait
                        , ArM.Char.Advancement
                        , ArM.Char.Markdown
