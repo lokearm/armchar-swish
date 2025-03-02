@@ -18,74 +18,72 @@ import ArM.Debug.Time
 import ArM.Char.Character
 import ArM.Char.Markdown
 
-import qualified Data.Text as T
-import Data.Maybe (fromJust)
-import Data.Aeson (FromJSON,encode,decode)
+import Data.Aeson (decode)
 
-import Data.ByteString.Lazy.UTF8 (fromString)
+-- import qualified Data.Text as T
+import Data.Maybe (fromJust)
 
 import qualified Data.ByteString.Lazy as LB
 
 data Options = Options {
-  sagaFile :: String,
+  sagaFile :: Maybe String,
   charFile :: Maybe String,
-  outFile  :: String,
-  debugFile  :: Maybe String,
-  outputDir  :: Maybe String
-}
+  outFile  :: Maybe String,
+  debugFile  :: Maybe String
+} deriving (Show)
 defaultOptions :: Options
 defaultOptions = Options {
-  sagaFile = "Test/saga.ttl",
+  sagaFile = Just "Test/saga.ttl",
   charFile = Nothing,
-  outFile  = "test.md",
-  debugFile  = Nothing,
-  outputDir  = Nothing
+  outFile  = Nothing,
+  debugFile  = Nothing
 }
 
 
-options :: [ OptDescr (Options -> IO Options) ]
+options :: [ OptDescr (Options -> Options) ]
 options =
-    [ Option ['o']     ["output"]  (ReqArg 
-            (\arg opt -> return opt { outFile = arg })
+    [ Option ['o']     ["output"]  (OptArg 
+            (\arg opt -> opt { outFile = arg })
             "FILE") "output file"
     , Option ['c']     ["character"] (OptArg 
-            (\arg opt -> return opt { charFile = arg })
+            (\arg opt -> opt { charFile = arg })
             "FILE") "character file"
-    , Option ['s']     ["saga"] (ReqArg 
-            (\arg opt -> return opt { sagaFile = arg })
+    , Option ['s']     ["saga"] (OptArg 
+            (\arg opt -> opt { sagaFile = arg })
             "FILE") "saga file"
     , Option ['O']     ["debug-output"] (OptArg 
-            (\arg opt -> return opt { debugFile = arg })
+            (\arg opt -> opt { debugFile = arg })
             "FILE") "debug output"
-    , Option ['D']     ["output-directory"] (OptArg 
-            (\arg opt -> return opt { outputDir = arg })
-            "FILE") "output directory"
     ]
 
-dirOpts :: Options -> Options
-dirOpts opt | outputDir opt == Nothing = opt
-      | otherwise = opt {
-          outFile = d ++ "/character.md",
-          debugFile = Just $ d ++ "/character.triples"
-       }
-       where d = fromJust $ outputDir opt
+armcharOpts :: [String] -> IO (Options, [String])
+armcharOpts argv =
+      case getOpt Permute options argv of
+         (o,n,[]  ) -> return (foldl (flip id) defaultOptions o, n)
+         (_,_,errs) -> ioError (userError (concat errs ++ usageInfo header options))
+     where header = "Usage: armchar [OPTION...] "
 
 main :: IO ()
 main = do 
      putStrLn "Starting: armchar ..."
      printTime
      args <- getArgs
-     let (opt,_,_) = getOpt RequireOrder options args
-     opt0 <- foldl (>>=) (return defaultOptions) opt
+     putStrLn "Arguments"
+     putStrLns args
+     (opt,n) <- armcharOpts args
+     putStrLn "Options"
+     putStrLn $ show opt
 
-     main' $ dirOpts opt0
+     main' opt
 
 main' :: Options -> IO ()
 main' opts | charFile opts == Nothing = do 
-     t <- LB.readFile "test.json"
+     putStrLn $ "Reading file " ++ fn
+     t <- LB.readFile fn
      let char = fromJust $ ( decode t  :: Maybe Character )
      putStrLn $ show char
-     putStrLns $ printMD char
-     putStrLns $ printMD $ prepareCharacter char
+     writeMaybeFile ( debugFile opts ) $ printMD char
+     writeMaybeFile ( outFile opts ) $ printMD $ prepareCharacter char
      return ()
+   where fn = fromJust $ charFile opts
 main' _ | otherwise = error "Not implemented!" 

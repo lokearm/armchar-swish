@@ -39,9 +39,6 @@ instance Markdown Character where
              cs = futureAdvancement c
              maybeP  Nothing = []
              maybeP (Just xs) = printMD xs
-             pt = map ("    + "++) . foldl (++) [] . map printMD . traits 
-             cts Nothing = "No date"
-             cts (Just x) = x
 
 instance Markdown CharacterState where
    printMD c = ( "## " ++ show (charTime c) ):"":pt c
