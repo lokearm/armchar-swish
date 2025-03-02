@@ -29,6 +29,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , sortTraits
                       , key
                       , (<:)
+                      , (>:)
                       , filterTrait
                        ) where
 
@@ -430,15 +431,21 @@ instance TraitType Reputation where
 instance TraitLike Reputation where
     key x = ReputationKey ( reputationName x ) ( repLocale x )
 
-class TraitLike t where
-    key :: t -> TraitKey
-    (<:) :: t -> t -> Bool
-    (<:) p1 p2 = key p1 < key p2
-    sortTraits :: [ t ] -> [ t ]
-    sortTraits = sortBy f
+(<:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
+(<:) p1 p2 = key p1 < key p2
+
+(>:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
+(>:) p1 p2 = p2 <: p1
+
+
+sortTraits :: TraitLike t => [ t ] -> [ t ]
+sortTraits = sortBy f
        where f x y | x <: y = LT
                    | y <: x = GT
                    | otherwise = EQ
+
+class TraitLike t where
+    key :: t -> TraitKey
 
 instance TraitLike ProtoTrait where
    key p
