@@ -33,6 +33,18 @@ aliases:
 + Virtue and Flaws trait calculation
 	+ Puissant
 
++ Advancement process.
+    + Uses State from previous season and Advancement from current season.
+        + The State includes virtues and flaws which may modify behaviour.
+        + However, implied traits are effective immediately.
+    + Advancement may be amended
+        + additional XP
+    + ProtoTrait may be amended
+        + affinity
+    + Trait may be amended
+        + bonusScore
+        
+
 + Modules
 	+ `Char.Trait`
 		+ Trait

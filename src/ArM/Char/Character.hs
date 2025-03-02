@@ -25,7 +25,6 @@ module ArM.Char.Character ( Character(..)
                           ) where
 
 import GHC.Generics
-import Data.Maybe (fromJust,isNothing)
 import Data.Aeson
 -- import Data.Aeson.Types (Parser)
 
@@ -66,6 +65,17 @@ instance FromJSON CharacterConcept where
         <*> v .:? "house"
         <*> v .: "charGlance"
         <*> v .: "charData"
+
+instance Show CharacterConcept where
+   show c = fullConceptName c ++ "\n"
+         ++ ( show $ charGlance c ) ++ ( show $ charData c )
+
+fullConceptName :: CharacterConcept -> String
+fullConceptName c = name c ++ (f $ house c)
+      where f Nothing = ""
+            f (Just x) | take 2 x == "ex" = " " ++ x
+                       | otherwise  = " ex " ++ x
+
 
 -- = CharacterState
 
@@ -127,6 +137,11 @@ defaultCharacter = Character { charID = "N/A"
                              , futureAdvancement = [ ]
        }  
 
+instance Show Character where
+   show = show . concept 
+
+fullName :: Character -> String
+fullName = fullConceptName . concept
 
 instance ToJSON Character where
     -- For efficiency - Not required
@@ -140,8 +155,6 @@ instance FromJSON Character where
         <*> fmap listNothing ( v .:? "pregameAdvancement" )
         <*> fmap listNothing ( v .:? "pastAdvancement" )
         <*> fmap listNothing ( v .:? "futureAdvancement" )
-
-
 
 
 -- | Compute the initial state if no state is recorded.
@@ -172,32 +185,6 @@ filterCS cs = cs { vfList = x1
                  (x4,y4) = filterTrait y3
                  (x5,y5) = filterTrait y4
 
-class TraitType t where
-    filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
-    filterTrait ts = y where (_,y) = filterTrait' (ts,([],[]))
-    filterTrait' :: ( [ Trait ], ( [ t ], [ Trait ] ) )
-                  -> ( [ Trait ], ( [ t ], [ Trait ] ) )
-    filterTrait' ([],y) = ([],y)
-    filterTrait' (x:xs,(ys,zs)) | isNothing ab  = (xs,(ys,x:zs))
-                                | otherwise = (xs,(fromJust ab:ys,zs))
-        where ab = getTrait x
-    getTrait :: Trait -> Maybe t
-
-instance TraitType VF where
-    getTrait (VFTrait x) = Just x
-    getTrait _ = Nothing
-instance TraitType Ability where
-    getTrait (AbilityTrait x) = Just x
-    getTrait _ = Nothing
-instance TraitType Art where
-    getTrait (ArtTrait x) = Just x
-    getTrait _ = Nothing
-instance TraitType Spell where
-    getTrait (SpellTrait x) = Just x
-    getTrait _ = Nothing
-instance TraitType Reputation where
-    getTrait (ReputationTrait x) = Just x
-    getTrait _ = Nothing
 
 
 computeCS :: [ ProtoTrait ] -> [ Trait ]
@@ -237,21 +224,4 @@ instance FromJSON Advancement where
         <*> v .:? "narrative"
         <*> v .:? "totalXP"
         <*> fmap listNothing ( v .:? "changes" )
-
--- = Show Instances
-instance Show CharacterConcept where
-   show c = fullConceptName c ++ "\n"
-         ++ ( show $ charGlance c ) ++ ( show $ charData c )
-instance Show Character where
-   show = show . concept 
-
--- = Other display functions
-
-fullConceptName :: CharacterConcept -> String
-fullConceptName c = name c ++ (f $ house c)
-      where f Nothing = ""
-            f (Just x) | take 2 x == "ex" = " " ++ x
-                       | otherwise  = " ex " ++ x
-fullName :: Character -> String
-fullName = fullConceptName . concept
 

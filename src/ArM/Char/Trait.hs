@@ -29,13 +29,14 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , key
                       , getTraitKey
                       , (<:)
+                      , filterTrait
                        ) where
 
 import ArM.GameRules
 import GHC.Generics
 -- import Data.List (sort)
 import Data.Aeson
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust,isNothing)
 import Data.List (sortBy)
 
 maybeList :: Maybe [a] -> [a]
@@ -418,3 +419,32 @@ processTrait p
     | other p /= Nothing = OtherTraitTrait $ computeOther p
     | otherwise  = error "No Trait for this ProtoTrait" 
 
+
+-- = Filtering 
+
+class TraitType t where
+    filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
+    filterTrait ts = y where (_,y) = filterTrait' (ts,([],[]))
+    filterTrait' :: ( [ Trait ], ( [ t ], [ Trait ] ) )
+                  -> ( [ Trait ], ( [ t ], [ Trait ] ) )
+    filterTrait' ([],y) = ([],y)
+    filterTrait' (x:xs,(ys,zs)) | isNothing ab  = (xs,(ys,x:zs))
+                                | otherwise = (xs,(fromJust ab:ys,zs))
+        where ab = getTrait x
+    getTrait :: Trait -> Maybe t
+
+instance TraitType VF where
+    getTrait (VFTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Ability where
+    getTrait (AbilityTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Art where
+    getTrait (ArtTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Spell where
+    getTrait (SpellTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Reputation where
+    getTrait (ReputationTrait x) = Just x
+    getTrait _ = Nothing
