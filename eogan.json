@@ -1,8 +1,8 @@
 {
    "charID" : "Eogan mac Eogan",
    "concept" : {
+      "name" : "Eogan mac Eogan",
       "charGlance" : {
-         "Name" : "Eogan mac Eogan",
          "Born" : 1230,
          "Concept" : "Kennel Master"
       },
