@@ -11,3 +11,7 @@ writeFile fn c = do
      let p = hPutStrLn handle
      mapM_ p c
      hClose handle
+
+putStrLns :: [ String ] -> IO ()
+putStrLns [] = return ()
+putStrLns (x:xs) = putStrLn x >> putStrLns xs

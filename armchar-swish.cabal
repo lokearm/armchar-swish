@@ -111,6 +111,14 @@ executable cli
     -threaded
     "-with-rtsopts=-N -s -h -i0.1"
 
+executable tst
+  import:      armchar-deps
+  main-is:     Test.hs
+  ghc-options:
+    -O2
+    -Wall
+    -threaded
+    "-with-rtsopts=-N -s -h -i0.1"
 executable armchar
   import:      armchar-deps
   main-is:     ArmChar.hs

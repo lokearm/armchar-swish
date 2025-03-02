@@ -13,7 +13,6 @@ module Main where
 import System.Environment
 import System.Console.GetOpt
 
-import ArM.BasicIO
 import ArM.Debug.Time
 import ArM.Char.Character
 import ArM.Char.Markdown
@@ -80,12 +79,13 @@ main = do
 
      main' $ dirOpts opt0
 
+testChar :: Character 
+testChar = defaultCharacter { charID = "Cieran", 
+   concept = defaultConcept {
+      charGlance = KeyPairList [ KeyPair "Name" (TextValue $ T.pack "Cieran") ],
+      charData = KeyPairList [ KeyPair "Size" (IntValue 0) ]
+   }
+   }
+
 main' :: Options -> IO ()
-main' opts | charFile opts == Nothing = do 
-     t <- LB.readFile "test.json"
-     let char = fromJust $ ( decode t  :: Maybe Character )
-     putStrLn $ show char
-     putStrLns $ printMD char
-     putStrLns $ printMD $ prepareCharacter char
-     return ()
-main' _ | otherwise = error "Not implemented!" 
+main' _ = putStrLn $ show $ encode testChar
