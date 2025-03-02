@@ -76,9 +76,38 @@ key :: ProtoTrait -> ( Maybe String, Maybe String, Maybe String, Maybe String, M
 key pt = ( ability pt, virtue pt, flaw pt, characteristic pt, art pt, spell pt
                              , ptrait pt , confidence pt , reputation pt , other pt
                              , detail pt , locale pt , cost pt )
+class GetTraitKey a where
+   getTraitKey :: a -> TraitKey
+instance GetTraitKey ProtoTrait where
+   getTraitKey p
+       | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
+       | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
+       | art p /= Nothing = ArtKey $ fromJust $ art p 
+       | spell p /= Nothing = SpellKey $ fromJust $ spell p
+       | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
+       | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (maybeString (locale p))
+       | virtue p /= Nothing = VFKey $ fromJust (virtue p)
+       | flaw p /= Nothing = VFKey $ fromJust (flaw p)
+       | confidence p /= Nothing = ConfidenceKey 
+       | other p /= Nothing = OtherTraitKey $ fromJust $ other p
+       | otherwise  = error "No Trait for this ProtoTrait" 
+instance GetTraitKey Trait where
+   getTraitKey (AbilityTrait a) = AbilityKey $ abilityName a
+   getTraitKey (ArtTrait a) = ArtKey $ artName a
+   getTraitKey (SpellTrait a) = SpellKey $ spellName a
+   getTraitKey (CharacteristicTrait a) = CharacteristicKey $ characteristicName a
+   getTraitKey (PTraitTrait a) = PTraitKey $ ptraitName a
+   getTraitKey (ReputationTrait a) = ReputationKey ( reputationName a ) (repLocale a)
+   getTraitKey (ConfidenceTrait _) = ConfidenceKey
+   getTraitKey (VFTrait a) = VFKey $ vfname a
+   getTraitKey (OtherTraitTrait a) = OtherTraitKey $ trait a
 
-(<:) :: ProtoTrait -> ProtoTrait -> Bool
-(<:) p1 p2 = key p1 < key p2
+class TraitCompare a where
+    (<:) :: a -> ProtoTrait -> Bool
+instance TraitCompare ProtoTrait where
+    (<:) p1 p2 = getTraitKey p1 < getTraitKey p2
+instance TraitCompare Trait where
+    (<:) p1 p2 = getTraitKey p1 < getTraitKey p2
 
 sortTraits :: [ ProtoTrait ] -> [ ProtoTrait ]
 sortTraits = sortBy f
@@ -310,19 +339,6 @@ instance Show ProtoTrait  where
             fromJust (other p) ++ " " ++ show ( maybeInt ( points p ) )
     | otherwise  = error "No Trait for this ProtoTrait" 
 
-getTraitKey :: ProtoTrait -> TraitKey
-getTraitKey p
-    | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
-    | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
-    | art p /= Nothing = ArtKey $ fromJust $ art p 
-    | spell p /= Nothing = SpellKey $ fromJust $ spell p
-    | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
-    | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (maybeString (locale p))
-    | virtue p /= Nothing = VFKey $ fromJust (virtue p)
-    | flaw p /= Nothing = VFKey $ fromJust (flaw p)
-    | confidence p /= Nothing = ConfidenceKey 
-    | other p /= Nothing = OtherTraitKey $ fromJust $ other p
-    | otherwise  = error "No Trait for this ProtoTrait" 
 
 -- |
 -- = Computing Traits
