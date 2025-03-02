@@ -62,8 +62,7 @@
       { "mode" : "Later Life"
       , "totalXP" : 300
       , "changes" : 
-         [
-         , { "ability" : "Survival", "spec" : "Hills", "xp" : 50 }
+         [ { "ability" : "Survival", "spec" : "Hills", "xp" : 50 }
          , { "ability" : "Animal Handling", "spec": "Dogs", "xp": 75 }
          , { "ability" : "Animal Ken", "spec": "Canine", "xp": 45 }
          , { "ability" : "Athletics", "spec": "obstacle race", "xp": 30 }
@@ -76,5 +75,3 @@
       }
    ]
 }
-
-
