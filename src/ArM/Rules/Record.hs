@@ -28,7 +28,7 @@ import Swish.RDF.Graph
 -- import Swish.RDF.Vocabulary.XSD
 import Swish.RDF.Ruleset (RDFRule)
 import ArM.GameRules
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS

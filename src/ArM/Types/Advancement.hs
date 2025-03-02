@@ -22,8 +22,8 @@ import Data.Maybe
 import Data.List (sort,intercalate)
 import ArM.Types.Season
 import ArM.KeyPair
-import ArM.Resources
-import ArM.BlankNode
+import ArM.Swish.Resources
+import ArM.Swish.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.RDF
 import ArM.Types.Trait

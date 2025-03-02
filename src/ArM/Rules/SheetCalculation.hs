@@ -27,7 +27,6 @@ import Swish.RDF.Graph
 -- import Swish.RDF.Vocabulary.RDF
 -- import Swish.RDF.Vocabulary.XSD
 import Swish.RDF.Ruleset (RDFRule)
-import ArM.Resources
 import ArM.KeyPair
 import ArM.Rules.Aux
 import Data.Maybe (fromJust,catMaybes)
@@ -35,7 +34,8 @@ import Data.List (sort)
 
 import Control.Parallel.Strategies
 
-import ArM.BlankNode
+import ArM.Swish.Resources
+import ArM.Swish.BlankNode
 
 -- | Prepare a character record graph.
 -- This includes merging in the given schema

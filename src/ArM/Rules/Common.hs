@@ -14,7 +14,7 @@
 module ArM.Rules.Common where
 
 import Swish.RDF.Graph
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 import Swish.RDF.Ruleset (RDFRule)
 

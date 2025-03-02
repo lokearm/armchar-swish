@@ -37,8 +37,8 @@ import           Data.List (sort)
 
 import ArM.KeyPair
 import ArM.Types.Character
-import ArM.Resources
-import ArM.BlankNode
+import ArM.Swish.Resources
+import ArM.Swish.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.Advancement
 import ArM.Types.Season

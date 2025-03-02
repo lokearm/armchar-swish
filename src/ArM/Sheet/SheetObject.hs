@@ -20,7 +20,7 @@ import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.Graph as G
 import           ArM.CharacterQuery 
 import           ArM.KeyPair 
-import           ArM.Resources 
+import           ArM.Swish.Resources 
 import           ArM.Rules.Aux 
 import           ArM.Sheet.Book
 import Data.List(sortOn)

@@ -16,7 +16,7 @@ module ArM.Markdown.AdvancementLog ( printAdvancementLog ) where
 
 import ArM.Markdown.CharacterSheet
 import ArM.Rules.Aux
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Types.Trait
 import ArM.Types.Advancement
 import ArM.Types.Season

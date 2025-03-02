@@ -14,7 +14,7 @@ module ArM.Sheet.Book ( Book(..)
 
 import Swish.RDF.Graph as G
 import ArM.KeyPair
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Types.RDF()
 
 import Data.Maybe (fromJust)

@@ -66,8 +66,8 @@ common swish-deps
                        , ArM.Rules.FullGraph
                        , ArM.Rules.Record
                        , ArM.Rules.SheetCalculation
-                       , ArM.IO
-                       , ArM.BlankNode
+                       , ArM.Swish.IO
+                       , ArM.Swish.BlankNode
                        , ArM.CharacterQuery
                        , ArM.KeyPair
                        , ArM.Types.Character
@@ -81,7 +81,7 @@ common swish-deps
                        , ArM.Types.SagaFile
                        , ArM.Types.LoadedSaga
                        , ArM.Types.RDF
-                       , ArM.Resources
+                       , ArM.Swish.Resources
 
 common cli-deps
   -- documentation:       True

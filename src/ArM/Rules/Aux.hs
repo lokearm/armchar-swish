@@ -20,7 +20,7 @@ import Swish.RDF.Vocabulary.XSD
 
 import Data.Set (fromList)
 import qualified Data.Text as T
-import ArM.Resources
+import ArM.Swish.Resources
 import Swish.VarBinding (varBindingId) 
 
 import Control.Parallel.Strategies

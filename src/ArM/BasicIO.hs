@@ -1,3 +1,4 @@
+module ArM.BasicIO where
 
 import System.IO -- for file IO
 

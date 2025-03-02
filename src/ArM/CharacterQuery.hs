@@ -36,7 +36,7 @@ import Data.Maybe (fromJust)
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import           ArM.Resources 
+import           ArM.Swish.Resources 
 import           ArM.KeyPair
 import ArM.Rules.Aux
 

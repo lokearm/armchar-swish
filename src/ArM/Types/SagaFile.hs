@@ -26,7 +26,7 @@ import           Swish.VarBinding  (vbMap)
 import           Data.Aeson
 import           ArM.Types.RDF
 import           ArM.Rules.Aux
-import           ArM.Resources
+import           ArM.Swish.Resources
 import           ArM.KeyPair
 import Data.Maybe(catMaybes)
 

@@ -37,7 +37,7 @@ import           Swish.VarBinding  (vbMap)
 -- import           Data.Maybe (fromJust)
 
 import ArM.KeyPair
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Types.RDF
 import ArM.Internal.Aux

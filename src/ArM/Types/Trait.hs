@@ -30,7 +30,7 @@ import Swish.RDF.Graph as G
 import Data.List (sort)
 import Data.Aeson
 import ArM.KeyPair
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Types.RDF()
 
