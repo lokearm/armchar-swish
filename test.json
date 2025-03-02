@@ -1,10 +1,10 @@
 {
-   "charID" : "Cieran",
+   "charID" : "Eogan mac Eogan",
    "concept" : {
       "charGlance" : {
-         "Name" : "Cieran",
-         "Born" : 1195,
-         "Concept" : "Rusticanus Fletcher"
+         "Name" : "Eogan mac Eogan",
+         "Born" : 1230,
+         "Concept" : "Kennel Master"
       },
       "charData" : {
          "Size" : 0
@@ -13,22 +13,36 @@
    "pregameAdvancement" : [
       { "mode" : "Base Character"
       , "changes" : [
-         { "virtue" : "Warrior"
-         , "cost" : 1
-         },
-         { "flaw" : "Poor Hearing"
-         , "cost" : -1
-         },
-         { "virtue" : "Puissant (art)"
-         , "detail" : "Creo"
-         , "cost" : 1
-         },
+         { "ability" : "Native Language: Irish"
+         , "spec" : "Munster"
+         , "xp" : 75
+         }
+         , { "virtue" : "Warrior", "cost" : 1 }
+         . { "ability" : "Bows", spec : "Shortbow", "xp" : 50 }
+         . { "virtue" : "Independent Study", "cost" : 1 }
+         . { "virtue" : "Affinity with Animal Handling", "cost" : 1 }
+         . { "virtue" : "Puissant Animal Handling", "cost" : 1 }
+         . { "virtue" : "Unaging", "cost" : 1 }
+         , { "virtue" : "Animal Ken", "cost" : 1 }
+         , { "virtue" : "Alluring to Magical Beings", "cost" : 1 }
+         , { "virtue" : "Death Prophecy", "cost" : 3 }
+         , { "virtue" : "Covenfolk", "cost" : 0 }
+         , { "flaw" : "Black Sheep at the Covenant", "cost" : -3 }
+         , { "reputation" : "Disloyal", 
+             "locale" : "Covenant and allies", "xp" : 15 }
+         , { "flaw" : "Ambitious",
+             "detail": "train the greatest hounds of Ireland",
+             "cost" : -3 }
+         , { "flaw" : "Weakness for Dogs", "cost" : -1 }
+         , { "flaw" : "Lesser Malediction: Vertigo", "cost" : -1 }
+         , { "flaw" : "Ability Block for Letters", "cost" : -1 }
+         , { "flaw" : "Uncertain Faith", "cost" : -1 }
          , { "ptrait" : "Obedient" , "score" : -3 }
          , { "ptrait" : "Loyal" , "score" : +1 }
          , { "ptrait" : "Uncertain Faith" , "score" : +1 }
-         , { "characteristic" : "Int", "score" : 1 }
-         , { "characteristic" : "Per", "score" : -1 }
-         , { "characteristic" : "Pre", "score" : 1 }
+         , { "characteristic" : "Int", "score" : 2 }
+         , { "characteristic" : "Per", "score" : 0 }
+         , { "characteristic" : "Pre", "score" : 3 }
          , { "characteristic" : "Com", "score" : 1 }
          , { "characteristic" : "Str", "score" : -1 }
          , { "characteristic" : "Sta", "score" : 1 }
@@ -37,51 +51,30 @@
       ] },
       { "mode" : "Early Childhood"
       , "totalXP" : 45
-      , "changes" : [
-         { "ability" : "Stealth"
-         , "spec" : "Woodland"
-         , "xp" : 15
-         },
-         { "ability" : "Awareness"
-         , "spec" : "Good ears"
-         , "xp" : 15
-         },
-         { "ability" : "Survival"
-         , "spec" : "Woodland"
-         , "xp" : 15
-         }
-      ] }
-
-
+      , "changes" : 
+         [ { "ability" : "Stealth", "spec" : "Hiding", "xp" : 5 }
+         , { "ability" : "Awareness" , "spec" : "Good ears" , "xp" : 5 }
+         , { "ability" : "Guile" , "spec" : "Fast talk" , "xp" : 5 }
+         , { "ability" : "Munster Lore" , "spec" : "Outback" , "xp" : 15 }
+         , { "ability" : "Covenant Lore" , "spec" : "Hierarchies" , "xp" : 15 }
+         ] 
+      },
+      { "mode" : "Later Life"
+      , "totalXP" : 300
+      , "changes" : 
+         [
+         , { "ability" : "Survival", "spec" : "Hills", "xp" : 50 }
+         , { "ability" : "Animal Handling", "spec: "Dogs", "xp": 75 }
+         , { "ability" : "Animal Ken", "spec: "Canine", "xp": 45 }
+         , { "ability" : "Athletics", "spec: "obstacle race", "xp": 30 }
+         , { "ability" : "Brawl", "spec: "dirty fighting", "xp": 15 }
+         , { "ability" : "Ride", "spec: "Horse training", "xp": 30 }
+         , { "ability" : "Survival", "spec: "Hills", "xp": 50 }
+         , { "ability" : "Hunt", "spec: "with dogs", "xp": 75 }
+         , { "ability" : "Single Weapon", "spec: "spear", "xp": 5 }
+         ] 
+      }
    ]
 }
 
 
-+ **Virtues** Covenfolk (0), Warrior (+1)
-	+ Independent study (+1), Affinity with Animal Handling (+1), Puissant Animal Handling (+1)
-	+ Death Prophecy (+3), Unaging (+1).
-	+ Animal Ken (+1),  Alluring to Magical Beings (+1)
-+ **Flaws**
-	+ *Story flaw* Black Sheep at the Covenant (-3)
-	+ *Personality flaws*: Weakness for Dogs (-1),  Ambitious (-3) train the greatest hounds of Ireland
-	+ Lesser Malediction: Vertigo (-1),   Ability Block for Letters (-1), Uncertain Faith (-1)
-+ **Reputation** Disloyal [Covenant and allies] 2 (from Black Sheep)
-+ **Abilities**
-	+ Native Language: Irish [Munster] 5
-	+ Early childhood (45/45)
-		+ Awareness [hearing] 1 (5)
-		+ Stealth [hiding] 1 (5)
-		  Guile [fast talk] 1 (5)
-		+ Covenant Lore [hierarchies] 2 (15)
-		+ Munster Lore [outback] 2 (15)
-	+ Later life (300/300)
-		+ Animal Handling [Dogs] 5 +2 (50xp+affinity)
-		+ Animal Ken [Canine] 4  (45)
-		+ Athletics [obstacle race] 3 (30)
-		+ Brawl [dirty fighting] 2 (15)
-		+ Ride [Horse training]  3 (30)
-		+ Survival [Hills] 4 (50)
-		+ Hunt [with dogs] 5 (75)
-		+ Single Weapon [spear] 1 (5)
-	+ Warrior (50/50)
-		+ Bows [short bow] 4 (50)
