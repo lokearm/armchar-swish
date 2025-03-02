@@ -20,6 +20,8 @@ module ArM.Char.Character ( Character(..)
                           , prepareCharacter
                           , Advancement(..)
                           , computeCS
+                          , fullName
+                          , fullConceptName
                           ) where
 
 import GHC.Generics
@@ -73,12 +75,16 @@ pairToJSON (KeyPair a (ObjectValue b)) = ((fromString a), (b))
 -- = CharacterConcept
 
 data CharacterConcept = CharacterConcept 
-         { charGlance :: KeyPairList
+         { name :: String
+         , house :: Maybe String
+         , charGlance :: KeyPairList
          , charData :: KeyPairList
        }  deriving (Eq,Generic)
 
 defaultConcept :: CharacterConcept 
-defaultConcept = CharacterConcept { charGlance = KeyPairList []
+defaultConcept = CharacterConcept { name = "John Doe"
+                                  , house = Nothing
+                                  , charGlance = KeyPairList []
                                   , charData = KeyPairList []
        }  
 
@@ -88,7 +94,9 @@ instance ToJSON CharacterConcept where
 
 instance FromJSON CharacterConcept where
     parseJSON = withObject "CharacterConcept" $ \v -> CharacterConcept
-        <$> v .: "charGlance"
+        <$> v .: "name"
+        <*> v .:? "house"
+        <*> v .: "charGlance"
         <*> v .: "charData"
 
 -- = CharacterState
@@ -215,7 +223,18 @@ instance Show KeyPair where
 instance Show KeyPairList where
    show (KeyPairList xs) = ( foldl (++) "" $ map show xs )
 instance Show CharacterConcept where
-   show c = ( show $ charGlance c ) ++ ( show $ charData c )
+   show c = fullConceptName c ++ "\n"
+         ++ ( show $ charGlance c ) ++ ( show $ charData c )
 instance Show Character where
    show = show . concept 
+
+-- = Other display functions
+
+fullConceptName :: CharacterConcept -> String
+fullConceptName c = name c ++ (f $ house c)
+      where f Nothing = ""
+            f (Just x) | take 2 x == "ex" = " " ++ x
+                       | otherwise  = " ex " ++ x
+fullName :: Character -> String
+fullName = fullConceptName . concept
 

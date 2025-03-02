@@ -7,11 +7,49 @@ aliases:
 + Main file: `ArmChar.hs`
 + Dedicated Libraries: `ArM/Char`
 + Also reuses some libraries from the swish model
++ See also [[Character Generation Process]]
++ 
 
++ [ ] Step 1.  Working Companion
+	+ [ ] Implement Affinity
+	+ [ ] Implement Puissant
+	+ [ ] Implement XP validation
+	+ [ ] Implement VF calculation 
+	+ [ ] Implement Characteristics Validation
+
++ Virtue and Flaws affecting advancement
+	+ Affinity
+		+ MultiplyXP (Ability "Stealth") 1.5
+	+ Warrior, etc.
+		+ BonusXP "Later Life" 50 "from Warrior"
+	+ Supernatural abilities
+		+ ImpliedTrait ( defaultTrait { ability = "Second Sight", xp = 5 })
+	+ Skilled Parens
+		+ BonusXP "Apprenticeship" 60 "from Skilled Parens"
+		+ BonusSpells "Apprenticeship" 60 "from Skilled Parens"
+	+ Linguist
+	+ Flawless Magic
+		+ flag
++ Virtue and Flaws trait calculation
+	+ Puissant
 
 + Modules
 	+ `Char.Trait`
 		+ Trait
+			+  VF (virtues and flaws) may affect other traits
+			+ Often affected by virtues and flaws
+				+ Ability 
+				+  Art
+			+ Characteristic
+				+ affected by virtues and flaws
+				+ may handle manually, but gets the point count wrong
+			+  Spell
+				+ **NB** Flawless magic
+			+ Handle manually
+				+  Reputation
+				+  PTrait
+				+  Confidence
+				+  OtherTrait (Warping, Decrepitude)
 		+ ProtoTrait
 	+ `Char.Character`
 		+ Character

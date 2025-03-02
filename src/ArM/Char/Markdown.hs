@@ -21,12 +21,14 @@ class Markdown a where
 instance Markdown FieldValue where
    printMD =  (:[]) . show
 
+
 instance Markdown KeyPair where
    printMD (KeyPair x  y) = [ x, ':':' ':show y, "" ]
 instance Markdown KeyPairList where
    printMD (KeyPairList xs) = ( foldl (++) [] $ map printMD xs )
 instance Markdown CharacterConcept where
-   printMD c = ( printMD $ charGlance c ) ++ ( printMD $ charData c )
+   printMD c = ("# " ++ fullConceptName c ):"": 
+      ( printMD $ charGlance c ) ++ ( printMD $ charData c )
 instance Markdown Character where
    printMD c = ( printMD . concept ) c 
             ++ maybeP (state c)
