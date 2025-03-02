@@ -146,13 +146,3 @@ executable prof
     -threaded
     "-with-rtsopts=-N -p -s -h -i0.1 -xc"
 
-executable tst
-  import: swish-deps
-  main-is:             Test.hs
-  ghc-options:
-    -O2
-    -Wall
-    -threaded
-    "-with-rtsopts=-N -s -h -i0.1"
-
-
