@@ -17,6 +17,7 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Trait ( ProtoTrait(..)
                       , Trait(..)
+                      , TraitKey(..)
                       , Ability(..)
                       , Art(..)
                       , Spell(..)

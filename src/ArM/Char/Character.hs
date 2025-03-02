@@ -26,6 +26,7 @@ module ArM.Char.Character ( Character(..)
 
 import GHC.Generics
 import Data.Aeson
+import qualified Data.Map as Map
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
@@ -78,6 +79,16 @@ fullConceptName c = name c ++ (f $ house c)
 
 
 -- = CharacterState
+
+data CharacterMapState = CharacterMapState 
+         { cmsTime :: CharTime
+         , traitMap :: Map.Map TraitKey Trait
+         }  deriving (Eq,Generic)
+defaultCMS :: CharacterMapState 
+defaultCMS = CharacterMapState 
+         { cmsTime = Nothing
+         , traitMap = Map.empty
+         }
 
 data CharacterState = CharacterState 
          { charTime :: CharTime
