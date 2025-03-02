@@ -22,6 +22,8 @@ common deps
   other-modules:       ArM.Debug.NoTrace
                        , ArM.Debug.Trace
                        , ArM.Debug.Time
+                       , ArM.GameRules
+                       , ArM.BasicIO
   -- other-extensions:
   build-depends:       base >=4.13 
                        , scientific >= 0.3.7

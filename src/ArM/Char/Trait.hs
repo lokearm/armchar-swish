@@ -22,9 +22,11 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , processTrait
                       , sortTraits
                       , key
+                      , getTraitKey
                       , (<:)
                        ) where
 
+import ArM.GameRules
 import GHC.Generics
 -- import Data.List (sort)
 import Data.Aeson
@@ -117,6 +119,15 @@ advanceTrait a
     | other a /= Nothing = updatePts a
     | otherwise  = id
 
+advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
+advanceTraits [] ys = ys
+advanceTraits ys [] = ys
+advanceTraits (x:xs) (y:ys) 
+    | x <: y = x:advanceTraits xs (y:ys)
+    | y <: x = y:advanceTraits (x:xs) ys
+    | otherwise = advanceTrait x y:advanceTraits xs ys
+
+
 instance ToJSON ProtoTrait 
 instance FromJSON ProtoTrait where
     parseJSON = withObject "ProtoTrait" $ \v -> ProtoTrait
@@ -153,23 +164,50 @@ data TraitKey = AbilityKey String
            | ConfidenceKey 
            | OtherTraitKey String
            deriving (Show, Ord, Eq )
-data Ability = Ability { abilityName :: String, speciality :: Maybe String, abilityXP :: Int }
+data Ability = Ability { abilityName :: String
+                       , speciality :: Maybe String
+                       , abilityXP :: Int 
+                       , abilityScore :: Int 
+                       , abilityEffectiveScore :: Int 
+                       , abilityExcessXP :: Int 
+                       }
            deriving (Show, Ord, Eq, Generic)
-data Characteristic = Characteristic { characteristicName :: String, charScore :: Int, agingPoints :: Int }
+data Characteristic = Characteristic { characteristicName :: String
+                                     , charScore :: Int
+                                     , agingPoints :: Int }
            deriving (Show, Ord, Eq, Generic)
-data Art = Art { artName :: String, artXP :: Int }
+data Art = Art { artName :: String
+               , artXP :: Int 
+               , artScore :: Int 
+               , artEffectiveScore :: Int 
+               , artExcessXP :: Int 
+               }
            deriving (Show, Ord, Eq, Generic)
-data Spell = Spell { spellName :: String, spellXP :: Int, masteryOptions :: [String] }
+data Spell = Spell { spellName :: String
+                   , spellXP :: Int
+                   , masteryScore :: Int
+                   , spellExcessXP :: Int
+                   , masteryOptions :: [String] 
+                   }
            deriving (Show, Ord, Eq, Generic)
 data PTrait = PTrait { ptraitName :: String, pscore :: Int }
            deriving (Show, Ord, Eq, Generic)
-data Reputation = Reputation { reputationName :: String, repLocale :: String,  repXP :: Int }
+data Reputation = Reputation { reputationName :: String
+                             , repLocale :: String
+                             ,  repXP :: Int 
+                             ,  repScore :: Int 
+                             ,  repExcessXP :: Int 
+                             }
            deriving (Show, Ord, Eq, Generic)
-data VF = VF { vfname :: String, vfcost :: Int }
+data VF = VF { vfname :: String, vfDetail :: String, vfcost :: Int }
            deriving (Show, Ord, Eq, Generic)
 data Confidence = Confidence { cscore :: Int, cpoints :: Int }
            deriving (Show, Ord, Eq, Generic)
-data OtherTrait = OtherTrait { trait :: String, pts :: Int }
+data OtherTrait = OtherTrait { trait :: String
+                             , otherScore :: Int
+                             , pts :: Int 
+                             , otherExcess :: Int
+                             }
            deriving (Show, Ord, Eq, Generic)
 data Trait = AbilityTrait Ability
            | CharacteristicTrait Characteristic
@@ -181,8 +219,25 @@ data Trait = AbilityTrait Ability
            | ConfidenceTrait Confidence
            | OtherTraitTrait OtherTrait
            deriving (Show, Ord, Eq, Generic)
-
+instance FromJSON Ability
+instance FromJSON Characteristic 
+instance FromJSON Art 
+instance FromJSON Spell 
+instance FromJSON PTrait 
+instance FromJSON Reputation 
+instance FromJSON VF 
+instance FromJSON Confidence 
+instance FromJSON OtherTrait 
 instance FromJSON Trait  
+instance ToJSON Ability
+instance ToJSON Characteristic 
+instance ToJSON Art 
+instance ToJSON Spell 
+instance ToJSON PTrait 
+instance ToJSON Reputation 
+instance ToJSON VF 
+instance ToJSON Confidence 
+instance ToJSON OtherTrait 
 instance ToJSON Trait 
 
 showAging :: ProtoTrait -> String
@@ -241,49 +296,93 @@ getTraitKey p
     | other p /= Nothing = OtherTraitKey $ fromJust $ other p
     | otherwise  = error "No Trait for this ProtoTrait" 
 
-processTrait :: ProtoTrait -> Trait
-processTrait p
-    | ability p /= Nothing = AbilityTrait $
+-- |
+-- = Computing Traits
+computeAbility :: ProtoTrait -> Ability
+computeAbility p
+    | ability p == Nothing = error "Not an ability"
+    | otherwise =
         Ability { abilityName = fromJust ( ability p ) 
                 , speciality = spec p
-                , abilityXP = maybeInt (xp p) }
+                , abilityXP = maybeInt (xp p)
+                , abilityScore = s
+                , abilityExcessXP = y
+                , abilityEffectiveScore = s
+                }
+     where (s,y) = getAbilityScore (xp p)
+computeArt :: ProtoTrait -> Art
+computeArt p
+    | art p == Nothing = error "Not an art"
+    | otherwise =
+        Art { artName = fromJust ( ability p ) 
+                , artXP = x
+                , artScore = s
+                , artExcessXP = y
+                , artEffectiveScore = s
+                }
+     where y = x - xpFromScore s
+           s = scoreFromXP x
+           x = maybeInt (xp p) 
+
+getAbilityScore :: Maybe Int -> (Int,Int)
+getAbilityScore x' = (s,y) 
+     where y = x - 5*xpFromScore s
+           s = scoreFromXP (x `div` 5)
+           x = maybeInt x'
+
+computeReputation :: ProtoTrait -> Reputation
+computeReputation p
+    | reputation p == Nothing = error "Not an reputation"
+    | otherwise =
+           Reputation { reputationName = fromJust (reputation p)
+                      , repLocale = maybeString (locale p)
+                      , repXP = maybeInt (xp p)
+                      , repScore = s
+                      , repExcessXP = y
+                      }
+     where (s,y) = getAbilityScore (xp p)
+computeSpell :: ProtoTrait -> Spell
+computeSpell p
+    | spell p == Nothing = error "Not an spell"
+    | otherwise =
+           Spell { spellName = fromJust (spell p)
+                      , spellXP = maybeInt (xp p)
+                      , masteryScore = s
+                      , masteryOptions = maybeList (mastery p)
+                      , spellExcessXP = y
+                      }
+     where (s,y) = getAbilityScore (xp p)
+computeOther :: ProtoTrait -> OtherTrait
+computeOther p
+    | spell p == Nothing = error "Not an properly formatted trait"
+    | otherwise =
+           OtherTrait { trait = fromJust (other p) 
+                      , pts = maybeInt ( points p ) 
+                      , otherScore = s
+                      , otherExcess = y
+                      }
+                 where (s,y) = getAbilityScore (points p)
+
+processTrait :: ProtoTrait -> Trait
+processTrait p
+    | ability p /= Nothing = AbilityTrait $ computeAbility p
     | characteristic p /= Nothing = CharacteristicTrait $
         Characteristic { characteristicName = fromJust ( characteristic p ) 
                 , charScore = maybeInt (score p)
                 , agingPoints = maybeInt (aging p) }
-    | art p /= Nothing = ArtTrait $
-        Art { artName = fromJust ( art p ) 
-            , artXP = maybeInt (xp p) }
-    | spell p /= Nothing = SpellTrait $
-           Spell { spellName = fromJust (spell p)
-                 , spellXP = maybeInt (xp p) 
-                 , masteryOptions = maybeList (mastery p)
-                 }
+    | art p /= Nothing = ArtTrait $ computeArt p
+    | spell p /= Nothing = SpellTrait $ computeSpell p
     | ptrait p /= Nothing = PTraitTrait $
            PTrait { ptraitName = fromJust (ptrait p)
                   , pscore = maybeInt (score p)
                   } 
-    | reputation p /= Nothing = ReputationTrait $
-           Reputation { reputationName = fromJust (reputation p)
-                      , repLocale = maybeString (locale p)
-                      , repXP = maybeInt (xp p)
-                      }
+    | reputation p /= Nothing = ReputationTrait $ computeReputation p
     | virtue p /= Nothing = VFTrait $
-           VF { vfname = fromJust (virtue p), vfcost = maybeInt (cost p) }
+           VF { vfname = fromJust (virtue p), vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p }
     | flaw p /= Nothing = VFTrait $
-           VF { vfname = fromJust (flaw p), vfcost = maybeInt (cost p) }
+           VF { vfname = fromJust (flaw p), vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p }
     | confidence p /= Nothing = ConfidenceTrait $
            Confidence { cscore = maybeInt (score p), cpoints = maybeInt (points p) }
-    | other p /= Nothing = OtherTraitTrait $
-           OtherTrait { trait = fromJust (other p) 
-                      , pts = maybeInt ( points p ) }
+    | other p /= Nothing = OtherTraitTrait $ computeOther p
     | otherwise  = error "No Trait for this ProtoTrait" 
-
-advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
-advanceTraits [] ys = ys
-advanceTraits ys [] = ys
-advanceTraits (x:xs) (y:ys) 
-    | x <: y = x:advanceTraits xs (y:ys)
-    | y <: x = y:advanceTraits (x:xs) ys
-    | otherwise = advanceTrait x y:advanceTraits xs ys
 

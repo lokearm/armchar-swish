@@ -79,16 +79,6 @@ main = do
 
      main' $ dirOpts opt0
 
-s :: String
-s = "{ \"foo\" : \"string\", \"bar\" : 0 }"
-
-decodeJSON :: FromJSON a => String -> Maybe a
-decodeJSON = decode . fromString
-
-kpl :: KeyPairList 
-kpl = KeyPairList [ KeyPair "foo" (TextValue $ T.pack "test")
-                  , KeyPair "bar" (IntValue 0)  ] 
-
 c :: Character 
 c = defaultCharacter { charID = "Cieran", 
    concept = defaultConcept {
