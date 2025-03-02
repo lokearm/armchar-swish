@@ -18,7 +18,6 @@
          , "xp" : 75
          }
          , { "virtue" : "Warrior", "cost" : 1 }
-         , { "ability" : "Bows", "spec" : "Shortbow", "xp" : 50 }
          , { "virtue" : "Independent Study", "cost" : 1 }
          , { "virtue" : "Affinity with Animal Handling", "cost" : 1 }
          , { "virtue" : "Puissant Animal Handling", "cost" : 1 }
@@ -71,6 +70,7 @@
          , { "ability" : "Survival", "spec": "Hills", "xp": 45 }
          , { "ability" : "Hunt", "spec": "with dogs", "xp": 75 }
          , { "ability" : "Single Weapon", "spec": "spear", "xp": 5 }
+         , { "ability" : "Bows", "spec" : "Shortbow", "xp" : 50 }
          ] 
       }
    ]
