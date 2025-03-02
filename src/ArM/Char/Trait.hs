@@ -168,21 +168,21 @@ data Ability = Ability { abilityName :: String
                        , speciality :: Maybe String
                        , abilityXP :: Int 
                        , abilityScore :: Int 
-                       , abilityEffectiveScore :: Int 
+                       , abilityBonus :: Int 
                        , abilityExcessXP :: Int 
                        }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 data Characteristic = Characteristic { characteristicName :: String
                                      , charScore :: Int
                                      , agingPoints :: Int }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 data Art = Art { artName :: String
                , artXP :: Int 
                , artScore :: Int 
-               , artEffectiveScore :: Int 
+               , artBonus :: Int 
                , artExcessXP :: Int 
                }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 data Spell = Spell { spellName :: String
                    , spellXP :: Int
                    , masteryScore :: Int
@@ -239,6 +239,34 @@ instance ToJSON VF
 instance ToJSON Confidence 
 instance ToJSON OtherTrait 
 instance ToJSON Trait 
+
+showBonus :: Int -> String
+showBonus x | x > 0 = " +" ++ show x
+            | x < 0 = " " ++ show x
+            | otherwise = ""
+showSigned :: Int -> String
+showSigned x | x > 0 = "+" ++ show x
+            | otherwise = show x
+
+
+instance Show Ability  where
+   show a = abilityName a ++ " [" ++ showspec sp ++ "] "
+          ++ show (abilityScore a) 
+          ++ showBonus (abilityBonus a)
+          ++ " (" ++ show (abilityExcessXP a) ++ "xp) "
+      where showspec Nothing = "  --  "
+            showspec (Just s) = s
+            sp = speciality a
+instance Show Characteristic  where
+   show a = characteristicName a ++ " " ++ showSigned (charScore a)
+          ++ showA (agingPoints a)
+       where showA x | x == 0 = ""
+                    | otherwise = " (" ++ show x ++ " aging points)"
+instance Show Art  where
+   show a = artName a ++ " " 
+          ++ show (artScore a) 
+          ++ showBonus (artBonus a)
+          ++ " (" ++ show (artExcessXP a) ++ "xp) "
 
 showAging :: ProtoTrait -> String
 showAging p | Nothing == aging p = ""
@@ -307,7 +335,7 @@ computeAbility p
                 , abilityXP = maybeInt (xp p)
                 , abilityScore = s
                 , abilityExcessXP = y
-                , abilityEffectiveScore = s
+                , abilityBonus = 0
                 }
      where (s,y) = getAbilityScore (xp p)
 computeArt :: ProtoTrait -> Art
@@ -318,7 +346,7 @@ computeArt p
                 , artXP = x
                 , artScore = s
                 , artExcessXP = y
-                , artEffectiveScore = s
+                , artBonus = 0 
                 }
      where y = x - xpFromScore s
            s = scoreFromXP x
