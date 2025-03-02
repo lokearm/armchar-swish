@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.KeyPair
+-- Module      :  ArM.Swish.KeyPair
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -20,7 +20,7 @@
 -- same subject.
 --
 -----------------------------------------------------------------------------
-module ArM.KeyPair ( keypairFromBinding 
+module ArM.Swish.KeyPair ( keypairFromBinding 
                    , keyvalueToArcList 
                    , tripleToJSON 
                    , KeyValuePair(..)

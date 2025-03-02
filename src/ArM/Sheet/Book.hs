@@ -13,7 +13,7 @@ module ArM.Sheet.Book ( Book(..)
                        ) where
 
 import Swish.RDF.Graph as G
-import ArM.KeyPair
+import ArM.Swish.KeyPair
 import ArM.Swish.Resources
 import ArM.Types.RDF()
 

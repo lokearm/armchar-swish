@@ -27,7 +27,7 @@ import Swish.RDF.Graph
 -- import Swish.RDF.Vocabulary.RDF
 -- import Swish.RDF.Vocabulary.XSD
 import Swish.RDF.Ruleset (RDFRule)
-import ArM.KeyPair
+import ArM.Swish.KeyPair
 import ArM.Rules.Aux
 import Data.Maybe (fromJust,catMaybes)
 import Data.List (sort)

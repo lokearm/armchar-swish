@@ -68,8 +68,8 @@ common swish-deps
                        , ArM.Rules.SheetCalculation
                        , ArM.Swish.IO
                        , ArM.Swish.BlankNode
-                       , ArM.CharacterQuery
-                       , ArM.KeyPair
+                       , ArM.Swish.CharacterQuery
+                       , ArM.Swish.KeyPair
                        , ArM.Types.Character
                        , ArM.Types.CharacterSheet
                        , ArM.Types.Advancement

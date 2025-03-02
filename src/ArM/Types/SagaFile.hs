@@ -27,7 +27,7 @@ import           Data.Aeson
 import           ArM.Types.RDF
 import           ArM.Rules.Aux
 import           ArM.Swish.Resources
-import           ArM.KeyPair
+import           ArM.Swish.KeyPair
 import Data.Maybe(catMaybes)
 
 data SagaFile = SagaFile { sagaID :: RDFLabel

@@ -35,7 +35,7 @@ import qualified ArM.Types.Advancement as TA
 import qualified ArM.Types.Character as TC
 import qualified ArM.Types.Season as TS
 import qualified ArM.Character.CharGen as TCG
-import qualified ArM.CharacterQuery as CQ
+import qualified ArM.Swish.CharacterQuery as CQ
 import ArM.Resources
 import qualified Data.Aeson as Aeson
 

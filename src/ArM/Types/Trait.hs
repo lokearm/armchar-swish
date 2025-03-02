@@ -29,7 +29,7 @@ module ArM.Types.Trait ( Trait(..)
 import Swish.RDF.Graph as G
 import Data.List (sort)
 import Data.Aeson
-import ArM.KeyPair
+import ArM.Swish.KeyPair
 import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Types.RDF()

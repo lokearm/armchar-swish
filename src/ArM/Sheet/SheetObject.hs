@@ -18,8 +18,8 @@ module ArM.Sheet.SheetObject ( getSheetObject
 
 import qualified Swish.RDF.Query as Q
 import qualified Swish.RDF.Graph as G
-import           ArM.CharacterQuery 
-import           ArM.KeyPair 
+import           ArM.Swish.CharacterQuery 
+import           ArM.Swish.KeyPair 
 import           ArM.Swish.Resources 
 import           ArM.Rules.Aux 
 import           ArM.Sheet.Book

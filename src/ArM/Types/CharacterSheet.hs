@@ -35,7 +35,7 @@ module ArM.Types.CharacterSheet ( CharacterSheet(..)
 import Swish.RDF.Graph as G
 import           Data.List (sort)
 
-import ArM.KeyPair
+import ArM.Swish.KeyPair
 import ArM.Types.Character
 import ArM.Swish.Resources
 import ArM.Swish.BlankNode
