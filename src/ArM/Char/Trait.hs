@@ -27,7 +27,6 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , processTrait
                       , sortTraits
                       , key
-                      , getTraitKey
                       , (<:)
                       , filterTrait
                        ) where
@@ -75,22 +74,6 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , aging :: Maybe Int
                              }
                              deriving (Ord,Eq,Generic)
-
-key :: ProtoTrait -> ( Maybe String, Maybe String, Maybe String, Maybe String, Maybe String, Maybe String
-                             , Maybe String, Maybe String, Maybe String, Maybe String
-                             , Maybe String, Maybe String, Maybe Int )
-key pt = ( ability pt, virtue pt, flaw pt, characteristic pt, art pt, spell pt
-                             , ptrait pt , confidence pt , reputation pt , other pt
-                             , detail pt , locale pt , cost pt )
-
-(<:) :: ProtoTrait -> ProtoTrait -> Bool
-(<:) p1 p2 = key p1 < key p2
-
-sortTraits :: [ ProtoTrait ] -> [ ProtoTrait ]
-sortTraits = sortBy f
-      where f x y | x <: y = LT
-                  | y <: x = GT
-                  | otherwise = EQ
 
 
 updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait
@@ -315,19 +298,6 @@ instance Show ProtoTrait  where
             fromJust (other p) ++ " " ++ show ( maybeInt ( points p ) )
     | otherwise  = error "No Trait for this ProtoTrait" 
 
-getTraitKey :: ProtoTrait -> TraitKey
-getTraitKey p
-    | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
-    | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
-    | art p /= Nothing = ArtKey $ fromJust $ art p 
-    | spell p /= Nothing = SpellKey $ fromJust $ spell p
-    | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
-    | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (maybeString (locale p))
-    | virtue p /= Nothing = VFKey $ fromJust (virtue p)
-    | flaw p /= Nothing = VFKey $ fromJust (flaw p)
-    | confidence p /= Nothing = ConfidenceKey 
-    | other p /= Nothing = OtherTraitKey $ fromJust $ other p
-    | otherwise  = error "No Trait for this ProtoTrait" 
 
 -- |
 -- = Computing Traits
@@ -436,15 +406,50 @@ class TraitType t where
 instance TraitType VF where
     getTrait (VFTrait x) = Just x
     getTrait _ = Nothing
+instance TraitLike VF where
+    key x = VFKey $ vfname x
 instance TraitType Ability where
     getTrait (AbilityTrait x) = Just x
     getTrait _ = Nothing
+instance TraitLike Ability where
+    key x = AbilityKey $ abilityName x
 instance TraitType Art where
     getTrait (ArtTrait x) = Just x
     getTrait _ = Nothing
+instance TraitLike Art where
+    key x = ArtKey $ artName x
 instance TraitType Spell where
     getTrait (SpellTrait x) = Just x
     getTrait _ = Nothing
+instance TraitLike Spell where
+    key x = SpellKey $ spellName x
 instance TraitType Reputation where
     getTrait (ReputationTrait x) = Just x
     getTrait _ = Nothing
+instance TraitLike Reputation where
+    key x = ReputationKey ( reputationName x ) ( repLocale x )
+
+class TraitLike t where
+    key :: t -> TraitKey
+    (<:) :: t -> t -> Bool
+    (<:) p1 p2 = key p1 < key p2
+    sortTraits :: [ t ] -> [ t ]
+    sortTraits = sortBy f
+       where f x y | x <: y = LT
+                   | y <: x = GT
+                   | otherwise = EQ
+
+instance TraitLike ProtoTrait where
+   key p
+       | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
+       | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
+       | art p /= Nothing = ArtKey $ fromJust $ art p 
+       | spell p /= Nothing = SpellKey $ fromJust $ spell p
+       | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
+       | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (maybeString (locale p))
+       | virtue p /= Nothing = VFKey $ fromJust (virtue p)
+       | flaw p /= Nothing = VFKey $ fromJust (flaw p)
+       | confidence p /= Nothing = ConfidenceKey 
+       | other p /= Nothing = OtherTraitKey $ fromJust $ other p
+       | otherwise  = error "No Trait for this ProtoTrait" 
+
