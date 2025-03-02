@@ -42,17 +42,17 @@ defaultOptions = Options {
 
 options :: [ OptDescr (Options -> Options) ]
 options =
-    [ Option ['o']     ["output"]  (OptArg 
-            (\arg opt -> opt { outFile = arg })
+    [ Option ['o']     ["output"]  (ReqArg 
+            (\arg opt -> opt { outFile = Just arg })
             "FILE") "output file"
-    , Option ['c']     ["character"] (OptArg 
-            (\arg opt -> opt { charFile = arg })
+    , Option ['c']     ["character"] (ReqArg 
+            (\arg opt -> opt { charFile = Just arg })
             "FILE") "character file"
-    , Option ['s']     ["saga"] (OptArg 
-            (\arg opt -> opt { sagaFile = arg })
+    , Option ['s']     ["saga"] (ReqArg 
+            (\arg opt -> opt { sagaFile = Just arg })
             "FILE") "saga file"
-    , Option ['O']     ["debug-output"] (OptArg 
-            (\arg opt -> opt { debugFile = arg })
+    , Option ['O']     ["debug-output"] (ReqArg 
+            (\arg opt -> opt { debugFile = Just arg })
             "FILE") "debug output"
     ]
 
@@ -71,13 +71,14 @@ main = do
      putStrLn "Arguments"
      putStrLns args
      (opt,n) <- armcharOpts args
+     putStrLns n
      putStrLn "Options"
      putStrLn $ show opt
 
      main' opt
 
 main' :: Options -> IO ()
-main' opts | charFile opts == Nothing = do 
+main' opts | charFile opts /= Nothing = do 
      putStrLn $ "Reading file " ++ fn
      t <- LB.readFile fn
      let char = fromJust $ ( decode t  :: Maybe Character )
