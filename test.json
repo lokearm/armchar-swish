@@ -23,12 +23,17 @@
          , "detail" : "Creo"
          , "cost" : 1
          },
-         { "characteristic" : "Int"
-         , "score" : 1
-         },
-         { "characteristic" : "Per"
-         , "score" : -1
-         }
+         , { "ptrait" : "Obedient" , "score" : -3 }
+         , { "ptrait" : "Loyal" , "score" : +1 }
+         , { "ptrait" : "Uncertain Faith" , "score" : +1 }
+         , { "characteristic" : "Int", "score" : 1 }
+         , { "characteristic" : "Per", "score" : -1 }
+         , { "characteristic" : "Pre", "score" : 1 }
+         , { "characteristic" : "Com", "score" : 1 }
+         , { "characteristic" : "Str", "score" : -1 }
+         , { "characteristic" : "Sta", "score" : 1 }
+         , { "characteristic" : "Dex", "score" : 0 }
+         , { "characteristic" : "Qik", "score" : -2 }
       ] },
       { "mode" : "Early Childhood"
       , "totalXP" : 45
@@ -51,3 +56,32 @@
    ]
 }
 
+
++ **Virtues** Covenfolk (0), Warrior (+1)
+	+ Independent study (+1), Affinity with Animal Handling (+1), Puissant Animal Handling (+1)
+	+ Death Prophecy (+3), Unaging (+1).
+	+ Animal Ken (+1),  Alluring to Magical Beings (+1)
++ **Flaws**
+	+ *Story flaw* Black Sheep at the Covenant (-3)
+	+ *Personality flaws*: Weakness for Dogs (-1),  Ambitious (-3) train the greatest hounds of Ireland
+	+ Lesser Malediction: Vertigo (-1),   Ability Block for Letters (-1), Uncertain Faith (-1)
++ **Reputation** Disloyal [Covenant and allies] 2 (from Black Sheep)
++ **Abilities**
+	+ Native Language: Irish [Munster] 5
+	+ Early childhood (45/45)
+		+ Awareness [hearing] 1 (5)
+		+ Stealth [hiding] 1 (5)
+		  Guile [fast talk] 1 (5)
+		+ Covenant Lore [hierarchies] 2 (15)
+		+ Munster Lore [outback] 2 (15)
+	+ Later life (300/300)
+		+ Animal Handling [Dogs] 5 +2 (50xp+affinity)
+		+ Animal Ken [Canine] 4  (45)
+		+ Athletics [obstacle race] 3 (30)
+		+ Brawl [dirty fighting] 2 (15)
+		+ Ride [Horse training]  3 (30)
+		+ Survival [Hills] 4 (50)
+		+ Hunt [with dogs] 5 (75)
+		+ Single Weapon [spear] 1 (5)
+	+ Warrior (50/50)
+		+ Bows [short bow] 4 (50)
