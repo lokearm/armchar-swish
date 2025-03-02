@@ -25,7 +25,7 @@ module ArM.Char.Character ( Character(..)
                           ) where
 
 import GHC.Generics
--- import Data.Maybe (fromJust)
+import Data.Maybe (fromJust,isNothing)
 import qualified Data.Text as T
 import Data.Aeson
 import Data.Aeson.Key
@@ -103,6 +103,10 @@ instance FromJSON CharacterConcept where
 
 data CharacterState = CharacterState 
          { charTime :: CharTime
+         , vfList :: [ VF ]
+         , abilityList :: [ Ability ]
+         , artList :: [ Art ]
+         , spellList :: [ Spell ]
          , traits :: [ Trait ]
          , protoTraits :: [ ProtoTrait ]
          }  deriving (Eq,Generic)
@@ -110,6 +114,10 @@ data CharacterState = CharacterState
 defaultCS :: CharacterState 
 defaultCS = CharacterState 
          { charTime = Nothing
+         , vfList = [ ]
+         , abilityList = [ ]
+         , artList = [ ]
+         , spellList = [ ]
          , traits = [ ]
          , protoTraits = [ ]
          }  
@@ -120,6 +128,10 @@ instance ToJSON CharacterState where
 instance FromJSON CharacterState where
     parseJSON = withObject "CharacterState" $ \v -> CharacterState
         <$> v .:? "charTime"
+        <*> fmap listNothing ( v .:? "vfList" )
+        <*> fmap listNothing ( v .:? "abilityList" )
+        <*> fmap listNothing ( v .:? "artList" )
+        <*> fmap listNothing ( v .:? "spellList" )
         <*> fmap listNothing ( v .:? "traits" )
         <*> fmap listNothing ( v .:? "protoTraits" )
 
@@ -170,11 +182,48 @@ prepareCharacter c
 
 -- | Process pregameAdvancement to compute initial CharacterState
 pregameBuild :: [ Advancement ] -> CharacterState
-pregameBuild as = defaultCS { charTime = Just "Game Start"
+pregameBuild as = filterCS $ defaultCS { charTime = Just "Game Start"
                             , traits = computeCS bs
                             , protoTraits = bs 
                             }
     where bs = pregameAdvance [] as
+filterCS :: CharacterState -> CharacterState
+filterCS cs = cs { vfList = x1
+                 , abilityList = x2
+                 , artList = x3
+                 , spellList = x4
+                 , traits = y4
+                }
+           where (x1,y1) = filterTrait $ traits cs
+                 (x2,y2) = filterTrait y1
+                 (x3,y3) = filterTrait y2
+                 (x4,y4) = filterTrait y3
+
+class TraitType t where
+    filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
+    filterTrait ts = y where (_,y) = filterTrait' (ts,([],[]))
+    filterTrait' :: ( [ Trait ], ( [ t ], [ Trait ] ) )
+                  -> ( [ Trait ], ( [ t ], [ Trait ] ) )
+    filterTrait' ([],y) = ([],y)
+    filterTrait' (x:xs,(ys,zs)) | isNothing ab  = (xs,(ys,x:zs))
+                                | otherwise = (xs,(fromJust ab:ys,zs))
+        where ab = getTrait x
+    getTrait :: Trait -> Maybe t
+
+instance TraitType VF where
+    getTrait (VFTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Ability where
+    getTrait (AbilityTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Art where
+    getTrait (ArtTrait x) = Just x
+    getTrait _ = Nothing
+instance TraitType Spell where
+    getTrait (SpellTrait x) = Just x
+    getTrait _ = Nothing
+
+
 computeCS :: [ ProtoTrait ] -> [ Trait ]
 computeCS = map processTrait
 pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ] 

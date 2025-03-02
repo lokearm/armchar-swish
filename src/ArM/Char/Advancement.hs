@@ -10,7 +10,7 @@
 module ArM.Char.Advancement where
 
 import ArM.Char.Character
-import ArM.Char.Trait
+-- import ArM.Char.Trait
 
 {-
 advanceCharacter :: Character -> [ ( CharTime, [ ProtoTrait ] ) ]
@@ -33,6 +33,6 @@ advanceCharacterState (cs,[],ys) = (cs,[],ys)
 advanceCharacterState (cs,(x:xs),ys) = advanceCharacterState (cs',xs,(x:ys))
    where cs' = advanceCS cs x
 advanceCS :: CharacterState -> Advancement -> CharacterState 
-advanceCS cs x = cs { traits = cx, protoTraits = nx }
+advanceCS cs _ = cs { traits = cx, protoTraits = nx }
    where cx = computeCS nx
          nx = []

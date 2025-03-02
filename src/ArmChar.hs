@@ -29,6 +29,7 @@ data Options = Options {
   sagaFile :: Maybe String,
   charFile :: Maybe String,
   outFile  :: Maybe String,
+  jsonFile :: Maybe String,
   debugFile  :: Maybe String
 } deriving (Show)
 defaultOptions :: Options
@@ -36,6 +37,7 @@ defaultOptions = Options {
   sagaFile = Just "Test/saga.ttl",
   charFile = Nothing,
   outFile  = Nothing,
+  jsonFile  = Nothing,
   debugFile  = Nothing
 }
 
@@ -51,6 +53,9 @@ options =
     , Option ['s']     ["saga"] (ReqArg 
             (\arg opt -> opt { sagaFile = Just arg })
             "FILE") "saga file"
+    , Option ['j']     ["json"] (ReqArg 
+            (\arg opt -> opt { jsonFile = Just arg })
+            "FILE") "JSON output file"
     , Option ['O']     ["debug-output"] (ReqArg 
             (\arg opt -> opt { debugFile = Just arg })
             "FILE") "debug output"
@@ -83,8 +88,10 @@ main' opts | charFile opts /= Nothing = do
      t <- LB.readFile fn
      let char = fromJust $ ( decode t  :: Maybe Character )
      putStrLn $ show char
+     let cs = prepareCharacter char
      writeMaybeFile ( debugFile opts ) $ printMD char
-     writeMaybeFile ( outFile opts ) $ printMD $ prepareCharacter char
+     writeMaybeFile ( outFile opts ) $ printMD cs
+     writeMaybeJSON ( jsonFile opts ) cs 
      return ()
    where fn = fromJust $ charFile opts
 main' _ | otherwise = error "Not implemented!" 

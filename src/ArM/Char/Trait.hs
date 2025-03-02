@@ -17,6 +17,11 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Trait ( ProtoTrait(..)
                       , Trait(..)
+                      , Ability(..)
+                      , Art(..)
+                      , Spell(..)
+                      , Reputation(..)
+                      , VF(..)
                       , advanceTrait
                       , advanceTraits
                       , processTrait
@@ -126,7 +131,6 @@ advanceTraits (x:xs) (y:ys)
     | x <: y = x:advanceTraits xs (y:ys)
     | y <: x = y:advanceTraits (x:xs) ys
     | otherwise = advanceTrait x y:advanceTraits xs ys
-
 
 instance ToJSON ProtoTrait 
 instance FromJSON ProtoTrait where
