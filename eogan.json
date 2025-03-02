@@ -11,7 +11,7 @@
       }
    },
    "pregameAdvancement" : [
-      { "mode" : "Base Character"
+      { "mode" : "Virtues and Flaws"
       , "changes" : [
          { "ability" : "Native Language: Irish"
          , "spec" : "Munster"
@@ -39,7 +39,10 @@
          , { "ptrait" : "Obedient" , "score" : -3 }
          , { "ptrait" : "Loyal" , "score" : 1 }
          , { "ptrait" : "Uncertain Faith" , "score" : 1 }
-         , { "characteristic" : "Int", "score" : 2 }
+      ] },
+      { "mode" : "Characteristics"
+      , "changes" : 
+         [ { "characteristic" : "Int", "score" : 2 }
          , { "characteristic" : "Per", "score" : 0 }
          , { "characteristic" : "Pre", "score" : 3 }
          , { "characteristic" : "Com", "score" : 1 }
