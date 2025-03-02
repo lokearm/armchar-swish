@@ -18,6 +18,9 @@ experimenting with different approaches.
 2. [[CLI using JSON]]
 
 
+## Ars Magica  Notes
+
++ [[Character Generation Process]]
 ## Technical Notes
 
 + On #haskell
