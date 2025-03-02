@@ -20,6 +20,7 @@ aliases:
 + Virtue and Flaws affecting advancement
 	+ Affinity
 		+ MultiplyXP (Ability "Stealth") 1.5
+			+ Implied trait - new multiplyXP attribute
 	+ Warrior, etc.
 		+ BonusXP "Later Life" 50 "from Warrior"
 	+ Supernatural abilities
@@ -32,6 +33,7 @@ aliases:
 		+ flag
 + Virtue and Flaws trait calculation
 	+ Puissant
+			+ Implied trait - new bonusScore attribute
 
 + Advancement process.
     + Uses State from previous season and Advancement from current season.
@@ -44,7 +46,12 @@ aliases:
     + Trait may be amended
         + bonusScore
         
-
++ Ideas
+	+ [Data.Map](https://hackage.haskell.org/package/containers-0.4.0.0/docs/Data-Map.html) could be used for CharacterState
+	+ How do we represent Puissant (ability), Deft (art), etc.
+		+ `appliesTo :: Maybe TraitKey`
+		+ `detail :: Maybe String`
+		+ `detail = Just "Creo"` $\sim$ `appliesTo :: Just $ Art "Creo"`
 + Modules
 	+ `Char.Trait`
 		+ Trait
