@@ -34,6 +34,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , filterTrait
                        ) where
 
+import ArM.Debug.Trace
 import ArM.GameRules
 import GHC.Generics
 -- import Data.List (sort)
@@ -417,6 +418,15 @@ instance TraitLike Trait where
     key (PTraitTrait x) = key x
     key (OtherTraitTrait x) = key x
     key (ConfidenceTrait x) = key x
+    advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (AbilityTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (ArtTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (SpellTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (ReputationTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (VFTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (PTraitTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     toTrait = id
 
 instance TraitLike PTrait where
@@ -428,6 +438,9 @@ instance TraitLike VF where
 instance TraitLike Ability where
     key x = AbilityKey $ abilityName x
     toTrait = AbilityTrait
+    advanceTrait a x = 
+      trace (show x) $ trace (show a) $ updateAbilitySpec (spec a) $ updateAbilityXP y x
+      where y = (abilityExcessXP x) + (maybeInt $ xp a)
 instance TraitLike Art where
     key x = ArtKey $ artName x
     toTrait = ArtTrait
@@ -490,6 +503,15 @@ instance TraitLike ProtoTrait where
 
 -- |
 -- == Auxiliary update functions
+
+updateAbilitySpec :: Maybe String -> Ability -> Ability
+updateAbilitySpec Nothing a = a
+updateAbilitySpec (Just x) a = a { speciality = Just x }
+updateAbilityXP :: Int -> Ability -> Ability
+updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
+                     | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
+    where sc = abilityScore ab
+          tr = (sc+1)*5
 
 updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait
 updateSpec a = u (spec a)
