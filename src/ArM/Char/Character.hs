@@ -20,7 +20,6 @@ module ArM.Char.Character ( Character(..)
                           , FieldValue(..)
                           , prepareCharacter
                           , Advancement(..)
-                          , computeCS
                           , fullName
                           , fullConceptName
                           ) where
@@ -93,25 +92,13 @@ defaultCMS = CharacterMapState
 
 data CharacterState = CharacterState 
          { charTime :: CharTime
-         , vfList :: [ VF ]
-         , abilityList :: [ Ability ]
-         , artList :: [ Art ]
-         , spellList :: [ Spell ]
-         , reputationList :: [ Reputation ]
          , traits :: [ Trait ]
-         , protoTraits :: [ ProtoTrait ]
          }  deriving (Eq,Generic)
 
 defaultCS :: CharacterState 
 defaultCS = CharacterState 
          { charTime = Nothing
-         , vfList = [ ]
-         , abilityList = [ ]
-         , artList = [ ]
-         , spellList = [ ]
-         , reputationList = []
          , traits = [ ]
-         , protoTraits = [ ]
          }  
 
 instance ToJSON CharacterState where
@@ -120,13 +107,7 @@ instance ToJSON CharacterState where
 instance FromJSON CharacterState where
     parseJSON = withObject "CharacterState" $ \v -> CharacterState
         <$> v .:? "charTime"
-        <*> fmap listNothing ( v .:? "vfList" )
-        <*> fmap listNothing ( v .:? "abilityList" )
-        <*> fmap listNothing ( v .:? "artList" )
-        <*> fmap listNothing ( v .:? "spellList" )
-        <*> fmap listNothing ( v .:? "reputationList" )
         <*> fmap listNothing ( v .:? "traits" )
-        <*> fmap listNothing ( v .:? "protoTraits" )
 
 -- = Character
 
@@ -178,29 +159,11 @@ prepareCharacter c
 
 -- | Process pregameAdvancement to compute initial CharacterState
 pregameBuild :: [ Advancement ] -> CharacterState
-pregameBuild as = filterCS $ defaultCS { charTime = Just "Game Start"
-                            , traits = computeCS bs
-                            , protoTraits = bs 
+pregameBuild as = defaultCS { charTime = Just "Game Start"
+                            , traits = map toTrait $ pregameAdvance [] as
                             }
-    where bs = pregameAdvance [] as
-filterCS :: CharacterState -> CharacterState
-filterCS cs = cs { vfList = x1
-                 , abilityList = x2
-                 , artList = x3
-                 , spellList = x4
-                 , reputationList = x5
-                 , traits = y5
-                }
-           where (x1,y1) = filterTrait $ traits cs
-                 (x2,y2) = filterTrait y1
-                 (x3,y3) = filterTrait y2
-                 (x4,y4) = filterTrait y3
-                 (x5,y5) = filterTrait y4
 
 
-
-computeCS :: [ ProtoTrait ] -> [ Trait ]
-computeCS = map processTrait
 pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ] 
 pregameAdvance xs [] = xs
 pregameAdvance xs (y:ys) = pregameAdvance ns ys

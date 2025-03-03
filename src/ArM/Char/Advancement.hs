@@ -33,6 +33,6 @@ advanceCharacterState (cs,[],ys) = (cs,[],ys)
 advanceCharacterState (cs,(x:xs),ys) = advanceCharacterState (cs',xs,(x:ys))
    where cs' = advanceCS cs x
 advanceCS :: CharacterState -> Advancement -> CharacterState 
-advanceCS cs _ = cs { traits = cx, protoTraits = nx }
+advanceCS cs _ = cs { traits = cx }
    where cx = computeCS nx
          nx = []

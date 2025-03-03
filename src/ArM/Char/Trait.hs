@@ -25,7 +25,6 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , VF(..)
                       , advanceTrait
                       , advanceTraits
-                      , processTrait
                       , sortTraits
                       , key
                       , (<:)
@@ -79,45 +78,6 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              }
                              deriving (Ord,Eq,Generic)
 
-
-updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait
-updateSpec a = u (spec a)
-    where u Nothing t = t
-          u (Just x) t = t { spec = Just x }
-updateScore :: ProtoTrait -> ProtoTrait -> ProtoTrait
-updateScore a = u (score a)
-    where u Nothing t = t
-          u (Just x) t = t { score = Just x }
-updateXP :: ProtoTrait -> ProtoTrait -> ProtoTrait
-updateXP a t = t { xp = maybeAdd (xp a) (xp t) }
-updatePts :: ProtoTrait -> ProtoTrait -> ProtoTrait
-updatePts a t = t { points = maybeAdd ( points t ) ( points a ) }
-updateAging :: ProtoTrait -> ProtoTrait -> ProtoTrait
-updateAging a t = t { aging = maybeAdd ( aging t ) ( aging a ) }
-updateMastery :: ProtoTrait -> ProtoTrait -> ProtoTrait
-updateMastery a t = t { mastery = f (mastery t) (mastery a) }
-    where f Nothing x = x
-          f y Nothing = y
-          f (Just x) (Just y)  = Just (x ++ y)
-
-
-advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
-advanceTraits [] ys = ys
-advanceTraits ys [] = ys
-advanceTraits (x:xs) (y:ys) 
-    | x <: y = x:advanceTraits xs (y:ys)
-    | y <: x = y:advanceTraits (x:xs) ys
-    | otherwise = advanceTrait x y:advanceTraits xs ys
-
-advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
-advance [] ys = ys
-advance ys [] = map toTrait ys
-advance (x:xs) (y:ys) 
-    | x <: y = toTrait x:advance xs (y:ys)
-    | y <: x = y:advance (x:xs) ys
-    | otherwise = adv x y:advance xs ys
-    where adv a b = toTrait $ advanceTrait a b
-
 instance ToJSON ProtoTrait 
 instance FromJSON ProtoTrait where
     parseJSON = withObject "ProtoTrait" $ \v -> ProtoTrait
@@ -140,6 +100,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "points"
         <*> v .:?  "xp"
         <*> v .:?  "aging"
+
 
 -- | 
 -- = Trait
@@ -321,23 +282,6 @@ computeOther p
                       }
                  where (s,y) = getAbilityScore (points p)
 
-processTrait :: ProtoTrait -> Trait
-processTrait p
-    | ability p /= Nothing = AbilityTrait $ fromJust $ computeTrait p
-    | characteristic p /= Nothing = CharacteristicTrait $  fromJust $ computeTrait p
-    | art p /= Nothing = ArtTrait $ fromJust $ computeTrait p
-    | spell p /= Nothing = SpellTrait $ fromJust $ computeTrait p
-    | ptrait p /= Nothing = PTraitTrait $
-           PTrait { ptraitName = fromJust (ptrait p)
-                  , pscore = maybeInt (score p)
-                  } 
-    | reputation p /= Nothing = ReputationTrait $ fromJust $ computeTrait p
-    | virtue p /= Nothing = VFTrait $ fromJust $ computeTrait p
-    | flaw p /= Nothing = VFTrait $ fromJust $ computeTrait p
-    | confidence p /= Nothing = ConfidenceTrait $
-           Confidence { cscore = maybeInt (score p), cpoints = maybeInt (points p) }
-    | other p /= Nothing = OtherTraitTrait $ computeOther p
-    | otherwise  = error "No Trait for this ProtoTrait" 
 
 
 -- = Filtering and Advancement - the TraitType class
@@ -427,7 +371,8 @@ instance TraitType Reputation where
                       }
      where (s,y) = getAbilityScore (xp p)
 
--- = Sorting - the TraitLike class
+
+-- = Sorting and Advancement 
 
 (<:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
 (<:) p1 p2 = key p1 < key p2
@@ -441,6 +386,8 @@ sortTraits = sortBy f
        where f x y | x <: y = LT
                    | y <: x = GT
                    | otherwise = EQ
+
+-- == the TraitLike class
 
 class TraitLike t where
     key :: t -> TraitKey
@@ -512,4 +459,60 @@ instance TraitLike ProtoTrait where
        | confidence a /= Nothing = updateScore a . updatePts a
        | other a /= Nothing = updatePts a
        | otherwise  = id
-   toTrait = processTrait
+   toTrait p 
+      | ability p /= Nothing = AbilityTrait $ fromJust $ computeTrait p
+      | characteristic p /= Nothing = CharacteristicTrait $  fromJust $ computeTrait p
+      | art p /= Nothing = ArtTrait $ fromJust $ computeTrait p
+      | spell p /= Nothing = SpellTrait $ fromJust $ computeTrait p
+      | ptrait p /= Nothing = PTraitTrait $
+           PTrait { ptraitName = fromJust (ptrait p)
+                  , pscore = maybeInt (score p)
+                  } 
+      | reputation p /= Nothing = ReputationTrait $ fromJust $ computeTrait p
+      | virtue p /= Nothing = VFTrait $ fromJust $ computeTrait p
+      | flaw p /= Nothing = VFTrait $ fromJust $ computeTrait p
+      | confidence p /= Nothing = ConfidenceTrait $
+           Confidence { cscore = maybeInt (score p), cpoints = maybeInt (points p) }
+      | other p /= Nothing = OtherTraitTrait $ computeOther p
+      | otherwise  = error "No Trait for this ProtoTrait" 
+
+-- == Auxiliary update functions
+
+updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait
+updateSpec a = u (spec a)
+    where u Nothing t = t
+          u (Just x) t = t { spec = Just x }
+updateScore :: ProtoTrait -> ProtoTrait -> ProtoTrait
+updateScore a = u (score a)
+    where u Nothing t = t
+          u (Just x) t = t { score = Just x }
+updateXP :: ProtoTrait -> ProtoTrait -> ProtoTrait
+updateXP a t = t { xp = maybeAdd (xp a) (xp t) }
+updatePts :: ProtoTrait -> ProtoTrait -> ProtoTrait
+updatePts a t = t { points = maybeAdd ( points t ) ( points a ) }
+updateAging :: ProtoTrait -> ProtoTrait -> ProtoTrait
+updateAging a t = t { aging = maybeAdd ( aging t ) ( aging a ) }
+updateMastery :: ProtoTrait -> ProtoTrait -> ProtoTrait
+updateMastery a t = t { mastery = f (mastery t) (mastery a) }
+    where f Nothing x = x
+          f y Nothing = y
+          f (Just x) (Just y)  = Just (x ++ y)
+
+
+advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
+advanceTraits [] ys = ys
+advanceTraits ys [] = ys
+advanceTraits (x:xs) (y:ys) 
+    | x <: y = x:advanceTraits xs (y:ys)
+    | y <: x = y:advanceTraits (x:xs) ys
+    | otherwise = advanceTrait x y:advanceTraits xs ys
+
+advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
+advance [] ys = ys
+advance ys [] = map toTrait ys
+advance (x:xs) (y:ys) 
+    | x <: y = toTrait x:advance xs (y:ys)
+    | y <: x = y:advance (x:xs) ys
+    | otherwise = adv x y:advance xs ys
+    where adv a b = toTrait $ advanceTrait a b
+
