@@ -52,6 +52,9 @@ aliases:
 		    + Trait may be amended
 		        + bonusScore
     + Advance trait $\to$  `advance`
++ Validation
+	+ note that validation must be based on the augmented advancements
+		+ hence the augmented advancements must be stored
         
 + Ideas
 	+ [Data.Map](https://hackage.haskell.org/package/containers-0.4.0.0/docs/Data-Map.html) could be used for CharacterState

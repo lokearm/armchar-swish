@@ -157,20 +157,29 @@ prepareAdvancement = prepareAdvancementVF . fst . filterTrait . traits
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancementVF :: [VF] -> Advancement -> Advancement
-prepareAdvancementVF _ = id
+prepareAdvancementVF vfs a = a { changes = inferTraitsVF vfs $ changes a }
+--
+-- | Add ProtoTrait objects infered by current virtues and flaws
+inferTraitsVF :: [VF] -> [ProtoTrait] -> [ProtoTrait]
+inferTraitsVF _ = sortTraits . id
 
 -- | Apply advancement
 applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
 applyAdvancement a cs = (a',cs')
     where a' = prepareAdvancement cs a
-          cs' = cs { traits = advance change old }
-          change = inferTraits cs ps
-          ps = changes a'
+          cs' = cs { charTime = season a, traits = advance change old }
+          change = changes a'
           old = traits cs
 
--- | Add ProtoTrait objects infered by current virtues and flaws
-inferTraits :: CharacterState -> [ProtoTrait] -> [ProtoTrait]
-inferTraits _ = sortTraits . id
+-- | Apply a list of advancements
+applyAdvancements :: [Advancement] -> CharacterState -> ([(Advancement,Advancement)],CharacterState)
+applyAdvancements a cs = applyAdvancements' ([],a,cs)
+applyAdvancements' :: ([(Advancement,Advancement)],[Advancement],CharacterState)
+                   -> ([(Advancement,Advancement)],CharacterState)
+applyAdvancements' (xs,[],cs) = (xs,cs)
+applyAdvancements' (xs,y:ys,cs) = applyAdvancements' ((a',y):xs,ys,cs')
+    where (a',cs') = applyAdvancement y cs
+
 
 -- | Compute the initial state if no state is recorded.
 prepareCharacter :: Character -> Character
