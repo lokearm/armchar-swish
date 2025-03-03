@@ -7,6 +7,8 @@
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
+-- 
+-- Description :  Types to Traits and advancement of Traits
 --
 -- Types to handle Characters and Traits, with some basic associated functions.
 --

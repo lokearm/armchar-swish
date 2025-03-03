@@ -1,3 +1,17 @@
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Char.Character
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- Description :  Simple utilities to read and write files.
+--
+-- This module contains types to process characters, including 
+-- persistence in JSON and advancement.
+--
+-----------------------------------------------------------------------------
 module ArM.BasicIO where
 
 import System.IO as IO -- for file IO

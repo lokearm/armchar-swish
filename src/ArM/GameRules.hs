@@ -6,6 +6,8 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  Simple utilities for basic calculation in ArM Rules.
+--
 -- Simple and generic functions for ArM Rules.  Should be independent
 -- of the software design.
 --

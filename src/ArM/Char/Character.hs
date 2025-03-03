@@ -8,6 +8,11 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  Types to represent Characters and functions for advancement.
+--
+-- This module contains types to process characters, including 
+-- persistence in JSON and advancement.
+--
 -----------------------------------------------------------------------------
 module ArM.Char.Character ( Character(..)
                           , defaultCharacter

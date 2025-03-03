@@ -7,6 +7,8 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  Rudimentary functions to log CPU time.
+--
 -- Simple functions to log CPU usage.
 --
 -----------------------------------------------------------------------------
