@@ -434,6 +434,7 @@ instance TraitLike Trait where
 instance TraitLike PTrait where
     key x = PTraitKey $ ptraitName x
     toTrait = PTraitTrait
+    advanceTrait _ x = trace "Warning! Advancement not implemented for personality traits"  x
 instance TraitLike VF where
     key x = VFKey $ vfname x
     toTrait = VFTrait
@@ -446,21 +447,29 @@ instance TraitLike Ability where
 instance TraitLike Art where
     key x = ArtKey $ artName x
     toTrait = ArtTrait
+    advanceTrait _ x = trace "Warning! Advancement not implemented for arts"  x
 instance TraitLike Spell where
     key x = SpellKey $ spellName x
     toTrait = SpellTrait
+    advanceTrait a x = trace (show x) $ trace (show a) $ 
+        updateSpellXP y $ updateSpellMastery ms x
+      where y = (spellExcessXP x) + (maybeInt $ xp a)
+            ms = maybeList $ mastery a
 instance TraitLike Reputation where
     key x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
 instance TraitLike Characteristic where
     key x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
+    advanceTrait _ x = trace "Warning! Advancement not implemented for characteristics"  x
 instance TraitLike  Confidence where
     key _ = ConfidenceKey 
     toTrait = ConfidenceTrait
+    advanceTrait _ x = trace "Warning! Advancement not implemented for confidence"  x
 instance TraitLike  OtherTrait where
     key x = OtherTraitKey ( trait x ) 
     toTrait = OtherTraitTrait
+    advanceTrait _ x = trace "Warning! Advancement not implemented for OtherTrait"  x
 
 instance TraitLike ProtoTrait where
    key p
@@ -514,6 +523,14 @@ updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
                      | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
     where sc = abilityScore ab
           tr = (sc+1)*5
+
+updateSpellXP :: Int -> Spell -> Spell
+updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
+                   | otherwise = updateSpellXP (x-tr) $ ab { masteryScore = sc+1 }
+    where sc = masteryScore ab
+          tr = (sc+1)*5
+updateSpellMastery :: [String] -> Spell -> Spell
+updateSpellMastery ms t = t { masteryOptions = (masteryOptions t) ++ ms }
 
 updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait
 updateSpec a = u (spec a)
