@@ -48,6 +48,7 @@ data CharacterConcept = CharacterConcept
          , charData :: KeyPairList
        }  deriving (Eq,Generic)
 
+-- | Default (empty) character concept object.
 defaultConcept :: CharacterConcept 
 defaultConcept = CharacterConcept { name = "John Doe"
                                   , house = Nothing
@@ -70,6 +71,8 @@ instance Show CharacterConcept where
    show c = fullConceptName c ++ "\n"
          ++ ( show $ charGlance c ) ++ ( show $ charData c )
 
+-- | Return the name of the character as a string, including house affiliation
+-- if defined.
 fullConceptName :: CharacterConcept -> String
 fullConceptName c = name c ++ (f $ house c)
       where f Nothing = ""
@@ -85,6 +88,7 @@ data CharacterState = CharacterState
          , traits :: [ Trait ]
          }  deriving (Eq,Generic)
 
+-- | Default (empty) character state object.
 defaultCS :: CharacterState 
 defaultCS = CharacterState 
          { charTime = Nothing
@@ -112,6 +116,7 @@ data Character = Character
          }  deriving (Eq,Generic)
 
 
+-- | Default (empty) character object.
 defaultCharacter :: Character 
 defaultCharacter = Character { charID = "N/A"
                              , concept = defaultConcept
@@ -124,6 +129,8 @@ defaultCharacter = Character { charID = "N/A"
 instance Show Character where
    show = show . concept 
 
+-- | Return the name of the character as a string, including house affiliation
+-- if defined.
 fullName :: Character -> String
 fullName = fullConceptName . concept
 
@@ -170,6 +177,7 @@ pregameBuild as = defaultCS { charTime = Just "Game Start"
                             }
 
 
+-- | Recursive helper for pregameBuild
 pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ] 
 pregameAdvance xs [] = xs
 pregameAdvance xs (y:ys) = pregameAdvance ns ys
