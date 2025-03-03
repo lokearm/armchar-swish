@@ -3,6 +3,16 @@ cabal-version:       3.0
 -- init'.  For further documentation, see
 -- http://haskell.org/cabal/users-guide/
 
+description: 
+     The armchar module provides a CLI interface to process Ars Magica
+     characters from JSON files and produce character sheets in Markdown.
+
+     The JSON file normally contains a list of advancement stages, and the
+     actual state of the character at a given time is computed.
+
+     The libraries are designed with the intention of creating client/server
+     systems with different interactie and non-interactive clients.
+
 name:                armchar-swish
 version:             0.1.0.0
 -- synopsis:
@@ -49,7 +59,7 @@ common armchar-deps
   other-modules:       ArM.Char.Character
                        , ArM.Char.Internal.KeyPair
                        , ArM.Char.Trait
-                       , ArM.Char.Advancement
+                       -- , ArM.Char.Advancement
                        , ArM.Char.Markdown
                        -- , ArM.Char.CharacterSheet
                        , ArM.Types.Season

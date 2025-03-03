@@ -6,6 +6,8 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  Defines trace functions for debugging output.
+--
 -- This module exports `Debug.Trace.trace` and adds a few convenience
 -- functions for debug tracing.
 -- To turn off the debug trace, `ArM.NoTrace` can be imported instead

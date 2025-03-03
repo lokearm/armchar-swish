@@ -6,6 +6,8 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  Defines a dummy trace to turn off debugging output.
+--
 -- This module defines the same functions as `ArM.Trace` to be identity
 -- functions; thus the debug trace can be turned off simply by importing
 -- this module instead of `ArM.Trace`, leaving the debug code in place.

@@ -8,6 +8,11 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  Types to represent Characters and functions for advancement.
+--
+-- This module contains types to process characters, including 
+-- persistence in JSON and advancement.
+--
 -----------------------------------------------------------------------------
 module ArM.Char.Character ( Character(..)
                           , defaultCharacter
@@ -19,7 +24,6 @@ module ArM.Char.Character ( Character(..)
                           , FieldValue(..)
                           , prepareCharacter
                           , Advancement(..)
-                          , computeCS
                           , fullName
                           , fullConceptName
                           ) where
@@ -39,6 +43,7 @@ listNothing Nothing = []
 listNothing (Just xs) = xs
 
 
+-- |
 -- = CharacterConcept
 
 data CharacterConcept = CharacterConcept 
@@ -48,6 +53,7 @@ data CharacterConcept = CharacterConcept
          , charData :: KeyPairList
        }  deriving (Eq,Generic)
 
+-- | Default (empty) character concept object.
 defaultConcept :: CharacterConcept 
 defaultConcept = CharacterConcept { name = "John Doe"
                                   , house = Nothing
@@ -70,6 +76,8 @@ instance Show CharacterConcept where
    show c = fullConceptName c ++ "\n"
          ++ ( show $ charGlance c ) ++ ( show $ charData c )
 
+-- | Return the name of the character as a string, including house affiliation
+-- if defined.
 fullConceptName :: CharacterConcept -> String
 fullConceptName c = name c ++ (f $ house c)
       where f Nothing = ""
@@ -77,29 +85,19 @@ fullConceptName c = name c ++ (f $ house c)
                        | otherwise  = " ex " ++ x
 
 
+-- |
 -- = CharacterState
 
 data CharacterState = CharacterState 
          { charTime :: CharTime
-         , vfList :: [ VF ]
-         , abilityList :: [ Ability ]
-         , artList :: [ Art ]
-         , spellList :: [ Spell ]
-         , reputationList :: [ Reputation ]
          , traits :: [ Trait ]
-         , protoTraits :: [ ProtoTrait ]
          }  deriving (Eq,Generic)
 
+-- | Default (empty) character state object.
 defaultCS :: CharacterState 
 defaultCS = CharacterState 
          { charTime = Nothing
-         , vfList = [ ]
-         , abilityList = [ ]
-         , artList = [ ]
-         , spellList = [ ]
-         , reputationList = []
          , traits = [ ]
-         , protoTraits = [ ]
          }  
 
 instance ToJSON CharacterState where
@@ -108,30 +106,28 @@ instance ToJSON CharacterState where
 instance FromJSON CharacterState where
     parseJSON = withObject "CharacterState" $ \v -> CharacterState
         <$> v .:? "charTime"
-        <*> fmap listNothing ( v .:? "vfList" )
-        <*> fmap listNothing ( v .:? "abilityList" )
-        <*> fmap listNothing ( v .:? "artList" )
-        <*> fmap listNothing ( v .:? "spellList" )
-        <*> fmap listNothing ( v .:? "reputationList" )
         <*> fmap listNothing ( v .:? "traits" )
-        <*> fmap listNothing ( v .:? "protoTraits" )
 
+-- |
 -- = Character
 
 data Character = Character 
          { charID :: String
          , concept :: CharacterConcept
          , state :: Maybe CharacterState
+         , pregameDesign :: [ Advancement ]
          , pregameAdvancement :: [ Advancement ]
          , pastAdvancement :: [ Advancement ]
          , futureAdvancement :: [ Advancement ]
          }  deriving (Eq,Generic)
 
 
+-- | Default (empty) character object.
 defaultCharacter :: Character 
 defaultCharacter = Character { charID = "N/A"
                              , concept = defaultConcept
                              , state = Nothing
+                             , pregameDesign = [ ]
                              , pregameAdvancement = [ ]
                              , pastAdvancement = [ ]
                              , futureAdvancement = [ ]
@@ -140,6 +136,8 @@ defaultCharacter = Character { charID = "N/A"
 instance Show Character where
    show = show . concept 
 
+-- | Return the name of the character as a string, including house affiliation
+-- if defined.
 fullName :: Character -> String
 fullName = fullConceptName . concept
 
@@ -152,49 +150,69 @@ instance FromJSON Character where
         <$> v .: "charID"
         <*> v .: "concept"
         <*> v .:? "state" 
+        <*> fmap listNothing ( v .:? "pregameDesign" )
         <*> fmap listNothing ( v .:? "pregameAdvancement" )
         <*> fmap listNothing ( v .:? "pastAdvancement" )
         <*> fmap listNothing ( v .:? "futureAdvancement" )
+
+-- |
+-- = Advancement
+
+
+-- | Augment and amend the advancements based on current virtues and flaws.
+prepareAdvancement :: CharacterState -> Advancement -> Advancement
+prepareAdvancement = prepareAdvancementVF . fst . filterTrait . traits 
+
+-- | Augment and amend the advancements based on current virtues and flaws.
+prepareAdvancementVF :: [VF] -> Advancement -> Advancement
+prepareAdvancementVF vfs a = a { changes = inferTraitsVF vfs $ changes a }
+--
+-- | Add ProtoTrait objects infered by current virtues and flaws
+inferTraitsVF :: [VF] -> [ProtoTrait] -> [ProtoTrait]
+inferTraitsVF _ = sortTraits . id
+
+-- | Apply advancement
+applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
+applyAdvancement a cs = (a',cs')
+    where a' = prepareAdvancement cs a
+          cs' = cs { charTime = season a, traits = advance change old }
+          change = changes a'
+          old = traits cs
+
+-- | Apply a list of advancements
+applyAdvancements :: [Advancement] -> CharacterState -> ([(Advancement,Advancement)],CharacterState)
+applyAdvancements a cs = applyAdvancements' ([],a,cs)
+applyAdvancements' :: ([(Advancement,Advancement)],[Advancement],CharacterState)
+                   -> ([(Advancement,Advancement)],CharacterState)
+applyAdvancements' (xs,[],cs) = (xs,cs)
+applyAdvancements' (xs,y:ys,cs) = applyAdvancements' ((a',y):xs,ys,cs')
+    where (a',cs') = applyAdvancement y cs
 
 
 -- | Compute the initial state if no state is recorded.
 prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
-            | otherwise = c { state = Just s }
-            where s = pregameBuild $ pregameAdvancement  c 
+            | otherwise = c { state = Just cs
+                            , pregameDesign = fst $ unzip xs
+                            }
+            where as = pregameAdvancement  c 
+                  (xs,cs) = applyAdvancements as defaultCS
 
+{-
 -- | Process pregameAdvancement to compute initial CharacterState
 pregameBuild :: [ Advancement ] -> CharacterState
-pregameBuild as = filterCS $ defaultCS { charTime = Just "Game Start"
-                            , traits = computeCS bs
-                            , protoTraits = bs 
+pregameBuild as = defaultCS { charTime = Just "Game Start"
+                            , traits = map toTrait $ pregameAdvance [] as
                             }
-    where bs = pregameAdvance [] as
-filterCS :: CharacterState -> CharacterState
-filterCS cs = cs { vfList = x1
-                 , abilityList = x2
-                 , artList = x3
-                 , spellList = x4
-                 , reputationList = x5
-                 , traits = y5
-                }
-           where (x1,y1) = filterTrait $ traits cs
-                 (x2,y2) = filterTrait y1
-                 (x3,y3) = filterTrait y2
-                 (x4,y4) = filterTrait y3
-                 (x5,y5) = filterTrait y4
 
 
-
-computeCS :: [ ProtoTrait ] -> [ Trait ]
-computeCS = map processTrait
+-- | Recursive helper for pregameBuild
 pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ] 
 pregameAdvance xs [] = xs
 pregameAdvance xs (y:ys) = pregameAdvance ns ys
    where ns = advanceTraits (changes y) xs
-
--- = Advancement
+-}
 
 data Season = Spring | Summer | Autumn | Winter 
    deriving (Show,Ord,Eq)
