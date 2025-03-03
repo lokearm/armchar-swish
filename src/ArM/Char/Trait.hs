@@ -51,8 +51,8 @@ maybeList (Just x) = x
 maybeString :: Maybe String -> String
 maybeString Nothing = ""
 maybeString (Just x) = x
-maybeInt :: Maybe Int -> Int
-maybeInt Nothing = 0
+maybeInt :: Num a => Maybe a -> a
+maybeInt Nothing = fromInteger 0
 maybeInt (Just x) = x
 maybeAdd :: Maybe Int -> Maybe Int -> Maybe Int
 maybeAdd x y = Just $ maybeInt x + maybeInt y
@@ -157,6 +157,7 @@ data Ability = Ability { abilityName :: String
                        , abilityXP :: Int 
                        , abilityScore :: Int 
                        , abilityBonus :: Int 
+                       , abilityMultiplier :: Float
                        , abilityExcessXP :: Int 
                        }
            deriving (Ord, Eq, Generic)
@@ -168,6 +169,7 @@ data Art = Art { artName :: String
                , artXP :: Int 
                , artScore :: Int 
                , artBonus :: Int 
+               , artMultiplier :: Float
                , artExcessXP :: Int 
                }
            deriving (Ord, Eq, Generic)
@@ -175,6 +177,7 @@ data Spell = Spell { spellName :: String
                    , spellXP :: Int
                    , masteryScore :: Int
                    , spellExcessXP :: Int
+                   , spellMultiplier :: Float
                    , masteryOptions :: [String] 
                    }
            deriving (Show, Ord, Eq, Generic)
@@ -378,7 +381,8 @@ instance TraitType Ability where
                 , abilityXP = maybeInt (xp p)
                 , abilityScore = s
                 , abilityExcessXP = y
-                , abilityBonus = 0
+                , abilityBonus = maybeInt $ bonusScore p
+                , abilityMultiplier = maybeInt $ multiplyXP p
                 }
      where (s,y) = getAbilityScore (xp p)
 instance TraitType Art where
@@ -391,7 +395,8 @@ instance TraitType Art where
                 , artXP = x
                 , artScore = s
                 , artExcessXP = y
-                , artBonus = 0 
+                , artBonus = maybeInt $ bonusScore p
+                , artMultiplier = maybeInt $ multiplyXP p
                 }
      where y = x - xpFromScore s
            s = scoreFromXP x
@@ -407,6 +412,7 @@ instance TraitType Spell where
                       , masteryScore = s
                       , masteryOptions = maybeList (mastery p)
                       , spellExcessXP = y
+                      , spellMultiplier = maybeInt $ multiplyXP p
                       }
      where (s,y) = getAbilityScore (xp p)
 instance TraitType Reputation where

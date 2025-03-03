@@ -37,7 +37,6 @@ import qualified Data.Map as M
 import ArM.Char.Trait
 import ArM.Char.Internal.KeyPair
 import ArM.Char.Virtues
-import ArM.Char.Virtues
 -- import ArM.Types.Season
 
 type CharTime = Maybe String
@@ -188,8 +187,10 @@ inferTraitsVF vfs = rs
 applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
 applyAdvancement a cs = (a',cs')
     where a' = prepareAdvancement cs a
-          cs' = cs { charTime = season a, traits = advance change old }
+          cs' = cs { charTime = season a, traits = new }
+          new = advance change $ advance inferred old 
           change = changes a'
+          inferred = inferredTraits a'
           old = traits cs
 
 -- | Apply a list of advancements
