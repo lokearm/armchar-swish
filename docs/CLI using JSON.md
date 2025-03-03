@@ -41,9 +41,9 @@ aliases:
         + However, implied traits are effective immediately.
     + Advancement may be amended
         + additional XP
-        + `computeAdvancement :: CharacterState -> Advancement -> Advancement`
+        + `prepareAdvancement :: CharacterState -> Advancement -> Advancement`
     + Virtues and flaws add implied traits
-        + `processVF :: [ProtoTrait] -> [ProtoTrait]`
+        + `inferTraits :: CharacterState -> [ProtoTrait] -> [ProtoTrait]`
         + This handles affinities and puissant
         + Alternative approaces
 		    + ProtoTrait may be amended

@@ -288,15 +288,24 @@ computeOther p
 -- = Filtering and Advancement - the TraitType class
 
 class TraitType t where
+    -- | Extract traits of the given type from a generic list of Trait objects.
+    -- It returns a pair of lists with the selected traits in the first list
+    -- and the remaining traits in the other.
     filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
     filterTrait ts = y where (_,y) = filterTrait' (ts,([],[]))
+
+    -- | Recursive helper for `filterTrait`
     filterTrait' :: ( [ Trait ], ( [ t ], [ Trait ] ) )
                   -> ( [ Trait ], ( [ t ], [ Trait ] ) )
     filterTrait' ([],y) = ([],y)
     filterTrait' (x:xs,(ys,zs)) | isNothing ab  = (xs,(ys,x:zs))
                                 | otherwise = (xs,(fromJust ab:ys,zs))
         where ab = getTrait x
+
+    -- | Return the specific trait from the generic Trait, or Nothing if the type does not match.
     getTrait :: Trait -> Maybe t
+
+    -- | Convert a ProtoTrait (advancement) to a new trait object.
     computeTrait :: ProtoTrait -> Maybe t
 
 instance TraitType Characteristic where
@@ -503,6 +512,8 @@ updateMastery a t = t { mastery = f (mastery t) (mastery a) }
           f (Just x) (Just y)  = Just (x ++ y)
 
 
+-- | Merge two lists of ProtoTrait (advancement) objects, combining objects
+-- which refer to the same Trait.
 advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
 advanceTraits [] ys = ys
 advanceTraits ys [] = ys
@@ -511,6 +522,7 @@ advanceTraits (x:xs) (y:ys)
     | y <: x = y:advanceTraits (x:xs) ys
     | otherwise = advanceTrait x y:advanceTraits xs ys
 
+-- | Apply a list of ProtoType advancements to a list of Traits.
 advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
 advance [] ys = ys
 advance ys [] = map toTrait ys

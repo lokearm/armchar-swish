@@ -140,6 +140,21 @@ instance FromJSON Character where
         <*> fmap listNothing ( v .:? "pastAdvancement" )
         <*> fmap listNothing ( v .:? "futureAdvancement" )
 
+-- |
+-- = Advancement
+
+
+-- | Augment and amend the advancements based on current virtues and flaws.
+prepareAdvancement :: CharacterState -> Advancement -> Advancement
+prepareAdvancement = prepareAdvancementVF . fst . filterTrait . traits 
+
+-- | Augment and amend the advancements based on current virtues and flaws.
+prepareAdvancementVF :: [VF] -> Advancement -> Advancement
+prepareAdvancementVF _ = id
+
+-- | Add ProtoTrait objects infered by current virtues and flaws
+inferTraits :: CharacterState -> [ProtoTrait] -> [ProtoTrait]
+inferTraits _ = sortTraits . id
 
 -- | Compute the initial state if no state is recorded.
 prepareCharacter :: Character -> Character
@@ -159,9 +174,6 @@ pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ]
 pregameAdvance xs [] = xs
 pregameAdvance xs (y:ys) = pregameAdvance ns ys
    where ns = advanceTraits (changes y) xs
-
--- |
--- = Advancement
 
 data Season = Spring | Summer | Autumn | Winter 
    deriving (Show,Ord,Eq)
