@@ -28,7 +28,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , advanceTrait
                       , advanceTraits
                       , sortTraits
-                      , key
+                      , traitKey
                       , (<:)
                       , (>:)
                       , toTrait
@@ -428,7 +428,7 @@ instance TraitType Reputation where
 -- = Sorting and Advancement 
 
 (<:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
-(<:) p1 p2 = key p1 < key p2
+(<:) p1 p2 = traitKey p1 < traitKey p2
 
 (>:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
 (>:) p1 p2 = p2 <: p1
@@ -444,21 +444,21 @@ sortTraits = sortBy f
 -- == the TraitLike class
 
 class TraitLike t where
-    key :: t -> TraitKey
+    traitKey :: t -> TraitKey
     advanceTrait :: ProtoTrait -> t -> t
     advanceTrait _ x = x
     toTrait :: t -> Trait
 
 instance TraitLike Trait where
-    key (CharacteristicTrait x) = key x
-    key (AbilityTrait x) = key x
-    key (ArtTrait x) = key x
-    key (SpellTrait x) = key x
-    key (ReputationTrait x) = key x
-    key (VFTrait x) = key x
-    key (PTraitTrait x) = key x
-    key (OtherTraitTrait x) = key x
-    key (ConfidenceTrait x) = key x
+    traitKey (CharacteristicTrait x) = traitKey x
+    traitKey (AbilityTrait x) = traitKey x
+    traitKey (ArtTrait x) = traitKey x
+    traitKey (SpellTrait x) = traitKey x
+    traitKey (ReputationTrait x) = traitKey x
+    traitKey (VFTrait x) = traitKey x
+    traitKey (PTraitTrait x) = traitKey x
+    traitKey (OtherTraitTrait x) = traitKey x
+    traitKey (ConfidenceTrait x) = traitKey x
     advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (AbilityTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ArtTrait x) = toTrait $ advanceTrait a x
@@ -471,41 +471,41 @@ instance TraitLike Trait where
     toTrait = id
 
 instance TraitLike PTrait where
-    key x = PTraitKey $ ptraitName x
+    traitKey x = PTraitKey $ ptraitName x
     toTrait = PTraitTrait
     advanceTrait _ x = trace "Warning! Advancement not implemented for personality traits"  x
 instance TraitLike VF where
-    key x = VFKey $ vfname x
+    traitKey x = VFKey $ vfname x
     toTrait = VFTrait
 instance TraitLike Ability where
-    key x = AbilityKey $ abilityName x
+    traitKey x = AbilityKey $ abilityName x
     toTrait = AbilityTrait
     advanceTrait a x = 
       trace (show x) $ trace (show a) $ updateAbilitySpec (spec a) $ updateAbilityXP y x
       where y = (abilityExcessXP x) + (maybeInt $ xp a)
 instance TraitLike Art where
-    key x = ArtKey $ artName x
+    traitKey x = ArtKey $ artName x
     toTrait = ArtTrait
     advanceTrait a x = updateArtXP y x
       where y = (artExcessXP x) + (maybeInt $ xp a)
 instance TraitLike Spell where
-    key x = SpellKey $ spellName x
+    traitKey x = SpellKey $ spellName x
     toTrait = SpellTrait
     advanceTrait a x = trace (show x) $ trace (show a) $ 
         updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (maybeInt $ xp a)
             ms = maybeList $ mastery a
 instance TraitLike Reputation where
-    key x = ReputationKey ( reputationName x ) ( repLocale x )
+    traitKey x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
     advanceTrait a x = updateRepXP y x
       where y = (repExcessXP x) + (maybeInt $ xp a)
 instance TraitLike Characteristic where
-    key x = CharacteristicKey ( characteristicName x ) 
+    traitKey x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
     advanceTrait _ x = trace "Warning! Advancement not implemented for characteristics"  x
 instance TraitLike Confidence where
-    key _ = ConfidenceKey 
+    traitKey _ = ConfidenceKey 
     toTrait = ConfidenceTrait
     advanceTrait a = updateCScore (score a) . updateCPoints (points a) 
        where updateCScore Nothing x = x
@@ -513,13 +513,13 @@ instance TraitLike Confidence where
              updateCPoints Nothing x = x
              updateCPoints (Just y) x = x { cpoints = y + cpoints x }
 instance TraitLike  OtherTrait where
-    key x = OtherTraitKey ( trait x ) 
+    traitKey x = OtherTraitKey ( trait x ) 
     toTrait = OtherTraitTrait
     advanceTrait _ x = trace "Warning! Advancement not implemented for OtherTrait"  x
 
 
 instance TraitLike ProtoTrait where
-   key p
+   traitKey p
        | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
        | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
        | art p /= Nothing = ArtKey $ fromJust $ art p 

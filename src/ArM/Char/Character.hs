@@ -30,10 +30,14 @@ module ArM.Char.Character ( Character(..)
 
 import GHC.Generics
 import Data.Aeson
+-- import Data.Maybe (fromJust)
+import qualified Data.Map as M
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
 import ArM.Char.Internal.KeyPair
+import ArM.Char.Virtues
+import ArM.Char.Virtues
 -- import ArM.Types.Season
 
 type CharTime = Maybe String
@@ -42,6 +46,11 @@ listNothing :: Maybe [a] -> [a]
 listNothing Nothing = []
 listNothing (Just xs) = xs
 
+filterNothing :: [Maybe a] -> [a]
+filterNothing = f
+    where f [] = []
+          f (Nothing:xs) = f xs
+          f (Just x:xs) = x:f xs
 
 -- |
 -- = CharacterConcept
@@ -165,11 +174,15 @@ prepareAdvancement = prepareAdvancementVF . fst . filterTrait . traits
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancementVF :: [VF] -> Advancement -> Advancement
-prepareAdvancementVF vfs a = a { inferredTraits = inferTraitsVF vfs $ changes a }
---
+prepareAdvancementVF vfs a = a { inferredTraits = inferTraitsVF vfs }
+
 -- | Add ProtoTrait objects infered by current virtues and flaws
-inferTraitsVF :: [VF] -> [ProtoTrait] -> [ProtoTrait]
-inferTraitsVF _ _ = []
+inferTraitsVF :: [VF] -> [ProtoTrait]
+inferTraitsVF vfs = rs
+    where vf = [ M.lookup (traitKey x) virtueMap | x <- vfs ]
+          app Nothing _ = Nothing
+          app (Just f) x = Just $ f x
+          rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
 
 -- | Apply advancement
 applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)

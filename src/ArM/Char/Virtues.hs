@@ -1,5 +1,5 @@
 
-module ArM.Char.Virtues (virtueMap) where
+module ArM.Char.Virtues (VFMap,virtueMap) where
 
 import ArM.Char.Trait
 import qualified Data.Map as Map
@@ -22,6 +22,7 @@ vl1 = [ (VFKey ab, \ _ -> defaultPT { ability = Just $ ab, score = Just 1 } ) | 
 snab :: [ String ]
 snab = [ "Second Sight", "Enchanting Music", "Dowsing", "Magic Sensitivity" ]
 
-virtueMap :: Map.Map TraitKey ( VF -> ProtoTrait ) 
+type VFMap = Map.Map TraitKey ( VF -> ProtoTrait ) 
+virtueMap :: VFMap
 virtueMap = Map.fromList $ vl1 ++ vl2
 
