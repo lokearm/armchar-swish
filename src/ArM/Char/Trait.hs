@@ -98,17 +98,6 @@ updateMastery a t = t { mastery = f (mastery t) (mastery a) }
           f y Nothing = y
           f (Just x) (Just y)  = Just (x ++ y)
 
-advanceTrait :: ProtoTrait -> ProtoTrait -> ProtoTrait
-advanceTrait a
-    | ability a /= Nothing = updateSpec a . updateXP a
-    | characteristic a /= Nothing = updateScore a . updateAging a
-    | art a /= Nothing = updateXP a 
-    | spell a /= Nothing = updateXP a . updateMastery a
-    | ptrait a /= Nothing = updateScore a 
-    | reputation a /= Nothing = updateScore a 
-    | confidence a /= Nothing = updateScore a . updatePts a
-    | other a /= Nothing = updatePts a
-    | otherwise  = id
 
 advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
 advanceTraits [] ys = ys
@@ -303,31 +292,6 @@ instance Show ProtoTrait  where
 
 -- |
 -- = Computing Traits
-computeAbility :: ProtoTrait -> Ability
-computeAbility p
-    | ability p == Nothing = error "Not an ability"
-    | otherwise =
-        Ability { abilityName = fromJust ( ability p ) 
-                , speciality = spec p
-                , abilityXP = maybeInt (xp p)
-                , abilityScore = s
-                , abilityExcessXP = y
-                , abilityBonus = 0
-                }
-     where (s,y) = getAbilityScore (xp p)
-computeArt :: ProtoTrait -> Art
-computeArt p
-    | art p == Nothing = error "Not an art"
-    | otherwise =
-        Art { artName = fromJust ( ability p ) 
-                , artXP = x
-                , artScore = s
-                , artExcessXP = y
-                , artBonus = 0 
-                }
-     where y = x - xpFromScore s
-           s = scoreFromXP x
-           x = maybeInt (xp p) 
 
 getAbilityScore :: Maybe Int -> (Int,Int)
 getAbilityScore x' = (s,y) 
@@ -335,28 +299,6 @@ getAbilityScore x' = (s,y)
            s = scoreFromXP (x `div` 5)
            x = maybeInt x'
 
-computeReputation :: ProtoTrait -> Reputation
-computeReputation p
-    | reputation p == Nothing = error "Not an reputation"
-    | otherwise =
-           Reputation { reputationName = fromJust (reputation p)
-                      , repLocale = maybeString (locale p)
-                      , repXP = maybeInt (xp p)
-                      , repScore = s
-                      , repExcessXP = y
-                      }
-     where (s,y) = getAbilityScore (xp p)
-computeSpell :: ProtoTrait -> Spell
-computeSpell p
-    | spell p == Nothing = error "Not an spell"
-    | otherwise =
-           Spell { spellName = fromJust (spell p)
-                      , spellXP = maybeInt (xp p)
-                      , masteryScore = s
-                      , masteryOptions = maybeList (mastery p)
-                      , spellExcessXP = y
-                      }
-     where (s,y) = getAbilityScore (xp p)
 computeOther :: ProtoTrait -> OtherTrait
 computeOther p
     | spell p == Nothing = error "Not an properly formatted trait"
@@ -370,29 +312,24 @@ computeOther p
 
 processTrait :: ProtoTrait -> Trait
 processTrait p
-    | ability p /= Nothing = AbilityTrait $ computeAbility p
-    | characteristic p /= Nothing = CharacteristicTrait $
-        Characteristic { characteristicName = fromJust ( characteristic p ) 
-                , charScore = maybeInt (score p)
-                , agingPoints = maybeInt (aging p) }
-    | art p /= Nothing = ArtTrait $ computeArt p
-    | spell p /= Nothing = SpellTrait $ computeSpell p
+    | ability p /= Nothing = AbilityTrait $ fromJust $ computeTrait p
+    | characteristic p /= Nothing = CharacteristicTrait $  fromJust $ computeTrait p
+    | art p /= Nothing = ArtTrait $ fromJust $ computeTrait p
+    | spell p /= Nothing = SpellTrait $ fromJust $ computeTrait p
     | ptrait p /= Nothing = PTraitTrait $
            PTrait { ptraitName = fromJust (ptrait p)
                   , pscore = maybeInt (score p)
                   } 
-    | reputation p /= Nothing = ReputationTrait $ computeReputation p
-    | virtue p /= Nothing = VFTrait $
-           VF { vfname = fromJust (virtue p), vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p }
-    | flaw p /= Nothing = VFTrait $
-           VF { vfname = fromJust (flaw p), vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p }
+    | reputation p /= Nothing = ReputationTrait $ fromJust $ computeTrait p
+    | virtue p /= Nothing = VFTrait $ fromJust $ computeTrait p
+    | flaw p /= Nothing = VFTrait $ fromJust $ computeTrait p
     | confidence p /= Nothing = ConfidenceTrait $
            Confidence { cscore = maybeInt (score p), cpoints = maybeInt (points p) }
     | other p /= Nothing = OtherTraitTrait $ computeOther p
     | otherwise  = error "No Trait for this ProtoTrait" 
 
 
--- = Filtering 
+-- = Filtering and Advancement - the TraitType class
 
 class TraitType t where
     filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
@@ -404,32 +341,82 @@ class TraitType t where
                                 | otherwise = (xs,(fromJust ab:ys,zs))
         where ab = getTrait x
     getTrait :: Trait -> Maybe t
+    computeTrait :: ProtoTrait -> Maybe t
 
+instance TraitType Characteristic where
+    getTrait (CharacteristicTrait x) = Just x
+    getTrait _ = Nothing
+    computeTrait p
+       | characteristic p == Nothing = Nothing
+       | otherwise = Just $
+          Characteristic { characteristicName = fromJust ( characteristic p ) 
+                , charScore = maybeInt (score p)
+                , agingPoints = maybeInt (aging p) }
 instance TraitType VF where
     getTrait (VFTrait x) = Just x
     getTrait _ = Nothing
-instance TraitLike VF where
-    key x = VFKey $ vfname x
+    computeTrait p 
+       | virtue p /= Nothing = Just $ vf1 { vfname = fromJust (virtue p) }
+       | flaw p /= Nothing = Just $ vf1 { vfname = fromJust (flaw p) }
+       | otherwise = Nothing
+      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p }
 instance TraitType Ability where
     getTrait (AbilityTrait x) = Just x
     getTrait _ = Nothing
-instance TraitLike Ability where
-    key x = AbilityKey $ abilityName x
+    computeTrait p
+       | ability p == Nothing = Nothing
+       | otherwise = Just $
+           Ability { abilityName = fromJust ( ability p ) 
+                , speciality = spec p
+                , abilityXP = maybeInt (xp p)
+                , abilityScore = s
+                , abilityExcessXP = y
+                , abilityBonus = 0
+                }
+     where (s,y) = getAbilityScore (xp p)
 instance TraitType Art where
     getTrait (ArtTrait x) = Just x
     getTrait _ = Nothing
-instance TraitLike Art where
-    key x = ArtKey $ artName x
+    computeTrait p
+        | art p == Nothing = Nothing
+        | otherwise = Just $
+            Art { artName = fromJust ( ability p ) 
+                , artXP = x
+                , artScore = s
+                , artExcessXP = y
+                , artBonus = 0 
+                }
+     where y = x - xpFromScore s
+           s = scoreFromXP x
+           x = maybeInt (xp p) 
 instance TraitType Spell where
     getTrait (SpellTrait x) = Just x
     getTrait _ = Nothing
-instance TraitLike Spell where
-    key x = SpellKey $ spellName x
+    computeTrait p
+        | spell p == Nothing = Nothing
+        | otherwise = Just $
+           Spell { spellName = fromJust (spell p)
+                      , spellXP = maybeInt (xp p)
+                      , masteryScore = s
+                      , masteryOptions = maybeList (mastery p)
+                      , spellExcessXP = y
+                      }
+     where (s,y) = getAbilityScore (xp p)
 instance TraitType Reputation where
     getTrait (ReputationTrait x) = Just x
     getTrait _ = Nothing
-instance TraitLike Reputation where
-    key x = ReputationKey ( reputationName x ) ( repLocale x )
+    computeTrait p
+       | reputation p == Nothing = Nothing
+       | otherwise = Just $
+           Reputation { reputationName = fromJust (reputation p)
+                      , repLocale = maybeString (locale p)
+                      , repXP = maybeInt (xp p)
+                      , repScore = s
+                      , repExcessXP = y
+                      }
+     where (s,y) = getAbilityScore (xp p)
+
+-- = Sorting - the TraitLike class
 
 (<:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
 (<:) p1 p2 = key p1 < key p2
@@ -446,6 +433,21 @@ sortTraits = sortBy f
 
 class TraitLike t where
     key :: t -> TraitKey
+    advanceTrait :: ProtoTrait -> t -> t
+    advanceTrait _ x = x
+
+instance TraitLike VF where
+    key x = VFKey $ vfname x
+instance TraitLike Ability where
+    key x = AbilityKey $ abilityName x
+instance TraitLike Art where
+    key x = ArtKey $ artName x
+instance TraitLike Spell where
+    key x = SpellKey $ spellName x
+instance TraitLike Reputation where
+    key x = ReputationKey ( reputationName x ) ( repLocale x )
+instance TraitLike Characteristic where
+    key x = CharacteristicKey ( characteristicName x ) 
 
 instance TraitLike ProtoTrait where
    key p
@@ -461,3 +463,13 @@ instance TraitLike ProtoTrait where
        | other p /= Nothing = OtherTraitKey $ fromJust $ other p
        | otherwise  = error "No Trait for this ProtoTrait" 
 
+   advanceTrait a
+       | ability a /= Nothing = updateSpec a . updateXP a
+       | characteristic a /= Nothing = updateScore a . updateAging a
+       | art a /= Nothing = updateXP a 
+       | spell a /= Nothing = updateXP a . updateMastery a
+       | ptrait a /= Nothing = updateScore a 
+       | reputation a /= Nothing = updateScore a 
+       | confidence a /= Nothing = updateScore a . updatePts a
+       | other a /= Nothing = updatePts a
+       | otherwise  = id
