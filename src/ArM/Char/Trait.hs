@@ -465,14 +465,19 @@ instance TraitLike Characteristic where
     key x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
     advanceTrait _ x = trace "Warning! Advancement not implemented for characteristics"  x
-instance TraitLike  Confidence where
+instance TraitLike Confidence where
     key _ = ConfidenceKey 
     toTrait = ConfidenceTrait
-    advanceTrait _ x = trace "Warning! Advancement not implemented for confidence"  x
+    advanceTrait a = updateCScore (score a) . updateCPoints (points a) 
+       where updateCScore Nothing x = x
+             updateCScore (Just y) x = x { cscore = y }
+             updateCPoints Nothing x = x
+             updateCPoints (Just y) x = x { cpoints = y + cpoints x }
 instance TraitLike  OtherTrait where
     key x = OtherTraitKey ( trait x ) 
     toTrait = OtherTraitTrait
     advanceTrait _ x = trace "Warning! Advancement not implemented for OtherTrait"  x
+
 
 instance TraitLike ProtoTrait where
    key p
