@@ -19,8 +19,10 @@
          }
          , { "virtue" : "Warrior", "cost" : 1 }
          , { "virtue" : "Independent Study", "cost" : 1 }
-         , { "virtue" : "Affinity with Animal Handling", "cost" : 1 }
-         , { "virtue" : "Puissant Animal Handling", "cost" : 1 }
+         , { "virtue" : "Affinity with (ability)"
+            , "detail" : "Animal Handling", "cost" : 1 }
+         , { "virtue" : "Puissant (ability)"
+            , "detail" : "Animal Handling", "cost" : 1 }
          , { "virtue" : "Unaging", "cost" : 1 }
          , { "virtue" : "Animal Ken", "cost" : 1 }
          , { "virtue" : "Alluring to Magical Beings", "cost" : 1 }

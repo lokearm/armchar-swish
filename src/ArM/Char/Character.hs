@@ -37,6 +37,7 @@ import qualified Data.Map as M
 import ArM.Char.Trait
 import ArM.Char.Internal.KeyPair
 import ArM.Char.Virtues
+import ArM.Debug.Trace
 -- import ArM.Types.Season
 
 type CharTime = Maybe String
@@ -190,7 +191,7 @@ applyAdvancement a cs = (a',cs')
           cs' = cs { charTime = season a, traits = new }
           new = advance change $ advance inferred old 
           change = changes a'
-          inferred = inferredTraits a'
+          inferred = trace (show a') $ inferredTraits a'
           old = traits cs
 
 -- | Apply a list of advancements
