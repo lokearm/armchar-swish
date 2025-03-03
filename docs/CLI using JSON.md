@@ -41,10 +41,17 @@ aliases:
         + However, implied traits are effective immediately.
     + Advancement may be amended
         + additional XP
-    + ProtoTrait may be amended
-        + affinity
-    + Trait may be amended
-        + bonusScore
+        + `computeAdvancement :: CharacterState -> Advancement -> Advancement`
+    + Virtues and flaws add implied traits
+        + `processVF :: [ProtoTrait] -> [ProtoTrait]`
+        + This handles affinities and puissant
+        + Alternative approaces
+		    + ProtoTrait may be amended
+		        + affinity
+		        + `computeAdvancement :: CharacterState -> ProtoTrait -> ProtoTrait`
+		    + Trait may be amended
+		        + bonusScore
+    + Advance trait $\to$  `advance`
         
 + Ideas
 	+ [Data.Map](https://hackage.haskell.org/package/containers-0.4.0.0/docs/Data-Map.html) could be used for CharacterState
