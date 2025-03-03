@@ -447,7 +447,8 @@ instance TraitLike Ability where
 instance TraitLike Art where
     key x = ArtKey $ artName x
     toTrait = ArtTrait
-    advanceTrait _ x = trace "Warning! Advancement not implemented for arts"  x
+    advanceTrait a x = updateArtXP y x
+      where y = (artExcessXP x) + (maybeInt $ xp a)
 instance TraitLike Spell where
     key x = SpellKey $ spellName x
     toTrait = SpellTrait
@@ -458,6 +459,7 @@ instance TraitLike Spell where
 instance TraitLike Reputation where
     key x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
+    advanceTrait _ x = trace "Warning! Advancement not implemented for reputation"  x
 instance TraitLike Characteristic where
     key x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
@@ -523,6 +525,12 @@ updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
                      | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
     where sc = abilityScore ab
           tr = (sc+1)*5
+
+updateArtXP :: Int -> Art -> Art
+updateArtXP x ab | x < tr = ab { artExcessXP = x }
+                     | otherwise = updateArtXP (x-tr) $ ab { artScore = sc+1 }
+    where sc = artScore ab
+          tr = (sc+1)
 
 updateSpellXP :: Int -> Spell -> Spell
 updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
