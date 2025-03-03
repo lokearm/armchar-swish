@@ -30,6 +30,8 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , key
                       , (<:)
                       , (>:)
+                      , toTrait
+                      , advance
                       , filterTrait
                        ) where
 
@@ -106,6 +108,15 @@ advanceTraits (x:xs) (y:ys)
     | x <: y = x:advanceTraits xs (y:ys)
     | y <: x = y:advanceTraits (x:xs) ys
     | otherwise = advanceTrait x y:advanceTraits xs ys
+
+advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
+advance [] ys = ys
+advance ys [] = map toTrait ys
+advance (x:xs) (y:ys) 
+    | x <: y = toTrait x:advance xs (y:ys)
+    | y <: x = y:advance (x:xs) ys
+    | otherwise = adv x y:advance xs ys
+    where adv a b = toTrait $ advanceTrait a b
 
 instance ToJSON ProtoTrait 
 instance FromJSON ProtoTrait where
@@ -435,19 +446,47 @@ class TraitLike t where
     key :: t -> TraitKey
     advanceTrait :: ProtoTrait -> t -> t
     advanceTrait _ x = x
+    toTrait :: t -> Trait
 
+instance TraitLike Trait where
+    key (CharacteristicTrait x) = key x
+    key (AbilityTrait x) = key x
+    key (ArtTrait x) = key x
+    key (SpellTrait x) = key x
+    key (ReputationTrait x) = key x
+    key (VFTrait x) = key x
+    key (PTraitTrait x) = key x
+    key (OtherTraitTrait x) = key x
+    key (ConfidenceTrait x) = key x
+    toTrait = id
+
+instance TraitLike PTrait where
+    key x = PTraitKey $ ptraitName x
+    toTrait = PTraitTrait
 instance TraitLike VF where
     key x = VFKey $ vfname x
+    toTrait = VFTrait
 instance TraitLike Ability where
     key x = AbilityKey $ abilityName x
+    toTrait = AbilityTrait
 instance TraitLike Art where
     key x = ArtKey $ artName x
+    toTrait = ArtTrait
 instance TraitLike Spell where
     key x = SpellKey $ spellName x
+    toTrait = SpellTrait
 instance TraitLike Reputation where
     key x = ReputationKey ( reputationName x ) ( repLocale x )
+    toTrait = ReputationTrait
 instance TraitLike Characteristic where
     key x = CharacteristicKey ( characteristicName x ) 
+    toTrait = CharacteristicTrait
+instance TraitLike  Confidence where
+    key _ = ConfidenceKey 
+    toTrait = ConfidenceTrait
+instance TraitLike  OtherTrait where
+    key x = OtherTraitKey ( trait x ) 
+    toTrait = OtherTraitTrait
 
 instance TraitLike ProtoTrait where
    key p
@@ -473,3 +512,4 @@ instance TraitLike ProtoTrait where
        | confidence a /= Nothing = updateScore a . updatePts a
        | other a /= Nothing = updatePts a
        | otherwise  = id
+   toTrait = processTrait

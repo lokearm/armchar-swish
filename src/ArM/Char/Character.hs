@@ -14,6 +14,7 @@ module ArM.Char.Character ( Character(..)
                           , CharacterConcept(..)
                           , defaultConcept
                           , CharacterState(..)
+                          , defaultCMS
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
