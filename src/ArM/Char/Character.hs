@@ -110,6 +110,7 @@ data Character = Character
          { charID :: String
          , concept :: CharacterConcept
          , state :: Maybe CharacterState
+         , pregameDesign :: [ Advancement ]
          , pregameAdvancement :: [ Advancement ]
          , pastAdvancement :: [ Advancement ]
          , futureAdvancement :: [ Advancement ]
@@ -121,6 +122,7 @@ defaultCharacter :: Character
 defaultCharacter = Character { charID = "N/A"
                              , concept = defaultConcept
                              , state = Nothing
+                             , pregameDesign = [ ]
                              , pregameAdvancement = [ ]
                              , pastAdvancement = [ ]
                              , futureAdvancement = [ ]
@@ -143,6 +145,7 @@ instance FromJSON Character where
         <$> v .: "charID"
         <*> v .: "concept"
         <*> v .:? "state" 
+        <*> fmap listNothing ( v .:? "pregameDesign" )
         <*> fmap listNothing ( v .:? "pregameAdvancement" )
         <*> fmap listNothing ( v .:? "pastAdvancement" )
         <*> fmap listNothing ( v .:? "futureAdvancement" )
@@ -185,9 +188,13 @@ applyAdvancements' (xs,y:ys,cs) = applyAdvancements' ((a',y):xs,ys,cs')
 prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
-            | otherwise = c { state = Just s }
-            where s = pregameBuild $ pregameAdvancement  c 
+            | otherwise = c { state = Just cs
+                            , pregameDesign = fst $ unzip xs
+                            }
+            where as = pregameAdvancement  c 
+                  (xs,cs) = applyAdvancements as defaultCS
 
+{-
 -- | Process pregameAdvancement to compute initial CharacterState
 pregameBuild :: [ Advancement ] -> CharacterState
 pregameBuild as = defaultCS { charTime = Just "Game Start"
@@ -200,6 +207,7 @@ pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ]
 pregameAdvance xs [] = xs
 pregameAdvance xs (y:ys) = pregameAdvance ns ys
    where ns = advanceTraits (changes y) xs
+-}
 
 data Season = Spring | Summer | Autumn | Winter 
    deriving (Show,Ord,Eq)
