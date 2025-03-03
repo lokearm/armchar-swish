@@ -34,6 +34,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , toTrait
                       , advance
                       , filterTrait
+                      , defaultPT
                        ) where
 
 import ArM.Debug.Trace
@@ -75,6 +76,8 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , locale :: Maybe String
                              , mastery :: Maybe [ String ]
                              , score :: Maybe Int
+                             , bonusScore :: Maybe Int
+                             , multiplyXP :: Maybe Float
                              , cost :: Maybe Int
                              , points :: Maybe Int 
                              , xp :: Maybe Int 
@@ -98,6 +101,8 @@ defaultPT = ProtoTrait { ability = Nothing
                              , locale = Nothing
                              , mastery = Nothing
                              , score = Nothing
+                             , bonusScore = Nothing
+                             , multiplyXP = Nothing
                              , cost = Nothing
                              , points = Nothing
                              , xp = Nothing
@@ -123,6 +128,8 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "locale"
         <*> v .:?  "mastery"
         <*> v .:?  "score"
+        <*> v .:?  "bonusScore"
+        <*> v .:?  "multiplyXP"
         <*> v .:?  "cost"
         <*> v .:?  "points"
         <*> v .:?  "xp"
@@ -614,7 +621,7 @@ advanceTraits (x:xs) (y:ys)
     | y <: x = y:advanceTraits (x:xs) ys
     | otherwise = advanceTrait x y:advanceTraits xs ys
 
--- | Apply a list of ProtoType advancements to a list of Traits.
+-- | Apply a list of ProtoTrait advancements to a list of Traits.
 advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
 advance [] ys = ys
 advance ys [] = map toTrait ys
