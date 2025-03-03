@@ -159,6 +159,15 @@ prepareAdvancement = prepareAdvancementVF . fst . filterTrait . traits
 prepareAdvancementVF :: [VF] -> Advancement -> Advancement
 prepareAdvancementVF _ = id
 
+-- | Apply advancement
+applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
+applyAdvancement a cs = (a',cs')
+    where a' = prepareAdvancement cs a
+          cs' = cs { traits = advance change old }
+          change = inferTraits cs ps
+          ps = changes a'
+          old = traits cs
+
 -- | Add ProtoTrait objects infered by current virtues and flaws
 inferTraits :: CharacterState -> [ProtoTrait] -> [ProtoTrait]
 inferTraits _ = sortTraits . id
