@@ -71,6 +71,7 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , other :: Maybe String
                              , spec :: Maybe String
                              , detail :: Maybe String
+                             , appliesTo :: Maybe TraitKey
                              , locale :: Maybe String
                              , mastery :: Maybe [ String ]
                              , score :: Maybe Int
@@ -80,6 +81,28 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , aging :: Maybe Int
                              }
                              deriving (Ord,Eq,Generic)
+defaultPT :: ProtoTrait
+defaultPT = ProtoTrait { ability = Nothing
+                             , virtue = Nothing
+                             , flaw = Nothing
+                             , characteristic = Nothing
+                             , art = Nothing
+                             , spell = Nothing
+                             , ptrait = Nothing
+                             , confidence = Nothing
+                             , reputation = Nothing
+                             , other = Nothing
+                             , spec = Nothing
+                             , detail = Nothing
+                             , appliesTo = Nothing
+                             , locale = Nothing
+                             , mastery = Nothing
+                             , score = Nothing
+                             , cost = Nothing
+                             , points = Nothing
+                             , xp = Nothing
+                             , aging = Nothing
+                             }
 
 instance ToJSON ProtoTrait 
 instance FromJSON ProtoTrait where
@@ -96,6 +119,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "other"
         <*> v .:?  "spec"
         <*> v .:?  "detail"
+        <*> v .:?  "appliesTo"
         <*> v .:?  "locale"
         <*> v .:?  "mastery"
         <*> v .:?  "score"
@@ -117,7 +141,10 @@ data TraitKey = AbilityKey String
            | VFKey String
            | ConfidenceKey 
            | OtherTraitKey String
-           deriving (Show, Ord, Eq )
+           deriving (Show, Ord, Eq,Generic )
+
+instance ToJSON TraitKey
+instance FromJSON TraitKey
 data Ability = Ability { abilityName :: String
                        , speciality :: Maybe String
                        , abilityXP :: Int 
@@ -153,7 +180,11 @@ data Reputation = Reputation { reputationName :: String
                              ,  repExcessXP :: Int 
                              }
            deriving (Show, Ord, Eq, Generic)
-data VF = VF { vfname :: String, vfDetail :: String, vfcost :: Int }
+data VF = VF { vfname :: String
+             , vfDetail :: String
+             , vfcost :: Int 
+             , vfAppliesTo :: Maybe TraitKey
+             }
            deriving (Show, Ord, Eq, Generic)
 data Confidence = Confidence { cscore :: Int, cpoints :: Int }
            deriving (Show, Ord, Eq, Generic)
@@ -327,7 +358,8 @@ instance TraitType VF where
        | virtue p /= Nothing = Just $ vf1 { vfname = fromJust (virtue p) }
        | flaw p /= Nothing = Just $ vf1 { vfname = fromJust (flaw p) }
        | otherwise = Nothing
-      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p }
+      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p,
+                    vfAppliesTo = Nothing }
 instance TraitType Ability where
     getTrait (AbilityTrait x) = Just x
     getTrait _ = Nothing

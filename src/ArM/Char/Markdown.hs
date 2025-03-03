@@ -49,7 +49,7 @@ instance Markdown Advancement where
    printMD a = f (season a) (mode a) $ fn (narrative a) $ pt a
       where xps | sx == Nothing = ""
                 | otherwise = " (" ++ ishow  sx ++ "xp)" 
-            sx = totalXP a
+            sx = sourceQuality a
             ishow = show . fromJust
             pt = map ("    + "++) . foldl (++) [] . map printMD . changes 
 
