@@ -1,0 +1,18 @@
+{
+	"nodes":[
+		{"id":"63ec40d009c68ce6","x":-380,"y":-240,"width":250,"height":60,"type":"text","text":"Raw file"},
+		{"id":"b3bd460a85f92ac5","x":-379,"y":-91,"width":250,"height":60,"type":"text","text":"CharacterState"},
+		{"id":"0268a1c436048303","x":9,"y":-197,"width":250,"height":60,"type":"text","text":"Computed Advancement"},
+		{"id":"f346168ec6199432","x":13,"y":-31,"width":227,"height":51,"type":"text","text":"Validation report (internal consistency)"},
+		{"id":"932ce8e2d61f580a","x":13,"y":-360,"width":250,"height":60,"type":"text","text":"Other Characters and Convenat"},
+		{"id":"b1e220a77e10a66d","x":384,"y":-197,"width":250,"height":60,"type":"text","text":"Validation Report (Covenant Consistency)"}
+	],
+	"edges":[
+		{"id":"978ad2bf35226945","fromNode":"63ec40d009c68ce6","fromSide":"bottom","toNode":"b3bd460a85f92ac5","toSide":"top"},
+		{"id":"d107cab9903a0a47","fromNode":"63ec40d009c68ce6","fromSide":"right","toNode":"0268a1c436048303","toSide":"left"},
+		{"id":"0a288380005d8e4d","fromNode":"b3bd460a85f92ac5","fromSide":"right","toNode":"0268a1c436048303","toSide":"left"},
+		{"id":"5fca43289e25385d","fromNode":"0268a1c436048303","fromSide":"bottom","toNode":"f346168ec6199432","toSide":"top"},
+		{"id":"ad138222b608663c","fromNode":"0268a1c436048303","fromSide":"right","toNode":"b1e220a77e10a66d","toSide":"left"},
+		{"id":"330ee0257e34b86e","fromNode":"932ce8e2d61f580a","fromSide":"right","toNode":"b1e220a77e10a66d","toSide":"left"}
+	]
+}

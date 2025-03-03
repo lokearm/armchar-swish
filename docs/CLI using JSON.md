@@ -8,6 +8,7 @@ aliases:
 + Dedicated Libraries: `ArM/Char`
 + Also reuses some libraries from the swish model
 + See also [[Character Generation Process]]
++ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]]
 + 
 
 + [ ] Step 1.  Working Companion
