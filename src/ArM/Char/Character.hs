@@ -40,6 +40,7 @@ listNothing Nothing = []
 listNothing (Just xs) = xs
 
 
+-- |
 -- = CharacterConcept
 
 data CharacterConcept = CharacterConcept 
@@ -78,6 +79,7 @@ fullConceptName c = name c ++ (f $ house c)
                        | otherwise  = " ex " ++ x
 
 
+-- |
 -- = CharacterState
 
 data CharacterMapState = CharacterMapState 
@@ -109,6 +111,7 @@ instance FromJSON CharacterState where
         <$> v .:? "charTime"
         <*> fmap listNothing ( v .:? "traits" )
 
+-- |
 -- = Character
 
 data Character = Character 
@@ -169,6 +172,7 @@ pregameAdvance xs [] = xs
 pregameAdvance xs (y:ys) = pregameAdvance ns ys
    where ns = advanceTraits (changes y) xs
 
+-- |
 -- = Advancement
 
 data Season = Spring | Summer | Autumn | Winter 

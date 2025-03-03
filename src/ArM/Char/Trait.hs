@@ -284,6 +284,7 @@ computeOther p
 
 
 
+-- |
 -- = Filtering and Advancement - the TraitType class
 
 class TraitType t where
@@ -372,6 +373,7 @@ instance TraitType Reputation where
      where (s,y) = getAbilityScore (xp p)
 
 
+-- |
 -- = Sorting and Advancement 
 
 (<:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
@@ -387,6 +389,7 @@ sortTraits = sortBy f
                    | y <: x = GT
                    | otherwise = EQ
 
+-- |
 -- == the TraitLike class
 
 class TraitLike t where
@@ -476,6 +479,7 @@ instance TraitLike ProtoTrait where
       | other p /= Nothing = OtherTraitTrait $ computeOther p
       | otherwise  = error "No Trait for this ProtoTrait" 
 
+-- |
 -- == Auxiliary update functions
 
 updateSpec :: ProtoTrait -> ProtoTrait -> ProtoTrait
