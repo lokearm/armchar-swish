@@ -60,6 +60,7 @@ common armchar-deps
                        , ArM.Char.Internal.KeyPair
                        , ArM.Char.Trait
                        -- , ArM.Char.Advancement
+                       , ArM.Char.Virtues
                        , ArM.Char.Markdown
                        -- , ArM.Char.CharacterSheet
                        , ArM.Types.Season

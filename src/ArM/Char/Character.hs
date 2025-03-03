@@ -165,11 +165,11 @@ prepareAdvancement = prepareAdvancementVF . fst . filterTrait . traits
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancementVF :: [VF] -> Advancement -> Advancement
-prepareAdvancementVF vfs a = a { changes = inferTraitsVF vfs $ changes a }
+prepareAdvancementVF vfs a = a { inferredTraits = inferTraitsVF vfs $ changes a }
 --
 -- | Add ProtoTrait objects infered by current virtues and flaws
 inferTraitsVF :: [VF] -> [ProtoTrait] -> [ProtoTrait]
-inferTraitsVF _ = sortTraits . id
+inferTraitsVF _ _ = []
 
 -- | Apply advancement
 applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
@@ -226,8 +226,10 @@ data ExposureType = LabWork | Teach | Train
 data Advancement = Advancement { mode :: Maybe String
                                , season :: CharTime
                                , narrative :: Maybe String
-                               , totalXP :: Maybe Int
+                               , sourceQuality :: Maybe Int
+                               , effectiveSQ :: Maybe Int
                                , changes :: [ ProtoTrait ]
+                               , inferredTraits :: [ ProtoTrait ]
                                }
    deriving (Eq,Generic,Show)
 
@@ -240,6 +242,8 @@ instance FromJSON Advancement where
         <$> v .:? "mode"
         <*> v .:? "season"
         <*> v .:? "narrative"
-        <*> v .:? "totalXP"
+        <*> v .:? "sourceQUality"
+        <*> v .:? "effectiveSQ"
         <*> fmap listNothing ( v .:? "changes" )
+        <*> fmap listNothing ( v .:? "inferredTraits" )
 
