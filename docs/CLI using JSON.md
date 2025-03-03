@@ -111,6 +111,16 @@ aliases:
 			+ includes a time (season) or a stage (pregame)
 			+ may include a narrative
 			+ may include appearance, if it changes
++ Advancement
+	+ as entered by user
+		+ season 
+		+ totalXP
+		+ uses (book)
+		+ changes 
+	+ maybe InferedAdvancement
+	+ derived
+		+ inferedTraits
+		+ inferedTotalXP
 + CharacterState
 	+ metadata from Character
 	+ state of traits
