@@ -223,14 +223,21 @@ data ExposureType = LabWork | Teach | Train
                   | Writing | Copying | OtherExposure | NoExposure
    deriving (Show,Ord,Eq)
 
-data Advancement = Advancement { mode :: Maybe String
-                               , season :: CharTime
-                               , narrative :: Maybe String
-                               , sourceQuality :: Maybe Int
-                               , effectiveSQ :: Maybe Int
-                               , changes :: [ ProtoTrait ]
-                               , inferredTraits :: [ ProtoTrait ]
-                               }
+-- | The advancement object has two roles.
+-- It can hold the advancemet from one season or chargen stage,
+-- as specified by the user.
+-- It can also hold additional field inferred by virtues and flaws.
+-- One may consider splitting these two functions into two types.
+data Advancement = Advancement 
+     { mode :: Maybe String  -- ^ mode of study
+     , season :: CharTime    -- ^ season or development stage
+     , narrative :: Maybe String -- ^ freeform description of the activities
+     , sourceQuality :: Maybe Int -- ^ Source Quality (SQ)
+     , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
+     , changes :: [ ProtoTrait ]  -- ^ trait changes defined by player
+     , inferredTraits :: [ ProtoTrait ] 
+         -- ^ trait changes inferred by virtues and flaws
+     }
    deriving (Eq,Generic,Show)
 
 instance ToJSON Advancement where
@@ -242,7 +249,7 @@ instance FromJSON Advancement where
         <$> v .:? "mode"
         <*> v .:? "season"
         <*> v .:? "narrative"
-        <*> v .:? "sourceQUality"
+        <*> v .:? "sourceQuality"
         <*> v .:? "effectiveSQ"
         <*> fmap listNothing ( v .:? "changes" )
         <*> fmap listNothing ( v .:? "inferredTraits" )
