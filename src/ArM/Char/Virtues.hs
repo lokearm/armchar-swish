@@ -32,7 +32,7 @@ virtueMap = Map.fromList $ vl1 ++ vl2
 
 -- | Add ProtoTrait objects infered by current virtues and flaws
 inferTraits :: [VF] -> [ProtoTrait]
-inferTraits vfs = trace ("inferTraits: " ++ show vfs) $ rs
+inferTraits vfs = trace ("inferTraits: " ++ show vfs) $ sortTraits rs
     where vf = [ trace (show $ traitKey x) $ Map.lookup (traitKey x) virtueMap | x <- vfs ]
           app Nothing _ = Nothing
           app (Just f) x = Just $ f x

@@ -26,7 +26,6 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Reputation(..)
                       , VF(..)
                       , advanceTrait
-                      , advanceTraits
                       , sortTraits
                       , traitKey
                       , getTrait
@@ -241,9 +240,12 @@ instance Show Ability  where
           ++ show (abilityScore a) 
           ++ showBonus (abilityBonus a)
           ++ " (" ++ show (abilityExcessXP a) ++ "xp) "
+          ++ f (abilityMultiplier a)
       where showspec Nothing = "  --  "
             showspec (Just s) = s
             sp = speciality a
+            f 0 = ""
+            f x = " [xp x" ++ show x ++  "]"
 instance Show Characteristic  where
    show a = characteristicName a ++ " " ++ showSigned (charScore a)
           ++ showA (agingPoints a)
@@ -254,6 +256,9 @@ instance Show Art  where
           ++ show (artScore a) 
           ++ showBonus (artBonus a)
           ++ " (" ++ show (artExcessXP a) ++ "xp) "
+          ++ f (artMultiplier a)
+      where f 0 = ""
+            f x = " [xp x" ++ show x ++  "]"
 
 showAging :: ProtoTrait -> String
 showAging p | Nothing == aging p = ""
@@ -468,6 +473,20 @@ instance TraitLike Trait where
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     toTrait = id
 
+updateBonus :: Maybe Int -> Ability -> Ability
+updateBonus Nothing a = a 
+updateBonus (Just x) a = a { abilityBonus = x + abilityBonus a }
+updateMultiplier :: Maybe Float -> Ability -> Ability
+updateMultiplier Nothing a = a
+updateMultiplier (Just x) a = a { abilityMultiplier = x }
+
+updateArtBonus :: Maybe Int -> Art -> Art
+updateArtBonus Nothing a = a 
+updateArtBonus (Just x) a = a { artBonus = x + artBonus a }
+updateArtMultiplier :: Maybe Float -> Art -> Art
+updateArtMultiplier Nothing a = a
+updateArtMultiplier (Just x) a = a { artMultiplier = x }
+
 instance TraitLike PTrait where
     traitKey x = PTraitKey $ ptraitName x
     toTrait = PTraitTrait
@@ -479,12 +498,16 @@ instance TraitLike Ability where
     traitKey x = AbilityKey $ abilityName x
     toTrait = AbilityTrait
     advanceTrait a x = 
-      trace (show x) $ trace (show a) $ updateAbilitySpec (spec a) $ updateAbilityXP y x
+          trace (show x) $ trace (show a) $ 
+          updateBonus (bonusScore a) $ updateMultiplier (multiplyXP a) $
+          updateAbilitySpec (spec a) $ updateAbilityXP y x
       where y = (abilityExcessXP x) + (maybeInt $ xp a)
 instance TraitLike Art where
     traitKey x = ArtKey $ artName x
     toTrait = ArtTrait
-    advanceTrait a x = updateArtXP y x
+    advanceTrait a x = 
+          updateArtBonus (bonusScore a) $ updateArtMultiplier (multiplyXP a) $
+          updateArtXP y x 
       where y = (artExcessXP x) + (maybeInt $ xp a)
 instance TraitLike Spell where
     traitKey x = SpellKey $ spellName x
@@ -608,6 +631,7 @@ updateMastery a t = t { mastery = f (mastery t) (mastery a) }
           f y Nothing = y
           f (Just x) (Just y)  = Just (x ++ y)
 
+{-
 
 -- | Merge two lists of ProtoTrait (advancement) objects, combining objects
 -- which refer to the same Trait.
@@ -618,14 +642,15 @@ advanceTraits (x:xs) (y:ys)
     | x <: y = x:advanceTraits xs (y:ys)
     | y <: x = y:advanceTraits (x:xs) ys
     | otherwise = advanceTrait x y:advanceTraits xs ys
+-}
 
 -- | Apply a list of ProtoTrait advancements to a list of Traits.
 advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
 advance [] ys = ys
-advance ys [] = map toTrait ys
+advance (x:xs) [] = advance xs [toTrait x]
 advance (x:xs) (y:ys) 
-    | x <: y = toTrait x:advance xs (y:ys)
+    | x <: y = advance xs (toTrait x:y:ys)
     | y <: x = y:advance (x:xs) ys
-    | otherwise = adv x y:advance xs ys
+    | otherwise = advance xs (adv x y:ys)
     where adv a b = toTrait $ advanceTrait a b
 
