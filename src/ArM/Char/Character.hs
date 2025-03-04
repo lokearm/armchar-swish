@@ -30,17 +30,16 @@ module ArM.Char.Character ( Character(..)
 
 import GHC.Generics
 import Data.Aeson
-import Data.Maybe (fromJust,isNothing,isJust)
+-- import Data.Maybe (fromJust,isNothing,isJust)
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
+import ArM.Char.Advancement
 import ArM.Char.Internal.KeyPair
-import ArM.Char.Virtues
 import ArM.Debug.Trace
 -- import ArM.Types.Season
 import ArM.Helper
 
-type CharTime = Maybe String
 
 
 
@@ -164,18 +163,6 @@ instance FromJSON Character where
 prepareAdvancement :: CharacterState -> Advancement -> Advancement
 prepareAdvancement _ = prepareAdvancementVF 
 
--- | Augment and amend the advancements based on current virtues and flaws.
-prepareAdvancementVF :: Advancement -> Advancement
-prepareAdvancementVF a = a { inferredTraits = f a }
-     where f = inferTraits . getVF . changes 
-
-getVF :: [ ProtoTrait ] -> [ VF ]
-getVF [] = []
-getVF (p:ps) | isJust (virtue p) = g p:getVF ps
-             | isJust (flaw p) = g p:getVF ps
-             | otherwise = getVF ps
-    where g = fromJust . computeTrait
-
 
 -- | Apply advancement
 applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
@@ -184,7 +171,7 @@ applyAdvancement a cs = (a',cs')
           cs' = cs { charTime = season a, traits = new }
           new = advance change $ advance inferred old 
           change = changes a'
-          inferred = trace (show a') $ inferredTraits a'
+          inferred = trace (">" ++ show a') $ inferredTraits a'
           old = traits cs
 
 -- | Apply a list of advancements
@@ -206,59 +193,4 @@ prepareCharacter c
                             }
             where as = pregameAdvancement  c 
                   (xs,cs) = applyAdvancements as defaultCS
-
-{-
--- | Process pregameAdvancement to compute initial CharacterState
-pregameBuild :: [ Advancement ] -> CharacterState
-pregameBuild as = defaultCS { charTime = Just "Game Start"
-                            , traits = map toTrait $ pregameAdvance [] as
-                            }
-
-
--- | Recursive helper for pregameBuild
-pregameAdvance :: [ ProtoTrait ]  -> [ Advancement ] -> [ ProtoTrait ] 
-pregameAdvance xs [] = xs
-pregameAdvance xs (y:ys) = pregameAdvance ns ys
-   where ns = advanceTraits (changes y) xs
--}
-
-data Season = Spring | Summer | Autumn | Winter 
-   deriving (Show,Ord,Eq)
-data AdvancementType = Practice | Exposure | Adventure 
-                     | Teaching | Training | Reading | VisStudy
-   deriving (Show,Ord,Eq)
-data ExposureType = LabWork | Teach | Train 
-                  | Writing | Copying | OtherExposure | NoExposure
-   deriving (Show,Ord,Eq)
-
--- | The advancement object has two roles.
--- It can hold the advancemet from one season or chargen stage,
--- as specified by the user.
--- It can also hold additional field inferred by virtues and flaws.
--- One may consider splitting these two functions into two types.
-data Advancement = Advancement 
-     { mode :: Maybe String  -- ^ mode of study
-     , season :: CharTime    -- ^ season or development stage
-     , narrative :: Maybe String -- ^ freeform description of the activities
-     , sourceQuality :: Maybe Int -- ^ Source Quality (SQ)
-     , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
-     , changes :: [ ProtoTrait ]  -- ^ trait changes defined by player
-     , inferredTraits :: [ ProtoTrait ] 
-         -- ^ trait changes inferred by virtues and flaws
-     }
-   deriving (Eq,Generic,Show)
-
-instance ToJSON Advancement where
-    -- For efficiency - Not required
-    toEncoding = genericToEncoding defaultOptions
-
-instance FromJSON Advancement where
-    parseJSON = withObject "Advancement" $ \v -> Advancement
-        <$> v .:? "mode"
-        <*> v .:? "season"
-        <*> v .:? "narrative"
-        <*> v .:? "sourceQuality"
-        <*> v .:? "effectiveSQ"
-        <*> fmap maybeList ( v .:? "changes" )
-        <*> fmap maybeList ( v .:? "inferredTraits" )
 

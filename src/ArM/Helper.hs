@@ -38,3 +38,7 @@ filterNothing = f
     where f [] = []
           f (Nothing:xs) = f xs
           f (Just x:xs) = x:f xs
+
+maybeShow :: Show a => Maybe a -> String
+maybeShow Nothing = ""
+maybeShow (Just x) = show x

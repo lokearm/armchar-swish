@@ -1,38 +1,79 @@
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Types.Character
+-- Module      :  ArM.Char.Advancement
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  The Advancement types representing changes over a season.
+--
 -----------------------------------------------------------------------------
 module ArM.Char.Advancement where
 
-import ArM.Char.Character
--- import ArM.Char.Trait
+-- import ArM.Char.Character
+import ArM.Helper
+import ArM.Char.Trait
+import ArM.Char.Virtues
 
-{-
-advanceCharacter :: Character -> [ ( CharTime, [ ProtoTrait ] ) ]
-advanceCharacter c = advanceCharacter' (charAdvancement c)
-                   $ advanceCharacter' (pregameAdvancement c) []
-advanceCharacter' :: [ Advancement ] -> [ ( CharTime, [ ProtoTrait ] ) ] 
-                                    -> [ ( CharTime, [ ProtoTrait ] ) ]
-advanceCharacter' [] cs = cs
-advanceCharacter' (a:as) [] = advanceCharacter' as [ ( season a, changes a ) ] 
-advanceCharacter' (a:as) ((t,xs):cs) = 
-    advanceCharacter' as bs
-       where bs = ( ( season a, advanceTraits ys xs):(t,xs):cs ) 
-             ys = sortTraits $ changes a
--}
+import Data.Aeson
+import Data.Maybe (fromJust,isJust)
+import GHC.Generics
 
-advanceCharacterState :: 
-    ( CharacterState, [ Advancement ], [ Advancement ] ) ->
-    ( CharacterState, [ Advancement ], [ Advancement ] ) 
-advanceCharacterState (cs,[],ys) = (cs,[],ys)
-advanceCharacterState (cs,(x:xs),ys) = advanceCharacterState (cs',xs,(x:ys))
-   where cs' = advanceCS cs x
-advanceCS :: CharacterState -> Advancement -> CharacterState 
-advanceCS cs _ = cs { traits = cx }
-   where cx = computeCS nx
-         nx = []
+type CharTime = Maybe String
+
+
+data Season = Spring | Summer | Autumn | Winter 
+   deriving (Show,Ord,Eq)
+data AdvancementType = Practice | Exposure | Adventure 
+                     | Teaching | Training | Reading | VisStudy
+   deriving (Show,Ord,Eq)
+data ExposureType = LabWork | Teach | Train 
+                  | Writing | Copying | OtherExposure | NoExposure
+   deriving (Show,Ord,Eq)
+
+-- | The advancement object has two roles.
+-- It can hold the advancemet from one season or chargen stage,
+-- as specified by the user.
+-- It can also hold additional field inferred by virtues and flaws.
+-- One may consider splitting these two functions into two types.
+data Advancement = Advancement 
+     { mode :: Maybe String  -- ^ mode of study
+     , season :: CharTime    -- ^ season or development stage
+     , narrative :: Maybe String -- ^ freeform description of the activities
+     , sourceQuality :: Maybe Int -- ^ Source Quality (SQ)
+     , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
+     , changes :: [ ProtoTrait ]  -- ^ trait changes defined by player
+     , inferredTraits :: [ ProtoTrait ] 
+         -- ^ trait changes inferred by virtues and flaws
+     }
+   deriving (Eq,Generic,Show)
+
+instance ToJSON Advancement where
+    -- For efficiency - Not required
+    toEncoding = genericToEncoding defaultOptions
+
+instance FromJSON Advancement where
+    parseJSON = withObject "Advancement" $ \v -> Advancement
+        <$> v .:? "mode"
+        <*> v .:? "season"
+        <*> v .:? "narrative"
+        <*> v .:? "sourceQuality"
+        <*> v .:? "effectiveSQ"
+        <*> fmap maybeList ( v .:? "changes" )
+        <*> fmap maybeList ( v .:? "inferredTraits" )
+
+
+-- | Augment and amend the advancements based on current virtues and flaws.
+prepareAdvancementVF :: Advancement -> Advancement
+prepareAdvancementVF a = a { inferredTraits = f a }
+     where f = inferTraits . getVF . changes 
+
+getVF :: [ ProtoTrait ] -> [ VF ]
+getVF [] = []
+getVF (p:ps) | isJust (virtue p) = g p:getVF ps
+             | isJust (flaw p) = g p:getVF ps
+             | otherwise = getVF ps
+    where g = fromJust . computeTrait

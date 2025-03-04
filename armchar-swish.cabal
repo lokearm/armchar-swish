@@ -59,7 +59,7 @@ common armchar-deps
   other-modules:       ArM.Char.Character
                        , ArM.Char.Internal.KeyPair
                        , ArM.Char.Trait
-                       -- , ArM.Char.Advancement
+                       , ArM.Char.Advancement
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
                        , ArM.Helper

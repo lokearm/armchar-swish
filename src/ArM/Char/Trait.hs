@@ -261,41 +261,41 @@ showAging p | Nothing == aging p = ""
     where pt = maybeInt $ aging p
 showXP :: ProtoTrait -> String
 showXP p = " " ++ show ( maybeInt (xp p) ) ++ "xp"
-maybeShow :: Show a => Maybe a -> String
-maybeShow Nothing = ""
-maybeShow (Just x) = show x
 
 instance Show ProtoTrait  where
    show p 
-    | ability p /= Nothing = 
-        "Ability: " ++ fromJust ( ability p )  ++ 
-        " [" ++ show ( spec p ) ++ "]" ++ showXP p
-    | characteristic p /= Nothing =
-        "Characteristic: " ++ fromJust ( characteristic p )  ++
-        " " ++ show ( maybeInt (score p) ) ++ showAging p 
-    | art p /= Nothing = 
-        "Art: " ++ fromJust ( art p ) ++ showXP p
-    | spell p /= Nothing =
-           "Spell: " ++ fromJust (spell p) ++ showXP p
-                 ++ maybeShow (mastery p)
-    | ptrait p /= Nothing = 
-           "Personality Trait: " ++ fromJust (ptrait p)
-                  ++ " " ++ maybeShow (score p)
-    | reputation p /= Nothing = 
-           "Reputation: " ++ fromJust (reputation p) ++
-           " [" ++ maybeShow (locale p) ++ "]" ++ showXP p
-    | virtue p /= Nothing = 
-           "Virtue: " ++ fromJust (virtue p) ++ " ("
-           ++ show ( maybeInt (cost p) ) ++ ")"
-    | flaw p /= Nothing = 
-           "Flaw: " ++ fromJust (flaw p) ++ " ("
-           ++ show ( maybeInt (cost p) ) ++ ")"
-    | confidence p /= Nothing = 
-           "Confidence: " ++ show (maybeInt (score p)) ++ " (" ++
-           show ( maybeInt (points p) ) ++ ")"
-    | other p /= Nothing = 
-            fromJust (other p) ++ " " ++ show ( maybeInt ( points p ) )
-    | otherwise  = error "No Trait for this ProtoTrait" 
+       | ability p /= Nothing = 
+           "Ability: " ++ fromJust ( ability p )  ++ 
+           " [" ++ show ( spec p ) ++ "]" ++ showXP p
+           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
+       | characteristic p /= Nothing =
+           "Characteristic: " ++ fromJust ( characteristic p )  ++
+           " " ++ show ( maybeInt (score p) ) ++ showAging p 
+       | art p /= Nothing = 
+           "Art: " ++ fromJust ( art p ) ++ showXP p
+           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
+       | spell p /= Nothing =
+              "Spell: " ++ fromJust (spell p) ++ showXP p
+                    ++ maybeShow (mastery p)
+       | ptrait p /= Nothing = 
+              "Personality Trait: " ++ fromJust (ptrait p)
+                     ++ " " ++ maybeShow (score p)
+       | reputation p /= Nothing = 
+              "Reputation: " ++ fromJust (reputation p) ++
+              " [" ++ maybeShow (locale p) ++ "]" ++ showXP p
+       | virtue p /= Nothing = 
+              "Virtue: " ++ fromJust (virtue p) ++ " ("
+              ++ show ( maybeInt (cost p) ) ++ ")"
+       | flaw p /= Nothing = 
+              "Flaw: " ++ fromJust (flaw p) ++ " ("
+              ++ show ( maybeInt (cost p) ) ++ ")"
+       | confidence p /= Nothing = 
+              "Confidence: " ++ show (maybeInt (score p)) ++ " (" ++
+              show ( maybeInt (points p) ) ++ ")"
+       | other p /= Nothing = 
+               fromJust (other p) ++ " " ++ show ( maybeInt ( points p ) )
+       | otherwise  = error "No Trait for this ProtoTrait" 
+     where si = show . maybeInt
 
 
 -- |
