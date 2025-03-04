@@ -2,6 +2,7 @@
 import ArM.Char.Virtues
 import ArM.Char.Trait
 import qualified Data.Map as Map
+import Data.Maybe
 
 k = VFKey "Puissant (art)"
 

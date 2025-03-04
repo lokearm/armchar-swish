@@ -1,7 +1,8 @@
 
-module ArM.Char.Virtues (VFMap,virtueMap) where
+module ArM.Char.Virtues (VFMap,virtueMap,inferTraits) where
 
 import ArM.Char.Trait
+import ArM.Helper
 import qualified Data.Map as Map
 import ArM.Debug.Trace
 
@@ -29,3 +30,10 @@ type VFMap = Map.Map TraitKey ( VF -> ProtoTrait )
 virtueMap :: VFMap
 virtueMap = Map.fromList $ vl1 ++ vl2
 
+-- | Add ProtoTrait objects infered by current virtues and flaws
+inferTraits :: [VF] -> [ProtoTrait]
+inferTraits vfs = trace ("inferTraits: " ++ show vfs) $ rs
+    where vf = [ trace (show $ traitKey x) $ Map.lookup (traitKey x) virtueMap | x <- vfs ]
+          app Nothing _ = Nothing
+          app (Just f) x = Just $ f x
+          rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]

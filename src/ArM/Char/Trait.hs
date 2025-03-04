@@ -29,6 +29,8 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , advanceTraits
                       , sortTraits
                       , traitKey
+                      , getTrait
+                      , computeTrait
                       , (<:)
                       , (>:)
                       , toTrait

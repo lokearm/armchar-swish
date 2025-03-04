@@ -30,8 +30,7 @@ module ArM.Char.Character ( Character(..)
 
 import GHC.Generics
 import Data.Aeson
--- import Data.Maybe (fromJust)
-import qualified Data.Map as M
+import Data.Maybe (fromJust,isNothing,isJust)
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
@@ -163,19 +162,20 @@ instance FromJSON Character where
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancement :: CharacterState -> Advancement -> Advancement
-prepareAdvancement = prepareAdvancementVF . fst . filterTrait . traits 
+prepareAdvancement _ = prepareAdvancementVF 
 
 -- | Augment and amend the advancements based on current virtues and flaws.
-prepareAdvancementVF :: [VF] -> Advancement -> Advancement
-prepareAdvancementVF vfs a = a { inferredTraits = inferTraitsVF vfs }
+prepareAdvancementVF :: Advancement -> Advancement
+prepareAdvancementVF a = a { inferredTraits = f a }
+     where f = inferTraits . getVF . changes 
 
--- | Add ProtoTrait objects infered by current virtues and flaws
-inferTraitsVF :: [VF] -> [ProtoTrait]
-inferTraitsVF vfs = rs
-    where vf = [ M.lookup (traitKey x) virtueMap | x <- vfs ]
-          app Nothing _ = Nothing
-          app (Just f) x = Just $ f x
-          rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
+getVF :: [ ProtoTrait ] -> [ VF ]
+getVF [] = []
+getVF (p:ps) | isJust (virtue p) = g p:getVF ps
+             | isJust (flaw p) = g p:getVF ps
+             | otherwise = getVF ps
+    where g = fromJust . computeTrait
+
 
 -- | Apply advancement
 applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
