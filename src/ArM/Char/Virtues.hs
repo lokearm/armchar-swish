@@ -21,14 +21,14 @@ vl2 = [ ( VFKey "Puissant (art)",
 
 
 vl1 :: [ ( TraitKey, VF -> ProtoTrait ) ]
-vl1 = [ (VFKey ab, \ _ -> defaultPT { ability = Just $ ab, score = Just 1 } ) | ab <- snab ]
+vl1 = [ (VFKey ab, \ _ -> defaultPT { ability = Just $ ab, xp = Just 5 } ) | ab <- snab ]
 
 snab :: [ String ]
 snab = [ "Second Sight", "Enchanting Music", "Dowsing",
          "Magic Sensitivity", "Animal Ken", "Wilderness Sense",
-	 "Sense Holiness and Unholiness",
-	 "Entrancement", "Premonitions",
-	 "Shapeshifter" ]
+         "Sense Holiness and Unholiness",
+         "Entrancement", "Premonitions",
+         "Shapeshifter" ]
 
 type VFMap = Map.Map TraitKey ( VF -> ProtoTrait ) 
 virtueMap :: VFMap
