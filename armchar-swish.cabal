@@ -62,6 +62,7 @@ common armchar-deps
                        -- , ArM.Char.Advancement
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
+                       , ArM.Helper
                        -- , ArM.Char.CharacterSheet
                        , ArM.Types.Season
 

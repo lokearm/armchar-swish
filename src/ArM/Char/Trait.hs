@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Types.Trait
+-- Module      :  ArM.Char.Trait
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -45,17 +45,7 @@ import Data.Aeson
 import Data.Maybe (fromJust,isNothing)
 import Data.List (sortBy)
 
-maybeList :: Maybe [a] -> [a]
-maybeList Nothing = []
-maybeList (Just x) = x
-maybeString :: Maybe String -> String
-maybeString Nothing = ""
-maybeString (Just x) = x
-maybeInt :: Num a => Maybe a -> a
-maybeInt Nothing = fromInteger 0
-maybeInt (Just x) = x
-maybeAdd :: Maybe Int -> Maybe Int -> Maybe Int
-maybeAdd x y = Just $ maybeInt x + maybeInt y
+import ArM.Helper
 
 -- | 
 -- = ProtoTrait

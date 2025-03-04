@@ -39,18 +39,11 @@ import ArM.Char.Internal.KeyPair
 import ArM.Char.Virtues
 import ArM.Debug.Trace
 -- import ArM.Types.Season
+import ArM.Helper
 
 type CharTime = Maybe String
 
-listNothing :: Maybe [a] -> [a]
-listNothing Nothing = []
-listNothing (Just xs) = xs
 
-filterNothing :: [Maybe a] -> [a]
-filterNothing = f
-    where f [] = []
-          f (Nothing:xs) = f xs
-          f (Just x:xs) = x:f xs
 
 -- |
 -- = CharacterConcept
@@ -115,7 +108,7 @@ instance ToJSON CharacterState where
 instance FromJSON CharacterState where
     parseJSON = withObject "CharacterState" $ \v -> CharacterState
         <$> v .:? "charTime"
-        <*> fmap listNothing ( v .:? "traits" )
+        <*> fmap maybeList ( v .:? "traits" )
 
 -- |
 -- = Character
@@ -159,10 +152,10 @@ instance FromJSON Character where
         <$> v .: "charID"
         <*> v .: "concept"
         <*> v .:? "state" 
-        <*> fmap listNothing ( v .:? "pregameDesign" )
-        <*> fmap listNothing ( v .:? "pregameAdvancement" )
-        <*> fmap listNothing ( v .:? "pastAdvancement" )
-        <*> fmap listNothing ( v .:? "futureAdvancement" )
+        <*> fmap maybeList ( v .:? "pregameDesign" )
+        <*> fmap maybeList ( v .:? "pregameAdvancement" )
+        <*> fmap maybeList ( v .:? "pastAdvancement" )
+        <*> fmap maybeList ( v .:? "futureAdvancement" )
 
 -- |
 -- = Advancement
@@ -266,6 +259,6 @@ instance FromJSON Advancement where
         <*> v .:? "narrative"
         <*> v .:? "sourceQuality"
         <*> v .:? "effectiveSQ"
-        <*> fmap listNothing ( v .:? "changes" )
-        <*> fmap listNothing ( v .:? "inferredTraits" )
+        <*> fmap maybeList ( v .:? "changes" )
+        <*> fmap maybeList ( v .:? "inferredTraits" )
 
