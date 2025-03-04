@@ -11,12 +11,14 @@ aliases:
 + See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]]
 + 
 
-+ [ ] Step 1.  Working Companion
-	+ [ ] Implement Affinity
-	+ [ ] Implement Puissant
++ [ ] Step 1.  Working Companion CharGen
+	+ [x] Implement Affinity
+	+ [x] Implement Puissant
 	+ [ ] Implement XP validation
-	+ [ ] Implement VF calculation 
+	+ [ ] Implement VF calculation/validation
 	+ [ ] Implement Characteristics Validation
+	+ [ ] Store augmented Advancement objects
++ [ ] Step 2.  Companion Advancement
 
 + Virtue and Flaws affecting advancement
 	+ Affinity
