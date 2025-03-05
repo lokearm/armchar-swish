@@ -14,11 +14,22 @@ aliases:
 + [ ] Step 1.  Working Companion CharGen
 	+ [x] Implement Affinity
 	+ [x] Implement Puissant
-	+ [ ] Implement XP validation
-	+ [ ] Implement VF calculation/validation
-	+ [ ] Implement Characteristics Validation
+	+ [ ] Include affinity in score calculation
++ [ ] Step 2. Advancement log
 	+ [ ] Store augmented Advancement objects
-+ [ ] Step 2.  Companion Advancement
+	+ [ ] Markdown output
++ [ ] Step 3. Calculations for validation purposes
+	+ [ ] Implement XP Calculation
+	+ [ ] Implement VF calculation
+	+ [ ] Characteristics Calculation
++ [ ] Step 4. Calculations for validation purposes
+	+ [ ] Implement XP validation
+	+ [ ] Implement VF validation
+	+ [ ] Implement Characteristics Validation
++ [ ] Step 5.  Companion Avancement
++ [ ] Step 6.  CharacterState in JSON
++ [ ] Step 7. Cleanup
+	+ [ ] Remove null entries from JSON output
 
 + Virtue and Flaws affecting advancement
 	+ Affinity
