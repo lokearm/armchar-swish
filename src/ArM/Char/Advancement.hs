@@ -34,6 +34,8 @@ data ExposureType = LabWork | Teach | Train
                   | Writing | Copying | OtherExposure | NoExposure
    deriving (Show,Ord,Eq)
 
+data Resource = Resource ""
+
 -- | The advancement object has two roles.
 -- It can hold the advancemet from one season or chargen stage,
 -- as specified by the user.
@@ -43,9 +45,18 @@ data Advancement = Advancement
      { mode :: Maybe String  -- ^ mode of study
      , season :: CharTime    -- ^ season or development stage
      , narrative :: Maybe String -- ^ freeform description of the activities
+     , uses :: Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
      , sourceQuality :: Maybe Int -- ^ Source Quality (SQ)
      , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
      , changes :: [ ProtoTrait ]  -- ^ trait changes defined by player
+     , inferredTraits :: [ ProtoTrait ] 
+         -- ^ trait changes inferred by virtues and flaws
+     }
+   deriving (Eq,Generic,Show)
+
+-- | Advancement with additional inferred fields
+data AugmentedAdvancement = Adv
+     { effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
      , inferredTraits :: [ ProtoTrait ] 
          -- ^ trait changes inferred by virtues and flaws
      }
@@ -71,6 +82,8 @@ prepareAdvancementVF :: Advancement -> Advancement
 prepareAdvancementVF a = a { inferredTraits = f a }
      where f = inferTraits . getVF . changes 
 
+-- | Get the virtues and flaws from a list of ProtoTrait objects, and convert them to
+-- VF objects
 getVF :: [ ProtoTrait ] -> [ VF ]
 getVF [] = []
 getVF (p:ps) | isJust (virtue p) = g p:getVF ps
