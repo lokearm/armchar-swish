@@ -168,9 +168,9 @@ prepareAdvancement _ = prepareAdvancementVF
 applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
 applyAdvancement a cs = (a',cs')
     where a' = prepareAdvancement cs a
-          cs' = trace (show new) $ cs { charTime = season a, traits = new }
-          new = trace ("tmp> "++show tmp) $ advance change tmp
-          tmp = trace ("old>"++show old) $ advance inferred old 
+          cs' = cs { charTime = season a, traits = new }
+          new =  advance change tmp
+          tmp =  advance inferred old 
           change = sortTraits $ changes a'
           inferred = trace (">" ++ show a') $ inferredTraits a'
           old = traits cs

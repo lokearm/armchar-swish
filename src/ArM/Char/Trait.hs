@@ -43,7 +43,7 @@ import ArM.GameRules
 import GHC.Generics
 -- import Data.List (sort)
 import Data.Aeson
-import Data.Maybe (fromJust,isNothing)
+import Data.Maybe (fromJust,isNothing,fromMaybe)
 import Data.List (sortBy)
 
 import ArM.Helper
@@ -379,7 +379,7 @@ instance TraitType Ability where
                 , abilityScore = s
                 , abilityExcessXP = y
                 , abilityBonus = maybeInt $ bonusScore p
-                , abilityMultiplier = maybeInt $ multiplyXP p
+                , abilityMultiplier = fromMaybe 1.0 $ multiplyXP p
                 }
      where (s,y) = getAbilityScore (xp p)
 instance TraitType Art where
@@ -393,7 +393,7 @@ instance TraitType Art where
                 , artScore = s
                 , artExcessXP = y
                 , artBonus = maybeInt $ bonusScore p
-                , artMultiplier = maybeInt $ multiplyXP p
+                , artMultiplier = fromMaybe 1.0 $ multiplyXP p
                 }
      where y = x - xpFromScore s
            s = scoreFromXP x
@@ -476,16 +476,10 @@ instance TraitLike Trait where
 updateBonus :: Maybe Int -> Ability -> Ability
 updateBonus Nothing a = a 
 updateBonus (Just x) a = a { abilityBonus = x + abilityBonus a }
-updateMultiplier :: Maybe Float -> Ability -> Ability
-updateMultiplier Nothing a = a
-updateMultiplier (Just x) a = a { abilityMultiplier = x }
 
 updateArtBonus :: Maybe Int -> Art -> Art
 updateArtBonus Nothing a = a 
 updateArtBonus (Just x) a = a { artBonus = x + artBonus a }
-updateArtMultiplier :: Maybe Float -> Art -> Art
-updateArtMultiplier Nothing a = a
-updateArtMultiplier (Just x) a = a { artMultiplier = x }
 
 instance TraitLike PTrait where
     traitKey x = PTraitKey $ ptraitName x
@@ -501,19 +495,24 @@ instance TraitLike Ability where
           trace (show x) $ trace (show a) $ 
           updateBonus (bonusScore a) $ updateMultiplier (multiplyXP a) $
           updateAbilitySpec (spec a) $ updateAbilityXP y x
-      where y = (abilityExcessXP x) + (maybeInt $ xp a)
+      where y = (abilityExcessXP x) + round (m * xp')
+            m = abilityMultiplier x
+            xp' = fromIntegral $ fromMaybe 0 (xp a)
+            updateMultiplier abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Art where
     traitKey x = ArtKey $ artName x
     toTrait = ArtTrait
     advanceTrait a x = 
-          updateArtBonus (bonusScore a) $ updateArtMultiplier (multiplyXP a) $
+          updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
           updateArtXP y x 
-      where y = (artExcessXP x) + (maybeInt $ xp a)
+      where y = (artExcessXP x) + round (m * xp')
+            m = artMultiplier x
+            xp' = fromIntegral $ fromMaybe 0 (xp a)
+            um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
     traitKey x = SpellKey $ spellName x
     toTrait = SpellTrait
-    advanceTrait a x = trace (show x) $ trace (show a) $ 
-        updateSpellXP y $ updateSpellMastery ms x
+    advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (maybeInt $ xp a)
             ms = maybeList $ mastery a
 instance TraitLike Reputation where

@@ -66,7 +66,7 @@
       { "mode" : "Later Life"
       , "totalXP" : 300
       , "changes" : 
-         [ { "ability" : "Animal Handling", "spec": "Dogs", "xp": 75 }
+         [ { "ability" : "Animal Handling", "spec": "Dogs", "xp": 50 }
          , { "ability" : "Animal Ken", "spec": "Canine", "xp": 45 }
          , { "ability" : "Athletics", "spec": "obstacle race", "xp": 30 }
          , { "ability" : "Brawl", "spec": "dirty fighting", "xp": 15 }
