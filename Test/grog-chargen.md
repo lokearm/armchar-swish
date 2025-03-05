@@ -1,11 +1,10 @@
 # Character Generation
 + Base Character
     + Traits advanced
-        + ???
+        + Size
         + Loyal
         + Brave
         + Compassionate
-        + ???
         + Warrior
         + Strength
         + Stamina
@@ -31,19 +30,19 @@
     + Source Quality 45
     + Spent 45xp of 45xp
     + Traits advanced
-        + ??? (15 xp)
+        + Survival (15 xp)
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life
-    + **Overspent**: No allowance, but 275xp spent
+    + **Overspent** 275xp of 270xp
     + Traits advanced
         + Thrown Weapon (30 xp)
-        + ??? (15 xp)
+        + Survival (15 xp)
         + Single Weapon (50 xp)
-        + ??? (5 xp)
-        + ??? (30 xp)
-        + ??? (5 xp)
-        + ??? (5 xp)
+        + Living Language: Norman (5 xp)
+        + Music (30 xp)
+        + Hunt (5 xp)
+        + Craft: Cooking (5 xp)
         + Brawl (30 xp)
         + Bows (75 xp)
         + (Area) Lore (30 xp)

@@ -26,7 +26,7 @@ module ArM.Rules.FullGraph (prepareGraph) where
 
 import Swish.RDF.Graph
 import ArM.Rules.Common
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Advancement
 import ArM.Rules.RDFS

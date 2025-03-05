@@ -1,3 +1,8 @@
+---
+title: Advancement
+tags:
+    - armchar/swish/model
+---
 
 + Advancement entails two computational tasks
 	+ Advancing the Character

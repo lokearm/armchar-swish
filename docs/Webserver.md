@@ -1,6 +1,9 @@
 ---
 title: Testing the Web Server
-tags: #webserver
+tags:
+  - armchar/server
+aliases:
+  - "#armchar/server"
 ---
 
 
@@ -113,7 +116,7 @@ simple `put.sh` script to test updating of advancements API, and
 
 ## TODO
 
-+ [ ] Handle multiple characters and file output.  #webserver/backlog
++ [ ] Handle multiple characters and file output.  #armchar/server/backlog
 
 ## References
 

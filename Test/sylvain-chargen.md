@@ -1,13 +1,11 @@
 # Character Generation
 + Base Character
     + Traits advanced
-        + ???
+        + Size
         + Stubborn
         + Pious
         + Curious
-        + ???
-        + ???
-        + ???
+        + Confidence
         + The Gift
         + Strength
         + Stamina
@@ -43,14 +41,14 @@
     + Source Quality 45
     + Spent 45xp of 45xp
     + Traits advanced
-        + ??? (15 xp)
+        + Survival (15 xp)
         + Stealth (15 xp)
         + Awareness (15 xp)
 + Later Life
-    + **Overspent**: No allowance, but 45xp spent
+    + Spent 45xp of 45xp
     + Traits advanced
-        + ??? (5 xp)
-        + ??? (5 xp)
+        + Intrigue (5 xp)
+        + Hunt (5 xp)
         + Forest Lore (20 xp)
         + Concentration (15 xp)
 + Apprenticeship

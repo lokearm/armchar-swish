@@ -39,18 +39,34 @@ armchar:verditius arm:characterClass arm:Magus ;
    arm:hasHouseVirtue 
     [ arm:traitClass armr:verditiusMagic ] ;
    arm:buyVirtueFlaw
-    [ arm:traitClass armr:affinityWithArt ; 
-      arm:hasDetail "Imaginem" ],
     [ arm:traitClass armr:theGift ],
     [ arm:traitClass armr:hermeticMagus ],
-    [ arm:traitClass armr:skilledParens ],
+
     [ arm:traitClass armr:secondaryInsight ],
-    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Moods" ],
-    [ arm:traitClass armr:deleteriousCircumstances ;
-      arm:hasDetail "Hearing Church Bells" ],
+    [ arm:traitClass armr:inventiveGenius ],
+    [ arm:traitClass armr:skilledParens ],
+    [ arm:traitClass armr:minorMagicalFocus ; arm:hasDetail "Sculptures" ],
+    [ arm:traitClass armr:lifeLinkedSpontaneousMagic ],
+
     [ arm:traitClass armr:greedyMajor ; a arm:majorFlaw ],
     [ arm:traitClass armr:minorPersonalityFlaw ;
-      arm:instanceLabel "Curious (custom, similar to reckless)" ] ;
+      arm:instanceLabel "Weakness for beautiful objects" ],
+    [ arm:traitClass armr:minorStoryFlaw ;
+      arm:instanceLabel "Confraternity of Inga the Younger" ],
+    [ arm:traitClass armr:minorHermeticFlaw ;
+      arm:instanceLabel "Bound Casting Tools" ],
+    [ arm:traitClass armr:majorGeneralFlaw ;
+      arm:instanceLabel "Lame" ],
+
+    [ arm:traitClass armr:inoffensiveToAnimals ],
+    [ arm:traitClass armr:puissantAbility ;
+      arm:grantsTrait [ arm:bonusTo armr:craft-sculptor ] ],
+    [ arm:traitClass armr:puissantAbility ;
+      arm:grantsTrait [ arm:bonusTo armr:magictheory ] ],
+    [ arm:traitClass armr:affinityWithArt ;
+      arm:grantsTrait [ arm:bonusTo armr:imaginem ] ],
+    [ arm:traitClass armr:minorHermeticFlaw ;
+      arm:instanceLabel "Cannot use handheld casting tools (custom restriction)." ] ;
 
    arm:advanceTrait 
     [ arm:traitClass armr:int ; arm:hasScore 3 ], [ arm:traitClass armr:per ; arm:hasScore +1 ],
@@ -58,26 +74,32 @@ armchar:verditius arm:characterClass arm:Magus ;
     [ arm:traitClass armr:str ; arm:hasScore +1 ], [ arm:traitClass armr:sta ; arm:hasScore +2 ],
     [ arm:traitClass armr:dex ; arm:hasScore -2 ], [ arm:traitClass armr:qik ; arm:hasScore -2 ],
     [ arm:traitClass armr:occitan ; arm:instanceLabel "L Lang: High German" ; arm:hasSpeciality "Vaud" ; arm:hasTotalXP 75  ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Ambitious" ;  arm:hasFixedScore 2 ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Contemplative" ;  arm:hasFixedScore 3 ],
-    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Stubborn" ;  arm:hasFixedScore 1 ] .
+    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Ambitious" ;  arm:hasFixedScore 1 ],
+    [ arm:traitClass arm:PersonalityTrait ; arm:instanceLabel "Problem solver" ;  arm:hasFixedScore 2 ] .
 
 # Pre-game Advancement
 :earlyadv arm:advanceCharacter armchar:verditius ;
    arm:advancementClass arm:EarlyChildhoodAdvancement ; 
    arm:advanceTrait 
    [ arm:traitClass armr:awareness ; arm:hasSpeciality "searching" ; arm:addedXP 5  ],
-   [ arm:traitClass armr:charm   ; arm:hasSpeciality "Traders" ; arm:addedXP 15  ] .
-   [ arm:traitClass armr:folkken ; arm:hasSpeciality "Townsfolk" ; arm:addedXP 15  ] .
-   [ arm:traitClass armr:english ; arm:hasSpeciality "East Anglia" ; arm:addedXP   5  ] .
+   [ arm:traitClass armr:charm   ; arm:hasSpeciality "Traders" ; arm:addedXP 15  ] ,
+   [ arm:traitClass armr:folkken ; arm:hasSpeciality "Townsfolk" ; arm:addedXP 15  ] ,
+   [ arm:traitClass armr:english ; arm:hasSpeciality "East Anglia" ; arm:addedXP   5  ] ,
    [ arm:traitClass armr:westnorse ; arm:hasSpeciality "Norwegian" ; arm:addedXP 5  ] .
 
 :lateradv arm:advanceCharacter armchar:verditius ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
+  arm:durationYears 5 ;
   arm:advanceTrait 
+   [ arm:traitClass armr:organisationlore ; arm:instanceLabel "Home Covenant" ;
+     arm:addedXP 5 ; arm:hasSpeciality "Grogs" ],
       [ arm:traitClass armr:craft-sculptor ;  arm:addedXP 50 ; arm:hasSpeciality "Stone"  ],
       [ arm:traitClass armr:bargain ;  arm:addedXP 5 ; arm:hasSpeciality "Own works"  ],
       [ arm:traitClass armr:etiquette ;  arm:addedXP 5 ; arm:hasSpeciality "Townsfolk"  ],
+      [ arm:traitClass armr:arealore ;
+        arm:instaceLabel "North Sea Lore" ;
+        arm:addedXP 5 ;
+        arm:hasSpeciality "Prosperous clients"  ],
       [ arm:traitClass armr:conc ; arm:hasSpeciality "Spell Conc." ;
         arm:addedXP 5  ]
       .
@@ -99,7 +121,7 @@ armchar:verditius arm:characterClass arm:Magus ;
       [ arm:traitClass armr:mentem ; arm:addedXP 36 ],
       [ arm:traitClass armr:terram ; arm:addedXP 0 ],
       [ arm:traitClass armr:vim ; arm:addedXP 15 ],
-      [ arm:traitClass armr:forestlore ; arm:addedXP 10  ],
+
     [ arm:traitClass armr:magictheory ; arm:addedXP 30 ; arm:hasSpeciality "Items" ],
     [ arm:traitClass armr:latin ; arm:instanceLabel "Dead Lang: Latin" ; arm:addedXP 50 ; arm:hasSpeciality "Hermetic Usage" ],
     [ arm:traitClass armr:artlib ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
@@ -109,15 +131,28 @@ armchar:verditius arm:characterClass arm:Magus ;
    [ arm:traitClass armr:penetration ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
     [ arm:traitClass armr:philosophiae ; arm:addedXP 5 ; arm:hasSpeciality "ceremonial casting" ],
    [ arm:traitClass armr:parmamagica ; arm:addedXP 5 ; arm:hasSpeciality "Mentem" ],
-   [ arm:traitClass armr:organisationlore ; arm:hasDetail "Home Covenant" ;
-     arm:addedXP 5 ; arm:hasSpeciality "Grogs" ],
 
    [ arm:traitClass armr:verditiuslore ; arm:addedXP  5 ; arm:hasSpeciality "Spells" ],
 
-   [ arm:traitClass armr:InAu15Whispering  ],
-   [ arm:traitClass armr:InVi20PiercingFaerie  ],
-   [ arm:traitClass armr:PeVi5Demons  ],
-   [ arm:traitClass armr:ReAu30Clouds ],
-   [ arm:traitClass armr:ReVi20Opening ],
-   [ arm:traitClass armr:CrAu30Wings ],
-   [ arm:traitClass armr:CrAu30Pull ] .
+   [ arm:traitClass armr:InVi20PiercingMagical  ],
+   [ arm:traitClass  arm:Spell ;
+      arm:hasTechnique armr:muto ;
+      arm:hasTechRequisite armr:rego ;
+      arm:hasForm      armr:terram ;
+      arm:hasLevel     10 ;
+      arm:hasLabel     "Crystal Dart" ],
+   [ arm:traitClass  arm:Spell ;
+      arm:hasTechnique armr:intellego ;
+      arm:hasForm      armr:vim ;
+      arm:hasLevel     15 ;
+      arm:hasRange     arm:Rper ;
+      arm:hasDuration  arm:Dsun ;
+      arm:hasTarget    arm:Tvision ;
+      arm:hasLabel       "Magical Sight of Vis (custom)" ],
+   [ arm:traitClass armr:MuIm10auraBeguiling ],
+   [ arm:traitClass armr:CrIg15Lamp ],
+   [ arm:traitClass armr:ReMe10slumber ],
+   [ arm:traitClass armr:ReIm10sidestep ],
+   [ arm:traitClass armr:CrMe20gossip ],
+   [ arm:traitClass armr:InVi20Detect ],
+   [ arm:traitClass armr:MuVi20Vigil ] .

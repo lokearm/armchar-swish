@@ -24,7 +24,7 @@ import qualified Data.Map as Map
 
 import qualified ArM.Types.SagaFile as TS
 import qualified ArM.Rules as R
-import           ArM.IO
+import           ArM.Swish.IO
 
 
 readAllFiles :: [String] -> IO [G.RDFGraph]

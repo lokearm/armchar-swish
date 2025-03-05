@@ -15,7 +15,7 @@ module ArM.Rules.Advancement ( prepareAdvancements, mod1Rule, mod2Rule ) where
 -- import qualified Swish.RDF.Query as Q
 import Swish.RDF.Graph
 import Swish.RDF.Ruleset (RDFRule)
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 
 -- import Control.Parallel.Strategies

@@ -1,3 +1,7 @@
+---
+tags:
+   - armchar/domain/model
+---
 
 + [[RDF Classes.canvas|RDF Classes]]
 + [[Traits and Possessions]]
@@ -30,6 +34,7 @@
 	+ `arm:traitClass`
 	+ `arm:advancementClass`
 + This facilitates some reasoning, being able to identify the direct membership of a key class, without being caught up in generic classes (like `owl:Object`)
+
 ### Label  and Description
 
 + All ArM classes and objects have label and description

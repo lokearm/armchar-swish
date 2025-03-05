@@ -26,8 +26,8 @@ import           Swish.VarBinding  (vbMap)
 import           Data.Aeson
 import           ArM.Types.RDF
 import           ArM.Rules.Aux
-import           ArM.Resources
-import           ArM.KeyPair
+import           ArM.Swish.Resources
+import           ArM.Swish.KeyPair
 import Data.Maybe(catMaybes)
 
 data SagaFile = SagaFile { sagaID :: RDFLabel
@@ -59,7 +59,9 @@ instance FromRDFGraph SagaFile where
 -- The graph should contain one and only one saga.
 sagaFromRDF :: RDFGraph -> SagaFile
 sagaFromRDF g = fromRDFGraph g sid
-    where sid = head $ sagaFromGraph g
+    where sid = h $ sagaFromGraph g
+          h []  = error "No saga"
+          h xs = head xs
 
 
 -- | Complete a saga object by extracting file names from the graph.

@@ -16,13 +16,14 @@ module ArM.Markdown.AdvancementLog ( printAdvancementLog ) where
 
 import ArM.Markdown.CharacterSheet
 import ArM.Rules.Aux
-import ArM.Resources
+import ArM.Swish.Resources
 import ArM.Types.Trait
 import ArM.Types.Advancement
 import ArM.Types.Season
 import Data.List(intercalate)
-import Data.Maybe (catMaybes)
+import Data.Maybe (catMaybes,fromJust)
 import Swish.RDF
+import ArM.Debug.Trace
 
 
 printAdvancementLog :: [Advancement] -> [String]
@@ -46,17 +47,27 @@ showAdType ad | y ad == Nothing = "+ " ++ showSeason ad
          fm Nothing = ""
          fm (Just x) = x
 
+xpaward :: Advancement -> Maybe Int
+xpaward adv = trace (show adv) (xpaward' adv)
+xpaward' :: Advancement -> Maybe Int
+xpaward' adv | advXP adv /= Nothing = advXP adv 
+            | advAnnualXP adv /= Nothing = Just $ (fromJust $ advAnnualXP adv)*f adv
+          | otherwise = Nothing
+    where f' Nothing = 0
+          f' (Just x) = x
+          f = f' . advDuration
+
 printAdvancement :: Advancement -> [String]
 printAdvancement ad = catMaybes 
                        [ Just $ showAdType ad
                        , f $ advLabel ad
                        , fi $ advXP ad
                        , f $ advDescription ad
-                       , xpCount (spentXP ad) (advXP ad)
+                       , xpCount (spentXP ad) (xpaward ad)
                        , lvlCount (spellLevels ad) (advLevels ad)
-                       , Just "    + Traits advanced"
+                       , Just "    + Traits changed"
                        ] ++
-                       ( map ("        + "++) . map printTrait . traits ) ad
+                       ( map ("        + "++) . map printTrait . filterTraits . traits ) ad
    where f Nothing = Nothing
          f (Just x) = Just $  "    + " ++ x
          fi Nothing = Nothing
@@ -96,6 +107,7 @@ showSeason =  show . advTime
 
 data PTrait = PTrait 
      { ptXP :: Maybe Int
+     , ptID :: String
      , label1 :: Maybe String
      , label2 :: Maybe String
      , ptDetail :: Maybe String
@@ -103,6 +115,7 @@ data PTrait = PTrait
 defaultPTrait :: PTrait 
 defaultPTrait = PTrait 
      { ptXP = Nothing
+     , ptID = ""
      , label1 = Nothing
      , label2 = Nothing
      , ptDetail = Nothing
@@ -111,12 +124,13 @@ defaultPTrait = PTrait
 
 ptLabel :: PTrait -> String
 ptLabel pt = f (label1 pt) (label2 pt) ++ pShow (ptDetail pt)
-   where f Nothing Nothing = "???"
+   where f Nothing Nothing = "??? " ++ ptID pt
          f Nothing (Just x) = x
          f (Just x) y = x ++ pShow y
 
 makePTrait :: [RDFTriple] -> PTrait
-makePTrait xs = makePTrait' xs defaultPTrait 
+makePTrait [] = defaultPTrait 
+makePTrait xs = makePTrait' xs defaultPTrait { ptID = show $ arcSubj $ head xs }
 
 makePTrait' :: [RDFTriple] -> PTrait -> PTrait
 makePTrait' [] pt = pt
@@ -125,6 +139,11 @@ makePTrait' (x:xs) pt
     | arcPred x == armRes "hasLabel" = makePTrait' xs $ pt { label2 = rdfToString (arcObj x) }
     | arcPred x == armRes "addedXP" = makePTrait' xs $ pt { ptXP = rdfToInt (arcObj x) }
     | otherwise = makePTrait' xs $ pt
+
+filterTraits :: [Trait] -> [Trait]
+filterTraits [] = []
+filterTraits (x:xs) | traitClass x == armRes "Bonus" = filterTraits xs
+                    | otherwise = x:filterTraits xs
 
 printTrait :: Trait -> String
 printTrait = printTrait' . makePTrait . traitContents

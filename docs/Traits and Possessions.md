@@ -1,3 +1,7 @@
+---
+tags:
+   - armchar/domain/model
+---
 
 
 + Common Framework for Possessions and Trait

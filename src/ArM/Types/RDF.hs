@@ -19,7 +19,7 @@ import Swish.RDF.Graph
 import Data.Aeson
 import Data.Aeson.Key
 import qualified Data.Text as T
-import ArM.Resources
+import ArM.Swish.Resources
 import Data.List       (intercalate)
 import Swish.Namespace (ScopedName)
 import Data.List.Split (splitOn)

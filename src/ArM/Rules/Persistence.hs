@@ -19,7 +19,7 @@ import Swish.RDF.Ruleset (RDFRule)
 -- import qualified Swish.RDF.Query as Q
 -- import           Swish.RDF.Vocabulary.RDF
 
-import ArM.Resources
+import ArM.Swish.Resources
 
 -- persistGraph' s g = persistGraph' $ merge s g
 -- persistGraph' s g = foldGraphs $ Q.rdfQuerySubs vb tg

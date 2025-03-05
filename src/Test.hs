@@ -1,48 +1,91 @@
-{-# LANGUAGE OverloadedStrings #-}
--- (C) 2022: Hans Georg Schaathun <hg+gamer@schaathun.net>
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Main
+-- Copyright   :  (c) 2023: Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-----------------------------------------------------------------------------
 
 module Main where
 
-import System.IO as IO
-import qualified Data.Text.IO as DTIO
-import qualified Data.Text.Lazy.IO as DTLIO
-import Control.Monad
-import qualified Data.Text.Lazy as  T
-import Swish.RDF.Formatter.Turtle
-import Swish.RDF.Graph
-import Data.Maybe
-import Data.Text (Text)
-import Control.Monad.IO.Class (liftIO)
+import System.Environment
+import System.Console.GetOpt
 
-import Data.Text.Encoding
-import Network.URI
-import ArM.Resources
+import ArM.Debug.Time
+import ArM.Char.Character
+import ArM.Char.Markdown
+
+import qualified Data.Text as T
+import Data.Maybe (fromJust)
+import Data.Aeson (FromJSON,encode,decode)
+
+import Data.ByteString.Lazy.UTF8 (fromString)
+
+import qualified Data.ByteString.Lazy as LB
+
+data Options = Options {
+  sagaFile :: String,
+  charFile :: Maybe String,
+  outFile  :: String,
+  debugFile  :: Maybe String,
+  outputDir  :: Maybe String
+}
+defaultOptions :: Options
+defaultOptions = Options {
+  sagaFile = "Test/saga.ttl",
+  charFile = Nothing,
+  outFile  = "test.md",
+  debugFile  = Nothing,
+  outputDir  = Nothing
+}
 
 
-import qualified Data.ByteString.Lazy as BS
-import ArM.Load
-import ArM.Resources as AR
-import ArM.Character
-import ArM.Types.Character as TC
-import ArM.STM
-import ArM.JSON
-import Data.Aeson.Encode.Pretty
-import Data.Aeson
+options :: [ OptDescr (Options -> IO Options) ]
+options =
+    [ Option ['o']     ["output"]  (ReqArg 
+            (\arg opt -> return opt { outFile = arg })
+            "FILE") "output file"
+    , Option ['c']     ["character"] (OptArg 
+            (\arg opt -> return opt { charFile = arg })
+            "FILE") "character file"
+    , Option ['s']     ["saga"] (ReqArg 
+            (\arg opt -> return opt { sagaFile = arg })
+            "FILE") "saga file"
+    , Option ['O']     ["debug-output"] (OptArg 
+            (\arg opt -> return opt { debugFile = arg })
+            "FILE") "debug output"
+    , Option ['D']     ["output-directory"] (OptArg 
+            (\arg opt -> return opt { outputDir = arg })
+            "FILE") "output directory"
+    ]
 
-testCharacter = "armchar:cieran"
+dirOpts :: Options -> Options
+dirOpts opt | outputDir opt == Nothing = opt
+      | otherwise = opt {
+          outFile = d ++ "/character.md",
+          debugFile = Just $ d ++ "/character.triples"
+       }
+       where d = fromJust $ outputDir opt
 
-s = "{\n     \"arm:hasDescription\": \"<p>You automatically master every spell that you learn. All your spells start with a score of 1 in the corresponding Ability. You may choose a different special ability for every spell you have. Further, all experience points you put into Spell Mastery Abilities are doubled.</p>  \",\n     \"arm:hasLabel\": \"Flawless Magic\",\n     \"arm:hasReference\": \"[ArM5:42]\",\n        \"arm:prefixedid\": \"_:118\", \n      \"arm:traitClass\": { \n     \"prefixedid\": \"armr:flawlessMagic\" \n   } \n } \n"
-
--- main :: IO ()
+main :: IO ()
 main = do 
-   test "5"
-   test "<http://example.org/foobar>"
-   test "string"
+     putStrLn "Starting: armchar ..."
+     printTime
+     args <- getArgs
+     let (opt,_,_) = getOpt RequireOrder options args
+     opt0 <- foldl (>>=) (return defaultOptions) opt
 
+     main' $ dirOpts opt0
 
-fromResult (Success x) = x
+testChar :: Character 
+testChar = defaultCharacter { charID = "Cieran", 
+   concept = defaultConcept {
+      charGlance = KeyPairList [ KeyPair "Name" (TextValue $ T.pack "Cieran") ],
+      charData = KeyPairList [ KeyPair "Size" (IntValue 0) ]
+   }
+   }
 
-test s = do
-   let i = fromJSON s :: Result RDFLabel 
-   print $ show i 
-   print $ toJSON $ fromResult i 
+main' :: Options -> IO ()
+main' _ = putStrLn $ show $ encode testChar

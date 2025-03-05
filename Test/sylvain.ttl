@@ -39,7 +39,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
     [ arm:traitClass armr:Fist ]
     ;
    arm:hasHouseVirtue 
-    [ arm:traitClass armr:faeriemagic  ] ;
+    [ arm:traitClass armr:faerieMagic  ] ;
    arm:buyVirtueFlaw
     [ arm:traitClass armr:theGift ],
     [ arm:traitClass armr:hermeticMagus ],
@@ -83,6 +83,7 @@ armchar:sylvain arm:characterClass arm:Magus ;
 
 :lateradv arm:advanceCharacter armchar:sylvain ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
+  arm:durationYears 3 ;
   arm:advanceTrait 
       [ arm:traitClass armr:hunt ;  arm:addedXP 5 ; arm:hasSpeciality "Woodlands"  ],
       [ arm:traitClass armr:intrigue ;  arm:addedXP 5 ; arm:hasSpeciality "Hermetic Politics"  ],

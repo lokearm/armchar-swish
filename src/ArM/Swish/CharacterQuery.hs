@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.CharacterQuery
+-- Module      :  ArM.Swish.CharacterQuery
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -14,7 +14,7 @@
 -- Only queries on the character sheet are defined in this module.
 --
 -----------------------------------------------------------------------------
-module ArM.CharacterQuery ( getTraitList
+module ArM.Swish.CharacterQuery ( getTraitList
                           , getVirtues
                           , getFlaws
                           , getPTs
@@ -36,8 +36,8 @@ import Data.Maybe (fromJust)
 
 import qualified Swish.RDF.Graph as G
 import qualified Swish.RDF.Query as Q
-import           ArM.Resources 
-import           ArM.KeyPair
+import           ArM.Swish.Resources 
+import           ArM.Swish.KeyPair
 import ArM.Rules.Aux
 
 getVirtues :: G.RDFGraph -> [KeyPairList]

@@ -46,11 +46,16 @@ Confidence
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
 | :-                   | :-              |    -: |   -: |    -: |        -: |
+| Living Language: Norman | -               |     1 |    0 |     - |         1 |
+| Craft: Cooking       | -               |     1 |    0 |     - |         1 |
 | (Area) Lore          | Hunting grounds |     3 |    0 |     - |         3 |
+| Music                | Flute           |     3 |    0 |     - |         3 |
 | Brawl                | Axe             |     3 |    5 |     - |         3 |
 | Thrown Weapon        | Axe             |     3 |    0 |     - |         3 |
 | Single Weapon        | Axe             |     4 |    5 |     - |         4 |
 | Bows                 | Shortbow        |     5 |    0 |     2 |         7 |
+| Hunt                 | Woodlands       |     1 |    0 |     - |         1 |
+| Survival             | Woodlands       |     3 |    0 |     - |         3 |
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
 | Awareness            | searching       |     2 |    2 |     - |         2 |
 | L Lang: English      | [local]         |     5 |    0 |     - |         5 |

@@ -29,8 +29,8 @@ module ArM.Types.Trait ( Trait(..)
 import Swish.RDF.Graph as G
 import Data.List (sort)
 import Data.Aeson
-import ArM.KeyPair
-import ArM.Resources
+import ArM.Swish.KeyPair
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Types.RDF()
 
@@ -143,6 +143,7 @@ calculateXP :: Trait -> [RDFTriple] -> [RDFTriple]
 calculateXP t ts | traitXP t  = ( sort . calculateXP' ) ts
 calculateXP _ ts | otherwise  = ts
 calculateXP' :: [RDFTriple] -> [RDFTriple]
+calculateXP' [] = []
 calculateXP' ts = xp:ys 
   where (tot,add,fac,ys) = getXPtriples' (0,0,1,ts)
         newtot = round $ (fromIntegral tot) + (fromIntegral add)*fac
@@ -169,6 +170,7 @@ calculateQ :: Trait -> [RDFTriple] -> [RDFTriple]
 calculateQ t ts | traitCountable t  = ( sort . calculateQ' ) ts
 calculateQ _ ts | otherwise          = ts
 calculateQ' :: [RDFTriple] -> [RDFTriple]
+calculateQ' [] = [] 
 calculateQ' ts = xp:ys 
    where (tot,add,ys) = getQtriples' (0,0,ts)
          newtot = (fromIntegral tot) + (fromIntegral add)

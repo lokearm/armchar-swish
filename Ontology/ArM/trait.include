@@ -59,10 +59,10 @@ arm:OtherTrait rdfs:subClassOf arm:Trait .
 
 
 
-arm:Size a arm:LeafTraitClass ; rdfs:label "Size" .
-arm:Warping a arm:LeafTraitClass ; rdfs:label "Warping" .
-arm:Decrepitude a arm:LeafTraitClass ; rdfs:label "Decrepitude" .
-arm:Confidence a arm:LeafTraitClass ; rdfs:label "Confidence" .
+arm:Size a arm:LeafTraitClass ; arm:hasLabel "Size" .
+arm:Warping a arm:LeafTraitClass ; arm:hasLabel "Warping" .
+arm:Decrepitude a arm:LeafTraitClass ; arm:hasLabel "Decrepitude" .
+arm:Confidence a arm:LeafTraitClass ; arm:hasLabel "Confidence" .
 
 arm:hasPoints a owl:DatatypeProperty, arm:PeristentProperty ;
         rdfs:subPropertyOf arm:hasXP ;

@@ -1,3 +1,7 @@
+---
+tags:
+    - armchar/swish
+---
 
 
 ## Steps of the loading process

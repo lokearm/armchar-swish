@@ -1,6 +1,10 @@
 ---
 title: Business Logic
+tagw:
+    armchar/swish
 ---
+
+# Logic
 
 The data structure organised as an ontology and is divided into three parts.
 

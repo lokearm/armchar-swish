@@ -1,3 +1,7 @@
+---
+tags:
+   - haskell/swish
+---
 
 # Problems upon transition from Jena to Swish
 

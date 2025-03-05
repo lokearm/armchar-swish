@@ -11,7 +11,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.BlankNode ( BlankState
+module ArM.Swish.BlankNode ( BlankState
                      , fixBlanksM
                      , runBlank
                      , getBlank 
@@ -20,7 +20,7 @@ module ArM.BlankNode ( BlankState
 import Swish.RDF.Graph (RDFLabel(..),RDFTriple,arc,arcObj,arcPred)
 import Control.Monad.State.Lazy
 import ArM.Types.Trait
-import ArM.Resources
+import ArM.Swish.Resources
 -- import Data.Maybe (fromJust)
 
 type BlankState = State (String,Int) 

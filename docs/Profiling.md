@@ -1,3 +1,7 @@
+---
+tags:
+   - haskell
+---
 
 
 + Profiling is implemented as the `prof` target in the makefile

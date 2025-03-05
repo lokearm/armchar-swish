@@ -27,7 +27,8 @@ import Swish.RDF.Graph
 -- import Swish.RDF.Vocabulary.RDF
 -- import Swish.RDF.Vocabulary.XSD
 import Swish.RDF.Ruleset (RDFRule)
-import ArM.Resources
+import ArM.GameRules
+import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Rules.Common
 import ArM.Rules.RDFS
@@ -107,11 +108,6 @@ processArtXP = processXP' "XPTrait" 5
 processAbXP :: RDFGraph -> [RDFTriple]
 processAbXP = processXP' "AccelleratedTrait" 1
           
--- | Calculate score from total XP, using the arts scale.
--- For abilities, the argument should be divided by 5 beforehand.
-scoreFromXP :: Int -> Int
-scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
-    where x = fromIntegral y  :: Double
 
 makeXPArcs :: Int -> (RDFLabel,Int) -> [RDFTriple]
 makeXPArcs n (trait,total) = [ arc trait (armRes "hasXPScore") (litInt score),

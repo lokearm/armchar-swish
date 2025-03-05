@@ -1,5 +1,7 @@
 ---
 title: Design Notes for armchar-swish
+tags:
+    - armchar/swish
 ---
 
 # Design Notes for armchar-swish

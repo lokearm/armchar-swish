@@ -49,6 +49,7 @@ Confidence
 
 + Elemental Magic (3)
 + The Gift (-)
++ Faerie Magic (0)
 + Affinity with Ability: Forest Lore (1)
 + Forest Lore (1)
 + Minor Magical Focus: Wind (1)
@@ -66,14 +67,17 @@ Confidence
 
 | Ability              | Speciality      | Score |   XP | Bonus | Effective |
 | :-                   | :-              |    -: |   -: |    -: |        -: |
-| Faerie Magic         | Spells          |     1 |    0 |     - |         0 |
 | Merinita Cult Lore   | Spells          |     1 |    0 |     - |         1 |
+| Faerie Magic         | Spells          |     1 |    0 |     - |         1 |
 | Magic Theory         | Spells          |     3 |    0 |     - |         3 |
 | Parma Magica         | Mentem          |     1 |    0 |     - |         1 |
 | Finesse              | Auram           |     1 |    0 |     - |         1 |
 | Penetration          | Auram           |     1 |    0 |     - |         1 |
 | Dead Lang: Latin     | Hermetic Usage  |     4 |    0 |     - |         4 |
 | Concentration        | Spell Conc.     |     2 |    0 |     - |         2 |
+| Intrigue             | Hermetic Politics |     1 |    0 |     - |         1 |
+| Hunt                 | Woodlands       |     1 |    0 |     - |         1 |
+| Survival             | Woodlands       |     2 |    0 |     - |         2 |
 | Stealth              | Woodlands       |     2 |    0 |     - |         2 |
 | Awareness            | searching       |     2 |    0 |     - |         2 |
 | L Lang: Occitan      | [local]         |     5 |    0 |     - |         5 |

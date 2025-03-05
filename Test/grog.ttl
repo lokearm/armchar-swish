@@ -65,6 +65,7 @@ armchar:andrew arm:characterClass arm:Grog ;
 
 :lateradv arm:advanceCharacter armchar:andrew ;
   arm:advancementClass arm:LaterLifeAdvancement ; 
+  arm:durationYears 18 ;
   arm:advanceTrait 
       [ arm:traitClass armr:hunt ;  arm:addedXP 5 ; arm:hasSpeciality "Woodlands"  ],
       [ arm:traitClass armr:bows ;  arm:addedXP 75 ; arm:hasSpeciality "Shortbow"  ],
@@ -74,7 +75,7 @@ armchar:andrew arm:characterClass arm:Grog ;
       [ arm:traitClass armr:music ;  arm:addedXP 30 ; arm:hasSpeciality "Flute"  ],
       [ arm:traitClass armr:arealore ;  arm:addedXP 30 ; arm:hasSpeciality "Hunting grounds"  ],
       [ arm:traitClass armr:survival ;  arm:addedXP 15 ],
-      [ arm:traitClass armr:cooking ;  arm:addedXP 5 ],
+      [ arm:traitClass armr:craft-cooking ;  arm:addedXP 5 ],
       [ arm:traitClass armr:norman ;  arm:addedXP 5 ]
       .
 

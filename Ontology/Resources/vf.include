@@ -102,6 +102,16 @@ armr:wealthy          rdfs:subClassOf   armr:majorGeneralVirtue ; arm:hasReferen
 			arm:hasClass arm:LaterLifeAdvancement ] ;
                          a arm:LeafTraitClass ;
                   arm:hasLabel "Wealthy" .
+
+armr:feralupbringing          rdfs:subClassOf   armr:minorGeneralFlaw ;
+      arm:hasReference   "[ArM5]" ;
+      arm:hasModifier [ arm:hasProperty arm:awardsXP ;
+                        arm:hasValue 120 ;
+			arm:hasClass arm:EarlyChildhoodAdvancement ] ;
+                         a arm:LeafTraitClass ;
+                  arm:hasLabel "Feral Upbringing" .
+
+
 armr:poor          rdfs:subClassOf   armr:majorGeneralFlaw ;
       arm:hasReference   "[ArM5]" ;
       arm:hasModifier [ arm:hasProperty arm:awardsAnnualXP ;
@@ -557,13 +567,21 @@ armr:ageQuickly  rdfs:subClassOf   armr:majorSupernaturalFlaw ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Age Quickly" .
 
+armr:greedyMajor  rdfs:subClassOf  armr:majorPersonalityFlaw ;
+                  arm:hasReference   "[ArM5]" ;
+                  a arm:LeafTraitClass ;
+                  arm:hasLabel "Greedy (major)" .
 armr:ambitiousMajor  rdfs:subClassOf  armr:majorPersonalityFlaw ;
                   arm:hasReference   "[ArM5]" ;
                   a arm:LeafTraitClass ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-ambitious ;
+		                   arm:hasFixedScore 6 ] ;
                   arm:hasLabel "Ambitious (major)" .
 armr:ambitious     rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
+                 arm:grantsTrait [ arm:traitClass armr:personality-ambitious ;
+		                   arm:hasFixedScore 3 ] ;
                arm:hasLabel "Ambitious" .
 armr:avariciousMajor rdfs:subClassOf  armr:majorPersonalityFlaw ;
                   arm:hasReference   "[ArM5]" ;
@@ -632,6 +650,10 @@ armr:carefree  rdfs:subClassOf  armr:minorPersonalityFlaw ;
                  arm:hasReference   "[ArM5]" ;
                  a arm:LeafTraitClass ;
                  arm:hasLabel "Carefree" .
+armr:curseOfVenus  rdfs:subClassOf  armr:majorStoryFlaw ;
+                       arm:hasReference   "[ArM5]" ;
+                       a arm:LeafTraitClass ;
+                       arm:hasLabel "Curse of Venus" .
 armr:pagan  rdfs:subClassOf  armr:majorStoryFlaw ;
                        arm:hasReference   "e.g. [HoH:TL]" ;
                        a arm:LeafTraitClass ;

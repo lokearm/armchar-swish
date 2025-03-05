@@ -21,9 +21,9 @@ import qualified Swish.RDF.Query as Q
 import Data.Maybe
 import Data.List (sort,intercalate)
 import ArM.Types.Season
-import ArM.KeyPair
-import ArM.Resources
-import ArM.BlankNode
+import ArM.Swish.KeyPair
+import ArM.Swish.Resources
+import ArM.Swish.BlankNode
 import ArM.Rules.Aux
 import ArM.Types.RDF
 import ArM.Types.Trait
@@ -32,6 +32,8 @@ import Data.Aeson
 import Data.Aeson.Key
 import qualified Swish.RDF.VarBinding  as VB
 import           Swish.VarBinding  (vbMap)
+
+import ArM.Debug.Trace
 
 -- |
 -- = Character Advancement
@@ -50,6 +52,8 @@ data Advancement = Advancement
     , advLevels      :: Maybe Int
     , spentXP        :: Maybe Int
     , advXP          :: Maybe Int
+    , advAnnualXP    :: Maybe Int
+    , advDuration    :: Maybe Int
     , advType        :: Maybe String
     , advLabel       :: Maybe String
     , advDescription :: Maybe String
@@ -66,6 +70,8 @@ defaultAdvancement = Advancement
                 , advLevels      = Nothing
                 , spentXP        = Nothing
                 , advXP         = Nothing
+                , advAnnualXP   = Nothing
+                , advDuration    = Nothing
                 , advType       = Nothing
                 , advLabel       = Nothing
                 , advDescription = Nothing
@@ -77,6 +83,9 @@ instance Show Advancement where
    show a = show (rdfid a) ++ "\n  **" ++ (season a) ++ " " ++ show (year a) ++ "**\n" 
                  ++ sc (contents a) 
                  ++ show (traits a) 
+                 ++ "\nXP: " ++ show (advXP a) 
+                 ++ "\nAnnual XP: " ++ show (advAnnualXP a) 
+                 ++ "\nDuration: " ++ show (advDuration a) 
                  ++ "\nSort Index: " ++ show (advSortIndex a) 
                  ++ "\nSeason No: " ++ show (sno a) 
                  ++ "\n"
@@ -314,6 +323,12 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advXP = (rdfToInt  ob) }
      | p == (armRes "awardsXP") =
              toAdvancement' xs $ adv { advXP = (rdfToInt  ob) }
+     | p == (armRes "classAwardsAnnualXP") && advAnnualXP adv == Nothing =
+             toAdvancement' xs $ adv { advAnnualXP = (rdfToInt  ob) }
+     | p == (armRes "awardsAnnualXP") =
+             toAdvancement' xs $ adv { advAnnualXP = (rdfToInt  ob) }
+     | p == (armRes "durationYears") =
+             toAdvancement' xs $ adv { advDuration = (rdfToInt  ob) }
      | p == (armRes "hasAdvancementIndex") =
              toAdvancement' xs $ adv { advTime = t { advancementIndex = fi (rdfToInt  ob) } }
      | p == (armRes "instanceLabel") =
@@ -322,7 +337,7 @@ toAdvancement' (KeyValuePair p ob:xs)  adv
              toAdvancement' xs $ adv { advDescription = rdfToString  ob } 
      | p == (armRes "advancementClassString") = 
         adv { advTime = t { advancementStage = fs (rdfToString ob) }, advType = rdfToString  ob }  
-     | otherwise = toAdvancement' xs adv 
+     | otherwise = trace (show p) $ toAdvancement' xs adv 
      where fs Nothing = "" 
            fs (Just x) = x
            fi Nothing = 0 

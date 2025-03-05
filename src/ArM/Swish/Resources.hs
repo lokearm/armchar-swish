@@ -13,7 +13,7 @@
 -- Much of this data should be made configurable.
 --
 -----------------------------------------------------------------------------
-module ArM.Resources where
+module ArM.Swish.Resources where
 
 import Swish.Namespace
 import Swish.RDF.Graph
