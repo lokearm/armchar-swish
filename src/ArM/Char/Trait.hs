@@ -409,7 +409,7 @@ instance TraitType Spell where
                       , masteryScore = s
                       , masteryOptions = maybeList (mastery p)
                       , spellExcessXP = y
-                      , spellMultiplier = maybeInt $ multiplyXP p
+                      , spellMultiplier = fromMaybe 1.0 $ multiplyXP p
                       }
      where (s,y) = getAbilityScore (xp p)
 instance TraitType Reputation where
@@ -493,12 +493,13 @@ instance TraitLike Ability where
     toTrait = AbilityTrait
     advanceTrait a x = 
           trace (show x) $ trace (show a) $ 
-          updateBonus (bonusScore a) $ updateMultiplier (multiplyXP a) $
+          updateBonus (bonusScore a) $ um (multiplyXP a) $
           updateAbilitySpec (spec a) $ updateAbilityXP y x
       where y = (abilityExcessXP x) + round (m * xp')
             m = abilityMultiplier x
             xp' = fromIntegral $ fromMaybe 0 (xp a)
-            updateMultiplier abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
+            um Nothing ab = ab 
+            um abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Art where
     traitKey x = ArtKey $ artName x
     toTrait = ArtTrait
@@ -508,6 +509,7 @@ instance TraitLike Art where
       where y = (artExcessXP x) + round (m * xp')
             m = artMultiplier x
             xp' = fromIntegral $ fromMaybe 0 (xp a)
+            um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
     traitKey x = SpellKey $ spellName x
