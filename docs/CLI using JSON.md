@@ -31,6 +31,19 @@ aliases:
 + [ ] Step 7. Cleanup
 	+ [ ] Remove null entries from JSON output
 
+
++ [ ] Step X.  Magi char gen
+	+ [ ] Spell data type
+	+ [ ] Read Spell data from CSV
+	+ [ ] Art and spell markdown
++ [ ] Step Y. Covenant
+	+ [ ] Covenant data model - analogous to Character
+	+ [ ] Book resource
+	+ [ ] Library
+	+ [ ] Read books from CSV
++ [ ] Step Z. Covenant advancement
+	+ [ ] Covenant advancement
+	+ [ ] Covenant members
 + Virtue and Flaws affecting advancement
 	+ Affinity
 		+ MultiplyXP (Ability "Stealth") 1.5
