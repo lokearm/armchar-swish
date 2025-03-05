@@ -116,8 +116,8 @@ data Character = Character
          , concept :: CharacterConcept
          , state :: Maybe CharacterState
          , pregameDesign :: [ Advancement ]
-         , pregameAdvancement :: [ Advancement ]
-         , pastAdvancement :: [ Advancement ]
+         , pregameAdvancement :: [ AugmentedAdvancement ]
+         , pastAdvancement :: [ AugmentedAdvancement ]
          , futureAdvancement :: [ Advancement ]
          }  deriving (Eq,Generic)
 
@@ -160,12 +160,12 @@ instance FromJSON Character where
 
 
 -- | Augment and amend the advancements based on current virtues and flaws.
-prepareAdvancement :: CharacterState -> Advancement -> Advancement
+prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
 prepareAdvancement _ = prepareAdvancementVF 
 
 
 -- | Apply advancement
-applyAdvancement :: Advancement -> CharacterState -> (Advancement,CharacterState)
+applyAdvancement :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyAdvancement a cs = (a',cs')
     where a' = prepareAdvancement cs a
           cs' = cs { charTime = season a, traits = new }
@@ -176,7 +176,7 @@ applyAdvancement a cs = (a',cs')
           old = traits cs
 
 -- | Apply a list of advancements
-applyAdvancements :: [Advancement] -> CharacterState -> ([(Advancement,Advancement)],CharacterState)
+applyAdvancements :: [Advancement] -> CharacterState -> ([(AugmentedAdvancement,Advancement)],CharacterState)
 applyAdvancements a cs = applyAdvancements' ([],a,cs)
 applyAdvancements' :: ([(Advancement,Advancement)],[Advancement],CharacterState)
                    -> ([(Advancement,Advancement)],CharacterState)
