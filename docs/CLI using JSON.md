@@ -30,18 +30,16 @@ aliases:
 + [ ] Step 6.  CharacterState in JSON
 + [ ] Step 7. Cleanup
 	+ [ ] Remove null entries from JSON output
-
-
-+ [ ] Step X.  Magi char gen
++ [ ] Step 8.  Magi char gen
 	+ [ ] Spell data type
 	+ [ ] Read Spell data from CSV
 	+ [ ] Art and spell markdown
-+ [ ] Step Y. Covenant
++ [ ] Step 9. Covenant
 	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Book resource
 	+ [ ] Library
 	+ [ ] Read books from CSV
-+ [ ] Step Z. Covenant advancement
++ [ ] Step 10. Covenant advancement
 	+ [ ] Covenant advancement
 	+ [ ] Covenant members
 + Virtue and Flaws affecting advancement

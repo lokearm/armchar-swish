@@ -12,20 +12,19 @@
 -----------------------------------------------------------------------------
 module ArM.Helper where
 
+import Data.Maybe (fromMaybe)
+
 -- | Get a list from a maybe-list, mapping Nothing to the empty list.
 maybeList :: Maybe [a] -> [a]
-maybeList Nothing = []
-maybeList (Just x) = x
+maybeList = fromMaybe []
 
 -- | Get a string from a maybe-string, mapping Nothing to the empty string.
 maybeString :: Maybe String -> String
-maybeString Nothing = ""
-maybeString (Just x) = x
+maybeString = fromMaybe ""
 
 -- | Get a number from a maybe-number, mapping Nothing to zero.
 maybeInt :: Num a => Maybe a -> a
-maybeInt Nothing = fromInteger 0
-maybeInt (Just x) = x
+maybeInt = fromMaybe 0
 
 -- | Add maybe-integers, treating Nothing as zero.
 maybeAdd :: Maybe Int -> Maybe Int -> Maybe Int
@@ -42,3 +41,14 @@ filterNothing = f
 maybeShow :: Show a => Maybe a -> String
 maybeShow Nothing = ""
 maybeShow (Just x) = show x
+
+-- | Show a non-zero integer with sign, or an empty string
+showBonus :: Int -> String
+showBonus x | x > 0 = " +" ++ show x
+            | x < 0 = " " ++ show x
+            | otherwise = ""
+
+-- | Show an integer with sign
+showSigned :: Int -> String
+showSigned x | x > 0 = "+" ++ show x
+            | otherwise = show x

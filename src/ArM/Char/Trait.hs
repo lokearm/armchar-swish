@@ -226,14 +226,8 @@ instance ToJSON Confidence
 instance ToJSON OtherTrait 
 instance ToJSON Trait 
 
-showBonus :: Int -> String
-showBonus x | x > 0 = " +" ++ show x
-            | x < 0 = " " ++ show x
-            | otherwise = ""
-showSigned :: Int -> String
-showSigned x | x > 0 = "+" ++ show x
-            | otherwise = show x
-
+-- |
+-- == Show instances
 
 instance Show Ability  where
    show a = abilityName a ++ " [" ++ showspec sp ++ "] "
@@ -265,7 +259,7 @@ showAging p | Nothing == aging p = ""
             | otherwise = " (" ++ show  pt ++ " aging points)"
     where pt = maybeInt $ aging p
 showXP :: ProtoTrait -> String
-showXP p = " " ++ show ( maybeInt (xp p) ) ++ "xp"
+showXP p = " " ++ show ( fromMaybe 0 (xp p) ) ++ "xp"
 
 instance Show ProtoTrait  where
    show p 
@@ -492,7 +486,6 @@ instance TraitLike Ability where
     traitKey x = AbilityKey $ abilityName x
     toTrait = AbilityTrait
     advanceTrait a x = 
-          trace (show x) $ trace (show a) $ 
           updateBonus (bonusScore a) $ um (multiplyXP a) $
           updateAbilitySpec (spec a) $ updateAbilityXP y x
       where y = (abilityExcessXP x) + round (m * xp')
@@ -564,6 +557,7 @@ instance TraitLike ProtoTrait where
        | confidence a /= Nothing = updateScore a . updatePts a
        | other a /= Nothing = updatePts a
        | otherwise  = id
+     where updatePts ad t = t { points = maybeAdd ( points t ) ( points ad ) }
    toTrait p 
       | ability p /= Nothing = AbilityTrait $ fromJust $ computeTrait p
       | characteristic p /= Nothing = CharacteristicTrait $  fromJust $ computeTrait p
@@ -587,11 +581,13 @@ instance TraitLike ProtoTrait where
 updateAbilitySpec :: Maybe String -> Ability -> Ability
 updateAbilitySpec Nothing a = a
 updateAbilitySpec (Just x) a = a { speciality = Just x }
+
 updateAbilityXP :: Int -> Ability -> Ability
 updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
                      | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
     where sc = abilityScore ab
           tr = (sc+1)*5
+
 updateRepXP :: Int -> Reputation -> Reputation
 updateRepXP x ab | x < tr = ab { repExcessXP = x }
                      | otherwise = updateRepXP (x-tr) $ ab { repScore = sc+1 }
@@ -622,8 +618,7 @@ updateScore a = u (score a)
           u (Just x) t = t { score = Just x }
 updateXP :: ProtoTrait -> ProtoTrait -> ProtoTrait
 updateXP a t = t { xp = maybeAdd (xp a) (xp t) }
-updatePts :: ProtoTrait -> ProtoTrait -> ProtoTrait
-updatePts a t = t { points = maybeAdd ( points t ) ( points a ) }
+
 updateAging :: ProtoTrait -> ProtoTrait -> ProtoTrait
 updateAging a t = t { aging = maybeAdd ( aging t ) ( aging a ) }
 updateMastery :: ProtoTrait -> ProtoTrait -> ProtoTrait
@@ -631,19 +626,6 @@ updateMastery a t = t { mastery = f (mastery t) (mastery a) }
     where f Nothing x = x
           f y Nothing = y
           f (Just x) (Just y)  = Just (x ++ y)
-
-{-
-
--- | Merge two lists of ProtoTrait (advancement) objects, combining objects
--- which refer to the same Trait.
-advanceTraits :: [ ProtoTrait ] -> [ ProtoTrait ] -> [ ProtoTrait ]
-advanceTraits [] ys = ys
-advanceTraits ys [] = ys
-advanceTraits (x:xs) (y:ys) 
-    | x <: y = x:advanceTraits xs (y:ys)
-    | y <: x = y:advanceTraits (x:xs) ys
-    | otherwise = advanceTrait x y:advanceTraits xs ys
--}
 
 -- | Apply a list of ProtoTrait advancements to a list of Traits.
 advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
