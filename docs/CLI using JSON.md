@@ -11,10 +11,10 @@ aliases:
 + See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]]
 + 
 
-+ [ ] Step 1.  Working Companion CharGen
++ [x] Step 1.  Working Companion CharGen
 	+ [x] Implement Affinity
 	+ [x] Implement Puissant
-	+ [ ] Include affinity in score calculation
+	+ [x] Include affinity in score calculation
 + [ ] Step 2. Advancement log
 	+ [ ] Store augmented Advancement objects
 	+ [ ] Markdown output
