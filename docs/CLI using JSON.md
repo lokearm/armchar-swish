@@ -86,6 +86,29 @@ aliases:
 + Validation
 	+ note that validation must be based on the augmented advancements
 		+ hence the augmented advancements must be stored
++ Advancement Types
+	+ Pregame
+		+ Virtues and Flaws
+			+ 0 years
+		+ Characteristics
+			+ 0 years
+		+ Early Childhood
+			+ 5 years
+		+ Later Life
+			+ $X$ years
+		+ Apprenticeship
+			+ 15 years
+		+ P/G Years
+			+ $X$ years
+	+ Ingame Season
+		+ Adventure
+		+ Practice
+		+ Teaching
+		+ Training
+		+ Reading
+		+ Vis study
+		+ Exposure
+	 
         
 + Ideas
 	+ [Data.Map](https://hackage.haskell.org/package/containers-0.4.0.0/docs/Data-Map.html) could be used for CharacterState
