@@ -76,6 +76,8 @@ defaultAdv = Advancement
      , advChanges = [ ]  
      }
 
+data Validation = Error String | Validated String
+   deriving (Eq,Generic,Show)
 -- | Advancement with additional inferred fields
 data AugmentedAdvancement = Adv
      { advancement :: Advancement -- ^ Base advancement as entered by the user
@@ -83,6 +85,7 @@ data AugmentedAdvancement = Adv
      , spentXP  :: Maybe Int   -- ^ Total XP spent on advancement
      , inferredTraits :: [ ProtoTrait ] -- ^ trait changes inferred by virtues and flaws
      , augYears :: Maybe Int    -- ^ number of years advanced
+     , validation :: Maybe Validation -- ^ Report from validation
      }
    deriving (Eq,Generic,Show)
 
@@ -94,6 +97,7 @@ defaultAA = Adv
      , spentXP = Nothing
      , inferredTraits = [ ] 
      , augYears = Nothing
+     , validation = Nothing
      }
 
 instance AdvancementLike Advancement where
@@ -110,6 +114,9 @@ instance AdvancementLike AugmentedAdvancement where
      uses  a = advUses  $ advancement a
      sourceQuality  a =  advSQ  $ advancement a
      changes  a = advChanges  $ advancement  a
+
+instance ToJSON Validation
+instance FromJSON Validation
 
 instance ToJSON AugmentedAdvancement where
     toEncoding = genericToEncoding defaultOptions
@@ -132,6 +139,7 @@ instance FromJSON AugmentedAdvancement where
         <*> v .:? "spentXP"
         <*> fmap maybeList ( v .:? "inferredTraits" )
         <*> v .:? "augYears"
+        <*> v .:? "validation"
 
 
 -- | Augment and amend the advancements based on current virtues and flaws.
