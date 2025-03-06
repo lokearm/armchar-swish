@@ -20,5 +20,5 @@ scoreFromXP :: Int -> Int
 scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
     where x = fromIntegral y  :: Double
 
-xpFromScore :: Int -> Int
-xpFromScore y = y*(y+1) `div` 2
+pyramidScore :: Int -> Int
+pyramidScore y = y*(y+1) `div` 2

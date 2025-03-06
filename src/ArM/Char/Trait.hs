@@ -309,7 +309,7 @@ instance Show ProtoTrait  where
 
 getAbilityScore :: Maybe Int -> (Int,Int)
 getAbilityScore x' = (s,y) 
-     where y = x - 5*xpFromScore s
+     where y = x - 5*pyramidScore s
            s = scoreFromXP (x `div` 5)
            x = maybeInt x'
 
@@ -396,7 +396,7 @@ instance TraitType Art where
                 , artBonus = maybeInt $ bonusScore p
                 , artMultiplier = fromMaybe 1.0 $ multiplyXP p
                 }
-     where y = x - xpFromScore s
+     where y = x - pyramidScore s
            s = scoreFromXP x
            x = maybeInt (xp p) 
 instance TraitType Spell where
