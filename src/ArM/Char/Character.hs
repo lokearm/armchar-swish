@@ -115,8 +115,8 @@ data Character = Character
          { charID :: String
          , concept :: CharacterConcept
          , state :: Maybe CharacterState
-         , pregameDesign :: [ Advancement ]
-         , pregameAdvancement :: [ AugmentedAdvancement ]
+         , pregameDesign :: [ AugmentedAdvancement ]
+         , pregameAdvancement :: [ Advancement ]
          , pastAdvancement :: [ AugmentedAdvancement ]
          , futureAdvancement :: [ Advancement ]
          }  deriving (Eq,Generic)
@@ -178,8 +178,8 @@ applyAdvancement a cs = (a',cs')
 -- | Apply a list of advancements
 applyAdvancements :: [Advancement] -> CharacterState -> ([(AugmentedAdvancement,Advancement)],CharacterState)
 applyAdvancements a cs = applyAdvancements' ([],a,cs)
-applyAdvancements' :: ([(Advancement,Advancement)],[Advancement],CharacterState)
-                   -> ([(Advancement,Advancement)],CharacterState)
+applyAdvancements' :: ([(AugmentedAdvancement,Advancement)],[Advancement],CharacterState)
+                   -> ([(AugmentedAdvancement,Advancement)],CharacterState)
 applyAdvancements' (xs,[],cs) = (xs,cs)
 applyAdvancements' (xs,y:ys,cs) = applyAdvancements' ((a',y):xs,ys,cs')
     where (a',cs') = applyAdvancement y cs

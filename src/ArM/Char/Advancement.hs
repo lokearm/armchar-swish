@@ -19,7 +19,7 @@ import ArM.Char.Trait
 import ArM.Char.Virtues
 
 import Data.Aeson
-import Data.Maybe (fromJust,isJust,isNothing)
+import Data.Maybe (fromJust,isJust)
 import GHC.Generics
 
 type CharTime = Maybe String
@@ -61,22 +61,32 @@ data Advancement = Advancement
      , advUses :: Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
      , advSQ :: Maybe Int -- ^ Source Quality (SQ)
      , advChanges :: [ ProtoTrait ]  -- ^ trait changes defined by player
-         -- ^ trait changes inferred by virtues and flaws
      }
    deriving (Eq,Generic,Show)
 
+defaultAdv :: Advancement 
+defaultAdv = Advancement 
+     { advMode = Nothing
+     , advSeason = Nothing
+     , advNarrative = Nothing
+     , advUses = Nothing
+     , advSQ = Nothing
+     , advChanges = [ ]  
+     }
+
 -- | Advancement with additional inferred fields
 data AugmentedAdvancement = Adv
-     { advancement :: Maybe Advancement
+     { advancement :: Advancement
      , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
      , inferredTraits :: [ ProtoTrait ] 
          -- ^ trait changes inferred by virtues and flaws
      }
    deriving (Eq,Generic,Show)
 
+
 defaultAA :: AugmentedAdvancement
 defaultAA = Adv
-     { advancement = Nothing
+     { advancement = defaultAdv
      , effectiveSQ = Nothing
      , inferredTraits = [ ] 
      }
@@ -89,21 +99,16 @@ instance AdvancementLike Advancement where
      sourceQuality  =  advSQ
      changes = advChanges
 instance AdvancementLike AugmentedAdvancement where
-     mode a | isNothing (advancement a) = Nothing
-            | otherwise = advMode $ fromJust $ advancement a
-     season  a | isNothing (advancement a) = Nothing
-          | otherwise = advSeason $ fromJust $  advancement  a
-     narrative  a | isNothing (advancement a) = Nothing
-          | otherwise = advNarrative $ fromJust $ advancement  a
-     uses  a | isNothing (advancement a) = Nothing
-          | otherwise = advUses $ fromJust $ advancement a
-     sourceQuality  a | isNothing (advancement a) = Nothing
-                      | otherwise =  advSQ $ fromJust $ advancement a
-     changes  a | isNothing (advancement a) = []
-             | otherwise = advChanges $ fromJust $ advancement  a
+     mode a = advMode  $ advancement a
+     season  = advSeason  .  advancement 
+     narrative  a = advNarrative  $ advancement  a
+     uses  a = advUses  $ advancement a
+     sourceQuality  a =  advSQ  $ advancement a
+     changes  a = advChanges  $ advancement  a
 
+instance ToJSON AugmentedAdvancement where
+    toEncoding = genericToEncoding defaultOptions
 instance ToJSON Advancement where
-    -- For efficiency - Not required
     toEncoding = genericToEncoding defaultOptions
 
 instance FromJSON Advancement where
@@ -116,14 +121,14 @@ instance FromJSON Advancement where
         <*> fmap maybeList ( v .:? "changes" )
 instance FromJSON AugmentedAdvancement where
     parseJSON = withObject "AugmentedAdvancement" $ \v -> Adv
-        <$> v .:? "advancement"
+        <$> v .: "advancement"
         <*> v .:? "effectiveSQ"
         <*> fmap maybeList ( v .:? "inferredTraits" )
 
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancementVF :: Advancement -> AugmentedAdvancement
-prepareAdvancementVF a = defaultAA { inferredTraits = f a, advancement = Just a }
+prepareAdvancementVF a = defaultAA { inferredTraits = f a, advancement = a }
      where f = inferTraits . getVF . changes 
 
 -- | Get the virtues and flaws from a list of ProtoTrait objects, and convert them to
