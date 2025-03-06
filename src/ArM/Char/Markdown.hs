@@ -49,12 +49,16 @@ instance Markdown Character where
 instance Markdown CharacterState where
    printMD c = ( "## " ++ show (charTime c) ):"":pt c
        where pt = map ("+ "++) . foldl (++) [] . map printMD . traits 
+
+showSQ :: Maybe Int -> Maybe Int -> String
+showSQ Nothing Nothing = ""
+showSQ (Just x) Nothing = "(" ++ show x ++ "xp)"
+showSQ Nothing (Just x) = "(" ++ show x ++ "xp)"
+showSQ (Just x) (Just y) = "(" ++ show x ++ "+" ++ show (y-x) ++ "xp)"
+
 instance Markdown AugmentedAdvancement where
    printMD a = f (season a) (mode a) $ fn (narrative a) $ pt a
-      where xps | sx == Nothing = ""
-                | otherwise = " (" ++ ishow  sx ++ "xp)" 
-            sx = sourceQuality a
-            ishow = show . fromJust
+      where xps = showSQ (sourceQuality a) (effectiveSQ a)
             pt = map ("    + "++) . foldl (++) [] . map printMD . changes 
 
             fn Nothing xs = xs
