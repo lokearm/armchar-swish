@@ -57,6 +57,7 @@ class AdvancementLike a where
 data Advancement = Advancement 
      { advMode :: Maybe String  -- ^ mode of study
      , advSeason :: CharTime    -- ^ season or development stage
+     , advYears :: Maybe Int    -- ^ number of years advanced
      , advNarrative :: Maybe String -- ^ freeform description of the activities
      , advUses :: Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
      , advSQ :: Maybe Int -- ^ Source Quality (SQ)
@@ -68,6 +69,7 @@ defaultAdv :: Advancement
 defaultAdv = Advancement 
      { advMode = Nothing
      , advSeason = Nothing
+     , advYears = Nothing
      , advNarrative = Nothing
      , advUses = Nothing
      , advSQ = Nothing
@@ -76,10 +78,11 @@ defaultAdv = Advancement
 
 -- | Advancement with additional inferred fields
 data AugmentedAdvancement = Adv
-     { advancement :: Advancement
+     { advancement :: Advancement -- ^ Base advancement as entered by the user
      , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
-     , inferredTraits :: [ ProtoTrait ] 
-         -- ^ trait changes inferred by virtues and flaws
+     , spentXP  :: Maybe Int   -- ^ Total XP spent on advancement
+     , inferredTraits :: [ ProtoTrait ] -- ^ trait changes inferred by virtues and flaws
+     , augYears :: Maybe Int    -- ^ number of years advanced
      }
    deriving (Eq,Generic,Show)
 
@@ -88,7 +91,9 @@ defaultAA :: AugmentedAdvancement
 defaultAA = Adv
      { advancement = defaultAdv
      , effectiveSQ = Nothing
+     , spentXP = Nothing
      , inferredTraits = [ ] 
+     , augYears = Nothing
      }
 
 instance AdvancementLike Advancement where
@@ -115,6 +120,7 @@ instance FromJSON Advancement where
     parseJSON = withObject "Advancement" $ \v -> Advancement
         <$> v .:? "mode"
         <*> v .:? "season"
+        <*> v .:? "years"
         <*> v .:? "narrative"
         <*> v .:? "uses"
         <*> v .:? "sourceQuality"
@@ -123,7 +129,9 @@ instance FromJSON AugmentedAdvancement where
     parseJSON = withObject "AugmentedAdvancement" $ \v -> Adv
         <$> v .: "advancement"
         <*> v .:? "effectiveSQ"
+        <*> v .:? "spentXP"
         <*> fmap maybeList ( v .:? "inferredTraits" )
+        <*> v .:? "augYears"
 
 
 -- | Augment and amend the advancements based on current virtues and flaws.

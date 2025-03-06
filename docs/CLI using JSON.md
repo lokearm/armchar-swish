@@ -15,9 +15,9 @@ aliases:
 	+ [x] Implement Affinity
 	+ [x] Implement Puissant
 	+ [x] Include affinity in score calculation
-+ [ ] Step 2. Advancement log
-	+ [ ] Store augmented Advancement objects
-	+ [ ] Markdown output
++ [x] Step 2. Advancement log
+	+ [x] Store augmented Advancement objects
+	+ [x] Markdown output
 + [ ] Step 3. Calculations for validation purposes
 	+ [ ] Implement XP Calculation
 	+ [ ] Implement VF calculation
@@ -27,9 +27,15 @@ aliases:
 	+ [ ] Implement VF validation
 	+ [ ] Implement Characteristics Validation
 + [ ] Step 5.  Companion Avancement
++ [ ] Step 6.  Clean up character sheet
+	+ [ ] Pretty advancement
+	+ [ ] Pretty CharacterState
+	+ [ ] Pretty metadata
+	+ [ ] Validate character build
 + [ ] Step 6.  CharacterState in JSON
-+ [ ] Step 7. Cleanup
 	+ [ ] Remove null entries from JSON output
+	+ [ ] Review Character State output
+	+ [ ] Read CharacterState from JSON
 + [ ] Step 8.  Magi char gen
 	+ [ ] Spell data type
 	+ [ ] Read Spell data from CSV

@@ -180,13 +180,13 @@ data Reputation = Reputation { reputationName :: String
                              ,  repScore :: Int 
                              ,  repExcessXP :: Int 
                              }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 data VF = VF { vfname :: String
              , vfDetail :: String
              , vfcost :: Int 
              , vfAppliesTo :: Maybe TraitKey
              }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 data Confidence = Confidence { cscore :: Int, cpoints :: Int }
            deriving (Show, Ord, Eq, Generic)
 data OtherTrait = OtherTrait { trait :: String
@@ -229,6 +229,10 @@ instance ToJSON Trait
 -- |
 -- == Show instances
 
+instance Show VF  where
+   show a = vfname a ++ " [" ++ sp ++ "] "
+          ++ " (" ++ show (vfcost a) ++ ") "
+      where sp = vfDetail a
 instance Show Ability  where
    show a = abilityName a ++ " [" ++ showspec sp ++ "] "
           ++ show (abilityScore a) 
@@ -253,6 +257,9 @@ instance Show Art  where
           ++ f (artMultiplier a)
       where f 0 = ""
             f x = " [xp x" ++ show x ++  "]"
+instance Show Reputation  where
+   show a = reputationName a ++ " [" ++ (repLocale a) ++ "] "
+          ++ show (repScore a) ++ " (" ++ show (repExcessXP a) ++ ") "
 
 showAging :: ProtoTrait -> String
 showAging p | Nothing == aging p = ""

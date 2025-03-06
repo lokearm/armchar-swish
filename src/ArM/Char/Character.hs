@@ -189,8 +189,9 @@ applyAdvancements' (xs,y:ys,cs) = applyAdvancements' (a':xs,ys,cs')
 prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
-            | otherwise = c { state = Just cs
+            | otherwise = c { state = Just $ cs { charTime = Just "Game start" }
                             , pregameDesign = xs
+                            , pregameAdvancement = []
                             }
             where as = pregameAdvancement  c 
                   (xs,cs) = applyAdvancements as defaultCS

@@ -11,7 +11,7 @@
 module ArM.Char.Markdown (printMD) where
 
 -- import Data.Maybe (fromJust)
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust,fromMaybe)
 import ArM.Char.Character 
 import ArM.Char.Trait
 import ArM.Char.Advancement
@@ -33,13 +33,19 @@ instance Markdown CharacterConcept where
 listMD :: Markdown a => [a] -> [String]
 listMD = foldl (++) [] . map printMD 
 
+pListMD :: Markdown a => String -> [a] -> [String]
+pListMD _ [] = []
+pListMD s x = ("":s:"":listMD x)
+
 instance Markdown Character where
    printMD c = ( printMD . concept ) c 
             ++ maybeP (state c)
-            ++ ("":"## Pregame Development":"":listMD as)
-            ++ ("":"## Past Advancement":"":listMD bs)
-            ++ ("":"## Future Advancement":"":listMD cs)
+            ++ (pListMD "## Game start design" as')
+            ++ (pListMD "## Pregame Development" as)
+            ++ (pListMD "## Past Advancement" bs)
+            ++ (pListMD "## Future Advancement" cs)
        where 
+             as' = pregameDesign c
              as = pregameAdvancement c
              bs = pastAdvancement c
              cs = futureAdvancement c
@@ -47,7 +53,7 @@ instance Markdown Character where
              maybeP (Just xs) = printMD xs
 
 instance Markdown CharacterState where
-   printMD c = ( "## " ++ show (charTime c) ):"":pt c
+   printMD c = ( "## " ++ (fromMaybe "Current - no time given" $ charTime c) ):"":pt c
        where pt = map ("+ "++) . foldl (++) [] . map printMD . traits 
 
 showSQ :: Maybe Int -> Maybe Int -> String
