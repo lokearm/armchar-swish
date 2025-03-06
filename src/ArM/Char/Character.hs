@@ -176,12 +176,12 @@ applyAdvancement a cs = (a',cs')
           old = traits cs
 
 -- | Apply a list of advancements
-applyAdvancements :: [Advancement] -> CharacterState -> ([(AugmentedAdvancement,Advancement)],CharacterState)
+applyAdvancements :: [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
 applyAdvancements a cs = applyAdvancements' ([],a,cs)
-applyAdvancements' :: ([(AugmentedAdvancement,Advancement)],[Advancement],CharacterState)
-                   -> ([(AugmentedAdvancement,Advancement)],CharacterState)
+applyAdvancements' :: ([AugmentedAdvancement],[Advancement],CharacterState)
+                   -> ([AugmentedAdvancement],CharacterState)
 applyAdvancements' (xs,[],cs) = (xs,cs)
-applyAdvancements' (xs,y:ys,cs) = applyAdvancements' ((a',y):xs,ys,cs')
+applyAdvancements' (xs,y:ys,cs) = applyAdvancements' (a':xs,ys,cs')
     where (a',cs') = applyAdvancement y cs
 
 
@@ -190,7 +190,7 @@ prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
             | otherwise = c { state = Just cs
-                            , pregameDesign = fst $ unzip xs
+                            , pregameDesign = xs
                             }
             where as = pregameAdvancement  c 
                   (xs,cs) = applyAdvancements as defaultCS
