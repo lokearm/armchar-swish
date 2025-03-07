@@ -73,12 +73,9 @@ main = do
      putStrLn "Starting: armchar ..."
      printTime
      args <- getArgs
-     putStrLn "Arguments"
-     putStrLns args
      (opt,n) <- armcharOpts args
      putStrLns n
-     putStrLn "Options"
-     putStrLn $ show opt
+     putStrLn $ "Options: " ++ show opt
 
      main' opt
 
@@ -87,7 +84,6 @@ main' opts | charFile opts /= Nothing = do
      putStrLn $ "Reading file " ++ fn
      t <- LB.readFile fn
      let char = fromJust $ ( decode t  :: Maybe Character )
-     putStrLn $ show char
      let cs = prepareCharacter char
      writeMaybeFile ( debugFile opts ) $ printMD char
      writeMaybeFile ( outFile opts ) $ printMD cs
