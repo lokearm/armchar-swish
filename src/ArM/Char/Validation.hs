@@ -58,6 +58,7 @@ validate :: AugmentedAdvancement -> AugmentedAdvancement
 validate a | m == "Virtues and Flaws" = validateVF a
            | m == "Characteristics" = validateChar a
            | otherwise = validateXP a
+           where m = fromMaybe "" $ mode a
 
 validateVF :: AugmentedAdvancement -> AugmentedAdvancement
 validateVF a = a

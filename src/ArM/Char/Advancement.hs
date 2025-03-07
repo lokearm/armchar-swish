@@ -19,7 +19,7 @@ import ArM.Char.Trait
 import ArM.Char.Virtues
 
 import Data.Aeson
-import Data.Maybe (fromJust,isJust)
+import Data.Maybe (fromJust,isJust,fromMaybe)
 import GHC.Generics
 
 type CharTime = Maybe String
@@ -164,6 +164,14 @@ instance FromJSON AugmentedAdvancement where
 prepareAdvancementVF :: Advancement -> AugmentedAdvancement
 prepareAdvancementVF a = defaultAA { inferredTraits = f a, advancement = a }
      where f = inferTraits . getVF . changes 
+
+augmentTotalXP :: AugmentedAdvancement -> AugmentedAdvancement
+augmentTotalXP a | m == "Early Childhood" = a { effectiveSQ = Just 45 }
+                 | m == "Apprenticeship" = a { effectiveSQ = Just 240 }
+                 | m == "Later Life" = a { effectiveSQ = Just $ y*15 }
+                 | otherwise = a { effectiveSQ = Just 0 }
+           where m = fromMaybe "" $ mode a
+                 y = fromMaybe 0 $ advYears $ advancement a
 
 -- | Get the virtues and flaws from a list of ProtoTrait objects, and convert them to
 -- VF objects
