@@ -24,9 +24,27 @@ import GHC.Generics
 
 type CharTime = Maybe String
 
-
 data Season = Spring | Summer | Autumn | Winter 
-   deriving (Show,Ord,Eq)
+     deriving (Show,Ord,Eq,Read)
+
+data SeasonTime = SeasonTime Season Int | GameStart deriving (Eq)
+
+instance Show SeasonTime where
+   show GameStart = "Game Start"
+   show (SeasonTime s y) = show s ++ " " ++ show y
+
+instance Ord SeasonTime where
+    compare GameStart (SeasonTime _ _) = LT
+    compare (SeasonTime _ _) GameStart = GT
+    compare GameStart GameStart = EQ
+    compare (SeasonTime s1 y1) (SeasonTime s2 y2) 
+        | y1 < y2 = LT
+        | y1 > y2 = GT
+        | otherwise = compare s1 s2 
+
+
+
+
 data AdvancementType = Practice | Exposure | Adventure 
                      | Teaching | Training | Reading | VisStudy
    deriving (Show,Ord,Eq)
