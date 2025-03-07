@@ -9,7 +9,7 @@
 -- Description :  Functions to calculate and validate advancements
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Validation where
+module ArM.Char.Validation (validate) where
 
 -- import ArM.Char.Character
 -- import ArM.Helper
@@ -20,23 +20,13 @@ import ArM.Char.Trait
 import Data.Maybe (fromMaybe,isJust)
 
 
--- | Count regular XP (excluding reputation) from an Advancement
-calculateXP :: Advancement -> Int
-calculateXP = sum . map regXP . changes
 
 -- | Count virtue and flaw costs from an Advancement
 calculateVFCost :: Advancement -> (Int,Int)
 calculateVFCost a = ( sum $ filter (<0) rs, sum $ filter (>0) rs )
    where rs = map regCost $ changes a
 
--- | Count characterics points spent in an Advancement
-calculateCharPoints :: Advancement -> Int
-calculateCharPoints = sum . map pyramidScore . map charScore . changes
 
-charScore :: ProtoTrait -> Int
-charScore p | isJust (characteristic p) = f p
-            | otherwise = 0
-        where f = fromMaybe 0 . score 
 
 regCost :: ProtoTrait -> Int
 regCost p | isJust (virtue p) = f p
@@ -77,8 +67,21 @@ validateVF a | m /= "Virtues and Flaws" = a
                 
 
 validateXP :: AugmentedAdvancement -> AugmentedAdvancement
-validateXP a = a
+validateXP a | sq > xpsum = a { validation = und:validation a }
+             | sq < xpsum = a { validation = over:validation a }
+             | otherwise = a { validation = val:validation a }
+    where xpsum = calculateXP $ advancement a
+          sq = fromMaybe 0 $ effectiveSQ a
+          val = Validated $ "Correctly spent " ++ show sq ++ " xp."
+          over = ValidationError $ "Overspent " ++ show xpsum ++ "xp of " ++ show sq ++ "."
+          und = ValidationError $ "Underspent " ++ show xpsum ++ "xp of " ++ show sq ++ "."
 
+--
+-- | Count regular XP (excluding reputation) from an Advancement
+calculateXP :: Advancement -> Int
+calculateXP = sum . map regXP . changes
+
+-- | Validate points spent on characterics.
 validateChar :: AugmentedAdvancement -> AugmentedAdvancement
 validateChar a | m /= "Characteristics" = a
              | ex < lim = a { validation = ValidationError und:validation a }
@@ -86,8 +89,17 @@ validateChar a | m /= "Characteristics" = a
              | otherwise = a { validation = Validated val:validation a }
            where m = fromMaybe "" $ mode a
                  lim = 7
-                 f = sum . map (pyramidScore.fromMaybe 0.score) . filter (isJust . characteristic) . changes . advancement
-                 ex = f a
+                 ex = calculateCharPoints $ advancement a
                  und = "Underspent " ++ (show ex) ++ " points on characteristics."  
                  over = "Underspent " ++ (show ex) ++ " points on characteristics."  
                  val = "Correctly spent " ++ (show ex) ++ " points on characteristics."  
+
+-- | Count characterics points spent in an Advancement
+calculateCharPoints :: Advancement -> Int
+calculateCharPoints = sum . map charScore . changes
+
+-- | Count characterics points spent on a trait
+charScore :: ProtoTrait -> Int
+charScore p | isJust (characteristic p) = f p
+            | otherwise = 0
+        where f = pyramidScore . fromMaybe 0 . score 

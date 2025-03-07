@@ -18,8 +18,8 @@ aliases:
 + [x] Step 2. Advancement log
 	+ [x] Store augmented Advancement objects
 	+ [x] Markdown output
-+ [ ] Step 3. Calculations for validation purposes
-	+ [ ] Implement XP Calculation
++ [x] Step 3. Calculations for validation purposes
+	+ [x] Implement XP Calculation
 	+ [x] Implement VF Calculation
 	+ [x] Characteristics Calculation
 + [ ] Step 4. Calculations for validation purposes
