@@ -22,11 +22,13 @@ aliases:
 	+ [x] Implement XP Calculation
 	+ [x] Implement VF Calculation
 	+ [x] Characteristics Calculation
-+ [ ] Step 4. Calculations for validation purposes
-	+ [ ] Implement XP validation
++ [x] Step 4. Calculations for validation purposes
+	+ [x] Implement XP validation
 	+ [x] Implement VF validation
 	+ [x] Implement Characteristics Validation
-+ [ ] Step 5. Augment advancements with different limnits
++ [ ] Step 5. Augment advancements with different limits
+	+ [ ] XP limits for different advancement types
+	+ [ ] extra XP from virtues
 	+ [ ] Virtues and flaws for grogs
 	+ [ ] Improved characteristics
 	+ [ ] XP for later life
