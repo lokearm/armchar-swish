@@ -76,6 +76,7 @@ data Advancement = Advancement
      , advNarrative :: Maybe String -- ^ freeform description of the activities
      , advUses :: Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
      , advSQ :: Maybe Int -- ^ Source Quality (SQ)
+     , advBonus :: Maybe Int -- ^ Bonus to Source Quality (SQ)
      , advChanges :: [ ProtoTrait ]  -- ^ trait changes defined by player
      }
    deriving (Eq,Generic,Show)
@@ -88,6 +89,7 @@ defaultAdv = Advancement
      , advNarrative = Nothing
      , advUses = Nothing
      , advSQ = Nothing
+     , advBonus = Nothing
      , advChanges = [ ]  
      }
 
@@ -151,6 +153,7 @@ instance FromJSON Advancement where
         <*> v .:? "narrative"
         <*> v .:? "uses"
         <*> v .:? "sourceQuality"
+        <*> v .:? "bonusQuality"
         <*> fmap maybeList ( v .:? "changes" )
 instance FromJSON AugmentedAdvancement where
     parseJSON = withObject "AugmentedAdvancement" $ \v -> Adv

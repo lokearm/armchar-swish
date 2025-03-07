@@ -111,13 +111,16 @@ aliases:
 		+ P/G Years
 			+ $X$ years
 	+ Ingame Season
-		+ Adventure
-		+ Practice
-		+ Teaching
-		+ Training
-		+ Reading
-		+ Vis study
-		+ Exposure
+		+ Adventure - fixed SQ + Independent study
+		+ Practice - fixed SQ + Independent study
+		+ Teaching - validate SQ against teacher
+		+ Training - validate SQ against trainer
+		+ Reading - get SQ from book
+		+ Vis study - fixed SQ + free study
+		+ Exposure - fixed SQ
+	+ SQ bonuses
+		+ correspondent
+		+ study bonus
 	 
         
 + Ideas
