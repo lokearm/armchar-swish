@@ -20,7 +20,7 @@ aliases:
 	+ [x] Markdown output
 + [ ] Step 3. Calculations for validation purposes
 	+ [ ] Implement XP Calculation
-	+ [ ] Implement VF calculation
+	+ [ ] Implement VF Calculation
 	+ [ ] Characteristics Calculation
 + [ ] Step 4. Calculations for validation purposes
 	+ [ ] Implement XP validation
@@ -35,20 +35,21 @@ aliases:
 	+ [ ] Pretty CharacterState
 	+ [ ] Pretty metadata
 	+ [ ] Validate character build
-+ [ ] Step 6.  CharacterState in JSON
++ [ ] Step 7.  Error report
++ [ ] Step 8.  CharacterState in JSON
 	+ [ ] Remove null entries from JSON output
 	+ [ ] Review Character State output
 	+ [ ] Read CharacterState from JSON
-+ [ ] Step 8.  Magi char gen
++ [ ] Step 9.  Magi char gen
 	+ [ ] Spell data type
 	+ [ ] Read Spell data from CSV
 	+ [ ] Art and spell markdown
-+ [ ] Step 9. Covenant
++ [ ] Step 10. Covenant
 	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Book resource
 	+ [ ] Library
 	+ [ ] Read books from CSV
-+ [ ] Step 10. Covenant advancement
++ [ ] Step 11. Covenant advancement
 	+ [ ] Covenant advancement
 	+ [ ] Covenant members
 + Virtue and Flaws affecting advancement

@@ -14,7 +14,7 @@ module ArM.Char.Validation where
 -- import ArM.Char.Character
 -- import ArM.Helper
 import ArM.GameRules
-import ArM.Char.Advancement
+import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
 
 import Data.Maybe (fromMaybe,isJust)
@@ -62,11 +62,11 @@ validate a | m == "Virtues and Flaws" = validateVF a
 
 validateVF :: AugmentedAdvancement -> AugmentedAdvancement
 validateVF a | m /= "Virtues and Flaws" = a
-             | v /= f = a { validation = Error imb:validation a }
-             | v > 10 = a { validation = Error over:validation a }
+             | 0 /= f + v = a { validation = ValidationError imb:validation a }
+             | v > 10 = a { validation = ValidationError over:validation a }
              | otherwise = a { validation = Validated val:validation a }
            where m = fromMaybe "" $ mode a
-                 (v,f) = calculateVFCost $ advancement a
+                 (f,v) = calculateVFCost $ advancement a
                  imb = "Virtues and flaws are imbalanced: "
                      ++ show v ++ " points of virtues and"
                      ++ show (-f) ++ " points of flaws."
