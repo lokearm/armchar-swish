@@ -8,6 +8,14 @@
 --
 -- Description :  Functions to calculate and validate advancements
 --
+-- Only one function is exported: `validate`.
+-- It checks the integrity of an AugmentedAdvancement object, and adds its
+-- reports to the validation field.
+--
+-- This function should be used after all other calculation of the 
+-- AugmentedAdvancement is complete, and before the object is displayed,
+-- or written to file.
+--
 -----------------------------------------------------------------------------
 module ArM.Char.Validation (validate) where
 
