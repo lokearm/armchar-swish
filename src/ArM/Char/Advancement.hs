@@ -103,7 +103,7 @@ data AugmentedAdvancement = Adv
      , spentXP  :: Maybe Int   -- ^ Total XP spent on advancement
      , inferredTraits :: [ ProtoTrait ] -- ^ trait changes inferred by virtues and flaws
      , augYears :: Maybe Int    -- ^ number of years advanced
-     , validation :: Maybe Validation -- ^ Report from validation
+     , validation :: [Validation] -- ^ Report from validation
      }
    deriving (Eq,Generic,Show)
 
@@ -115,7 +115,7 @@ defaultAA = Adv
      , spentXP = Nothing
      , inferredTraits = [ ] 
      , augYears = Nothing
-     , validation = Nothing
+     , validation = []
      }
 
 instance AdvancementLike Advancement where
@@ -157,7 +157,7 @@ instance FromJSON AugmentedAdvancement where
         <*> v .:? "spentXP"
         <*> fmap maybeList ( v .:? "inferredTraits" )
         <*> v .:? "augYears"
-        <*> v .:? "validation"
+        <*> fmap maybeList ( v .:?  "validation")
 
 
 -- | Augment and amend the advancements based on current virtues and flaws.

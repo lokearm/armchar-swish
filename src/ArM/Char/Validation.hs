@@ -61,7 +61,20 @@ validate a | m == "Virtues and Flaws" = validateVF a
            where m = fromMaybe "" $ mode a
 
 validateVF :: AugmentedAdvancement -> AugmentedAdvancement
-validateVF a = a
+validateVF a | m /= "Virtues and Flaws" = a
+             | v /= f = a { validation = Error imb:validation a }
+             | v > 10 = a { validation = Error over:validation a }
+             | otherwise = a { validation = Validated val:validation a }
+           where m = fromMaybe "" $ mode a
+                 (v,f) = calculateVFCost $ advancement a
+                 imb = "Virtues and flaws are imbalanced: "
+                     ++ show v ++ " points of virtues and"
+                     ++ show (-f) ++ " points of flaws."
+                 over = "Exceeds limit on virtues; " ++ show v ++ " points."
+                 val = "Virtues and flaws balance at " ++ show v ++ " points."
+
+
+                
 
 validateXP :: AugmentedAdvancement -> AugmentedAdvancement
 validateXP a = a
