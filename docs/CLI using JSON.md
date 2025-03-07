@@ -20,12 +20,16 @@ aliases:
 	+ [x] Markdown output
 + [ ] Step 3. Calculations for validation purposes
 	+ [ ] Implement XP Calculation
-	+ [ ] Implement VF Calculation
-	+ [ ] Characteristics Calculation
+	+ [x] Implement VF Calculation
+	+ [x] Characteristics Calculation
 + [ ] Step 4. Calculations for validation purposes
 	+ [ ] Implement XP validation
-	+ [ ] Implement VF validation
-	+ [ ] Implement Characteristics Validation
+	+ [x] Implement VF validation
+	+ [x] Implement Characteristics Validation
++ [ ] Step 5. Augment advancements with different limnits
+	+ [ ] Virtues and flaws for grogs
+	+ [ ] Improved characteristics
+	+ [ ] XP for later life
 + [ ] Step 5.  Companion Avancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime

@@ -80,5 +80,14 @@ validateXP :: AugmentedAdvancement -> AugmentedAdvancement
 validateXP a = a
 
 validateChar :: AugmentedAdvancement -> AugmentedAdvancement
-validateChar a = a
-
+validateChar a | m /= "Characteristics" = a
+             | ex < lim = a { validation = ValidationError und:validation a }
+             | ex > lim = a { validation = ValidationError over:validation a }
+             | otherwise = a { validation = Validated val:validation a }
+           where m = fromMaybe "" $ mode a
+                 lim = 7
+                 f = sum . map (pyramidScore.fromMaybe 0.score) . filter (isJust . characteristic) . changes . advancement
+                 ex = f a
+                 und = "Underspent " ++ (show ex) ++ " points on characteristics."  
+                 over = "Underspent " ++ (show ex) ++ " points on characteristics."  
+                 val = "Correctly spent " ++ (show ex) ++ " points on characteristics."  
