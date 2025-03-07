@@ -51,3 +51,20 @@ regXP p | isJust (ability p) = f p
         | isJust (spell p) = f p
         | otherwise = 0
         where f = fromMaybe 0 . xp 
+
+
+
+validate :: AugmentedAdvancement -> AugmentedAdvancement
+validate a | m == "Virtues and Flaws" = validateVF a
+           | m == "Characteristics" = validateChar a
+           | otherwise = validateXP a
+
+validateVF :: AugmentedAdvancement -> AugmentedAdvancement
+validateVF a = a
+
+validateXP :: AugmentedAdvancement -> AugmentedAdvancement
+validateXP a = a
+
+validateChar :: AugmentedAdvancement -> AugmentedAdvancement
+validateChar a = a
+
