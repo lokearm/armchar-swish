@@ -27,6 +27,9 @@ aliases:
 	+ [ ] Implement VF validation
 	+ [ ] Implement Characteristics Validation
 + [ ] Step 5.  Companion Avancement
+	+ [x] advanceCharacter function
+	+ [ ] Fix ordering on CharTime
+	+ [ ] Test output
 + [ ] Step 6.  Clean up character sheet
 	+ [ ] Pretty advancement
 	+ [ ] Pretty CharacterState

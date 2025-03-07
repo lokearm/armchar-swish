@@ -26,11 +26,12 @@ module ArM.Char.Character ( Character(..)
                           , Advancement(..)
                           , fullName
                           , fullConceptName
+                          , advanceCharacter
                           ) where
 
 import GHC.Generics
 import Data.Aeson
--- import Data.Maybe (fromJust,isNothing,isJust)
+import Data.Maybe (fromJust,isNothing) -- ,isJust)
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
@@ -196,3 +197,22 @@ prepareCharacter c
             where as = pregameAdvancement  c 
                   (xs,cs) = applyAdvancements as defaultCS
 
+
+-- | Advance the character until after the given time.
+advanceCharacter :: CharTime -> Character -> Character
+advanceCharacter ct c | isNothing (state c) = advanceCharacter ct $ prepareCharacter c
+                      | ct > ct' = c
+                      | otherwise = stepCharacter c 
+            where y = head $ futureAdvancement c
+                  ct' = season y
+
+-- | Advance the character one season forward
+stepCharacter :: Character -> Character
+stepCharacter c = c { state = Just cs 
+                            , pastAdvancement = (a:xs)
+                            , futureAdvancement = ys 
+                            }
+            where y = head $ futureAdvancement c
+                  ys = tail $ futureAdvancement c
+                  xs = pastAdvancement c
+                  (a,cs) = applyAdvancement y (fromJust $ state c)
