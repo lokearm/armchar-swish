@@ -32,25 +32,25 @@ aliases:
 	+ [ ] Virtues and flaws for grogs
 	+ [ ] Improved characteristics
 	+ [ ] XP for later life
-+ [ ] Step 5.  Companion Avancement
++ [ ] Step 6.  Companion Avancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
 	+ [ ] Test output
-+ [ ] Step 6.  Clean up character sheet
++ [ ] Step 7.  Clean up character sheet
 	+ [ ] Pretty advancement
 	+ [ ] Pretty CharacterState
 	+ [ ] Pretty metadata
 	+ [ ] Validate character build
-+ [ ] Step 7.  Error report
-+ [ ] Step 8.  CharacterState in JSON
++ [ ] Step 8.  Error report
++ [ ] Step 9.  CharacterState in JSON
 	+ [ ] Remove null entries from JSON output
 	+ [ ] Review Character State output
 	+ [ ] Read CharacterState from JSON
-+ [ ] Step 9.  Magi char gen
++ [ ] Step 10.  Magi char gen
 	+ [ ] Spell data type
 	+ [ ] Read Spell data from CSV
 	+ [ ] Art and spell markdown
-+ [ ] Step 10. Covenant
++ [ ] Step 11. Covenant
 	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Book resource
 	+ [ ] Library

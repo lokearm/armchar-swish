@@ -27,7 +27,7 @@ calculateVFCost a = ( sum $ filter (<0) rs, sum $ filter (>0) rs )
    where rs = map regCost $ changes a
 
 
-
+-- | Extract the virtue/flaw cost from a ProtoType; zero for other types of traits.
 regCost :: ProtoTrait -> Int
 regCost p | isJust (virtue p) = f p
           | isJust (flaw p) = f p
@@ -42,14 +42,14 @@ regXP p | isJust (ability p) = f p
         | otherwise = 0
         where f = fromMaybe 0 . xp 
 
-
-
+-- | validate an advancement, adding results to the validation field
 validate :: AugmentedAdvancement -> AugmentedAdvancement
 validate a | m == "Virtues and Flaws" = validateVF a
            | m == "Characteristics" = validateChar a
            | otherwise = validateXP a
            where m = fromMaybe "" $ mode a
 
+-- | Validate allocation of virtues and flaws.
 validateVF :: AugmentedAdvancement -> AugmentedAdvancement
 validateVF a | m /= "Virtues and Flaws" = a
              | 0 /= f + v = a { validation = ValidationError imb:validation a }
@@ -65,7 +65,7 @@ validateVF a | m /= "Virtues and Flaws" = a
 
 
                 
-
+-- | Validate allocation of XP.
 validateXP :: AugmentedAdvancement -> AugmentedAdvancement
 validateXP a | sq > xpsum = a { validation = und:validation a }
              | sq < xpsum = a { validation = over:validation a }
@@ -76,7 +76,6 @@ validateXP a | sq > xpsum = a { validation = und:validation a }
           over = ValidationError $ "Overspent " ++ show xpsum ++ "xp of " ++ show sq ++ "."
           und = ValidationError $ "Underspent " ++ show xpsum ++ "xp of " ++ show sq ++ "."
 
---
 -- | Count regular XP (excluding reputation) from an Advancement
 calculateXP :: Advancement -> Int
 calculateXP = sum . map regXP . changes
