@@ -26,16 +26,20 @@ aliases:
 	+ [x] Implement XP validation
 	+ [x] Implement VF validation
 	+ [x] Implement Characteristics Validation
-+ [ ] Step 5. Augment pregame advancements with different limits
++ [x] Step 5. Augment pregame advancements with different limits
 	+ [x] Outline functions for pregame and ingame augmentation
 	+ [x] Implement functions for pregame augmentation
 		+  Need to pass the initial Virtue/flaw list on to the entire process
 		+ Should not use CharacterState for the pregame augmentation
 	+ [x] XP limits for different advancement types
 	+ [x] extra XP from virtues
-	+ [ ] Virtues and flaws for grogs
 	+ [x] Improved characteristics
 	+ [x] XP for later life
++ [ ] Step 6. Refactor and treat grogs differently
+	+ [ ] Calculate CharGenParameters from VF list
+	+ [ ] Refactor CharGen advancement and validation into CharGen module
+	+ [ ] Use CharGenParameters in the validation during CharGen
+	+ [ ] Virtues and flaws for grogs
 + [ ] Step 6.  Companion Advancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
