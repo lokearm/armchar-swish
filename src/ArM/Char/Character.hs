@@ -162,7 +162,8 @@ instance FromJSON Character where
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
-prepareAdvancement _ = prepareAdvancementVF 
+prepareAdvancement cs = prepareAdvancementVF (csVF cs)
+   where csVF _ = []
 
 
 -- | Apply advancement

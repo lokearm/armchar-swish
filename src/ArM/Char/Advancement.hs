@@ -13,7 +13,6 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Advancement( module ArM.Char.Internal.Advancement
                            , prepareAdvancementVF
-                           , augmentTotalXP
                            ) where
 
 -- import ArM.Char.Character
@@ -28,20 +27,12 @@ import Data.Maybe (fromJust,isJust,fromMaybe)
 
 
 -- | Augment and amend the advancements based on current virtues and flaws.
-prepareAdvancementVF :: Advancement -> AugmentedAdvancement
-prepareAdvancementVF = validate . initialLimits . addInferredTraits 
+prepareAdvancementVF :: [ VF ] -> Advancement -> AugmentedAdvancement
+prepareAdvancementVF vfs = validate . initialLimits vfs . addInferredTraits 
 
 addInferredTraits :: Advancement -> AugmentedAdvancement
 addInferredTraits a = defaultAA { inferredTraits = f a, advancement = a }
      where f = inferTraits . getVF . changes 
-
-augmentTotalXP :: AugmentedAdvancement -> AugmentedAdvancement
-augmentTotalXP a | m == "Early Childhood" = a { effectiveSQ = Just 45 }
-                 | m == "Apprenticeship" = a { effectiveSQ = Just 240 }
-                 | m == "Later Life" = a { effectiveSQ = Just $ y*15 }
-                 | otherwise = a { effectiveSQ = Just 0 }
-           where m = fromMaybe "" $ mode a
-                 y = fromMaybe 0 $ advYears $ advancement a
 
 -- | Get the virtues and flaws from a list of ProtoTrait objects, and convert them to
 -- VF objects
@@ -52,10 +43,11 @@ getVF (p:ps) | isJust (virtue p) = g p:getVF ps
              | otherwise = getVF ps
     where g = fromJust . computeTrait
 
-initialLimits :: AugmentedAdvancement -> AugmentedAdvancement
-initialLimits ad | m == "Early Childhood" = f ad 45
-                 | m == "Later Life" = f ad $ 15*y 
-                 | otherwise = ad
+initialLimits :: [ VF ] -> AugmentedAdvancement -> AugmentedAdvancement
+initialLimits vfs ad | m == "Early Childhood" = f ad 45
+                 | m == "Apprenticeship" = f ad 240 
+                 | m == "Later Life" = f ad $ laterLifeSQ vfs (advancement ad)
+                 | otherwise = ad { effectiveSQ = sourceQuality $ advancement ad  }
            where m = fromMaybe "" $ mode ad
                  f a x | isJust t = a { effectiveSQ = t }
                        | otherwise = a { effectiveSQ = Just x }

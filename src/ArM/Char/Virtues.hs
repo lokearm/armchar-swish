@@ -10,14 +10,18 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Char.Virtues (inferTraits,advancementTransform,laterLifeXP) where
+module ArM.Char.Virtues (inferTraits
+                        , advancementTransform
+                        -- , laterLifeXP
+                        , laterLifeSQ
+                        ) where
 
 import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
 import ArM.Helper
 
 import qualified Data.Map as Map
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe,isJust,fromJust)
 
 import ArM.Debug.Trace
 
@@ -99,6 +103,16 @@ laterLifeXP' (vf:vfs) (x,y) = laterLifeXP' vfs $ (x'+x,f y y')
          where (x',y') = llLookup $ vfname vf
                f 0 z = z
                f z _ = z
+
+laterLifeSQ' :: Advancement -> (Int,Int) -> Int
+laterLifeSQ' ad (x,y) = t
+   where t | isJust (sourceQuality ad) = fromJust (sourceQuality ad)
+           | isJust (advYears ad) = x+y*fromJust (advYears ad)
+           | otherwise = x
+laterLifeSQ :: [VF] -> Advancement -> Int
+laterLifeSQ vfs ad = laterLifeSQ' ad $ laterLifeXP vfs
+           
+    
 
 advancementTransform :: [ VF ] -> AdvancementTransform
 advancementTransform = foldl (.) id . map f
