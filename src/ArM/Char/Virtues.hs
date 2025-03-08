@@ -1,10 +1,24 @@
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Char.Validation
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- Description :  Validation of advancement (XP allocation etc.)
+--
+-----------------------------------------------------------------------------
 
-module ArM.Char.Virtues (inferTraits) where
+module ArM.Char.Virtues (inferTraits,advancementTransform) where
 
 import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
 import ArM.Helper
+
 import qualified Data.Map as Map
+import Data.Maybe (fromMaybe)
+
 import ArM.Debug.Trace
 
 -- |
@@ -55,10 +69,13 @@ inferTraits vfs = sortTraits rs
 -- = Infer Limits
 -- 
 
-type AdvMap = Map.Map TraitKey ( AugmentedAdvancement -> AugmentedAdvancement  ) 
-advMap :: AdvMap
-advMap = Map.fromList $ []
+type AdvancementTransform = AugmentedAdvancement -> AugmentedAdvancement 
+type AdvMap = Map.Map TraitKey AdvancementTransform
 
+advMap :: AdvMap
+advMap = Map.fromList $ ad1
+
+ad1 :: [ ( TraitKey, AdvancementTransform ) ]
 ad1 = [ ( VFKey "Warrior", addFifty )   -- +50 xp
       , ( VFKey "Skilled Parens", id )  -- +60 xp +60 spells
       , ( VFKey "Book learner", id )     -- SQ +3
@@ -67,6 +84,11 @@ ad1 = [ ( VFKey "Warrior", addFifty )   -- +50 xp
       ]
 
 addFifty :: AugmentedAdvancement -> AugmentedAdvancement
-addFifty a | m == "Later Life" = a { effectiveSQ = effectiveSQ a + 50 }
+addFifty a | m == "Later Life" = a { effectiveSQ = Just $ ( fromMaybe 0 $ effectiveSQ a) + 50 }
            | otherwise = a
            where m = fromMaybe "" $ mode a
+
+advancementTransform :: [ VF ] -> AdvancementTransform
+advancementTransform = foldl (.) id . map f
+    where f x = fromMaybe id $ Map.lookup (traitKey x) advMap 
+
