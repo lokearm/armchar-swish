@@ -66,8 +66,7 @@ inferTraits vfs = sortTraits rs
           rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
 
 -- |
--- = Infer Limits
--- 
+-- = Infer Limits for Pregame Design
 
 type AdvancementTransform = AugmentedAdvancement -> AugmentedAdvancement 
 type AdvMap = Map.Map TraitKey AdvancementTransform
@@ -78,9 +77,8 @@ advMap = Map.fromList $ ad1
 ad1 :: [ ( TraitKey, AdvancementTransform ) ]
 ad1 = [ ( VFKey "Warrior", addFifty )   -- +50 xp
       , ( VFKey "Skilled Parens", id )  -- +60 xp +60 spells
-      , ( VFKey "Book learner", id )     -- SQ +3
-      , ( VFKey "Independent Study", id ) -- SQ +2/+3
-      , ( VFKey "Study Bonus", id )       -- reminder +2
+      , ( VFKey "Wealthy", id )  -- 20xp/year
+      , ( VFKey "Poor", id )  -- 10xp/year
       ]
 
 addFifty :: AugmentedAdvancement -> AugmentedAdvancement
@@ -88,7 +86,29 @@ addFifty a | m == "Later Life" = a { effectiveSQ = Just $ ( fromMaybe 0 $ effect
            | otherwise = a
            where m = fromMaybe "" $ mode a
 
+llLookup:: String -> (Int,Int)
+llLookup "Warrior" = (50,0) 
+llLookup "Wealthy" = (0,20) 
+llLookup "Poor" = (0,10) 
+llLookup _  = (0,0) 
+laterLifeVFS :: [ VF ] -> (Int,Int)
+laterLifeVFS vfs = laterLifeVFS' vfs (0,15)
+laterLifeVFS' :: [ VF ] -> (Int,Int) -> (Int,Int)
+laterLifeVFS' [] (x,y) = (x,y)
+laterLifeVFS' (vf:vfs) (x,y) = laterLifeVFS' vfs $ (x'+x,f y y') 
+         where (x',y') = llLookup $ vfname vf
+               f 0 z = z
+               f z _ = z
+
 advancementTransform :: [ VF ] -> AdvancementTransform
 advancementTransform = foldl (.) id . map f
     where f x = fromMaybe id $ Map.lookup (traitKey x) advMap 
 
+-- |
+-- = Infer Limits for Ingame Advancement 
+
+ad2 :: [ ( TraitKey, AdvancementTransform ) ]
+ad2 = [ ( VFKey "Book learner", id )     -- SQ +3
+      , ( VFKey "Independent Study", id ) -- SQ +2/+3
+      , ( VFKey "Study Bonus", id )       -- reminder +2
+      ]

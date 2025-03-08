@@ -29,7 +29,10 @@ import Data.Maybe (fromJust,isJust,fromMaybe)
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancementVF :: Advancement -> AugmentedAdvancement
-prepareAdvancementVF a = validate $ defaultAA { inferredTraits = f a, advancement = a }
+prepareAdvancementVF = validate . initialLimits . addInferredTraits 
+
+addInferredTraits :: Advancement -> AugmentedAdvancement
+addInferredTraits a = defaultAA { inferredTraits = f a, advancement = a }
      where f = inferTraits . getVF . changes 
 
 augmentTotalXP :: AugmentedAdvancement -> AugmentedAdvancement
@@ -48,3 +51,13 @@ getVF (p:ps) | isJust (virtue p) = g p:getVF ps
              | isJust (flaw p) = g p:getVF ps
              | otherwise = getVF ps
     where g = fromJust . computeTrait
+
+initialLimits :: AugmentedAdvancement -> AugmentedAdvancement
+initialLimits ad | m == "Early Childhood" = f ad 45
+                 | m == "Later Life" = f ad $ 15*y 
+                 | otherwise = ad
+           where m = fromMaybe "" $ mode ad
+                 f a x | isJust t = a { effectiveSQ = t }
+                       | otherwise = a { effectiveSQ = Just x }
+                 t = sourceQuality $ advancement ad
+                 y = fromMaybe 0 $ advYears $ advancement ad
