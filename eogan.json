@@ -2,6 +2,7 @@
    "charID" : "Eogan mac Eogan",
    "concept" : {
       "name" : "Eogan mac Eogan",
+      "charType" : "Companion",
       "charGlance" : {
          "Born" : 1230,
          "Concept" : "Kennel Master"

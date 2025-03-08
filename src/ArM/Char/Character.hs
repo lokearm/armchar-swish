@@ -48,8 +48,14 @@ import ArM.Helper
 -- |
 -- = CharacterConcept
 
+data CharacterType = Magus | Companion | Grog
+       deriving (Eq,Generic)
+instance ToJSON CharacterType
+instance FromJSON CharacterType
+
 data CharacterConcept = CharacterConcept 
          { name :: String
+         , charType :: CharacterType
          , house :: Maybe String
          , charGlance :: KeyPairList
          , charData :: KeyPairList
@@ -58,6 +64,7 @@ data CharacterConcept = CharacterConcept
 -- | Default (empty) character concept object.
 defaultConcept :: CharacterConcept 
 defaultConcept = CharacterConcept { name = "John Doe"
+                                  , charType = Magus
                                   , house = Nothing
                                   , charGlance = KeyPairList []
                                   , charData = KeyPairList []
@@ -70,6 +77,7 @@ instance ToJSON CharacterConcept where
 instance FromJSON CharacterConcept where
     parseJSON = withObject "CharacterConcept" $ \v -> CharacterConcept
         <$> v .: "name"
+        <*> v .: "charType"
         <*> v .:? "house"
         <*> v .: "charGlance"
         <*> v .: "charData"

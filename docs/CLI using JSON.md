@@ -36,7 +36,7 @@ aliases:
 	+ [ ] Virtues and flaws for grogs
 	+ [x] Improved characteristics
 	+ [x] XP for later life
-+ [ ] Step 6.  Companion Avancement
++ [ ] Step 6.  Companion Advancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
 	+ [ ] Test output
