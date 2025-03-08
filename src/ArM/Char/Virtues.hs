@@ -10,7 +10,7 @@
 --
 -----------------------------------------------------------------------------
 
-module ArM.Char.Virtues (inferTraits,advancementTransform) where
+module ArM.Char.Virtues (inferTraits,advancementTransform,laterLifeXP) where
 
 import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
@@ -91,11 +91,11 @@ llLookup "Warrior" = (50,0)
 llLookup "Wealthy" = (0,20) 
 llLookup "Poor" = (0,10) 
 llLookup _  = (0,0) 
-laterLifeVFS :: [ VF ] -> (Int,Int)
-laterLifeVFS vfs = laterLifeVFS' vfs (0,15)
-laterLifeVFS' :: [ VF ] -> (Int,Int) -> (Int,Int)
-laterLifeVFS' [] (x,y) = (x,y)
-laterLifeVFS' (vf:vfs) (x,y) = laterLifeVFS' vfs $ (x'+x,f y y') 
+laterLifeXP :: [ VF ] -> (Int,Int)
+laterLifeXP vfs = laterLifeXP' vfs (0,15)
+laterLifeXP' :: [ VF ] -> (Int,Int) -> (Int,Int)
+laterLifeXP' [] (x,y) = (x,y)
+laterLifeXP' (vf:vfs) (x,y) = laterLifeXP' vfs $ (x'+x,f y y') 
          where (x',y') = llLookup $ vfname vf
                f 0 z = z
                f z _ = z
