@@ -26,6 +26,7 @@ aliases:
 	+ [ ] Implement XP validation
 	+ [ ] Implement VF validation
 	+ [ ] Implement Characteristics Validation
+	+ [ ] Distinguish between grogs and companions
 + [ ] Step 5.  Companion Avancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
