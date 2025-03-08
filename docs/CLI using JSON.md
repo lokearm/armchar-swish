@@ -34,7 +34,7 @@ aliases:
 	+ [x] XP limits for different advancement types
 	+ [x] extra XP from virtues
 	+ [ ] Virtues and flaws for grogs
-	+ [ ] Improved characteristics
+	+ [x] Improved characteristics
 	+ [x] XP for later life
 + [ ] Step 6.  Companion Avancement
 	+ [x] advanceCharacter function

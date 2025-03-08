@@ -95,10 +95,12 @@ validateChar a | m /= "Characteristics" = a
              | ex > lim = a { validation = ValidationError over:validation a }
              | otherwise = a { validation = Validated val:validation a }
            where m = fromMaybe "" $ mode a
-                 lim = 7
+                 lim = fromMaybe 0 $ charAllowance a
                  ex = calculateCharPoints $ advancement a
-                 und = "Underspent " ++ (show ex) ++ " points on characteristics."  
-                 over = "Underspent " ++ (show ex) ++ " points on characteristics."  
+                 und = "Underspent " ++ (show ex) ++ " points out of "
+                     ++ show lim ++ " on characteristics."  
+                 over = "Underspent " ++ (show ex) ++ " points out of "
+                     ++ show lim ++ " on characteristics."  
                  val = "Correctly spent " ++ (show ex) ++ " points on characteristics."  
 
 -- | Count characterics points spent in an Advancement

@@ -12,6 +12,7 @@
 
 module ArM.Char.Virtues (inferTraits
                         , laterLifeSQ
+                        , getCharAllowance
                         ) where
 
 import ArM.Char.Internal.Advancement
@@ -95,6 +96,13 @@ laterLifeSQ :: [VF] -> Advancement -> Int
 laterLifeSQ vfs ad = laterLifeSQ' ad $ laterLifeXP vfs
            
     
+chLookup:: String -> Int
+chLookup "Improved Characteristics" = 3
+chLookup "Weak Characteristics" = 3
+chLookup _  = 0
+
+getCharAllowance :: [ VF ] -> Int
+getCharAllowance = (+7) . sum . map ( chLookup . vfname )
 
 -- |
 -- = Infer Limits for Ingame Advancement 

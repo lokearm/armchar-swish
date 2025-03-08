@@ -43,10 +43,12 @@ getVF (p:ps) | isJust (virtue p) = g p:getVF ps
     where g = fromJust . computeTrait
 
 initialLimits :: [ VF ] -> AugmentedAdvancement -> AugmentedAdvancement
-initialLimits vfs ad | m == "Early Childhood" = f ad 45
-                 | m == "Apprenticeship" = f ad 240 
-                 | m == "Later Life" = f ad $ laterLifeSQ vfs (advancement ad)
-                 | otherwise = ad { effectiveSQ = sourceQuality $ advancement ad  }
+initialLimits vfs ad
+            | m == "Early Childhood" = f ad 45
+            | m == "Apprenticeship" = f ad 240 
+            | m == "Characteristics" = ad { charAllowance = Just $ getCharAllowance vfs }
+            | m == "Later Life" = f ad $ laterLifeSQ vfs (advancement ad)
+            | otherwise = ad { effectiveSQ = sourceQuality $ advancement ad  }
            where m = fromMaybe "" $ mode ad
                  f a x | isJust t = a { effectiveSQ = t }
                        | otherwise = a { effectiveSQ = Just x }
