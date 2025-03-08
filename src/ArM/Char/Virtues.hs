@@ -1,10 +1,24 @@
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.Char.Validation
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+--
+-- Description :  Validation of advancement (XP allocation etc.)
+--
+-----------------------------------------------------------------------------
 
 module ArM.Char.Virtues (inferTraits) where
 
 import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
 import ArM.Helper
+
 import qualified Data.Map as Map
+import Data.Maybe (fromMaybe)
+
 import ArM.Debug.Trace
 
 -- |
@@ -55,13 +69,21 @@ inferTraits vfs = sortTraits rs
 -- = Infer Limits
 -- 
 
-type AdvMap = Map.Map TraitKey ( AugmentedAdvancement -> AugmentedAdvancement  ) 
+type AdvancementTransform = AugmentedAdvancement -> AugmentedAdvancement 
+type AdvMap = Map.Map TraitKey AdvancementTransform
+
 advMap :: AdvMap
 advMap = Map.fromList $ []
 
+ad1 :: [ ( TraitKey, AdvancementTransform ) ]
 ad1 = [ ( VFKey "Warrior", id )   -- +50 xp
       , ( VFKey "Skilled Parens", id )  -- +60 xp +60 spells
       , ( VFKey "Book learner", id )     -- SQ +3
       , ( VFKey "Independent Study", id ) -- SQ +2/+3
       , ( VFKey "Study Bonus", id )       -- reminder +2
       ]
+
+advancementTransform :: [ VF ] -> AdvancementTransform
+advancementTransform = foldl (.) id . map f
+    where f x = fromMaybe id $ Map.lookup (traitKey x) advMap 
+
