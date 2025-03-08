@@ -11,8 +11,6 @@
 -----------------------------------------------------------------------------
 
 module ArM.Char.Virtues (inferTraits
-                        , advancementTransform
-                        -- , laterLifeXP
                         , laterLifeSQ
                         ) where
 
@@ -21,7 +19,7 @@ import ArM.Char.Trait
 import ArM.Helper
 
 import qualified Data.Map as Map
-import Data.Maybe (fromMaybe,isJust,fromJust)
+import Data.Maybe (isJust,fromJust)
 
 import ArM.Debug.Trace
 
@@ -72,23 +70,7 @@ inferTraits vfs = sortTraits rs
 -- |
 -- = Infer Limits for Pregame Design
 
-type AdvancementTransform = AugmentedAdvancement -> AugmentedAdvancement 
-type AdvMap = Map.Map TraitKey AdvancementTransform
-
-advMap :: AdvMap
-advMap = Map.fromList $ ad1
-
-ad1 :: [ ( TraitKey, AdvancementTransform ) ]
-ad1 = [ ( VFKey "Warrior", addFifty )   -- +50 xp
-      , ( VFKey "Skilled Parens", id )  -- +60 xp +60 spells
-      , ( VFKey "Wealthy", id )  -- 20xp/year
-      , ( VFKey "Poor", id )  -- 10xp/year
-      ]
-
-addFifty :: AugmentedAdvancement -> AugmentedAdvancement
-addFifty a | m == "Later Life" = a { effectiveSQ = Just $ ( fromMaybe 0 $ effectiveSQ a) + 50 }
-           | otherwise = a
-           where m = fromMaybe "" $ mode a
+-- ( VFKey "Skilled Parens", id )  -- +60 xp +60 spells
 
 llLookup:: String -> (Int,Int)
 llLookup "Warrior" = (50,0) 
@@ -114,15 +96,14 @@ laterLifeSQ vfs ad = laterLifeSQ' ad $ laterLifeXP vfs
            
     
 
-advancementTransform :: [ VF ] -> AdvancementTransform
-advancementTransform = foldl (.) id . map f
-    where f x = fromMaybe id $ Map.lookup (traitKey x) advMap 
-
 -- |
 -- = Infer Limits for Ingame Advancement 
 
+{-
+type AdvancementTransform = AugmentedAdvancement -> AugmentedAdvancement 
 ad2 :: [ ( TraitKey, AdvancementTransform ) ]
 ad2 = [ ( VFKey "Book learner", id )     -- SQ +3
       , ( VFKey "Independent Study", id ) -- SQ +2/+3
       , ( VFKey "Study Bonus", id )       -- reminder +2
       ]
+-}
