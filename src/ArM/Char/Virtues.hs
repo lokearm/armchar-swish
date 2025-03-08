@@ -59,9 +59,14 @@ type AdvMap = Map.Map TraitKey ( AugmentedAdvancement -> AugmentedAdvancement  )
 advMap :: AdvMap
 advMap = Map.fromList $ []
 
-ad1 = [ ( VFKey "Warrior", id )   -- +50 xp
+ad1 = [ ( VFKey "Warrior", addFifty )   -- +50 xp
       , ( VFKey "Skilled Parens", id )  -- +60 xp +60 spells
       , ( VFKey "Book learner", id )     -- SQ +3
       , ( VFKey "Independent Study", id ) -- SQ +2/+3
       , ( VFKey "Study Bonus", id )       -- reminder +2
       ]
+
+addFifty :: AugmentedAdvancement -> AugmentedAdvancement
+addFifty a | m == "Later Life" = a { effectiveSQ = effectiveSQ a + 50 }
+           | otherwise = a
+           where m = fromMaybe "" $ mode a
