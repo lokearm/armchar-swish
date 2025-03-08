@@ -37,7 +37,7 @@ import Data.Maybe (fromJust,isNothing) -- ,isJust)
 import ArM.Char.Trait
 import ArM.Char.Advancement
 import ArM.Char.Internal.KeyPair
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 -- import ArM.Types.Season
 import ArM.Helper
 
@@ -173,7 +173,7 @@ applyAdvancement a cs = (a',cs')
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'
-          inferred = trace (">" ++ show a') $ inferredTraits a'
+          inferred = inferredTraits a'
           old = traits cs
 
 -- | Apply a list of advancements

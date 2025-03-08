@@ -18,38 +18,44 @@ aliases:
 + [x] Step 2. Advancement log
 	+ [x] Store augmented Advancement objects
 	+ [x] Markdown output
-+ [ ] Step 3. Calculations for validation purposes
-	+ [ ] Implement XP Calculation
-	+ [ ] Implement VF calculation
-	+ [ ] Characteristics Calculation
-+ [ ] Step 4. Calculations for validation purposes
-	+ [ ] Implement XP validation
-	+ [ ] Implement VF validation
-	+ [ ] Implement Characteristics Validation
-	+ [ ] Distinguish between grogs and companions
-+ [ ] Step 5.  Companion Avancement
++ [x] Step 3. Calculations for validation purposes
+	+ [x] Implement XP Calculation
+	+ [x] Implement VF Calculation
+	+ [x] Characteristics Calculation
++ [x] Step 4. Calculations for validation purposes
+	+ [x] Implement XP validation
+	+ [x] Implement VF validation
+	+ [x] Implement Characteristics Validation
++ [ ] Step 5. Augment advancements with different limits
+	+ [ ] XP limits for different advancement types
+	+ [ ] extra XP from virtues
+	+ [ ] Virtues and flaws for grogs
+	+ [ ] Improved characteristics
+	+ [ ] XP for later life
++ [ ] Step 6.  Companion Avancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
 	+ [ ] Test output
-+ [ ] Step 6.  Clean up character sheet
++ [ ] Step 7.  Clean up character sheet
 	+ [ ] Pretty advancement
 	+ [ ] Pretty CharacterState
 	+ [ ] Pretty metadata
 	+ [ ] Validate character build
-+ [ ] Step 6.  CharacterState in JSON
++ [ ] Step 8.  Error report
++ [ ] Step 9.  CharacterState in JSON
 	+ [ ] Remove null entries from JSON output
 	+ [ ] Review Character State output
 	+ [ ] Read CharacterState from JSON
-+ [ ] Step 8.  Magi char gen
++ [ ] Step 10.  Magi char gen
 	+ [ ] Spell data type
 	+ [ ] Read Spell data from CSV
 	+ [ ] Art and spell markdown
-+ [ ] Step 9. Covenant
++ [ ] Step 11. Covenant
 	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Book resource
 	+ [ ] Library
 	+ [ ] Read books from CSV
-+ [ ] Step 10. Covenant advancement
++ [ ] Step 11. Covenant advancement
 	+ [ ] Covenant advancement
 	+ [ ] Covenant members
 + Virtue and Flaws affecting advancement
@@ -105,13 +111,16 @@ aliases:
 		+ P/G Years
 			+ $X$ years
 	+ Ingame Season
-		+ Adventure
-		+ Practice
-		+ Teaching
-		+ Training
-		+ Reading
-		+ Vis study
-		+ Exposure
+		+ Adventure - fixed SQ + Independent study
+		+ Practice - fixed SQ + Independent study
+		+ Teaching - validate SQ against teacher
+		+ Training - validate SQ against trainer
+		+ Reading - get SQ from book
+		+ Vis study - fixed SQ + free study
+		+ Exposure - fixed SQ
+	+ SQ bonuses
+		+ correspondent
+		+ study bonus
 	 
         
 + Ideas

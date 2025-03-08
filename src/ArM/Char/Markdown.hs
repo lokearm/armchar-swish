@@ -15,6 +15,7 @@ import Data.Maybe (fromJust,fromMaybe)
 import ArM.Char.Character 
 import ArM.Char.Trait
 import ArM.Char.Advancement
+import ArM.Debug.Trace
 
 class Markdown a where
      printMD :: a -> [ String ]
@@ -63,10 +64,11 @@ showSQ Nothing (Just x) = "(" ++ show x ++ "xp)"
 showSQ (Just x) (Just y) = "(" ++ show x ++ "+" ++ show (y-x) ++ "xp)"
 
 instance Markdown AugmentedAdvancement where
-   printMD a = f (season a) (mode a) $ fn (narrative a) $ pt a
+   printMD a = trace (show (vs a)) $ f (season a) (mode a) $ fn (narrative a) $ pt a
       where xps = showSQ (sourceQuality a) (effectiveSQ a)
-            pt = map ("    + "++) . foldl (++) [] . map printMD . changes 
-
+            cs = map ("    + "++) . foldl (++) [] . map printMD . changes 
+            vs = map ("    + "++) . map show . validation
+            pt x = (cs x) ++ (vs x)
             fn Nothing xs = xs
             fn (Just x) xs = ( "    + " ++ show ( x ) ) :xs
             f Nothing Nothing xs = ("+ ?? " ++ xps):xs

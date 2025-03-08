@@ -21,4 +21,5 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
     where x = fromIntegral y  :: Double
 
 pyramidScore :: Int -> Int
-pyramidScore y = y*(y+1) `div` 2
+pyramidScore y | y < 0 = y*(-y+1) `div` 2
+               | otherwise = y*(y+1) `div` 2

@@ -60,6 +60,7 @@ common armchar-deps
                        , ArM.Char.Internal.KeyPair
                        , ArM.Char.Trait
                        , ArM.Char.Advancement
+                       , ArM.Char.Internal.Advancement
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
