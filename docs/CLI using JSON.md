@@ -27,8 +27,8 @@ aliases:
 	+ [x] Implement VF validation
 	+ [x] Implement Characteristics Validation
 + [ ] Step 5. Augment pregame advancements with different limits
-	+ [ ] Outline functions for pregame and ingame augmentation
-	+ [ ] Implement functions for pregame augmentation
+	+ [x] Outline functions for pregame and ingame augmentation
+	+ [x] Implement functions for pregame augmentation
 		+  Need to pass the initial Virtue/flaw list on to the entire process
 		+ Should not use CharacterState for the pregame augmentation
 	+ [x] XP limits for different advancement types

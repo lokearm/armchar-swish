@@ -54,7 +54,6 @@
          , { "characteristic" : "Qik", "score" : -2 }
       ] },
       { "mode" : "Early Childhood"
-      , "totalXP" : 45
       , "changes" : 
          [ { "ability" : "Stealth", "spec" : "Hiding", "xp" : 5 }
          , { "ability" : "Awareness" , "spec" : "Good ears" , "xp" : 5 }
@@ -64,7 +63,7 @@
          ] 
       },
       { "mode" : "Later Life"
-      , "totalXP" : 300
+      , "years" : 20
       , "changes" : 
          [ { "ability" : "Animal Handling", "spec": "Dogs", "xp": 50 }
          , { "ability" : "Animal Ken", "spec": "Canine", "xp": 45 }

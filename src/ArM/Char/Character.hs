@@ -31,11 +31,12 @@ module ArM.Char.Character ( Character(..)
 
 import GHC.Generics
 import Data.Aeson
-import Data.Maybe (fromJust,isNothing) -- ,isJust)
+import Data.Maybe (fromMaybe,fromJust,isNothing) -- ,isJust)
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
 import ArM.Char.Advancement
+import ArM.Char.Validation
 import ArM.Char.Internal.KeyPair
 -- import ArM.Debug.Trace
 -- import ArM.Types.Season
@@ -160,10 +161,57 @@ instance FromJSON Character where
 -- = Advancement
 
 
+
+-- |
+-- == Char Gen Advancement
+
+
+
 -- | Augment and amend the advancements based on current virtues and flaws.
-prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
-prepareAdvancement cs = prepareAdvancementVF (csVF cs)
-   where csVF _ = []
+prepareCharGen :: [VF] -> Advancement -> AugmentedAdvancement
+prepareCharGen vfs = validate . initialLimits vfs . addInferredTraits 
+
+
+-- | Compute the initial state if no state is recorded.
+prepareCharacter :: Character -> Character
+prepareCharacter c 
+            | state c /= Nothing = c
+            | otherwise = c { state = Just $ cs { charTime = Just "Game start" }
+                            , pregameDesign = xs
+                            , pregameAdvancement = []
+                            }
+            where as = pregameAdvancement  c 
+                  (xs,cs) = applyCGA vfs as defaultCS
+                  vfs = getInitVF $ head as
+
+getInitVF :: Advancement -> [ VF ]
+getInitVF a | m /= "Virtues and Flaws" = []
+            | otherwise = getVF $ changes a
+           where m = fromMaybe "" $ mode a
+
+
+-- | Apply CharGen advancement
+applyCharGenAdv :: [VF] -> Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
+applyCharGenAdv vfs a cs = (a',cs')
+    where a' = prepareCharGen vfs a
+          cs' = cs { charTime = season a, traits = new }
+          new =  advance change tmp
+          tmp =  advance inferred old 
+          change = sortTraits $ changes a'
+          inferred = inferredTraits a'
+          old = traits cs
+
+-- | Apply a list of advancements
+applyCGA :: [VF] -> [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
+applyCGA vfs a cs = applyCGA' vfs ([],a,cs)
+applyCGA' :: [VF] -> ([AugmentedAdvancement],[Advancement],CharacterState)
+                   -> ([AugmentedAdvancement],CharacterState)
+applyCGA' _ (xs,[],cs) = (xs,cs)
+applyCGA' vfs (xs,y:ys,cs) = applyCGA' vfs (a':xs,ys,cs')
+    where (a',cs') = applyCharGenAdv vfs y cs
+
+-- |
+-- == In Game Advancement
 
 
 -- | Apply advancement
@@ -177,6 +225,11 @@ applyAdvancement a cs = (a',cs')
           inferred = inferredTraits a'
           old = traits cs
 
+-- | Augment and amend the advancements based on current virtues and flaws.
+prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
+prepareAdvancement _ = validate . addInferredTraits
+
+{-
 -- | Apply a list of advancements
 applyAdvancements :: [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
 applyAdvancements a cs = applyAdvancements' ([],a,cs)
@@ -186,17 +239,7 @@ applyAdvancements' (xs,[],cs) = (xs,cs)
 applyAdvancements' (xs,y:ys,cs) = applyAdvancements' (a':xs,ys,cs')
     where (a',cs') = applyAdvancement y cs
 
-
--- | Compute the initial state if no state is recorded.
-prepareCharacter :: Character -> Character
-prepareCharacter c 
-            | state c /= Nothing = c
-            | otherwise = c { state = Just $ cs { charTime = Just "Game start" }
-                            , pregameDesign = xs
-                            , pregameAdvancement = []
-                            }
-            where as = pregameAdvancement  c 
-                  (xs,cs) = applyAdvancements as defaultCS
+-}
 
 
 -- | Advance the character until after the given time.

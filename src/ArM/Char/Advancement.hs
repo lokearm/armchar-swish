@@ -12,7 +12,9 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Char.Advancement( module ArM.Char.Internal.Advancement
-                           , prepareAdvancementVF
+                           , addInferredTraits
+                           , initialLimits
+                           , getVF
                            ) where
 
 -- import ArM.Char.Character
@@ -20,15 +22,12 @@ module ArM.Char.Advancement( module ArM.Char.Internal.Advancement
 import ArM.Char.Trait
 import ArM.Char.Virtues
 import ArM.Char.Internal.Advancement
-import ArM.Char.Validation
+-- import ArM.Char.Validation
 
 import Data.Maybe (fromJust,isJust,fromMaybe)
 
 
 
--- | Augment and amend the advancements based on current virtues and flaws.
-prepareAdvancementVF :: [ VF ] -> Advancement -> AugmentedAdvancement
-prepareAdvancementVF vfs = validate . initialLimits vfs . addInferredTraits 
 
 addInferredTraits :: Advancement -> AugmentedAdvancement
 addInferredTraits a = defaultAA { inferredTraits = f a, advancement = a }
@@ -52,4 +51,3 @@ initialLimits vfs ad | m == "Early Childhood" = f ad 45
                  f a x | isJust t = a { effectiveSQ = t }
                        | otherwise = a { effectiveSQ = Just x }
                  t = sourceQuality $ advancement ad
-                 y = fromMaybe 0 $ advYears $ advancement ad
