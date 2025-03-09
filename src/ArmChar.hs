@@ -25,20 +25,24 @@ import Data.Maybe (fromJust)
 
 import qualified Data.ByteString.Lazy as LB
 
-data Options = Options {
-  sagaFile :: Maybe String,
-  charFile :: Maybe String,
-  outFile  :: Maybe String,
-  jsonFile :: Maybe String,
-  debugFile  :: Maybe String
+data Options = Options 
+  { sagaFile :: Maybe String
+  , charFile :: Maybe String
+  , outFile  :: Maybe String
+  , jsonFile :: Maybe String
+  , debugFile  :: Maybe String
+  , seasonFile  :: Maybe String
+  , advanceSeason  :: Maybe String
 } deriving (Show)
 defaultOptions :: Options
-defaultOptions = Options {
-  sagaFile = Just "Test/saga.ttl",
-  charFile = Nothing,
-  outFile  = Nothing,
-  jsonFile  = Nothing,
-  debugFile  = Nothing
+defaultOptions = Options 
+  { sagaFile = Just "Test/saga.ttl"
+  , charFile = Nothing
+  , outFile  = Nothing
+  , jsonFile  = Nothing
+  , debugFile  = Nothing
+  , seasonFile  = Nothing
+  , advanceSeason  = Nothing
 }
 
 
@@ -50,6 +54,12 @@ options =
     , Option ['c']     ["character"] (ReqArg 
             (\arg opt -> opt { charFile = Just arg })
             "FILE") "character file"
+    , Option ['t']     ["advance-to"] (ReqArg 
+            (\arg opt -> opt { advanceSeason = Just arg })
+            "SEASON") "advance to "
+    , Option ['T']     ["sheet"] (ReqArg 
+            (\arg opt -> opt { seasonFile = Just arg })
+            "FILE") "output file for current character sheet"
     , Option ['s']     ["saga"] (ReqArg 
             (\arg opt -> opt { sagaFile = Just arg })
             "FILE") "saga file"
