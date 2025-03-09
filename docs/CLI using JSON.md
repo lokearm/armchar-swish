@@ -39,6 +39,7 @@ aliases:
 	+ [x] Introduce a CharacterSheet object which can be passed along advancement processing
 	+ [x] Virtues and flaws for grogs
 + [ ] Step 7.  Clean up character sheet
+	+ [x] Move characteristics limit to CharacterSheet
 	+ [ ] Pretty advancement
 	+ [ ] Markdown for CharacterSheet
 	+ [ ] Pretty metadata
@@ -49,7 +50,6 @@ aliases:
 	+ [ ] Test output
 + [ ] Step 9.  Error report
 + [ ] Step 10. Refactoring
-	+ [ ] Move characteristics limit to CharacterSheet
 + [ ] Step 11.  CharacterState in JSON
 	+ [ ] Remove null entries from JSON output
 	+ [ ] Review Character State output

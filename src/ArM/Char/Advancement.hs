@@ -46,7 +46,7 @@ initialLimits :: [ VF ] -> AugmentedAdvancement -> AugmentedAdvancement
 initialLimits vfs ad
             | m == "Early Childhood" = f ad 45
             | m == "Apprenticeship" = f ad 240 
-            | m == "Characteristics" = ad { charAllowance = Just $ getCharAllowance vfs }
+            | m == "Characteristics" = f ad 0
             | m == "Later Life" = f ad $ laterLifeSQ vfs (advancement ad)
             | otherwise = ad { effectiveSQ = sourceQuality $ advancement ad  }
            where m = fromMaybe "" $ mode ad

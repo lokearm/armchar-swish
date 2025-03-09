@@ -105,7 +105,6 @@ data AugmentedAdvancement = Adv
      { advancement :: Advancement -- ^ Base advancement as entered by the user
      , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
      , spentXP  :: Maybe Int   -- ^ Total XP spent on advancement
-     , charAllowance  :: Maybe Int   -- ^ Allowance for characteristics purchase
      , inferredTraits :: [ ProtoTrait ] -- ^ trait changes inferred by virtues and flaws
      , augYears :: Maybe Int    -- ^ number of years advanced
      , validation :: [Validation] -- ^ Report from validation
@@ -118,7 +117,6 @@ defaultAA = Adv
      { advancement = defaultAdv
      , effectiveSQ = Nothing
      , spentXP = Nothing
-     , charAllowance  = Nothing
      , inferredTraits = [ ] 
      , augYears = Nothing
      , validation = []
@@ -162,7 +160,6 @@ instance FromJSON AugmentedAdvancement where
         <$> v .: "advancement"
         <*> v .:? "effectiveSQ"
         <*> v .:? "spentXP"
-        <*> v .:? "charAllowance"
         <*> fmap maybeList ( v .:? "inferredTraits" )
         <*> v .:? "augYears"
         <*> fmap maybeList ( v .:?  "validation")

@@ -17,6 +17,7 @@ import ArM.Char.Internal.Advancement
 import ArM.Char.CharacterSheet
 import ArM.Char.Advancement
 import ArM.Char.Validation
+import ArM.Char.Virtues
 import ArM.GameRules
 import Data.Maybe
 
@@ -89,6 +90,8 @@ validateVF sheet a
                  val = "Virtues and flaws balance at " ++ show v ++ suf
                  suf = " of " ++ show lim ++ " points."
                  lim = vfLimit sheet
+
+-- | Return the limit on flaw points, i.e. 3 for grogs and 10 for others.
 vfLimit :: CharacterSheet -> Int
 vfLimit sheet | Grog == csType sheet = 3
               | otherwise = 10
@@ -113,7 +116,7 @@ validateChar sheet a | m /= "Characteristics" = a
              | ex > lim = a { validation = ValidationError over:validation a }
              | otherwise = a { validation = Validated val:validation a }
            where m = fromMaybe "" $ mode a
-                 lim = fromMaybe 0 $ charAllowance a
+                 lim = getCharAllowance $ vfList sheet
                  ex = calculateCharPoints $ advancement a
                  und = "Underspent " ++ (show ex) ++ " points out of "
                      ++ show lim ++ " on characteristics."  

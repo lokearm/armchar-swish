@@ -21,7 +21,7 @@ module ArM.Char.Validation (validate,validateXP) where
 
 -- import ArM.Char.Character
 -- import ArM.Helper
-import ArM.GameRules
+-- import ArM.GameRules
 import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
 
