@@ -26,6 +26,7 @@ data CharacterSheet = CharacterSheet
          { csTime :: CharTime
          , csType :: CharacterType
          , vfList :: [ VF ]
+         , charList :: [ Characteristic ]
          , abilityList :: [ Ability ]
          , artList :: [ Art ]
          , spellList :: [ Spell ]
@@ -39,6 +40,7 @@ defaultSheet = CharacterSheet
          { csTime = Nothing
          , csType = Magus
          , vfList = [ ]
+         , charList = [ ]
          , abilityList = [ ]
          , artList = [ ]
          , spellList = [ ]
@@ -65,7 +67,8 @@ filterCS cs = trace ("filterCS "++show cs) $ defaultSheet  { csTime = charTime c
                  , spellList = x4
                  , reputationList = x5
                  , ptList = x6
-                 , csTraits = y6
+                 , charList = x7
+                 , csTraits = y7
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1
@@ -73,3 +76,4 @@ filterCS cs = trace ("filterCS "++show cs) $ defaultSheet  { csTime = charTime c
                  (x4,y4) = filterTrait y3
                  (x5,y5) = filterTrait y4
                  (x6,y6) = filterTrait y5
+                 (x7,y7) = filterTrait y6

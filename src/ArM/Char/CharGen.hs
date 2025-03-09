@@ -126,10 +126,10 @@ validateChar sheet a | m /= "Characteristics" = a
 
 -- | Count characterics points spent in an Advancement
 calculateCharPoints :: Advancement -> Int
-calculateCharPoints = sum . map charScore . changes
+calculateCharPoints = sum . map cScore . changes
 
 -- | Count characterics points spent on a trait
-charScore :: ProtoTrait -> Int
-charScore p | isJust (characteristic p) = f p
+cScore :: ProtoTrait -> Int
+cScore p | isJust (characteristic p) = f p
             | otherwise = 0
         where f = pyramidScore . fromMaybe 0 . score 

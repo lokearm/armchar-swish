@@ -44,13 +44,17 @@ instance Markdown CharacterSheet where
          [ "+ **Confidence:**"
          , "+ **Warping:**"
          , "+ **Decrepitude:**"
-         , foldl (++) "+ **Personality Traits:** " (map (++", ") $ map show $ ptList c)
-         , foldl (++) "+ **Reputations:** " (map (++", ") $ map show $ reputationList c)
-         , foldl (++) "+ **Virtues and Flaws:** " (map (++", ") $ map show $ vfList c)
-         , foldl (++) "+ **Abilities:** " (map (++", ") $ map show $ abilityList c)
-         -- artList :: [ Art ]
-         -- spellList :: [ Spell ]
+         , f "+ **Characteristics:** "  $ charList c
+         , f "+ **Personality Traits:** "  $ ptList c
+         , f "+ **Reputations:** "  $ reputationList c
+         , f "+ **Virtues and Flaws:** "  $ vfList c
+         , f "+ **Abilities:** "  $ abilityList c
+         , f "+ **Arts:** "  $ artList c
+         , f "+ **Spells:** "  $ spellList c
+         , f "+ **Other:** " $ csTraits c
          ]
+    where f _ [] = ""
+          f s xs = foldl (++) s (map (++", ") $ map show xs)
 
 instance Markdown Character where
    printMD c = ( printMD . concept ) c 

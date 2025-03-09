@@ -20,6 +20,7 @@
 module ArM.Char.Trait ( ProtoTrait(..)
                       , Trait(..)
                       , TraitKey(..)
+                      , Characteristic(..)
                       , Ability(..)
                       , Art(..)
                       , PTrait(..)

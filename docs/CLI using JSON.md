@@ -41,7 +41,7 @@ aliases:
 + [ ] Step 7.  Clean up character sheet
 	+ [x] Move characteristics limit to CharacterSheet
 	+ [ ] Pretty advancement
-	+ [ ] Markdown for CharacterSheet
+	+ [x] Markdown for CharacterSheet
 	+ [ ] Pretty metadata
 	+ [ ] Validate character build
 	+ [ ] Review output files 
@@ -53,6 +53,10 @@ aliases:
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
 	+ [ ] Test output
++ [ ] Step 9. Finishing touches
+	+ [ ] Warping
+	+ [ ] Decrepitude
+	+ [ ] Confidence
 + [ ] Step 9.  Error report
 + [ ] Step 10. Refactoring
 + [ ] Step 11.  CharacterState in JSON
