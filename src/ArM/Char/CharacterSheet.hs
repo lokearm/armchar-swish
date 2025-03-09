@@ -12,9 +12,9 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , characterSheet
                                ) where
 
-import ArM.Char.Character
 import ArM.Char.Trait
-import ArM.Char.Advancement
+import ArM.Char.Internal.Character
+import ArM.Char.Internal.Advancement
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
@@ -27,7 +27,7 @@ data CharacterSheet = CharacterSheet
          , spellList :: [ Spell ]
          , reputationList :: [ Reputation ]
          , csTraits :: [ Trait ]
-         }  deriving (Eq,Generic)
+         }  deriving (Eq,Show,Generic)
 
 defaultSheet :: CharacterSheet 
 defaultSheet = CharacterSheet 
