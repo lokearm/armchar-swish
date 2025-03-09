@@ -44,6 +44,11 @@ aliases:
 	+ [ ] Markdown for CharacterSheet
 	+ [ ] Pretty metadata
 	+ [ ] Validate character build
+	+ [ ] Review output files 
+		+ [ ] Character Sheet in Markdown
+		+ [ ] Advancement Log in Markdown
+		+ [ ] Char Gen Validation in Markdown
+		+ [ ] Error report in Markdown
 + [ ] Step 8.  Companion Advancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
