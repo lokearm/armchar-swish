@@ -9,7 +9,20 @@ aliases:
 + Also reuses some libraries from the swish model
 + See also [[Character Generation Process]]
 + See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]]
-+ 
+
+## Command Line Syntax
+
+```
+armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eogan.pdf eogan.md  
+```
+
++ `-c FILE` read the character from `FILE`
++ `-o FILE` write a formatted character sheet at Game Start to `FILE`
++ `-j FILE` write character state as calculated at Game Start to `FILE` in JSON
++ Debug options
+	+ `-O FILE` write markdown of the character before the sheet is computed
+
+## Roadmap
 
 + [x] Step 1.  Working Companion CharGen
 	+ [x] Implement Affinity
