@@ -8,7 +8,9 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Char.CharacterSheet where
+module ArM.Char.CharacterSheet ( CharacterSheet(..)
+                               , characterSheet
+                               ) where
 
 import ArM.Char.Character
 import ArM.Char.Trait
