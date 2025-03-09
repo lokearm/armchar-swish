@@ -21,7 +21,7 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import Data.Maybe
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareCharGen :: CharacterState -> Advancement -> AugmentedAdvancement
@@ -46,7 +46,7 @@ prepareCharacter c
 applyCharGenAdv :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyCharGenAdv a cs = (a',cs')
     where a' = prepareCharGen cs a
-          cs' = trace (show $ mode a) $ cs { charTime = season a, traits = new }
+          cs' = cs { charTime = season a, traits = new }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'
@@ -60,8 +60,7 @@ applyCGA' :: ([AugmentedAdvancement],[Advancement],CharacterState)
                    -> ([AugmentedAdvancement],CharacterState)
 applyCGA' (xs,[],cs) = (xs,cs)
 applyCGA' (xs,y:ys,cs) = applyCGA' (a':xs,ys,cs')
-    where (a',cs') = trace ("cs "++show cs) $ 
-               trace ("sheet "++show (filterCS cs)) $ applyCharGenAdv y cs
+    where (a',cs') = applyCharGenAdv y cs
 
 -- |
 -- = Validation

@@ -22,7 +22,7 @@ import ArM.Helper
 import qualified Data.Map as Map
 import Data.Maybe (isJust,fromJust)
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- |
 -- = Infer traits
@@ -34,11 +34,9 @@ import ArM.Debug.Trace
 
 vl2 :: [ ( TraitKey, VF -> ProtoTrait ) ]
 vl2 = [ ( VFKey "Puissant (art)",
-         \ x -> defaultPT { art = Just $ vfDetail x, bonusScore = 
-                trace "puissant ability" $ Just 3 } )
+         \ x -> defaultPT { art = Just $ vfDetail x, bonusScore = Just 3 } )
      , ( VFKey "Puissant (ability)",
-              \ x -> defaultPT { ability = Just $ vfDetail x, bonusScore = 
-                 trace "puissant ability" $ Just 2 } )
+              \ x -> defaultPT { ability = Just $ vfDetail x, bonusScore = Just 2 } )
      , ( VFKey "Affinity with (art)",
               \ x -> defaultPT { art = Just $ vfDetail x, multiplyXP = Just 1.5 } )
      , ( VFKey "Affinity with (ability)",
