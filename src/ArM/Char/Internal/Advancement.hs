@@ -18,13 +18,31 @@ import ArM.Char.Trait
 
 import Data.Aeson
 import GHC.Generics
+import Data.List.Split
+import Text.Read
+
 
 type CharTime = Maybe String
 
-data Season = Spring | Summer | Autumn | Winter 
+data Season = Spring | Summer | Autumn | Winter | NoSeason
      deriving (Show,Ord,Eq,Read)
 
 data SeasonTime = SeasonTime Season Int | GameStart deriving (Eq)
+
+parseSeasonTime :: String -> SeasonTime
+parseSeasonTime "GameStart" = GameStart
+parseSeasonTime "Game Start" = GameStart
+parseSeasonTime s = SeasonTime (fs ss) (fy ys)
+    where xs = splitOn " " s
+          ys = map readMaybe xs :: [Maybe Int]
+          ss = map readMaybe xs :: [Maybe Season]
+          fs [] = NoSeason
+          fs (Nothing:rest) = fs rest
+          fs (Just r:_) = r
+          fy [] = 0
+          fy (Nothing:rest) = fy rest
+          fy (Just r:_) = r
+
 
 instance Show SeasonTime where
    show GameStart = "Game Start"
