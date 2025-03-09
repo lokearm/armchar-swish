@@ -41,7 +41,8 @@ pListMD s x = ("":s:"":listMD x)
 
 instance Markdown CharacterSheet where
    printMD c = 
-         [ "+ **Confidence:**"
+         [ "+ **Age:**"
+         , "+ **Confidence:**"
          , "+ **Warping:**"
          , "+ **Decrepitude:**"
          , f "+ **Characteristics:** "  $ charList c
