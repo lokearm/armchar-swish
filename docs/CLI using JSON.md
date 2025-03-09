@@ -8,7 +8,7 @@ aliases:
 + Dedicated Libraries: `ArM/Char`
 + Also reuses some libraries from the swish model
 + See also [[Character Generation Process]]
-+ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]]
++ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]] (canvas)
 
 ## Command Line Syntax
 
@@ -56,24 +56,26 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [x] Markdown for CharacterSheet
 + [ ] Step 8.  Companion Advancement
 	+ [x] advanceCharacter function
-	+ [ ] Fix ordering on CharTime
-	+ [ ] Test output
-	+ [ ] Pretty advancement output
+	+ [x] Fix ordering on CharTime
+	+ [x] Test output
+	+ [x] Pretty advancement output
+	+ [ ] Fix XP validation on in game advancement
 + [ ] Step 9. Finishing touches
 	+ [ ] Warping
 	+ [ ] Decrepitude
 	+ [ ] Confidence
 	+ [ ] Aging
-	+ [ ] Validate character build
-+ [ ] Step 10.  Review output files 
+	+ [ ] Age
++ [ ] Step 10.  More metadata
+	+ [x] Quirk
+	+ [x] Appearance
+	+ [ ] Sort metadata in output 
++ [ ] Step 11.  Review markdown output 
 	+ [ ] Character Sheet in Markdown
 	+ [ ] Advancement Log in Markdown
 	+ [ ] Char Gen Validation in Markdown
 	+ [ ] Error report in Markdown
-+ [ ] Step 11.  More metadata
-	+ [ ] Quirk
-	+ [ ] Appearance
-	+ [ ] Pretty output on Character sheet
+	+ [ ] Validate character build
 + [ ] Step 12.  CharacterState in JSON
 	+ [ ] Remove null entries from JSON output
 	+ [ ] Review Character State output
@@ -90,23 +92,14 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Step 15. Covenant advancement
 	+ [ ] Covenant advancement
 	+ [ ] Covenant members
-+ Virtue and Flaws affecting advancement
-	+ Affinity
-		+ MultiplyXP (Ability "Stealth") 1.5
-			+ Implied trait - new multiplyXP attribute
-	+ Warrior, etc.
-		+ BonusXP "Later Life" 50 "from Warrior"
-	+ Supernatural abilities
-		+ ImpliedTrait ( defaultTrait { ability = "Second Sight", xp = 5 })
+
++ Virtue and Flaws trait calculation
+	+ Linguist
+	+ Puissant
+			+ Implied trait - new bonusScore attribute
 	+ Skilled Parens
 		+ BonusXP "Apprenticeship" 60 "from Skilled Parens"
 		+ BonusSpells "Apprenticeship" 60 "from Skilled Parens"
-	+ Linguist
-	+ Flawless Magic
-		+ flag
-+ Virtue and Flaws trait calculation
-	+ Puissant
-			+ Implied trait - new bonusScore attribute
 
 + Advancement process.
     + Uses State from previous season and Advancement from current season.
@@ -118,12 +111,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
     + Virtues and flaws add implied traits
         + `inferTraits :: CharacterState -> [ProtoTrait] -> [ProtoTrait]`
         + This handles affinities and puissant
-        + Alternative approaces
-		    + ProtoTrait may be amended
-		        + affinity
-		        + `computeAdvancement :: CharacterState -> ProtoTrait -> ProtoTrait`
-		    + Trait may be amended
-		        + bonusScore
     + Advance trait $\to$  `advance`
 + Validation
 	+ note that validation must be based on the augmented advancements
@@ -154,41 +141,20 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ correspondent
 		+ study bonus
 	 
-        
-+ Ideas
-	+ [Data.Map](https://hackage.haskell.org/package/containers-0.4.0.0/docs/Data-Map.html) could be used for CharacterState
-	+ How do we represent Puissant (ability), Deft (art), etc.
-		+ `appliesTo :: Maybe TraitKey`
-		+ `detail :: Maybe String`
-		+ `detail = Just "Creo"` $\sim$ `appliesTo :: Just $ Art "Creo"`
+       
++ Specail cases to review
+	+ **NB** Flawless magic
 + Modules
 	+ `Char.Trait`
 		+ Trait
-			+  VF (virtues and flaws) may affect other traits
-			+ Often affected by virtues and flaws
-				+ Ability 
-				+  Art
-			+ Characteristic
-				+ affected by virtues and flaws
-				+ may handle manually, but gets the point count wrong
-			+  Spell
-				+ **NB** Flawless magic
-			+ Handle manually
-				+  Reputation
-				+  PTrait
-				+  Confidence
-				+  OtherTrait (Warping, Decrepitude)
 		+ ProtoTrait
 	+ `Char.Character`
 		+ Character
 			+ CharacterConcept
 			+ CharacterState
 		+ Advancement
-		+ function to create a full starting character
 	+ `Char.Advancement`
-		+ functions for ingame advancement
 	+ `Char.Markdown`
-		+ class and instnces for markdown output
 + Types
 	+ Character
 		+ contains
@@ -215,18 +181,9 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ totalXP
 		+ uses (book)
 		+ changes 
-	+ maybe InferedAdvancement
-	+ derived
-		+ inferedTraits
-		+ inferedTotalXP
 + CharacterState
-	+ metadata from Character
 	+ state of traits
 		+ traits
 		+ season
-	+ store past and future advancements?
 + CharacterSheet
-	+ metadata from Character
-	+ season
-	+ calculated traits
-	+ store past and future advancements?
+	+ Frontend for CharacterState
