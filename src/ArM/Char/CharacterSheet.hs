@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  ArM.Char.CharacterSheet
@@ -9,47 +10,51 @@
 -----------------------------------------------------------------------------
 module ArM.Char.CharacterSheet where
 
+import ArM.Char.Character
+import ArM.Char.Trait
+import ArM.Char.Advancement
+import GHC.Generics
+import Data.Aeson
+import Data.Maybe
+
 data CharacterSheet = CharacterSheet 
-         { charTime :: CharTime
+         { csTime :: CharTime
          , vfList :: [ VF ]
          , abilityList :: [ Ability ]
          , artList :: [ Art ]
          , spellList :: [ Spell ]
          , reputationList :: [ Reputation ]
-         , traits :: [ Trait ]
+         , csTraits :: [ Trait ]
          }  deriving (Eq,Generic)
 
-defaultheet :: Characterheet 
-defaultheet = Characterheet 
-         { charTime = Nothing
+defaultSheet :: CharacterSheet 
+defaultSheet = CharacterSheet 
+         { csTime = Nothing
          , vfList = [ ]
          , abilityList = [ ]
          , artList = [ ]
          , spellList = [ ]
          , reputationList = []
-         , traits = [ ]
+         , csTraits = [ ]
          }  
 
+characterSheet :: Character -> CharacterSheet
+characterSheet c | isNothing st = defaultSheet
+                 | otherwise = filterCS $ fromJust st
+    where st = state c
+
 instance ToJSON CharacterSheet where
-    -- For efficiency - Not required
     toEncoding = genericToEncoding defaultOptions
-instance FromJSON CharacterSheet where
-    parseJSON = withObject "CharacterSheet" $ \v -> CharacterSheet
-        <$> v .:? "charTime"
-        <*> fmap listNothing ( v .:? "vfList" )
-        <*> fmap listNothing ( v .:? "abilityList" )
-        <*> fmap listNothing ( v .:? "artList" )
-        <*> fmap listNothing ( v .:? "spellList" )
-        <*> fmap listNothing ( v .:? "reputationList" )
-        <*> fmap listNothing ( v .:? "traits" )
+instance FromJSON CharacterSheet 
 
 filterCS :: CharacterState -> CharacterSheet
-filterCS cs = cs { vfList = x1
+filterCS cs = defaultSheet  { csTime = charTime cs
+                 , vfList = x1
                  , abilityList = x2
                  , artList = x3
                  , spellList = x4
                  , reputationList = x5
-                 , traits = y5
+                 , csTraits = y5
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1

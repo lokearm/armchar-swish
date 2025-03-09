@@ -40,30 +40,30 @@ aliases:
 	+ [ ] Refactor CharGen advancement and validation into CharGen module
 	+ [ ] Use CharGenParameters in the validation during CharGen
 	+ [ ] Virtues and flaws for grogs
-+ [ ] Step 6.  Companion Advancement
++ [ ] Step 7.  Companion Advancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
 	+ [ ] Test output
-+ [ ] Step 7.  Clean up character sheet
++ [ ] Step 8.  Clean up character sheet
 	+ [ ] Pretty advancement
 	+ [ ] Pretty CharacterState
 	+ [ ] Pretty metadata
 	+ [ ] Validate character build
-+ [ ] Step 8.  Error report
-+ [ ] Step 9.  CharacterState in JSON
++ [ ] Step 9.  Error report
++ [ ] Step 10.  CharacterState in JSON
 	+ [ ] Remove null entries from JSON output
 	+ [ ] Review Character State output
 	+ [ ] Read CharacterState from JSON
-+ [ ] Step 10.  Magi char gen
++ [ ] Step 11.  Magi char gen
 	+ [ ] Spell data type
 	+ [ ] Read Spell data from CSV
 	+ [ ] Art and spell markdown
-+ [ ] Step 11. Covenant
++ [ ] Step 12. Covenant
 	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Book resource
 	+ [ ] Library
 	+ [ ] Read books from CSV
-+ [ ] Step 11. Covenant advancement
++ [ ] Step 13. Covenant advancement
 	+ [ ] Covenant advancement
 	+ [ ] Covenant members
 + Virtue and Flaws affecting advancement

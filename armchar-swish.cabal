@@ -67,7 +67,7 @@ common armchar-deps
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
                        , ArM.Helper
-                       -- , ArM.Char.CharacterSheet
+                       , ArM.Char.CharacterSheet
                        , ArM.Types.Season
 
 common swish-deps
