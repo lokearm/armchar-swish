@@ -38,7 +38,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , defaultPT
                        ) where
 
-import ArM.Debug.Trace
+import ArM.Debug.NoTrace
 import ArM.GameRules
 import GHC.Generics
 -- import Data.List (sort)
@@ -340,8 +340,8 @@ class TraitType t where
     filterTrait' :: ( [ Trait ], ( [ t ], [ Trait ] ) )
                   -> ( [ Trait ], ( [ t ], [ Trait ] ) )
     filterTrait' ([],y) = ([],y)
-    filterTrait' (x:xs,(ys,zs)) | isNothing ab  = (xs,(ys,x:zs))
-                                | otherwise = (xs,(fromJust ab:ys,zs))
+    filterTrait' (x:xs,(ys,zs)) | isNothing ab  = filterTrait' (xs,(ys,x:zs))
+                                | otherwise = filterTrait' (xs,(fromJust ab:ys,zs))
         where ab = getTrait x
 
     -- | Return the specific trait from the generic Trait, or Nothing if the type does not match.

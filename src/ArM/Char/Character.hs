@@ -40,11 +40,7 @@ import ArM.Char.CharGen
 -- import ArM.Debug.Trace
 
 -- |
--- = Advancement
-
-
-
-
+-- = Advancement in Game
 
 -- | Apply advancement
 applyAdvancement :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)

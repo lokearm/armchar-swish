@@ -19,6 +19,8 @@ import ArM.Char.Advancement
 import ArM.Char.Validation
 import Data.Maybe
 
+import ArM.Debug.Trace
+
 getParam :: Character -> [ VF ] -> CharGenParameters 
 getParam c _ | isGrog c = p { vfLimit = 3 }
              | otherwise = p
@@ -50,7 +52,7 @@ defaultParam = CharGenParameters
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareCharGen :: [VF] -> Advancement -> AugmentedAdvancement
-prepareCharGen vfs = validate . initialLimits vfs . addInferredTraits 
+prepareCharGen vfs = validate . ( trace (show vfs) $ initialLimits vfs ) . addInferredTraits 
 
 
 -- | Compute the initial state if no state is recorded.
@@ -66,15 +68,16 @@ prepareCharacter c
 
 
 -- | Apply CharGen advancement
-applyCharGenAdv :: [VF] -> Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
-applyCharGenAdv vfs a cs = (a',cs')
-    where a' = prepareCharGen vfs a
-          cs' = cs { charTime = season a, traits = new }
+applyCharGenAdv :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
+applyCharGenAdv a cs = (a',cs')
+    where a' = trace ("> " ++ show vfs) $ prepareCharGen vfs a
+          cs' = trace (show $ mode a) $ cs { charTime = season a, traits = new }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'
           inferred = inferredTraits a'
           old = traits cs
+          vfs = vfList $ filterCS cs
 
 -- | Apply a list of advancements
 applyCGA :: [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
@@ -83,6 +86,6 @@ applyCGA' :: ([AugmentedAdvancement],[Advancement],CharacterState)
                    -> ([AugmentedAdvancement],CharacterState)
 applyCGA' (xs,[],cs) = (xs,cs)
 applyCGA' (xs,y:ys,cs) = applyCGA' (a':xs,ys,cs')
-    where (a',cs') = applyCharGenAdv vfs y cs
-          vfs = vfList $ filterCS cs
+    where (a',cs') = trace ("cs "++show cs) $ 
+               trace ("sheet "++show (filterCS cs)) $ applyCharGenAdv y cs
 

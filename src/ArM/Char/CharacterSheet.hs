@@ -20,6 +20,8 @@ import GHC.Generics
 import Data.Aeson
 import Data.Maybe
 
+import ArM.Debug.Trace
+
 data CharacterSheet = CharacterSheet 
          { csTime :: CharTime
          , vfList :: [ VF ]
@@ -51,8 +53,8 @@ instance ToJSON CharacterSheet where
 instance FromJSON CharacterSheet 
 
 filterCS :: CharacterState -> CharacterSheet
-filterCS cs = defaultSheet  { csTime = charTime cs
-                 , vfList = x1
+filterCS cs = trace ("filterCS "++show cs) $ defaultSheet  { csTime = charTime cs
+                 , vfList = trace ("x1=" ++ show x1) x1
                  , abilityList = x2
                  , artList = x3
                  , spellList = x4

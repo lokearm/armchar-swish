@@ -101,7 +101,7 @@ fullConceptName c = name c ++ (f $ house c)
 data CharacterState = CharacterState 
          { charTime :: CharTime
          , traits :: [ Trait ]
-         }  deriving (Eq,Generic)
+         }  deriving (Eq,Generic,Show)
 
 -- | Default (empty) character state object.
 defaultCS :: CharacterState 
