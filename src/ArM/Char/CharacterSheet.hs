@@ -22,6 +22,8 @@ import Data.Maybe
 
 import ArM.Debug.Trace
 
+-- | The CharacterSheet object holds a Character State with separate fields
+-- for different kinds of traits
 data CharacterSheet = CharacterSheet 
          { csTime :: CharTime
          , csType :: CharacterType
@@ -35,6 +37,7 @@ data CharacterSheet = CharacterSheet
          , csTraits :: [ Trait ]
          }  deriving (Eq,Show,Generic)
 
+-- | A default CharacterSheet for internal use.
 defaultSheet :: CharacterSheet 
 defaultSheet = CharacterSheet 
          { csTime = Nothing
@@ -49,6 +52,7 @@ defaultSheet = CharacterSheet
          , csTraits = [ ]
          }  
 
+-- | Get the CharacterSheet from a given Character.
 characterSheet :: Character -> CharacterSheet
 characterSheet c | isNothing st = defaultSheet { csType = charType (concept c) }
                  | otherwise = cs  { csType = charType (concept c) }
@@ -59,6 +63,7 @@ instance ToJSON CharacterSheet where
     toEncoding = genericToEncoding defaultOptions
 instance FromJSON CharacterSheet 
 
+-- | Get the CharacterSheet corresponding to a given CharacterState.
 filterCS :: CharacterState -> CharacterSheet
 filterCS cs = trace ("filterCS "++show cs) $ defaultSheet  { csTime = charTime cs
                  , vfList = trace ("x1=" ++ show x1) x1

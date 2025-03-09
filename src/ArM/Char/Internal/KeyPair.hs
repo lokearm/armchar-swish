@@ -44,7 +44,7 @@ pairToJSON (KeyPair a (ObjectValue b)) = ((fromString a), (b))
 -- = Show Instances
 instance Show FieldValue where
    show (IntValue x) = show x
-   show (TextValue x) = show x
+   show (TextValue x) = T.unpack x
    show x = show x
 instance Show KeyPair where
    show (KeyPair x  y) = x ++ ":\t" ++ show y ++ "\n"

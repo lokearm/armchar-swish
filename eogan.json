@@ -4,6 +4,8 @@
       "name" : "Eogan mac Eogan",
       "charType" : "Companion",
       "charGlance" : {
+         "Quirk" : "Avoids danger, particularly heights.",
+         "Appearance" : "Slender, charming guy with dark hair. The clothes are clean, but smell of dog.",
          "Born" : 1230,
          "Concept" : "Kennel Master"
       },
