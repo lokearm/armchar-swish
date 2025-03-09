@@ -19,5 +19,5 @@ both are currently incomplete and on hold.
 
 Further documentation is found in the docs hierarchy.  
 
-+ [CLI using JSON](docs/CLI using JSON.md)
-+ [CLI with Swish](docs/CLI with Swish.md)
++ [CLI using JSON](docs/CLI%20using%20JSON.md)
++ [CLI with Swish](docs/CLI%20with%20Swish.md)
