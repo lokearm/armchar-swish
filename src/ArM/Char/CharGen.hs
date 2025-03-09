@@ -14,6 +14,7 @@ module ArM.Char.CharGen where
 import ArM.Char.Trait
 import ArM.Char.Internal.Character
 import ArM.Char.Internal.Advancement
+import ArM.Char.CharacterSheet
 import ArM.Char.Advancement
 import ArM.Char.Validation
 import Data.Maybe
@@ -61,8 +62,7 @@ prepareCharacter c
                             , pregameAdvancement = []
                             }
             where as = pregameAdvancement  c 
-                  (xs,cs) = applyCGA vfs as defaultCS
-                  vfs = getInitVF c
+                  (xs,cs) = applyCGA as defaultCS
 
 
 -- | Apply CharGen advancement
@@ -77,11 +77,12 @@ applyCharGenAdv vfs a cs = (a',cs')
           old = traits cs
 
 -- | Apply a list of advancements
-applyCGA :: [VF] -> [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
-applyCGA vfs a cs = applyCGA' vfs ([],a,cs)
-applyCGA' :: [VF] -> ([AugmentedAdvancement],[Advancement],CharacterState)
+applyCGA :: [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
+applyCGA a cs = applyCGA' ([],a,cs)
+applyCGA' :: ([AugmentedAdvancement],[Advancement],CharacterState)
                    -> ([AugmentedAdvancement],CharacterState)
-applyCGA' _ (xs,[],cs) = (xs,cs)
-applyCGA' vfs (xs,y:ys,cs) = applyCGA' vfs (a':xs,ys,cs')
+applyCGA' (xs,[],cs) = (xs,cs)
+applyCGA' (xs,y:ys,cs) = applyCGA' (a':xs,ys,cs')
     where (a',cs') = applyCharGenAdv vfs y cs
+          vfs = vfList $ filterCS cs
 

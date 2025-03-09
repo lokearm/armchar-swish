@@ -10,6 +10,7 @@
 -----------------------------------------------------------------------------
 module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , characterSheet
+                               , filterCS
                                ) where
 
 import ArM.Char.Trait
