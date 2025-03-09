@@ -35,11 +35,9 @@ aliases:
 	+ [x] extra XP from virtues
 	+ [x] Improved characteristics
 	+ [x] XP for later life
-+ [ ] Step 6. Refactor and treat grogs differently
-	+ [ ] Calculate CharGenParameters from VF list
-	+ [ ] Refactor CharGen advancement and validation into CharGen module
-	+ [ ] Use CharGenParameters in the validation during CharGen
-	+ [ ] Virtues and flaws for grogs
++ [x] Step 6. Refactor and treat grogs differently
+	+ [x] Introduce a CharacterSheet object which can be passed along advancement processing
+	+ [x] Virtues and flaws for grogs
 + [ ] Step 7.  Companion Advancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime

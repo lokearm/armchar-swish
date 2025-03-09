@@ -17,7 +17,7 @@
 -- or written to file.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Validation (validate) where
+module ArM.Char.Validation (validate,validateXP) where
 
 -- import ArM.Char.Character
 -- import ArM.Helper
@@ -29,18 +29,6 @@ import Data.Maybe (fromMaybe,isJust)
 
 
 
--- | Count virtue and flaw costs from an Advancement
-calculateVFCost :: Advancement -> (Int,Int)
-calculateVFCost a = ( sum $ filter (<0) rs, sum $ filter (>0) rs )
-   where rs = map regCost $ changes a
-
-
--- | Extract the virtue/flaw cost from a ProtoType; zero for other types of traits.
-regCost :: ProtoTrait -> Int
-regCost p | isJust (virtue p) = f p
-          | isJust (flaw p) = f p
-          | otherwise = 0
-        where f = fromMaybe 0 . cost 
 
 -- | Count regular XP (excluding reputation) from a ProtoTrait
 regXP :: ProtoTrait -> Int
@@ -52,27 +40,9 @@ regXP p | isJust (ability p) = f p
 
 -- | validate an advancement, adding results to the validation field
 validate :: AugmentedAdvancement -> AugmentedAdvancement
-validate a | m == "Virtues and Flaws" = validateVF a
-           | m == "Characteristics" = validateChar a
-           | otherwise = validateXP a
+validate a | otherwise = validateXP a
            where m = fromMaybe "" $ mode a
 
--- | Validate allocation of virtues and flaws.
-validateVF :: AugmentedAdvancement -> AugmentedAdvancement
-validateVF a | m /= "Virtues and Flaws" = a
-             | 0 /= f + v = a { validation = ValidationError imb:validation a }
-             | v > 10 = a { validation = ValidationError over:validation a }
-             | otherwise = a { validation = Validated val:validation a }
-           where m = fromMaybe "" $ mode a
-                 (f,v) = calculateVFCost $ advancement a
-                 imb = "Virtues and flaws are imbalanced: "
-                     ++ show v ++ " points of virtues and"
-                     ++ show (-f) ++ " points of flaws."
-                 over = "Exceeds limit on virtues; " ++ show v ++ " points."
-                 val = "Virtues and flaws balance at " ++ show v ++ " points."
-
-
-                
 -- | Validate allocation of XP.
 validateXP :: AugmentedAdvancement -> AugmentedAdvancement
 validateXP a | sq > xpsum = a { validation = und:validation a }
@@ -88,27 +58,3 @@ validateXP a | sq > xpsum = a { validation = und:validation a }
 calculateXP :: Advancement -> Int
 calculateXP = sum . map regXP . changes
 
--- | Validate points spent on characterics.
-validateChar :: AugmentedAdvancement -> AugmentedAdvancement
-validateChar a | m /= "Characteristics" = a
-             | ex < lim = a { validation = ValidationError und:validation a }
-             | ex > lim = a { validation = ValidationError over:validation a }
-             | otherwise = a { validation = Validated val:validation a }
-           where m = fromMaybe "" $ mode a
-                 lim = fromMaybe 0 $ charAllowance a
-                 ex = calculateCharPoints $ advancement a
-                 und = "Underspent " ++ (show ex) ++ " points out of "
-                     ++ show lim ++ " on characteristics."  
-                 over = "Underspent " ++ (show ex) ++ " points out of "
-                     ++ show lim ++ " on characteristics."  
-                 val = "Correctly spent " ++ (show ex) ++ " points on characteristics."  
-
--- | Count characterics points spent in an Advancement
-calculateCharPoints :: Advancement -> Int
-calculateCharPoints = sum . map charScore . changes
-
--- | Count characterics points spent on a trait
-charScore :: ProtoTrait -> Int
-charScore p | isJust (characteristic p) = f p
-            | otherwise = 0
-        where f = pyramidScore . fromMaybe 0 . score 
