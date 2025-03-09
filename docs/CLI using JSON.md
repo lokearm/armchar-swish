@@ -38,30 +38,32 @@ aliases:
 + [x] Step 6. Refactor and treat grogs differently
 	+ [x] Introduce a CharacterSheet object which can be passed along advancement processing
 	+ [x] Virtues and flaws for grogs
-+ [ ] Step 7.  Companion Advancement
++ [ ] Step 7.  Clean up character sheet
+	+ [ ] Pretty advancement
+	+ [ ] Markdown for CharacterSheet
+	+ [ ] Pretty metadata
+	+ [ ] Validate character build
++ [ ] Step 8.  Companion Advancement
 	+ [x] advanceCharacter function
 	+ [ ] Fix ordering on CharTime
 	+ [ ] Test output
-+ [ ] Step 8.  Clean up character sheet
-	+ [ ] Pretty advancement
-	+ [ ] Pretty CharacterState
-	+ [ ] Pretty metadata
-	+ [ ] Validate character build
 + [ ] Step 9.  Error report
-+ [ ] Step 10.  CharacterState in JSON
++ [ ] Step 10. Refactoring
+	+ [ ] Move characteristics limit to CharacterSheet
++ [ ] Step 11.  CharacterState in JSON
 	+ [ ] Remove null entries from JSON output
 	+ [ ] Review Character State output
 	+ [ ] Read CharacterState from JSON
-+ [ ] Step 11.  Magi char gen
++ [ ] Step 12.  Magi char gen
 	+ [ ] Spell data type
 	+ [ ] Read Spell data from CSV
 	+ [ ] Art and spell markdown
-+ [ ] Step 12. Covenant
++ [ ] Step 13. Covenant
 	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Book resource
 	+ [ ] Library
 	+ [ ] Read books from CSV
-+ [ ] Step 13. Covenant advancement
++ [ ] Step 14. Covenant advancement
 	+ [ ] Covenant advancement
 	+ [ ] Covenant members
 + Virtue and Flaws affecting advancement
