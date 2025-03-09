@@ -11,7 +11,7 @@
 module ArM.Char.Markdown (printMD) where
 
 -- import Data.Maybe (fromJust)
-import Data.Maybe (fromJust,fromMaybe)
+import Data.Maybe 
 import ArM.Char.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
@@ -73,7 +73,7 @@ instance Markdown Character where
              maybeP (Just xs) = printMD xs
 
 instance Markdown CharacterState where
-   printMD c = ( "## " ++ (fromMaybe "Current - no time given" $ charTime c) ):"":sh
+   printMD c = ( "## " ++ (show $ charTime c) ):"":sh
    -- pt c
        -- where pt = map ("+ "++) . foldl (++) [] . map printMD . traits 
        where sh = printMD $ filterCS c
@@ -85,19 +85,20 @@ showSQ Nothing (Just x) = "(" ++ show x ++ "xp)"
 showSQ (Just x) (Just y) = "(" ++ show x ++ "+" ++ show (y-x) ++ "xp)"
 
 instance Markdown AugmentedAdvancement where
-   printMD a = trace (show (vs a)) $ f (season a) (mode a) $ fn (narrative a) $ pt a
+   printMD a = trace (show (vs a)) $ showTime xps (season a) (mode a) $ fn (narrative a) $ pt a
       where xps = showSQ (sourceQuality a) (effectiveSQ a)
             cs = map ("    + "++) . foldl (++) [] . map printMD . changes 
             vs = map ("    + "++) . map show . validation
             pt x = (cs x) ++ (vs x)
             fn Nothing xs = xs
             fn (Just x) xs = ( "    + " ++ show ( x ) ) :xs
-            f Nothing Nothing xs = ("+ ?? " ++ xps):xs
-            f (Just x) Nothing xs = ("+ " ++ x ++ xps):xs
-            f Nothing (Just x) xs = ("+ " ++ x ++ xps):xs
-            f (Just x) (Just y) xs = ("+ " ++ x ++ xps):("    + " ++ y):xs
+showTime :: String -> SeasonTime -> Maybe String -> [String] -> [String]
+showTime xps NoTime Nothing xs = ("+ ?? " ++ xps):xs
+showTime xps  x Nothing xs = ("+ " ++ show x ++ xps):xs
+showTime xps NoTime (Just x) xs = ("+ " ++ x ++ xps):xs
+showTime xps x (Just y) xs = ("+ " ++ show x ++ xps):("    + " ++ y):xs
 instance Markdown Advancement where
-   printMD a = f (season a) (mode a) $ fn (narrative a) $ pt a
+   printMD a = showTime xps (season a) (mode a) $ fn (narrative a) $ pt a
       where xps | sx == Nothing = ""
                 | otherwise = " (" ++ ishow  sx ++ "xp)" 
             sx = sourceQuality a
@@ -106,10 +107,6 @@ instance Markdown Advancement where
 
             fn Nothing xs = xs
             fn (Just x) xs = ( "    + " ++ show ( x ) ) :xs
-            f Nothing Nothing xs = ("+ ?? " ++ xps):xs
-            f (Just x) Nothing xs = ("+ " ++ x ++ xps):xs
-            f Nothing (Just x) xs = ("+ " ++ x ++ xps):xs
-            f (Just x) (Just y) xs = ("+ " ++ x ++ xps):("    + " ++ y):xs
 instance Markdown Trait where
    printMD c = [ show c ]
 instance Markdown ProtoTrait where

@@ -71,7 +71,7 @@ applyAdvancements' (xs,y:ys,cs) = applyAdvancements' (a':xs,ys,cs')
 
 
 -- | Advance the character until after the given time.
-advanceCharacter :: CharTime -> Character -> Character
+advanceCharacter :: SeasonTime -> Character -> Character
 advanceCharacter ct c | isNothing (state c) = advanceCharacter ct $ prepareCharacter c
                       | ct > ct' = c
                       | otherwise = stepCharacter c 

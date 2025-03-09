@@ -15,7 +15,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
 
 import ArM.Char.Trait
 import ArM.Char.Internal.Character
-import ArM.Char.Internal.Advancement
+-- import ArM.Char.Internal.Advancement
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
@@ -25,8 +25,7 @@ import Data.Maybe
 -- | The CharacterSheet object holds a Character State with separate fields
 -- for different kinds of traits
 data CharacterSheet = CharacterSheet 
-         { csTime :: CharTime
-         , csType :: CharacterType
+         { csType :: CharacterType
          , vfList :: [ VF ]
          , charList :: [ Characteristic ]
          , abilityList :: [ Ability ]
@@ -40,8 +39,7 @@ data CharacterSheet = CharacterSheet
 -- | A default CharacterSheet for internal use.
 defaultSheet :: CharacterSheet 
 defaultSheet = CharacterSheet 
-         { csTime = Nothing
-         , csType = Magus
+         { csType = Magus
          , vfList = [ ]
          , charList = [ ]
          , abilityList = [ ]
@@ -65,8 +63,8 @@ instance FromJSON CharacterSheet
 
 -- | Get the CharacterSheet corresponding to a given CharacterState.
 filterCS :: CharacterState -> CharacterSheet
-filterCS cs = defaultSheet  { csTime = charTime cs
-                 , vfList = x1
+filterCS cs = defaultSheet  
+                 { vfList = x1
                  , abilityList = x2
                  , artList = x3
                  , spellList = x4

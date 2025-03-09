@@ -22,33 +22,42 @@ import Data.List.Split
 import Text.Read
 
 
-type CharTime = Maybe String
+type CharTime = SeasonTime 
+-- type CharTime = Maybe String
 
 data Season = Spring | Summer | Autumn | Winter | NoSeason
      deriving (Show,Ord,Eq,Read)
 
-data SeasonTime = SeasonTime Season Int | GameStart deriving (Eq)
+instance ToJSON SeasonTime where
+   toJSON = toJSON . show
 
-parseSeasonTime :: String -> SeasonTime
-parseSeasonTime "GameStart" = GameStart
-parseSeasonTime "Game Start" = GameStart
-parseSeasonTime s = SeasonTime (fs ss) (fy ys)
+data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq)
+
+parseSeasonTime :: Maybe String -> SeasonTime
+parseSeasonTime Nothing = NoTime
+parseSeasonTime (Just "GameStart") = GameStart
+parseSeasonTime (Just "Game Start") = GameStart
+parseSeasonTime (Just s) = fy ys
     where xs = splitOn " " s
           ys = map readMaybe xs :: [Maybe Int]
           ss = map readMaybe xs :: [Maybe Season]
           fs [] = NoSeason
           fs (Nothing:rest) = fs rest
           fs (Just r:_) = r
-          fy [] = 0
+          st = fs ss
+          fy [] = NoTime
           fy (Nothing:rest) = fy rest
-          fy (Just r:_) = r
+          fy (Just r:_) = SeasonTime st r
 
 
 instance Show SeasonTime where
    show GameStart = "Game Start"
    show (SeasonTime s y) = show s ++ " " ++ show y
+   show NoTime =  "N/A"
 
 instance Ord SeasonTime where
+    compare NoTime _ = GT
+    compare _ NoTime = LT
     compare GameStart (SeasonTime _ _) = LT
     compare (SeasonTime _ _) GameStart = GT
     compare GameStart GameStart = EQ
@@ -74,7 +83,7 @@ instance FromJSON Resource
 
 class AdvancementLike a where
      mode :: a -> Maybe String  -- ^ mode of study
-     season :: a -> CharTime    -- ^ season or development stage
+     season :: a -> SeasonTime    -- ^ season or development stage
      narrative :: a -> Maybe String -- ^ freeform description of the activities
      uses :: a -> Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
      sourceQuality :: a -> Maybe Int -- ^ Source Quality (SQ)
@@ -89,7 +98,7 @@ class AdvancementLike a where
 -- One may consider splitting these two functions into two types.
 data Advancement = Advancement 
      { advMode :: Maybe String  -- ^ mode of study
-     , advSeason :: CharTime    -- ^ season or development stage
+     , advSeason :: SeasonTime    -- ^ season or development stage
      , advYears :: Maybe Int    -- ^ number of years advanced
      , advNarrative :: Maybe String -- ^ freeform description of the activities
      , advUses :: Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
@@ -102,7 +111,7 @@ data Advancement = Advancement
 defaultAdv :: Advancement 
 defaultAdv = Advancement 
      { advMode = Nothing
-     , advSeason = Nothing
+     , advSeason = NoTime
      , advYears = Nothing
      , advNarrative = Nothing
      , advUses = Nothing
@@ -166,7 +175,8 @@ instance ToJSON Advancement where
 instance FromJSON Advancement where
     parseJSON = withObject "Advancement" $ \v -> Advancement
         <$> v .:? "mode"
-        <*> v .:? "season"
+        -- <*> v .:? "season"
+        <*> fmap parseSeasonTime ( v .:? "season" )
         <*> v .:? "years"
         <*> v .:? "narrative"
         <*> v .:? "uses"

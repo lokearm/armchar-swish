@@ -34,7 +34,7 @@ prepareCharGen cs = validateCharGen sheet . initialLimits vfs . addInferredTrait
 prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
-            | otherwise = c { state = Just $ cs { charTime = Just "Game start" }
+            | otherwise = c { state = Just $ cs { charTime = GameStart }
                             , pregameDesign = xs
                             , pregameAdvancement = []
                             }
