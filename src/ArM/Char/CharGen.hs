@@ -51,8 +51,9 @@ defaultParam = CharGenParameters
      }
 
 -- | Augment and amend the advancements based on current virtues and flaws.
-prepareCharGen :: [VF] -> Advancement -> AugmentedAdvancement
-prepareCharGen vfs = validate . ( trace (show vfs) $ initialLimits vfs ) . addInferredTraits 
+prepareCharGen :: CharacterState -> Advancement -> AugmentedAdvancement
+prepareCharGen cs = validate . initialLimits vfs . addInferredTraits 
+          where vfs = vfList $ filterCS cs
 
 
 -- | Compute the initial state if no state is recorded.
@@ -70,14 +71,13 @@ prepareCharacter c
 -- | Apply CharGen advancement
 applyCharGenAdv :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyCharGenAdv a cs = (a',cs')
-    where a' = trace ("> " ++ show vfs) $ prepareCharGen vfs a
+    where a' = prepareCharGen cs a
           cs' = trace (show $ mode a) $ cs { charTime = season a, traits = new }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'
           inferred = inferredTraits a'
           old = traits cs
-          vfs = vfList $ filterCS cs
 
 -- | Apply a list of advancements
 applyCGA :: [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
