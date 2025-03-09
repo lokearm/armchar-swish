@@ -80,5 +80,22 @@
          , { "ability" : "Bows", "spec" : "Shortbow", "xp" : 50 }
          ] 
       }
+   ],
+   "futureAdvancement" : [
+      { "mode" : "Adventure"
+      , "season" : "Spring 1220"
+      , "sourceQuality" : 10
+      , "changes" : 
+         [ { "ability" : "Animal Handling", "xp": 5 }
+         , { "ability" : "Animal Ken", "xp": 5 }
+         ] 
+      },
+      { "mode" : "Practice"
+      , "season" : "Summer 1220"
+      , "sourceQuality" : 4
+      , "changes" : 
+         [ { "ability" : "Music", "xp": 4 }
+         ] 
+      }
    ]
 }
