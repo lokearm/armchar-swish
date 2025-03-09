@@ -21,6 +21,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Trait(..)
                       , TraitKey(..)
                       , Characteristic(..)
+                      , Confidence(..)
                       , Ability(..)
                       , Art(..)
                       , PTrait(..)
@@ -40,7 +41,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , defaultPT
                        ) where
 
-import ArM.Debug.NoTrace
+import ArM.Debug.Trace
 import ArM.GameRules
 import GHC.Generics
 -- import Data.List (sort)
@@ -591,8 +592,8 @@ instance TraitLike ProtoTrait where
       | reputation p /= Nothing = ReputationTrait $ fromJust $ computeTrait p
       | virtue p /= Nothing = VFTrait $ fromJust $ computeTrait p
       | flaw p /= Nothing = VFTrait $ fromJust $ computeTrait p
-      | confidence p /= Nothing = ConfidenceTrait $
-           Confidence { cscore = maybeInt (score p), cpoints = maybeInt (points p) }
+      | confidence p /= Nothing = ConfidenceTrait $ trace ("conf "++show (points p) )
+           Confidence { cscore = fromMaybe 0 (score p), cpoints = fromMaybe 0 (points p) }
       | other p /= Nothing = OtherTraitTrait $ computeOther p
       | otherwise  = error "No Trait for this ProtoTrait" 
 

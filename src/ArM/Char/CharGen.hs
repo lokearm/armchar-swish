@@ -28,18 +28,25 @@ prepareCharGen :: CharacterState -> Advancement -> AugmentedAdvancement
 prepareCharGen cs = validateCharGen sheet . initialLimits vfs . addInferredTraits 
           where vfs = vfList sheet
                 sheet = filterCS cs
+addConfidence :: CharacterState -> CharacterState
+addConfidence cs = cs { traits = ct:traits cs }
+          where vfs = vfList sheet
+                sheet = filterCS cs
+                ct | csType sheet == Grog = ConfidenceTrait $ Confidence { cscore = 0, cpoints = 0 }
+                   | otherwise = inferConfidence vfs 
 
 
 -- | Compute the initial state if no state is recorded.
 prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
-            | otherwise = c { state = Just $ cs { charTime = GameStart }
+            | otherwise = c { state = newstate
                             , pregameDesign = xs
                             , pregameAdvancement = []
                             }
             where as = pregameAdvancement  c 
                   (xs,cs) = applyCGA as defaultCS
+                  newstate = Just $ addConfidence $ cs { charTime = GameStart }
 
 
 -- | Apply CharGen advancement

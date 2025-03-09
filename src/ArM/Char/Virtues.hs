@@ -13,6 +13,7 @@
 module ArM.Char.Virtues (inferTraits
                         , laterLifeSQ
                         , getCharAllowance
+                        , inferConfidence
                         ) where
 
 import ArM.Char.Internal.Advancement
@@ -47,6 +48,21 @@ vl2 = [ ( VFKey "Puissant (art)",
 vl1 :: [ ( TraitKey, VF -> ProtoTrait ) ]
 vl1 = [ (VFKey ab, \ _ -> defaultPT { ability = Just $ ab, xp = Just 5 } ) | ab <- snab ]
 
+vl3 :: [ ( TraitKey, VF -> Trait ) ]
+vl3 = [ (VFKey "Self-Confidence", \ _ -> confTrait 2 5 )
+      , (VFKey "Low Self-Esteem", \ _ -> confTrait 0 0 )
+      ]
+
+confTrait :: Int -> Int -> Trait
+confTrait x y = ConfidenceTrait $ Confidence { cscore = x, cpoints = y } 
+inferConfidence :: [VF] -> Trait
+inferConfidence vfs | rs == [] = confTrait 1 3
+                    | otherwise =  head rs
+    where vf = [ Map.lookup (traitKey x) confMap | x <- vfs ]
+          app Nothing _ = Nothing
+          app (Just f) x = Just $ f x
+          rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
+
 snab :: [ String ]
 snab = [ "Second Sight", "Enchanting Music", "Dowsing",
          "Magic Sensitivity", "Animal Ken", "Wilderness Sense",
@@ -57,6 +73,8 @@ snab = [ "Second Sight", "Enchanting Music", "Dowsing",
 type VFMap = Map.Map TraitKey ( VF -> ProtoTrait ) 
 virtueMap :: VFMap
 virtueMap = Map.fromList $ vl1 ++ vl2
+confMap :: Map.Map TraitKey ( VF -> Trait ) 
+confMap = Map.fromList $ vl3
 
 -- | Add ProtoTrait objects infered by current virtues and flaws
 inferTraits :: [VF] -> [ProtoTrait]
