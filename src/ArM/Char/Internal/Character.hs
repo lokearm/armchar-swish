@@ -16,6 +16,7 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Internal.Character ( Character(..)
                           , defaultCharacter
+                          , CharacterType(..)
                           , CharacterConcept(..)
                           , defaultConcept
                           , CharacterState(..)
@@ -49,7 +50,7 @@ isGrog c | charType (concept c) == Grog = True
 -- = CharacterConcept
 
 data CharacterType = Magus | Companion | Grog
-       deriving (Eq,Generic)
+       deriving (Eq,Generic,Show)
 instance ToJSON CharacterType
 instance FromJSON CharacterType
 

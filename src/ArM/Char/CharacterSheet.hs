@@ -24,6 +24,7 @@ import ArM.Debug.Trace
 
 data CharacterSheet = CharacterSheet 
          { csTime :: CharTime
+         , csType :: CharacterType
          , vfList :: [ VF ]
          , abilityList :: [ Ability ]
          , artList :: [ Art ]
@@ -35,6 +36,7 @@ data CharacterSheet = CharacterSheet
 defaultSheet :: CharacterSheet 
 defaultSheet = CharacterSheet 
          { csTime = Nothing
+         , csType = Magus
          , vfList = [ ]
          , abilityList = [ ]
          , artList = [ ]
@@ -44,9 +46,10 @@ defaultSheet = CharacterSheet
          }  
 
 characterSheet :: Character -> CharacterSheet
-characterSheet c | isNothing st = defaultSheet
-                 | otherwise = filterCS $ fromJust st
+characterSheet c | isNothing st = defaultSheet { csType = charType (concept c) }
+                 | otherwise = cs  { csType = charType (concept c) }
     where st = state c
+          cs = filterCS $ fromJust st 
 
 instance ToJSON CharacterSheet where
     toEncoding = genericToEncoding defaultOptions
