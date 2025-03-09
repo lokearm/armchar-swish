@@ -1,16 +1,24 @@
 # armchar-swish
 
-ArM character generator implemented in declarative programming
-using Haskell and Swish.
-Still in early stages of construction.
+ArM character generator implemented in declarative programming,
+using Haskell.
 
-The focus in this repository is a command line tool generating
-markdown sheets from an RDF graph (turtle files).
+The repository includes several distinct attempts.  The current
+attempt uses data files in JSON and CSV.  The code for this is
+essentially
++ The `ArM.Char` modules
++ The `ArmChar.hs` main script
+This provides a CLI tool to produce character sheets and validation
+reports from the character defined in JSON.
 
-There is also a server implementation, serving JSON files generated
-from the RDF graph, and a very crude client indended to test the
-server.  Development on this client/server system is currently on 
-halt.
+Previous attempts used data files in RDF and the Swish library.
+One problem with this approach is the computational complexity
+of logic inference on RDF graphs.  The code includes attempts
+on both a client/server solution and a standalone CLI tool, but
+both are currently incomplete and on hold.
+
+The notes below are on the Swish tool.  More up to date notes are
+in the docs hierarchy.  
 
 ## Design notes
 
