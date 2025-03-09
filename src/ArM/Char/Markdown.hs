@@ -96,7 +96,7 @@ showTime :: String -> SeasonTime -> Maybe String -> [String] -> [String]
 showTime xps NoTime Nothing xs = ("+ ?? " ++ xps):xs
 showTime xps  x Nothing xs = ("+ " ++ show x ++ xps):xs
 showTime xps NoTime (Just x) xs = ("+ " ++ x ++ xps):xs
-showTime xps x (Just y) xs = ("+ " ++ show x ++ xps):("    + " ++ y):xs
+showTime xps x (Just y) xs = ("+ " ++ show x ++ xps ++ " " ++ y):xs
 instance Markdown Advancement where
    printMD a = showTime xps (season a) (mode a) $ fn (narrative a) $ pt a
       where xps | sx == Nothing = ""
