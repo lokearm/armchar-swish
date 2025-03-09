@@ -41,7 +41,6 @@ regXP p | isJust (ability p) = f p
 -- | validate an advancement, adding results to the validation field
 validate :: AugmentedAdvancement -> AugmentedAdvancement
 validate a | otherwise = validateXP a
-           where m = fromMaybe "" $ mode a
 
 -- | Validate allocation of XP.
 validateXP :: AugmentedAdvancement -> AugmentedAdvancement

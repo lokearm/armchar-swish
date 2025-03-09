@@ -13,6 +13,7 @@ module ArM.Char.Markdown (printMD) where
 -- import Data.Maybe (fromJust)
 import Data.Maybe (fromJust,fromMaybe)
 import ArM.Char.Character 
+import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Advancement
 import ArM.Debug.Trace
@@ -38,6 +39,19 @@ pListMD :: Markdown a => String -> [a] -> [String]
 pListMD _ [] = []
 pListMD s x = ("":s:"":listMD x)
 
+instance Markdown CharacterSheet where
+   printMD c = 
+         [ "+ **Confidence:**"
+         , "+ **Warping:**"
+         , "+ **Decrepitude:**"
+         , foldl (++) "+ **Personality Traits:** " (map (++", ") $ map show $ ptList c)
+         , foldl (++) "+ **Reputations:** " (map (++", ") $ map show $ reputationList c)
+         , foldl (++) "+ **Virtues and Flaws:** " (map (++", ") $ map show $ vfList c)
+         , foldl (++) "+ **Abilities:** " (map (++", ") $ map show $ abilityList c)
+         -- artList :: [ Art ]
+         -- spellList :: [ Spell ]
+         ]
+
 instance Markdown Character where
    printMD c = ( printMD . concept ) c 
             ++ maybeP (state c)
@@ -54,8 +68,10 @@ instance Markdown Character where
              maybeP (Just xs) = printMD xs
 
 instance Markdown CharacterState where
-   printMD c = ( "## " ++ (fromMaybe "Current - no time given" $ charTime c) ):"":pt c
-       where pt = map ("+ "++) . foldl (++) [] . map printMD . traits 
+   printMD c = ( "## " ++ (fromMaybe "Current - no time given" $ charTime c) ):"":sh
+   -- pt c
+       -- where pt = map ("+ "++) . foldl (++) [] . map printMD . traits 
+       where sh = printMD $ filterCS c
 
 showSQ :: Maybe Int -> Maybe Int -> String
 showSQ Nothing Nothing = ""

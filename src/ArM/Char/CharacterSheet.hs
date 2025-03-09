@@ -30,6 +30,7 @@ data CharacterSheet = CharacterSheet
          , artList :: [ Art ]
          , spellList :: [ Spell ]
          , reputationList :: [ Reputation ]
+         , ptList :: [ PTrait ]
          , csTraits :: [ Trait ]
          }  deriving (Eq,Show,Generic)
 
@@ -42,6 +43,7 @@ defaultSheet = CharacterSheet
          , artList = [ ]
          , spellList = [ ]
          , reputationList = []
+         , ptList = []
          , csTraits = [ ]
          }  
 
@@ -62,10 +64,12 @@ filterCS cs = trace ("filterCS "++show cs) $ defaultSheet  { csTime = charTime c
                  , artList = x3
                  , spellList = x4
                  , reputationList = x5
-                 , csTraits = y5
+                 , ptList = x6
+                 , csTraits = y6
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1
                  (x3,y3) = filterTrait y2
                  (x4,y4) = filterTrait y3
                  (x5,y5) = filterTrait y4
+                 (x6,y6) = filterTrait y5

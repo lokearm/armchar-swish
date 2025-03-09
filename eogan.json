@@ -35,9 +35,9 @@
          , { "flaw" : "Ambitious",
              "detail": "train the greatest hounds of Ireland",
              "cost" : -3 }
-         , { "flaw" : "Weakness for Dogs", "cost" : -1 }
+         , { "flaw" : "Weakness", "detail": "for Dogs", "cost" : -1 }
          , { "flaw" : "Lesser Malediction: Vertigo", "cost" : -1 }
-         , { "flaw" : "Ability Block for Letters", "cost" : -1 }
+         , { "flaw" : "Ability Block", "detail" : "for Letters", "cost" : -1 }
          , { "flaw" : "Uncertain Faith", "cost" : -1 }
          , { "ptrait" : "Obedient" , "score" : -3 }
          , { "ptrait" : "Loyal" , "score" : 1 }

@@ -22,6 +22,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , TraitKey(..)
                       , Ability(..)
                       , Art(..)
+                      , PTrait(..)
                       , Spell(..)
                       , Reputation(..)
                       , VF(..)
@@ -173,7 +174,7 @@ data Spell = Spell { spellName :: String
                    }
            deriving (Show, Ord, Eq, Generic)
 data PTrait = PTrait { ptraitName :: String, pscore :: Int }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 data Reputation = Reputation { reputationName :: String
                              , repLocale :: String
                              ,  repXP :: Int 
@@ -230,19 +231,23 @@ instance ToJSON Trait
 -- == Show instances
 
 instance Show VF  where
-   show a = vfname a ++ " [" ++ sp ++ "] "
-          ++ " (" ++ show (vfcost a) ++ ") "
+   show a = vfname a ++ f sp 
+          ++ " (" ++ show (vfcost a) ++ ")"
       where sp = vfDetail a
+            f "" = ""
+            f x = " [" ++ x ++ "]"
+instance Show PTrait  where
+   show a = ptraitName a ++ " " ++ show (pscore a)
 instance Show Ability  where
    show a = abilityName a ++ " [" ++ showspec sp ++ "] "
           ++ show (abilityScore a) 
           ++ showBonus (abilityBonus a)
-          ++ " (" ++ show (abilityExcessXP a) ++ "xp) "
+          ++ " (" ++ show (abilityExcessXP a) ++ "xp)"
           ++ f (abilityMultiplier a)
       where showspec Nothing = "  --  "
             showspec (Just s) = s
             sp = speciality a
-            f 0 = ""
+            f 1 = ""
             f x = " [xp x" ++ show x ++  "]"
 instance Show Characteristic  where
    show a = characteristicName a ++ " " ++ showSigned (charScore a)
@@ -426,6 +431,14 @@ instance TraitType Reputation where
                       , repExcessXP = y
                       }
      where (s,y) = getAbilityScore (xp p)
+instance TraitType PTrait where
+    getTrait (PTraitTrait x) = Just x
+    getTrait _ = Nothing
+    computeTrait p 
+       | ptrait p /= Nothing = Just $ PTrait 
+                           { ptraitName = fromJust ( ptrait p )
+                           , pscore = fromMaybe 0 (score p) }
+       | otherwise = Nothing
 
 
 -- |
