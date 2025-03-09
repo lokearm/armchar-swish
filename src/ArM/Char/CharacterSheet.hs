@@ -65,8 +65,8 @@ instance FromJSON CharacterSheet
 
 -- | Get the CharacterSheet corresponding to a given CharacterState.
 filterCS :: CharacterState -> CharacterSheet
-filterCS cs = trace ("filterCS "++show cs) $ defaultSheet  { csTime = charTime cs
-                 , vfList = trace ("x1=" ++ show x1) x1
+filterCS cs = defaultSheet  { csTime = charTime cs
+                 , vfList = x1
                  , abilityList = x2
                  , artList = x3
                  , spellList = x4
