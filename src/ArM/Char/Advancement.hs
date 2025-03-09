@@ -11,10 +11,14 @@
 -- Description :  The Advancement types representing changes over a season.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Advancement( module ArM.Char.Internal.Advancement
-                           , addInferredTraits
+module ArM.Char.Advancement( addInferredTraits
                            , initialLimits
                            , getVF
+                           , parseSeasonTime
+                           , SeasonTime(..)
+                           , Advancement(..)
+                           , AugmentedAdvancement(..)
+                           , AdvancementLike(..)
                            ) where
 
 -- import ArM.Char.Character

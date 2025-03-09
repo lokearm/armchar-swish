@@ -16,6 +16,7 @@ import System.Console.GetOpt
 import ArM.BasicIO
 import ArM.Debug.Time
 import ArM.Char.Character
+import ArM.Char.Advancement
 import ArM.Char.Markdown
 
 import Data.Aeson (decode)
@@ -89,6 +90,14 @@ main = do
 
      main' opt
 
+advChar :: Maybe String -> Maybe String -> Character -> IO ()
+advChar Nothing _ _ = return ()
+advChar sn fn cs0 = do
+     let cs = advanceCharacter seasn cs0
+     writeMaybeFile fn $ printMD cs
+     return ()
+   where seasn = parseSeasonTime sn
+
 main' :: Options -> IO ()
 main' opts | charFile opts /= Nothing = do 
      putStrLn $ "Reading file " ++ fn
@@ -98,6 +107,7 @@ main' opts | charFile opts /= Nothing = do
      writeMaybeFile ( debugFile opts ) $ printMD char
      writeMaybeFile ( outFile opts ) $ printMD cs
      writeMaybeJSON ( jsonFile opts ) cs 
+     advChar ( advanceSeason opts ) (seasonFile opts) cs
      return ()
    where fn = fromJust $ charFile opts
 main' _ | otherwise = error "Not implemented!" 

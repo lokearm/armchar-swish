@@ -56,15 +56,13 @@ instance Show SeasonTime where
    show NoTime =  "N/A"
 
 instance Ord SeasonTime where
-    compare NoTime _ = GT
-    compare _ NoTime = LT
-    compare GameStart (SeasonTime _ _) = LT
-    compare (SeasonTime _ _) GameStart = GT
-    compare GameStart GameStart = EQ
-    compare (SeasonTime s1 y1) (SeasonTime s2 y2) 
-        | y1 < y2 = LT
-        | y1 > y2 = GT
-        | otherwise = compare s1 s2 
+    (<=) NoTime _ = False
+    (<=) _ NoTime = True
+    (<=) GameStart _ = True
+    (<=) _ GameStart = False
+    (<=) (SeasonTime s1 y1) (SeasonTime s2 y2) 
+        | y1 == y2 = s1 <= s2
+        | otherwise = y1 <= y2
 
 
 

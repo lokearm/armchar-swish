@@ -37,7 +37,7 @@ import ArM.Char.Advancement
 import ArM.Char.Validation
 import ArM.Char.Internal.Character
 import ArM.Char.CharGen
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- |
 -- = Advancement in Game
@@ -72,11 +72,12 @@ applyAdvancements' (xs,y:ys,cs) = applyAdvancements' (a':xs,ys,cs')
 
 -- | Advance the character until after the given time.
 advanceCharacter :: SeasonTime -> Character -> Character
-advanceCharacter ct c | isNothing (state c) = advanceCharacter ct $ prepareCharacter c
-                      | ct > ct' = c
-                      | otherwise = stepCharacter c 
-            where y = head $ futureAdvancement c
-                  ct' = season y
+advanceCharacter ct c | futureAdvancement c == [] = c
+                      | isNothing (state c) = advanceCharacter ct $ prepareCharacter c
+                      | ct < ct' = trace "ct > ct'" $ c
+                      | otherwise =  advanceCharacter ct $ trace "stepCharacter" $ stepCharacter c 
+            where y =  head $ futureAdvancement c
+                  ct' = trace (show ct) $ trace ( "advance "++show (season y)) $ season y
 
 -- | Advance the character one season forward
 stepCharacter :: Character -> Character
