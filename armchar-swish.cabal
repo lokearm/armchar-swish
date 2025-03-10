@@ -57,18 +57,17 @@ common deps
 common armchar-deps
   import:    deps
   other-modules:       ArM.Char.Character
+                       , ArM.Char.CharacterSheet
                        , ArM.Char.Internal.KeyPair
                        , ArM.Char.Internal.Character
+                       , ArM.Char.Internal.Advancement
                        , ArM.Char.Trait
                        , ArM.Char.CharGen
                        , ArM.Char.Advancement
-                       , ArM.Char.Internal.Advancement
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
                        , ArM.Helper
-                       , ArM.Char.CharacterSheet
-                       , ArM.Types.Season
 
 common swish-deps
   import:    deps
