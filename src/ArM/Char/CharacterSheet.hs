@@ -57,7 +57,7 @@ defaultSheet = CharacterSheet
 -- | Get the CharacterSheet from a given Character.
 characterSheet :: Character -> CharacterSheet
 characterSheet c | isNothing st = defaultSheet { csType = charType (concept c) }
-                 | otherwise = cs  { csType = charType (concept c), csAge = age st' }
+                 | otherwise = cs { csType = charType (concept c) }
     where st = state c
           cs = filterCS st'
           st' = fromJust st 
@@ -78,6 +78,7 @@ filterCS cs = defaultSheet
                  , charList = x7
                  , confList = x8
                  , csTraits = y8
+                 , csAge = age cs
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1

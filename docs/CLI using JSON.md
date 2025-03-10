@@ -28,8 +28,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 1. Finishing touches
 		+ [ ] Fix XP validation on in game advancement
 		+ [x] Confidence
-		+ [ ] Aging
-		+ [ ] Age
+		+ [x] Age
 		+ [ ] Sort metadata in output 
 	+ [ ] Step 2.  Review markdown output 
 		+ [ ] Character Sheet in Markdown
@@ -37,18 +36,19 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Char Gen Validation in Markdown
 		+ [ ] Error report in Markdown
 		+ [ ] Validate character build
-	+ [ ] Step 3.  CharacterState in JSON
-		+ [ ] Remove null entries from JSON output
-		+ [ ] Review Character State output
-		+ [ ] Read CharacterState from JSON
 + [ ] Phase 2. Magus
 	+ [ ] Step 1.  Magi char gen
 		+ [ ] Spell data type
 		+ [ ] Read Spell data from CSV
 		+ [ ] Art and spell markdown
-	+ [ ] Step 5. Finishing touches
+	+ [ ] Step 2. Finishing touches
 		+ [ ] Warping
 		+ [ ] Decrepitude
+		+ [ ] Aging
+	+ [ ] Step 3.  CharacterState in JSON
+		+ [ ] Remove null entries from JSON output
+		+ [ ] Review Character State output
+		+ [ ] Read CharacterState from JSON
 + [ ] Phase 3. Covenant
 	+ [ ] Step 6. Covenant
 		+ [ ] Covenant data model - analogous to Character
