@@ -30,26 +30,17 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
 + [ ] Phase 2. Magus
 	+ [ ] Step 1.  Magi char gen
-		+ [ ] Sample file with Cieran
-		+ [x] Spell data type
+		+ [ ] Review Cieran
 		+ [ ] Read Spell data from CSV
-		+ [x] Art markdown
-		+ [x] Spell markdown
 	+ [ ] Step 2. Magi calculations
 		+ [ ] Casting Score
 		+ [ ] Spell level limit at Char Gen
-		+ [ ] Skilled Parens
-	+ [ ] Step 3. Other calculations
 		+ [ ] Stat bonus from Strong Faerie Blood
-	+ [ ] Step 4. Finishing touches
+	+ [ ] Step 3. Finishing touches
 		+ [ ] Warping
 		+ [ ] Decrepitude
 		+ [ ] Aging
-	+ [ ] Step 5.  CharacterState in JSON
-		+ [ ] Remove null entries from JSON output
-		+ [ ] Review Character State output
-		+ [ ] Read CharacterState from JSON
-	+ [ ] Step 6.  P/G Char Gen
+	+ [ ] Step 4.  P/G Char Gen
 + [ ] Phase 3. Covenant
 	+ [ ] Step 6. Covenant
 		+ [ ] Covenant data model - analogous to Character
@@ -59,13 +50,14 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 15. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
-+ [ ] Phase 4. Virtues and Flaws - Special cases
-	+ [ ] Flawless magic
-	+ [ ] Linguist
-	+ [ ] Strong Faerie Blood Characteristic Bonus
-	+ [ ] Skilled Parens
-		+ BonusXP "Apprenticeship" 60 "from Skilled Parens"
-		+ BonusSpells "Apprenticeship" 60 "from Skilled Parens"
++ [ ] Phase 4. Polish
+	+ [ ] Step 5.  CharacterState in JSON
+		+ [ ] Remove null entries from JSON output
+		+ [ ] Read CharacterState from JSON
+	+ [ ] Step 2. Virtues and Flaws - Special cases
+		+ [ ] Flawless magic
+		+ [ ] Linguist
+		+ [ ] Strong Faerie Blood Characteristic Bonus
 
 + Advancement process.
     + Uses State from previous season and Advancement from current season.

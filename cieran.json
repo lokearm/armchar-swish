@@ -55,7 +55,7 @@
          , { "characteristic" : "Pre", "score" : 0 }
          , { "characteristic" : "Com", "score" : -1 }
          , { "characteristic" : "Str", "score" : 2 }
-         , { "characteristic" : "Sta", "score" : 4 }
+         , { "characteristic" : "Sta", "score" : 3 }
          , { "characteristic" : "Dex", "score" : 2 }
          , { "characteristic" : "Qik", "score" : -3 }
       ] },

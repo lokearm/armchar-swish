@@ -129,6 +129,7 @@ instance Show Validation where
 data AugmentedAdvancement = Adv
      { advancement :: Advancement -- ^ Base advancement as entered by the user
      , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
+     , levelLimit :: Maybe Int   -- ^ spell level allowance
      , spentXP  :: Maybe Int   -- ^ Total XP spent on advancement
      , inferredTraits :: [ ProtoTrait ] -- ^ trait changes inferred by virtues and flaws
      , augYears :: Maybe Int    -- ^ number of years advanced
@@ -141,6 +142,7 @@ defaultAA :: AugmentedAdvancement
 defaultAA = Adv
      { advancement = defaultAdv
      , effectiveSQ = Nothing
+     , levelLimit = Nothing 
      , spentXP = Nothing
      , inferredTraits = [ ] 
      , augYears = Nothing
@@ -185,6 +187,7 @@ instance FromJSON AugmentedAdvancement where
     parseJSON = withObject "AugmentedAdvancement" $ \v -> Adv
         <$> v .: "advancement"
         <*> v .:? "effectiveSQ"
+        <*> v .:? "levels"
         <*> v .:? "spentXP"
         <*> fmap maybeList ( v .:? "inferredTraits" )
         <*> v .:? "augYears"

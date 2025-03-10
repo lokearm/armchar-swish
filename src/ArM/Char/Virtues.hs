@@ -14,6 +14,7 @@ module ArM.Char.Virtues (inferTraits
                         , laterLifeSQ
                         , getCharAllowance
                         , inferConfidence
+                        , appSQ
                         ) where
 
 import ArM.Char.Internal.Advancement
@@ -108,13 +109,22 @@ laterLifeSQ' ad (x,y) = t
    where t | isJust (sourceQuality ad) = fromJust (sourceQuality ad)
            | isJust (advYears ad) = x+y*fromJust (advYears ad)
            | otherwise = x
+
+-- | Get XP total for Later Life
 laterLifeSQ :: [VF] -> Advancement -> Int
 laterLifeSQ vfs ad = laterLifeSQ' ad $ laterLifeXP vfs
-           
-    
+
+-- | Get XP and spell level total for Apprenticeship
+appSQ :: [VF] -> (Int,Int)
+appSQ []  = (0,0) 
+appSQ (x:xs) | vfname x == "Weak Parens" = (180,180) 
+             | vfname x == "Skilled Parens" = (300,300) 
+             | otherwise = appSQ xs
+
+
 chLookup:: String -> Int
 chLookup "Improved Characteristics" = 3
-chLookup "Weak Characteristics" = 3
+chLookup "Weak Characteristics" = -3
 chLookup _  = 0
 
 getCharAllowance :: [ VF ] -> Int
