@@ -6,6 +6,7 @@
       "charGlance" : {
          "Quirk" : "Avoids danger, particularly heights.",
          "Appearance" : "Slender, charming guy with dark hair. The clothes are clean, but smell of dog.",
+         "Player" : "George", 
          "Born" : 1230,
          "Concept" : "Kennel Master"
       },
