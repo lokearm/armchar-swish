@@ -40,6 +40,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , advance
                       , filterTrait
                       , defaultPT
+                      , spellTeFoLe
                        ) where
 
 import ArM.Debug.Trace
@@ -68,6 +69,8 @@ data ProtoTrait = ProtoTrait { ability :: Maybe String
                              , spec :: Maybe String
                              , detail :: Maybe String
                              , appliesTo :: Maybe TraitKey
+                             , level :: Maybe Int
+                             , tefo :: Maybe String
                              , locale :: Maybe String
                              , mastery :: Maybe [ String ]
                              , score :: Maybe Int
@@ -93,6 +96,8 @@ defaultPT = ProtoTrait { ability = Nothing
                              , spec = Nothing
                              , detail = Nothing
                              , appliesTo = Nothing
+                             , level = Nothing
+                             , tefo = Nothing
                              , locale = Nothing
                              , mastery = Nothing
                              , score = Nothing
@@ -120,6 +125,8 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "spec"
         <*> v .:?  "detail"
         <*> v .:?  "appliesTo"
+        <*> v .:?  "level"
+        <*> v .:?  "tefo"
         <*> v .:?  "locale"
         <*> v .:?  "mastery"
         <*> v .:?  "score"
@@ -169,6 +176,8 @@ data Art = Art { artName :: String
                }
            deriving (Ord, Eq, Generic)
 data Spell = Spell { spellName :: String
+                   , spellTeFo :: String
+                   , spellLevel :: Int
                    , spellXP :: Int
                    , masteryScore :: Int
                    , spellExcessXP :: Int
@@ -176,6 +185,12 @@ data Spell = Spell { spellName :: String
                    , masteryOptions :: [String] 
                    }
            deriving (Show, Ord, Eq, Generic)
+
+-- | Return a string of Technique/Form/Level classifying the Spell.
+spellTeFoLe :: Spell -> String
+spellTeFoLe sp = spellTeFo sp ++ show (spellLevel sp)
+
+-- | Personality trait
 data PTrait = PTrait { ptraitName :: String, pscore :: Int }
            deriving (Ord, Eq, Generic)
 data Reputation = Reputation { reputationName :: String
@@ -416,6 +431,8 @@ instance TraitType Spell where
         | spell p == Nothing = Nothing
         | otherwise = Just $
            Spell { spellName = fromJust (spell p)
+                      , spellLevel = fromMaybe 0 $ level p
+                      , spellTeFo = fromMaybe "TeFo" $ tefo p
                       , spellXP = maybeInt (xp p)
                       , masteryScore = s
                       , masteryOptions = maybeList (mastery p)
