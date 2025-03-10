@@ -37,17 +37,11 @@ common deps
   -- other-extensions:
   build-depends:       base >=4.13 
                        , scientific >= 0.3.7
-                       , swish >=0.10.1.0
                        , text >= 1.2.4.0
-                       , network-uri >= 2.6.3.0
                        , containers >= 0.6
                        , aeson >= 2.2.0.3
                        , aeson-pretty >= 0.8
-                       , mtl >= 2.2
                        , bytestring >= 0.10.10
-                       , http-types >= 0.12
-                       , parallel >= 3.2
-                       , ttrie >= 0.1.2
                        , unordered-containers >= 0.2.18
                        , split >= 0.2.3
                        , utf8-string >= 1.0.2
@@ -98,6 +92,13 @@ common swish-deps
                        , ArM.Types.LoadedSaga
                        , ArM.Types.RDF
                        , ArM.Swish.Resources
+  build-depends:       base >=4.13 
+                       , swish >=0.10.1.0
+                       , network-uri >= 2.6.3.0
+                       , mtl >= 2.2
+                       , http-types >= 0.12
+                       , parallel >= 3.2
+                       , ttrie >= 0.1.2
 
 common cli-deps
   -- documentation:       True
