@@ -16,7 +16,7 @@ import ArM.Char.Character
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Advancement
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 class Markdown a where
      printMD :: a -> [ String ]
@@ -91,20 +91,25 @@ showSQ Nothing (Just x) = "(" ++ show x ++ "xp)"
 showSQ (Just x) (Just y) = "(" ++ show x ++ "+" ++ show (y-x) ++ "xp)"
 
 instance Markdown AugmentedAdvancement where
-   printMD a = trace (show (vs a)) $ showTime xps (season a) (mode a) $ fn (narrative a) $ pt a
+   printMD a = showTime xps (season a) (mode a) y : (fn (narrative a) $ pt a)
       where xps = showSQ (sourceQuality a) (effectiveSQ a)
             cs = map ("    + "++) . foldl (++) [] . map printMD . changes 
             vs = map ("    + "++) . map show . validation
             pt x = (cs x) ++ (vs x)
             fn Nothing xs = xs
             fn (Just x) xs = ( "    + " ++ show ( x ) ) :xs
-showTime :: String -> SeasonTime -> Maybe String -> [String] -> [String]
-showTime xps NoTime Nothing xs = ("+ ?? " ++ xps):xs
-showTime xps  x Nothing xs = ("+ " ++ show x ++ xps):xs
-showTime xps NoTime (Just x) xs = ("+ " ++ x ++ xps):xs
-showTime xps x (Just y) xs = ("+ " ++ show x ++ xps ++ " " ++ y):xs
+            y = augYears a
+showTime :: String -> SeasonTime -> Maybe String -> Maybe Int -> String
+showTime xps NoTime Nothing y = ("+ ?? " ++ xps ++ showYears y)
+showTime xps  x Nothing y = ("+ " ++ show x ++ xps ++ showYears y)
+showTime xps NoTime (Just x) y = ("+ " ++ x ++ xps ++ showYears y)
+showTime xps x (Just z) y = ("+ " ++ show x ++ xps ++ showYears y ++ " " ++ z)
+showYears :: Maybe Int -> String
+showYears Nothing = ""
+showYears (Just x) = " (" ++ show x ++ " years)"
+
 instance Markdown Advancement where
-   printMD a = showTime xps (season a) (mode a) $ fn (narrative a) $ pt a
+   printMD a = showTime xps (season a) (mode a) y : (fn (narrative a) $ pt a)
       where xps | sx == Nothing = ""
                 | otherwise = " (" ++ ishow  sx ++ "xp)" 
             sx = sourceQuality a
@@ -113,6 +118,7 @@ instance Markdown Advancement where
 
             fn Nothing xs = xs
             fn (Just x) xs = ( "    + " ++ show ( x ) ) :xs
+            y = advYears a
 instance Markdown Trait where
    printMD c = [ show c ]
 instance Markdown ProtoTrait where
