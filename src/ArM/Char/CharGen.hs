@@ -54,12 +54,13 @@ prepareCharacter c
 applyCharGenAdv :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyCharGenAdv a cs = (a',cs')
     where a' = prepareCharGen cs a
-          cs' = cs { charTime = season a, traits = new }
+          cs' = cs { charTime = season a, traits = new, age = ag }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'
           inferred = inferredTraits a'
           old = traits cs
+          ag = fromMaybe 0 (augYears a') + age cs
 
 -- | Apply a list of advancements
 applyCGA :: [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)

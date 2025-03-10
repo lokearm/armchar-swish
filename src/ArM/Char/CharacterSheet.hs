@@ -26,6 +26,7 @@ import Data.Maybe
 -- for different kinds of traits
 data CharacterSheet = CharacterSheet 
          { csType :: CharacterType
+         , csAge :: Int
          , vfList :: [ VF ]
          , charList :: [ Characteristic ]
          , abilityList :: [ Ability ]
@@ -41,6 +42,7 @@ data CharacterSheet = CharacterSheet
 defaultSheet :: CharacterSheet 
 defaultSheet = CharacterSheet 
          { csType = Magus
+         , csAge = 0
          , vfList = [ ]
          , charList = [ ]
          , abilityList = [ ]
@@ -55,9 +57,10 @@ defaultSheet = CharacterSheet
 -- | Get the CharacterSheet from a given Character.
 characterSheet :: Character -> CharacterSheet
 characterSheet c | isNothing st = defaultSheet { csType = charType (concept c) }
-                 | otherwise = cs  { csType = charType (concept c) }
+                 | otherwise = cs  { csType = charType (concept c), csAge = age st' }
     where st = state c
-          cs = filterCS $ fromJust st 
+          cs = filterCS st'
+          st' = fromJust st 
 
 instance ToJSON CharacterSheet where
     toEncoding = genericToEncoding defaultOptions

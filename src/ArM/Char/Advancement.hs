@@ -48,8 +48,8 @@ getVF (p:ps) | isJust (virtue p) = g p:getVF ps
 
 initialLimits :: [ VF ] -> AugmentedAdvancement -> AugmentedAdvancement
 initialLimits vfs ad
-            | m == "Early Childhood" = f ad 45
-            | m == "Apprenticeship" = f ad 240 
+            | m == "Early Childhood" = ( f ad 45 ) { augYears = Just 5 }
+            | m == "Apprenticeship" = ( f ad 240 ) { augYears = Just 15 }
             | m == "Characteristics" = f ad 0
             | m == "Later Life" = f ad $ laterLifeSQ vfs (advancement ad)
             | otherwise = ad { effectiveSQ = sourceQuality $ advancement ad  }

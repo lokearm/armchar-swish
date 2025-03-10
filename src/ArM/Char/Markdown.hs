@@ -40,11 +40,10 @@ pListMD _ [] = []
 pListMD s x = ("":s:"":listMD x)
 
 instance Markdown CharacterSheet where
-   printMD c = ol ++ cl ++ ml -- foldl (:) ml cl
+   printMD c = typ:ag:(ol ++ cl ++ ml) -- foldl (:) ml cl
     where f _ [] = ""
           f s xs = foldl (++) s (map (++", ") $ map show xs)
-          ml = [ "+ **Age:**"
-               , f "+ **Characteristics:** "  $ charList c
+          ml = [ f "+ **Characteristics:** "  $ charList c
                , f "+ **Personality Traits:** "  $ ptList c
                , f "+ **Reputations:** "  $ reputationList c
                , f "+ **Virtues and Flaws:** "  $ vfList c
@@ -54,6 +53,8 @@ instance Markdown CharacterSheet where
                ]
           cl = foldl (++) [] $ map printMD $ confList c
           ol = foldl (++) [] $ map printMD $ csTraits c
+          typ = "+ " ++ show (csType c)
+          ag = "+ **Age:** " ++ show (csAge c)
 
 instance Markdown Confidence where
    printMD c = [ "+ **" ++ cname c ++ "**: " ++ show (cscore c) ++ " ("

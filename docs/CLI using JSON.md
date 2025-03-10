@@ -24,74 +24,40 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 
 ## Roadmap
 
-+ [x] Step 1.  Working Companion CharGen
-	+ [x] Implement Affinity
-	+ [x] Implement Puissant
-	+ [x] Include affinity in score calculation
-+ [x] Step 2. Advancement log
-	+ [x] Store augmented Advancement objects
-	+ [x] Markdown output
-+ [x] Step 3. Calculations for validation purposes
-	+ [x] Implement XP Calculation
-	+ [x] Implement VF Calculation
-	+ [x] Characteristics Calculation
-+ [x] Step 4. Calculations for validation purposes
-	+ [x] Implement XP validation
-	+ [x] Implement VF validation
-	+ [x] Implement Characteristics Validation
-+ [x] Step 5. Augment pregame advancements with different limits
-	+ [x] Outline functions for pregame and ingame augmentation
-	+ [x] Implement functions for pregame augmentation
-		+  Need to pass the initial Virtue/flaw list on to the entire process
-		+ Should not use CharacterState for the pregame augmentation
-	+ [x] XP limits for different advancement types
-	+ [x] extra XP from virtues
-	+ [x] Improved characteristics
-	+ [x] XP for later life
-+ [x] Step 6. Refactor and treat grogs differently
-	+ [x] Introduce a CharacterSheet object which can be passed along advancement processing
-	+ [x] Virtues and flaws for grogs
-+ [x] Step 7.  Clean up character sheet
-	+ [x] Move characteristics limit to CharacterSheet
-	+ [x] Markdown for CharacterSheet
-+ [ ] Step 8.  Companion Advancement
-	+ [x] advanceCharacter function
-	+ [x] Fix ordering on CharTime
-	+ [x] Test output
-	+ [x] Pretty advancement output
-	+ [ ] Fix XP validation on in game advancement
-+ [ ] Step 9. Finishing touches
-	+ [ ] Warping
-	+ [ ] Decrepitude
-	+ [x] Confidence
-	+ [ ] Aging
-	+ [ ] Age
-+ [ ] Step 10.  More metadata
-	+ [x] Quirk
-	+ [x] Appearance
-	+ [ ] Sort metadata in output 
-+ [ ] Step 11.  Review markdown output 
-	+ [ ] Character Sheet in Markdown
-	+ [ ] Advancement Log in Markdown
-	+ [ ] Char Gen Validation in Markdown
-	+ [ ] Error report in Markdown
-	+ [ ] Validate character build
-+ [ ] Step 12.  CharacterState in JSON
-	+ [ ] Remove null entries from JSON output
-	+ [ ] Review Character State output
-	+ [ ] Read CharacterState from JSON
-+ [ ] Step 13.  Magi char gen
-	+ [ ] Spell data type
-	+ [ ] Read Spell data from CSV
-	+ [ ] Art and spell markdown
-+ [ ] Step 14. Covenant
-	+ [ ] Covenant data model - analogous to Character
-	+ [ ] Book resource
-	+ [ ] Library
-	+ [ ] Read books from CSV
-+ [ ] Step 15. Covenant advancement
-	+ [ ] Covenant advancement
-	+ [ ] Covenant members
++ [ ] Phase 1. Companion/Grog
+	+ [ ] Step 1. Finishing touches
+		+ [ ] Fix XP validation on in game advancement
+		+ [x] Confidence
+		+ [ ] Aging
+		+ [ ] Age
+		+ [ ] Sort metadata in output 
+	+ [ ] Step 2.  Review markdown output 
+		+ [ ] Character Sheet in Markdown
+		+ [ ] Advancement Log in Markdown
+		+ [ ] Char Gen Validation in Markdown
+		+ [ ] Error report in Markdown
+		+ [ ] Validate character build
+	+ [ ] Step 3.  CharacterState in JSON
+		+ [ ] Remove null entries from JSON output
+		+ [ ] Review Character State output
+		+ [ ] Read CharacterState from JSON
++ [ ] Phase 2. Magus
+	+ [ ] Step 1.  Magi char gen
+		+ [ ] Spell data type
+		+ [ ] Read Spell data from CSV
+		+ [ ] Art and spell markdown
+	+ [ ] Step 5. Finishing touches
+		+ [ ] Warping
+		+ [ ] Decrepitude
++ [ ] Phase 3. Covenant
+	+ [ ] Step 6. Covenant
+		+ [ ] Covenant data model - analogous to Character
+		+ [ ] Book resource
+		+ [ ] Library
+		+ [ ] Read books from CSV
+	+ [ ] Step 15. Covenant advancement
+		+ [ ] Covenant advancement
+		+ [ ] Covenant members
 
 + Virtue and Flaws trait calculation
 	+ Linguist
