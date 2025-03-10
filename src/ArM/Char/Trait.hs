@@ -414,7 +414,7 @@ instance TraitType Art where
     computeTrait p
         | art p == Nothing = Nothing
         | otherwise = Just $
-            Art { artName = fromJust ( ability p ) 
+            Art { artName = fromJust ( art p ) 
                 , artXP = x
                 , artScore = s
                 , artExcessXP = y
