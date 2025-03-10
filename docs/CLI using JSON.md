@@ -27,6 +27,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 1. Companion/Grog
 	+ [ ] Extract error report in Markdown
 	+ [ ] Validate character build
+	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
 + [ ] Phase 2. Magus
 	+ [ ] Step 1.  Magi char gen
 		+ [ ] Sample file with Cieran
@@ -41,6 +42,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Review Character State output
 		+ [ ] Read CharacterState from JSON
+	+ [ ] Step 4.  P/G Char Gen
 + [ ] Phase 3. Covenant
 	+ [ ] Step 6. Covenant
 		+ [ ] Covenant data model - analogous to Character
@@ -50,12 +52,10 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 15. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
-
-+ Virtue and Flaws trait calculation
-	+ Linguist
-	+ Puissant
-			+ Implied trait - new bonusScore attribute
-	+ Skilled Parens
++ [ ] Phase 4. Virtues and Flaws - Special cases
+	+ [ ] Flawless magic
+	+ [ ] Linguist
+	+ [ ] Skilled Parens
 		+ BonusXP "Apprenticeship" 60 "from Skilled Parens"
 		+ BonusSpells "Apprenticeship" 60 "from Skilled Parens"
 
@@ -70,23 +70,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
         + `inferTraits :: CharacterState -> [ProtoTrait] -> [ProtoTrait]`
         + This handles affinities and puissant
     + Advance trait $\to$  `advance`
-+ Validation
-	+ note that validation must be based on the augmented advancements
-		+ hence the augmented advancements must be stored
 + Advancement Types
-	+ Pregame
-		+ Virtues and Flaws
-			+ 0 years
-		+ Characteristics
-			+ 0 years
-		+ Early Childhood
-			+ 5 years
-		+ Later Life
-			+ $X$ years
-		+ Apprenticeship
-			+ 15 years
-		+ P/G Years
-			+ $X$ years
 	+ Ingame Season
 		+ Adventure - fixed SQ + Independent study
 		+ Practice - fixed SQ + Independent study
@@ -100,8 +84,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ study bonus
 	 
        
-+ Specail cases to review
-	+ **NB** Flawless magic
 + Modules
 	+ `Char.Trait`
 		+ Trait
