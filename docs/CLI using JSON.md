@@ -25,19 +25,8 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 ## Roadmap
 
 + [ ] Phase 1. Companion/Grog
-	+ [ ] Step 1. Finishing touches and bug fixes
-		+ [x] Fix XP validation on in game advancement
-		+ [x] Confidence
-		+ [x] Age
-		+ [x] Sort metadata in output 
-		+ [ ] Fix CharacterType (not Magus)
-		+ [x] Move CharacterType to concept section (not state)
-	+ [ ] Step 2.  Review markdown output 
-		+ [ ] Character Sheet in Markdown
-		+ [ ] Advancement Log in Markdown
-		+ [ ] Char Gen Validation in Markdown
-		+ [ ] Error report in Markdown
-		+ [ ] Validate character build
+	+ [ ] Extract error report in Markdown
+	+ [ ] Validate character build
 + [ ] Phase 2. Magus
 	+ [ ] Step 1.  Magi char gen
 		+ [ ] Sample file with Cieran

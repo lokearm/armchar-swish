@@ -97,9 +97,11 @@ instance Markdown CharacterState where
 
 showSQ :: Maybe Int -> Maybe Int -> String
 showSQ Nothing Nothing = ""
-showSQ (Just x) Nothing = "(" ++ show x ++ "xp)"
-showSQ Nothing (Just x) = "(" ++ show x ++ "xp)"
-showSQ (Just x) (Just y) = "(" ++ show x ++ "+" ++ show (y-x) ++ "xp)"
+showSQ (Just x) Nothing = " (" ++ show x ++ "xp)"
+showSQ Nothing (Just x) = " (" ++ show x ++ "xp)"
+showSQ (Just x) (Just y) = " (" ++ show x ++ f (y-x) ++ "xp)"
+    where f 0 = ""
+          f z = "+" ++ show z
 
 instance Markdown AugmentedAdvancement where
    printMD a = showTime xps (season a) (mode a) y : (fn (narrative a) $ pt a)
