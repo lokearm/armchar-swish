@@ -57,6 +57,11 @@ instance FromJSON CharacterType
 data CharacterConcept = CharacterConcept 
          { name :: String
          , charType :: CharacterType
+         , briefConcept :: Maybe String
+         , quirk :: Maybe String
+         , appearance :: Maybe String
+         , born :: Maybe Int
+         , player :: Maybe String
          , house :: Maybe String
          , charGlance :: KeyPairList
          , charData :: KeyPairList
@@ -66,6 +71,11 @@ data CharacterConcept = CharacterConcept
 defaultConcept :: CharacterConcept 
 defaultConcept = CharacterConcept { name = "John Doe"
                                   , charType = Magus
+                                  , briefConcept = Nothing
+                                  , quirk = Nothing
+                                  , appearance = Nothing
+                                  , born = Nothing
+                                  , player = Nothing
                                   , house = Nothing
                                   , charGlance = KeyPairList []
                                   , charData = KeyPairList []
@@ -79,6 +89,11 @@ instance FromJSON CharacterConcept where
     parseJSON = withObject "CharacterConcept" $ \v -> CharacterConcept
         <$> v .: "name"
         <*> v .: "charType"
+        <*> v .:? "concept"
+        <*> v .:? "quirk"
+        <*> v .:? "appearance"
+        <*> v .:? "born"
+        <*> v .:? "player"
         <*> v .:? "house"
         <*> v .: "charGlance"
         <*> v .: "charData"

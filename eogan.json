@@ -3,14 +3,13 @@
    "concept" : {
       "name" : "Eogan mac Eogan",
       "charType" : "Companion",
-      "charGlance" : {
-         "Quirk" : "Avoids danger, particularly heights.",
-         "Appearance" : "Slender, charming guy with dark hair. The clothes are clean, but smell of dog.",
-         "Player" : "George", 
-         "Born" : 1230,
-         "Concept" : "Kennel Master"
-      },
-      "charData" : {
+      "concept" : "Kennel Master",
+      "quirk" : "Avoids danger, particularly heights.",
+      "appearance" : "Slender, charming guy with dark hair. The clothes are clean, but smell of dog."
+      , "born" : 1230
+      , "player" : "George"
+      , "charGlance" : { }
+      , "charData" : {
          "Size" : 0
       }
    },

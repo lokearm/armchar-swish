@@ -29,9 +29,9 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Fix XP validation on in game advancement
 		+ [x] Confidence
 		+ [x] Age
-		+ [ ] Sort metadata in output 
+		+ [x] Sort metadata in output 
 		+ [ ] Fix CharacterType (not Magus)
-		+ [ ] Move CharacterType to concept section (not state)
+		+ [x] Move CharacterType to concept section (not state)
 	+ [ ] Step 2.  Review markdown output 
 		+ [ ] Character Sheet in Markdown
 		+ [ ] Advancement Log in Markdown

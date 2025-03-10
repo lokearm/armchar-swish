@@ -29,8 +29,20 @@ instance Markdown KeyPair where
 instance Markdown KeyPairList where
    printMD (KeyPairList xs) = ( foldl (++) [] $ map printMD xs )
 instance Markdown CharacterConcept where
-   printMD c = ("# " ++ fullConceptName c ):"": 
-      ( printMD $ charGlance c ) ++ ( printMD $ charData c )
+   printMD c = ("# " ++ fullConceptName c ):""
+      : typ : con : ""
+      : "Quirk" : qrk : ""
+      : "Appearance" : app : ""
+      : "Born" : brn : ""
+      : "Player" : ply : ""
+      : ( printMD $ charGlance c ) ++ ( printMD $ charData c )
+          where typ = show (charType c)
+                con = ": " ++ ( fromMaybe "-" $ briefConcept c )
+                qrk = ": " ++ ( fromMaybe "-" $ quirk c )
+                app = ": " ++ ( fromMaybe "-" $ appearance c )
+                ply = ": " ++ ( fromMaybe "-" $ player c )
+                brn | born c == Nothing = ": ??" 
+                    | otherwise = ": " ++ (show $ fromJust $ born c)
 
 listMD :: Markdown a => [a] -> [String]
 listMD = foldl (++) [] . map printMD 
@@ -40,7 +52,7 @@ pListMD _ [] = []
 pListMD s x = ("":s:"":listMD x)
 
 instance Markdown CharacterSheet where
-   printMD c = typ:ag:(ol ++ cl ++ ml) -- foldl (:) ml cl
+   printMD c = ag:(ol ++ cl ++ ml) -- foldl (:) ml cl
     where f _ [] = ""
           f s xs = foldl (++) s (map (++", ") $ map show xs)
           ml = [ f "+ **Characteristics:** "  $ charList c
@@ -53,7 +65,6 @@ instance Markdown CharacterSheet where
                ]
           cl = foldl (++) [] $ map printMD $ confList c
           ol = foldl (++) [] $ map printMD $ csTraits c
-          typ = "+ " ++ show (csType c)
           ag = "+ **Age:** " ++ show (csAge c)
 
 instance Markdown Confidence where
