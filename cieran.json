@@ -106,17 +106,17 @@
          , { "ability" : "Bows", "spec" : "Longbow", "xp": 30 }
          , { "ability" : "Thrown Weapon", "spec" : "Dart", "xp": 5 }
          , { "ability" : "Area Lore: Ireland", "spec" : "Legends", "xp": 5 }
-         , { "spell" : "PeCo20Wound" }
-         , { "spell" : "ReCo5Spasms" }
-         , { "spell" : "CrIg15Lamp" }
-         , { "spell" : "PeIm20Veil" }
-         , { "spell" : "CrIm10Clarity" }
-         , { "spell" : "MuIm10Aura" }
-         , { "spell" : "PeMe10Trust" }
-         , { "spell" : "ReMe15Arrow" }
-         , { "spell" : "ReMe5Touch" }
-         , { "spell" : "PeTe20Obliteration" }
-         , { "spell" : "PeTe20End" }
+         , { "spell" : "Wound without Cause", "tefo" : "PeCo", "level" : 20  }
+         , { "spell" : "Spasms of the Uncontrolled Body", "tefo" : "ReCo", "level" : 5  }
+         , { "spell" : "Lamp till Morning without Flame", "tefo" : "CrIg", "level" : 15  }
+         , { "spell" : "Veil of Invisibility", "tefo" : "PeIm", "level" : 20  }
+         , { "spell" : "Clarity of Public Speech", "tefo" : "CrIm", "level" : 10  }
+         , { "spell" : "Aura of Ennobled Presence", "tefo" : "MuIm", "level" : 10  }
+         , { "spell" : "Trust of the Childlike Faith", "tefo" : "PeMe", "level" : 10  }
+         , { "spell" : "Arrow of Peaceful Slumber", "tefo" : "ReMe", "level" : 15  }
+         , { "spell" : "Touch of Slumber", "tefo" : "ReMe", "level" : 5  }
+         , { "spell" : "Obliteration of the Metallic Barrier", "tefo" : "PeTe", "level" : 20  }
+         , { "spell" : "End of the Mighty Castle", "tefo" : "PeTe", "level" : 20  }
          ] 
       }
    ],

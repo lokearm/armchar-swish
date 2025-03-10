@@ -280,7 +280,7 @@ instance Show Art  where
           ++ showBonus (artBonus a)
           ++ " (" ++ show (artExcessXP a) ++ "xp) "
           ++ f (artMultiplier a)
-      where f 0 = ""
+      where f 1 = ""
             f x = " [xp x" ++ show x ++  "]"
 instance Show Reputation  where
    show a = reputationName a ++ " [" ++ (repLocale a) ++ "] "

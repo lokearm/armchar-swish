@@ -12,11 +12,13 @@ module ArM.Char.Markdown (printMD) where
 
 -- import Data.Maybe (fromJust)
 import Data.Maybe 
+import Data.List 
 import ArM.Char.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Advancement
 -- import ArM.Debug.Trace
+import qualified Data.Map as M
 
 class Markdown a where
      printMD :: a -> [ String ]
@@ -51,8 +53,25 @@ pListMD :: Markdown a => String -> [a] -> [String]
 pListMD _ [] = []
 pListMD s x = ("":s:"":listMD x)
 
+artMD :: CharacterSheet -> [ String ]
+artMD = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
+   where h1 = "| Art  | Score | XP |" 
+         h2 = "| -: | -: | -: |"
+
+arts :: [ String ]
+arts = [ "Creo", "Intellego", "Muto", "Perdo", "Rego",
+         "Animal", "Aquam", "Auram", "Corpus", "Herbam", 
+         "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
+sMap :: M.Map String Int 
+sMap = M.fromList $ zip arts [1..15]
+sortArts :: [Art] -> [Art]
+sortArts = sortOn ( fromMaybe 0 . ( \ x -> M.lookup x sMap ) . artName)
+
+artLine :: Art -> String
+artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
+
 instance Markdown CharacterSheet where
-   printMD c = ag:(ol ++ cl ++ ml) -- foldl (:) ml cl
+   printMD c = ag:(ol ++ cl ++ ml ++ artl) -- foldl (:) ml cl
     where f _ [] = ""
           f s xs = foldl (++) s (map (++", ") $ map show xs)
           ml = [ f "+ **Characteristics:** "  $ charList c
@@ -60,9 +79,9 @@ instance Markdown CharacterSheet where
                , f "+ **Reputations:** "  $ reputationList c
                , f "+ **Virtues and Flaws:** "  $ vfList c
                , f "+ **Abilities:** "  $ abilityList c
-               , f "+ **Arts:** "  $ artList c
                , f "+ **Spells:** "  $ spellList c
                ]
+          artl = artMD c
           cl = foldl (++) [] $ map printMD $ confList c
           ol = foldl (++) [] $ map printMD $ csTraits c
           ag = "+ **Age:** " ++ show (csAge c)
