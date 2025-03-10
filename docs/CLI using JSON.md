@@ -63,7 +63,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Step 9. Finishing touches
 	+ [ ] Warping
 	+ [ ] Decrepitude
-	+ [ ] Confidence
+	+ [x] Confidence
 	+ [ ] Aging
 	+ [ ] Age
 + [ ] Step 10.  More metadata
