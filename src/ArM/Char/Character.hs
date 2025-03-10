@@ -34,7 +34,6 @@ import Data.Maybe
 
 import ArM.Char.Trait
 import ArM.Char.Advancement
-import ArM.Char.Validation
 import ArM.Char.Internal.Character
 import ArM.Char.CharGen
 import ArM.Debug.Trace
@@ -53,9 +52,6 @@ applyAdvancement a cs = (a',cs')
           inferred = inferredTraits a'
           old = traits cs
 
--- | Augment and amend the advancements based on current virtues and flaws.
-prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
-prepareAdvancement _ = validate . addInferredTraits
 
 {-
 -- | Apply a list of advancements

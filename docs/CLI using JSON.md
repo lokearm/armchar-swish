@@ -26,7 +26,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 
 + [ ] Phase 1. Companion/Grog
 	+ [ ] Step 1. Finishing touches and bug fixes
-		+ [ ] Fix XP validation on in game advancement
+		+ [x] Fix XP validation on in game advancement
 		+ [x] Confidence
 		+ [x] Age
 		+ [x] Sort metadata in output 

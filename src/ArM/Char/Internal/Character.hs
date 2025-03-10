@@ -34,7 +34,7 @@ import Data.Aeson
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
-import ArM.Char.Advancement
+import ArM.Char.Internal.Advancement
 import ArM.Char.Internal.KeyPair
 -- import ArM.Debug.Trace
 -- import ArM.Types.Season
