@@ -31,9 +31,10 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 2. Magus
 	+ [ ] Step 1.  Magi char gen
 		+ [ ] Sample file with Cieran
-		+ [ ] Spell data type
+		+ [x] Spell data type
 		+ [ ] Read Spell data from CSV
-		+ [ ] Art and spell markdown
+		+ [ ] Art markdown
+		+ [ ] Spell markdown
 	+ [ ] Step 2. Finishing touches
 		+ [ ] Warping
 		+ [ ] Decrepitude
