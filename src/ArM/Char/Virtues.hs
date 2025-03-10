@@ -54,7 +54,7 @@ vl3 = [ (VFKey "Self-Confidence", \ _ -> confTrait 2 5 )
       ]
 
 confTrait :: Int -> Int -> Trait
-confTrait x y = ConfidenceTrait $ Confidence { cscore = x, cpoints = y } 
+confTrait x y = ConfidenceTrait $ Confidence { cname = "Confidence", cscore = x, cpoints = y } 
 inferConfidence :: [VF] -> Trait
 inferConfidence vfs | rs == [] = confTrait 1 3
                     | otherwise =  head rs

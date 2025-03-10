@@ -32,7 +32,8 @@ addConfidence :: CharacterState -> CharacterState
 addConfidence cs = cs { traits = ct:traits cs }
           where vfs = vfList sheet
                 sheet = filterCS cs
-                ct | csType sheet == Grog = ConfidenceTrait $ Confidence { cscore = 0, cpoints = 0 }
+                ct | csType sheet == Grog = ConfidenceTrait $ Confidence
+                           { cname = "Confidence", cscore = 0, cpoints = 0 }
                    | otherwise = inferConfidence vfs 
 
 

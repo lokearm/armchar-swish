@@ -140,7 +140,7 @@ data TraitKey = AbilityKey String
            | PTraitKey String
            | ReputationKey String String
            | VFKey String
-           | ConfidenceKey 
+           | ConfidenceKey String
            | OtherTraitKey String
            deriving (Show, Ord, Eq,Generic )
 
@@ -190,8 +190,8 @@ data VF = VF { vfname :: String
              , vfAppliesTo :: Maybe TraitKey
              }
            deriving (Ord, Eq, Generic)
-data Confidence = Confidence { cscore :: Int, cpoints :: Int }
-           deriving (Show, Ord, Eq, Generic)
+data Confidence = Confidence { cname :: String, cscore :: Int, cpoints :: Int }
+           deriving ( Ord, Eq, Generic)
 data OtherTrait = OtherTrait { trait :: String
                              , otherScore :: Int
                              , pts :: Int 
@@ -238,6 +238,8 @@ instance Show VF  where
       where sp = vfDetail a
             f "" = ""
             f x = " [" ++ x ++ "]"
+instance Show Confidence  where
+   show a = cname a ++ ": " ++ show (cscore a) ++ " (" ++ show (cpoints a) ++ ")"
 instance Show PTrait  where
    show a = ptraitName a ++ " " ++ show (pscore a)
 instance Show Ability  where
@@ -303,7 +305,7 @@ instance Show ProtoTrait  where
               "Flaw: " ++ fromJust (flaw p) ++ " ("
               ++ show ( maybeInt (cost p) ) ++ ")"
        | confidence p /= Nothing = 
-              "Confidence: " ++ show (maybeInt (score p)) ++ " (" ++
+              fromMaybe "Confidence" (confidence p) ++ ": " ++ show (maybeInt (score p)) ++ " (" ++
               show ( maybeInt (points p) ) ++ ")"
        | other p /= Nothing = 
                fromJust (other p) ++ " " ++ show ( maybeInt ( points p ) )
@@ -441,6 +443,16 @@ instance TraitType PTrait where
                            { ptraitName = fromJust ( ptrait p )
                            , pscore = fromMaybe 0 (score p) }
        | otherwise = Nothing
+instance TraitType Confidence where
+    getTrait (ConfidenceTrait x) = Just x
+    getTrait _ = Nothing
+    computeTrait p 
+       | ptrait p /= Nothing = Just $ Confidence 
+                           { cname = fromMaybe "Confidence" ( confidence p )
+                           , cscore = fromMaybe 0 (score p) 
+                           , cpoints = fromMaybe 0 (points p) 
+                           }
+       | otherwise = Nothing
 
 
 -- |
@@ -542,7 +554,7 @@ instance TraitLike Characteristic where
     toTrait = CharacteristicTrait
     advanceTrait _ x = trace "Warning! Advancement not implemented for characteristics"  x
 instance TraitLike Confidence where
-    traitKey _ = ConfidenceKey 
+    traitKey p = ConfidenceKey $ cname p
     toTrait = ConfidenceTrait
     advanceTrait a = updateCScore (score a) . updateCPoints (points a) 
        where updateCScore Nothing x = x
@@ -565,7 +577,7 @@ instance TraitLike ProtoTrait where
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
        | virtue p /= Nothing = VFKey $ fromJust (virtue p)
        | flaw p /= Nothing = VFKey $ fromJust (flaw p)
-       | confidence p /= Nothing = ConfidenceKey 
+       | confidence p /= Nothing = ConfidenceKey $ fromMaybe "Confidence" $ confidence p
        | other p /= Nothing = OtherTraitKey $ fromJust $ other p
        | otherwise  = error "No Trait for this ProtoTrait" 
 
@@ -593,7 +605,9 @@ instance TraitLike ProtoTrait where
       | virtue p /= Nothing = VFTrait $ fromJust $ computeTrait p
       | flaw p /= Nothing = VFTrait $ fromJust $ computeTrait p
       | confidence p /= Nothing = ConfidenceTrait $ trace ("conf "++show (points p) )
-           Confidence { cscore = fromMaybe 0 (score p), cpoints = fromMaybe 0 (points p) }
+           Confidence { cname = fromMaybe "Confidence" (confidence p)
+                      , cscore = fromMaybe 0 (score p)
+                      , cpoints = fromMaybe 0 (points p) }
       | other p /= Nothing = OtherTraitTrait $ computeOther p
       | otherwise  = error "No Trait for this ProtoTrait" 
 
