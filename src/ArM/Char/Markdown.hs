@@ -40,23 +40,28 @@ pListMD _ [] = []
 pListMD s x = ("":s:"":listMD x)
 
 instance Markdown CharacterSheet where
-   printMD c = 
-         [ "+ **Age:**"
-         , "+ **Confidence:**"
-         , "+ **Warping:**"
-         , "+ **Decrepitude:**"
-         , f "+ **Characteristics:** "  $ charList c
-         , f "+ **Personality Traits:** "  $ ptList c
-         , f "+ **Reputations:** "  $ reputationList c
-         , f "+ **Virtues and Flaws:** "  $ vfList c
-         , f "+ **Abilities:** "  $ abilityList c
-         , f "+ **Arts:** "  $ artList c
-         , f "+ **Spells:** "  $ spellList c
-         , f "+ **Other:** " $ csTraits c
-         ]
+   printMD c = ol ++ cl ++ ml -- foldl (:) ml cl
     where f _ [] = ""
           f s xs = foldl (++) s (map (++", ") $ map show xs)
+          ml = [ "+ **Age:**"
+               , f "+ **Characteristics:** "  $ charList c
+               , f "+ **Personality Traits:** "  $ ptList c
+               , f "+ **Reputations:** "  $ reputationList c
+               , f "+ **Virtues and Flaws:** "  $ vfList c
+               , f "+ **Abilities:** "  $ abilityList c
+               , f "+ **Arts:** "  $ artList c
+               , f "+ **Spells:** "  $ spellList c
+               ]
+          cl = foldl (++) [] $ map printMD $ confList c
+          ol = foldl (++) [] $ map printMD $ csTraits c
 
+instance Markdown Confidence where
+   printMD c = [ "+ **" ++ cname c ++ "**: " ++ show (cscore c) ++ " ("
+             ++ show (cpoints c) ++ ")" ]
+instance Markdown OtherTrait where
+   printMD c = [ "+ **" ++ trait c ++ "**: " ++ show (otherScore c) ++ " ("
+             ++ show (otherExcess c) ++ ")" ]
+ 
 instance Markdown Character where
    printMD c = ( printMD . concept ) c 
             ++ maybeP (state c)

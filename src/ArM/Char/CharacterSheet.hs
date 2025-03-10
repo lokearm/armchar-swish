@@ -33,6 +33,7 @@ data CharacterSheet = CharacterSheet
          , spellList :: [ Spell ]
          , reputationList :: [ Reputation ]
          , ptList :: [ PTrait ]
+         , confList :: [ Confidence ]
          , csTraits :: [ Trait ]
          }  deriving (Eq,Show,Generic)
 
@@ -47,6 +48,7 @@ defaultSheet = CharacterSheet
          , spellList = [ ]
          , reputationList = []
          , ptList = []
+         , confList = []
          , csTraits = [ ]
          }  
 
@@ -71,7 +73,8 @@ filterCS cs = defaultSheet
                  , reputationList = x5
                  , ptList = x6
                  , charList = x7
-                 , csTraits = y7
+                 , confList = x8
+                 , csTraits = y8
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1
@@ -80,3 +83,4 @@ filterCS cs = defaultSheet
                  (x5,y5) = filterTrait y4
                  (x6,y6) = filterTrait y5
                  (x7,y7) = filterTrait y6
+                 (x8,y8) = filterTrait y7
