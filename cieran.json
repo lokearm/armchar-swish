@@ -11,12 +11,12 @@
       , "player" : "George"
       , "charGlance" : { }
       , "charData" : 
-        [ "Size" : 0 
+        { "Size" : 0 
 	, "Nationality" : "Irish" 
 	, "Alma Mater" : "Stonehenge"
 	, "Covenant" : "Elk's Run"
 	, "Saga" :  "Contested Lands"
-	]
+	}
       },
    "pregameAdvancement" : [
       { "mode" : "Virtues and Flaws"
@@ -157,10 +157,3 @@
       }
    ]
 }
-
-
-
-
-
-
-
