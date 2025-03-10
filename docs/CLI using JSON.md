@@ -55,6 +55,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 4. Virtues and Flaws - Special cases
 	+ [ ] Flawless magic
 	+ [ ] Linguist
+	+ [ ] Strong Faerie Blood Characteristic Bonus
 	+ [ ] Skilled Parens
 		+ BonusXP "Apprenticeship" 60 "from Skilled Parens"
 		+ BonusSpells "Apprenticeship" 60 "from Skilled Parens"

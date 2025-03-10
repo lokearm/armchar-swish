@@ -1,0 +1,166 @@
+{
+   "charID" : "Cieran",
+   "concept" : 
+      { "name" : "Cieran the Fletcher"
+      , "charType" : "Magus"
+      , "house" : "ex Miscellanea"
+      , "concept" : "Rusticanus Fletcher"
+      , "quirk" : ""
+      , "appearance" : ""
+      , "born" : 1192
+      , "player" : "George"
+      , "charGlance" : { }
+      , "charData" : 
+        [ "Size" : 0 
+	, "Nationality" : "Irish" 
+	, "Alma Mater" : "Stonehenge"
+	, "Covenant" : "Elk's Run"
+	, "Saga" :  "Contested Lands"
+	]
+      },
+   "pregameAdvancement" : [
+      { "mode" : "Virtues and Flaws"
+      , "changes" : [
+         { "ability" : "Native Language: Irish"
+         , "spec" : "Munster"
+         , "xp" : 75
+         }
+         , { "virtue" : "Craft Magic", "cost" : 0 }
+         , { "virtue" : "Spell Foci", "cost" : 0 }
+         , { "flaw" : "Weak Spontaneous Magic", "cost" : 0 }
+
+         , { "virtue" : "Strong Faerie Blood", "detail" : "Ettin blood", "cost" : 3 }
+         , { "virtue" : "Flawless Magic", "cost" : 3 }
+         , { "virtue" : "Skilled Parens", "cost" : 1 }
+         , { "virtue" : "Affinity with (art)", "detail" : "Imaginem", "cost" : 1 }
+
+         , { "virtue" : "Second Sight", "cost" : 0 }
+         , { "virtue" : "Minor Magical Focus", "detail" : "magical arrows", "cost" : 0 }
+
+         , { "flaw" : "Mistaken Identity", "cost" : -3 }
+         , { "flaw" : "Meddler (major)", "cost" : -3 }
+         , { "flaw" : "Carefree", "cost" : -1 }
+         , { "flaw" : "Short Ranged Magic", "cost" : -3 }
+
+         , { "flaw" : "Weakness", "detail": "for Dogs", "cost" : -1 }
+
+         , { "ptrait" : "Villager" , "score" : 2 }
+         , { "ptrait" : "Carefree" , "score" : 3 }
+         , { "ptrait" : "Meddler" , "score" : 6 }
+      ] },
+      { "mode" : "Characteristics"
+      , "changes" : 
+         [ { "characteristic" : "Int", "score" : 3 }
+         , { "characteristic" : "Per", "score" : -1 }
+         , { "characteristic" : "Pre", "score" : 0 }
+         , { "characteristic" : "Com", "score" : -1 }
+         , { "characteristic" : "Str", "score" : 2 }
+         , { "characteristic" : "Sta", "score" : 4 }
+         , { "characteristic" : "Dex", "score" : 2 }
+         , { "characteristic" : "Qik", "score" : -3 }
+      ] },
+      { "mode" : "Early Childhood"
+      , "changes" : 
+         [ { "ability" : "Stealth", "spec" : "Hiding", "xp" : 5 }
+         , { "ability" : "Awareness" , "spec" : "Searching" , "xp" : 15 }
+         , { "ability" : "Second Sight" , "spec" : "Faerie Illusions"  }
+         , { "ability" : "Brawl" , "spec" : "Dodge" , "xp" : 15 }
+         , { "ability" : "Area Lore: Munster" , "spec" : "Hiding Places" , "xp" : 5 }
+         , { "ability" : "Folk Ken" , "spec" : "Vilagers" , "xp" : 5 }
+         ] 
+      },
+      { "mode" : "Later Life"
+      , "years" : 5
+      , "changes" : 
+         [ { "ability" : "Bargain", "spec": "", "xp": 5 }
+         , { "ability" : "Concentration", "spec": "Spell Concentration", "xp": 5 }
+         , { "ability" : "Craft: Cooking", "spec": "Cookies", "xp": 30 }
+         , { "ability" : "Craft: Fletching", "spec": "Arrows", "xp": 30 }
+         , { "ability" : "Hermes Lore", "spec": "Hibernia", "xp": 5 }
+         ] 
+      },
+      { "mode" : "Apprenticeship"
+      , "changes" : 
+         [ { "art" : "Creo", "xp": 21 }
+         , { "art" : "Intellego", "xp": 15 }
+         , { "art" : "Muto", "xp": 0 }
+         , { "art" : "Perdo", "xp": 36 }
+         , { "art" : "Rego", "xp": 36 }
+         , { "art" : "Animal", "xp": 0 }
+         , { "art" : "Aquam", "xp": 0 }
+         , { "art" : "Auram", "xp": 0 }
+         , { "art" : "Corpus", "xp": 15 }
+         , { "art" : "Herbam", "xp": 0 }
+         , { "art" : "Ignem", "xp": 0 }
+         , { "art" : "Imaginem", "xp": 53 }
+         , { "art" : "Mentem", "xp": 1 }
+         , { "art" : "Terram", "xp": 15 }
+         , { "art" : "Vim", "xp": 1 }
+         , { "ability" : "Artes Liberales", "spec" : "Rituals", "xp": 5 }
+         , { "ability" : "Philosophiae", "spec" : "Rituals", "xp": 0 }
+         , { "ability" : "Latin", "spec" : "Hermetic Usage", "xp": 30 }
+         , { "ability" : "Parma Magica", "spec" : "Mentem", "xp": 5 }
+         , { "ability" : "Hermes Code", "spec" : "Stonehenge", "xp": 5 }
+         , { "ability" : "Magic Theory", "spec" : "Spells", "xp": 30 }
+         , { "ability" : "Penetration", "spec" : "Rego", "xp": 5 }
+         , { "ability" : "Bows", "spec" : "Longbow", "xp": 30 }
+         , { "ability" : "Thrown Weapon", "spec" : "Dart", "xp": 5 }
+         , { "ability" : "Area Lore: Ireland", "spec" : "Legends", "xp": 5 }
+         , { "spell" : "PeCo20Wound" }
+         , { "spell" : "ReCo5Spasms" }
+         , { "spell" : "CrIg15Lamp" }
+         , { "spell" : "PeIm20Veil" }
+         , { "spell" : "CrIm10Clarity" }
+         , { "spell" : "MuIm10Aura" }
+         , { "spell" : "PeMe10Trust" }
+         , { "spell" : "ReMe15Arrow" }
+         , { "spell" : "ReMe5Touch" }
+         , { "spell" : "PeTe20Obliteration" }
+         , { "spell" : "PeTe20End" }
+         ] 
+      }
+   ],
+   "futureAdvancement" : [
+      { "mode" : "Reading"
+      , "season" : "Summer 1217"
+      , "sourceQuality" : 21
+      , "changes" : 
+         [ { "art" : "Herbam", "xp": 21 }
+         ] 
+      , "narrative" : "Studies Herbam L6 Q21 +3" 
+      },
+      { "mode" : "Reading"
+      , "season" : "Autumn 1217"
+
+      , "sourceQuality" : 16
+      , "changes" : 
+         [ { "art" : "Mentem", "xp": 16 }
+         ] 
+      , "narrative" : "Studies Mentem L16 Q13 +3" 
+      },
+      { "mode" : "Exposure: Lab Work"
+      , "season" : "Winter 1217"
+      , "sourceQuality" : 2
+      , "changes" : 
+         [ { "art" : "Magic Theory", "xp": 2 }
+         , { "spell" : "MuCo25Shape " }
+         ] 
+      , "narrative" : "Learn Spell" 
+      },
+      { "mode" : "Adventure"
+      , "season" : "Spring 1218"
+      , "sourceQuality" : 7
+      , "changes" : 
+         [ { "art" : "Creo", "xp": 2 }
+         , { "ability" : "Awareness", "xp": 5 }
+         ] 
+      }
+   ]
+}
+
+
+
+
+
+
+
