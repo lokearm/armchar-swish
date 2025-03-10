@@ -116,9 +116,9 @@ laterLifeSQ vfs ad = laterLifeSQ' ad $ laterLifeXP vfs
 
 -- | Get XP and spell level total for Apprenticeship
 appSQ :: [VF] -> (Int,Int)
-appSQ []  = (0,0) 
-appSQ (x:xs) | vfname x == "Weak Parens" = (180,180) 
-             | vfname x == "Skilled Parens" = (300,300) 
+appSQ []  = (240,120) 
+appSQ (x:xs) | vfname x == "Weak Parens" = (180,90) 
+             | vfname x == "Skilled Parens" = (300,150) 
              | otherwise = appSQ xs
 
 

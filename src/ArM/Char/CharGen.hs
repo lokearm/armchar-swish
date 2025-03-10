@@ -8,8 +8,12 @@
 --
 -- Description :  Character Generation Management
 --
+-- The module exports only one function, `prepareCharacter` which 
+-- computes the starting character using the list of pregame
+-- advancements.
+--
 -----------------------------------------------------------------------------
-module ArM.Char.CharGen where
+module ArM.Char.CharGen (prepareCharacter) where
 
 import ArM.Char.Trait
 import ArM.Char.Internal.Character
@@ -21,7 +25,17 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import Data.Maybe
 
--- import ArM.Debug.Trace
+-- | Compute the initial state if no state is recorded.
+prepareCharacter :: Character -> Character
+prepareCharacter c 
+            | state c /= Nothing = c
+            | otherwise = c { state = newstate
+                            , pregameDesign = xs
+                            , pregameAdvancement = []
+                            }
+            where as = pregameAdvancement  c 
+                  (xs,cs) = applyCGA as defaultCS
+                  newstate = Just $ addConfidence $ cs { charTime = GameStart }
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareCharGen :: CharacterState -> Advancement -> AugmentedAdvancement
@@ -37,17 +51,6 @@ addConfidence cs = cs { traits = ct:traits cs }
                    | otherwise = inferConfidence vfs 
 
 
--- | Compute the initial state if no state is recorded.
-prepareCharacter :: Character -> Character
-prepareCharacter c 
-            | state c /= Nothing = c
-            | otherwise = c { state = newstate
-                            , pregameDesign = xs
-                            , pregameAdvancement = []
-                            }
-            where as = pregameAdvancement  c 
-                  (xs,cs) = applyCGA as defaultCS
-                  newstate = Just $ addConfidence $ cs { charTime = GameStart }
 
 
 -- | Apply CharGen advancement
@@ -79,7 +82,7 @@ validateCharGen :: CharacterSheet -> AugmentedAdvancement -> AugmentedAdvancemen
 validateCharGen cs a 
            | m == "Virtues and Flaws" = validateVF cs a
            | m == "Characteristics" = validateChar cs a
-           | otherwise = validateXP a
+           | otherwise = validateLevels $ validateXP a
            where m = fromMaybe "" $ mode a
 
 -- | Validate allocation of virtues and flaws.
@@ -156,3 +159,19 @@ initialLimits vfs ad
                  t = sourceQuality $ advancement ad
                  (app1,app2) = appSQ vfs
                  app a = a { effectiveSQ = Just app1, levelLimit = Just app2, augYears = Just 15 }
+
+-- | Validate allocation of Spell Levels.
+validateLevels :: AugmentedAdvancement -> AugmentedAdvancement
+validateLevels a | isNothing (levelLimit a) = a
+                 | sq > lsum = a { validation = und:validation a }
+                 | sq < lsum = a { validation = over:validation a }
+                 | otherwise = a { validation = val:validation a }
+    where lsum = calculateLevels $ advancement a
+          sq = fromMaybe 0 $ levelLimit a
+          val = Validated $ "Correctly spent " ++ show sq ++ " spell levels."
+          over = ValidationError $ "Overspent " ++ show lsum ++ " spell levels of " ++ show sq ++ "."
+          und = ValidationError $ "Underspent " ++ show lsum ++ " spell levels of " ++ show sq ++ "."
+
+-- | Count spell levels from an Advancement
+calculateLevels :: Advancement -> Int
+calculateLevels = sum . map ( fromMaybe 0 . level ) . changes

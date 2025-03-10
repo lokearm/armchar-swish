@@ -34,7 +34,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Read Spell data from CSV
 	+ [ ] Step 2. Magi calculations
 		+ [ ] Casting Score
-		+ [ ] Spell level limit at Char Gen
 		+ [ ] Stat bonus from Strong Faerie Blood
 	+ [ ] Step 3. Finishing touches
 		+ [ ] Warping
@@ -58,6 +57,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Flawless magic
 		+ [ ] Linguist
 		+ [ ] Strong Faerie Blood Characteristic Bonus
+		+ [ ] Great/Poor Characteristic
 
 + Advancement process.
     + Uses State from previous season and Advancement from current season.
