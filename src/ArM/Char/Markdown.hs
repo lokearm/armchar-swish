@@ -8,7 +8,7 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Markdown (printMD) where
+module ArM.Char.Markdown (printMD,artMD) where
 
 -- import Data.Maybe (fromJust)
 import Data.Maybe 
@@ -71,7 +71,7 @@ artLine :: Art -> String
 artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
 
 instance Markdown CharacterSheet where
-   printMD c = ag:(ol ++ cl ++ ml ++ artl) -- foldl (:) ml cl
+   printMD c = ag:(ol ++ cl ++ ml ) -- foldl (:) ml cl
     where f _ [] = ""
           f s xs = foldl (++) s (map (++", ") $ map show xs)
           ml = [ f "+ **Characteristics:** "  $ charList c
@@ -79,9 +79,10 @@ instance Markdown CharacterSheet where
                , f "+ **Reputations:** "  $ reputationList c
                , f "+ **Virtues and Flaws:** "  $ vfList c
                , f "+ **Abilities:** "  $ abilityList c
+               , f "+ **Arts:** "  $ sortArts $ artList c
                , f "+ **Spells:** "  $ spellList c
                ]
-          artl = artMD c
+          -- artl = artMD c
           cl = foldl (++) [] $ map printMD $ confList c
           ol = foldl (++) [] $ map printMD $ csTraits c
           ag = "+ **Age:** " ++ show (csAge c)
