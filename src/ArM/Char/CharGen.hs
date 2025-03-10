@@ -128,7 +128,7 @@ validateChar sheet a | m /= "Characteristics" = a
                  ex = calculateCharPoints $ advancement a
                  und = "Underspent " ++ (show ex) ++ " points out of "
                      ++ show lim ++ " on characteristics."  
-                 over = "Underspent " ++ (show ex) ++ " points out of "
+                 over = "Overspent " ++ (show ex) ++ " points out of "
                      ++ show lim ++ " on characteristics."  
                  val = "Correctly spent " ++ (show ex) ++ " points on characteristics."  
 

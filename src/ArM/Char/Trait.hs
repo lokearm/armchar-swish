@@ -184,7 +184,7 @@ data Spell = Spell { spellName :: String
                    , spellMultiplier :: Float
                    , masteryOptions :: [String] 
                    }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 
 -- | Return a string of Technique/Form/Level classifying the Spell.
 spellTeFoLe :: Spell -> String
@@ -274,6 +274,9 @@ instance Show Characteristic  where
           ++ showA (agingPoints a)
        where showA x | x == 0 = ""
                     | otherwise = " (" ++ show x ++ " aging points)"
+instance Show Spell  where
+   show a = "*" ++ spellName a ++ "* " 
+          ++ spellTeFo a ++ show (spellLevel a) 
 instance Show Art  where
    show a = artName a ++ " " 
           ++ show (artScore a) 

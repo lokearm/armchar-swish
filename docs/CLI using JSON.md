@@ -33,17 +33,23 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Sample file with Cieran
 		+ [x] Spell data type
 		+ [ ] Read Spell data from CSV
-		+ [ ] Art markdown
-		+ [ ] Spell markdown
-	+ [ ] Step 2. Finishing touches
+		+ [x] Art markdown
+		+ [x] Spell markdown
+	+ [ ] Step 2. Magi calculations
+		+ [ ] Casting Score
+		+ [ ] Spell level limit at Char Gen
+		+ [ ] Skilled Parens
+	+ [ ] Step 3. Other calculations
+		+ [ ] Stat bonus from Strong Faerie Blood
+	+ [ ] Step 4. Finishing touches
 		+ [ ] Warping
 		+ [ ] Decrepitude
 		+ [ ] Aging
-	+ [ ] Step 3.  CharacterState in JSON
+	+ [ ] Step 5.  CharacterState in JSON
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Review Character State output
 		+ [ ] Read CharacterState from JSON
-	+ [ ] Step 4.  P/G Char Gen
+	+ [ ] Step 6.  P/G Char Gen
 + [ ] Phase 3. Covenant
 	+ [ ] Step 6. Covenant
 		+ [ ] Covenant data model - analogous to Character
