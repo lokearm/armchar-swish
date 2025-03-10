@@ -373,7 +373,7 @@ instance TraitType VF where
        | virtue p /= Nothing = Just $ vf1 { vfname = fromJust (virtue p) }
        | flaw p /= Nothing = Just $ vf1 { vfname = fromJust (flaw p) }
        | otherwise = Nothing
-      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = maybeString $ detail p,
+      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = fromMaybe "" $ detail p,
                     vfAppliesTo = Nothing }
 instance TraitType Ability where
     getTrait (AbilityTrait x) = Just x
@@ -427,8 +427,8 @@ instance TraitType Reputation where
        | reputation p == Nothing = Nothing
        | otherwise = Just $
            Reputation { reputationName = fromJust (reputation p)
-                      , repLocale = maybeString (locale p)
-                      , repXP = maybeInt (xp p)
+                      , repLocale = fromMaybe "" (locale p)
+                      , repXP = fromMaybe 0 (xp p)
                       , repScore = s
                       , repExcessXP = y
                       }
@@ -562,7 +562,7 @@ instance TraitLike ProtoTrait where
        | art p /= Nothing = ArtKey $ fromJust $ art p 
        | spell p /= Nothing = SpellKey $ fromJust $ spell p
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
-       | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (maybeString (locale p))
+       | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
        | virtue p /= Nothing = VFKey $ fromJust (virtue p)
        | flaw p /= Nothing = VFKey $ fromJust (flaw p)
        | confidence p /= Nothing = ConfidenceKey 

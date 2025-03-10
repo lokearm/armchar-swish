@@ -18,10 +18,6 @@ import Data.Maybe (fromMaybe)
 maybeList :: Maybe [a] -> [a]
 maybeList = fromMaybe []
 
--- | Get a string from a maybe-string, mapping Nothing to the empty string.
-maybeString :: Maybe String -> String
-maybeString = fromMaybe ""
-
 -- | Get a number from a maybe-number, mapping Nothing to zero.
 maybeInt :: Num a => Maybe a -> a
 maybeInt = fromMaybe 0
