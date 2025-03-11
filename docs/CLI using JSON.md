@@ -32,6 +32,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 2. Magus
 	+ [ ] Review Cieran
 	+ [ ] Casting Score
+	+ [ ] Lab Total
 	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Step 3. Finishing touches
 		+ [ ] Warping

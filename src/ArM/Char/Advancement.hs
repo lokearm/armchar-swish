@@ -12,7 +12,6 @@
 --
 -----------------------------------------------------------------------------
 module ArM.Char.Advancement( addInferredTraits
-                           , getVF
                            , parseSeasonTime
                            , SeasonTime(..)
                            , Advancement(..)
