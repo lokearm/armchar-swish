@@ -35,16 +35,10 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Spell(..)
                       , Reputation(..)
                       , VF(..)
-                      , advanceTrait
                       , sortTraits
-                      , traitKey
-                      , getTrait
-                      , computeTrait
-                      , (<:)
-                      , (>:)
-                      , toTrait
+                      , TraitLike(..)
+                      , TraitType(..)
                       , advance
-                      , filterTrait
                       , defaultPT
                       , spellTeFoLe
                        ) where
@@ -52,7 +46,6 @@ module ArM.Char.Trait ( ProtoTrait(..)
 import ArM.Debug.Trace
 import ArM.GameRules
 import GHC.Generics
--- import Data.List (sort)
 import Data.Aeson
 import Data.Maybe (fromJust,isNothing,fromMaybe)
 import Data.List (sortBy)
@@ -506,8 +499,10 @@ instance TraitType Confidence where
 (<:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
 (<:) p1 p2 = traitKey p1 < traitKey p2
 
+{-
 (>:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
 (>:) p1 p2 = p2 <: p1
+-}
 
 
 sortTraits :: TraitLike t => [ t ] -> [ t ]

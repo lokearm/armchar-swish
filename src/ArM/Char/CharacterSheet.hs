@@ -7,6 +7,10 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  CharacterSheet is an alternative representation of CharacterState
+--
+-- CharacterSheet is a façade exposing lists for each kind of trait.
+--
 -----------------------------------------------------------------------------
 module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , characterSheet
@@ -15,7 +19,6 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
 
 import ArM.Char.Trait
 import ArM.Char.Internal.Character
--- import ArM.Char.Internal.Advancement
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
