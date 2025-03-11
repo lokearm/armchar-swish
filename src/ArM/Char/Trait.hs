@@ -10,11 +10,17 @@
 -- 
 -- Description :  Types to Traits and advancement of Traits
 --
--- Types to handle Characters and Traits, with some basic associated functions.
+-- Traits are represented as `ProtoTrait` objects in the design and
+-- advancement. A `ProtoTrait` can represent either a new trait or a
+-- change to an existing trait.
 --
--- When parsing a trait without an arm:traitClass property, Nothing
--- is returned.  Thus such traits will be discarded.  
+-- Processing advancements, the `ProtoTrait` is converted to a `Trait` 
+-- object, representing the current state of the trait.
 --
+-- There are individual types for each kind of trait, e.g. virtue/flaw,
+-- ability, spell, art, etc.   Conversion between a `Trait` object and
+-- a more specific type, like `Art`, is done by the (polymorphic)
+-- `toTrait` and `getTrait` functions.
 --
 -----------------------------------------------------------------------------
 module ArM.Char.Trait ( ProtoTrait(..)
@@ -56,32 +62,46 @@ import ArM.Helper
 -- | 
 -- = ProtoTrait
 
-data ProtoTrait = ProtoTrait { ability :: Maybe String
-                             , virtue :: Maybe String
-                             , flaw :: Maybe String
-                             , characteristic :: Maybe String
-                             , art :: Maybe String
-                             , spell :: Maybe String
-                             , ptrait :: Maybe String
-                             , confidence :: Maybe String
-                             , reputation :: Maybe String
-                             , other :: Maybe String
-                             , spec :: Maybe String
-                             , detail :: Maybe String
-                             , appliesTo :: Maybe TraitKey
-                             , level :: Maybe Int
-                             , tefo :: Maybe String
-                             , locale :: Maybe String
-                             , mastery :: Maybe [ String ]
-                             , score :: Maybe Int
-                             , bonusScore :: Maybe Int
-                             , multiplyXP :: Maybe Float
-                             , cost :: Maybe Int
-                             , points :: Maybe Int 
-                             , xp :: Maybe Int 
-                             , aging :: Maybe Int
-                             }
-                             deriving (Ord,Eq,Generic)
+-- | A `ProtoTrait` represents a new trait or an advacement of an existing trait
+-- as represented in the JSON input.  
+-- Most fields are used only for certain types of traits and are Nothing for other
+-- types.  This is the case, in particular, for the first quite a few fields which
+-- give the name of the trait of the relevant type only. 
+data ProtoTrait = ProtoTrait
+    { ability :: Maybe String  -- ^ ability name 
+    , virtue :: Maybe String   -- ^ virtue name
+    , flaw :: Maybe String     -- ^ flaw name
+    , characteristic :: Maybe String  -- ^ characteristic name
+    , art :: Maybe String  -- ^ art name
+    , spell :: Maybe String  -- ^ spell name
+    , ptrait :: Maybe String  -- ^ personality trait name
+    , confidence :: Maybe String  -- ^ confidence, true faith, or similar
+    , reputation :: Maybe String  -- ^ reputation contents
+    , other :: Maybe String       -- ^ other trait, e.g. warping or decrepitude
+    , spec :: Maybe String        -- ^ specialisation of an ability
+    , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
+    , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
+    , level :: Maybe Int       -- ^ level of a space
+    , tefo :: Maybe String     -- ^ technique/form of a spell
+    , locale :: Maybe String   -- ^ locale/domain of a reputation
+    , mastery :: Maybe [ String ]   -- ^ mastery options for a spell
+    , score :: Maybe Int       -- ^ new score to replace the old one
+    , bonusScore :: Maybe Int  -- ^ bonus from puissant; should also be used on initial 
+                               -- characteristics for the bonus from Strong Faerie Blood
+                               -- or Great/Poor Characteristic to keep it separate from
+                               -- the levels bought from points.
+    , multiplyXP :: Maybe Float  -- ^ XP multiplier from affinities and similar
+    , cost :: Maybe Int          -- ^ cost of a virtue or flaw
+    , points :: Maybe Int        -- ^ points for confidence/true faith/etc (additive)
+    , xp :: Maybe Int            -- ^ XP to be added to the trait
+    , aging :: Maybe Int         -- ^ aging points for characteristicds (additive)
+    , multiplicity :: Maybe Int  -- ^ number of types a virtue/flaw is taken;
+                                 -- could be negative to remove an existing, but
+                                 -- this is not yet implemented
+    } deriving (Ord,Eq,Generic)
+
+-- | Default ProtoTrait object, used internally for step-by-step construction of
+-- new objects.
 defaultPT :: ProtoTrait
 defaultPT = ProtoTrait { ability = Nothing
                              , virtue = Nothing
@@ -107,6 +127,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , points = Nothing
                              , xp = Nothing
                              , aging = Nothing
+                             , multiplicity = Nothing
                              }
 
 instance ToJSON ProtoTrait 
@@ -136,6 +157,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "points"
         <*> v .:?  "xp"
         <*> v .:?  "aging"
+        <*> v .:?  "multiplicity"
 
 
 -- | 
@@ -147,7 +169,7 @@ data TraitKey = AbilityKey String
            | SpellKey String
            | PTraitKey String
            | ReputationKey String String
-           | VFKey String
+           | VFKey String String
            | ConfidenceKey String
            | OtherTraitKey String
            deriving (Show, Ord, Eq,Generic )
@@ -193,17 +215,19 @@ spellTeFoLe sp = spellTeFo sp ++ show (spellLevel sp)
 -- | Personality trait
 data PTrait = PTrait { ptraitName :: String, pscore :: Int }
            deriving (Ord, Eq, Generic)
-data Reputation = Reputation { reputationName :: String
-                             , repLocale :: String
-                             ,  repXP :: Int 
-                             ,  repScore :: Int 
-                             ,  repExcessXP :: Int 
+-- | Reputation object 
+data Reputation = Reputation { reputationName :: String  -- ^ contents of the reputation
+                             , repLocale :: String       -- ^ domain or location of the reputation
+                             ,  repXP :: Int             -- ^ total XP in the reputation (used?)
+                             ,  repScore :: Int          -- ^ reputation Score
+                             ,  repExcessXP :: Int       -- ^ XP towards next level in the reputation
                              }
            deriving (Ord, Eq, Generic)
-data VF = VF { vfname :: String
-             , vfDetail :: String
-             , vfcost :: Int 
-             , vfAppliesTo :: Maybe TraitKey
+data VF = VF { vfname :: String    -- ^ name of the virtue/flaw
+             , vfDetail :: String  -- ^ detail, where the virtue/flaw has options
+             , vfcost :: Int       -- ^ cost, should be zero for free/inferred virtues/flaws
+             , vfAppliesTo :: Maybe TraitKey  -- ^ not used
+             , vfMultiplicity :: Int          -- ^ number of times the virtue/flaw is take
              }
            deriving (Ord, Eq, Generic)
 data Confidence = Confidence { cname :: String, cscore :: Int, cpoints :: Int }
@@ -385,7 +409,7 @@ instance TraitType Characteristic where
        | characteristic p == Nothing = Nothing
        | otherwise = Just $
           Characteristic { characteristicName = fromJust ( characteristic p ) 
-                , charScore = maybeInt (score p)
+                , charScore = fromMaybe 0 (score p) + fromMaybe 0 (bonusScore p)
                 , agingPoints = maybeInt (aging p) }
 instance TraitType VF where
     getTrait (VFTrait x) = Just x
@@ -395,7 +419,7 @@ instance TraitType VF where
        | flaw p /= Nothing = Just $ vf1 { vfname = fromJust (flaw p) }
        | otherwise = Nothing
       where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = fromMaybe "" $ detail p,
-                    vfAppliesTo = Nothing }
+                    vfAppliesTo = Nothing, vfMultiplicity = fromMaybe 1 $ multiplicity p }
 instance TraitType Ability where
     getTrait (AbilityTrait x) = Just x
     getTrait _ = Nothing
@@ -535,7 +559,7 @@ instance TraitLike PTrait where
     toTrait = PTraitTrait
     advanceTrait _ x = trace "Warning! Advancement not implemented for personality traits"  x
 instance TraitLike VF where
-    traitKey x = VFKey $ vfname x
+    traitKey x = VFKey (vfname x) (vfDetail x)
     toTrait = VFTrait
 instance TraitLike Ability where
     traitKey x = AbilityKey $ abilityName x
@@ -596,8 +620,8 @@ instance TraitLike ProtoTrait where
        | spell p /= Nothing = SpellKey $ fromJust $ spell p
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
-       | virtue p /= Nothing = VFKey $ fromJust (virtue p)
-       | flaw p /= Nothing = VFKey $ fromJust (flaw p)
+       | virtue p /= Nothing = VFKey ( fromJust (virtue p) ) (fromMaybe "" $ detail p)
+       | flaw p /= Nothing = VFKey ( fromJust (flaw p) ) (fromMaybe "" $ detail p)
        | confidence p /= Nothing = ConfidenceKey $ fromMaybe "Confidence" $ confidence p
        | other p /= Nothing = OtherTraitKey $ fromJust $ other p
        | otherwise  = error "No Trait for this ProtoTrait" 

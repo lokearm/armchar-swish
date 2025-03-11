@@ -26,6 +26,10 @@ import ArM.GameRules
 import Data.Maybe
 
 -- | Compute the initial state if no state is recorded.
+--
+-- The function uses `applyCGA` to process all of the pregame advancements.
+-- It then calls `addConfidence` to add the confidence trait to the state
+-- for the returned `Character` object
 prepareCharacter :: Character -> Character
 prepareCharacter c 
             | state c /= Nothing = c
@@ -38,10 +42,17 @@ prepareCharacter c
                   newstate = Just $ addConfidence $ cs { charTime = GameStart }
 
 -- | Augment and amend the advancements based on current virtues and flaws.
+--
+-- This function is applied by `applyCharGenAdv` before the advancement is
+-- applied to the `CharacterState`.  It infers additional traits from 
+-- virtues and flaws, add XP limits to the advancements, and checks that
+-- the advancement does not overspend XP or exceed other limnits.
 prepareCharGen :: CharacterState -> Advancement -> AugmentedAdvancement
 prepareCharGen cs = validateCharGen sheet . initialLimits vfs . addInferredTraits 
           where vfs = vfList sheet
                 sheet = filterCS cs
+
+-- | Add the Confidence trait to the character state, using 
 addConfidence :: CharacterState -> CharacterState
 addConfidence cs = cs { traits = ct:traits cs }
           where vfs = vfList sheet
@@ -49,8 +60,6 @@ addConfidence cs = cs { traits = ct:traits cs }
                 ct | csType sheet == Grog = ConfidenceTrait $ Confidence
                            { cname = "Confidence", cscore = 0, cpoints = 0 }
                    | otherwise = inferConfidence vfs 
-
-
 
 
 -- | Apply CharGen advancement
@@ -68,6 +77,8 @@ applyCharGenAdv a cs = (a',cs')
 -- | Apply a list of advancements
 applyCGA :: [Advancement] -> CharacterState -> ([AugmentedAdvancement],CharacterState)
 applyCGA a cs = applyCGA' ([],a,cs)
+
+-- | Recursive helper for `applyCGA`.
 applyCGA' :: ([AugmentedAdvancement],[Advancement],CharacterState)
                    -> ([AugmentedAdvancement],CharacterState)
 applyCGA' (xs,[],cs) = (xs,cs)

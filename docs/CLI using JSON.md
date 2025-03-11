@@ -28,18 +28,18 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Extract error report in Markdown
 	+ [ ] Validate character build
 	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
+	+ [ ] Refactor and document code
 + [ ] Phase 2. Magus
-	+ [ ] Step 1.  Magi char gen
-		+ [ ] Review Cieran
-		+ [ ] Read Spell data from CSV
-	+ [ ] Step 2. Magi calculations
-		+ [ ] Casting Score
-		+ [ ] Stat bonus from Strong Faerie Blood
+	+ [ ] Review Cieran
+	+ [ ] Casting Score
+	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Step 3. Finishing touches
 		+ [ ] Warping
 		+ [ ] Decrepitude
 		+ [ ] Aging
-	+ [ ] Step 4.  P/G Char Gen
+		+ [ ] Comment field on traits
+	+ [ ]  P/G Char Gen
+	+ [ ] Read Spell data from CSV
 + [ ] Phase 3. Covenant
 	+ [ ] Step 6. Covenant
 		+ [ ] Covenant data model - analogous to Character
@@ -56,7 +56,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 2. Virtues and Flaws - Special cases
 		+ [ ] Flawless magic
 		+ [ ] Linguist
-		+ [ ] Strong Faerie Blood Characteristic Bonus
 		+ [ ] Great/Poor Characteristic
 
 + Advancement process.

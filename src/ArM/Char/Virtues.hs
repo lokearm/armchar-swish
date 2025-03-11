@@ -22,7 +22,7 @@ import ArM.Char.Trait
 import ArM.Helper
 
 import qualified Data.Map as Map
-import Data.Maybe (isJust,fromJust)
+import Data.Maybe
 
 -- import ArM.Debug.Trace
 
@@ -34,24 +34,24 @@ import Data.Maybe (isJust,fromJust)
 -- giving bonuses to regular abilities, and virtues which grant supernatural
 -- abilities.
 
-vl2 :: [ ( TraitKey, VF -> ProtoTrait ) ]
-vl2 = [ ( VFKey "Puissant (art)",
+vl2 :: [ ( String, VF -> ProtoTrait ) ]
+vl2 = [ ( "Puissant (art)",
          \ x -> defaultPT { art = Just $ vfDetail x, bonusScore = Just 3 } )
-     , ( VFKey "Puissant (ability)",
+     , ( "Puissant (ability)",
               \ x -> defaultPT { ability = Just $ vfDetail x, bonusScore = Just 2 } )
-     , ( VFKey "Affinity with (art)",
+     , ( "Affinity with (art)",
               \ x -> defaultPT { art = Just $ vfDetail x, multiplyXP = Just 1.5 } )
-     , ( VFKey "Affinity with (ability)",
+     , ( "Affinity with (ability)",
               \ x -> defaultPT { ability = Just $ vfDetail x, multiplyXP = Just 1.5 } )
      ]
 
 
-vl1 :: [ ( TraitKey, VF -> ProtoTrait ) ]
-vl1 = [ (VFKey ab, \ _ -> defaultPT { ability = Just $ ab, xp = Just 5 } ) | ab <- snab ]
+vl1 :: [ ( String, VF -> ProtoTrait ) ]
+vl1 = [ (ab, \ _ -> defaultPT { ability = Just $ ab, xp = Just 5 } ) | ab <- snab ]
 
-vl3 :: [ ( TraitKey, VF -> Trait ) ]
-vl3 = [ (VFKey "Self-Confidence", \ _ -> confTrait 2 5 )
-      , (VFKey "Low Self-Esteem", \ _ -> confTrait 0 0 )
+vl3 :: [ ( String, VF -> Trait ) ]
+vl3 = [ ("Self-Confidence", \ _ -> confTrait 2 5 )
+      , ("Low Self-Esteem", \ _ -> confTrait 0 0 )
       ]
 
 confTrait :: Int -> Int -> Trait
@@ -59,7 +59,7 @@ confTrait x y = ConfidenceTrait $ Confidence { cname = "Confidence", cscore = x,
 inferConfidence :: [VF] -> Trait
 inferConfidence vfs | rs == [] = confTrait 1 3
                     | otherwise =  head rs
-    where vf = [ Map.lookup (traitKey x) confMap | x <- vfs ]
+    where vf = [ Map.lookup (vfname x) confMap | x <- vfs ]
           app Nothing _ = Nothing
           app (Just f) x = Just $ f x
           rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
@@ -71,16 +71,15 @@ snab = [ "Second Sight", "Enchanting Music", "Dowsing",
          "Entrancement", "Premonitions",
          "Shapeshifter" ]
 
-type VFMap = Map.Map TraitKey ( VF -> ProtoTrait ) 
-virtueMap :: VFMap
+virtueMap :: Map.Map String ( VF -> ProtoTrait ) 
 virtueMap = Map.fromList $ vl1 ++ vl2
-confMap :: Map.Map TraitKey ( VF -> Trait ) 
+confMap :: Map.Map String ( VF -> Trait ) 
 confMap = Map.fromList $ vl3
 
 -- | Add ProtoTrait objects infered by current virtues and flaws
 inferTraits :: [VF] -> [ProtoTrait]
 inferTraits vfs = sortTraits rs
-    where vf = [ Map.lookup (traitKey x) virtueMap | x <- vfs ]
+    where vf = [ Map.lookup (vfname x) virtueMap | x <- vfs ]
           app Nothing _ = Nothing
           app (Just f) x = Just $ f x
           rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
@@ -122,6 +121,9 @@ appSQ (x:xs) | vfname x == "Weak Parens" = (180,90)
              | otherwise = appSQ xs
 
 
+-- | 
+-- == Characteristics
+
 chLookup:: String -> Int
 chLookup "Improved Characteristics" = 3
 chLookup "Weak Characteristics" = -3
@@ -130,14 +132,9 @@ chLookup _  = 0
 getCharAllowance :: [ VF ] -> Int
 getCharAllowance = (+7) . sum . map ( chLookup . vfname )
 
--- |
--- = Infer Limits for Ingame Advancement 
+cbLookup:: VF -> Maybe (String,Int,Int)
+cbLookup v | vfname v == "Great Characteristic" = Just (vv,5,1)
+           | vfname v == "Poor Characteristic" = Just (vv,5,-1)
+           where vv = vfDetail v
+cbLookup _  = Nothing
 
-{-
-type AdvancementTransform = AugmentedAdvancement -> AugmentedAdvancement 
-ad2 :: [ ( TraitKey, AdvancementTransform ) ]
-ad2 = [ ( VFKey "Book learner", id )     -- SQ +3
-      , ( VFKey "Independent Study", id ) -- SQ +2/+3
-      , ( VFKey "Study Bonus", id )       -- reminder +2
-      ]
--}
