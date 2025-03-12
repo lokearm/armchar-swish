@@ -28,9 +28,12 @@ data SpellRecord = SpellRecord
                    , techniqueReq :: [String]
                    , form :: String
                    , formReq :: [String]
+                   , trd :: (String,String,String)
                    , specialSpell :: [String]
                    , description :: String
                    , design :: String 
+                   , comment :: String 
+                   , cite :: String 
                    }
            deriving (Ord, Eq, Generic)
 defaultSR :: SpellRecord
@@ -41,13 +44,16 @@ defaultSR = SpellRecord
                    , techniqueReq = []
                    , form = ""
                    , formReq = []
+                   , trd = ("Per","Mom","Ind")
                    , specialSpell = []
                    , description = ""
                    , design = ""
+                   , comment = ""
+                   , cite = ""
                    }
 
 fromCSVline :: [String] -> SpellRecord
-fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:_) =
+fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:_) =
       defaultSR { spellKey = SpellKey x1 x2
                 , lvl = read x3
                 , technique = x4
@@ -57,5 +63,7 @@ fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:_) =
                 , specialSpell = splitOn ";" x8
                 , description = x9
                 , design = x10
+                , comment = x11
+                , cite = x12
                 }
 fromCSVline _ = defaultSR
