@@ -21,6 +21,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , findTraitCS
                                , castingScore
                                , addCastingScores
+                               , labTotals
                                ) where
 
 import ArM.Char.Trait
@@ -172,11 +173,20 @@ addCastingScore db cs sp = trace (show $ traitKey sp) $ sp { spellCastingScore =
 
 -- | Return the Lab Total a given TeFo combo.
 labTotal :: CharacterSheet -- ^ Current character sheet
-             -> TraitKey       -- ^ Key identifying the spell
-             -> TraitKey       -- ^ Key identifying the spell
-             -> Int            -- ^ Computed casting score
+             -> TraitKey       -- ^ Key identifying the technique
+             -> TraitKey       -- ^ Key identifying the form
+             -> Int            -- ^ Computed lab total
 labTotal cs te fo = ts + fs + int + mt
    where ts = getArtScore cs te
          fs = getArtScore cs fo
          int = getCharacteristicScore cs (CharacteristicKey "Int" ) 
-         (mt,mtspec) = getAbilityScore cs (AbilityKey "Magic Theory" ) 
+         (mt,_) = getAbilityScore cs (AbilityKey "Magic Theory" ) 
+
+labTotals :: CharacterSheet -- ^ Current character sheet
+             -> [[Int]]     -- ^ Computed lab totals 
+labTotals cs = [ [ labTotal cs te fo | te <- techniques ] | fo <- forms ]
+
+techniques :: [ TraitKey ]
+techniques = [ ArtKey te | te <- [ "Cr", "In", "Mu", "Pe", "Re" ] ]
+forms :: [ TraitKey ]
+forms = [ ArtKey fo | fo <- [ "An", "Aq", "Au", "Co", "He", "Ig", "Im", "Me", "Te", "Vi" ] ]
