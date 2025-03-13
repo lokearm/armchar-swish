@@ -15,6 +15,7 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Spell ( SpellRecord(..)
                        , spellDB
+                       , SpellDB
                        ) where
 
 import ArM.Char.Trait
@@ -55,24 +56,27 @@ defaultSR = SpellRecord
                    , cite = ""
                    }
 
+type SpellDB = M.Map TraitKey SpellRecord
+
 -- | Create a `Data.Map.Map` of SpellRecord objects.  
 -- The input is the output from `Data.CSV.csvFile`
-spellDB :: [[String]] -> M.Map TraitKey SpellRecord
+spellDB :: [[String]] -> SpellDB
 spellDB = M.fromList . map ( \ x -> (spellKey x,x) ) . map fromCSVline
 
 -- | Parse the cells of one line from the CSV file into a SpellRecord object.
 fromCSVline :: [String] -> SpellRecord
-fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:_) =
+fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:x13:x14:x15:_) =
       defaultSR { spellKey = SpellKey x1 x2
                 , lvl = read x3
                 , technique = x4
                 , techniqueReq = splitOn ";" x5
                 , form = x6
                 , formReq = splitOn ";" x7
-                , specialSpell = splitOn ";" x8
-                , description = x9
-                , design = x10
-                , comment = x11
-                , cite = x12
+                , rdt = (x8, x9, x10)
+                , specialSpell = splitOn ";" x11
+                , description = x12
+                , design = x13
+                , comment = x14
+                , cite = x15
                 }
 fromCSVline _ = defaultSR

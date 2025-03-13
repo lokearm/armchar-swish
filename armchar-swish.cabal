@@ -62,7 +62,11 @@ common armchar-deps
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
+                       , ArM.Char.IO
                        , ArM.Helper
+  build-depends:       cassava >= 0.5.3
+                       , parsec >= 3.1
+                       , MissingH >= 1.6
 
 common swish-deps
   import:    deps
