@@ -8,7 +8,7 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Markdown (printMD,artMD) where
+module ArM.Char.Markdown (printMDaug,printMD,artMD) where
 
 -- import Data.Maybe (fromJust)
 import Data.Maybe 
@@ -17,11 +17,14 @@ import ArM.Char.Character
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Advancement
+import ArM.Char.Spell
 -- import ArM.Debug.Trace
 import qualified Data.Map as M
 
 class Markdown a where
      printMD :: a -> [ String ]
+     printMDaug :: SpellDB -> a -> [ String ]
+     printMDaug _ = printMD
 
 instance Markdown FieldValue where
    printMD =  (:[]) . show
@@ -86,6 +89,7 @@ instance Markdown CharacterSheet where
           cl = foldl (++) [] $ map printMD $ confList c
           ol = foldl (++) [] $ map printMD $ csTraits c
           ag = "+ **Age:** " ++ show (csAge c)
+   printMDaug db = printMD . addCastingScores db
 
 instance Markdown Confidence where
    printMD c = [ "+ **" ++ cname c ++ "**: " ++ show (cscore c) ++ " ("
@@ -108,12 +112,25 @@ instance Markdown Character where
              cs = futureAdvancement c
              maybeP  Nothing = []
              maybeP (Just xs) = printMD xs
+   printMDaug db c = ( printMD . concept ) c 
+            ++ maybeP (state c)
+            ++ (pListMD "## Game start design" as')
+            ++ (pListMD "## Pregame Development" as)
+            ++ (pListMD "## Past Advancement" bs)
+            ++ (pListMD "## Future Advancement" cs)
+       where 
+             as' = pregameDesign c
+             as = pregameAdvancement c
+             bs = pastAdvancement c
+             cs = futureAdvancement c
+             maybeP  Nothing = []
+             maybeP (Just xs) = printMDaug db xs
 
 instance Markdown CharacterState where
    printMD c = ( "## " ++ (show $ charTime c) ):"":sh
-   -- pt c
-       -- where pt = map ("+ "++) . foldl (++) [] . map printMD . traits 
        where sh = printMD $ filterCS c
+   printMDaug db c = ( "## " ++ (show $ charTime c) ):"":sh
+       where sh = printMDaug db $ filterCS c
 
 showSQ :: Maybe Int -> Maybe Int -> String
 showSQ Nothing Nothing = ""

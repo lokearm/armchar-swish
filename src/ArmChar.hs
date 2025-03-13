@@ -108,11 +108,12 @@ main' :: Options -> IO ()
 main' opts | charFile opts /= Nothing = do 
      putStrLn $ "Reading file " ++ fn
      t <- readCharacter fn
-     db <- readSpell $ spellFile opts
+     db' <- readSpell $ spellFile opts
      let char = fromJust t  
+     let db = fromJust db'
      let cs = prepareCharacter char
-     writeMaybeFile ( debugFile opts ) $ printMD char
-     writeMaybeFile ( outFile opts ) $ printMD cs
+     writeMaybeFile ( debugFile opts ) $ printMDaug db char
+     writeMaybeFile ( outFile opts ) $ printMDaug db cs
      writeMaybeJSON ( jsonFile opts ) cs 
      advChar ( advanceSeason opts ) (seasonFile opts) cs
      return ()

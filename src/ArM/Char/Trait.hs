@@ -450,10 +450,9 @@ instance TraitType Art where
 instance TraitType Spell where
     getTrait (SpellTrait x) = Just x
     getTrait _ = Nothing
-    computeTrait p
-        | spell p == Nothing = Nothing
-        | otherwise = Just $
-           Spell { spellName = fromJust (spell p)
+    computeTrait p | spell p == Nothing = Nothing
+                   | otherwise = trace (show sp) ( Just sp )
+          where sp = Spell { spellName = fromJust (spell p)
                       , spellLevel = fromMaybe 0 $ level p
                       , spellTeFo = fromMaybe "TeFo" $ tefo p
                       , spellXP = maybeInt (xp p)
@@ -463,7 +462,7 @@ instance TraitType Spell where
                       , spellMultiplier = fromMaybe 1.0 $ multiplyXP p
                       , spellCastingScore = Nothing
                       }
-     where (s,y) = getAbilityScore (xp p)
+                (s,y) = getAbilityScore (xp p)
 instance TraitType Reputation where
     getTrait (ReputationTrait x) = Just x
     getTrait _ = Nothing
@@ -583,7 +582,7 @@ instance TraitLike Art where
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
-    traitKey x = SpellKey ( spellName x ) ( spellTeFo x )
+    traitKey x = SpellKey ( spellName x ) ( spellTeFo x ++ show (spellLevel x))
     toTrait = SpellTrait
     advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (maybeInt $ xp a)
@@ -616,7 +615,8 @@ instance TraitLike ProtoTrait where
        | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
        | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
        | art p /= Nothing = ArtKey $ fromJust $ art p 
-       | spell p /= Nothing = SpellKey ( fromJust $ spell p ) (fromMaybe "" $ tefo p)
+       | spell p /= Nothing = SpellKey ( fromJust $ spell p ) 
+             $ (fromMaybe "" $ tefo p) ++ (show $ fromMaybe 0 $ level p )
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
        | virtue p /= Nothing = VFKey ( fromJust (virtue p) ) (fromMaybe "" $ detail p)

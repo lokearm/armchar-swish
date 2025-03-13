@@ -31,7 +31,7 @@ import Data.Aeson
 import Data.Maybe
 import Data.List
 
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- | The CharacterSheet object holds a Character State with separate fields
 -- for different kinds of traits
@@ -149,8 +149,8 @@ castingScore :: SpellDB    -- ^ Spell DB with general descriptions of the spells
              -> CharacterSheet -- ^ Current character sheet
              -> TraitKey       -- ^ Key identifying the spell
              -> Int            -- ^ Computed casting score
-castingScore db cs k | isNothing rec' = 0
-                     | isNothing sp' = 0
+castingScore db cs k | isNothing rec' = trace ( "no rec' " ++ show k)  0
+                     | isNothing sp' = trace ( "no sp' " ++ show k)  0
                      | otherwise = castingScore' cs ts fs + mf ( getTrait sp)
    where sp' = findTraitCS k cs
          sp = fromJust sp'
@@ -162,8 +162,8 @@ castingScore db cs k | isNothing rec' = 0
          fs = (ArtKey $ form rec):(map ArtKey $ formReq rec)
 
 addCastingScores :: SpellDB -> CharacterSheet -> CharacterSheet
-addCastingScores db cs = cs { spellList = spellList' }
+addCastingScores db cs = trace "addCastingScores" $ cs { spellList = spellList' }
    where spellList' = map (addCastingScore db cs) (spellList cs)
 addCastingScore :: SpellDB -> CharacterSheet -> Spell -> Spell
-addCastingScore db cs sp = sp { spellCastingScore = sc }
+addCastingScore db cs sp = trace (show sp) $ trace (show $ traitKey sp) $ sp { spellCastingScore = sc }
    where sc = Just $ castingScore db cs (traitKey sp) 
