@@ -30,34 +30,44 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Refactor and document code
 + [ ] Phase 2. Magus
-	+ [ ] Review Cieran
-	+ [ ] Casting Score
-	+ [ ] Lab Total
-	+ [ ] Review Cieran's ingame advancements
-	+ [ ] Step 3. Finishing touches
+	+ [ ] Step 1.  Spells
+		+ [x] Read Spell data from CSV
+		+ [ ] Pretty print spells for validation
+	+ [x] Step 2. Casting Score
+		+ [x] Look up arts and stats
+		+ [x] Compute Casting Score
+		+ [x] Print Casting Score on character sheet
+	+ [ ] Step 3. Review Cieran
+		+ [ ] Review Cieran's ingame advancements
+		+ [ ] Add in-game advancements
+	+ [ ] Step 4. Lab Total
+		+ [ ] Compute Lab Totals
+		+ [ ] Print lab totals on character sheet
+	+ [ ] Step 5. Finishing touches
 		+ [ ] Warping
 		+ [ ] Decrepitude
 		+ [ ] Aging
 		+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
-	+ [ ] Read Spell data from CSV
 + [ ] Phase 3. Covenant
-	+ [ ] Step 6. Covenant
+	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
 		+ [ ] Book resource
 		+ [ ] Library
 		+ [ ] Read books from CSV
-	+ [ ] Step 15. Covenant advancement
+	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
+	+ [ ] Step 3. Saga.  Organise files
 + [ ] Phase 4. Polish
-	+ [ ] Step 5.  CharacterState in JSON
-		+ [ ] Remove null entries from JSON output
-		+ [ ] Read CharacterState from JSON
+	+ [ ] Step 1. Compute Combat Stats
 	+ [ ] Step 2. Virtues and Flaws - Special cases
 		+ [ ] Flawless magic
 		+ [ ] Linguist
 		+ [ ] Great/Poor Characteristic
+	+ [ ] Step 3.  CharacterState in JSON
+		+ [ ] Remove null entries from JSON output
+		+ [ ] Read CharacterState from JSON
 
 + Advancement process.
     + Uses State from previous season and Advancement from current season.
