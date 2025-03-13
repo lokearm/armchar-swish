@@ -8,6 +8,13 @@
 --
 -- Description :  Simple utilities to read and parse ArMChar files.
 --
+-- The functions in this module generally take a filename (String)
+-- and returns a Maybe object by attempting to parse the relevant 
+-- file.
+--
+-- Some objects, like the Spell Database, are stored in CSV, others
+-- in JSON, including Character and Covenant.
+--
 -----------------------------------------------------------------------------
 module ArM.Char.IO where
 
