@@ -15,6 +15,10 @@
 module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , characterSheet
                                , filterCS
+                               , getArtScore
+                               , getAbilityScore
+                               , getCharacteristicScore
+                               , findTraitCS
                                ) where
 
 import ArM.Char.Trait
@@ -22,6 +26,7 @@ import ArM.Char.Internal.Character
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
+import Data.List
 
 -- import ArM.Debug.Trace
 
@@ -91,3 +96,30 @@ filterCS cs = defaultSheet
                  (x6,y6) = filterTrait y5
                  (x7,y7) = filterTrait y6
                  (x8,y8) = filterTrait y7
+
+findTrait :: (TraitLike a) => TraitKey -> [a] -> Maybe a
+findTrait k = find ( (k==) . traitKey )
+
+
+findTraitCS ::  TraitKey -> CharacterSheet -> Maybe Trait
+findTraitCS (AbilityKey x) = (fmap toTrait) . findTrait (AbilityKey x) . abilityList
+findTraitCS (ArtKey x) = (fmap toTrait) . findTrait (ArtKey x) . abilityList
+findTraitCS (SpellKey x y) = (fmap toTrait) . findTrait (SpellKey x y) . abilityList
+findTraitCS (CharacteristicKey x) = (fmap toTrait) . findTrait (CharacteristicKey x) . abilityList
+findTraitCS _ = \ _ -> Nothing
+
+getAbilityScore :: CharacterSheet -> TraitKey -> (Int,Maybe String)
+getAbilityScore cs k | isNothing x = (0,Nothing)
+                     | otherwise = (abilityScore x', speciality x') 
+     where x = ( findTrait k . abilityList ) cs
+           x' = fromJust x
+getArtScore :: CharacterSheet -> TraitKey -> Int
+getArtScore cs k | isNothing x = 0
+                 | otherwise = artScore x'
+     where x = ( findTrait k . artList ) cs
+           x' = fromJust x
+getCharacteristicScore :: CharacterSheet -> TraitKey -> Int
+getCharacteristicScore cs k | isNothing x = 0
+                 | otherwise = charScore x'
+     where x = ( findTrait k . charList ) cs
+           x' = fromJust x
