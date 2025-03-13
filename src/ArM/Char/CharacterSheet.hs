@@ -20,6 +20,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , getCharacteristicScore
                                , findTraitCS
                                , castingScore
+                               , addCastingScores
                                ) where
 
 import ArM.Char.Trait
@@ -159,3 +160,10 @@ castingScore db cs k | isNothing rec' = 0
          rec = fromJust rec'
          ts = (ArtKey $ technique rec):(map ArtKey $ techniqueReq rec)
          fs = (ArtKey $ form rec):(map ArtKey $ formReq rec)
+
+addCastingScores :: SpellDB -> CharacterSheet -> CharacterSheet
+addCastingScores db cs = cs { spellList = spellList' }
+   where spellList' = map (addCastingScore db cs) (spellList cs)
+addCastingScore :: SpellDB -> CharacterSheet -> Spell -> Spell
+addCastingScore db cs sp = sp { spellCastingScore = sc }
+   where sc = Just $ castingScore db cs (traitKey sp) 

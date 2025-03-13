@@ -198,6 +198,7 @@ data Spell = Spell { spellName :: String
                    , spellExcessXP :: Int
                    , spellMultiplier :: Float
                    , masteryOptions :: [String] 
+                   , spellCastingScore :: Maybe Int
                    }
            deriving (Ord, Eq, Generic)
 
@@ -293,7 +294,9 @@ instance Show Characteristic  where
                     | otherwise = " (" ++ show x ++ " aging points)"
 instance Show Spell  where
    show a = "*" ++ spellName a ++ "* " 
-          ++ spellTeFo a ++ show (spellLevel a) 
+            ++ spellTeFo a ++ show (spellLevel a) ++ f (spellCastingScore a)
+      where f Nothing = ""
+            f (Just x) = " (" ++ show x ++ ")"
 instance Show Art  where
    show a = artName a ++ " " 
           ++ show (artScore a) 
@@ -458,6 +461,7 @@ instance TraitType Spell where
                       , masteryOptions = maybeList (mastery p)
                       , spellExcessXP = y
                       , spellMultiplier = fromMaybe 1.0 $ multiplyXP p
+                      , spellCastingScore = Nothing
                       }
      where (s,y) = getAbilityScore (xp p)
 instance TraitType Reputation where
