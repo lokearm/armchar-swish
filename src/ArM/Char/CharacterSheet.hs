@@ -168,3 +168,15 @@ addCastingScores db cs = trace "addCastingScores" $ cs { spellList = spellList' 
 addCastingScore :: SpellDB -> CharacterSheet -> Spell -> Spell
 addCastingScore db cs sp = trace (show $ traitKey sp) $ sp { spellCastingScore = sc }
    where sc = Just $ castingScore db cs (traitKey sp) 
+
+
+-- | Return the Lab Total a given TeFo combo.
+labTotal :: CharacterSheet -- ^ Current character sheet
+             -> TraitKey       -- ^ Key identifying the spell
+             -> TraitKey       -- ^ Key identifying the spell
+             -> Int            -- ^ Computed casting score
+labTotal cs te fo = ts + fs + int + mt
+   where ts = getArtScore cs te
+         fs = getArtScore cs fo
+         int = getCharacteristicScore cs (CharacteristicKey "Int" ) 
+         (mt,mtspec) = getAbilityScore cs (AbilityKey "Magic Theory" ) 

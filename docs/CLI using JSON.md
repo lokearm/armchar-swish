@@ -65,6 +65,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Flawless magic
 		+ [ ] Linguist
 		+ [ ] Great/Poor Characteristic
+		+ [ ] Inventive Genius
 	+ [ ] Step 3.  CharacterState in JSON
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
