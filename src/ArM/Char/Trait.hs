@@ -91,6 +91,7 @@ data ProtoTrait = ProtoTrait
     , multiplicity :: Maybe Int  -- ^ number of types a virtue/flaw is taken;
                                  -- could be negative to remove an existing, but
                                  -- this is not yet implemented
+    , comment :: Maybe String    -- ^ freeform comment
     } deriving (Ord,Eq,Generic)
 
 -- | Default ProtoTrait object, used internally for step-by-step construction of
@@ -121,6 +122,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , xp = Nothing
                              , aging = Nothing
                              , multiplicity = Nothing
+                             , comment = Nothing
                              }
 
 instance ToJSON ProtoTrait 
@@ -151,7 +153,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "xp"
         <*> v .:?  "aging"
         <*> v .:?  "multiplicity"
-
+        <*> v .:?  "comment"
 
 -- | 
 -- = Trait
@@ -222,6 +224,7 @@ data VF = VF { vfname :: String    -- ^ name of the virtue/flaw
              , vfcost :: Int       -- ^ cost, should be zero for free/inferred virtues/flaws
              , vfAppliesTo :: Maybe TraitKey  -- ^ not used
              , vfMultiplicity :: Int          -- ^ number of times the virtue/flaw is take
+             , vfComment :: String              -- ^ freeform comment
              }
            deriving (Ord, Eq, Generic)
 data Confidence = Confidence { cname :: String, cscore :: Int, cpoints :: Int }
@@ -414,8 +417,10 @@ instance TraitType VF where
        | virtue p /= Nothing = Just $ vf1 { vfname = fromJust (virtue p) }
        | flaw p /= Nothing = Just $ vf1 { vfname = fromJust (flaw p) }
        | otherwise = Nothing
-      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = fromMaybe "" $ detail p,
-                    vfAppliesTo = Nothing, vfMultiplicity = fromMaybe 1 $ multiplicity p }
+      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = fromMaybe "" $ detail p
+                    , vfAppliesTo = Nothing
+                    , vfMultiplicity = fromMaybe 1 $ multiplicity p
+                    , vfComment = fromMaybe "" $ comment p }
 instance TraitType Ability where
     getTrait (AbilityTrait x) = Just x
     getTrait _ = Nothing

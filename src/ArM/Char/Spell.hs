@@ -39,7 +39,7 @@ data SpellRecord = SpellRecord
                    , specialSpell :: [String]        -- ^ Special tags, like Ritual or Mutantum.
                    , description :: String           -- ^ Freeform description of the effect
                    , design :: String                -- ^ Level calculation
-                   , comment :: String               -- ^ Freeform remarks that do not fit elsewhere
+                   , spellComment :: String          -- ^ Freeform remarks that do not fit elsewhere
                    , cite :: String                  -- ^ Source reference
                    }
            deriving (Ord, Eq, Generic, Show)
@@ -58,7 +58,7 @@ defaultSR = SpellRecord
                    , specialSpell = []
                    , description = ""
                    , design = ""
-                   , comment = ""
+                   , spellComment = ""
                    , cite = ""
                    }
 
@@ -83,7 +83,7 @@ fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:x13:x14:x15:_) =
                 , specialSpell =  filter (/="") $ splitOn ";" x11
                 , description = x12
                 , design = x13
-                , comment = x14
+                , spellComment = x14
                 , cite = x15
                 }
 fromCSVline _ = defaultSR

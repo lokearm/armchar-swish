@@ -25,24 +25,23 @@
          , "spec" : "Munster"
          , "xp" : 75
          }
-         , { "virtue" : "Craft Magic", "cost" : 0 }
-         , { "virtue" : "Spell Foci", "cost" : 0 }
-         , { "flaw" : "Weak Spontaneous Magic", "cost" : 0 }
-
-         , { "virtue" : "Strong Faerie Blood", "detail" : "Ettin blood", "cost" : 3 }
-         , { "virtue" : "Flawless Magic", "cost" : 3 }
-         , { "virtue" : "Skilled Parens", "cost" : 1 }
-         , { "virtue" : "Affinity with (art)", "detail" : "Imaginem", "cost" : 1 }
-
-         , { "virtue" : "Second Sight", "cost" : 0 }
-         , { "virtue" : "Minor Magical Focus", "detail" : "magical arrows", "cost" : 0 }
-
-         , { "flaw" : "Mistaken Identity", "cost" : -3 }
+         , { "virtue" : "Craft Magic", "cost" : 0, "comment" : "House Virtue" }
+         , { "virtue" : "Spell Foci", "cost" : 0, "comment" : "House Virtue" }
          , { "flaw" : "Meddler (major)", "cost" : -3 }
          , { "flaw" : "Carefree", "cost" : -1 }
-         , { "flaw" : "Short Ranged Magic", "cost" : -3 }
+         , { "flaw" : "Weak Spontaneous Magic", "cost" : 0, "comment" : "House Flaw" }
 
-         , { "flaw" : "Weakness", "detail": "for Dogs", "cost" : -1 }
+         , { "virtue" : "Minor Magical Focus", "detail" : "magical arrows", "cost" : 1 }
+         , { "virtue" : "Strong Faerie Blood", "detail" : "Ettin blood", "cost" : 3
+           , "comment" : "Ettin Blood gives +1 to Stamina" }
+         , { "flaw" : "Mistaken Identity", "cost" : -3, "comment" : "Story flaw" }
+
+         , { "virtue" : "Flawless Magic", "cost" : 3 }
+         , { "flaw" : "Short-Range Magic", "cost" : -3 }
+         , { "virtue" : "Book Learner", "cost" : 1 }
+         , { "virtue" : "Affinity with (art)", "detail" : "Imaginem", "cost" : 1 }
+         , { "virtue" : "Skilled Parens", "cost" : 1 }
+         , { "virtue" : "Second Sight", "cost" : 0, "comment" : "From Strong Faerie Blood" }
 
          , { "ptrait" : "Villager" , "score" : 2 }
          , { "ptrait" : "Carefree" , "score" : 3 }
