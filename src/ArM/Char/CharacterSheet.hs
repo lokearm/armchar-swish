@@ -138,8 +138,12 @@ castingScore' cs ts fs = t + f + sta
           minl xs = foldl min 0 xs
 castingScore :: SpellDB -> CharacterSheet -> TraitKey -> Int
 castingScore db cs k | isNothing rec' = 0
-                       | otherwise = castingScore' cs ts fs
-   where sp = findTraitCS k cs
+                     | isNothing sp' = 0
+                     | otherwise = castingScore' cs ts fs + mf ( getTrait sp)
+   where sp' = findTraitCS k cs
+         sp = fromJust sp'
+         mf Nothing = 0
+         mf (Just x) = masteryScore x
          rec' = spellLookup k db
          rec = fromJust rec'
          ts = (ArtKey $ technique rec):(map ArtKey $ techniqueReq rec)
