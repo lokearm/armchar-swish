@@ -130,13 +130,21 @@ getCharacteristicScore cs k | isNothing x = 0
            x' = fromJust x
 
 
+-- | Helper for `castingScore`
 castingScore' :: CharacterSheet -> [TraitKey] -> [TraitKey] -> Int
 castingScore' cs ts fs = t + f + sta
     where t = minl $ map (getArtScore cs) ts
           f = minl $ map (getArtScore cs) fs
           sta = getCharacteristicScore cs (CharacteristicKey "Sta")
           minl xs = foldl min 0 xs
-castingScore :: SpellDB -> CharacterSheet -> TraitKey -> Int
+
+-- | Return the Casting Score for a given spell.
+-- The function depends both on the Spell trait from the CharacterSheet
+-- and a generic spell description from a SpellDB.
+castingScore :: SpellDB    -- ^ Spell DB with general descriptions of the spells
+             -> CharacterSheet -- ^ Current character sheet
+             -> TraitKey       -- ^ Key identifying the spell
+             -> Int            -- ^ Computed casting score
 castingScore db cs k | isNothing rec' = 0
                      | isNothing sp' = 0
                      | otherwise = castingScore' cs ts fs + mf ( getTrait sp)
