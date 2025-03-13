@@ -15,16 +15,17 @@ import System.Console.GetOpt
 
 import ArM.BasicIO
 import ArM.Debug.Time
+import ArM.Char.IO
 import ArM.Char.Character
 import ArM.Char.Advancement
 import ArM.Char.Markdown
 
-import Data.Aeson (decode)
+-- import Data.Aeson (decode)
 
 -- import qualified Data.Text as T
 import Data.Maybe (fromJust)
 
-import qualified Data.ByteString.Lazy as LB
+-- import qualified Data.ByteString.Lazy as LB
 
 data Options = Options 
   { sagaFile :: Maybe String
@@ -101,8 +102,8 @@ advChar sn fn cs0 = do
 main' :: Options -> IO ()
 main' opts | charFile opts /= Nothing = do 
      putStrLn $ "Reading file " ++ fn
-     t <- LB.readFile fn
-     let char = fromJust $ ( decode t  :: Maybe Character )
+     t <- readCharacter fn
+     let char = fromJust t  
      let cs = prepareCharacter char
      writeMaybeFile ( debugFile opts ) $ printMD char
      writeMaybeFile ( outFile opts ) $ printMD cs
