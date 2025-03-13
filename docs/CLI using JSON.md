@@ -58,7 +58,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
 	+ [ ] Step 3. Saga.  Organise files
-		+ [ ] Saga object
+		+ [ ] [[Saga object]]
 + [ ] Phase 4. Polish
 	+ [ ] Step 1. Compute Combat Stats
 	+ [ ] Step 2. Virtues and Flaws - Special cases
