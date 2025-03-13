@@ -137,6 +137,10 @@ castingScore' cs ts fs = t + f + sta
           sta = getCharacteristicScore cs (CharacteristicKey "Sta")
           minl xs = foldl min 0 xs
 castingScore :: SpellDB -> CharacterSheet -> TraitKey -> Int
-castingScore db cs key = castingScore' cs [] []
-   where spell = findTraitCS key cs
-         rec = spellLookup
+castingScore db cs k | isNothing rec' = 0
+                       | otherwise = castingScore' cs ts fs
+   where sp = findTraitCS k cs
+         rec' = spellLookup k db
+         rec = fromJust rec'
+         ts = (ArtKey $ technique rec):(map ArtKey $ techniqueReq rec)
+         fs = (ArtKey $ form rec):(map ArtKey $ formReq rec)
