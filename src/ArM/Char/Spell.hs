@@ -74,7 +74,7 @@ fromCSVline :: [String] -> SpellRecord
 fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:x13:x14:x15:_) =
       defaultSR { spellKey = SpellKey x1 
                 , spellRecordTeFo = x2
-                , lvl = trace ("read: "++x7) $ readMaybe x7
+                , lvl = readMaybe x7
                 , technique = x3
                 , techniqueReq = filter (/="") $ splitOn ";" x4
                 , form = x5
