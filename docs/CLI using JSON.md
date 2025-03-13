@@ -30,14 +30,12 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Refactor and document code
 + [ ] Phase 2. Magus
-	+ [ ] Step 1.  Spells
-		+ [x] Read Spell data from CSV
-		+ [ ] Pretty print spells for validation
 	+ [x] Step 2. Casting Score
 		+ [x] Look up arts and stats
 		+ [x] Compute Casting Score
 		+ [x] Print Casting Score on character sheet
 	+ [ ] Step 3. Review Cieran
+		+ [ ] Fix Cieran build
 		+ [ ] Review Cieran's ingame advancements
 		+ [ ] Add in-game advancements
 	+ [ ] Step 4. Lab Total
@@ -47,6 +45,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Warping
 		+ [ ] Decrepitude
 		+ [ ] Aging
+		+ [ ] advance age on Winter seasons
 		+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
 + [ ] Phase 3. Covenant
@@ -59,6 +58,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
 	+ [ ] Step 3. Saga.  Organise files
+		+ [ ] Saga object
 + [ ] Phase 4. Polish
 	+ [ ] Step 1. Compute Combat Stats
 	+ [ ] Step 2. Virtues and Flaws - Special cases
@@ -68,6 +68,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 3.  CharacterState in JSON
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
+	+ [ ] Pretty print spells for reference
 
 + Advancement process.
     + Uses State from previous season and Advancement from current season.
