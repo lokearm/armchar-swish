@@ -19,9 +19,11 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , getAbilityScore
                                , getCharacteristicScore
                                , findTraitCS
+                               , castingScore
                                ) where
 
 import ArM.Char.Trait
+import ArM.Char.Spell
 import ArM.Char.Internal.Character
 import GHC.Generics
 import Data.Aeson
@@ -126,3 +128,15 @@ getCharacteristicScore cs k | isNothing x = 0
                  | otherwise = charScore x'
      where x = ( findTrait k . charList ) cs
            x' = fromJust x
+
+
+castingScore' :: CharacterSheet -> [TraitKey] -> [TraitKey] -> Int
+castingScore' cs ts fs = t + f + sta
+    where t = minl $ map (getArtScore cs) ts
+          f = minl $ map (getArtScore cs) fs
+          sta = getCharacteristicScore cs (CharacteristicKey "Sta")
+          minl xs = foldl min 0 xs
+castingScore :: SpellDB -> CharacterSheet -> TraitKey -> Int
+castingScore db cs key = castingScore' cs [] []
+   where spell = findTraitCS key cs
+         rec = spellLookup
