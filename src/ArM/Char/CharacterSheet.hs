@@ -97,10 +97,13 @@ filterCS cs = defaultSheet
                  (x7,y7) = filterTrait y6
                  (x8,y8) = filterTrait y7
 
+-- | Find a trait, given by a key, from a list of Trait objects.
 findTrait :: (TraitLike a) => TraitKey -> [a] -> Maybe a
 findTrait k = find ( (k==) . traitKey )
 
 
+-- | Find a trait, given by a key, from the CharacterSheet.
+-- This may not be in use. 
 findTraitCS ::  TraitKey -> CharacterSheet -> Maybe Trait
 findTraitCS (AbilityKey x) = (fmap toTrait) . findTrait (AbilityKey x) . abilityList
 findTraitCS (ArtKey x) = (fmap toTrait) . findTrait (ArtKey x) . abilityList
