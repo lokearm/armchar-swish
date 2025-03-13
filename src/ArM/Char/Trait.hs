@@ -159,7 +159,7 @@ instance FromJSON ProtoTrait where
 data TraitKey = AbilityKey String
            | CharacteristicKey String
            | ArtKey String
-           | SpellKey String String
+           | SpellKey String 
            | PTraitKey String
            | ReputationKey String String
            | VFKey String String
@@ -582,7 +582,7 @@ instance TraitLike Art where
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
-    traitKey x = SpellKey ( spellName x ) ( spellTeFo x ++ show (spellLevel x))
+    traitKey x = SpellKey ( spellName x ) 
     toTrait = SpellTrait
     advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (maybeInt $ xp a)
@@ -616,7 +616,6 @@ instance TraitLike ProtoTrait where
        | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
        | art p /= Nothing = ArtKey $ fromJust $ art p 
        | spell p /= Nothing = SpellKey ( fromJust $ spell p ) 
-             $ (fromMaybe "" $ tefo p) ++ (show $ fromMaybe 0 $ level p )
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
        | virtue p /= Nothing = VFKey ( fromJust (virtue p) ) (fromMaybe "" $ detail p)

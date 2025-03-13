@@ -26,6 +26,7 @@ import qualified Data.Map as M
 
 data SpellRecord = SpellRecord
                    { spellKey :: TraitKey   -- ^ Unique identifier as used in `ArM.Char.Trait`
+                   , spellRecordTeFo :: String
                    , lvl :: Maybe Int       -- ^ Spell Level.  General Level Spells have Nothing.
                    , technique :: String
                    , techniqueReq :: [String]
@@ -44,6 +45,7 @@ data SpellRecord = SpellRecord
 defaultSR :: SpellRecord
 defaultSR = SpellRecord
                    { spellKey = OtherTraitKey "None"
+                   , spellRecordTeFo = ""
                    , lvl = Nothing
                    , technique = ""
                    , techniqueReq = []
@@ -67,7 +69,8 @@ spellDB = M.fromList . map ( \ x -> (spellKey x,x) ) . map fromCSVline
 -- | Parse the cells of one line from the CSV file into a SpellRecord object.
 fromCSVline :: [String] -> SpellRecord
 fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:x13:x14:x15:_) =
-      defaultSR { spellKey = SpellKey x1 x2
+      defaultSR { spellKey = SpellKey x1 
+                , spellRecordTeFo = x2
                 , lvl = read x3
                 , technique = x4
                 , techniqueReq = splitOn ";" x5
