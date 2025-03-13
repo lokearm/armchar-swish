@@ -32,6 +32,7 @@ data Options = Options
   , charFile :: Maybe String
   , outFile  :: Maybe String
   , jsonFile :: Maybe String
+  , spellFile :: Maybe String
   , debugFile  :: Maybe String
   , seasonFile  :: Maybe String
   , advanceSeason  :: Maybe String
@@ -42,6 +43,7 @@ defaultOptions = Options
   , charFile = Nothing
   , outFile  = Nothing
   , jsonFile  = Nothing
+  , spellFile = Nothing
   , debugFile  = Nothing
   , seasonFile  = Nothing
   , advanceSeason  = Nothing
@@ -65,6 +67,9 @@ options =
     , Option ['s']     ["saga"] (ReqArg 
             (\arg opt -> opt { sagaFile = Just arg })
             "FILE") "saga file"
+    , Option ['S']     ["spells"] (ReqArg 
+            (\arg opt -> opt { spellFile = Just arg })
+            "FILE") "input file for spell database"
     , Option ['j']     ["json"] (ReqArg 
             (\arg opt -> opt { jsonFile = Just arg })
             "FILE") "JSON output file"
@@ -103,6 +108,7 @@ main' :: Options -> IO ()
 main' opts | charFile opts /= Nothing = do 
      putStrLn $ "Reading file " ++ fn
      t <- readCharacter fn
+     db <- readSpell $ spellFile opts
      let char = fromJust t  
      let cs = prepareCharacter char
      writeMaybeFile ( debugFile opts ) $ printMD char
@@ -111,4 +117,7 @@ main' opts | charFile opts /= Nothing = do
      advChar ( advanceSeason opts ) (seasonFile opts) cs
      return ()
    where fn = fromJust $ charFile opts
+         readSpell Nothing = return Nothing
+         readSpell (Just f) = readSpellDB f
+
 main' _ | otherwise = error "Not implemented!" 
