@@ -113,16 +113,19 @@ findTraitCS (SpellKey x y) = (fmap toTrait) . findTrait (SpellKey x y) . ability
 findTraitCS (CharacteristicKey x) = (fmap toTrait) . findTrait (CharacteristicKey x) . abilityList
 findTraitCS _ = \ _ -> Nothing
 
+-- | Get the score and speciality in a given ability.
 getAbilityScore :: CharacterSheet -> TraitKey -> (Int,Maybe String)
 getAbilityScore cs k | isNothing x = (0,Nothing)
                      | otherwise = (abilityScore x', speciality x') 
      where x = ( findTrait k . abilityList ) cs
            x' = fromJust x
+-- | Get a given art score 
 getArtScore :: CharacterSheet -> TraitKey -> Int
 getArtScore cs k | isNothing x = 0
                  | otherwise = artScore x'
      where x = ( findTrait k . artList ) cs
            x' = fromJust x
+-- | Get a given characteristic score 
 getCharacteristicScore :: CharacterSheet -> TraitKey -> Int
 getCharacteristicScore cs k | isNothing x = 0
                  | otherwise = charScore x'
