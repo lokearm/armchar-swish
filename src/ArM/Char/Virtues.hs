@@ -54,16 +54,6 @@ vl3 = [ ("Self-Confidence", \ _ -> confTrait 2 5 )
       , ("Low Self-Esteem", \ _ -> confTrait 0 0 )
       ]
 
-confTrait :: Int -> Int -> Trait
-confTrait x y = ConfidenceTrait $ Confidence { cname = "Confidence", cscore = x, cpoints = y } 
-inferConfidence :: [VF] -> Trait
-inferConfidence vfs | rs == [] = confTrait 1 3
-                    | otherwise =  head rs
-    where vf = [ Map.lookup (vfname x) confMap | x <- vfs ]
-          app Nothing _ = Nothing
-          app (Just f) x = Just $ f x
-          rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
-
 snab :: [ String ]
 snab = [ "Second Sight", "Enchanting Music", "Dowsing",
          "Magic Sensitivity", "Animal Ken", "Wilderness Sense",
@@ -73,6 +63,19 @@ snab = [ "Second Sight", "Enchanting Music", "Dowsing",
 
 virtueMap :: Map.Map String ( VF -> ProtoTrait ) 
 virtueMap = Map.fromList $ vl1 ++ vl2
+
+-- |
+-- = Confidence
+
+confTrait :: Int -> Int -> Trait
+confTrait x y = ConfidenceTrait $ Confidence { cname = "Confidence", cscore = x, cpoints = y } 
+inferConfidence :: [VF] -> Trait
+inferConfidence vfs | rs == [] = confTrait 1 3
+                    | otherwise =  head rs
+    where vf = [ Map.lookup (vfname x) confMap | x <- vfs ]
+          app Nothing _ = Nothing
+          app (Just f) x = Just $ f x
+          rs = filterNothing [ app g x | (g,x) <- zip vf vfs ]
 confMap :: Map.Map String ( VF -> Trait ) 
 confMap = Map.fromList $ vl3
 
@@ -86,8 +89,6 @@ inferTraits vfs = sortTraits rs
 
 -- |
 -- = Infer Limits for Pregame Design
-
--- ( VFKey "Skilled Parens", id )  -- +60 xp +60 spells
 
 llLookup:: String -> (Int,Int)
 llLookup "Warrior" = (50,0) 

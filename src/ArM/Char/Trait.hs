@@ -35,16 +35,10 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Spell(..)
                       , Reputation(..)
                       , VF(..)
-                      , advanceTrait
                       , sortTraits
-                      , traitKey
-                      , getTrait
-                      , computeTrait
-                      , (<:)
-                      , (>:)
-                      , toTrait
+                      , TraitLike(..)
+                      , TraitType(..)
                       , advance
-                      , filterTrait
                       , defaultPT
                       , spellTeFoLe
                        ) where
@@ -52,7 +46,6 @@ module ArM.Char.Trait ( ProtoTrait(..)
 import ArM.Debug.Trace
 import ArM.GameRules
 import GHC.Generics
--- import Data.List (sort)
 import Data.Aeson
 import Data.Maybe (fromJust,isNothing,fromMaybe)
 import Data.List (sortBy)
@@ -166,7 +159,7 @@ instance FromJSON ProtoTrait where
 data TraitKey = AbilityKey String
            | CharacteristicKey String
            | ArtKey String
-           | SpellKey String
+           | SpellKey String String
            | PTraitKey String
            | ReputationKey String String
            | VFKey String String
@@ -506,8 +499,10 @@ instance TraitType Confidence where
 (<:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
 (<:) p1 p2 = traitKey p1 < traitKey p2
 
+{-
 (>:) :: (TraitLike t1, TraitLike t2) => t1 -> t2 -> Bool
 (>:) p1 p2 = p2 <: p1
+-}
 
 
 sortTraits :: TraitLike t => [ t ] -> [ t ]
@@ -584,7 +579,7 @@ instance TraitLike Art where
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
-    traitKey x = SpellKey $ spellName x
+    traitKey x = SpellKey ( spellName x ) ( spellTeFo x )
     toTrait = SpellTrait
     advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (maybeInt $ xp a)
@@ -617,7 +612,7 @@ instance TraitLike ProtoTrait where
        | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
        | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
        | art p /= Nothing = ArtKey $ fromJust $ art p 
-       | spell p /= Nothing = SpellKey $ fromJust $ spell p
+       | spell p /= Nothing = SpellKey ( fromJust $ spell p ) (fromMaybe "" $ tefo p)
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
        | virtue p /= Nothing = VFKey ( fromJust (virtue p) ) (fromMaybe "" $ detail p)
