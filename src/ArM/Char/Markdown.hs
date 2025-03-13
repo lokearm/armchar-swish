@@ -13,7 +13,7 @@ module ArM.Char.Markdown (printMDaug,printMD,artMD) where
 -- import Data.Maybe (fromJust)
 import Data.Maybe 
 import Data.List 
-import ArM.Char.Character 
+import ArM.Char.Internal.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Advancement
@@ -74,7 +74,7 @@ artLine :: Art -> String
 artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
 
 instance Markdown CharacterSheet where
-   printMD c = ag:(ol ++ cl ++ ml ) -- foldl (:) ml cl
+   printMD c = ag:(ol ++ cl ++ ml ++ lt ) -- foldl (:) ml cl
     where f _ [] = ""
           f s xs = foldl (++) s (map (++", ") $ map show xs)
           ml = [ f "+ **Characteristics:** "  $ charList c
@@ -89,6 +89,13 @@ instance Markdown CharacterSheet where
           cl = foldl (++) [] $ map printMD $ confList c
           ol = foldl (++) [] $ map printMD $ csTraits c
           ag = "+ **Age:** " ++ show (csAge c)
+          lt | Magus /= csType c = []
+             | otherwise = "":"| Casting Total | Creo | Intellego | Muto | Perdo | Rego |":
+                              "|         :-    |  -:  |  -:       |  -:  |  -:   |  -:  |":
+                              lts
+          lts = [ "| " ++ fo ++ foldl (++) "" (map ( (" | "++) . show ) ts ) ++ " |" 
+                | (fo,ts) <- zip lforms (labTotals c) ]
+          lforms = [ "Aninal", "Aquam", "Auram", "Corpus", "Herbam", "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
    printMDaug db = printMD . addCastingScores db
 
 instance Markdown Confidence where

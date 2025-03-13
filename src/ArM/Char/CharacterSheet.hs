@@ -22,6 +22,8 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , castingScore
                                , addCastingScores
                                , labTotals
+                               , techniques
+                               , forms
                                ) where
 
 import ArM.Char.Trait

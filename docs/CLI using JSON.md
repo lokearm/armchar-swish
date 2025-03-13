@@ -38,9 +38,9 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Fix Cieran build
 		+ [ ] Review Cieran's ingame advancements
 		+ [ ] Add in-game advancements
-	+ [ ] Step 4. Lab Total
-		+ [ ] Compute Lab Totals
-		+ [ ] Print lab totals on character sheet
+	+ [x] Step 4. Lab Total
+		+ [x] Compute Lab Totals
+		+ [x] Print lab totals on character sheet
 	+ [ ] Step 5. Finishing touches
 		+ [ ] Warping
 		+ [ ] Decrepitude

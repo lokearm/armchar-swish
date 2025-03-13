@@ -26,6 +26,7 @@ module ArM.Char.Internal.Character ( Character(..)
                           , fullName
                           , fullConceptName
                           , isGrog
+                          , isMagus
                           , defaultCS
                           ) where
 
@@ -45,6 +46,9 @@ import ArM.Helper
 isGrog :: Character -> Bool
 isGrog c | charType (concept c) == Grog = True
          | otherwise = False
+isMagus :: Character -> Bool
+isMagus c | charType (concept c) == Magus = True
+          | otherwise = False
 
 -- |
 -- = CharacterConcept
