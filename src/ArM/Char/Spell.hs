@@ -22,7 +22,10 @@ module ArM.Char.Spell ( SpellRecord(..)
 import ArM.Char.Trait
 import GHC.Generics
 import Data.List.Split
+import Text.Read
 import qualified Data.Map as M
+
+import ArM.Debug.Trace
 
 data SpellRecord = SpellRecord
                    { spellKey :: TraitKey   -- ^ Unique identifier as used in `ArM.Char.Trait`
@@ -39,7 +42,7 @@ data SpellRecord = SpellRecord
                    , comment :: String               -- ^ Freeform remarks that do not fit elsewhere
                    , cite :: String                  -- ^ Source reference
                    }
-           deriving (Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic, Show)
 
 -- | Default SpellRecord object as a starting point for step-by-step construction.
 defaultSR :: SpellRecord
@@ -71,13 +74,13 @@ fromCSVline :: [String] -> SpellRecord
 fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:x13:x14:x15:_) =
       defaultSR { spellKey = SpellKey x1 
                 , spellRecordTeFo = x2
-                , lvl = read x3
-                , technique = x4
-                , techniqueReq = splitOn ";" x5
-                , form = x6
-                , formReq = splitOn ";" x7
+                , lvl = trace ("read: "++x7) $ readMaybe x7
+                , technique = x3
+                , techniqueReq = filter (/="") $ splitOn ";" x4
+                , form = x5
+                , formReq = filter (/="") $ splitOn ";" x6
                 , rdt = (x8, x9, x10)
-                , specialSpell = splitOn ";" x11
+                , specialSpell =  filter (/="") $ splitOn ";" x11
                 , description = x12
                 , design = x13
                 , comment = x14

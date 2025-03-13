@@ -109,9 +109,9 @@ findTrait k = find ( (k==) . traitKey )
 -- This may not be in use. 
 findTraitCS ::  TraitKey -> CharacterSheet -> Maybe Trait
 findTraitCS (AbilityKey x) = (fmap toTrait) . findTrait (AbilityKey x) . abilityList
-findTraitCS (ArtKey x) = (fmap toTrait) . findTrait (ArtKey x) . abilityList
-findTraitCS (SpellKey x) = (fmap toTrait) . findTrait (SpellKey x) . abilityList
-findTraitCS (CharacteristicKey x) = (fmap toTrait) . findTrait (CharacteristicKey x) . abilityList
+findTraitCS (ArtKey x) = (fmap toTrait) . findTrait (ArtKey x) . artList
+findTraitCS (SpellKey x) = (fmap toTrait) . findTrait (SpellKey x) . spellList
+findTraitCS (CharacteristicKey x) = (fmap toTrait) . findTrait (CharacteristicKey x) . charList
 findTraitCS _ = \ _ -> Nothing
 
 -- | Get the score and speciality in a given ability.
@@ -122,8 +122,8 @@ getAbilityScore cs k | isNothing x = (0,Nothing)
            x' = fromJust x
 -- | Get a given art score 
 getArtScore :: CharacterSheet -> TraitKey -> Int
-getArtScore cs k | isNothing x = 0
-                 | otherwise = artScore x'
+getArtScore cs k | isNothing x = trace ("0"++show k) $ trace (show $artList cs)  0
+                 | otherwise = trace (show x') $ artScore x'
      where x = ( findTrait k . artList ) cs
            x' = fromJust x
 -- | Get a given characteristic score 
@@ -136,11 +136,12 @@ getCharacteristicScore cs k | isNothing x = 0
 
 -- | Helper for `castingScore`
 castingScore' :: CharacterSheet -> [TraitKey] -> [TraitKey] -> Int
-castingScore' cs ts fs = t + f + sta
-    where t = minl $ map (getArtScore cs) ts
-          f = minl $ map (getArtScore cs) fs
+castingScore' cs ts fs = trace ("- " ++ show ts) $ trace ( show fs ) $ t + f + sta
+    where t = minl $ trace ("ts="++show ts) $ map (getArtScore cs) ts
+          f = minl $ trace ("fs="++show fs) $ map (getArtScore cs) fs
           sta = getCharacteristicScore cs (CharacteristicKey "Sta")
-          minl xs = foldl min 0 xs
+          minl [] = 0
+          minl (x:xs) = trace ( "> " ++ show (x:xs) ) $ foldl min x xs
 
 -- | Return the Casting Score for a given spell.
 -- The function depends both on the Spell trait from the CharacterSheet
@@ -151,7 +152,7 @@ castingScore :: SpellDB    -- ^ Spell DB with general descriptions of the spells
              -> Int            -- ^ Computed casting score
 castingScore db cs k | isNothing rec' = trace ( "no rec' " ++ show k)  0
                      | isNothing sp' = trace ( "no sp' " ++ show k)  0
-                     | otherwise = castingScore' cs ts fs + mf ( getTrait sp)
+                     | otherwise = trace (show rec) $ castingScore' cs ts fs + mf ( getTrait sp)
    where sp' = findTraitCS k cs
          sp = fromJust sp'
          mf Nothing = 0
@@ -165,5 +166,5 @@ addCastingScores :: SpellDB -> CharacterSheet -> CharacterSheet
 addCastingScores db cs = trace "addCastingScores" $ cs { spellList = spellList' }
    where spellList' = map (addCastingScore db cs) (spellList cs)
 addCastingScore :: SpellDB -> CharacterSheet -> Spell -> Spell
-addCastingScore db cs sp = trace (show sp) $ trace (show $ traitKey sp) $ sp { spellCastingScore = sc }
+addCastingScore db cs sp = trace (show $ traitKey sp) $ sp { spellCastingScore = sc }
    where sc = Just $ castingScore db cs (traitKey sp) 

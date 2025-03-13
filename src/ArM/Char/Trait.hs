@@ -571,7 +571,7 @@ instance TraitLike Ability where
             um Nothing ab = ab 
             um abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Art where
-    traitKey x = ArtKey $ artName x
+    traitKey x = ArtKey $ take 2 $ artName x
     toTrait = ArtTrait
     advanceTrait a x = 
           updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
