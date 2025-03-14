@@ -883,7 +883,7 @@
       { "mode" : "Story", "season" : "Winter 1254"
       , "sourceQuality" : 7
       , "narrative" : "No Aging (rolled 4)"
-      , "changes" : [ { "ability" : "Finesse", "xp" : 5 } ]
+      , "changes" : [ { "ability" : "Finesse", "xp" : 5 } 
                     , { "ability" : "Etiquette", "xp" : 2 } ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"

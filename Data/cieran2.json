@@ -362,10 +362,19 @@
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
       { "mode" : "Lab Work ", "season" : "Spring 1228"
-      , "sourceQuality" : 3
+      , "sourceQuality" : 3.5
       , "narrative" : ""
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2.5 } 
                     , { "ability" : "Herme Lore", "xp" : 1 } ]
+      },
+      { "mode" : "Reading ", "season" : "Summer 1228"
+      , "sourceQuality" : 19.5
+      , "changes" : [ { "art" : "Imaginem", "xp" : 19.5 } ]
+      },
+      { "mode" : "Lab Work", "season" : "Spring 1255"
+      , "sourceQuality" : 4.5
+      , "narrative" : "CrIm spells (376xp)"
+      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
       }
    ]
 }
