@@ -359,12 +359,6 @@ instance Show ProtoTrait  where
 -- |
 -- = Computing Traits
 
-getAbilityScore :: Maybe XPType -> (Int,XPType)
-getAbilityScore x' = (s,y) 
-     where y = x - 5*pyramidScore s
-           s = scoreFromXP (x `div` 5)
-           x = fromMaybe 0 x'
-
 computeOther :: ProtoTrait -> OtherTrait
 computeOther p
     | spell p == Nothing = error "Not an properly formatted trait"
