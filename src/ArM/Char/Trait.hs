@@ -368,7 +368,7 @@ computeOther p
                       , otherScore = s
                       , otherExcess = y
                       }
-                 where (s,y) = getAbilityScore (fmap fromIntegral $ points p)
+                 where (s,y) = getAbilityScore (points p)
 
 
 
