@@ -22,7 +22,7 @@
       { "mode" : "Virtues and Flaws"
       , "changes" : [
          { "ability" : "Native Language: Irish"
-         , "spec" : "Munster"
+         , "spec" : "Leinster"
          , "xp" : 75
          }
          , { "virtue" : "Craft Magic", "cost" : 0, "comment" : "House Virtue" }
@@ -60,28 +60,28 @@
       ] },
       { "mode" : "Early Childhood"
       , "changes" : 
-         [ { "ability" : "Stealth", "spec" : "Hiding", "xp" : 5 }
+         [ { "ability" : "Area Lore: Munster" , "spec" : "Hiding Places" , "xp" : 5 }
          , { "ability" : "Awareness" , "spec" : "Searching" , "xp" : 15 }
-         , { "ability" : "Second Sight" , "spec" : "Faerie Illusions"  }
          , { "ability" : "Brawl" , "spec" : "Dodge" , "xp" : 15 }
-         , { "ability" : "Area Lore: Munster" , "spec" : "Hiding Places" , "xp" : 5 }
          , { "ability" : "Folk Ken" , "spec" : "Vilagers" , "xp" : 5 }
+         , { "ability" : "Stealth", "spec" : "Hiding", "xp" : 5 }
+         , { "ability" : "Second Sight" , "spec" : "Faerie Illusions"  }
          ] 
       },
       { "mode" : "Later Life"
       , "years" : 5
       , "changes" : 
-         [ { "ability" : "Bargain", "spec": "", "xp": 5 }
+         [ { "ability" : "Area Lore: Ireland", "spec" : "Legends", "xp": 5 }
+         , { "ability" : "Bargain", "spec": "", "xp": 5 }
          , { "ability" : "Concentration", "spec": "Spell Concentration", "xp": 5 }
          , { "ability" : "Craft: Cooking", "spec": "Cookies", "xp": 30 }
          , { "ability" : "Craft: Fletching", "spec": "Arrows", "xp": 30 }
-         , { "ability" : "Hermes Lore", "spec": "Hibernia", "xp": 5 }
          ] 
       },
       { "mode" : "Apprenticeship"
       , "changes" : 
          [ { "art" : "Creo", "xp": 21 }
-         , { "art" : "Intellego", "xp": 15 }
+         , { "art" : "Intellego", "xp": 0 }
          , { "art" : "Muto", "xp": 0 }
          , { "art" : "Perdo", "xp": 36 }
          , { "art" : "Rego", "xp": 36 }
@@ -94,17 +94,16 @@
          , { "art" : "Imaginem", "xp": 53 }
          , { "art" : "Mentem", "xp": 1 }
          , { "art" : "Terram", "xp": 15 }
-         , { "art" : "Vim", "xp": 1 }
+         , { "art" : "Vim", "xp": 3 }
+         , { "ability" : "Hermes Lore", "spec": "Hibernia", "xp": 5 }
          , { "ability" : "Artes Liberales", "spec" : "Rituals", "xp": 5 }
-         , { "ability" : "Philosophiae", "spec" : "Rituals", "xp": 0 }
          , { "ability" : "Latin", "spec" : "Hermetic Usage", "xp": 30 }
-         , { "ability" : "Parma Magica", "spec" : "Mentem", "xp": 5 }
          , { "ability" : "Hermes Code", "spec" : "Stonehenge", "xp": 5 }
          , { "ability" : "Magic Theory", "spec" : "Spells", "xp": 30 }
+         , { "ability" : "Parma Magica", "spec" : "Mentem", "xp": 5 }
          , { "ability" : "Penetration", "spec" : "Rego", "xp": 5 }
          , { "ability" : "Bows", "spec" : "Longbow", "xp": 30 }
          , { "ability" : "Thrown Weapon", "spec" : "Dart", "xp": 5 }
-         , { "ability" : "Area Lore: Ireland", "spec" : "Legends", "xp": 5 }
          , { "spell" : "Wound without Cause", "tefo" : "PeCo", "level" : 20  }
          , { "spell" : "Spasms of the Uncontrolled Body", "tefo" : "ReCo", "level" : 5  }
          , { "spell" : "Lamp till Morning without Flame", "tefo" : "CrIg", "level" : 15  }

@@ -30,7 +30,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [x] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Validate Eogan build
 	+ [ ] Step 3. Review Cieran
-		+ [ ] Fix Cieran build
+		+ [x] Fix Cieran build
 		+ [ ] Review Cieran's ingame advancements
 		+ [ ] Add in-game advancements
 	+ [ ] Refactor and document code
