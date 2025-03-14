@@ -366,9 +366,9 @@ computeOther p
            OtherTrait { trait = fromJust (other p) 
                       , pts = fromMaybe 0 ( points p ) 
                       , otherScore = s
-                      , otherExcess = round y
+                      , otherExcess = y
                       }
-                 where (s,y) = getAbilityScore (fmap fromIntegral $ points p)
+                 where (s,y) = getAbilityScore (points p)
 
 
 
