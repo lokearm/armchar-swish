@@ -247,7 +247,7 @@
       { "mode" : "Lab Work", "season" : "Summer 1222"
       , "sourceQuality" : 2
       , "narrative" : "ReTe items (covenant service) Parma to 24xp"
-      , "changes" : [ { "art" : "Parma", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1222"
       , "sourceQuality" : 16
@@ -257,7 +257,7 @@
       { "mode" : "Lab Work ", "season" : "Winter 1223"
       , "sourceQuality" : 2
       , "narrative" : "Stone Tell of Mind that Sits "
-      , "changes" : [ { "art" : "Parma", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1223"
       , "sourceQuality" : 2
@@ -317,7 +317,9 @@
       { "mode" : "Adventure ", "season" : "Winter 1226"
       , "sourceQuality" : 15
       , "narrative" : ""
-      , "changes" : [ { "art" : "Second SIght (5) Parma (5) Leadership (5)", "xp" : 15 } ]
+      , "changes" : [ { "ability" : "Second Sight", "xp" : 5 } 
+                    , { "ability" : "Parma Magica", "xp" : 5 }
+                    , { "ability" : "Leadership", "xp" : 5 } ]
       },
       { "mode" : "Open Arts ", "season" : "Spring 1226"
       , "sourceQuality" : 2
@@ -352,7 +354,7 @@
       { "mode" : "Exposure", "season" : "Autumn 1227"
       , "sourceQuality" : 2
       , "narrative" : "Copy spells (covenant service) "
-      , "changes" : [ { "art" : "Latin", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : "Winter 1228"
       , "sourceQuality" : 16
@@ -437,42 +439,42 @@
       { "mode" : "Initiation", "season" : "Winter 1232"
       , "sourceQuality" : 2
       , "narrative" : "Puissant SOCP Lore."
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Initiation", "season" : "Spring 1232"
       , "sourceQuality" : 2
       , "narrative" : "Good Teacher."
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Teaching  ", "season" : "Summer 1232"
       , "sourceQuality" : 2
       , "narrative" : "Train Hiccup. Parma to 45xp"
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Lab       ", "season" : "Autumn 1232"
       , "sourceQuality" : 2
       , "narrative" : "Oblivion Variants "
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Taught    ", "season" : "Winter 1233"
       , "sourceQuality" : 15
       , "narrative" : "Hired teacher for £1. "
-      , "changes" : [ { "art" : "Craft: Rope.", "xp" : 15 } ]
+      , "changes" : [ { "ability" : "Craft: Rope.", "xp" : 15 } ]
       },
       { "mode" : "Teaching  ", "season" : "Spring 1233"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup "
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Lab       ", "season" : "Summer 1233"
       , "sourceQuality" : 2
       , "narrative" : "Gift of Perception ++ "
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Lab       ", "season" : "Autumn 1233"
       , "sourceQuality" : 2
       , "narrative" : "Ward of Heat and Flames Parma to 51xp "
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Reading   ", "season" : "Winter 1234"
       , "sourceQuality" : 16
@@ -566,8 +568,9 @@
       },
       { "mode" : "Story ", "season" : "Summer 1238"
       , "sourceQuality" : 8
-      , "narrative" : "Plus Quest for Cautious Sorcerer"
-      , "changes" : [ { "art" : "Parma Magica (4 to 55xp) Second Sight (4)", "xp" : 8 } ]
+      , "narrative" : "Plus Quest for Cautious Sorcerer. Parma Magica (4 to 55xp)"
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 4 } 
+                    , { "ability" : "Second Sight", "xp" : 4 } ]
       },
       { "mode" : "Lab Work ", "season" : "Autumn 1238"
       , "sourceQuality" : 2
@@ -627,7 +630,7 @@
       { "mode" : "Exposure", "season" : "Summer 1241"
       , "sourceQuality" : 2
       , "narrative" : " Copy lab tests (covenant service)  "
-      , "changes" : [ { "art" : "Latin", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1241"
       , "sourceQuality" : 17
@@ -682,12 +685,13 @@
       { "mode" : "Lab Work", "season" : "Spring 1244"
       , "sourceQuality" : 2
       , "narrative" : " CrIg Attack Spell. Parma to 57xp "
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Story   ", "season" : "Summer 1244"
       , "sourceQuality" : 10
-      , "narrative" : " Midsummer Fair "
-      , "changes" : [ { "art" : "Parma Magica (5), Folk Ken (5) + one confidence point ", "xp" : 10 } ]
+      , "narrative" : " Midsummer Fair: Parma Magica (5), Folk Ken (5) + one confidence point "
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 5 }
+                    , { "ability" : "Folk Ken", "xp" : 5 } ]
       },
       { "mode" : "Reading ", "season" : " Autumn 1244"
       , "sourceQuality" : 11
@@ -697,12 +701,14 @@
       { "mode" : "Lab Work ", "season" : " Winter 1245"
       , "sourceQuality" : 2
       , "narrative" : " PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases "
-      , "changes" : [ { "art" : "Parma Magica ", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica ", "xp" : 2 } ]
       },
       { "mode" : "Story    ", "season" : "Spring 1245"
       , "sourceQuality" : 15
       , "narrative" : " 4 conf pts "
-      , "changes" : [ { "art" : "Second Sight/Parma Magica/Faerie Lore", "xp" : 15 } ]
+      , "changes" : [ { "ability" : "Second Sight", "xp" : 5 }
+                    , { "ability" : "Parma Magica", "xp" : 5 } 
+                    , { "ability" : "Faerie Lore", "xp" : 5 } ]
       },
       { "mode" : "Reading ", "season" : "Summer 1245"
       , "sourceQuality" : 14.5
@@ -752,7 +758,7 @@
       { "mode" : "Author  ", "season" : " Autumn 1247"
       , "sourceQuality" : 2
       , "narrative" : " CrMe rituals x4 for Com to +5; (58xp) Tractatus on Corpus Q14 "
-      , "changes" : [ { "art" : "Latin", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : " Winter 1248"
       , "sourceQuality" : 15
@@ -792,12 +798,12 @@
       { "mode" : "Author", "season" : " Autumn 1249"
       , "sourceQuality" : 2
       , "narrative" : " Tractatus on Imaginem Q14"
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : " Winter 1250"
       , "sourceQuality" : 2
       , "narrative" : " no aging (-18); invent InHe25 Converse with Plant and Tree "
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Reading", "season" : " Spring 1250"
       , "sourceQuality" : 22.5
@@ -832,7 +838,7 @@
       { "mode" : "Author Book", "season" : " Autumn 1251"
       , "sourceQuality" : 2
       , "narrative" : " *Imaginary Horrors*"
-      , "changes" : [ { "art" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Reading", "season" : " Winter 1252"
       , "sourceQuality" : 12
@@ -872,12 +878,13 @@
       { "mode" : "Author", "season" : "Autumn 1253"
       , "sourceQuality" : 2
       , "narrative" : "Rego Tracatus (62xp) "
-      , "changes" : [ { "art" : "Latin", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
       { "mode" : "Story", "season" : "Winter 1254"
       , "sourceQuality" : 7
       , "narrative" : " No Aging (rolled 4)"
-      , "changes" : [ { "art" : "Finesse (5), Etiquette (2)", "xp" : 7 } ]
+      , "changes" : [ { "ability" : "Finesse", "xp" : 5 } ]
+                    , { "ability" : "Etiquette", "xp" : 2 } ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"
       , "sourceQuality" : 24
