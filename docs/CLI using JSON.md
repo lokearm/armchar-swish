@@ -25,8 +25,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 ## Roadmap
 
 + [ ] Phase 1. Companion/Grog
-	+ [ ] [[Saga object]]
-	+ [ ] Produce bundle of files - systematic name and directory structure
+	+ [x] Produce bundle of files - systematic name and directory structure
 	+ [ ] Extract error report in Markdown
 	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Validate Eogan build
@@ -51,6 +50,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
+	+ [ ] Develop [[Saga object]]
 + [ ] Phase 4. Polish
 	+ [ ] Step 1. Compute Combat Stats
 	+ [ ] Step 2.  Long Character Sheet
