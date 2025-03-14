@@ -120,5 +120,7 @@ main' opts | charFile opts /= Nothing = do
    where fn = fromJust $ charFile opts
          readSpell Nothing = return Nothing
          readSpell (Just f) = readSpellDB f
-
+main' opts | sagaFile opts /= Nothing = do 
+     saga <- readSaga $ fromJust $ sagaFile opts
+     return ()
 main' _ | otherwise = error "Not implemented!" 

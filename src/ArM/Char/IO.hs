@@ -62,6 +62,7 @@ readSpellDB fn = parseFromFile CSV.csvFile fn >>= return . Just . spellDB . g
 loadSaga :: SagaFile -> IO Saga
 loadSaga saga = do
    db <- readSpellDB $ spellFile saga
+   cs <- mapM readCharacter $ characterFiles saga
    return Saga { covenants = []  
-           , characters = []
+           , characters = map fromJust $ filter (Nothing/=) cs
            , spells = fromJust db }
