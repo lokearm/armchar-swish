@@ -36,7 +36,8 @@ import ArM.Char.Trait
 import ArM.Char.Advancement
 import ArM.Char.Internal.Character
 import ArM.Char.CharGen
--- import ArM.Debug.Trace
+
+import ArM.Debug.Trace
 
 -- |
 -- = Advancement in Game
@@ -45,12 +46,15 @@ import ArM.Char.CharGen
 applyAdvancement :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyAdvancement a cs = (a',cs')
     where a' = prepareAdvancement cs a
-          cs' = cs { charTime = season a, traits = new }
+          cs' = trace ("old>>"++show old)
+              $ trace ("change>>"++show change)
+              $ trace ("new>>"++show new)
+              $ cs { charTime = season a, traits = new }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'
-          inferred = inferredTraits a'
-          old = traits cs
+          inferred = sortTraits $ inferredTraits a'
+          old = sortTraits $ traits cs
 
 
 {-

@@ -624,12 +624,12 @@
       },
       { "mode" : "Lab Work", "season" : "Spring 1241"
       , "sourceQuality" : 2
-      , "narrative" : " Fan of Summer Breezes CrAu(Ig)19  "
+      , "narrative" : "Fan of Summer Breezes CrAu(Ig)19  "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Exposure", "season" : "Summer 1241"
       , "sourceQuality" : 2
-      , "narrative" : " Copy lab tests (covenant service)  "
+      , "narrative" : "Copy lab tests (covenant service)  "
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1241"
@@ -657,7 +657,7 @@
       , "narrative" : "Horror Cabinet Item  2xp Exposure Magic Theory"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Reading", "season" : " Winter 1243"
+      { "mode" : "Reading", "season" : "Winter 1243"
       , "sourceQuality" : 16
       , "narrative" : " *The Mind's Eye* L16Q13 -> 81xp | No aging"
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
@@ -672,35 +672,35 @@
       , "narrative" : " *Growing, Healing, and Creation* L15Q14 -> 106xp "
       , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
       },
-      { "mode" : "Reading", "season" : " Autumn 1243"
+      { "mode" : "Reading", "season" : "Autumn 1243"
       , "sourceQuality" : 14
       , "narrative" : " *Growing, Healing, and Creation* L15Q14 capped 15 for +14xp -> 120xp "
       , "changes" : [ { "art" : "Creo", "xp" : 14 } ]
       },
-      { "mode" : "Reading", "season" : " Winter 1244"
+      { "mode" : "Reading", "season" : "Winter 1244"
       , "sourceQuality" : 17
-      , "narrative" : " Maine's Tractatus on Creo Vol I (to 16  or 137xp)| No apparent aging |"
+      , "narrative" : "Maine's Tractatus on Creo Vol I (to 16  or 137xp)| No apparent aging |"
       , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1244"
       , "sourceQuality" : 2
-      , "narrative" : " CrIg Attack Spell. Parma to 57xp "
+      , "narrative" : "CrIg Attack Spell. Parma to 57xp "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Story   ", "season" : "Summer 1244"
       , "sourceQuality" : 10
-      , "narrative" : " Midsummer Fair: Parma Magica (5), Folk Ken (5) + one confidence point "
+      , "narrative" : "Midsummer Fair: Parma Magica (5), Folk Ken (5) + one confidence point "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 5 }
                     , { "ability" : "Folk Ken", "xp" : 5 } ]
       },
-      { "mode" : "Reading ", "season" : " Autumn 1244"
+      { "mode" : "Reading ", "season" : "Autumn 1244"
       , "sourceQuality" : 11
       , "narrative" : " *Dark Fey of the East* "
       , "changes" : [ { "art" : "Faerie Lore ", "xp" : 11 } ]
       },
-      { "mode" : "Lab Work ", "season" : " Winter 1245"
+      { "mode" : "Lab Work ", "season" : "Winter 1245"
       , "sourceQuality" : 2
-      , "narrative" : " PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases "
+      , "narrative" : "PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases "
       , "changes" : [ { "ability" : "Parma Magica ", "xp" : 2 } ]
       },
       { "mode" : "Story    ", "season" : "Spring 1245"
@@ -740,47 +740,47 @@
       , "narrative" : "13 (capped) | Mentem| Mentem L16Q13 to 16 |"
       , "changes" : [ { "art" : "Mentem", "xp" : 13 } ]
       },
-      { "mode" : "Reading ", "season" : " Winter 1247"
+      { "mode" : "Reading ", "season" : "Winter 1247"
       , "sourceQuality" : 17
-      , "narrative" : " Maine's Tractatus + Book Learner; 8-24=-16 no aging |"
+      , "narrative" : "Maine's Tractatus + Book Learner; 8-24=-16 no aging |"
       , "changes" : [ { "art" : "Mentem", "xp" : 17 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1247"
       , "sourceQuality" : 14
-      , "narrative" : " Tractatus *On the Spark* | "
+      , "narrative" : "Tractatus *On the Spark* | "
       , "changes" : [ { "art" : "Creo", "xp" : 14 } ]
       },
       { "mode" : "Reading ", "season" : "Summer 1247"
       , "sourceQuality" : 12
-      , "narrative" : " Tractatus *From nothing to everything*"
+      , "narrative" : "Tractatus *From nothing to everything*"
       , "changes" : [ { "art" : "Creo", "xp" : 12 } ]
       },
-      { "mode" : "Author  ", "season" : " Autumn 1247"
+      { "mode" : "Author  ", "season" : "Autumn 1247"
       , "sourceQuality" : 2
-      , "narrative" : " CrMe rituals x4 for Com to +5; (58xp) Tractatus on Corpus Q14 "
+      , "narrative" : "CrMe rituals x4 for Com to +5; (58xp) Tractatus on Corpus Q14 "
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
-      { "mode" : "Reading ", "season" : " Winter 1248"
+      { "mode" : "Reading ", "season" : "Winter 1248"
       , "sourceQuality" : 15
       , "narrative" : "Summa L20Q12; no aging (-4) "
       , "changes" : [ { "art" : "Muto", "xp" : 15 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1248"
       , "sourceQuality" : 27
-      , "narrative" : " Oswald's tractatus Q14 + correspondent "
+      , "narrative" : "Oswald's tractatus Q14 + correspondent "
       , "changes" : [ { "art" : "Imaginem", "xp" : 27 } ]
       },
       { "mode" : "Reading ", "season" : "Summer 1248"
       , "sourceQuality" : 27
-      , "narrative" : " Maine's tractatus Q14 + correspondent (245½xp) "
+      , "narrative" : "Maine's tractatus Q14 + correspondent (245½xp) "
       , "changes" : [ { "art" : "Imaginem", "xp" : 27 } ]
       },
-      { "mode" : "Lab Work", "season" : " Autumn 1248"
+      { "mode" : "Lab Work", "season" : "Autumn 1248"
       , "sourceQuality" : 4.5
       , "narrative" : " 250xp incl. affinity and correspondent; Ogre's Stench/see below "
       , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
       },
-      { "mode" : " Lab Work", "season" : " Winter 1249"
+      { "mode" : "Lab Work", "season" : "Winter 1249"
       , "sourceQuality" : 4.5
       , "narrative" : " 254½xp Invisibility Quartz for Sean; see below ; no aging (-18)"
       , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
@@ -790,74 +790,74 @@
       , "narrative" : "Summa L15Q13 (to 80xp: 12) "
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
-      { "mode" : "Reading", "season" : " Summer 1249"
+      { "mode" : "Reading", "season" : "Summer 1249"
       , "sourceQuality" : 16
-      , "narrative" : " Summa L15Q13"
+      , "narrative" : "Summa L15Q13"
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
-      { "mode" : "Author", "season" : " Autumn 1249"
+      { "mode" : "Author", "season" : "Autumn 1249"
       , "sourceQuality" : 2
-      , "narrative" : " Tractatus on Imaginem Q14"
+      , "narrative" : "Tractatus on Imaginem Q14"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work", "season" : " Winter 1250"
+      { "mode" : "Lab Work", "season" : "Winter 1250"
       , "sourceQuality" : 2
       , "narrative" : " no aging (-18); invent InHe25 Converse with Plant and Tree "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Reading", "season" : " Spring 1250"
+      { "mode" : "Reading", "season" : "Spring 1250"
       , "sourceQuality" : 22.5
-      , "narrative" : " Tractatus Q11 *Approaching Silence and Invisibility* with Book Learner, Correspondence, and Affinity"
+      , "narrative" : "Tractatus Q11 *Approaching Silence and Invisibility* with Book Learner, Correspondence, and Affinity"
       , "changes" : [ { "art" : "Imaginem", "xp" : 22.5 } ]
       },
-      { "mode" : "Reading", "season" : " Summer 1250"
+      { "mode" : "Reading", "season" : "Summer 1250"
       , "sourceQuality" : 15
-      , "narrative" : " Summa L17Q12 + Book Learner $53\to68$ "
+      , "narrative" : "Summa L17Q12 + Book Learner $53\to68$ "
       , "changes" : [ { "art" : "Corpus", "xp" : 15 } ]
       },
-      { "mode" : "Reading", "season" : " Autumn 1250"
+      { "mode" : "Reading", "season" : "Autumn 1250"
       , "sourceQuality" : 16
-      , "narrative" : " Summa L15Q13 + Book Learner $80\to96$ "
+      , "narrative" : "Summa L15Q13 + Book Learner $80\to96$ "
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
-      { "mode" : "Reading", "season" : " Winter 1251"
+      { "mode" : "Reading", "season" : "Winter 1251"
       , "sourceQuality" : 16
-      , "narrative" : " Summa L15Q13 + Book Learner $96\to112$ | no aging -20 |"
+      , "narrative" : "Summa L15Q13 + Book Learner $96\to112$ | no aging -20 |"
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
-      { "mode" : "Lab Work", "season" : " Spring 1251"
+      { "mode" : "Lab Work", "season" : "Spring 1251"
       , "sourceQuality" : 4.5
-      , "narrative" : " InIm spells below $\to281½$"
+      , "narrative" : "InIm spells below $\to281½$"
       , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
       },
-      { "mode" : "Reading", "season" : " Summer 1251"
+      { "mode" : "Reading", "season" : "Summer 1251"
       , "sourceQuality" : 12
       , "narrative" : ""
       , "changes" : [ { "art" : "Rego", "xp" : 12 } ]
       },
-      { "mode" : "Author Book", "season" : " Autumn 1251"
+      { "mode" : "Author Book", "season" : "Autumn 1251"
       , "sourceQuality" : 2
-      , "narrative" : " *Imaginary Horrors*"
+      , "narrative" : "*Imaginary Horrors*"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Reading", "season" : " Winter 1252"
+      { "mode" : "Reading", "season" : "Winter 1252"
       , "sourceQuality" : 12
-      , "narrative" : " no aging -16"
+      , "narrative" : "no aging -16"
       , "changes" : [ { "art" : "Rego", "xp" : 12 } ]
       },
-      { "mode" : "Lab Work", "season" : " Spring 1252"
+      { "mode" : "Lab Work", "season" : "Spring 1252"
       , "sourceQuality" : 4.5
-      , "narrative" : " ReIm35 CONFUSION OF THE INSANE VIBRATIONS (no text) (sun duration)"
+      , "narrative" : "ReIm35 CONFUSION OF THE INSANE VIBRATIONS (no text) (sun duration)"
       , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
       },
-      { "mode" : "Reading", "season" : " Summer 1252"
+      { "mode" : "Reading", "season" : "Summer 1252"
       , "sourceQuality" : 16
-      , "narrative" : " To 83xp "
+      , "narrative" : "To 83xp"
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
-      { "mode" : "Story", "season" : " Autumn 1252"
+      { "mode" : "Story", "season" : "Autumn 1252"
       , "sourceQuality" : 15
-      , "narrative" : " Imaginem 286 + 9 = 295 (5+correspondence&affinity), Faerie Lore 16+4=20, Latin 58+2=60, OoH Lore 7+4=11|"
+      , "narrative" : "Imaginem 286 + 9 = 295 (5+correspondence&affinity), Faerie Lore 16+4=20, Latin 58+2=60, OoH Lore 7+4=11|"
       , "changes" : [ { "art" : "", "xp" : 15 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1253"
@@ -882,7 +882,7 @@
       },
       { "mode" : "Story", "season" : "Winter 1254"
       , "sourceQuality" : 7
-      , "narrative" : " No Aging (rolled 4)"
+      , "narrative" : "No Aging (rolled 4)"
       , "changes" : [ { "ability" : "Finesse", "xp" : 5 } ]
                     , { "ability" : "Etiquette", "xp" : 2 } ]
       },
@@ -908,7 +908,7 @@
       },
       { "mode" : "Lab Work", "season" : "Spring 1255"
       , "sourceQuality" : 4.5
-      , "narrative" : " CrIm spells (376xp)"
+      , "narrative" : "CrIm spells (376xp)"
       , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
       }
    ]
