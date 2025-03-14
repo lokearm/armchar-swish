@@ -48,3 +48,7 @@ getAbilityScore x' = (s,y)
            s = scoreFromXP (x / 5)
            -- s = scoreFromXP (x `div` 5)
            x = fromMaybe 0 x'
+
+calcXP :: Float -> XPType -> Maybe XPType -> XPType
+calcXP m x y = x + ( m*fromMaybe 0 y )
+
