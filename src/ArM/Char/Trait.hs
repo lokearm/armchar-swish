@@ -567,7 +567,7 @@ instance TraitLike Ability where
           updateAbilitySpec (spec a) $ updateAbilityXP y x
       where y = (abilityExcessXP x) + xpround (m * xp')
             m = abilityMultiplier x
-            xp' = fromIntegral $ fromMaybe 0 (xp a)
+            xp' = fromMaybe 0 (xp a)
             um Nothing ab = ab 
             um abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Art where
@@ -578,7 +578,7 @@ instance TraitLike Art where
           updateArtXP y x 
       where y = (artExcessXP x) + xpround (m * xp')
             m = artMultiplier x
-            xp' = fromIntegral $ fromMaybe 0 (xp a)
+            xp' = fromMaybe 0 (xp a)
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
@@ -591,7 +591,7 @@ instance TraitLike Reputation where
     traitKey x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
     advanceTrait a x = updateRepXP y x
-      where y = (repExcessXP x) + (round $ fromMaybe 0 $ xp a)
+      where y = (repExcessXP x) + (fromMaybe 0 $ xp a)
 instance TraitLike Characteristic where
     traitKey x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait

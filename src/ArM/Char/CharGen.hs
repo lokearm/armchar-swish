@@ -153,8 +153,8 @@ calculateCharPoints = sum . map cScore . changes
 -- | Count characterics points spent on a trait
 cScore :: ProtoTrait -> Int
 cScore p | isJust (characteristic p) = f p
-            | otherwise = 0
-        where f = pyramidScore . fromMaybe 0 . score 
+         | otherwise = 0
+        where f = round . pyramidScore . fromMaybe 0 . score 
 
 -- | Calculate initial XP limits on Char Gen Advancements
 initialLimits :: [ VF ] -> AugmentedAdvancement -> AugmentedAdvancement

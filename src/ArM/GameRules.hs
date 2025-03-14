@@ -45,5 +45,6 @@ pyramidScore = fromIntegral . f
 getAbilityScore :: Maybe XPType -> (Int,XPType)
 getAbilityScore x' = (s,y) 
      where y = x - 5*pyramidScore s
-           s = scoreFromXP (x `div` 5)
+           s = scoreFromXP (x / 5)
+           -- s = scoreFromXP (x `div` 5)
            x = fromMaybe 0 x'

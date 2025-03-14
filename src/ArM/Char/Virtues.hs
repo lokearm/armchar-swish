@@ -20,6 +20,7 @@ module ArM.Char.Virtues (inferTraits
 import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
 import ArM.Helper
+import ArM.GameRules
 
 import qualified Data.Map as Map
 import Data.Maybe
@@ -90,32 +91,33 @@ inferTraits vfs = sortTraits rs
 -- |
 -- = Infer Limits for Pregame Design
 
-llLookup:: String -> (Int,Int)
+llLookup:: String -> (XPType,XPType)
 llLookup "Warrior" = (50,0) 
 llLookup "Wealthy" = (0,20) 
 llLookup "Poor" = (0,10) 
 llLookup _  = (0,0) 
-laterLifeXP :: [ VF ] -> (Int,Int)
+laterLifeXP :: [ VF ] -> (XPType,XPType)
 laterLifeXP vfs = laterLifeXP' vfs (0,15)
-laterLifeXP' :: [ VF ] -> (Int,Int) -> (Int,Int)
+laterLifeXP' :: [ VF ] -> (XPType,XPType) -> (XPType,XPType)
 laterLifeXP' [] (x,y) = (x,y)
 laterLifeXP' (vf:vfs) (x,y) = laterLifeXP' vfs $ (x'+x,f y y') 
          where (x',y') = llLookup $ vfname vf
                f 0 z = z
                f z _ = z
 
-laterLifeSQ' :: Advancement -> (Int,Int) -> Int
+laterLifeSQ' :: Advancement -> (XPType,XPType) -> XPType
 laterLifeSQ' ad (x,y) = t
    where t | isJust (sourceQuality ad) = fromJust (sourceQuality ad)
-           | isJust (advYears ad) = x+y*fromJust (advYears ad)
+           | isJust (advYears ad) = x+y*yy
            | otherwise = x
+         yy = fromIntegral $ fromJust (advYears ad)
 
 -- | Get XP total for Later Life
-laterLifeSQ :: [VF] -> Advancement -> Int
+laterLifeSQ :: [VF] -> Advancement -> XPType
 laterLifeSQ vfs ad = laterLifeSQ' ad $ laterLifeXP vfs
 
 -- | Get XP and spell level total for Apprenticeship
-appSQ :: [VF] -> (Int,Int)
+appSQ :: [VF] -> (XPType,Int)
 appSQ []  = (240,120) 
 appSQ (x:xs) | vfname x == "Weak Parens" = (180,90) 
              | vfname x == "Skilled Parens" = (300,150) 

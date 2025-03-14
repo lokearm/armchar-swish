@@ -21,12 +21,13 @@ module ArM.Char.Validation (validate,validateXP) where
 
 import ArM.Char.Internal.Advancement
 import ArM.Char.Trait
+import ArM.GameRules
 
 import Data.Maybe (fromMaybe,isJust)
 
 
 -- | Count regular XP (excluding reputation) from a ProtoTrait
-regXP :: ProtoTrait -> Int
+regXP :: ProtoTrait -> XPType
 regXP p | isJust (ability p) = f p
         | isJust (art p) = f p
         | isJust (spell p) = f p
@@ -49,6 +50,6 @@ validateXP a | sq > xpsum = a { validation = und:validation a }
           und = ValidationError $ "Underspent " ++ show xpsum ++ "xp of " ++ show sq ++ "."
 
 -- | Count regular XP (excluding reputation) from an Advancement
-calculateXP :: Advancement -> Int
+calculateXP :: Advancement -> XPType
 calculateXP = sum . map regXP . changes
 
