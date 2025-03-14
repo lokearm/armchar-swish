@@ -15,6 +15,7 @@ module ArM.Char.Internal.Advancement where
 
 import ArM.Helper
 import ArM.Char.Trait
+import ArM.GameRules
 
 import Data.Aeson
 import GHC.Generics
@@ -84,7 +85,7 @@ class AdvancementLike a where
      season :: a -> SeasonTime    -- ^ season or development stage
      narrative :: a -> Maybe String -- ^ freeform description of the activities
      uses :: a -> Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
-     sourceQuality :: a -> Maybe Int -- ^ Source Quality (SQ)
+     sourceQuality :: a -> Maybe XPType -- ^ Source Quality (SQ)
      -- effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
      changes :: a -> [ ProtoTrait ]  -- ^ trait changes defined by player
      -- inferredTraits :: [ ProtoTrait ] -- ^ trait changes inferred by virtues and flaws
@@ -100,7 +101,7 @@ data Advancement = Advancement
      , advYears :: Maybe Int    -- ^ number of years advanced
      , advNarrative :: Maybe String -- ^ freeform description of the activities
      , advUses :: Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
-     , advSQ :: Maybe Int -- ^ Source Quality (SQ)
+     , advSQ :: Maybe XPType -- ^ Source Quality (SQ)
      , advBonus :: Maybe Int -- ^ Bonus to Source Quality (SQ)
      , advChanges :: [ ProtoTrait ]  -- ^ trait changes defined by player
      }
@@ -128,9 +129,9 @@ instance Show Validation where
 -- | Advancement with additional inferred fields
 data AugmentedAdvancement = Adv
      { advancement :: Advancement -- ^ Base advancement as entered by the user
-     , effectiveSQ :: Maybe Int   -- ^ SQ modified by virtues and flaws
+     , effectiveSQ :: Maybe XPType   -- ^ SQ modified by virtues and flaws
      , levelLimit :: Maybe Int   -- ^ spell level allowance
-     , spentXP  :: Maybe Int   -- ^ Total XP spent on advancement
+     , spentXP  :: Maybe XPType   -- ^ Total XP spent on advancement
      , inferredTraits :: [ ProtoTrait ] -- ^ trait changes inferred by virtues and flaws
      , augYears :: Maybe Int    -- ^ number of years advanced
      , validation :: [Validation] -- ^ Report from validation

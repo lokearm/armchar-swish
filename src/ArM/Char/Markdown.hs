@@ -28,6 +28,7 @@ import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Advancement
 import ArM.Char.Spell
+import ArM.GameRules
 
 -- import ArM.Debug.Trace
 
@@ -194,7 +195,7 @@ instance Markdown CharacterState where
        where sh = printMDaug db $ filterCS c
 
 -- | Render the source quality of an advancement
-showSQ :: Maybe Int -> Maybe Int -> String
+showSQ :: Maybe XPType -> Maybe XPType -> String
 showSQ Nothing Nothing = ""
 showSQ (Just x) Nothing = " (" ++ show x ++ "xp)"
 showSQ Nothing (Just x) = " (" ++ show x ++ "xp)"
