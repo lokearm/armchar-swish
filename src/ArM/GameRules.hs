@@ -14,12 +14,14 @@
 -----------------------------------------------------------------------------
 module ArM.GameRules where
 
+type XPType = Int
+
 -- | Calculate score from total XP, using the arts scale.
 -- For abilities, the argument should be divided by 5 beforehand.
-scoreFromXP :: Int -> Int
+scoreFromXP :: XPType -> Int
 scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
     where x = fromIntegral y  :: Double
 
-pyramidScore :: Int -> Int
+pyramidScore :: Int -> XPType
 pyramidScore y | y < 0 = y*(-y+1) `div` 2
                | otherwise = y*(y+1) `div` 2

@@ -87,7 +87,7 @@ data ProtoTrait = ProtoTrait
     , multiplyXP :: Maybe Float  -- ^ XP multiplier from affinities and similar
     , cost :: Maybe Int          -- ^ cost of a virtue or flaw
     , points :: Maybe Int        -- ^ points for confidence/true faith/etc (additive)
-    , xp :: Maybe Int            -- ^ XP to be added to the trait
+    , xp :: Maybe XPType         -- ^ XP to be added to the trait
     , aging :: Maybe Int         -- ^ aging points for characteristicds (additive)
     , multiplicity :: Maybe Int  -- ^ number of types a virtue/flaw is taken;
                                  -- could be negative to remove an existing, but
@@ -174,11 +174,11 @@ instance ToJSON TraitKey
 instance FromJSON TraitKey
 data Ability = Ability { abilityName :: String
                        , speciality :: Maybe String
-                       , abilityXP :: Int 
+                       , abilityXP :: XPType 
                        , abilityScore :: Int 
                        , abilityBonus :: Int 
                        , abilityMultiplier :: Float
-                       , abilityExcessXP :: Int 
+                       , abilityExcessXP :: XPType 
                        }
            deriving (Ord, Eq, Generic)
 data Characteristic = Characteristic { characteristicName :: String
@@ -186,19 +186,19 @@ data Characteristic = Characteristic { characteristicName :: String
                                      , agingPoints :: Int }
            deriving (Ord, Eq, Generic)
 data Art = Art { artName :: String
-               , artXP :: Int 
+               , artXP :: XPType 
                , artScore :: Int 
                , artBonus :: Int 
                , artMultiplier :: Float
-               , artExcessXP :: Int 
+               , artExcessXP :: XPType 
                }
            deriving (Ord, Eq, Generic)
 data Spell = Spell { spellName :: String
                    , spellTeFo :: String
                    , spellLevel :: Int
-                   , spellXP :: Int
+                   , spellXP :: XPType
                    , masteryScore :: Int
-                   , spellExcessXP :: Int
+                   , spellExcessXP :: XPType
                    , spellMultiplier :: Float
                    , masteryOptions :: [String] 
                    , spellCastingScore :: Maybe Int
@@ -215,9 +215,9 @@ data PTrait = PTrait { ptraitName :: String, pscore :: Int }
 -- | Reputation object 
 data Reputation = Reputation { reputationName :: String  -- ^ contents of the reputation
                              , repLocale :: String       -- ^ domain or location of the reputation
-                             ,  repXP :: Int             -- ^ total XP in the reputation (used?)
+                             ,  repXP :: XPType          -- ^ total XP in the reputation (used?)
                              ,  repScore :: Int          -- ^ reputation Score
-                             ,  repExcessXP :: Int       -- ^ XP towards next level in the reputation
+                             ,  repExcessXP :: XPType    -- ^ XP towards next level in the reputation
                              }
            deriving (Ord, Eq, Generic)
 data VF = VF { vfname :: String    -- ^ name of the virtue/flaw
@@ -328,7 +328,7 @@ instance Show ProtoTrait  where
            ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
        | characteristic p /= Nothing =
            "Characteristic: " ++ fromJust ( characteristic p )  ++
-           " " ++ show ( maybeInt (score p) ) ++ showAging p 
+           " " ++ show ( fromMaybe 0 (score p) ) ++ showAging p 
        | art p /= Nothing = 
            "Art: " ++ fromJust ( art p ) ++ showXP p
            ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
@@ -343,34 +343,34 @@ instance Show ProtoTrait  where
               " [" ++ maybeShow (locale p) ++ "]" ++ showXP p
        | virtue p /= Nothing = 
               "Virtue: " ++ fromJust (virtue p) ++ " ("
-              ++ show ( maybeInt (cost p) ) ++ ")"
+              ++ show ( fromMaybe 0 (cost p) ) ++ ")"
        | flaw p /= Nothing = 
               "Flaw: " ++ fromJust (flaw p) ++ " ("
-              ++ show ( maybeInt (cost p) ) ++ ")"
+              ++ show ( fromMaybe 0 (cost p) ) ++ ")"
        | confidence p /= Nothing = 
-              fromMaybe "Confidence" (confidence p) ++ ": " ++ show (maybeInt (score p)) ++ " (" ++
-              show ( maybeInt (points p) ) ++ ")"
+              fromMaybe "Confidence" (confidence p) ++ ": " ++ show (fromMaybe 0 (score p)) ++ " (" ++
+              show ( fromMaybe 0 (points p) ) ++ ")"
        | other p /= Nothing = 
-               fromJust (other p) ++ " " ++ show ( maybeInt ( points p ) )
+               fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
        | otherwise  = error "No Trait for this ProtoTrait" 
-     where si = show . maybeInt
+     where si = show . fromMaybe 0
 
 
 -- |
 -- = Computing Traits
 
-getAbilityScore :: Maybe Int -> (Int,Int)
+getAbilityScore :: Maybe XPType -> (Int,XPType)
 getAbilityScore x' = (s,y) 
      where y = x - 5*pyramidScore s
            s = scoreFromXP (x `div` 5)
-           x = maybeInt x'
+           x = fromMaybe 0 x'
 
 computeOther :: ProtoTrait -> OtherTrait
 computeOther p
     | spell p == Nothing = error "Not an properly formatted trait"
     | otherwise =
            OtherTrait { trait = fromJust (other p) 
-                      , pts = maybeInt ( points p ) 
+                      , pts = fromMaybe 0 ( points p ) 
                       , otherScore = s
                       , otherExcess = y
                       }
@@ -433,7 +433,7 @@ instance TraitType Ability where
                 , abilityXP = maybeInt (xp p)
                 , abilityScore = s
                 , abilityExcessXP = y
-                , abilityBonus = maybeInt $ bonusScore p
+                , abilityBonus = fromMaybe 0 $ bonusScore p
                 , abilityMultiplier = fromMaybe 1.0 $ multiplyXP p
                 }
      where (s,y) = getAbilityScore (xp p)
@@ -447,12 +447,12 @@ instance TraitType Art where
                 , artXP = x
                 , artScore = s
                 , artExcessXP = y
-                , artBonus = maybeInt $ bonusScore p
+                , artBonus = fromMaybe 0 $ bonusScore p
                 , artMultiplier = fromMaybe 1.0 $ multiplyXP p
                 }
      where y = x - pyramidScore s
            s = scoreFromXP x
-           x = maybeInt (xp p) 
+           x = fromMaybe 0 (xp p) 
 instance TraitType Spell where
     getTrait (SpellTrait x) = Just x
     getTrait _ = Nothing
@@ -461,7 +461,7 @@ instance TraitType Spell where
           where sp = Spell { spellName = fromJust (spell p)
                       , spellLevel = fromMaybe 0 $ level p
                       , spellTeFo = fromMaybe "TeFo" $ tefo p
-                      , spellXP = maybeInt (xp p)
+                      , spellXP = fromMaybe 0 (xp p)
                       , masteryScore = s
                       , masteryOptions = maybeList (mastery p)
                       , spellExcessXP = y
@@ -591,13 +591,13 @@ instance TraitLike Spell where
     traitKey x = SpellKey ( spellName x ) 
     toTrait = SpellTrait
     advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
-      where y = (spellExcessXP x) + (maybeInt $ xp a)
+      where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
             ms = maybeList $ mastery a
 instance TraitLike Reputation where
     traitKey x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
     advanceTrait a x = updateRepXP y x
-      where y = (repExcessXP x) + (maybeInt $ xp a)
+      where y = (repExcessXP x) + (fromMaybe 0 $ xp a)
 instance TraitLike Characteristic where
     traitKey x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
@@ -637,7 +637,7 @@ instance TraitLike ProtoTrait where
       | spell p /= Nothing = SpellTrait $ fromJust $ computeTrait p
       | ptrait p /= Nothing = PTraitTrait $
            PTrait { ptraitName = fromJust (ptrait p)
-                  , pscore = maybeInt (score p)
+                  , pscore = fromMaybe 0 (score p)
                   } 
       | reputation p /= Nothing = ReputationTrait $ fromJust $ computeTrait p
       | virtue p /= Nothing = VFTrait $ fromJust $ computeTrait p
@@ -656,25 +656,25 @@ updateAbilitySpec :: Maybe String -> Ability -> Ability
 updateAbilitySpec Nothing a = a
 updateAbilitySpec (Just x) a = a { speciality = Just x }
 
-updateAbilityXP :: Int -> Ability -> Ability
+updateAbilityXP :: XPType -> Ability -> Ability
 updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
                      | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
     where sc = abilityScore ab
           tr = (sc+1)*5
 
-updateRepXP :: Int -> Reputation -> Reputation
+updateRepXP :: XPType -> Reputation -> Reputation
 updateRepXP x ab | x < tr = ab { repExcessXP = x }
                      | otherwise = updateRepXP (x-tr) $ ab { repScore = sc+1 }
     where sc = repScore ab
           tr = (sc+1)*5
 
-updateArtXP :: Int -> Art -> Art
+updateArtXP :: XPType -> Art -> Art
 updateArtXP x ab | x < tr = ab { artExcessXP = x }
                      | otherwise = updateArtXP (x-tr) $ ab { artScore = sc+1 }
     where sc = artScore ab
           tr = (sc+1)
 
-updateSpellXP :: Int -> Spell -> Spell
+updateSpellXP :: XPType -> Spell -> Spell
 updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
                    | otherwise = updateSpellXP (x-tr) $ ab { masteryScore = sc+1 }
     where sc = masteryScore ab

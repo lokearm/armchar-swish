@@ -24,15 +24,14 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 
 ## Roadmap
 
-+ [ ] Phase 1. Companion/Grog
++ [ ] Phase 1. Review and bugfix
 	+ [x] Produce bundle of files - systematic name and directory structure
 	+ [x] Extract error report in Markdown
 	+ [x] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Validate Eogan build
-	+ [ ] Step 3. Review Cieran
-		+ [x] Fix Cieran build
-		+ [ ] Review Cieran's ingame advancements
-		+ [ ] Add in-game advancements
+	+ [ ] Irish calendar
+	+ [ ] Fractional XP
+	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Refactor and document code
 + [ ] Phase 2.  Finishing touches
 	+ [ ] Warping
