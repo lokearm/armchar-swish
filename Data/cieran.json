@@ -125,33 +125,74 @@
       , "changes" : 
          [ { "art" : "Herbam", "xp": 21 }
          ] 
-      , "narrative" : "Studies Herbam L6 Q21 +3" 
+      , "narrative" : "Studies *Root of Herbam* L6 Q21 +3" 
       },
       { "mode" : "Reading"
       , "season" : "Autumn 1217"
-
       , "sourceQuality" : 16
       , "changes" : 
          [ { "art" : "Mentem", "xp": 16 }
          ] 
-      , "narrative" : "Studies Mentem L16 Q13 +3" 
+      , "narrative" : "Studies Mentem L16Q13 +3" 
       },
-      { "mode" : "Exposure: Lab Work"
+      { "mode" : "Reading"
       , "season" : "Winter 1217"
-      , "sourceQuality" : 2
+      , "sourceQuality" : 18
       , "changes" : 
-         [ { "art" : "Magic Theory", "xp": 2 }
-         , { "spell" : "MuCo25Shape " }
+         [ { "art" : "Terram", "xp": 18 }
          ] 
-      , "narrative" : "Learn Spell" 
+      , "narrative" : "Studies *Root of Terram* L8Q15 +3" 
       },
       { "mode" : "Adventure"
       , "season" : "Spring 1218"
+      , "sourceQuality" : 14
+      , "narrative" : "Jerome's Tower - covenant service"
+      , "changes" : 
+         [ { "ability" : "Infernal Lore", "xp": 5 }
+         , { "ability" : "Parma Magica", "xp": 5 }
+         , { "ability" : "Second Sight", "xp": 4 }
+         ] 
+      },
+      { "mode" : "Reading"
+      , "season" : "Summer 1218"
+      , "sourceQuality" : 17
+      , "changes" : 
+         [ { "ability" : "Servants of the Common People Lore", "xp": 17 }
+         ] 
+      , "narrative" : "Studies book found in Jerome's Tower"
+      },
+      { "mode" : "Exposure: Lab Work"
+      , "season" : "Autumn 1218"
+      , "sourceQuality" : 2
+      , "changes" : 
+         [ { "ability" : "Parma Magica", "xp": 2 }
+         ] 
+      , "narrative" : "Enchant Bookstand of Hespera" 
+      },
+      { "mode" : "Reading"
+      , "season" : "Winter 1218"
+      , "sourceQuality" : 16
+      , "changes" : 
+         [ { "art" : "Intellego", "xp": 16 }
+         ] 
+      , "narrative" : "Also a short story to Praesis."
+      },
+      { "mode" : "Adventure"
+      , "season" : "Spring 1219"
       , "sourceQuality" : 7
       , "changes" : 
          [ { "art" : "Creo", "xp": 2 }
          , { "ability" : "Awareness", "xp": 5 }
          ] 
+      }
+      , { "mode" : "Exposure: Lab Work"
+      , "season" : "Autumn 1219"
+      , "sourceQuality" : 2
+      , "changes" : 
+         [ { "ability" : "Magic Theory", "xp": 2 }
+         , { "spell" : "MuCo25Shape " }
+         ] 
+      , "narrative" : "Learn Spell" 
       }
    ]
 }
