@@ -13,11 +13,10 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Saga where
 
-import Data.Maybe 
+-- import Data.Maybe 
 import Data.Aeson 
 import GHC.Generics
 
-import ArM.Char.IO
 import ArM.Char.Trait
 import ArM.Char.Internal.Character
 import ArM.Char.Internal.Advancement
@@ -26,12 +25,6 @@ import ArM.Char.Spell
 -- import ArM.Debug.Trace
 --
 
-loadSaga :: SagaFile -> IO Saga
-loadSaga saga = do
-   db <- readSpellDB $ spellFile saga
-   return Saga { covenants = []  
-           , characters = []
-           , spells = fromJust db }
 
 data Saga = Saga 
          { covenants :: [Covenant]

@@ -19,6 +19,7 @@
 module ArM.Char.IO where
 
 -- import qualified System.IO as IO -- for file IO
+import Data.Maybe 
 import Data.Aeson (decode)
 import qualified Data.CSV as CSV
 -- import Data.Text.Lazy.IO as I
@@ -27,6 +28,7 @@ import qualified Data.ByteString.Lazy as LB
 import Text.ParserCombinators.Parsec
 
 import ArM.Char.Character
+import ArM.Char.Saga
 import ArM.Char.Spell
 
 -- | Read a character from JSON.  Return Maybe Character
@@ -37,9 +39,29 @@ readCharacter fn = LB.readFile fn
    where prepMaybe Nothing = Nothing
          prepMaybe (Just x) = Just $ prepareCharacter x
 
+-- | Read a saga from JSON.  Return Maybe Saga
+readSagaFile :: String -- ^ Filename
+             -> IO (Maybe SagaFile)
+readSagaFile fn = LB.readFile fn >>= return . decode
+
+readSaga :: String -- ^ Filename
+         -> IO (Maybe Saga)
+readSaga fn = readSagaFile fn >>= passMaybe loadSaga
+
+passMaybe :: (Monad m) => (a -> m b) -> Maybe a -> m (Maybe b)
+passMaybe _ Nothing = return Nothing
+passMaybe g (Just x) = fmap Just $ g x
+
 -- | Read spells from CSV.  Return Maybe SpellDB.
 readSpellDB :: String -- ^ Filename
               -> IO (Maybe SpellDB)
 readSpellDB fn = parseFromFile CSV.csvFile fn >>= return . Just . spellDB . g
   where g (Left _) = [[]]
         g (Right x) = x
+
+loadSaga :: SagaFile -> IO Saga
+loadSaga saga = do
+   db <- readSpellDB $ spellFile saga
+   return Saga { covenants = []  
+           , characters = []
+           , spells = fromJust db }
