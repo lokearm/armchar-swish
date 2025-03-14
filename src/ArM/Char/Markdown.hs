@@ -20,7 +20,7 @@ import ArM.Char.Trait
 import ArM.Char.Advancement
 import ArM.Char.Spell
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 class Markdown a where
      printMD :: a -> [ String ]

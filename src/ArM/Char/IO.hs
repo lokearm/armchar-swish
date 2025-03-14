@@ -33,7 +33,7 @@ import ArM.Char.Saga
 import ArM.Char.Spell
 import ArM.BasicIO
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- | Read a character from JSON.  Return Maybe Character
 readCharacter :: String -- ^ Filename
@@ -67,7 +67,7 @@ loadSaga :: SagaFile -> IO Saga
 loadSaga saga = do
    db <- readSpellDB $ spellFile saga
    cs <- mapM readCharacter $ characterFiles saga
-   trace (">> " ++ (show $ map (concept.fromJust) cs)) $ return   Saga { covenants = []  
+   return   Saga { covenants = []  
            , characters = map fromJust $ filter (Nothing/=) cs
            , spells = fromJust db }
 

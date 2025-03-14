@@ -36,7 +36,7 @@ import ArM.Char.Trait
 import ArM.Char.Advancement
 import ArM.Char.Internal.Character
 import ArM.Char.CharGen
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- |
 -- = Advancement in Game

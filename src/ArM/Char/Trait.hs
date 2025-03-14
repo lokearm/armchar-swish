@@ -43,14 +43,15 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , spellTeFoLe
                        ) where
 
-import ArM.Debug.Trace
 import ArM.GameRules
+import ArM.Helper
+
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe (fromJust,isNothing,fromMaybe)
 import Data.List (sortBy)
 
-import ArM.Helper
+import ArM.Debug.Trace
 
 -- | 
 -- = ProtoTrait

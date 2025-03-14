@@ -127,7 +127,6 @@ main' opts | charFile opts /= Nothing = do
          readSpell (Just f) = readSpellDB f
 main' opts | sagaFile opts /= Nothing = do 
      saga <- readSaga $ fromJust $ sagaFile opts
-     putStrLn $ show saga
      writeCharacters (fromJust $ gameStartDir opts) (fromJust saga)
      return ()
 main' _ | otherwise = error "Not implemented!" 

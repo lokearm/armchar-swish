@@ -34,7 +34,7 @@ import Data.Aeson
 import Data.Maybe
 import Data.List
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- | The CharacterSheet object holds a Character State with separate fields
 -- for different kinds of traits
