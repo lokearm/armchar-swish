@@ -76,3 +76,13 @@ data Book = Book
        }  deriving (Eq,Generic,Show)
 instance ToJSON Book
 instance FromJSON Book
+
+-- | Exctract a list of validation errors 
+pregameErrors :: Saga -> [String]
+pregameErrors saga = foldl (++) [] vs
+    where f (Validated _:xs) = f xs
+          f (ValidationError x:xs) = x:f xs
+          f [] = []
+          vs = map g (gameStartCharacters saga)
+          g = foldl (++) [] . map (f . validation) . pregameDesign
+
