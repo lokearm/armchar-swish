@@ -179,17 +179,14 @@
       },
       { "mode" : "Reading", "season" : "Spring 1219"
       , "sourceQuality" : 13
-      , "narrative" : ""
       , "changes" : [ { "art" : "Terram", "xp" : 13 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1219"
       , "sourceQuality" : 16
-      , "narrative" : ""
       , "changes" : [ { "art" : "Rego", "xp" : 16 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1219"
       , "sourceQuality" : 18
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Latin", "xp" : 18 } ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1220"
@@ -204,17 +201,14 @@
       },
       { "mode" : "Reading", "season" : "Summer 1220"
       , "sourceQuality" : 16
-      , "narrative" : ""
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1220"
       , "sourceQuality" : 21
-      , "narrative" : ""
       , "changes" : [ { "art" : "Muto", "xp" : 21 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1221"
       , "sourceQuality" : 21
-      , "narrative" : ""
       , "changes" : [ { "art" : "Aquam", "xp" : 21 } ]
       },
       { "mode" : "Adventure", "season" : "Spring 1221"
@@ -231,17 +225,14 @@
       },
       { "mode" : "Reading", "season" : "Autumn 1221"
       , "sourceQuality" : 21
-      , "narrative" : ""
       , "changes" : [ { "art" : "Auram", "xp" : 21 } ]
       },
       { "mode" : "Reading ", "season" : "Winter 1222"
       , "sourceQuality" : 16
-      , "narrative" : ""
       , "changes" : [ { "art" : "Intellego ", "xp" : 16 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1222"
       , "sourceQuality" : 18
-      , "narrative" : ""
       , "changes" : [ { "art" : "Ignem", "xp" : 18 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1222"
@@ -251,7 +242,6 @@
       },
       { "mode" : "Reading", "season" : "Autumn 1222"
       , "sourceQuality" : 16
-      , "narrative" : ""
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
       { "mode" : "Lab Work ", "season" : "Winter 1223"
@@ -271,12 +261,10 @@
       },
       { "mode" : "Reading", "season" : "Autumn 1223"
       , "sourceQuality" : 17
-      , "narrative" : ""
       , "changes" : [ { "art" : "Animal", "xp" : 17 } ]
       },
       { "mode" : "Reading ", "season" : "Winter 1224"
       , "sourceQuality" : 18
-      , "narrative" : ""
       , "changes" : [ { "art" : "Ignem", "xp" : 18 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1224"
@@ -286,27 +274,22 @@
       },
       { "mode" : "Reading ", "season" : "Summer 1224"
       , "sourceQuality" : 15
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 15 } ]
       },
       { "mode" : "Reading ", "season" : "Autumn 1224"
       , "sourceQuality" : 15
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 15 } ]
       },
       { "mode" : "Lab Work ", "season" : "Winter 1225"
       , "sourceQuality" : 2
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Second Sight", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1225"
       , "sourceQuality" : 15
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 15 } ]
       },
       { "mode" : "Lab Work ", "season" : "Summer 1225"
       , "sourceQuality" : 2
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : "Autumn 1225"
@@ -316,7 +299,6 @@
       },
       { "mode" : "Adventure ", "season" : "Winter 1226"
       , "sourceQuality" : 15
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Second Sight", "xp" : 5 } 
                     , { "ability" : "Parma Magica", "xp" : 5 }
                     , { "ability" : "Leadership", "xp" : 5 } ]
@@ -328,22 +310,18 @@
       },
       { "mode" : "Reading ", "season" : "Summer 1226"
       , "sourceQuality" : 17
-      , "narrative" : ""
       , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
       },
       { "mode" : "Reading ", "season" : "Autumn 1226"
       , "sourceQuality" : 16
-      , "narrative" : " "
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
       { "mode" : "Lab Work ", "season" : "Winter 1227"
       , "sourceQuality" : 2
-      , "narrative" : " "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1227"
       , "sourceQuality" : 17
-      , "narrative" : " "
       , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
       },
       { "mode" : "Lab Work ", "season" : "Summer 1227"
@@ -358,12 +336,10 @@
       },
       { "mode" : "Reading ", "season" : "Winter 1228"
       , "sourceQuality" : 16
-      , "narrative" : ""
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
       { "mode" : "Lab Work ", "season" : "Spring 1228"
       , "sourceQuality" : 3
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
                     , { "ability" : "Herme Lore", "xp" : 1 } ]
       },
@@ -393,22 +369,18 @@
       },
       { "mode" : "Lab work", "season" : "Autumn 1229"
       , "sourceQuality" : 2
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Magic Theory. Leap of Homecoming + Frog's Legs", "xp" : 2 } ]
       },
       { "mode" : "Lab work", "season" : "Winter 1230"
       , "sourceQuality" : 2
-      , "narrative" : ""
       , "changes" : [ { "ability" : "Magic Theory. CrCo spells", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1230"
       , "sourceQuality" : 15
-      , "narrative" : ""
       , "changes" : [ { "art" : "Hibernia Lore L6Q12", "xp" : 15 } ]
       },
       { "mode" : "Story    ", "season" : "Summer 1230"
       , "sourceQuality" : 10
-      , "narrative" : ""
       , "changes" : [ { "art" : "Teaching + Magic Lore", "xp" : 10 } ]
       },
       { "mode" : "Exposure", "season" : "Autumn 1230"
@@ -428,12 +400,10 @@
       },
       { "mode" : "Reading   ", "season" : "Summer 1231"
       , "sourceQuality" : 17
-      , "narrative" : ""
       , "changes" : [ { "art" : "SOCP Lore.", "xp" : 17 } ]
       },
       { "mode" : "Reading   ", "season" : "Autumn 1231"
       , "sourceQuality" : 16
-      , "narrative" : ""
       , "changes" : [ { "art" : "SOCP Lore. Reaching 4. ", "xp" : 16 } ]
       },
       { "mode" : "Initiation", "season" : "Winter 1232"
@@ -802,7 +772,7 @@
       },
       { "mode" : "Lab Work", "season" : "Winter 1250"
       , "sourceQuality" : 2
-      , "narrative" : " no aging (-18); invent InHe25 Converse with Plant and Tree "
+      , "narrative" : "no aging (-18); invent InHe25 Converse with Plant and Tree "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Reading", "season" : "Spring 1250"
@@ -812,27 +782,26 @@
       },
       { "mode" : "Reading", "season" : "Summer 1250"
       , "sourceQuality" : 15
-      , "narrative" : "Summa L17Q12 + Book Learner $53\to68$ "
+      , "narrative" : "Summa L17Q12 + Book Learner 53 -> 68 "
       , "changes" : [ { "art" : "Corpus", "xp" : 15 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1250"
       , "sourceQuality" : 16
-      , "narrative" : "Summa L15Q13 + Book Learner $80\to96$ "
+      , "narrative" : "Summa L15Q13 + Book Learner 80 -> 96"
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1251"
       , "sourceQuality" : 16
-      , "narrative" : "Summa L15Q13 + Book Learner $96\to112$ | no aging -20 |"
+      , "narrative" : "Summa L15Q13 + Book Learner 96 -> 112; no aging -20"
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1251"
       , "sourceQuality" : 4.5
-      , "narrative" : "InIm spells below $\to281½$"
+      , "narrative" : "InIm spells below $\to$  281½"
       , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1251"
       , "sourceQuality" : 12
-      , "narrative" : ""
       , "changes" : [ { "art" : "Rego", "xp" : 12 } ]
       },
       { "mode" : "Author Book", "season" : "Autumn 1251"
@@ -872,18 +841,18 @@
       },
       { "mode" : "Lab", "season" : "Summer 1253"
       , "sourceQuality" : 2
-      , "narrative" : "Intangible Tunnel ReVi20; diam version ReVi5 (144xp)|"
+      , "narrative" : "Intangible Tunnel ReVi20; diam version ReVi5 (144xp)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Author", "season" : "Autumn 1253"
       , "sourceQuality" : 2
-      , "narrative" : "Rego Tracatus (62xp) "
+      , "narrative" : "Rego Tracatus (62xp)"
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
       { "mode" : "Story", "season" : "Winter 1254"
       , "sourceQuality" : 7
       , "narrative" : "No Aging (rolled 4)"
-      , "changes" : [ { "ability" : "Finesse", "xp" : 5 } ]
+      , "changes" : [ { "ability" : "Finesse", "xp" : 5 } 
                     , { "ability" : "Etiquette", "xp" : 2 } ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"
