@@ -1,5 +1,5 @@
 {
    "covenantFiles" : []
    , "characterFiles" : [ "Data/cieran.json", "Data/eogan.json" ]
-   , "spells" : "Data/spells.csv"
+   , "spellFile" : "Data/spells.csv"
 }

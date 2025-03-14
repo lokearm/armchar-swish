@@ -28,8 +28,10 @@ import qualified Data.ByteString.Lazy as LB
 import Text.ParserCombinators.Parsec
 
 import ArM.Char.Character
+import ArM.Char.Markdown
 import ArM.Char.Saga
 import ArM.Char.Spell
+import ArM.BasicIO
 
 -- | Read a character from JSON.  Return Maybe Character
 readCharacter :: String -- ^ Filename
@@ -66,3 +68,13 @@ loadSaga saga = do
    return Saga { covenants = []  
            , characters = map fromJust $ filter (Nothing/=) cs
            , spells = fromJust db }
+
+writeCharacter :: String -> SpellDB -> Character -> IO ()
+writeCharacter dir db c = do
+     writeLns fn $ printMDaug db c
+     return ()
+     where fn = dir ++ "/" ++ charID c ++ ".md"
+
+writeCharacters :: String -> Saga -> IO ()
+writeCharacters dir saga = mapM (writeCharacter dir db) (characters saga) >> return ()
+     where db = spells saga

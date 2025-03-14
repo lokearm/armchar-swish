@@ -35,6 +35,7 @@ data Options = Options
   , spellFile :: Maybe String
   , debugFile  :: Maybe String
   , seasonFile  :: Maybe String
+  , gameStartDir  :: Maybe String
   , advanceSeason  :: Maybe String
 } deriving (Show)
 defaultOptions :: Options
@@ -46,6 +47,7 @@ defaultOptions = Options
   , spellFile = Nothing
   , debugFile  = Nothing
   , seasonFile  = Nothing
+  , gameStartDir  = Nothing
   , advanceSeason  = Nothing
 }
 
@@ -70,6 +72,9 @@ options =
     , Option ['S']     ["spells"] (ReqArg 
             (\arg opt -> opt { spellFile = Just arg })
             "FILE") "input file for spell database"
+    , Option ['g']     ["game-start-dir"] (ReqArg 
+            (\arg opt -> opt { gameStartDir = Just arg })
+            "FILE") "JSON output file"
     , Option ['j']     ["json"] (ReqArg 
             (\arg opt -> opt { jsonFile = Just arg })
             "FILE") "JSON output file"
@@ -122,5 +127,7 @@ main' opts | charFile opts /= Nothing = do
          readSpell (Just f) = readSpellDB f
 main' opts | sagaFile opts /= Nothing = do 
      saga <- readSaga $ fromJust $ sagaFile opts
+     putStrLn $ show saga
+     writeCharacters (fromJust $ gameStartDir opts) (fromJust saga)
      return ()
 main' _ | otherwise = error "Not implemented!" 
