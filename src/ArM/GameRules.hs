@@ -23,32 +23,39 @@ import Data.Maybe
 type XPType = Float
 -- type XPType = Int
 
--- | Round the XPType if required.  
--- This has to be redefined depending on the type of XPType.
-xpround :: Float -> XPType
-xpround = id
--- xpround = round
 
 
--- | Calculate score from total XP, using the arts scale.
--- For abilities, the argument should be divided by 5 beforehand.
-scoreFromXP :: XPType -> Int
-scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
-    where x = y
-          -- x = fromIntegral y  :: Double
 
 pyramidScore :: Num a => Int -> a
 pyramidScore = fromIntegral . f
   where  f y | y < 0 = y*(-y+1) `div` 2
              | otherwise = y*(y+1) `div` 2
 
-getAbilityScore :: Maybe XPType -> (Int,XPType)
-getAbilityScore x' = (s,y) 
-     where y = x - 5*pyramidScore s
-           s = scoreFromXP (x / 5)
-           -- s = scoreFromXP (x `div` 5)
-           x = fromMaybe 0 x'
+class GenericXPType a where
+    getAbilityScore :: Maybe a -> (Int,a)
+    -- | Calculate score from total XP, using the arts scale.
+    -- For abilities, the argument should be divided by 5 beforehand.
+    scoreFromXP :: a -> Int
+    calcXP :: Float -> a -> Maybe a -> a
+    -- | Round the XPType if required.  
+    -- This has to be redefined depending on the type of XPType.
+    xpround :: Float -> a
+instance GenericXPType Int where
+    getAbilityScore x' = (s,y) 
+         where y = x - 5*pyramidScore s
+               s = scoreFromXP (x `div` 5)
+               x = fromMaybe 0 x'
+    scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
+        where x = fromIntegral y  :: Double
+    calcXP m x y = x + round ( m*fromIntegral ( fromMaybe 0 y ) )
+    xpround = round
+instance GenericXPType Float where
+    getAbilityScore x' = (s,y) 
+         where y = x - 5*pyramidScore s
+               s = scoreFromXP (x / 5)
+               x = fromMaybe 0 x'
+    scoreFromXP x = floor $ (-1+sqrt (1+8*x))/2
+    calcXP m x y = x + ( m*( fromMaybe 0 y ) )
+    xpround = id
 
-calcXP :: Float -> XPType -> Maybe XPType -> XPType
-calcXP m x y = x + ( m*fromMaybe 0 y )
 
