@@ -48,10 +48,12 @@ readSagaFile :: String -- ^ Filename
              -> IO (Maybe SagaFile)
 readSagaFile fn = LB.readFile fn >>= return . decode
 
+-- | Load the saga and its constituent objects from the given file.
 readSaga :: String -- ^ Filename
          -> IO (Maybe Saga)
 readSaga fn = readSagaFile fn >>= passMaybe loadSaga
 
+-- | Skip Nothing values and apply the give function on Just-objects.
 passMaybe :: (Monad m) => (a -> m b) -> Maybe a -> m (Maybe b)
 passMaybe _ Nothing = return Nothing
 passMaybe g (Just x) = fmap Just $ g x
@@ -63,6 +65,7 @@ readSpellDB fn = parseFromFile CSV.csvFile fn >>= return . Just . spellDB . g
   where g (Left _) = [[]]
         g (Right x) = x
 
+-- | Load constituent objects for a saga.
 loadSaga :: SagaFile -> IO Saga
 loadSaga saga = do
    db <- readSpellDB $ spellFile saga
@@ -72,23 +75,39 @@ loadSaga saga = do
            , currentCharacters = []
            , spells = fromJust db }
 
-writeCharacter :: String -> SpellDB -> Character -> IO ()
+-- | Write a charactersheet in MarkDown, with both ingame and pregame logs.
+-- This is currently not used.
+writeCharacter :: String   -- ^ Directory for the output files
+              -> SpellDB   -- ^ Spell database
+              -> Character -- ^ Character whose sheet is written
+              -> IO ()
 writeCharacter dir db c = do
      writeLns fn $ printMDaug db c
      return ()
      where fn = dir ++ "/" ++ charID c ++ ".md"
 
+-- | Write charactersheets for a list of characters
+-- All advancement logs are written, both pregame and ingame.
+-- This is currently not used.
 writeCharacterList :: String -> SpellDB -> [Character] -> IO ()
 writeCharacterList dir db cs = mapM (writeCharacter dir db) cs >> return ()
 
-writeGameStart :: String -> Saga -> IO ()
+-- | Write charactersheets at Game Start in MarkDown
+-- File name is derived from the character name.
+writeGameStart :: String  -- ^ Directory for the output files
+               -> Saga    -- ^ Saga whose characters are written
+               -> IO ()
 writeGameStart dir saga = mapM wf  cs >> return ()
      where db = spells saga
            cs = gameStartCharacters saga
            wf c = (writeLns (fn c) $ gameStartSheet db c)
            fn c = dir ++ "/" ++ charID c ++ ".md"
 
-writeCurrent :: String -> Saga -> IO ()
+-- | Write current charactersheets in MarkDown
+-- File name is derived from the character name.
+writeCurrent :: String  -- ^ Directory for the output files
+             -> Saga    -- ^ Saga whose characters are written
+             -> IO ()
 writeCurrent dir saga = mapM wf  cs >> return ()
      where db = spells saga
            cs = currentCharacters saga
