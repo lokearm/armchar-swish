@@ -25,21 +25,19 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 ## Roadmap
 
 + [ ] Phase 1. Review and bugfix
-	+ [x] Produce bundle of files - systematic name and directory structure
-	+ [x] Extract error report in Markdown
-	+ [x] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Validate Eogan build
-	+ [x] Irish calendar
-	+ [x] Fractional XP
 	+ [ ] Add Cieran's spells
+	+ [ ] Step 1. Features required by Cieran
+		+ [ ] Bonus XP
+		+ [ ] Advance age on Winter seasons
+		+ [ ] Flawless magic
+	+ [ ] Step 2.  Long Character Sheet
 	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Refactor and document code
-	+ [ ] Bonus XP
 + [ ] Phase 2.  Finishing touches
 	+ [ ] Warping
 	+ [ ] Decrepitude
 	+ [ ] Aging
-	+ [ ] advance age on Winter seasons
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
 + [ ] Phase 3. Covenant
@@ -51,13 +49,12 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
+		+ [ ] Error report for ingame advancement
 	+ [ ] Develop [[Saga object]]
 	+ [ ] Hyperlinked web site
 + [ ] Phase 4. Polish
 	+ [ ] Step 1. Compute Combat Stats
-	+ [ ] Step 2.  Long Character Sheet
 	+ [ ] Step 3. Virtues and Flaws - Special cases
-		+ [ ] Flawless magic
 		+ [ ] Linguist
 		+ [ ] Great/Poor Characteristic
 		+ [ ] Inventive Genius
