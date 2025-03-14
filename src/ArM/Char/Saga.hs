@@ -77,12 +77,30 @@ data Book = Book
 instance ToJSON Book
 instance FromJSON Book
 
+augHead :: SeasonTime -> Maybe String -> String
+augHead NoTime Nothing = ("??" )
+augHead x Nothing = (show x )
+augHead NoTime (Just x) = x
+augHead x (Just z) = (show x  ++ " " ++ z)
+
+pregameCharErrors :: Character -> [(String,[String])]
+pregameCharErrors c = ff $ map f as
+   where as = pregameDesign c
+         f a = (charID c ++ ": " ++ augHead (season a) (mode a)
+               , filterError $ validation a)
+         ff ((_,[]):xs) = ff xs
+         ff (x:xs) = x:ff xs
+         ff [] = []
+
+filterError :: [Validation] -> [String]
+filterError (Validated _:xs) = filterError xs
+filterError (ValidationError x:xs) = x:filterError xs
+filterError [] = []
+
 -- | Exctract a list of validation errors 
 pregameErrors :: Saga -> [String]
-pregameErrors saga = foldl (++) [] vs
-    where f (Validated _:xs) = f xs
-          f (ValidationError x:xs) = x:f xs
-          f [] = []
-          vs = map g (gameStartCharacters saga)
-          g = foldl (++) [] . map (f . validation) . pregameDesign
-
+pregameErrors saga = foldl (++) [] $ map formatOutput vvs
+    where cs = gameStartCharacters saga
+          vs = map pregameCharErrors  cs
+          vvs = foldl (++) [] vs
+          formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
