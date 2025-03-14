@@ -10,6 +10,7 @@ do
    pandoc -o "$o" "$i"
 done
 
+cd ..
 cd Current
 for i in *.md
 do
