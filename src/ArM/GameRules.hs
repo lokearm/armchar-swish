@@ -46,3 +46,7 @@ getAbilityScore x' = (s,y)
      where y = x - 5*pyramidScore s
            s = scoreFromXP (x `div` 5)
            x = fromMaybe 0 x'
+
+calcXP :: Float -> XPType -> Maybe XPType -> XPType
+calcXP m x y = x + round ( m*fromIntegral ( fromMaybe 0 y ) )
+

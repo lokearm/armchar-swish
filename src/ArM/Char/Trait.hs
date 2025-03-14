@@ -565,9 +565,8 @@ instance TraitLike Ability where
     advanceTrait a x = 
           updateBonus (bonusScore a) $ um (multiplyXP a) $
           updateAbilitySpec (spec a) $ updateAbilityXP y x
-      where y = (abilityExcessXP x) + xpround (m * xp')
+      where y = calcXP m (abilityExcessXP x) (xp a) 
             m = abilityMultiplier x
-            xp' = fromIntegral $ fromMaybe 0 (xp a)
             um Nothing ab = ab 
             um abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Art where
@@ -576,9 +575,8 @@ instance TraitLike Art where
     advanceTrait a x = 
           updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
           updateArtXP y x 
-      where y = (artExcessXP x) + xpround (m * xp')
+      where y = calcXP m (artExcessXP x) (xp a) 
             m = artMultiplier x
-            xp' = fromIntegral $ fromMaybe 0 (xp a)
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
