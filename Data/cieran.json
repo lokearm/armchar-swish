@@ -380,7 +380,7 @@
       , "narrative" : "L6Q12"
       , "changes" : [ { "ability" : "Hibernia Lore", "xp" : 15 } ]
       },
-      { "mode" : "Story", "season" : "Summer 1230"
+      { "mode" : "Adventure", "season" : "Summer 1230"
       , "sourceQuality" : 10
       , "changes" : [ { "ability" : "Teaching", "xp" : 5 } 
                     , { "ability" : "Magic Lore", "xp" : 5 } ]
@@ -538,7 +538,7 @@
       , "narrative" : " (19xp) Hiccup "
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Story ", "season" : "Summer 1238"
+      { "mode" : "Adventure", "season" : "Summer 1238"
       , "sourceQuality" : 8
       , "narrative" : "Plus Quest for Cautious Sorcerer. Parma Magica (4 to 55xp)"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 4 } 
@@ -659,7 +659,7 @@
       , "narrative" : "CrIg Attack Spell. Parma to 57xp "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Story   ", "season" : "Summer 1244"
+      { "mode" : "Adventure", "season" : "Summer 1244"
       , "sourceQuality" : 10
       , "narrative" : "Midsummer Fair: Parma Magica (5), Folk Ken (5) + one confidence point "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 5 }
@@ -675,7 +675,7 @@
       , "narrative" : "PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases "
       , "changes" : [ { "ability" : "Parma Magica ", "xp" : 2 } ]
       },
-      { "mode" : "Story    ", "season" : "Spring 1245"
+      { "mode" : "Adventure", "season" : "Spring 1245"
       , "sourceQuality" : 15
       , "narrative" : " 4 conf pts "
       , "changes" : [ { "ability" : "Second Sight", "xp" : 5 }
@@ -826,7 +826,7 @@
       , "narrative" : "To 83xp"
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
-      { "mode" : "Story", "season" : "Autumn 1252"
+      { "mode" : "Adventure", "season" : "Autumn 1252"
       , "sourceQuality" : 15
       , "narrative" : "Imaginem 286 + 9 = 295 (5+correspondence&affinity), Faerie Lore 16+4=20, Latin 58+2=60, OoH Lore 7+4=11|"
       , "changes" : [ { "art" : "Imaginem", "xp" : 6 }
@@ -855,7 +855,7 @@
       , "narrative" : "Rego Tracatus (62xp)"
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
-      { "mode" : "Story", "season" : "Winter 1254"
+      { "mode" : "Adventure", "season" : "Winter 1254"
       , "sourceQuality" : 7
       , "narrative" : "No Aging (rolled 4)"
       , "changes" : [ { "ability" : "Finesse", "xp" : 5 } 
