@@ -26,7 +26,12 @@ import Text.Read
 type CharTime = SeasonTime 
 -- type CharTime = Maybe String
 
-data Season = Spring | Summer | Autumn | Winter | NoSeason
+-- | Season of the year.
+-- This is currently defined using the Hibernian calendar,
+-- with Winter being the first season of the year.
+-- This must be changed for the standard calendare.
+-- data Season = Spring | Summer | Autumn | Winter | NoSeason
+data Season = Winter | Spring | Summer | Autumn  | NoSeason
      deriving (Show,Ord,Eq,Read)
 
 instance ToJSON SeasonTime where

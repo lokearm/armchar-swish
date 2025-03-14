@@ -29,10 +29,12 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [x] Extract error report in Markdown
 	+ [x] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Validate Eogan build
-	+ [ ] Irish calendar
-	+ [ ] Fractional XP
+	+ [x] Irish calendar
+	+ [x] Fractional XP
+	+ [ ] Add Cieran's spells
 	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Refactor and document code
+	+ [ ] Bonus XP
 + [ ] Phase 2.  Finishing touches
 	+ [ ] Warping
 	+ [ ] Decrepitude

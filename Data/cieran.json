@@ -136,7 +136,7 @@
       , "narrative" : "Studies Mentem L16Q13 +3" 
       },
       { "mode" : "Reading"
-      , "season" : "Winter 1217"
+      , "season" : "Winter 1218"
       , "sourceQuality" : 18
       , "changes" : 
          [ { "art" : "Terram", "xp": 18 }
@@ -157,7 +157,7 @@
       , "season" : "Summer 1218"
       , "sourceQuality" : 17
       , "changes" : 
-         [ { "ability" : "Servants of the Common People Lore", "xp": 17 }
+         [ { "ability" : "SOCP Lore", "xp": 17 }
          ] 
       , "narrative" : "Studies book found in Jerome's Tower"
       },
@@ -170,7 +170,7 @@
       , "narrative" : "Enchant Bookstand of Hespera" 
       },
       { "mode" : "Reading"
-      , "season" : "Winter 1218"
+      , "season" : "Winter 1219"
       , "sourceQuality" : 16
       , "changes" : 
          [ { "art" : "Intellego", "xp": 16 }
@@ -341,7 +341,7 @@
       { "mode" : "Lab Work ", "season" : "Spring 1228"
       , "sourceQuality" : 3
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
-                    , { "ability" : "Herme Lore", "xp" : 1 } ]
+                    , { "ability" : "Hermes Lore", "xp" : 1 } ]
       },
       { "mode" : "Reading ", "season" : "Summer 1228"
       , "sourceQuality" : 19.5
@@ -377,16 +377,18 @@
       },
       { "mode" : "Reading ", "season" : "Spring 1230"
       , "sourceQuality" : 15
-      , "changes" : [ { "art" : "Hibernia Lore L6Q12", "xp" : 15 } ]
+      , "narrative" : "L6Q12"
+      , "changes" : [ { "ability" : "Hibernia Lore", "xp" : 15 } ]
       },
-      { "mode" : "Story    ", "season" : "Summer 1230"
+      { "mode" : "Story", "season" : "Summer 1230"
       , "sourceQuality" : 10
-      , "changes" : [ { "art" : "Teaching + Magic Lore", "xp" : 10 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 5 } 
+                    , { "ability" : "Magic Lore", "xp" : 5 } ]
       },
       { "mode" : "Exposure", "season" : "Autumn 1230"
       , "sourceQuality" : 2
       , "narrative" : "Autumn 1230 | Exposure  | 2  | Magic Theory|  Help Maine "
-      , "changes" : [ { "art" : "Magic THeory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1231"
       , "sourceQuality" : 2
@@ -400,11 +402,11 @@
       },
       { "mode" : "Reading   ", "season" : "Summer 1231"
       , "sourceQuality" : 17
-      , "changes" : [ { "art" : "SOCP Lore.", "xp" : 17 } ]
+      , "changes" : [ { "ability" : "SOCP Lore.", "xp" : 17 } ]
       },
       { "mode" : "Reading   ", "season" : "Autumn 1231"
       , "sourceQuality" : 16
-      , "changes" : [ { "art" : "SOCP Lore. Reaching 4. ", "xp" : 16 } ]
+      , "changes" : [ { "ability" : "SOCP Lore. Reaching 4. ", "xp" : 16 } ]
       },
       { "mode" : "Initiation", "season" : "Winter 1232"
       , "sourceQuality" : 2
@@ -585,7 +587,7 @@
       { "mode" : "Initiation ", "season" : "Autumn 1240"
       , "sourceQuality" : 2
       , "narrative" : "Cautious Sorcerer "
-      , "changes" : [ { "art" : "SOCP Lore", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "SOCP Lore", "xp" : 2 } ]
       },
       { "mode" : "Exposure", "season" : "Winter 1241"
       , "sourceQuality" : 2
@@ -666,7 +668,7 @@
       { "mode" : "Reading ", "season" : "Autumn 1244"
       , "sourceQuality" : 11
       , "narrative" : " *Dark Fey of the East* "
-      , "changes" : [ { "art" : "Faerie Lore ", "xp" : 11 } ]
+      , "changes" : [ { "ability" : "Faerie Lore", "xp" : 11 } ]
       },
       { "mode" : "Lab Work ", "season" : "Winter 1245"
       , "sourceQuality" : 2
@@ -827,7 +829,11 @@
       { "mode" : "Story", "season" : "Autumn 1252"
       , "sourceQuality" : 15
       , "narrative" : "Imaginem 286 + 9 = 295 (5+correspondence&affinity), Faerie Lore 16+4=20, Latin 58+2=60, OoH Lore 7+4=11|"
-      , "changes" : [ { "art" : "", "xp" : 15 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 6 }
+                    , { "ability" : "Faerie Lore", "xp" : 4 }
+                    , { "ability" : "Latin", "xp" : 2 }
+                    , { "ability" : "Hermes Lore", "xp" : 4 }
+      ]
       },
       { "mode" : "Reading", "season" : "Winter 1253"
       , "sourceQuality" : 13
