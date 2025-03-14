@@ -20,22 +20,21 @@ import Data.Maybe
 -- By RAW it should be Int, but some troupes prefer to count
 -- fractional XP when affinities are involved.  This requires
 -- changing to a floating point type.
-type XPType = Float
--- type XPType = Int
+-- type XPType = Float
+type XPType = Int
 
 -- | Round the XPType if required.  
 -- This has to be redefined depending on the type of XPType.
 xpround :: Float -> XPType
-xpround = id
--- xpround = round
+-- xpround = id
+xpround = round
 
 
 -- | Calculate score from total XP, using the arts scale.
 -- For abilities, the argument should be divided by 5 beforehand.
 scoreFromXP :: XPType -> Int
 scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
-    where x = y
-          -- x = fromIntegral y  :: Double
+    where x = fromIntegral y  :: Double
 
 pyramidScore :: Int -> XPType
 pyramidScore = fromIntegral . f

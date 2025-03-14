@@ -25,6 +25,8 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import Data.Maybe
 
+import ArM.Debug.Trace
+
 -- | Compute the initial state if no state is recorded.
 --
 -- The function uses `applyCGA` to process all of the pregame advancements.
@@ -54,7 +56,7 @@ prepareCharGen cs = validateCharGen sheet . initialLimits vfs . addInferredTrait
 
 -- | Add the Confidence trait to the character state, using 
 addConfidence :: CharacterState -> CharacterState
-addConfidence cs = cs { traits = ct:traits cs }
+addConfidence cs = cs { traits = sortTraits $ ct:traits cs }
           where vfs = vfList sheet
                 sheet = filterCS cs
                 ct | csType sheet == Grog = ConfidenceTrait $ Confidence
@@ -66,7 +68,10 @@ addConfidence cs = cs { traits = ct:traits cs }
 applyCharGenAdv :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyCharGenAdv a cs = (a',cs')
     where a' = prepareCharGen cs a
-          cs' = cs { charTime = season a, traits = new, age = ag }
+          cs' = trace ("old>"++show old)
+              $ trace ("change>"++show change)
+              $ trace ("new>"++show new)
+              $ cs { charTime = season a, traits = new, age = ag }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'
