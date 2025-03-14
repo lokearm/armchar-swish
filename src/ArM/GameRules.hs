@@ -37,3 +37,4 @@ pyramidScore :: Int -> XPType
 pyramidScore = fromIntegral . f
   where  f y | y < 0 = y*(-y+1) `div` 2
              | otherwise = y*(y+1) `div` 2
+

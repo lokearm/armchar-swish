@@ -215,9 +215,9 @@ data PTrait = PTrait { ptraitName :: String, pscore :: Int }
 -- | Reputation object 
 data Reputation = Reputation { reputationName :: String  -- ^ contents of the reputation
                              , repLocale :: String       -- ^ domain or location of the reputation
-                             ,  repXP :: Int             -- ^ total XP in the reputation (used?)
+                             ,  repXP :: XPType          -- ^ total XP in the reputation (used?)
                              ,  repScore :: Int          -- ^ reputation Score
-                             ,  repExcessXP :: Int       -- ^ XP towards next level in the reputation
+                             ,  repExcessXP :: XPType    -- ^ XP towards next level in the reputation
                              }
            deriving (Ord, Eq, Generic)
 data VF = VF { vfname :: String    -- ^ name of the virtue/flaw
@@ -374,7 +374,7 @@ computeOther p
                       , otherScore = s
                       , otherExcess = round y
                       }
-                 where (s,y) = getAbilityScore (points p)
+                 where (s,y) = getAbilityScore (fmap fromIntegral $ points p)
 
 
 
@@ -662,11 +662,11 @@ updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
     where sc = abilityScore ab
           tr = fromIntegral (sc+1)*5
 
-updateRepXP :: Int -> Reputation -> Reputation
+updateRepXP :: XPType -> Reputation -> Reputation
 updateRepXP x ab | x < tr = ab { repExcessXP = x }
                  | otherwise = updateRepXP (x-tr) $ ab { repScore = sc+1 }
     where sc = repScore ab
-          tr = (sc+1)*5
+          tr = fromIntegral $ (sc+1)*5
 
 updateArtXP :: XPType -> Art -> Art
 updateArtXP x ab | x < tr = ab { artExcessXP = x }
@@ -678,7 +678,7 @@ updateSpellXP :: XPType -> Spell -> Spell
 updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
                    | otherwise = updateSpellXP (x-tr) $ ab { masteryScore = sc+1 }
     where sc = masteryScore ab
-          tr = (sc+1)*5
+          tr = fromIntegral $ (sc+1)*5
 updateSpellMastery :: [String] -> Spell -> Spell
 updateSpellMastery ms t = t { masteryOptions = (masteryOptions t) ++ ms }
 
