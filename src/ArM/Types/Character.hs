@@ -40,7 +40,7 @@ import ArM.Swish.KeyPair
 import ArM.Swish.Resources
 import ArM.Rules.Aux
 import ArM.Types.RDF
-import ArM.Internal.Aux
+import ArM.Helper
 import Data.Aeson
 
 import ArM.Debug.NoTrace

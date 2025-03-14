@@ -73,7 +73,6 @@ common swish-deps
   import:    deps
   other-modules:       ArM.Rules
                        , ArM.Rules.Resource
-                       , ArM.Internal.Aux
                        , ArM.Rules.Advancement
                        , ArM.Rules.Aux
                        , ArM.Rules.Common

@@ -141,9 +141,12 @@ main' opts | charFile opts /= Nothing = do
 main' opts | sagaFile opts /= Nothing = do 
      saga <- readSaga $ fromJust $ sagaFile opts
      case saga of
-        Nothing -> error "Coudl not read Saga file"
+        Nothing -> error "Could not read Saga file"
         (Just s1) -> do
-               writeGameStart (fromJust $ gameStartDir opts) s1
+               writeGameStart gsf  s1
+               writeLns (gsf ++ "/errors.md") $ 
+                  "# Errors in Character Design":"":pregameErrors s1
                advSaga ( advanceSeason opts ) (currentDir opts ) s1
                return ()
+        where gsf = fromJust $ gameStartDir opts
 main' _ | otherwise = error "Not implemented!" 

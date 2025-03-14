@@ -13,6 +13,7 @@
 module ArM.Helper where
 
 import Data.Maybe (fromMaybe)
+import Data.List (sort)
 
 -- | Get a list from a maybe-list, mapping Nothing to the empty list.
 maybeList :: Maybe [a] -> [a]
@@ -48,3 +49,11 @@ showBonus x | x > 0 = " +" ++ show x
 showSigned :: Int -> String
 showSigned x | x > 0 = "+" ++ show x
             | otherwise = show x
+
+-- | Sort the list and remove duplicates.
+uniqueSort :: (Ord a,Eq a) => [a] -> [a]
+uniqueSort = f . sort
+    where f [] = []
+          f (x:[]) = x:[]
+          f (x:y:ys) | x == y = f (y:ys)
+                     | otherwise = x:f (y:ys)

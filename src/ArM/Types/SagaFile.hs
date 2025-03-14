@@ -16,7 +16,7 @@ module ArM.Types.SagaFile ( SagaFile(..)
                           , sagaFromRDF
                           ) where
 
-import ArM.Internal.Aux
+import ArM.Helper
 import ArM.Debug.Trace
 
 import           Swish.RDF.Graph as G
