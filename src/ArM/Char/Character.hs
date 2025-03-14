@@ -52,9 +52,9 @@ applyAdvancement a cs = (a',cs')
               $ cs { charTime = season a, traits = new }
           new =  advance change tmp
           tmp =  advance inferred old 
-          change = sortTraits $ changes a'
-          inferred = sortTraits $ inferredTraits a'
-          old = sortTraits $ traits cs
+          change = changes a'
+          inferred = inferredTraits a'
+          old = traits cs
 
 
 {-

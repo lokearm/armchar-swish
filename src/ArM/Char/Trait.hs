@@ -614,7 +614,7 @@ instance TraitLike ProtoTrait where
    traitKey p
        | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
        | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
-       | art p /= Nothing = ArtKey $ fromJust $ art p 
+       | art p /= Nothing = ArtKey $ take 2 $ fromJust $ art p 
        | spell p /= Nothing = SpellKey ( fromJust $ spell p ) 
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
