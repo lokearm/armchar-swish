@@ -25,28 +25,22 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 ## Roadmap
 
 + [ ] Phase 1. Companion/Grog
+	+ [ ] [[Saga object]]
+	+ [ ] Produce bundle of files - systematic name and directory structure
 	+ [ ] Extract error report in Markdown
-	+ [ ] Validate character build
 	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
-	+ [ ] Refactor and document code
-+ [ ] Phase 2. Magus
-	+ [x] Step 2. Casting Score
-		+ [x] Look up arts and stats
-		+ [x] Compute Casting Score
-		+ [x] Print Casting Score on character sheet
+	+ [ ] Validate Eogan build
 	+ [ ] Step 3. Review Cieran
 		+ [ ] Fix Cieran build
 		+ [ ] Review Cieran's ingame advancements
 		+ [ ] Add in-game advancements
-	+ [x] Step 4. Lab Total
-		+ [x] Compute Lab Totals
-		+ [x] Print lab totals on character sheet
-	+ [ ] Step 5. Finishing touches
-		+ [ ] Warping
-		+ [ ] Decrepitude
-		+ [ ] Aging
-		+ [ ] advance age on Winter seasons
-		+ [ ] Comment field on traits
+	+ [ ] Refactor and document code
++ [ ] Phase 2.  Finishing touches
+	+ [ ] Warping
+	+ [ ] Decrepitude
+	+ [ ] Aging
+	+ [ ] advance age on Winter seasons
+	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
@@ -57,16 +51,16 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
-	+ [ ] Step 3. Saga.  Organise files
-		+ [ ] [[Saga object]]
 + [ ] Phase 4. Polish
 	+ [ ] Step 1. Compute Combat Stats
-	+ [ ] Step 2. Virtues and Flaws - Special cases
+	+ [ ] Step 2.  Long Character Sheet
+	+ [ ] Step 3. Virtues and Flaws - Special cases
 		+ [ ] Flawless magic
 		+ [ ] Linguist
 		+ [ ] Great/Poor Characteristic
 		+ [ ] Inventive Genius
-	+ [ ] Step 3.  CharacterState in JSON
+		+ [ ] Infer Second Sight from Strong Faerie Blood
+	+ [ ] Step 4.  CharacterState in JSON
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
 	+ [ ] Pretty print spells for reference
