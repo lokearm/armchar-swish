@@ -37,7 +37,7 @@ scoreFromXP y = floor $ (-1+sqrt (1+8*x))/2
     where x = y
           -- x = fromIntegral y  :: Double
 
-pyramidScore :: Int -> XPType
+pyramidScore :: Num a => Int -> a
 pyramidScore = fromIntegral . f
   where  f y | y < 0 = y*(-y+1) `div` 2
              | otherwise = y*(y+1) `div` 2
