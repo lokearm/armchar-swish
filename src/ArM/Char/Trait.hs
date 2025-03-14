@@ -215,9 +215,9 @@ data PTrait = PTrait { ptraitName :: String, pscore :: Int }
 -- | Reputation object 
 data Reputation = Reputation { reputationName :: String  -- ^ contents of the reputation
                              , repLocale :: String       -- ^ domain or location of the reputation
-                             ,  repXP :: XPType          -- ^ total XP in the reputation (used?)
+                             ,  repXP :: Int             -- ^ total XP in the reputation (used?)
                              ,  repScore :: Int          -- ^ reputation Score
-                             ,  repExcessXP :: XPType    -- ^ XP towards next level in the reputation
+                             ,  repExcessXP :: Int       -- ^ XP towards next level in the reputation
                              }
            deriving (Ord, Eq, Generic)
 data VF = VF { vfname :: String    -- ^ name of the virtue/flaw
@@ -372,7 +372,7 @@ computeOther p
            OtherTrait { trait = fromJust (other p) 
                       , pts = fromMaybe 0 ( points p ) 
                       , otherScore = s
-                      , otherExcess = y
+                      , otherExcess = round y
                       }
                  where (s,y) = getAbilityScore (points p)
 
@@ -571,7 +571,7 @@ instance TraitLike Ability where
     advanceTrait a x = 
           updateBonus (bonusScore a) $ um (multiplyXP a) $
           updateAbilitySpec (spec a) $ updateAbilityXP y x
-      where y = (abilityExcessXP x) + round (m * xp')
+      where y = (abilityExcessXP x) + xpround (m * xp')
             m = abilityMultiplier x
             xp' = fromIntegral $ fromMaybe 0 (xp a)
             um Nothing ab = ab 
@@ -582,7 +582,7 @@ instance TraitLike Art where
     advanceTrait a x = 
           updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
           updateArtXP y x 
-      where y = (artExcessXP x) + round (m * xp')
+      where y = (artExcessXP x) + xpround (m * xp')
             m = artMultiplier x
             xp' = fromIntegral $ fromMaybe 0 (xp a)
             um Nothing ab = ab 
@@ -597,7 +597,7 @@ instance TraitLike Reputation where
     traitKey x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
     advanceTrait a x = updateRepXP y x
-      where y = (repExcessXP x) + (fromMaybe 0 $ xp a)
+      where y = (repExcessXP x) + (round $ fromMaybe 0 $ xp a)
 instance TraitLike Characteristic where
     traitKey x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
@@ -660,19 +660,19 @@ updateAbilityXP :: XPType -> Ability -> Ability
 updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
                      | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
     where sc = abilityScore ab
-          tr = (sc+1)*5
+          tr = fromIntegral (sc+1)*5
 
-updateRepXP :: XPType -> Reputation -> Reputation
+updateRepXP :: Int -> Reputation -> Reputation
 updateRepXP x ab | x < tr = ab { repExcessXP = x }
-                     | otherwise = updateRepXP (x-tr) $ ab { repScore = sc+1 }
+                 | otherwise = updateRepXP (x-tr) $ ab { repScore = sc+1 }
     where sc = repScore ab
           tr = (sc+1)*5
 
 updateArtXP :: XPType -> Art -> Art
 updateArtXP x ab | x < tr = ab { artExcessXP = x }
-                     | otherwise = updateArtXP (x-tr) $ ab { artScore = sc+1 }
+                 | otherwise = updateArtXP (x-tr) $ ab { artScore = sc+1 }
     where sc = artScore ab
-          tr = (sc+1)
+          tr = fromIntegral (sc+1)
 
 updateSpellXP :: XPType -> Spell -> Spell
 updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
