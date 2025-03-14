@@ -68,7 +68,7 @@ loadSaga saga = do
    db <- readSpellDB $ spellFile saga
    cs <- mapM readCharacter $ characterFiles saga
    return   Saga { covenants = []  
-           , characters = map fromJust $ filter (Nothing/=) cs
+           , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
            , spells = fromJust db }
 
 writeCharacter :: String -> SpellDB -> Character -> IO ()
@@ -77,6 +77,13 @@ writeCharacter dir db c = do
      return ()
      where fn = dir ++ "/" ++ charID c ++ ".md"
 
-writeCharacters :: String -> Saga -> IO ()
-writeCharacters dir saga = mapM (writeCharacter dir db) (characters saga) >> return ()
+writeCharacterList :: String -> SpellDB -> [Character] -> IO ()
+writeCharacterList dir db cs = mapM (writeCharacter dir db) cs >> return ()
+
+writeGameStart :: String -> Saga -> IO ()
+writeGameStart dir saga = writeCharacterList dir db (gameStartCharacters saga) 
+     where db = spells saga
+
+writeCurrent :: String -> Saga -> IO ()
+writeCurrent dir saga = writeCharacterList dir db (currentCharacters saga) 
      where db = spells saga

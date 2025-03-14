@@ -18,7 +18,7 @@ import Data.Aeson
 import GHC.Generics
 
 import ArM.Char.Trait
-import ArM.Char.Internal.Character
+import ArM.Char.Character
 import ArM.Char.Internal.Advancement
 import ArM.Char.Spell
 
@@ -28,9 +28,13 @@ import ArM.Char.Spell
 
 data Saga = Saga 
          { covenants :: [Covenant]
-         , characters :: [Character]
+         , gameStartCharacters :: [Character]
+         , currentCharacters :: [Character]
          , spells :: SpellDB
        }  deriving (Eq,Show)
+
+advanceSaga :: SeasonTime -> Saga -> Saga
+advanceSaga t saga = saga { currentCharacters = map (advanceCharacter t) ( gameStartCharacters saga ) }
 
 data SagaFile = SagaFile 
          { covenantFiles :: [String]
