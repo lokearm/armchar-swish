@@ -8,7 +8,12 @@
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Markdown (printMDaug,printMD,artMD) where
+module ArM.Char.Markdown ( printMDaug
+                         , printMD
+                         , artMD
+                         , gameStartSheet
+                         , currentSheet
+                         ) where
 
 import Data.Maybe 
 import Data.List 
@@ -105,6 +110,25 @@ instance Markdown Confidence where
 instance Markdown OtherTrait where
    printMD c = [ "+ **" ++ trait c ++ "**: " ++ show (otherScore c) ++ " ("
              ++ show (otherExcess c) ++ ")" ]
+
+gameStartSheet :: SpellDB -> Character -> [String]
+gameStartSheet db c = ( printMD . concept ) c 
+            ++ maybeP (state c)
+            ++ (pListMD "## Game start design" as')
+       where 
+             as' = pregameDesign c
+             maybeP Nothing = []
+             maybeP (Just xs) = printMDaug db xs
+currentSheet :: SpellDB -> Character -> [String]
+currentSheet db c = ( printMD . concept ) c 
+            ++ maybeP (state c)
+            ++ (pListMD "## Past Advancement" bs)
+            ++ (pListMD "## Future Advancement" cs)
+       where 
+             bs = pastAdvancement c
+             cs = futureAdvancement c
+             maybeP  Nothing = []
+             maybeP (Just xs) = printMDaug db xs
  
 instance Markdown Character where
    printMD c = ( printMD . concept ) c 

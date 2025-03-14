@@ -27,7 +27,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 1. Companion/Grog
 	+ [x] Produce bundle of files - systematic name and directory structure
 	+ [ ] Extract error report in Markdown
-	+ [ ] Clean up MD Character Sheets (pregame vs ingame)
+	+ [x] Clean up MD Character Sheets (pregame vs ingame)
 	+ [ ] Validate Eogan build
 	+ [ ] Step 3. Review Cieran
 		+ [ ] Fix Cieran build
