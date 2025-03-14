@@ -108,8 +108,9 @@ laterLifeXP' (vf:vfs) (x,y) = laterLifeXP' vfs $ (x'+x,f y y')
 laterLifeSQ' :: Advancement -> (XPType,XPType) -> XPType
 laterLifeSQ' ad (x,y) = t
    where t | isJust (sourceQuality ad) = fromJust (sourceQuality ad)
-           | isJust (advYears ad) = x+y*fromJust (advYears ad)
+           | isJust (advYears ad) = x+y*yy
            | otherwise = x
+         yy = fromIntegral $ fromJust (advYears ad)
 
 -- | Get XP total for Later Life
 laterLifeSQ :: [VF] -> Advancement -> XPType

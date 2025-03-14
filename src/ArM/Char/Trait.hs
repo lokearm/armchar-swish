@@ -368,7 +368,7 @@ computeOther p
                       , otherScore = s
                       , otherExcess = y
                       }
-                 where (s,y) = getAbilityScore (points p)
+                 where (s,y) = getAbilityScore (fmap fromIntegral $ points p)
 
 
 
@@ -565,7 +565,7 @@ instance TraitLike Ability where
     advanceTrait a x = 
           updateBonus (bonusScore a) $ um (multiplyXP a) $
           updateAbilitySpec (spec a) $ updateAbilityXP y x
-      where y = (abilityExcessXP x) + round (m * xp')
+      where y = (abilityExcessXP x) + xpround (m * xp')
             m = abilityMultiplier x
             xp' = fromIntegral $ fromMaybe 0 (xp a)
             um Nothing ab = ab 
@@ -576,7 +576,7 @@ instance TraitLike Art where
     advanceTrait a x = 
           updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
           updateArtXP y x 
-      where y = (artExcessXP x) + round (m * xp')
+      where y = (artExcessXP x) + xpround (m * xp')
             m = artMultiplier x
             xp' = fromIntegral $ fromMaybe 0 (xp a)
             um Nothing ab = ab 
@@ -654,25 +654,25 @@ updateAbilityXP :: XPType -> Ability -> Ability
 updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
                      | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
     where sc = abilityScore ab
-          tr = (sc+1)*5
+          tr = fromIntegral (sc+1)*5
 
 updateRepXP :: XPType -> Reputation -> Reputation
 updateRepXP x ab | x < tr = ab { repExcessXP = x }
-                     | otherwise = updateRepXP (x-tr) $ ab { repScore = sc+1 }
+                 | otherwise = updateRepXP (x-tr) $ ab { repScore = sc+1 }
     where sc = repScore ab
-          tr = (sc+1)*5
+          tr = fromIntegral $ (sc+1)*5
 
 updateArtXP :: XPType -> Art -> Art
 updateArtXP x ab | x < tr = ab { artExcessXP = x }
-                     | otherwise = updateArtXP (x-tr) $ ab { artScore = sc+1 }
+                 | otherwise = updateArtXP (x-tr) $ ab { artScore = sc+1 }
     where sc = artScore ab
-          tr = (sc+1)
+          tr = fromIntegral (sc+1)
 
 updateSpellXP :: XPType -> Spell -> Spell
 updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
                    | otherwise = updateSpellXP (x-tr) $ ab { masteryScore = sc+1 }
     where sc = masteryScore ab
-          tr = (sc+1)*5
+          tr = fromIntegral $ (sc+1)*5
 updateSpellMastery :: [String] -> Spell -> Spell
 updateSpellMastery ms t = t { masteryOptions = (masteryOptions t) ++ ms }
 
