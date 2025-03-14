@@ -25,7 +25,7 @@ import Data.List.Split
 import Text.Read
 import qualified Data.Map as M
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 data SpellRecord = SpellRecord
                    { spellKey :: TraitKey   -- ^ Unique identifier as used in `ArM.Char.Trait`

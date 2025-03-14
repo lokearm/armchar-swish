@@ -70,10 +70,10 @@ applyAdvancements' (xs,y:ys,cs) = applyAdvancements' (a':xs,ys,cs')
 advanceCharacter :: SeasonTime -> Character -> Character
 advanceCharacter ct c | futureAdvancement c == [] = c
                       | isNothing (state c) = advanceCharacter ct $ prepareCharacter c
-                      | ct < ct' = trace "ct > ct'" $ c
-                      | otherwise =  advanceCharacter ct $ trace "stepCharacter" $ stepCharacter c 
+                      | ct < ct' = c
+                      | otherwise =  advanceCharacter ct $ stepCharacter c 
             where y =  head $ futureAdvancement c
-                  ct' = trace (show ct) $ trace ( "advance "++show (season y)) $ season y
+                  ct' =  season y
 
 -- | Advance the character one season forward
 stepCharacter :: Character -> Character

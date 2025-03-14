@@ -38,7 +38,7 @@ prepareCharacter c
                             , pregameAdvancement = []
                             }
             where as = pregameAdvancement  c 
-                  (xs,cs) = applyCGA as defaultCS
+                  (xs,cs) = applyCGA as defaultCS { charSType = charType $ concept c }
                   newstate = Just $ addConfidence $ cs { charTime = GameStart }
 
 -- | Augment and amend the advancements based on current virtues and flaws.

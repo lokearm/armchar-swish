@@ -456,7 +456,7 @@ instance TraitType Spell where
     getTrait (SpellTrait x) = Just x
     getTrait _ = Nothing
     computeTrait p | spell p == Nothing = Nothing
-                   | otherwise = trace (show sp) ( Just sp )
+                   | otherwise =  Just sp 
           where sp = Spell { spellName = fromJust (spell p)
                       , spellLevel = fromMaybe 0 $ level p
                       , spellTeFo = fromMaybe "TeFo" $ tefo p
@@ -641,7 +641,7 @@ instance TraitLike ProtoTrait where
       | reputation p /= Nothing = ReputationTrait $ fromJust $ computeTrait p
       | virtue p /= Nothing = VFTrait $ fromJust $ computeTrait p
       | flaw p /= Nothing = VFTrait $ fromJust $ computeTrait p
-      | confidence p /= Nothing = ConfidenceTrait $ trace ("conf "++show (points p) )
+      | confidence p /= Nothing = ConfidenceTrait $ 
            Confidence { cname = fromMaybe "Confidence" (confidence p)
                       , cscore = fromMaybe 0 (score p)
                       , cpoints = fromMaybe 0 (points p) }

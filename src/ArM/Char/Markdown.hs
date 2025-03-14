@@ -10,16 +10,17 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Markdown (printMDaug,printMD,artMD) where
 
--- import Data.Maybe (fromJust)
 import Data.Maybe 
 import Data.List 
+import qualified Data.Map as M
+
 import ArM.Char.Internal.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Advancement
 import ArM.Char.Spell
--- import ArM.Debug.Trace
-import qualified Data.Map as M
+
+import ArM.Debug.Trace
 
 class Markdown a where
      printMD :: a -> [ String ]
