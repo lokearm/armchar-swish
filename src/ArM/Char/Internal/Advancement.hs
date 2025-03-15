@@ -38,6 +38,9 @@ instance ToJSON SeasonTime where
    toJSON = toJSON . show
 
 data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq)
+isWinter :: SeasonTime -> Bool
+isWinter (SeasonTime Winter _) = True
+isWinter _ = False
 
 parseSeasonTime :: Maybe String -> SeasonTime
 parseSeasonTime Nothing = NoTime

@@ -39,8 +39,11 @@ import Data.Maybe
 addInferredTraits :: Advancement -> AugmentedAdvancement
 addInferredTraits a = defaultAA { inferredTraits = f a
                                 , advancement = a
-                                , augYears = advYears a }
+                                , augYears = yf }
      where f = inferTraits . getVF . changes 
+           yf | Nothing /= advYears a = advYears a
+              | isWinter $ season a = Just 1
+              | otherwise = Nothing
 
 -- | Get the virtues and flaws from a list of ProtoTrait objects, and convert them to
 -- VF objects
