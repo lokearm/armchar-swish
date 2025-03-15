@@ -58,7 +58,6 @@ common armchar-deps
                        , ArM.Char.Trait
                        , ArM.Char.Spell
                        , ArM.Char.Saga
-                       , ArM.Char.CharGen
                        , ArM.Char.Advancement
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
