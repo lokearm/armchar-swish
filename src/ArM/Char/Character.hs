@@ -46,12 +46,13 @@ import ArM.Char.CharGen
 applyAdvancement :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyAdvancement a cs = (a',cs')
     where a' = prepareAdvancement cs a
-          cs' = cs { charTime = season a, traits = new }
+          cs' = cs { charTime = season a, traits = new, age = ag }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = changes a'
           inferred = inferredTraits a'
           old = traits cs
+          ag = fromMaybe 0 (augYears a') + age cs
 
 
 {-
