@@ -389,12 +389,12 @@
                     , { "ability" : "Hermes Lore", "xp" : 1 } ]
       },
       { "mode" : "Reading ", "season" : "Summer 1228"
-      , "sourceQuality" : 19.5
-      , "changes" : [ { "art" : "Imaginem", "xp" : 19.5 } ]
+      , "sourceQuality" : 13
+      , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
       { "mode" : "Reading ", "season" : "Autumn 1228"
-      , "sourceQuality" : 19.5
-      , "changes" : [ { "art" : "Imaginem", "xp" : 19.5 } ]
+      , "sourceQuality" : 13
+      , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
       { "mode" : "Reading ", "season" : "Winter 1229"
       , "sourceQuality" : 19
@@ -536,14 +536,14 @@
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
       { "mode" : "Reading  ", "season" : "Autumn 1234"
-      , "sourceQuality" : 19.5
+      , "sourceQuality" : 13
       , "narrative" : "Autumn 1234 | Reading  | 13x1½ | Imaginem |"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 19.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
       { "mode" : "Reading  ", "season" : "Winter 1235"
-      , "sourceQuality" : 19.5
+      , "sourceQuality" : 13
       , "narrative" : "| Winter 1235 | Reading  | 13x1½ | Imaginem 105x1½xp = 157½ -> 17 (4½)|"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 19.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
       { "mode" : "Teaching  ", "season" : "Spring 1235"
       , "sourceQuality" : 2
@@ -561,9 +561,9 @@
       , "changes" : [ { "art" : "Rego ", "xp" : 12 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1236"
-      , "sourceQuality" : 19.5
+      , "sourceQuality" : 13
       , "narrative" : "| Winter 1236 | Reading  | 13x1½ | Imaginem 118x1½xp = 177 -> 18 (6)|"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 19.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
       { "mode" : "Teaching", "season" : "Spring 1236"
       , "sourceQuality" : 2
@@ -846,24 +846,24 @@
       , "changes" : [ { "art" : "Muto", "xp" : 15 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1248"
-      , "sourceQuality" : 27
+      , "sourceQuality" : 18
       , "narrative" : "Oswald's tractatus Q14 + correspondent "
-      , "changes" : [ { "art" : "Imaginem", "xp" : 27 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 18 } ]
       },
       { "mode" : "Reading ", "season" : "Summer 1248"
-      , "sourceQuality" : 27
+      , "sourceQuality" : 18
       , "narrative" : "Maine's tractatus Q14 + correspondent (245½xp) "
-      , "changes" : [ { "art" : "Imaginem", "xp" : 27 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 18 } ]
       },
       { "mode" : "Lab Work", "season" : "Autumn 1248"
-      , "sourceQuality" : 4.5
+      , "sourceQuality" : 3
       , "narrative" : " 250xp incl. affinity and correspondent; Ogre's Stench/see below "
-      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1249"
-      , "sourceQuality" : 4.5
+      , "sourceQuality" : 3
       , "narrative" : " 254½xp Invisibility Quartz for Sean; see below ; no aging (-18)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
       },
       { "mode" : "Reading", "season" : "Spring 1249"
       , "sourceQuality" : 16
@@ -890,9 +890,9 @@
          ]
       },
       { "mode" : "Reading", "season" : "Spring 1250"
-      , "sourceQuality" : 22.5
+      , "sourceQuality" : 15
       , "narrative" : "Tractatus Q11 *Approaching Silence and Invisibility* with Book Learner, Correspondence, and Affinity"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 22.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 15 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1250"
       , "sourceQuality" : 15
@@ -910,9 +910,9 @@
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1251"
-      , "sourceQuality" : 4.5
+      , "sourceQuality" : 3
       , "narrative" : "InIm spells below $\to$  281½"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1251"
       , "sourceQuality" : 12
@@ -929,9 +929,9 @@
       , "changes" : [ { "art" : "Rego", "xp" : 12 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1252"
-      , "sourceQuality" : 4.5
+      , "sourceQuality" : 3
       , "narrative" : "ReIm35 CONFUSION OF THE INSANE VIBRATIONS (no text) (sun duration)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } 
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
          , { "spell" : "Confusion of the Insane Vibrations"
            , "tefo" : "ReIm", "level" : 35
            }
@@ -978,19 +978,19 @@
                     , { "ability" : "Etiquette", "xp" : 2 } ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"
-      , "sourceQuality" : 24
+      , "sourceQuality" : 16
       , "narrative" : " (319xp)"
       , "changes" : [ { "art" : "Imaginem", "xp" : 24 } ]
       },
       { "mode" : "Vis study", "season" : "Summer 1254"
-      , "sourceQuality" : 31.5
+      , "sourceQuality" : 21
       , "narrative" : " (350½xp)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 31.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 21 } ]
       },
       { "mode" : "Vis study", "season" : "Autumn 1254"
-      , "sourceQuality" : 21
+      , "sourceQuality" : 14
       , "narrative" : "  (371½xp)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 21 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 14 } ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1255"
       , "sourceQuality" : 2
@@ -998,9 +998,9 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1255"
-      , "sourceQuality" : 4.5
+      , "sourceQuality" : 3
       , "narrative" : "CrIm spells (376xp)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
       }
    ]
 }
