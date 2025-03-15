@@ -253,17 +253,24 @@
       },
       { "mode" : "Lab Work ", "season" : "Winter 1223"
       , "sourceQuality" : 2
+      , "narrative" : "Lab work: InVi5 Sense the Nature of Vis + InVi20 Piercing the magic veil (from texts) + 2xp parma"
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 }
+          , { "spell" : "Sense the Nature of Vis"
+             , "tefo" : "InVi", "level" : 5
+          }
+          , { "spell" : "Piercing the magic veil"
+             , "tefo" : "InVi", "level" : 20
+          }
+      ]
+      },
+      { "mode" : "Lab Work", "season" : "Spring 1223"
+      , "sourceQuality" : 2
       , "narrative" : "Stone Tell of Mind that Sits "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Stone Tell of Mind that Sits"
             , "tefo" : "InTe", "level" : 30
          }
       ]
-      },
-      { "mode" : "Lab Work", "season" : "Spring 1223"
-      , "sourceQuality" : 2
-      , "narrative" : "InVi"
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1223"
       , "sourceQuality" : 2
@@ -304,7 +311,12 @@
       },
       { "mode" : "Lab Work ", "season" : "Winter 1225"
       , "sourceQuality" : 2
-      , "changes" : [ { "ability" : "Second Sight", "xp" : 2 } ]
+      , "narrative" : "Invent a touch version of Unravelling the Fabric of Imaginem lvl 13.  Exposure 2xp Second Sight. Lab Total 26."
+      , "changes" : [ { "ability" : "Second Sight", "xp" : 2 } 
+         , { "spell" : "Unravelling the Fabric of Imaginem (Touch)"
+            , "tefo" : "PeVi", "level" : 13
+         }
+      ]
       },
       { "mode" : "Reading ", "season" : "Spring 1225"
       , "sourceQuality" : 15
@@ -312,7 +324,12 @@
       },
       { "mode" : "Lab Work ", "season" : "Summer 1225"
       , "sourceQuality" : 2
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "Lab work. Touch version of Pit of Gaping Earth PeTe15. Exposure 2xp Magic Theory. Lab Total 30."
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Pit of Gaping Earth (Touch)"
+            , "tefo" : "PeTe", "level" : 15
+         }
+      ]
       },
       { "mode" : "Reading ", "season" : "Autumn 1225"
       , "sourceQuality" : 16
@@ -323,11 +340,12 @@
       , "sourceQuality" : 15
       , "changes" : [ { "ability" : "Second Sight", "xp" : 5 } 
                     , { "ability" : "Parma Magica", "xp" : 5 }
-                    , { "ability" : "Leadership", "xp" : 5 } ]
+                    , { "ability" : "Leadership", "xp" : 5 } 
+                    , { "confidence" : "Confidence", "points" : 5 } ]
       },
       { "mode" : "Open Arts ", "season" : "Spring 1226"
       , "sourceQuality" : 2
-      , "narrative" : "Hiccup "
+      , "narrative" : "Open arts for Hiccup."
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : "Summer 1226"
@@ -340,6 +358,7 @@
       },
       { "mode" : "Lab Work ", "season" : "Winter 1227"
       , "sourceQuality" : 2
+      , "narrative" : "Training for Hiccup in Magic Theory.  (SQ 8 for Hiccup) Create Safe Cauldron. Using Folio-1109 for lab text. Exposure 2xp Magic Theory. Bonus XP in Hermes Lore. Using bookstand of Hespera"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Reading ", "season" : "Spring 1227"
@@ -348,8 +367,12 @@
       },
       { "mode" : "Lab Work ", "season" : "Summer 1227"
       , "sourceQuality" : 2
-      , "narrative" : "Wizard's Communion "
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "Learn Wizard's Communion (MuVi 10) - Magic Theory exposure 2 using Bookstand of Hespera"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Wizard's Communion"
+            , "tefo" : "MuVi", "level" : 10
+         }
+      ]
       },
       { "mode" : "Exposure", "season" : "Autumn 1227"
       , "sourceQuality" : 2
@@ -380,11 +403,18 @@
       },
       { "mode" : "Lab Work ", "season" : "Spring 1229"
       , "sourceQuality" : 3
-      , "narrative" : "Spring 1229 | Lab Work  | 2+1 | Magic Theory+Hermes Lore"
+      , "narrative" : "Training for Hiccup in Magic Theory.  (SQ 8 for Hiccup) Invent spells from Folio. Bonus XP in Hermes Lore"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
-                    , { "ability" : "Hermes Lore", "xp" : 1 } ]
+                    , { "ability" : "Hermes Lore", "xp" : 1 } 
+                    , { "spell" : "Circle of Undisturbed Rest"
+                       , "tefo" : "ReIm", "level" : 10
+                    } 
+                    , { "spell" : "Willful Sidestep"
+                       , "tefo" : "ReIm", "level" : 20
+                    } 
+      ]
       },
-      { "mode" : "Lab Work ", "season" : "Summer 1229"
+      { "mode" : "Exposure", "season" : "Summer 1229"
       , "sourceQuality" : 2
       , "narrative" : "Teaching Spells to Hiccup"
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
@@ -457,42 +487,50 @@
       , "narrative" : "Train Hiccup. Parma to 45xp"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Lab       ", "season" : "Autumn 1232"
+      { "mode" : "Lab Work", "season" : "Autumn 1232"
       , "sourceQuality" : 2
-      , "narrative" : "Oblivion Variants "
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
+      , "narrative" : "Circle of Demon's Oblivion.  Invent both level 5 and level 15 versions. Train familiar"
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
+         , { "spell" : "Circle of Demon's Oblivion"
+            , "tefo" : "PeVi", "level" : 5
+            , "comment" : "PeVi 5 [Base 10 (generic), -1 touch]: Range: Touch, Duration: Mom, Target: Circle. Destroys ten points of might to any infernal being inside the circle.  Lab Total 42 including similar spell L15 (+6 with Hiccup).  Casting Total 27 within covenant aura (Pen +44 w/o die)."
+         }
+         , { "spell" : "Circle of Demon's Oblivion"
+            , "tefo" : "PeVi", "level" : 15
+         }
+      ]
       },
-      { "mode" : "Taught    ", "season" : "Winter 1233"
+      { "mode" : "Teaching", "season" : "Winter 1233"
       , "sourceQuality" : 15
       , "narrative" : "Hired teacher for £1. "
       , "changes" : [ { "ability" : "Craft: Rope.", "xp" : 15 } ]
       },
-      { "mode" : "Teaching  ", "season" : "Spring 1233"
+      { "mode" : "Exposure", "season" : "Spring 1233"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup "
       , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Lab       ", "season" : "Summer 1233"
+      { "mode" : "Lab Work", "season" : "Summer 1233"
       , "sourceQuality" : 2
       , "narrative" : "Gift of Perception ++ "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Lab       ", "season" : "Autumn 1233"
+      { "mode" : "Lab Work", "season" : "Autumn 1233"
       , "sourceQuality" : 2
       , "narrative" : "Ward of Heat and Flames Parma to 51xp "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Reading   ", "season" : "Winter 1234"
+      { "mode" : "Reading", "season" : "Winter 1234"
       , "sourceQuality" : 16
       , "narrative" : " *Magic Companion* L15Q13 "
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
-      { "mode" : "Teaching  ", "season" : "Spring 1234"
+      { "mode" : "Exposure", "season" : "Spring 1234"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup "
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Reading   ", "season" : "Summer 1234"
+      { "mode" : "Reading", "season" : "Summer 1234"
       , "sourceQuality" : 16
       , "narrative" : " *Magic Companion* L15Q13 "
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
@@ -522,12 +560,12 @@
       , "narrative" : " 52->64 "
       , "changes" : [ { "art" : "Rego ", "xp" : 12 } ]
       },
-      { "mode" : "Reading  ", "season" : "Winter 1236"
+      { "mode" : "Reading", "season" : "Winter 1236"
       , "sourceQuality" : 19.5
       , "narrative" : "| Winter 1236 | Reading  | 13x1½ | Imaginem 118x1½xp = 177 -> 18 (6)|"
       , "changes" : [ { "art" : "Imaginem", "xp" : 19.5 } ]
       },
-      { "mode" : "Teaching  ", "season" : "Spring 1236"
+      { "mode" : "Teaching", "season" : "Spring 1236"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup 13->15"
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
@@ -625,7 +663,7 @@
       },
       { "mode" : "Teaching ", "season" : "Spring 1240"
       , "sourceQuality" : 2
-      , "narrative" : " (23xp) Hiccup.  "
+      , "narrative" : " (23xp) Hiccup."
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Lab Work ", "season" : "Summer 1240"
@@ -640,12 +678,12 @@
       },
       { "mode" : "Exposure", "season" : "Winter 1241"
       , "sourceQuality" : 2
-      , "narrative" : "Fixate AC  "
+      , "narrative" : "Fixate AC"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1241"
       , "sourceQuality" : 2
-      , "narrative" : "Fan of Summer Breezes CrAu(Ig)19  "
+      , "narrative" : "Fan of Summer Breezes CrAu(Ig)19"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Exposure", "season" : "Summer 1241"
@@ -666,7 +704,11 @@
       { "mode" : "Lab Work", "season" : "Spring 1242"
       , "sourceQuality" : 2
       , "narrative" : "Horror Cabinet Item continued with extra spells  2xp Exposure Magic Theory"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Horror Cabinet"
+            , "tefo" : "CrIm", "level" : 35
+         }
+      ]
       },
       { "mode" : "Exposure", "season" : "Summer 1242"
       , "sourceQuality" : 2
@@ -706,7 +748,11 @@
       { "mode" : "Lab Work", "season" : "Spring 1244"
       , "sourceQuality" : 2
       , "narrative" : "CrIg Attack Spell. Parma to 57xp "
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
+         , {  "spell" : "Arrow of Fiery Ribbons"
+            , "tefo" : "CrIg", "level" : 30
+         }
+      ]
       },
       { "mode" : "Adventure", "season" : "Summer 1244"
       , "sourceQuality" : 10
@@ -721,8 +767,21 @@
       },
       { "mode" : "Lab Work ", "season" : "Winter 1245"
       , "sourceQuality" : 2
-      , "narrative" : "PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases "
-      , "changes" : [ { "ability" : "Parma Magica ", "xp" : 2 } ]
+      , "narrative" : "PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases.  lab total 51. Lab text for Break the Shield."
+      , "changes" : [ { "ability" : "Parma Magica ", "xp" : 2 } 
+         , { "spell" : "Fist of Fey Oblivion"
+            , "tefo" : "PeVi", "level" : 5
+         }
+         , { "spell" : "Fist of Magic Oblivion"
+            , "tefo" : "PeVi", "level" : 5
+         }
+         , { "spell" : "Circle of Fey Oblivion"
+            , "tefo" : "PeVi", "level" : 10
+         }
+         , { "spell" : "Break the Shield (with lab text)"
+            , "tefo" : "PeVi", "level" : 10
+         }
+        ]
       },
       { "mode" : "Adventure", "season" : "Spring 1245"
       , "sourceQuality" : 15
