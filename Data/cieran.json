@@ -961,10 +961,17 @@
       , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent ($88\to114$)"
       , "changes" : [ { "art" : "Rego", "xp" : 13 } ]
       },
-      { "mode" : "Lab", "season" : "Summer 1253"
+      { "mode" : "Lab Work", "season" : "Summer 1253"
       , "sourceQuality" : 2
       , "narrative" : "Intangible Tunnel ReVi20; diam version ReVi5 (144xp)"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Intangible Tunnel"
+            , "tefo" : "ReVi", "level" : 20
+         }
+         , { "spell" : "The Minute of Reckoning (diam)"
+            , "tefo" : "ReVi", "level" : 5
+         }
+      ]
       },
       { "mode" : "Author", "season" : "Autumn 1253"
       , "sourceQuality" : 2
