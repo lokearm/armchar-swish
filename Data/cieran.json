@@ -391,11 +391,23 @@
       },
       { "mode" : "Lab work", "season" : "Autumn 1229"
       , "sourceQuality" : 2
-      , "changes" : [ { "ability" : "Magic Theory. Leap of Homecoming + Frog's Legs", "xp" : 2 } ]
+      , "narrative" : "ReCo 43 + Hiccup + bookstand = 51"
+      , "changes" : [ { "ability" : "Magic Theory. Leap of Homecoming + Frog's Legs", "xp" : 2 }
+         ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 15 }
+         ,  { "spell" : "Frog's Legs", "tefo" : "ReCo", "level" : 15 }
+      ]
       },
       { "mode" : "Lab work", "season" : "Winter 1230"
       , "sourceQuality" : 2
-      , "changes" : [ { "ability" : "Magic Theory. CrCo spells", "xp" : 2 } ]
+      , "narrative" : "CrCo 43 + Hiccup + bookstand = 51"
+      , "changes" : [ { "ability" : "Magic Theory. CrCo spells", "xp" : 2 } 
+         , { "spell" : "Restoration of the Defiled Body"
+           , "tefo" : "CrCo", "level" : 25
+           }
+         , { "spell" : "Improved Purification of the Festering Wounds"
+           , "tefo" : "CrCo", "level" : 25
+           }
+      ]
       },
       { "mode" : "Reading ", "season" : "Spring 1230"
       , "sourceQuality" : 15
