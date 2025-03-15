@@ -33,6 +33,9 @@ import Data.Maybe
 
 
 
+-- | Infer traits from new virtues and flaws and add them to the advancement.
+-- This typically applies to virtues providing supernatural abilities.
+-- The ability is inferred and should not be added manually.
 addInferredTraits :: Advancement -> AugmentedAdvancement
 addInferredTraits a = defaultAA { inferredTraits = f a
                                 , advancement = a

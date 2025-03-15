@@ -56,7 +56,7 @@ import ArM.Debug.Trace
 -- | 
 -- = ProtoTrait
 
--- | A `ProtoTrait` represents a new trait or an advacement of an existing trait
+-- | A `ProtoTrait` represents a new trait or an advancement of an existing trait
 -- as represented in the JSON input.  
 -- Most fields are used only for certain types of traits and are Nothing for other
 -- types.  This is the case, in particular, for the first quite a few fields which

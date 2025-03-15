@@ -8,7 +8,9 @@ aliases:
 + Dedicated Libraries: `ArM/Char`
 + Also reuses some libraries from the swish model
 + See also [[Character Generation Process]]
-+ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]] (canvas)
++ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]] (canvas
++ [[Types for JSON]]
+
 
 ## Command Line Syntax
 
@@ -105,35 +107,3 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ Advancement
 	+ `Char.Advancement`
 	+ `Char.Markdown`
-+ Types
-	+ Character
-		+ contains
-			+ CharacterConcept (permanent metadata)
-			+ CharacterState (current stats)
-			+ Pregame Advancement
-			+ Past Advancement (most recent first)
-			+ Future Advancement (next one first)
-		+ advancing a character moves an Advancement from future to past and updates the state accordingly
-		+ The character can be persisted at any stage of advancement
-		+ Prior states can be recovered by redoing calculations from scratch
-		+ Future states can be computed by advancing one Advancement at a time
-	+ Constituent types
-		+ `ProtoTrait` represents advancement of a trait
-		+ `Trait` represents a trait with computed scores
-		+ `Advancement` represents advancement of a character or covenant
-			+ includes a list of `ProtoTrait` advancing individual traits
-			+ includes a time (season) or a stage (pregame)
-			+ may include a narrative
-			+ may include appearance, if it changes
-+ Advancement
-	+ as entered by user
-		+ season 
-		+ totalXP
-		+ uses (book)
-		+ changes 
-+ CharacterState
-	+ state of traits
-		+ traits
-		+ season
-+ CharacterSheet
-	+ Frontend for CharacterState
