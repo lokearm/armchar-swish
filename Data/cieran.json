@@ -857,8 +857,14 @@
       },
       { "mode" : "Lab Work", "season" : "Autumn 1248"
       , "sourceQuality" : 3
-      , "narrative" : " 250xp incl. affinity and correspondent; Ogre's Stench/see below "
-      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
+      , "narrative" : " 250xp incl. affinity and correspondent; MuIm Lab total 62.  Warping roll 3"
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
+         , { "spell" : "Ogre's Stench"
+            , "tefo" : "MuIm", "level" : 25 }
+         , { "spell" : "Aura of the Trustful Merchant"
+            , "tefo" : "MuIm", "level" : 10 }
+
+      ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1249"
       , "sourceQuality" : 3
