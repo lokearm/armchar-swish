@@ -114,7 +114,7 @@ findTrait k = find ( (k==) . traitKey )
 findTraitCS ::  TraitKey -> CharacterSheet -> Maybe Trait
 findTraitCS (AbilityKey x) = (fmap toTrait) . findTrait (AbilityKey x) . abilityList
 findTraitCS (ArtKey x) = (fmap toTrait) . findTrait (ArtKey x) . artList
-findTraitCS (SpellKey x) = (fmap toTrait) . findTrait (SpellKey x) . spellList
+findTraitCS (SpellKey x y z) = (fmap toTrait) . findTrait (SpellKey x y z) . spellList
 findTraitCS (CharacteristicKey x) = (fmap toTrait) . findTrait (CharacteristicKey x) . charList
 findTraitCS _ = \ _ -> Nothing
 

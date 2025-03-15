@@ -41,6 +41,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , advance
                       , defaultPT
                       , spellTeFoLe
+                      , spellKeyName
                        ) where
 
 import ArM.GameRules
@@ -197,13 +198,16 @@ instance Show ProtoTrait  where
 data TraitKey = AbilityKey String
            | CharacteristicKey String
            | ArtKey String
-           | SpellKey String 
+           | SpellKey String Int String 
            | PTraitKey String
            | ReputationKey String String
            | VFKey String String
            | ConfidenceKey String
            | OtherTraitKey String
            deriving (Show, Ord, Eq,Generic )
+spellKeyName :: TraitKey -> String
+spellKeyName ( SpellKey _ _ n ) = n
+spellKeyName _ = "Error!"
 
 instance ToJSON TraitKey
 instance FromJSON TraitKey
@@ -585,7 +589,7 @@ instance TraitLike Art where
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
-    traitKey x = SpellKey ( spellName x ) 
+    traitKey x = SpellKey (spellTeFo x) (spellLevel x) ( spellName x ) 
     toTrait = SpellTrait
     advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
@@ -618,7 +622,8 @@ instance TraitLike ProtoTrait where
        | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
        | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
        | art p /= Nothing = ArtKey $ take 2 $ fromJust $ art p 
-       | spell p /= Nothing = SpellKey ( fromJust $ spell p ) 
+       | spell p /= Nothing = SpellKey (fromMaybe "" $ tefo p)
+                           (fromMaybe 0 $ level p ) ( fromJust $ spell p ) 
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
        | virtue p /= Nothing = VFKey ( fromJust (virtue p) ) (fromMaybe "" $ detail p)
