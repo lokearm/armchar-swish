@@ -25,7 +25,7 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import Data.Maybe
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- | Compute the initial state if no state is recorded.
 --
@@ -68,10 +68,7 @@ addConfidence cs = cs { traits = sortTraits $ ct:traits cs }
 applyCharGenAdv :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyCharGenAdv a cs = (a',cs')
     where a' = prepareCharGen cs a
-          cs' = trace ("old>"++show old)
-              $ trace ("change>"++show change)
-              $ trace ("new>"++show new)
-              $ cs { charTime = season a, traits = new, age = ag }
+          cs' = cs { charTime = season a, traits = new, age = ag }
           new =  advance change tmp
           tmp =  advance inferred old 
           change = sortTraits $ changes a'

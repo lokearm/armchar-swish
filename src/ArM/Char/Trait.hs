@@ -202,6 +202,7 @@ data Spell = Spell { spellName :: String
                    , spellMultiplier :: Float
                    , masteryOptions :: [String] 
                    , spellCastingScore :: Maybe Int
+                   , spellTComment :: String
                    }
            deriving (Ord, Eq, Generic)
 
@@ -461,6 +462,7 @@ instance TraitType Spell where
                       , spellExcessXP = y
                       , spellMultiplier = fromMaybe 1.0 $ multiplyXP p
                       , spellCastingScore = Nothing
+                      , spellTComment = fromMaybe "" $ comment p
                       }
                 (s,y) = getAbilityScore (xp p)
 instance TraitType Reputation where
