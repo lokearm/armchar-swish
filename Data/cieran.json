@@ -12,11 +12,11 @@
       , "charGlance" : { }
       , "charData" : 
         { "Size" : 0 
-	, "Nationality" : "Irish" 
-	, "Alma Mater" : "Stonehenge"
-	, "Covenant" : "Elk's Run"
-	, "Saga" :  "Contested Lands"
-	}
+        , "Nationality" : "Irish" 
+        , "Alma Mater" : "Stonehenge"
+        , "Covenant" : "Elk's Run"
+        , "Saga" :  "Contested Lands"
+        }
       },
    "pregameAdvancement" : [
       { "mode" : "Virtues and Flaws"
@@ -192,7 +192,14 @@
       { "mode" : "Lab Work", "season" : "Winter 1220"
       , "sourceQuality" : 2
       , "narrative" : "Learn fist of demon's Oblivion"
-      , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Latin", "xp" : 2 } 
+           , { "spell" : "Fist of Demon's Oblivion"
+              , "tefo" : "PeVi", "level" : 5
+              }
+           , { "spell" : "Fist of Demon's Oblivion"
+              , "tefo" : "PeVi", "level" : 15
+              }
+          ]
       },
       { "mode" : "Adventure", "season" : "Spring 1220"
       , "sourceQuality" : 5
@@ -521,17 +528,25 @@
       { "mode" : "Lab Work ", "season" : "Summer 1237"
       , "sourceQuality" : 2
       , "narrative" : " (101xp) Eyes of the Eagle at touch InIm30 "
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
+         , { "spell" : "Eyes of the Eagle (touch)"
+            , "tefo" : "InIm", "level" : 30 
+         }
+         ]
       },
       { "mode" : "Lab Work ", "season" : "Autumn 1237"
       , "sourceQuality" : 2
-      , "narrative" : "Leap of Homecoming Touch  "
+      , "narrative" : "Leap of Homecoming Touch (starting, not completed)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Lab Work ", "season" : "Winter 1238"
       , "sourceQuality" : 2
       , "narrative" : "Leap of Homecoming Touch (continued) "
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Leap of Homecoming (Touch)"
+            , "tefo": "ReCo", "level" : 40
+         }
+      ]
       },
       { "mode" : "Teaching ", "season" : "Spring 1238"
       , "sourceQuality" : 2
@@ -552,7 +567,7 @@
       { "mode" : "Reading ", "season" : "Winter 1239"
       , "sourceQuality" : 12
       , "narrative" : "SQ 6 doubled by flawless magic | Aegis of the Heath Mastery | Learns Safe Casting |"
-      , "changes" : [ { "spell" : "Aegis of the Hearth", "level" : 20,  "xp" : 12 } ]
+      , "changes" : [ { "spell" : "Aegis of the Hearth", "level" : 30,  "xp" : 12 } ]
       },
       { "mode" : "Teaching ", "season" : "Spring 1239"
       , "sourceQuality" : 2
@@ -774,8 +789,12 @@
       },
       { "mode" : "Lab Work", "season" : "Winter 1250"
       , "sourceQuality" : 2
-      , "narrative" : "no aging (-18); invent InHe25 Converse with Plant and Tree "
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
+      , "narrative" : "no aging (-18); invent InHe25 Converse with Plant and Tree"
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
+         , { "spell" : "invent InHe25 Converse with Plant and Tree"
+           , "tefo" : "InHe", "level" : 25
+         }
+         ]
       },
       { "mode" : "Reading", "season" : "Spring 1250"
       , "sourceQuality" : 22.5
@@ -819,7 +838,11 @@
       { "mode" : "Lab Work", "season" : "Spring 1252"
       , "sourceQuality" : 4.5
       , "narrative" : "ReIm35 CONFUSION OF THE INSANE VIBRATIONS (no text) (sun duration)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 4.5 } 
+         , { "spell" : "Confusion of the Insane Vibrations"
+           , "tefo" : "ReIm", "level" : 35
+           }
+                    ]
       },
       { "mode" : "Reading", "season" : "Summer 1252"
       , "sourceQuality" : 16
@@ -842,7 +865,7 @@
       },
       { "mode" : "Reading", "season" : "Spring 1253"
       , "sourceQuality" : 13
-      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent ($88\to114$).  Aging roll -21"
+      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent ($88\to114$)"
       , "changes" : [ { "art" : "Rego", "xp" : 13 } ]
       },
       { "mode" : "Lab", "season" : "Summer 1253"

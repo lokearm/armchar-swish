@@ -31,6 +31,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Bonus XP
 		+ [ ] Advance age on Winter seasons
 		+ [ ] Flawless magic
+		+ [ ] General level spells
 	+ [ ] Step 2.  Long Character Sheet
 	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Refactor and document code
