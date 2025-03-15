@@ -890,7 +890,7 @@
       , "sourceQuality" : 2
       , "narrative" : "no aging (-18); invent InHe25 Converse with Plant and Tree"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
-         , { "spell" : "invent InHe25 Converse with Plant and Tree"
+         , { "spell" : "Converse with Plant and Tree"
            , "tefo" : "InHe", "level" : 25
          }
          ]

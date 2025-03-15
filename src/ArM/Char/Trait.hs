@@ -249,6 +249,11 @@ data Spell = Spell { spellName :: String
 spellTeFoLe :: Spell -> String
 spellTeFoLe sp = spellTeFo sp ++ show (spellLevel sp)
 
+-- | Return a string of Form/Technique for sorting
+spellFoTe :: Spell -> String
+spellFoTe sp = drop 2 tf ++ take 2 tf
+    where tf = spellTeFo sp 
+
 -- | Personality trait
 data PTrait = PTrait { ptraitName :: String, pscore :: Int }
            deriving (Ord, Eq, Generic)
@@ -589,7 +594,7 @@ instance TraitLike Art where
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Spell where
-    traitKey x = SpellKey (spellTeFo x) (spellLevel x) ( spellName x ) 
+    traitKey x = SpellKey (spellFoTe x) (spellLevel x) (spellName x ) 
     toTrait = SpellTrait
     advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
