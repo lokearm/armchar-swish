@@ -917,8 +917,15 @@
       },
       { "mode" : "Lab Work", "season" : "Spring 1251"
       , "sourceQuality" : 3
-      , "narrative" : "InIm spells below $\to$  281½"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
+      , "narrative" : "InIm spells below $\to$  281½.  Lab total 71"
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
+         , { "spell" : "Palm of Seeing (sun duration)"
+            , "tefo" : "InIm", "level" : 20 }
+         , { "spell" : "Brushstrokes Revealed"
+            , "tefo" : "InIm", "level" : 10 }
+         , { "spell" : "Prying Eyes"
+            , "tefo" : "InIm", "level" : 5 }
+      ]
       },
       { "mode" : "Reading", "season" : "Summer 1251"
       , "sourceQuality" : 12
