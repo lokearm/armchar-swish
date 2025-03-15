@@ -33,6 +33,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Flawless magic
 		+ [ ] General level spells
 	+ [ ] Step 2.  Long Character Sheet
+	+ [ ] Count spell and xp totals (ingame) for validation
 	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Refactor and document code
 + [ ] Phase 2.  Finishing touches

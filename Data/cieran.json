@@ -254,7 +254,11 @@
       { "mode" : "Lab Work ", "season" : "Winter 1223"
       , "sourceQuality" : 2
       , "narrative" : "Stone Tell of Mind that Sits "
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
+         , { "spell" : "Stone Tell of Mind that Sits"
+            , "tefo" : "InTe", "level" : 30
+         }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1223"
       , "sourceQuality" : 2
@@ -263,8 +267,19 @@
       },
       { "mode" : "Lab Work", "season" : "Summer 1223"
       , "sourceQuality" : 2
-      , "narrative" : "Parma to 30xp"
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
+      , "narrative" : "Parma to 30xp.  Story (2conf pts) Lab work: InVi5 Spot the Vis + InVi5 Scales of M W + InVi20 Piercing the faerie veil (from texts) (lab total InVi 14 + Int 3 + MT 4 + Aura 5 + similar spell 4 = 30) + 2xp parma"
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
+         , { "confidence" : "Confidence", "points" : 2 }
+         , { "spell" : "Spot the Vis"
+           , "tefo" : "InVi", "level" : 5
+           }
+         , { "spell" : "Scales of Magical Weight"
+           , "tefo" : "InVi", "level" : 5
+           }
+         , { "spell" : "Piercing the faerie veil"
+           , "tefo" : "InVi", "level" : 20
+           }
+      ]
       },
       { "mode" : "Reading", "season" : "Autumn 1223"
       , "sourceQuality" : 17
@@ -561,8 +576,15 @@
       },
       { "mode" : "Lab Work ", "season" : "Autumn 1238"
       , "sourceQuality" : 2
-      , "narrative" : "ReVi "
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "Invent ReVi spells with help from Hiccup and Jimeny and lab text.  Lab total (ReVi) 47 + 11 (Hiccup + Jimeny) +2 text = 60.  Exposure 2xp Magic Theory (-> 107xp)"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Aegis of the Hearth"
+            , "tefo" : "ReVi", "level" : 30 
+         }
+         , { "spell" : "Watching Ward"
+            , "tefo" : "ReVi", "level" : 30 
+         }
+      ]
       },
       { "mode" : "Reading ", "season" : "Winter 1239"
       , "sourceQuality" : 12
