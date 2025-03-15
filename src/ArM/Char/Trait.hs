@@ -156,6 +156,41 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "multiplicity"
         <*> v .:?  "comment"
 
+instance Show ProtoTrait  where
+   show p 
+       | ability p /= Nothing = 
+           "Ability: " ++ fromJust ( ability p )  ++ 
+           " [" ++ show ( spec p ) ++ "]" ++ showXP p
+           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
+       | characteristic p /= Nothing =
+           "Characteristic: " ++ fromJust ( characteristic p )  ++
+           " " ++ show ( fromMaybe 0 (score p) ) ++ showAging p 
+       | art p /= Nothing = 
+           "Art: " ++ fromJust ( art p ) ++ showXP p
+           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
+       | spell p /= Nothing =
+              "Spell: " ++ fromJust (spell p) ++ showXP p
+                    ++ maybeShow (mastery p)
+       | ptrait p /= Nothing = 
+              "Personality Trait: " ++ fromJust (ptrait p)
+                     ++ " " ++ maybeShow (score p)
+       | reputation p /= Nothing = 
+              "Reputation: " ++ fromJust (reputation p) ++
+              " [" ++ maybeShow (locale p) ++ "]" ++ showXP p
+       | virtue p /= Nothing = 
+              "Virtue: " ++ fromJust (virtue p) ++ " ("
+              ++ show ( fromMaybe 0 (cost p) ) ++ ")"
+       | flaw p /= Nothing = 
+              "Flaw: " ++ fromJust (flaw p) ++ " ("
+              ++ show ( fromMaybe 0 (cost p) ) ++ ")"
+       | confidence p /= Nothing = 
+              fromMaybe "Confidence" (confidence p) ++ ": " ++ show (fromMaybe 0 (score p)) ++ " (" ++
+              show ( fromMaybe 0 (points p) ) ++ ")"
+       | other p /= Nothing = 
+               fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
+       | otherwise  = error "No Trait for this ProtoTrait" 
+     where si = show . fromMaybe 0
+
 -- | 
 -- = Trait
 
@@ -213,6 +248,7 @@ spellTeFoLe sp = spellTeFo sp ++ show (spellLevel sp)
 -- | Personality trait
 data PTrait = PTrait { ptraitName :: String, pscore :: Int }
            deriving (Ord, Eq, Generic)
+
 -- | Reputation object 
 data Reputation = Reputation { reputationName :: String  -- ^ contents of the reputation
                              , repLocale :: String       -- ^ domain or location of the reputation
@@ -237,6 +273,7 @@ data OtherTrait = OtherTrait { trait :: String
                              , otherExcess :: Int
                              }
            deriving (Show, Ord, Eq, Generic)
+
 data Trait = AbilityTrait Ability
            | CharacteristicTrait Characteristic
            | ArtTrait Art
@@ -321,40 +358,6 @@ showAging p | Nothing == aging p = ""
 showXP :: ProtoTrait -> String
 showXP p = " " ++ show ( fromMaybe 0 (xp p) ) ++ "xp"
 
-instance Show ProtoTrait  where
-   show p 
-       | ability p /= Nothing = 
-           "Ability: " ++ fromJust ( ability p )  ++ 
-           " [" ++ show ( spec p ) ++ "]" ++ showXP p
-           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
-       | characteristic p /= Nothing =
-           "Characteristic: " ++ fromJust ( characteristic p )  ++
-           " " ++ show ( fromMaybe 0 (score p) ) ++ showAging p 
-       | art p /= Nothing = 
-           "Art: " ++ fromJust ( art p ) ++ showXP p
-           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
-       | spell p /= Nothing =
-              "Spell: " ++ fromJust (spell p) ++ showXP p
-                    ++ maybeShow (mastery p)
-       | ptrait p /= Nothing = 
-              "Personality Trait: " ++ fromJust (ptrait p)
-                     ++ " " ++ maybeShow (score p)
-       | reputation p /= Nothing = 
-              "Reputation: " ++ fromJust (reputation p) ++
-              " [" ++ maybeShow (locale p) ++ "]" ++ showXP p
-       | virtue p /= Nothing = 
-              "Virtue: " ++ fromJust (virtue p) ++ " ("
-              ++ show ( fromMaybe 0 (cost p) ) ++ ")"
-       | flaw p /= Nothing = 
-              "Flaw: " ++ fromJust (flaw p) ++ " ("
-              ++ show ( fromMaybe 0 (cost p) ) ++ ")"
-       | confidence p /= Nothing = 
-              fromMaybe "Confidence" (confidence p) ++ ": " ++ show (fromMaybe 0 (score p)) ++ " (" ++
-              show ( fromMaybe 0 (points p) ) ++ ")"
-       | other p /= Nothing = 
-               fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
-       | otherwise  = error "No Trait for this ProtoTrait" 
-     where si = show . fromMaybe 0
 
 
 -- |
@@ -676,8 +679,13 @@ updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
 updateSpellMastery :: [String] -> Spell -> Spell
 updateSpellMastery ms t = t { masteryOptions = (masteryOptions t) ++ ms }
 
+-- |
+-- = Advancement
 
 -- | Apply a list of ProtoTrait advancements to a list of Traits.
+--
+-- This is the main function used by other modules when characters are
+-- advanced.
 advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
 advance [] ys = ys
 advance (x:xs) [] = advance xs [toTrait x]
