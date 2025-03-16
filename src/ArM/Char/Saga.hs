@@ -52,8 +52,8 @@ data Covenant = Covenant
          , founded :: Maybe Int
          , covData :: KeyPairList
          , covenantState :: CovenantState
-         , pastAdvancement :: [ AugmentedAdvancement ]
-         , futureAdvancement :: [ Advancement ]
+         , pastCovAdvancement :: [ AugmentedAdvancement ]
+         , futureCovAdvancement :: [ Advancement ]
        }  deriving (Eq,Generic,Show)
 instance ToJSON Covenant 
 instance FromJSON Covenant 
@@ -84,13 +84,18 @@ augHead NoTime (Just x) = x
 augHead x (Just z) = (show x  ++ " " ++ z)
 
 pregameCharErrors :: Character -> [(String,[String])]
-pregameCharErrors c = ff $ map f as
-   where as = pregameDesign c
-         f a = (charID c ++ ": " ++ augHead (season a) (mode a)
+pregameCharErrors c = renderCharErrors c $ pregameDesign c
+
+renderCharErrors :: Character -> [AugmentedAdvancement] -> [(String,[String])]
+renderCharErrors c as = ff $ map f as
+   where f a = (charID c ++ ": " ++ augHead (season a) (mode a)
                , filterError $ validation a)
          ff ((_,[]):xs) = ff xs
          ff (x:xs) = x:ff xs
          ff [] = []
+
+ingameCharErrors :: Character -> [(String,[String])]
+ingameCharErrors c = renderCharErrors c $ pastAdvancement c
 
 filterError :: [Validation] -> [String]
 filterError (Validated _:xs) = filterError xs
@@ -102,5 +107,13 @@ pregameErrors :: Saga -> [String]
 pregameErrors saga = foldl (++) [] $ map formatOutput vvs
     where cs = gameStartCharacters saga
           vs = map pregameCharErrors  cs
+          vvs = foldl (++) [] vs
+          formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
+
+-- | Exctract a list of validation errors 
+ingameErrors :: Saga -> [String]
+ingameErrors saga = foldl (++) [] $ map formatOutput vvs
+    where cs = currentCharacters saga
+          vs = map ingameCharErrors  cs
           vvs = foldl (++) [] vs
           formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs

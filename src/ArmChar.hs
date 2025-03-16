@@ -155,8 +155,11 @@ main' opts | sagaFile opts /= Nothing = do
                writeGameStart gsf  s1
                writeLns (gsf ++ "/errors.md") $ 
                   "# Errors in Character Design":"":pregameErrors s1
-               s2 <- advSaga ( advanceSeason opts ) (currentDir opts ) s1
+               s2 <- advSaga ( advanceSeason opts ) (currentDir opts) s1
                _ <- longSheet (longDir opts ) s2
+               writeLns (cdir ++ "/errors.md") $ 
+                  "# Errors in Advancement":"":ingameErrors s2
                return ()
         where gsf = fromJust $ gameStartDir opts
+              cdir = fromJust $ currentDir opts
 main' _ | otherwise = error "Not implemented!" 

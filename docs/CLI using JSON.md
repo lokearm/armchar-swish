@@ -25,7 +25,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ `-O FILE` write markdown of the character before the sheet is computed
 
 ## Roadmap
-
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Validate Eogan build
 	+ [ ] Add Cieran's spells
@@ -49,7 +48,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
-		+ [ ] Error report for ingame advancement
 	+ [ ] Develop [[Saga object]]
 	+ [ ] Hyperlinked web site
 + [ ] Phase 4. Polish
