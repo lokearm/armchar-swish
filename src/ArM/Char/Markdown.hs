@@ -9,7 +9,9 @@
 -- Description :  Classes and instances to make MarkDown output.
 --
 -- The core of this module is the `Markdown` class and its `printMD`
--- function which renders an object in Markdown.
+-- function which renders an object in Markdown.  There is also 
+-- a `LongSheet` class with a `printSheetMD` function for a more
+-- verbose character sheet.
 --
 -----------------------------------------------------------------------------
 module ArM.Char.Markdown ( Markdown(..)

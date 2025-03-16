@@ -30,17 +30,18 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Flawless magic
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
-	+ [ ] Refactor and document code
-+ [ ] Phase 2.  Finishing touches
+	+ [ ] Update Characteristic
+		+ [ ] advanceTrait function
+		+ [ ] Cieran's changes
 	+ [ ] Warping
 		+ [ ] Check for LR and warp in Winter
 		+ [ ] Check warping for Cieran
-	+ [ ] Decrepitude
 	+ [ ] Aging
 		+ [ ] validate presence of aging roll in Winter
 		+ [ ] check aging points on characteristics
-	+ [ ] Comment field on traits
-	+ [ ]  P/G Char Gen
+		+ [ ] Record apparent age
+		+ [ ] Decrepitude
+	+ [ ] Compute Combat Stats
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
@@ -53,7 +54,9 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Develop [[Saga object]]
 	+ [ ] Hyperlinked web site
 + [ ] Phase 4. Polish
-	+ [ ] Step 1. Compute Combat Stats
+	+ [ ] Refactor and document code
+	+ [ ] Comment field on traits
+	+ [ ]  P/G Char Gen
 	+ [ ] Step 3. Virtues and Flaws - Special cases
 		+ [ ] Linguist
 		+ [ ] Great/Poor Characteristic

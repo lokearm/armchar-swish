@@ -22,7 +22,6 @@ module ArM.Char.IO where
 import Data.Maybe 
 import Data.Aeson (decode)
 import qualified Data.CSV as CSV
--- import Data.Text.Lazy.IO as I
 import qualified Data.ByteString.Lazy as LB
 
 import Text.ParserCombinators.Parsec
