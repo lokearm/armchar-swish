@@ -384,9 +384,13 @@
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1228"
-      , "sourceQuality" : 3
+      , "sourceQuality" : 2
+      , "narrative" : "Learn Sense of the lingering magic from lab text.  Using Bookstand of Hespera. Train Hiccup in Magic Theory. Exposure 2xp Magic Theory (-> 85xp)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
-                    , { "ability" : "Hermes Lore", "xp" : 1 } ]
+                    , { "spell" : "Sense of the Lingering Magic", 
+                       "tefo" : "InVi", "level" : 30
+                    } 
+      ]
       },
       { "mode" : "Reading", "season" : "Summer 1228"
       , "sourceQuality" : 13
@@ -423,7 +427,7 @@
       , "sourceQuality" : 2
       , "narrative" : "ReCo 43 + Hiccup + bookstand = 51. Leap of Homecoming + Frog's Legs"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
-         ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 15 }
+         ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 35 }
          ,  { "spell" : "Gift of the Frog's Legs", "tefo" : "ReCo", "level" : 15 }
       ]
       },
@@ -606,7 +610,7 @@
       , "narrative" : "IMAGE FROM THE WIZARD TORN: Lab total InIm 50 + 10 (Hiccup/Jimeny) + 1 read imaginem"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
           , { "spell" : "Image from the Wizard Torn"
-             , "tefo" : "InIm", "level" : 30 
+             , "tefo" : "ReIm", "level" : 30 
           }
       ]
       },
@@ -665,8 +669,14 @@
       },
       { "mode" : "Reading", "season" : "Winter 1239"
       , "sourceQuality" : 12
-      , "narrative" : "SQ 6 doubled by flawless magic | Aegis of the Heath Mastery | Learns Safe Casting |"
-      , "changes" : [ { "spell" : "Aegis of the Hearth", "level" : 30,  "xp" : 12 } ]
+      , "narrative" : "SQ 6 doubled by flawless magic. Aegis of the Heath Mastery. Learns Safe Casting."
+      , "changes" : [ 
+          { "spell" : "Aegis of the Hearth"
+            , "tefo" : "ReVi", "level" : 30 
+            , "masteryOption" : [ "Safe Casting" ]
+            , "xp" : 12
+         }
+      ]
       },
       { "mode" : "Teaching", "season" : "Spring 1239"
       , "sourceQuality" : 2
@@ -694,8 +704,15 @@
       },
       { "mode" : "Lab Work", "season" : "Winter 1240"
       , "sourceQuality" : 2
-      , "narrative" : "MuIm Spells.  Magic Theory to 128xp"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "MuIm spells with help from Hiccup and Jimeny  (without text). MuIm 50 + 12 = 62. Magic Theory to 128xp."
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Sight of the Warm Surface"
+            , "tefo" : "MuIm", "level" : 15
+         }
+         , { "spell" : "Disguise of the Transformed Image"
+            , "tefo" : "MuIm", "level" : 15
+         }
+      ]
       },
       { "mode" : "Teaching", "season" : "Spring 1240"
       , "sourceQuality" : 2
@@ -705,7 +722,11 @@
       { "mode" : "Lab Work", "season" : "Summer 1240"
       , "sourceQuality" : 2
       , "narrative" : "Gift of Com. Magic Theory to 130xp "
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Gift of Communication"
+            , "tefo" : "CrMe", "level" : 40
+         }
+      ]
       },
       { "mode" : "Initiation", "season" : "Autumn 1240"
       , "sourceQuality" : 2
@@ -734,15 +755,22 @@
       },
       { "mode" : "Lab Work", "season" : "Winter 1242"
       , "sourceQuality" : 2
-      , "narrative" : "Horror Cabinet Spell  2xp Exposure Magic Theory -> 136xp (score 6)(covenant service)"
+      , "narrative" : "Horror Cabinet Spell  2xp Exposure Magic Theory -> 136xp (score 6)(covenant service).  Lab Total Cr(Re)Im 61 (spells) Experiment adds 7+ with maximum risk Nocturnal +2 gives Rolled *no benefit* lab total 63(66) gaining 28/31 points."
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1242"
       , "sourceQuality" : 2
-      , "narrative" : "Horror Cabinet Item continued with extra spells  2xp Exposure Magic Theory"
+      , "narrative" : "Horror Cabinet Item continued with extra spells  2xp Exposure Magic Theory. Lab Total 61. Level 35+10=45. Earn 16 points; need 17(14)."
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Horror Cabinet"
             , "tefo" : "CrIm", "level" : 35
+         }
+         , { "spell" : "False Window"
+
+            , "tefo" : "CrIm", "level" : 5
+         }
+         , { "spell" : "Smoke of Escaping"
+            , "tefo" : "CrIm", "level" : 5
          }
       ]
       },
@@ -1069,8 +1097,18 @@
       },
       { "mode" : "Lab Work", "season" : "Spring 1255"
       , "sourceQuality" : 3
-      , "narrative" : "CrIm spells (376xp)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
+      , "narrative" : "CrIm spells (376xp).  Studious Doppleganger w/o text."
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
+         , { "spell" : "Book of Images"
+            , "tefo" : "CrIm", "level" : 15
+         }
+         , { "spell" : "The Shadow of Human Life"
+            , "tefo" : "CrIm", "level" : 40
+         }
+         , { "spell" : "The Studious Doppleganger"
+            , "tefo" : "CrIm", "level" : 5
+         }
+      ]
       }
    ]
 }

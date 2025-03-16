@@ -16,9 +16,9 @@ The Studious Doppleganger ,CrIm5,Cr,,Im,,5,,,,,,,,
 False Window,CrIm5,Cr,,Im,,5,Touch,Sun,Ind,,,,,
 Smoke of Escaping,CrIm5,Cr,,Im,,5,,,,,,,,
 Clarity of Public Speech,CrIm10,Cr,,Im,,10,Touch,Sun,Room,,,,"After Notes of Delightful Sound, but the focus is on human speech, loud and clear. ",
-Book of Images,CrIm15,Cr,,Im,,15,,,,,,,,
-The Shadow of Human Life,CrIm40,Cr,,Im,Me,40,,,,,,,,
-Horror Cabinet,CrIm35,Cr,Re,Im,,35,Touch,Moon,Room,,,,,
+Book of Images,CrIm15,Cr,,Im,,15,,,,,,,,[MoH:124]
+The Shadow of Human Life,CrIm40,Cr,,Im,Me,40,,,,,,,,[ArM:144]
+Horror Cabinet,CrIm35,Cr,Re,Im,,35,Touch,Moon,Room,,Fills the room with horrible, moving images of beasts, ghosts, and undead threatening to devour any intruders.  Most will run in panic (failing a brave personality roll 12+), and some (botching such roll) may be driven insane.,Base 3 (three senses) + Touch + Moon +Room -> L25 +1 (Rego) +1 (Complexity) -> L35,,
 Prying Eyes,InIm5,In,,Im,,5,,,,,,,,
 Brushstrokes Revealed,InIm10,In,,Im,,10,,,,,,,,
 Palm of Seeing (Sun duration),InIm20,In,,Im,,20,,,,,,,,
@@ -30,7 +30,20 @@ Sight of the Warm Surface,MuIm15,Mu,,Im,,15,touch,conc,vision,,,,,
 Disguise of the Transformed Image,MuIm15,Mu,,Im,,15,touch,sun,vision,,,,,
 Circle of Undisturbed Rest,ReIm10,Re,,Im,,10,,,,,,,covers smell as well as hearing and sight,[MoH:30]
 Willful Sidestep,ReIm20,Re,,Im,,20,,,,,,,,
-Image from the Wizard Torn,ReIm30,Re,In,Im,,30,,,,,,,,
+Image from the Wizard Torn,ReIm30,Re,In,Im,,30,Per,Conc,Ind,,Your image separates from your body and moves as you do. It can
+speak whatever you say and do so in your voice, and you can see
+through its eyes. You must make an Int + Concentration stress roll
+for each solid object the image passes through and for each mile it
+travels. If you wish the image to be able to leave your sight, you must
+use an Arcane Connection to yourself (for example, a fingernail or
+a lock of hair) when you cast the spell. That connection becomes
+an integral part of the image, and when the spell ends, it falls to
+the ground wherever the image was located. As your image is away
+from your body, you are invisible and silent at your actual location.
+The image is your image, so while you may move it in space you
+may not have it sit down if you are standing. Further, it appears as
+if illuminated by whatever light is falling on you, no matter what
+the level of illumination is at the image.,"Base 15, +1 Concentration, +1 additional sense, +1 Intellego requisite",,[ArM:147]
 Confusion of the Insane Vibrations,ReIm35,Re,,Im,,35,,sun,,,,,,
 By His Works [HoH:TL:73],CrMe5,Cr,,Me,,5,Per,Conc,Ind,,,,,
 Gift of Perception,CrMe40,Cr,,Me,,40,,,,Ritual,,,,

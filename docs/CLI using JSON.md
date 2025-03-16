@@ -27,11 +27,10 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Validate Eogan build
-	+ [ ] Add Cieran's spells
 	+ [ ] Flawless magic
 	+ [ ] pretty print grimoire with details from DB
-	+ [ ] Count spell and xp totals (ingame) for validation
 	+ [ ] Review Cieran's ingame advancements
+	+ [ ] Review Cieran's abilities
 	+ [ ] Refactor and document code
 + [ ] Phase 2.  Finishing touches
 	+ [ ] Warping
@@ -61,6 +60,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
 	+ [ ] Pretty print spells for reference
+	+ [ ] Count xp total (ingame) for validation
 + [ ] Phase 5. Integer XP
 	+ [ ] handle Correspondent (which goes beyond cap)
 

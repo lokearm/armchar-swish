@@ -387,6 +387,14 @@ masteryMD s | 0 == masteryScore s && 0 == spellExcessXP s = OList []
 printGrimoire :: [Spell] -> OList
 printGrimoire xs = OList [ OString "## Grimoire"
                          , OString ""
-                         , OList $ map (indentOList . spellMD) xs ]
+                         , OList $ map (indentOList . spellMD) xs 
+                         , OString ""
+                         , OString $ "Total: " ++show (totalLevels xs)  
+                            ++ " levels of spells."
+                         ]
+
+
+totalLevels :: [Spell] -> Int
+totalLevels = sum . map spellLevel
 
 

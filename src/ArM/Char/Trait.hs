@@ -255,8 +255,11 @@ spellTeFoLe sp = spellTeFo sp ++ show (spellLevel sp)
 
 -- | Return a string of Form/Technique for sorting
 spellFoTe :: Spell -> String
-spellFoTe sp = drop 2 tf ++ take 2 tf
-    where tf = spellTeFo sp 
+spellFoTe = fote . spellTeFo 
+
+-- | Convert the TeFo string to Form/Technique for sorting
+fote :: String -> String
+fote tf = drop 2 tf ++ take 2 tf
 
 -- | Personality trait
 data PTrait = PTrait { ptraitName :: String, pscore :: Int }
@@ -593,7 +596,7 @@ instance TraitLike Art where
     toTrait = ArtTrait
     advanceTrait a x = 
           updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
-          trace (show (traitKey x,lim,y,x)) $ updateArtXP lim y x 
+          updateArtXP lim y x 
       where y = calcXP m (artExcessXP x) (xp a) 
             m = artMultiplier x
             um Nothing ab = ab 
@@ -603,7 +606,8 @@ instance TraitLike Art where
 instance TraitLike Spell where
     traitKey x = SpellKey (spellFoTe x) (spellLevel x) (spellName x ) 
     toTrait = SpellTrait
-    advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
+    advanceTrait a x = trace "Advance spell" $ trace (show a ) $ trace (show x) 
+         $ updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
             ms = maybeList $ mastery a
 instance TraitLike Reputation where
@@ -634,7 +638,7 @@ instance TraitLike ProtoTrait where
        | ability p /= Nothing = AbilityKey $ fromJust $ ability p 
        | characteristic p /= Nothing = CharacteristicKey $ fromJust $ characteristic p 
        | art p /= Nothing = ArtKey $ take 2 $ fromJust $ art p 
-       | spell p /= Nothing = SpellKey (fromMaybe "" $ tefo p)
+       | spell p /= Nothing = SpellKey (fote $ fromMaybe "TeFo" $ tefo p)
                            (fromMaybe 0 $ level p ) ( fromJust $ spell p ) 
        | ptrait p /= Nothing = PTraitKey $ fromJust $ ptrait p
        | reputation p /= Nothing = ReputationKey (fromJust (reputation p)) (fromMaybe "" (locale p))
@@ -672,7 +676,7 @@ updateAbilitySpec (Just x) a = a { speciality = Just x }
 
 updateAbilityXP :: Maybe Int -> XPType -> Ability -> Ability
 updateAbilityXP lim x ab
-    | isJust lim && fromJust lim <= abilityScore ab = trace (show lim) $ ab
+    | isJust lim && fromJust lim <= abilityScore ab = ab
     | x < tr = ab { abilityExcessXP = x }
     | otherwise = updateAbilityXP lim (x-tr) 
                 $ ab { abilityScore = sc+1, abilityExcessXP = 0 }
@@ -687,7 +691,7 @@ updateRepXP x ab | x < tr = ab { repExcessXP = x }
 
 updateArtXP :: Maybe Int ->  XPType -> Art -> Art
 updateArtXP lim x ab
-    | isJust lim && fromJust lim <= artScore ab = trace (show lim) $ ab
+    | isJust lim && fromJust lim <= artScore ab = ab
     | x < tr = ab { artExcessXP = x }
     | otherwise = updateArtXP lim (x-tr) $ ab { artScore = sc+1, artExcessXP = 0 }
    where sc = artScore ab
