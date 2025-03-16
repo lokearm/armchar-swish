@@ -110,7 +110,7 @@ main = do
 advChar :: Maybe String -> Maybe String -> Character -> IO ()
 advChar Nothing _ _ = return ()
 advChar sn fn cs0 = do
-     writeMaybeFile fn $ printMD cs
+     writeMaybeOList fn $ printMD cs
      return ()
    where seasn = parseSeasonTime sn
          cs = advanceCharacter seasn cs0
@@ -130,8 +130,8 @@ main' opts | charFile opts /= Nothing = do
      let char = fromJust t  
      let db = fromJust db'
      let cs = prepareCharacter char
-     writeMaybeFile ( debugFile opts ) $ printMDaug db char
-     writeMaybeFile ( outFile opts ) $ printMDaug db cs
+     writeMaybeOList ( debugFile opts ) $ printMDaug db char
+     writeMaybeOList ( outFile opts ) $ printMDaug db cs
      writeMaybeJSON ( jsonFile opts ) cs 
      advChar ( advanceSeason opts ) (seasonFile opts) cs
      return ()

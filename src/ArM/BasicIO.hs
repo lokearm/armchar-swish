@@ -25,6 +25,11 @@ import Data.Text.Lazy.IO as I
 -- objects.
 data OList = OList [ OList ] | OString String deriving ( Show )
 
+
+-- | Convert a list of Strings to a OList object
+toOList :: [ String ] -> OList
+toOList= OList . map OString 
+
 writeOListH :: Handle -> OList -> IO ()
 writeOListH h (OString x) = IO.hPutStrLn h x
 writeOListH _ (OList []) = return ()
@@ -35,6 +40,10 @@ writeOList fn x = do
      handle <- openFile fn WriteMode
      writeOListH handle x
      hClose handle
+
+writeMaybeOList :: Maybe String -> OList -> IO ()
+writeMaybeOList Nothing   = \ _ -> return ()
+writeMaybeOList (Just fn) = writeOList fn
 
 
 -- | Write a list of strings into the given file

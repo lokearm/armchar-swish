@@ -82,7 +82,7 @@ writeCharacter :: String   -- ^ Directory for the output files
               -> Character -- ^ Character whose sheet is written
               -> IO ()
 writeCharacter dir db c = do
-     writeLns fn $ printMDaug db c
+     writeOList fn $ printMDaug db c
      return ()
      where fn = dir ++ "/" ++ charID c ++ ".md"
 
