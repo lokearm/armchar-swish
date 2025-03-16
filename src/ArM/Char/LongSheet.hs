@@ -12,7 +12,7 @@
 -- function which renders an object in Markdown.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.LongSheet ( printLongSheet ) where
+module ArM.Char.LongSheet ( LongSheet(..) ) where
 
 import Data.Maybe 
 import Data.List 
@@ -29,45 +29,27 @@ import ArM.BasicIO
 -- import ArM.Debug.Trace
 
 class Markdown a => LongSheet a where
-   printSheetMD :: a       -- ^ object to render
+   printSheetMD :: SpellDB
+                -> a       -- ^ object to render
                 -> OList   -- ^ list of lines for output
-   printSheetMD = printMD
+   printSheetMD = printMDaug
 
-advancementMD :: Character -> OList
-advancementMD c = OList [ (pListMD "## Past Advancement" bs)
-                        , (pListMD "## Future Advancement" cs) ]
-mainstatMD :: Character -> OList
-mainstatMD c = OList [ "+ **Characteristics:** "  $ charList c
-               , f "+ **Personality Traits:** "  $ ptList c
-               , f "+ **Reputations:** "  $ reputationList c ]
-    where f _ [] = ""
-          f s xs = foldl (++) s (map (++", ") $ map show xs)
-printLongSheet :: SpellDB -> Character -> OList
-printLongSheet db c
-    | isNothing st = ( printMD . concept ) c 
-    | otherwise = OList [ ( printMD . concept ) c 
-                        , printSheet sheet
-			, advancementMD c
-			]
-       where bs = pastAdvancement c
-             cs = futureAdvancement c
-             st = state c
-             sheet = addCastingScores db $ filterCS $ fromJust st 
-
-printSheet :: CharacterSheet -> OList
-printSheet c = (cl ++ ml ++ lt ++ artl ++ ("":sl) ) 
-    where f _ [] = ""
-          f s xs = foldl (++) s (map (++", ") $ map show xs)
-          ml = [ mainlistMD c
-               , f "+ **Virtues and Flaws:** "  $ vfList c
-               , f "+ **Abilities:** "  $ abilityList c
-               , ""
+instance LongSheet CharacterSheet where
+   printSheetMD db c' = OList 
+               [ briefTraits c
+               , showlistMD "+ **Characteristics:** "  $ charList c
+               , showlistMD "+ **Personality Traits:** "  $ ptList c
+               , showlistMD "+ **Reputations:** "  $ reputationList c
+               , showlistMD "+ **Virtues and Flaws:** "  $ vfList c
+               , showlistMD "+ **Abilities:** "  $ abilityList c
+               , artMD c
+               , printGrimoire $ spellList c
+               , toOList $ printCastingTotals c
                ]
-          artl = artMD c
-          lt = printCastingTotals c
-          cl = briefTraits c
-          sl = printGrimoire $ spellList c
+         where c = addCastingScores db c'
 
 printGrimoire :: [Spell] -> OList
-printGrimoire _ = OString "## Grimoire":OString "":xs
-    where xs = OList[]
+printGrimoire _ = OList $ OString "## Grimoire":OString "":xs 
+    where xs = []
+
+

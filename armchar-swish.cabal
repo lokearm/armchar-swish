@@ -62,7 +62,7 @@ common armchar-deps
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
-                       -- , ArM.Char.LongSheet
+                       , ArM.Char.LongSheet
                        , ArM.Char.IO
                        , ArM.Helper
   build-depends:       cassava >= 0.5.3

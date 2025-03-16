@@ -19,6 +19,7 @@ module ArM.Char.Markdown ( Markdown(..)
                          , sortArts
                          , printCastingTotals
                          , briefTraits
+                         , showlistMD
                          ) where
 
 import Data.Maybe 
@@ -247,8 +248,13 @@ instance Markdown Character where
 
 -- | Render art scores as a table
 artMD :: CharacterSheet
+      -> OList
+artMD = toOList . artMD'
+
+-- | Render art scores as a table
+artMD' :: CharacterSheet
       -> [ String ]
-artMD = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
+artMD' = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
    where h1 = "| Art  | Score | XP |" 
          h2 = "| -: | -: | -: |"
 
