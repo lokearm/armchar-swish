@@ -5,8 +5,8 @@
       , "charType" : "Magus"
       , "house" : "ex Miscellanea"
       , "concept" : "Rusticanus Fletcher"
-      , "quirk" : ""
-      , "appearance" : ""
+      , "quirk" : "Meddler.  Happily gives away charged items."
+      , "appearance" : "Cheerful, moving slowly and carefully.  Dresses like a craftsman, with a sturdy leather apron and tool belt."
       , "born" : 1192
       , "player" : "George"
       , "charGlance" : { }
