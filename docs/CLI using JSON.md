@@ -61,7 +61,8 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
 	+ [ ] Pretty print spells for reference
-	+ [ ] Count xp total (ingame) for validation
+	+ [ ] Count xp total (ingame) for validationparallel
+	+ [ ] Process characters in 
 + [ ] Phase 5. Integer XP
 	+ [ ] handle Correspondent (which goes beyond cap)
 
@@ -88,16 +89,3 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ SQ bonuses
 		+ correspondent
 		+ study bonus
-	 
-       
-+ Modules
-	+ `Char.Trait`
-		+ Trait
-		+ ProtoTrait
-	+ `Char.Character`
-		+ Character
-			+ CharacterConcept
-			+ CharacterState
-		+ Advancement
-	+ `Char.Advancement`
-	+ `Char.Markdown`
