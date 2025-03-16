@@ -792,9 +792,9 @@
                     , { "ability" : "Faerie Lore", "xp" : 5 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1245"
-      , "sourceQuality" : 14.5
+      , "sourceQuality" : 13
       , "narrative" : "Summa; capped at 19 +1½xp for correspondent (191½xp) "
-      , "changes" : [ { "art" : "Imaginem", "xp" : 14.5, "levelCap" : 19 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 13, "levelCap" : 19 } ]
       },
       { "mode" : "Copy", "season" : "Autumn 1245"
       , "sourceQuality" : 2
@@ -1001,7 +1001,7 @@
       { "mode" : "Vis study", "season" : "Spring 1254"
       , "sourceQuality" : 16
       , "narrative" : " (319xp)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 24 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 16 } ]
       },
       { "mode" : "Vis study", "season" : "Summer 1254"
       , "sourceQuality" : 21

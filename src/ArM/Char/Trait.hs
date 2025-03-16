@@ -592,7 +592,7 @@ instance TraitLike Art where
     toTrait = ArtTrait
     advanceTrait a x = 
           updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
-          updateArtXP lim y x 
+          trace (show (traitKey x,lim,y,x)) $ updateArtXP lim y x 
       where y = calcXP m (artExcessXP x) (xp a) 
             m = artMultiplier x
             um Nothing ab = ab 
@@ -685,7 +685,7 @@ updateArtXP :: Maybe Int ->  XPType -> Art -> Art
 updateArtXP lim x ab
     | isJust lim && fromJust lim <= artScore ab = trace (show lim) $ ab
     | x < tr = ab { artExcessXP = x }
-    | otherwise = updateArtXP lim (x-tr) $ ab { artScore = sc+1 }
+    | otherwise = updateArtXP lim (x-tr) $ ab { artScore = sc+1, artExcessXP = 0 }
    where sc = artScore ab
          tr = fromIntegral (sc+1)
 
