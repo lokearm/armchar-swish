@@ -49,7 +49,7 @@ baseSheet db c | isNothing (state c ) = s1
 gameStartSheet :: SpellDB -> Character -> OList
 gameStartSheet db c = OList
             [ baseSheet db c
-            , OString "## Game start design"
+            , OString ""
             , designMD c
             ]
 
