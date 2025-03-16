@@ -582,11 +582,12 @@ instance TraitLike Ability where
     toTrait = AbilityTrait
     advanceTrait a x = 
           updateBonus (bonusScore a) $ um (multiplyXP a) $
-          updateAbilitySpec (spec a) $ updateAbilityXP y x
+          updateAbilitySpec (spec a) $ updateAbilityXP lim y x
       where y = calcXP m (abilityExcessXP x) (xp a) 
             m = abilityMultiplier x
             um Nothing ab = ab 
             um abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
+            lim = levelCap a
 instance TraitLike Art where
     traitKey x = ArtKey $ take 2 $ artName x
     toTrait = ArtTrait
@@ -669,9 +670,12 @@ updateAbilitySpec :: Maybe String -> Ability -> Ability
 updateAbilitySpec Nothing a = a
 updateAbilitySpec (Just x) a = a { speciality = Just x }
 
-updateAbilityXP :: XPType -> Ability -> Ability
-updateAbilityXP x ab | x < tr = ab { abilityExcessXP = x }
-                     | otherwise = updateAbilityXP (x-tr) $ ab { abilityScore = sc+1 }
+updateAbilityXP :: Maybe Int -> XPType -> Ability -> Ability
+updateAbilityXP lim x ab
+    | isJust lim && fromJust lim <= abilityScore ab = trace (show lim) $ ab
+    | x < tr = ab { abilityExcessXP = x }
+    | otherwise = updateAbilityXP lim (x-tr) 
+                $ ab { abilityScore = sc+1, abilityExcessXP = 0 }
     where sc = abilityScore ab
           tr = fromIntegral (sc+1)*5
 
