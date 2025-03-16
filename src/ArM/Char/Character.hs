@@ -48,7 +48,7 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import ArM.Helper
 
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- | Apply advancement
 -- This function is generic, and used for both chargen and ingame 
@@ -257,7 +257,14 @@ applyInGameAdv a cs = applyAdvancement ( prepareAdvancement cs a ) cs
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
-prepareAdvancement _ = validate . inferSQ . addInferredTraits
+prepareAdvancement c = validate . inferSQ . winterEvents c . addInferredTraits
+
+-- | Handle aging and some warping for Winter advancements
+winterEvents :: CharacterState -> AugmentedAdvancement -> AugmentedAdvancement
+winterEvents c a | isWinter $ season a = 
+                        trace ("Winter Season - handle aging - age " ++ show ag ) a
+                 | otherwise = a
+    where ag = age c
 
 -- | Calculate initial XP limits on Advancements
 inferSQ :: AugmentedAdvancement -> AugmentedAdvancement
