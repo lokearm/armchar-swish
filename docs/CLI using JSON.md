@@ -31,7 +31,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Add Cieran's spells
 	+ [ ] Fix bonus XP
 		+ [ ] handle Study Bonus
-		+ [ ] handle Correspondent (which goes beyond cap)
 		+ [ ] consistency of SQ
 	+ [ ] Flawless magic
 	+ [ ] pretty print grimoire with details from DB
@@ -67,6 +66,8 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
 	+ [ ] Pretty print spells for reference
++ [ ] Phase 5. Integer XP
+	+ [ ] handle Correspondent (which goes beyond cap)
 
 + Advancement process.
     + Uses State from previous season and Advancement from current season.

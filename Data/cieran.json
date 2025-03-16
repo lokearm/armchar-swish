@@ -794,7 +794,8 @@
       { "mode" : "Reading", "season" : "Summer 1245"
       , "sourceQuality" : 13
       , "narrative" : "Summa; capped at 19 +1½xp for correspondent (191½xp) "
-      , "changes" : [ { "art" : "Imaginem", "xp" : 13, "levelCap" : 19 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 12, "levelCap" : 19 } 
+                    , { "art" : "Imaginem", "xp" : 1 } ]
       },
       { "mode" : "Copy", "season" : "Autumn 1245"
       , "sourceQuality" : 2
