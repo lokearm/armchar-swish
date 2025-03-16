@@ -14,16 +14,15 @@
 -----------------------------------------------------------------------------
 module ArM.Char.LongSheet ( LongSheet(..) ) where
 
-import Data.Maybe 
-import Data.List 
-import qualified Data.Map as M
+-- import Data.Maybe 
+-- import Data.List 
+-- import qualified Data.Map as M
 
-import ArM.Char.Internal.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
 import ArM.Char.Spell
 import ArM.Char.Markdown
-import ArM.GameRules
+-- import ArM.GameRules
 import ArM.BasicIO
 
 -- import ArM.Debug.Trace
@@ -41,7 +40,8 @@ instance LongSheet CharacterSheet where
                , showlistMD "+ **Personality Traits:** "  $ ptList c
                , showlistMD "+ **Reputations:** "  $ reputationList c
                , showlistMD "+ **Virtues and Flaws:** "  $ vfList c
-               , showlistMD "+ **Abilities:** "  $ abilityList c
+               , OList $ (OString "**Abilities:**")
+                       : (map (OString . show) ( abilityList c ))
                , artMD c
                , printGrimoire $ spellList c
                , toOList $ printCastingTotals c
@@ -49,7 +49,7 @@ instance LongSheet CharacterSheet where
          where c = addCastingScores db c'
 
 printGrimoire :: [Spell] -> OList
-printGrimoire _ = OList $ OString "## Grimoire":OString "":xs 
-    where xs = []
+printGrimoire xs = OList $ OString "## Grimoire":OString ""
+                       : (map (OString . show) xs)
 
 
