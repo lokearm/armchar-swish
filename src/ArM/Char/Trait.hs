@@ -242,6 +242,7 @@ data Spell = Spell { spellName :: String
                    , masteryOptions :: [String] 
                    , spellCastingScore :: Maybe Int
                    , spellTComment :: String
+                   -- , spellRecord :: Maybe SpellRecord
                    }
            deriving (Ord, Eq, Generic)
 

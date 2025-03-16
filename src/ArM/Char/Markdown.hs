@@ -12,11 +12,14 @@
 -- function which renders an object in Markdown.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Markdown ( printMDaug
-                         , printMD
+module ArM.Char.Markdown ( Markdown(..)
                          , artMD
                          , gameStartSheet
                          , currentSheet
+                         , pListMD
+                         , sortArts
+                         , printCastingTotals
+                         , briefTraits
                          ) where
 
 import Data.Maybe 
@@ -105,7 +108,7 @@ artLine :: Art -> String
 artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
 
 instance Markdown CharacterSheet where
-   printMD c = ag:(ol ++ cl ++ ml ++ lt ) -- foldl (:) ml cl
+   printMD c = (cl ++ ml ++ lt ) -- foldl (:) ml cl
     where f _ [] = ""
           f s xs = foldl (++) s (map (++", ") $ map show xs)
           ml = [ f "+ **Characteristics:** "  $ charList c
@@ -117,17 +120,26 @@ instance Markdown CharacterSheet where
                , f "+ **Spells:** "  $ spellList c
                ]
           -- artl = artMD c
+          lt = printCastingTotals c
+          cl = briefTraits c
+   printMDaug db = printMD . addCastingScores db
+
+briefTraits :: CharacterSheet -> [String]
+briefTraits c = ag:(ol++cl)
+     where
           cl = foldl (++) [] $ map printMD $ confList c
           ol = foldl (++) [] $ map printMD $ csTraits c
           ag = "+ **Age:** " ++ show (csAge c)
-          lt | Magus /= csType c = []
+printCastingTotals :: CharacterSheet -> [String]
+printCastingTotals c 
+             | Magus /= csType c = []
              | otherwise = "":"| Casting Total | Creo | Intellego | Muto | Perdo | Rego |":
                               "|         :-    |  -:  |  -:       |  -:  |  -:   |  -:  |":
                               lts
+      where
           lts = [ "| " ++ fo ++ foldl (++) "" (map ( (" | "++) . show ) ts ) ++ " |" 
                 | (fo,ts) <- zip lforms (labTotals c) ]
-          lforms = [ "Aninal", "Aquam", "Auram", "Corpus", "Herbam", "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
-   printMDaug db = printMD . addCastingScores db
+          lforms = [ "Animal", "Aquam", "Auram", "Corpus", "Herbam", "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
 
 instance Markdown Confidence where
    printMD c = [ "+ **" ++ cname c ++ "**: " ++ show (cscore c) ++ " ("
