@@ -63,7 +63,7 @@
          [ { "ability" : "Area Lore: Munster" , "spec" : "Hiding Places" , "xp" : 5 }
          , { "ability" : "Awareness" , "spec" : "Searching" , "xp" : 15 }
          , { "ability" : "Brawl" , "spec" : "Dodge" , "xp" : 15 }
-         , { "ability" : "Folk Ken" , "spec" : "Vilagers" , "xp" : 5 }
+         , { "ability" : "Folk Ken" , "spec" : "Villagers" , "xp" : 5 }
          , { "ability" : "Stealth", "spec" : "Hiding", "xp" : 5 }
          , { "ability" : "Second Sight" , "spec" : "Faerie Illusions"  }
          ] 
@@ -148,7 +148,7 @@
       , "sourceQuality" : 14
       , "narrative" : "Jerome's Tower - covenant service"
       , "changes" : 
-         [ { "ability" : "Infernal Lore", "xp": 5 }
+         [ { "ability" : "Infernal Lore", "spec" : "Undead", "xp": 5 }
          , { "ability" : "Parma Magica", "xp": 5 }
          , { "ability" : "Second Sight", "xp": 4 }
          ] 
@@ -157,7 +157,7 @@
       , "season" : "Summer 1218"
       , "sourceQuality" : 17
       , "changes" : 
-         [ { "ability" : "SOCP Lore", "xp": 17 }
+         [ { "ability" : "SOCP Lore", "spec" : "Self initiation", "xp": 17 }
          ] 
       , "narrative" : "Studies book found in Jerome's Tower"
       },
@@ -228,7 +228,7 @@
       { "mode" : "Reading", "season" : "Summer 1221"
       , "sourceQuality" : 8
       , "narrative" : " (Causes and Curies) half xp due to injuries = 8"
-      , "changes" : [ { "ability" : "Philosophiæ", "xp" : 8 } ]
+      , "changes" : [ { "ability" : "Philosophiæ", "spec" : "Rituals", "xp" : 8 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1221"
       , "sourceQuality" : 21
@@ -417,7 +417,7 @@
       { "mode" : "Exposure", "season" : "Summer 1229"
       , "sourceQuality" : 2
       , "narrative" : "Teaching Spells to Hiccup"
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "spec" : "apprentices", "xp" : 2 } ]
       },
       { "mode" : "Lab work", "season" : "Autumn 1229"
       , "sourceQuality" : 2
@@ -442,12 +442,12 @@
       { "mode" : "Reading", "season" : "Spring 1230"
       , "sourceQuality" : 15
       , "narrative" : "L6Q12"
-      , "changes" : [ { "ability" : "Hibernia Lore", "xp" : 15 } ]
+      , "changes" : [ { "ability" : "Area Lore: Ireland", "xp" : 15 } ]
       },
       { "mode" : "Adventure", "season" : "Summer 1230"
       , "sourceQuality" : 10
       , "changes" : [ { "ability" : "Teaching", "xp" : 5 } 
-                    , { "ability" : "Magic Lore", "xp" : 5 } ]
+                    , { "ability" : "Magic Lore", "spec" : "creatures", "xp" : 5 } ]
       },
       { "mode" : "Exposure", "season" : "Autumn 1230"
       , "sourceQuality" : 2
@@ -540,7 +540,7 @@
       { "mode" : "Exposure", "season" : "Spring 1234"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup "
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1234"
       , "sourceQuality" : 16
@@ -560,7 +560,7 @@
       { "mode" : "Teaching", "season" : "Spring 1235"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup 11->13"
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1235"
       , "sourceQuality" : 2
@@ -587,7 +587,7 @@
       { "mode" : "Teaching", "season" : "Spring 1236"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup 13->15"
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1236"
       , "sourceQuality" : 2
@@ -613,7 +613,7 @@
       { "mode" : "Teaching", "season" : "Spring 1237"
       , "sourceQuality" : 2
       , "narrative" : " (17xp) Hiccup "
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1237"
       , "sourceQuality" : 2
@@ -641,7 +641,7 @@
       { "mode" : "Teaching", "season" : "Spring 1238"
       , "sourceQuality" : 2
       , "narrative" : " (19xp) Hiccup "
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Adventure", "season" : "Summer 1238"
       , "sourceQuality" : 8
@@ -671,7 +671,7 @@
       { "mode" : "Teaching", "season" : "Spring 1239"
       , "sourceQuality" : 2
       , "narrative" : " (21xp) Hiccup.  SOCP Lore"
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1239"
       , "sourceQuality" : 2
@@ -700,7 +700,7 @@
       { "mode" : "Teaching", "season" : "Spring 1240"
       , "sourceQuality" : 2
       , "narrative" : " (23xp) Hiccup."
-      , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Teaching", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1240"
       , "sourceQuality" : 2
@@ -799,7 +799,7 @@
       { "mode" : "Reading", "season" : "Autumn 1244"
       , "sourceQuality" : 11
       , "narrative" : " *Dark Fey of the East* "
-      , "changes" : [ { "ability" : "Faerie Lore", "xp" : 11 } ]
+      , "changes" : [ { "ability" : "Faerie Lore", "spec" : "Dark fey", "xp" : 11 } ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1245"
       , "sourceQuality" : 2
@@ -1031,7 +1031,7 @@
       { "mode" : "Adventure", "season" : "Winter 1254"
       , "sourceQuality" : 7
       , "narrative" : "No Aging (rolled 4)"
-      , "changes" : [ { "ability" : "Finesse", "xp" : 5 } 
+      , "changes" : [ { "ability" : "Finesse", "spec" : "Precision", "xp" : 5 } 
                     , { "ability" : "Etiquette", "xp" : 2 } ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"
