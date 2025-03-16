@@ -73,6 +73,7 @@ data ProtoTrait = ProtoTrait
     , confidence :: Maybe String  -- ^ confidence, true faith, or similar
     , reputation :: Maybe String  -- ^ reputation contents
     , other :: Maybe String       -- ^ other trait, e.g. warping or decrepitude
+    , strait :: Maybe String      -- ^ special trait, like Longevity Potion
     , spec :: Maybe String        -- ^ specialisation of an ability
     , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
     , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
@@ -110,6 +111,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , confidence = Nothing
                              , reputation = Nothing
                              , other = Nothing
+                             , strait = Nothing
                              , spec = Nothing
                              , detail = Nothing
                              , appliesTo = Nothing
@@ -142,6 +144,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "confidence"
         <*> v .:?  "reputation"
         <*> v .:?  "other"
+        <*> v .:?  "specialTrait"
         <*> v .:?  "spec"
         <*> v .:?  "detail"
         <*> v .:?  "appliesTo"
@@ -207,6 +210,7 @@ data TraitKey = AbilityKey String
            | VFKey String String
            | ConfidenceKey String
            | OtherTraitKey String
+           | SpecialKey String
            deriving (Show, Ord, Eq,Generic )
 spellKeyName :: TraitKey -> String
 spellKeyName ( SpellKey _ _ n ) = n
@@ -285,10 +289,17 @@ data Confidence = Confidence { cname :: String, cscore :: Int, cpoints :: Int }
            deriving ( Ord, Eq, Generic)
 data OtherTrait = OtherTrait { trait :: String
                              , otherScore :: Int
-                             , pts :: Int 
+                             -- , pts :: Int 
                              , otherExcess :: Int
                              }
            deriving (Show, Ord, Eq, Generic)
+data SpecialTrait = SpecialTrait { specialTrait :: String
+                             , specialScore :: Maybe Int
+                             , specialComment :: Maybe String 
+                             }
+           deriving (Show, Ord, Eq, Generic)
+instance FromJSON SpecialTrait
+instance ToJSON SpecialTrait
 
 data Trait = AbilityTrait Ability
            | CharacteristicTrait Characteristic
@@ -299,6 +310,7 @@ data Trait = AbilityTrait Ability
            | VFTrait VF
            | ConfidenceTrait Confidence
            | OtherTraitTrait OtherTrait
+           | SpecialTraitTrait SpecialTrait
            deriving (Show, Ord, Eq, Generic)
 instance FromJSON Ability
 instance FromJSON Characteristic 
@@ -376,19 +388,6 @@ showXP p = " " ++ show ( fromMaybe 0 (xp p) ) ++ "xp"
 
 
 
--- |
--- = Computing Traits
-
-computeOther :: ProtoTrait -> OtherTrait
-computeOther p
-    | spell p == Nothing = error "Not an properly formatted trait"
-    | otherwise =
-           OtherTrait { trait = fromJust (other p) 
-                      , pts = fromMaybe 0 ( points p ) 
-                      , otherScore = s
-                      , otherExcess = y
-                      }
-                 where (s,y) = getAbilityScore (points p)
 
 
 
@@ -509,10 +508,30 @@ instance TraitType Confidence where
     getTrait (ConfidenceTrait x) = Just x
     getTrait _ = Nothing
     computeTrait p 
-       | ptrait p /= Nothing = Just $ Confidence 
+       | confidence p /= Nothing = Just $ Confidence 
                            { cname = fromMaybe "Confidence" ( confidence p )
                            , cscore = fromMaybe 0 (score p) 
                            , cpoints = fromMaybe 0 (points p) 
+                           }
+       | otherwise = Nothing
+instance TraitType OtherTrait where
+    getTrait (OtherTraitTrait x) = Just x
+    getTrait _ = Nothing
+    computeTrait p 
+       | other p /= Nothing = Just $ OtherTrait 
+                           { trait = fromJust ( other p )
+                           , otherScore = fromMaybe 0 (score p) 
+                           , otherExcess = fromMaybe 0 (points p) 
+                           }
+       | otherwise = Nothing
+instance TraitType SpecialTrait where
+    getTrait (SpecialTraitTrait x) = Just x
+    getTrait _ = Nothing
+    computeTrait p 
+       | strait p /= Nothing = Just $ SpecialTrait 
+                           { specialTrait = fromJust ( strait p )
+                           , specialScore = (score p) 
+                           , specialComment = comment p
                            }
        | otherwise = Nothing
 
@@ -554,6 +573,7 @@ instance TraitLike Trait where
     traitKey (PTraitTrait x) = traitKey x
     traitKey (OtherTraitTrait x) = traitKey x
     traitKey (ConfidenceTrait x) = traitKey x
+    traitKey (SpecialTraitTrait x) = traitKey x
     advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (AbilityTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ArtTrait x) = toTrait $ advanceTrait a x
@@ -563,6 +583,7 @@ instance TraitLike Trait where
     advanceTrait a (PTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
     toTrait = id
 
 updateBonus :: Maybe Int -> Ability -> Ability
@@ -627,11 +648,23 @@ instance TraitLike Confidence where
              updateCScore (Just y) x = x { cscore = y }
              updateCPoints Nothing x = x
              updateCPoints (Just y) x = x { cpoints = y + cpoints x }
-instance TraitLike  OtherTrait where
+instance TraitLike OtherTrait where
     traitKey x = OtherTraitKey ( trait x ) 
     toTrait = OtherTraitTrait
-    advanceTrait _ x = trace "Warning! Advancement not implemented for OtherTrait"  x
+    advanceTrait a x = updateOther y x
+      where y = otherExcess x + (fromMaybe 0 $ points a)
+instance TraitLike SpecialTrait where
+    traitKey x = SpecialKey ( specialTrait x ) 
+    toTrait = SpecialTraitTrait
+    advanceTrait a _ = fromJust $ computeTrait a
 
+updateOther :: Int -> OtherTrait -> OtherTrait
+updateOther x ab
+    | x < tr = ab { otherExcess = x }
+    | otherwise = updateOther (x-tr) 
+                $ ab { otherScore = sc+1, otherExcess = 0 }
+    where sc = otherScore ab
+          tr = (sc+1)*5
 
 instance TraitLike ProtoTrait where
    traitKey p
@@ -664,8 +697,9 @@ instance TraitLike ProtoTrait where
            Confidence { cname = fromMaybe "Confidence" (confidence p)
                       , cscore = fromMaybe 0 (score p)
                       , cpoints = fromMaybe 0 (points p) }
-      | other p /= Nothing = OtherTraitTrait $ computeOther p
+      | other p /= Nothing = OtherTraitTrait $ fromJust $ computeTrait p
       | otherwise  = error "No Trait for this ProtoTrait" 
+
 
 -- |
 -- == Auxiliary update functions
