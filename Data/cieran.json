@@ -739,7 +739,7 @@
       { "mode" : "Reading", "season" : "Autumn 1243"
       , "sourceQuality" : 14
       , "narrative" : " *Growing, Healing, and Creation* L15Q14 capped 15 for +14xp -> 120xp "
-      , "changes" : [ { "art" : "Creo", "xp" : 14 } ]
+      , "changes" : [ { "art" : "Creo", "xp" : 14, "levelCap" : 15 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1244"
       , "sourceQuality" : 17
@@ -794,7 +794,7 @@
       { "mode" : "Reading", "season" : "Summer 1245"
       , "sourceQuality" : 14.5
       , "narrative" : "Summa; capped at 19 +1½xp for correspondent (191½xp) "
-      , "changes" : [ { "art" : "Imaginem", "xp" : 14.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 14.5, "levelCap" : 19 } ]
       },
       { "mode" : "Copy", "season" : "Autumn 1245"
       , "sourceQuality" : 2
@@ -819,7 +819,7 @@
       { "mode" : "Reading", "season" : "Autumn 1246"
       , "sourceQuality" : 13
       , "narrative" : "13 (capped) | Mentem| Mentem L16Q13 to 16 |"
-      , "changes" : [ { "art" : "Mentem", "xp" : 13 } ]
+      , "changes" : [ { "art" : "Mentem", "xp" : 13, "levelCap" : 16 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1247"
       , "sourceQuality" : 17

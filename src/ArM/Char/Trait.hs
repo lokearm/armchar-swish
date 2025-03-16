@@ -76,7 +76,8 @@ data ProtoTrait = ProtoTrait
     , spec :: Maybe String        -- ^ specialisation of an ability
     , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
     , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
-    , level :: Maybe Int       -- ^ level of a space
+    , levelCap :: Maybe Int    -- ^ cap on advancement
+    , level :: Maybe Int       -- ^ level of a spell
     , tefo :: Maybe String     -- ^ technique/form of a spell
     , locale :: Maybe String   -- ^ locale/domain of a reputation
     , mastery :: Maybe [ String ]   -- ^ mastery options for a spell
@@ -112,6 +113,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , spec = Nothing
                              , detail = Nothing
                              , appliesTo = Nothing
+                             , levelCap = Nothing
                              , level = Nothing
                              , tefo = Nothing
                              , locale = Nothing
@@ -143,6 +145,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "spec"
         <*> v .:?  "detail"
         <*> v .:?  "appliesTo"
+        <*> v .:?  "levelCap"
         <*> v .:?  "level"
         <*> v .:?  "tefo"
         <*> v .:?  "locale"
@@ -589,11 +592,12 @@ instance TraitLike Art where
     toTrait = ArtTrait
     advanceTrait a x = 
           updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
-          updateArtXP y x 
+          updateArtXP lim y x 
       where y = calcXP m (artExcessXP x) (xp a) 
             m = artMultiplier x
             um Nothing ab = ab 
             um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
+            lim = levelCap a
 instance TraitLike Spell where
     traitKey x = SpellKey (spellFoTe x) (spellLevel x) (spellName x ) 
     toTrait = SpellTrait
@@ -676,9 +680,11 @@ updateRepXP x ab | x < tr = ab { repExcessXP = x }
     where sc = repScore ab
           tr = fromIntegral $ (sc+1)*5
 
-updateArtXP :: XPType -> Art -> Art
-updateArtXP x ab | x < tr = ab { artExcessXP = x }
-                 | otherwise = updateArtXP (x-tr) $ ab { artScore = sc+1 }
+updateArtXP :: Maybe Int ->  XPType -> Art -> Art
+updateArtXP lim x ab 
+    | isNothing lim || fromJust lim <= artScore ab = ab
+    | x < tr = ab { artExcessXP = x }
+    | otherwise = updateArtXP lim (x-tr) $ ab { artScore = sc+1 }
     where sc = artScore ab
           tr = fromIntegral (sc+1)
 

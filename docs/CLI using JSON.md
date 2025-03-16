@@ -29,13 +29,10 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Validate Eogan build
 	+ [ ] Add Cieran's spells
-	+ [x] Revise Cieran to avoid double counting affinity
 	+ [ ] Step 1. Features required by Cieran
 		+ [ ] level cap on summa
 		+ [ ] Bonus XP
-		+ [x] Advance age on Winter seasons
 		+ [ ] Flawless magic
-		+ [ ] General level spells
 		+ [ ] pretty print grimoire with details
 	+ [ ] Step 2.  Long Character Sheet
 	+ [ ] Count spell and xp totals (ingame) for validation
