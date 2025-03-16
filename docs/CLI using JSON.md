@@ -31,12 +31,16 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Review Cieran's abilities
-	+ [ ] Review casting scores 
+	+ [ ] Review casting scores on Cieran
 	+ [ ] Refactor and document code
 + [ ] Phase 2.  Finishing touches
 	+ [ ] Warping
+		+ [ ] Check for LR and warp in Winter
+		+ [ ] Check warping for Cieran
 	+ [ ] Decrepitude
 	+ [ ] Aging
+		+ [ ] validate presence of aging roll in Winter
+		+ [ ] check aging points on characteristics
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
 + [ ] Phase 3. Covenant
