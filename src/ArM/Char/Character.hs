@@ -54,11 +54,11 @@ applyAdvancement :: AugmentedAdvancement
                  -> (AugmentedAdvancement,CharacterState)
 applyAdvancement a' cs = (a',cs')
     where cs' = cs { charTime = season a', traits = new, age = ag }
-          new =  advance change tmp
-          tmp =  advance inferred old 
-          change = changes a'
+          new = advance change tmp
+          tmp = sortTraits $ advance inferred old 
+          change = sortTraits $ changes a'
           inferred = inferredTraits a'
-          old = traits cs
+          old = sortTraits $ traits cs
           ag = fromMaybe 0 (augYears a') + age cs
 
 -- |
