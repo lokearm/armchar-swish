@@ -258,7 +258,7 @@
           , { "spell" : "Sense the Nature of Vis"
              , "tefo" : "InVi", "level" : 5
           }
-          , { "spell" : "Piercing the magic veil"
+          , { "spell" : "Piercing the Magical Veil"
              , "tefo" : "InVi", "level" : 20
           }
       ]
@@ -267,7 +267,7 @@
       , "sourceQuality" : 2
       , "narrative" : "Stone Tell of Mind that Sits "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
-         , { "spell" : "Stone Tell of Mind that Sits"
+         , { "spell" : "Stone Tell of the Mind that Sits"
             , "tefo" : "InTe", "level" : 30
          }
       ]
@@ -277,13 +277,13 @@
       , "narrative" : "Parma to 30xp.  Story (2conf pts) Lab work: InVi5 Spot the Vis + InVi5 Scales of M W + InVi20 Piercing the faerie veil (from texts) (lab total InVi 14 + Int 3 + MT 4 + Aura 5 + similar spell 4 = 30) + 2xp parma"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "confidence" : "Confidence", "points" : 2 }
-         , { "spell" : "Spot the Vis"
+         , { "spell" : "Spot the Presence of Vis"
            , "tefo" : "InVi", "level" : 5
            }
          , { "spell" : "Scales of Magical Weight"
            , "tefo" : "InVi", "level" : 5
            }
-         , { "spell" : "Piercing the faerie veil"
+         , { "spell" : "Piercing the Faerie Veil"
            , "tefo" : "InVi", "level" : 20
            }
       ]
@@ -313,7 +313,7 @@
       , "sourceQuality" : 2
       , "narrative" : "Invent a touch version of Unravelling the Fabric of Imaginem lvl 13.  Exposure 2xp Second Sight. Lab Total 26."
       , "changes" : [ { "ability" : "Second Sight", "xp" : 2 } 
-         , { "spell" : "Unravelling the Fabric of Imaginem (Touch)"
+         , { "spell" : "Tearing the Fabric of Imaginem"
             , "tefo" : "PeVi", "level" : 13
          }
       ]
@@ -326,7 +326,7 @@
       , "sourceQuality" : 2
       , "narrative" : "Lab work. Touch version of Pit of Gaping Earth PeTe15. Exposure 2xp Magic Theory. Lab Total 30."
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
-         , { "spell" : "Pit of Gaping Earth (Touch)"
+         , { "spell" : "Arrow of Gaping Earth"
             , "tefo" : "PeTe", "level" : 15
          }
       ]
@@ -424,7 +424,7 @@
       , "narrative" : "ReCo 43 + Hiccup + bookstand = 51. Leap of Homecoming + Frog's Legs"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
          ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 15 }
-         ,  { "spell" : "Frog's Legs", "tefo" : "ReCo", "level" : 15 }
+         ,  { "spell" : "Gift of the Frog's Legs", "tefo" : "ReCo", "level" : 15 }
       ]
       },
       { "mode" : "Lab work", "season" : "Winter 1230"
@@ -609,7 +609,7 @@
       , "sourceQuality" : 2
       , "narrative" : "Leap of Homecoming Touch (continued) "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
-         , { "spell" : "Leap of Homecoming (Touch)"
+         , { "spell" : "Leap of Homecoming (touch)"
             , "tefo": "ReCo", "level" : 40
          }
       ]
@@ -779,7 +779,7 @@
          , { "spell" : "Circle of Fey Oblivion"
             , "tefo" : "PeVi", "level" : 10
          }
-         , { "spell" : "Break the Shield (with lab text)"
+         , { "spell" : "Break the Shield"
             , "tefo" : "PeVi", "level" : 10
          }
         ]
@@ -920,7 +920,7 @@
       , "sourceQuality" : 3
       , "narrative" : "InIm spells below $\to$  281½.  Lab total 71"
       , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
-         , { "spell" : "Palm of Seeing (sun duration)"
+         , { "spell" : "Palm of Seeing (Sun duration)"
             , "tefo" : "InIm", "level" : 20 }
          , { "spell" : "Brushstrokes Revealed"
             , "tefo" : "InIm", "level" : 10 }
@@ -979,10 +979,10 @@
       , "sourceQuality" : 2
       , "narrative" : "Intangible Tunnel ReVi20; diam version ReVi5 (144xp)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
-         , { "spell" : "Intangible Tunnel"
+         , { "spell" : "Opening the Intangible Tunnel"
             , "tefo" : "ReVi", "level" : 20
          }
-         , { "spell" : "The Minute of Reckoning (diam)"
+         , { "spell" : "The Minute of Reckoning"
             , "tefo" : "ReVi", "level" : 5
          }
       ]

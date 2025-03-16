@@ -128,6 +128,12 @@ showlistMD s xs = OList [ OString s
                         , toOList $ (map (++", ") $ map show xs)
                         ]
 
+-- | Render a Maybe String as an OList.
+-- Nothing becomes an empty OList and a Just object becomes a single line.
+stringMD :: Maybe String -> OList
+stringMD Nothing = OList []
+stringMD (Just x) = OString x
+
 -- |
 -- Markdown for the Character types
 
@@ -294,9 +300,6 @@ instance Markdown AugmentedAdvancement where
       where xps = showSQ (sourceQuality a) (effectiveSQ a)
             y = augYears a
 
-stringMD :: Maybe String -> OList
-stringMD Nothing = OList []
-stringMD (Just x) = OString x
 
 -- | Render the season and mode of an advancement
 showTime :: String -> SeasonTime -> Maybe String -> Maybe Int -> String
@@ -361,9 +364,29 @@ instance LongSheet CharacterSheet where
                ]
          where c = addCastingScores db c'
 
+
+-- | Render a spell trait in Markdown
+-- The result should normally be subject to indentOList to make an hierarchical
+-- list.
+spellMD :: Spell -> OList
+spellMD s = OList [ OString $ show s
+                  , OList
+                    [ masteryMD s
+                    , f $ spellTComment s
+                    ]
+                  ]
+     where f "" = OList [] 
+           f x = OString x
+masteryMD :: Spell -> OList
+masteryMD s | 0 == masteryScore s && 0 == spellExcessXP s = OList []
+            | otherwise = OString
+                          $ "Mastery: " ++ show (masteryScore s)
+                          ++ " (" ++ show (spellExcessXP s) ++ "xp) "
+                          ++ show (masteryOptions s)
+
 printGrimoire :: [Spell] -> OList
 printGrimoire xs = OList [ OString "## Grimoire"
                          , OString ""
-                         , indentOList $ OList $ map (OString . show) xs ]
+                         , OList $ map (indentOList . spellMD) xs ]
 
 
