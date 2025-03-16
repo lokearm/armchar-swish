@@ -235,7 +235,7 @@ showSQ (Just x) (Just y) = " (" ++ show x ++ f (y-x) ++ "xp)"
 instance Markdown AugmentedAdvancement where
    printMD a = indentOList $ OList
        [ OString $ showTime xps (season a) (mode a) y 
-       , stringMD $ narrative a
+       , OList [ stringMD $ narrative a ]
        , OList $ map printMD $ changes a
        , OList $ map (OString . show) $ validation a
        ]
@@ -248,10 +248,10 @@ stringMD (Just x) = OString x
 
 -- | Render the season and mode of an advancement
 showTime :: String -> SeasonTime -> Maybe String -> Maybe Int -> String
-showTime xps NoTime Nothing y = ("+ ?? " ++ xps ++ showYears y)
-showTime xps  x Nothing y = ("+ " ++ show x ++ xps ++ showYears y)
-showTime xps NoTime (Just x) y = ("+ " ++ x ++ xps ++ showYears y)
-showTime xps x (Just z) y = ("+ " ++ show x ++ xps ++ showYears y ++ " " ++ z)
+showTime xps NoTime Nothing y = ("?? " ++ xps ++ showYears y)
+showTime xps  x Nothing y = (show x ++ xps ++ showYears y)
+showTime xps NoTime (Just x) y = (x ++ xps ++ showYears y)
+showTime xps x (Just z) y = (show x ++ xps ++ showYears y ++ " " ++ z)
 
 -- | Render the duration of an advancement
 showYears :: Maybe Int -> String
@@ -261,7 +261,7 @@ showYears (Just x) = " (" ++ show x ++ " years)"
 instance Markdown Advancement where
    printMD a = indentOList $ OList
          [ OString $ showTime xps (season a) (mode a) y 
-         , stringMD $ narrative a
+         , OList [ stringMD $ narrative a ]
          , OList $ map printMD $ changes a
          ]
       where xps | sx == Nothing = ""

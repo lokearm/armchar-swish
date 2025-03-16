@@ -32,7 +32,8 @@ toOList= OList . map OString
 
 -- | Render an OList as a hierarchical markdown list
 indentOList :: OList -> OList
-indentOList = indentOList' "+ "
+indentOList (OString x) = OString $ '+':' ':x
+indentOList (OList xs) = OList $ map (indentOList' "+ ") xs
 
 indentOList' :: String -> OList -> OList
 indentOList' s (OString x) = OString $ s ++ x
