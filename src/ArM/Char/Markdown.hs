@@ -36,7 +36,7 @@ import ArM.BasicIO
 -- import ArM.Debug.Trace
 
 -- |
--- = Pringitng the Character Sheet
+-- = Rendering the Character Sheet
 
 -- | Render a character sheet without advancement log
 baseSheet :: SpellDB -> Character -> OList
@@ -45,6 +45,7 @@ baseSheet db c | isNothing (state c ) = s1
        where 
             s1 = printMD $ concept  c 
             s2 = printMDaug db $ state  c 
+
 -- | Render a character sheet at game start.
 -- Unlike the regular `printMD`, this includes only the character design
 -- and not ingame advancements.
@@ -55,6 +56,12 @@ gameStartSheet db c = OList
             , designMD c
             ]
 
+-- | Render the current character sheet without pregame design details.
+currentSheet :: SpellDB -> Character -> OList
+currentSheet db c = OList [ baseSheet db c, advancementMD c ]
+
+-- | Render the char gen design.
+-- This is a list of all the pregame advancement objects.
 designMD :: Character -> OList
 designMD c = OList
             [ OString "## Game start design"
@@ -62,6 +69,9 @@ designMD c = OList
             , OList $ map printMD $ pregameDesign c
             , OString ""
             ]
+
+-- | Render the advancement log.
+-- This is two lists of past and future advancement objects
 advancementMD :: Character -> OList
 advancementMD c = OList
             [ OString "## Past Advancement"
@@ -74,9 +84,6 @@ advancementMD c = OList
             , OString ""
             ]
 
--- | Render the current character sheet without pregame design details.
-currentSheet :: SpellDB -> Character -> OList
-currentSheet db c = OList [ baseSheet db c, advancementMD c ]
 
 -- |
 -- = The Markdown Class
@@ -109,6 +116,23 @@ instance Markdown Trait where
    printMD = OString . show 
 instance Markdown ProtoTrait where
    printMD = OString . show 
+
+instance Markdown a => Markdown (Maybe a) where
+   printMD Nothing = OList []
+   printMD (Just x) = printMD x
+   printMDaug _ Nothing = OList []
+   printMDaug db (Just x) = printMDaug db x
+
+-- | Render a list of objects as a comma-separated list on a single
+-- line/paragraph.  This works for any instance of `Show`.
+showlistMD :: Show a => String -> [a] -> OList
+showlistMD _ [] = OList []
+showlistMD s xs = OList [ OString s
+                        , toOList $ (map (++", ") $ map show xs)
+                        ]
+
+-- |
+-- Markdown for the Character types
 
 instance Markdown CharacterConcept where
    printMD c = OList
@@ -150,6 +174,21 @@ instance Markdown CharacterSheet where
                , toOList $ printCastingTotals c
                ]
    printMDaug db = printMD . addCastingScores db
+
+instance Markdown CharacterState where
+   printMD c = OList
+       [ OString $ "## " ++ (show $ charTime c )
+       , OString ""
+       , printMD $ filterCS c
+       ]
+   printMDaug db c = OList
+       [ OString $ "## " ++ (show $ charTime c) 
+       , OString ""
+       , printMDaug db $ filterCS c
+       ]
+
+-- |
+-- == Markdown for Certain Traits
 
 briefTraits :: CharacterSheet -> OList
 briefTraits c = OList
@@ -203,22 +242,33 @@ instance Markdown Character where
             , advancementMD c
             ]
 
-instance Markdown a => Markdown (Maybe a) where
-   printMD Nothing = OList []
-   printMD (Just x) = printMD x
-   printMDaug _ Nothing = OList []
-   printMDaug db (Just x) = printMDaug db x
-instance Markdown CharacterState where
-   printMD c = OList
-       [ OString $ "## " ++ (show $ charTime c )
-       , OString ""
-       , printMD $ filterCS c
-       ]
-   printMDaug db c = OList
-       [ OString $ "## " ++ (show $ charTime c) 
-       , OString ""
-       , printMDaug db $ filterCS c
-       ]
+-- |
+-- == Pretty print arts
+
+-- | Render art scores as a table
+artMD :: CharacterSheet
+      -> [ String ]
+artMD = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
+   where h1 = "| Art  | Score | XP |" 
+         h2 = "| -: | -: | -: |"
+
+-- | List of arts defined in *Ars Magica*
+arts :: [ String ]
+arts = [ "Creo", "Intellego", "Muto", "Perdo", "Rego",
+         "Animal", "Aquam", "Auram", "Corpus", "Herbam", 
+         "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
+
+-- | Map assigning sort index to each Art
+sMap :: M.Map String Int 
+sMap = M.fromList $ zip arts [1..15]
+
+-- | Sort a list of arts in canonical order
+sortArts :: [Art] -> [Art]
+sortArts = sortOn ( fromMaybe 0 . ( \ x -> M.lookup x sMap ) . artName)
+
+-- | Auxiliary for `artMD`, rendering a single line in the table
+artLine :: Art -> String
+artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
 
 -- |
 -- = Advancements
@@ -270,56 +320,3 @@ instance Markdown Advancement where
             ishow = show . fromJust
             y = advYears a
 
--- |
--- = Auxliaries
-
--- |
--- == Simple functions for generic types
-
-{-
--- | Apply `printMD` to every object in the list and merge the results.
-listMD :: Markdown a => [a]    -- ^ objects to render
-                     -> [String] -- ^ list of lines of Markdown output
-listMD = foldl (++) [] . map printMD'
-
--- | Render every object in the list and apply a header at the start.
-pListMD :: Markdown a => String  -- ^ Header string
-                      -> [a]     -- ^ objects to render
-                      -> [String] -- ^ list of lines of Markdown output
-pListMD _ [] = []
-pListMD s x = ("":s:"":listMD x)
--}
-
-showlistMD :: Show a => String -> [a] -> OList
-showlistMD _ [] = OList []
-showlistMD s xs = OList [ OString s
-                        , toOList $ (map (++", ") $ map show xs)
-                        ]
-
--- |
--- == Pretty print arts
-
--- | Render art scores as a table
-artMD :: CharacterSheet
-      -> [ String ]
-artMD = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
-   where h1 = "| Art  | Score | XP |" 
-         h2 = "| -: | -: | -: |"
-
--- | List of arts defined in *Ars Magica*
-arts :: [ String ]
-arts = [ "Creo", "Intellego", "Muto", "Perdo", "Rego",
-         "Animal", "Aquam", "Auram", "Corpus", "Herbam", 
-         "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
-
--- | Map assigning sort index to each Art
-sMap :: M.Map String Int 
-sMap = M.fromList $ zip arts [1..15]
-
--- | Sort a list of arts in canonical order
-sortArts :: [Art] -> [Art]
-sortArts = sortOn ( fromMaybe 0 . ( \ x -> M.lookup x sMap ) . artName)
-
--- | Auxiliary for `artMD`, rendering a single line in the table
-artLine :: Art -> String
-artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
