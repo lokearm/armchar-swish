@@ -19,6 +19,23 @@ import Data.Aeson
 import Data.Aeson.Text
 import Data.Text.Lazy.IO as I
 
+-- | Nested lists of strings.
+-- This is intended to build output files, where each atomic object is rendered 
+-- as a list of lines and composite objects as a list of rendered constituent
+-- objects.
+data OList = OList [ OList ] | OString String deriving ( Show )
+
+writeOListH :: Handle -> OList -> IO ()
+writeOListH h (OString x) = IO.hPutStrLn h x
+writeOListH _ (OList []) = return ()
+writeOListH h (OList (x:xs)) = writeOListH h x  >> writeOListH h (OList xs)
+
+writeOList :: String -> OList -> IO ()
+writeOList fn x = do
+     handle <- openFile fn WriteMode
+     writeOListH handle x
+     hClose handle
+
 
 -- | Write a list of strings into the given file
 writeLns :: String     -- ^ File name
