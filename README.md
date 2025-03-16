@@ -21,3 +21,5 @@ Further documentation is found in the docs hierarchy.
 
 + [CLI using JSON](docs/CLI%20using%20JSON.md)
 + [CLI with Swish](docs/CLI%20with%20Swish.md)
+
+Sample character files are found in the `Data` subdirectory.

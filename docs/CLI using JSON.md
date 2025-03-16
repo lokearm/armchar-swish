@@ -28,9 +28,10 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Validate Eogan build
 	+ [ ] Flawless magic
-	+ [ ] pretty print grimoire with details from DB
+	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
 	+ [ ] Review Cieran's abilities
+	+ [ ] Review casting scores 
 	+ [ ] Refactor and document code
 + [ ] Phase 2.  Finishing touches
 	+ [ ] Warping

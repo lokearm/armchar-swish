@@ -34,21 +34,20 @@ import qualified Data.Map as M
 -- level spells share a record.  The SpellKey is used to sort traits and
 -- includes the level of the instance.
 data SpellRecord = SpellRecord
-                   { spellRecordName :: String -- ^ Name of the spell
-                   , spellRecordTeFo :: String
-                   , lvl :: Maybe Int       -- ^ Spell Level.  General Level Spells have Nothing.
-                   , technique :: String
-                   , techniqueReq :: [String]
-                   , form :: String
-                   , formReq :: [String]
-                   , rdt :: (String,String,String)   -- ^ Range/Duration/Target
-                   , specialSpell :: [String]        -- ^ Special tags, like Ritual or Mutantum.
-                   , description :: String           -- ^ Freeform description of the effect
-                   , design :: String                -- ^ Level calculation
-                   , spellComment :: String          -- ^ Freeform remarks that do not fit elsewhere
-                   , cite :: String                  -- ^ Source reference
-                   }
-           deriving (Ord, Eq, Generic, Show)
+    { spellRecordName :: String -- ^ Name of the spell
+    , spellRecordTeFo :: String -- ^ Technique/Form abreviation for the spell
+    , lvl :: Maybe Int       -- ^ Spell Level.  General Level Spells have Nothing.
+    , technique :: String
+    , techniqueReq :: [String]
+    , form :: String
+    , formReq :: [String]
+    , rdt :: (String,String,String)   -- ^ Range/Duration/Target
+    , specialSpell :: [String]        -- ^ Special tags, like Ritual or Mutantum.
+    , description :: String           -- ^ Freeform description of the effect
+    , design :: String                -- ^ Level calculation
+    , spellComment :: String          -- ^ Freeform remarks that do not fit elsewhere
+    , cite :: String                  -- ^ Source reference
+    } deriving (Ord, Eq, Generic, Show)
 
 -- | Default SpellRecord object as a starting point for step-by-step construction.
 defaultSR :: SpellRecord
