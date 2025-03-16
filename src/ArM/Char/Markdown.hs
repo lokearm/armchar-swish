@@ -24,10 +24,9 @@ import Data.Maybe
 import Data.List 
 import qualified Data.Map as M
 
-import ArM.Char.Internal.Character 
+import ArM.Char.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
-import ArM.Char.Advancement
 import ArM.Char.Spell
 import ArM.GameRules
 import ArM.BasicIO

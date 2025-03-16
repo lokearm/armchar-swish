@@ -23,11 +23,16 @@ module ArM.Char.Character ( Character(..)
                           , KeyPair(..)
                           , FieldValue(..)
                           , prepareCharacter
-                          , Advancement(..)
                           , fullName
                           , fullConceptName
                           , advanceCharacter
                           , isGrog
+                          , parseSeasonTime
+                          , SeasonTime(..)
+                          , Advancement(..)
+                          , AugmentedAdvancement(..)
+                          , AdvancementLike(..)
+                          , CharacterType(..)
                           ) where
 
 -- module ArM.Char.CharGen (prepareCharacter) where
@@ -35,13 +40,13 @@ module ArM.Char.Character ( Character(..)
 import Data.Maybe 
 
 import ArM.Char.Trait
-import ArM.Char.Advancement
 import ArM.Char.Internal.Character
 import ArM.Char.Internal.Advancement
 import ArM.Char.CharacterSheet
 import ArM.Char.Validation
 import ArM.Char.Virtues
 import ArM.GameRules
+import ArM.Helper
 
 -- import ArM.Debug.Trace
 
@@ -60,6 +65,29 @@ applyAdvancement a' cs = (a',cs')
           inferred = inferredTraits a'
           old = sortTraits $ traits cs
           ag = fromMaybe 0 (augYears a') + age cs
+
+
+-- | Infer traits from new virtues and flaws and add them to the advancement.
+-- This typically applies to virtues providing supernatural abilities.
+-- The ability is inferred and should not be added manually.
+addInferredTraits :: Advancement -> AugmentedAdvancement
+addInferredTraits a = defaultAA { inferredTraits = f a
+                                , advancement = a
+                                , augYears = yf }
+     where f = inferTraits . getVF . changes 
+           yf | Nothing /= advYears a = advYears a
+              | isWinter $ season a = Just 1
+              | otherwise = Nothing
+
+-- | Get the virtues and flaws from a list of ProtoTrait objects, and convert them to
+-- VF objects
+getVF :: [ ProtoTrait ] -> [ VF ]
+getVF [] = []
+getVF (p:ps) | isJust (virtue p) = g p:getVF ps
+             | isJust (flaw p) = g p:getVF ps
+             | otherwise = getVF ps
+    where g = fromJust . computeTrait
+
 
 -- |
 -- = Char Gen
@@ -226,6 +254,16 @@ calculateLevels = sum . map ( fromMaybe 0 . level ) . changes
 applyInGameAdv :: Advancement -> CharacterState -> (AugmentedAdvancement,CharacterState)
 applyInGameAdv a cs = applyAdvancement ( prepareAdvancement cs a ) cs
 
+
+-- | Augment and amend the advancements based on current virtues and flaws.
+prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
+prepareAdvancement _ = validate . inferSQ . addInferredTraits
+
+-- | Calculate initial XP limits on Advancements
+inferSQ :: AugmentedAdvancement -> AugmentedAdvancement
+inferSQ ad = ad { effectiveSQ = esq }
+        where esq = maybeAdd (sourceQuality ad') (advBonus ad')
+              ad' = advancement ad
 
 -- | Advance the character until after the given time.
 advanceCharacter :: SeasonTime -> Character -> Character

@@ -18,7 +18,6 @@ import ArM.Debug.Time
 import ArM.Debug.Trace
 import ArM.Char.IO
 import ArM.Char.Character
-import ArM.Char.Advancement
 import ArM.Char.Markdown
 import ArM.Char.Saga
 
