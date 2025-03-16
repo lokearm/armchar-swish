@@ -958,7 +958,7 @@
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
       { "mode" : "Adventure", "season" : "Autumn 1252"
-      , "sourceQuality" : 15
+      , "sourceQuality" : 15, "bonusQuality" : 1
       , "narrative" : "Imaginem 286 + 9 = 295 (5+correspondence&affinity), Faerie Lore 16+4=20, Latin 58+2=60, OoH Lore 7+4=11|"
       , "changes" : [ { "art" : "Imaginem", "xp" : 6 }
                     , { "ability" : "Faerie Lore", "xp" : 4 }

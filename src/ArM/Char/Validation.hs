@@ -25,6 +25,7 @@ import ArM.GameRules
 
 import Data.Maybe (fromMaybe,isJust)
 
+import ArM.Debug.Trace
 
 -- | Count regular XP (excluding reputation) from a ProtoTrait
 regXP :: ProtoTrait -> XPType
@@ -41,7 +42,7 @@ validate a | otherwise = validateXP a
 -- | Validate allocation of XP.
 validateXP :: AugmentedAdvancement -> AugmentedAdvancement
 validateXP a | sq > xpsum = a { validation = und:validation a }
-             | sq < xpsum = a { validation = over:validation a }
+             | sq < xpsum = trace ("Overspent> "++ show (advancement a)) $ a { validation = over:validation a }
              | otherwise = a { validation = val:validation a }
     where xpsum = calculateXP $ advancement a
           sq = fromMaybe 0 $ effectiveSQ a

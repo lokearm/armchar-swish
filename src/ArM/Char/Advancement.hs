@@ -21,7 +21,7 @@ module ArM.Char.Advancement( addInferredTraits
                            ) where
 
 -- import ArM.Char.Character
--- import ArM.Helper
+import ArM.Helper
 import ArM.Char.Trait
 import ArM.Char.Virtues
 import ArM.Char.Internal.Advancement
@@ -56,7 +56,9 @@ getVF (p:ps) | isJust (virtue p) = g p:getVF ps
 
 -- | Calculate initial XP limits on Char Gen Advancements
 inferSQ :: AugmentedAdvancement -> AugmentedAdvancement
-inferSQ ad = ad { effectiveSQ = sourceQuality $ advancement ad  }
+inferSQ ad = ad { effectiveSQ = esq }
+        where esq = maybeAdd (sourceQuality ad') (advBonus ad')
+              ad' = advancement ad
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement

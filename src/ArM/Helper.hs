@@ -24,8 +24,9 @@ maybeInt :: Num a => Maybe a -> a
 maybeInt = fromMaybe 0
 
 -- | Add maybe-integers, treating Nothing as zero.
-maybeAdd :: Maybe Int -> Maybe Int -> Maybe Int
-maybeAdd x y = Just $ maybeInt x + maybeInt y
+maybeAdd :: Num a => Maybe a -> Maybe a -> Maybe a
+maybeAdd Nothing Nothing = Nothing 
+maybeAdd x y = Just $ fromMaybe 0 x + fromMaybe 0 y
 
 -- | Remove Nothing elements from a list, and map the Just-elements
 -- to the constituent object.

@@ -29,9 +29,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Validate Eogan build
 	+ [ ] Add Cieran's spells
-	+ [ ] Fix bonus XP
-		+ [ ] handle Study Bonus
-		+ [ ] consistency of SQ
 	+ [ ] Flawless magic
 	+ [ ] pretty print grimoire with details from DB
 	+ [ ] Count spell and xp totals (ingame) for validation

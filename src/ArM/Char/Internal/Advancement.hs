@@ -109,8 +109,8 @@ data Advancement = Advancement
      , advYears :: Maybe Int    -- ^ number of years advanced
      , advNarrative :: Maybe String -- ^ freeform description of the activities
      , advUses :: Maybe [ Resource ] -- ^ Books and other resources used exclusively by the character
-     , advSQ :: Maybe XPType -- ^ Source Quality (SQ)
-     , advBonus :: Maybe Int -- ^ Bonus to Source Quality (SQ)
+     , advSQ :: Maybe XPType -- ^ Source Quality (SQ) This should be the common SQ for adventures; individual variation should be recorded as `advBonus`
+     , advBonus :: Maybe XPType -- ^ Bonus to Source Quality (SQ)
      , advChanges :: [ ProtoTrait ]  -- ^ trait changes defined by player
      }
    deriving (Eq,Generic,Show)
@@ -163,7 +163,7 @@ instance AdvancementLike Advancement where
      season  = advSeason
      narrative  = advNarrative
      uses  = advUses
-     sourceQuality  =  advSQ
+     sourceQuality  = advSQ
      changes = advChanges
 instance AdvancementLike AugmentedAdvancement where
      mode a = advMode  $ advancement a
