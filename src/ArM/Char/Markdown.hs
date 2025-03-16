@@ -20,6 +20,8 @@ module ArM.Char.Markdown ( Markdown(..)
                          , printCastingTotals
                          , briefTraits
                          , showlistMD
+                         , designMD
+                         , advancementMD
                          ) where
 
 import Data.Maybe 

@@ -15,6 +15,7 @@ import System.Console.GetOpt
 
 import ArM.BasicIO
 import ArM.Debug.Time
+import ArM.Debug.Trace
 import ArM.Char.IO
 import ArM.Char.Character
 import ArM.Char.Advancement
@@ -38,6 +39,7 @@ data Options = Options
   , seasonFile  :: Maybe String
   , gameStartDir  :: Maybe String
   , currentDir  :: Maybe String
+  , longDir  :: Maybe String
   , advanceSeason  :: Maybe String
 } deriving (Show)
 defaultOptions :: Options
@@ -51,6 +53,7 @@ defaultOptions = Options
   , seasonFile  = Nothing
   , gameStartDir  = Nothing
   , currentDir  = Nothing
+  , longDir  = Nothing
   , advanceSeason  = Nothing
 }
 
@@ -60,6 +63,9 @@ options =
     [ Option ['c']     ["character"] (ReqArg 
             (\arg opt -> opt { charFile = Just arg })
             "FILE") "character file"
+    , Option ['d']     ["long-dir"] (ReqArg 
+            (\arg opt -> opt { longDir = Just arg })
+            "FILE") "directory for long character sheets"
     , Option ['D']     ["current-dir"] (ReqArg 
             (\arg opt -> opt { currentDir = Just arg })
             "FILE") "directory for current character sheets"
@@ -115,12 +121,15 @@ advChar sn fn cs0 = do
    where seasn = parseSeasonTime sn
          cs = advanceCharacter seasn cs0
 
-advSaga :: Maybe String -> Maybe String -> Saga -> IO ()
-advSaga Nothing _ _ = return ()
-advSaga _ Nothing _ = return ()
-advSaga sn (Just dir) s1 = writeCurrent dir s2
+advSaga :: Maybe String -> Maybe String -> Saga -> IO Saga
+advSaga Nothing _ s2 = return s2
+advSaga _ Nothing s2 = return s2
+advSaga sn (Just dir) s1 = writeCurrent dir s2 >> return s2
    where seasn = parseSeasonTime sn
          s2 = advanceSaga seasn s1
+longSheet :: Maybe String -> Saga -> IO Saga
+longSheet Nothing s = trace "No longSheet file" $ return s
+longSheet (Just dir) s = trace "Write longSheet" $ writeLong dir s >> return s
 
 main' :: Options -> IO ()
 main' opts | charFile opts /= Nothing = do 
@@ -146,7 +155,8 @@ main' opts | sagaFile opts /= Nothing = do
                writeGameStart gsf  s1
                writeLns (gsf ++ "/errors.md") $ 
                   "# Errors in Character Design":"":pregameErrors s1
-               advSaga ( advanceSeason opts ) (currentDir opts ) s1
+               s2 <- advSaga ( advanceSeason opts ) (currentDir opts ) s1
+               _ <- longSheet (longDir opts ) s2
                return ()
         where gsf = fromJust $ gameStartDir opts
 main' _ | otherwise = error "Not implemented!" 

@@ -234,11 +234,11 @@
       , "sourceQuality" : 21
       , "changes" : [ { "art" : "Auram", "xp" : 21 } ]
       },
-      { "mode" : "Reading ", "season" : "Winter 1222"
+      { "mode" : "Reading", "season" : "Winter 1222"
       , "sourceQuality" : 16
-      , "changes" : [ { "art" : "Intellego ", "xp" : 16 } ]
+      , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
-      { "mode" : "Reading ", "season" : "Spring 1222"
+      { "mode" : "Reading", "season" : "Spring 1222"
       , "sourceQuality" : 18
       , "changes" : [ { "art" : "Ignem", "xp" : 18 } ]
       },
@@ -251,7 +251,7 @@
       , "sourceQuality" : 16
       , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Winter 1223"
+      { "mode" : "Lab Work", "season" : "Winter 1223"
       , "sourceQuality" : 2
       , "narrative" : "Lab work: InVi5 Sense the Nature of Vis + InVi20 Piercing the magic veil (from texts) + 2xp parma"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 }
@@ -292,24 +292,24 @@
       , "sourceQuality" : 17
       , "changes" : [ { "art" : "Animal", "xp" : 17 } ]
       },
-      { "mode" : "Reading ", "season" : "Winter 1224"
+      { "mode" : "Reading", "season" : "Winter 1224"
       , "sourceQuality" : 18
       , "changes" : [ { "art" : "Ignem", "xp" : 18 } ]
       },
-      { "mode" : "Reading ", "season" : "Spring 1224"
+      { "mode" : "Reading", "season" : "Spring 1224"
       , "sourceQuality" : 19
       , "narrative" : " *Corpus Hermeticus*"
       , "changes" : [ { "art" : "Corpus", "xp" : 19 } ]
       },
-      { "mode" : "Reading ", "season" : "Summer 1224"
+      { "mode" : "Reading", "season" : "Summer 1224"
       , "sourceQuality" : 15
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 15 } ]
       },
-      { "mode" : "Reading ", "season" : "Autumn 1224"
+      { "mode" : "Reading", "season" : "Autumn 1224"
       , "sourceQuality" : 15
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 15 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Winter 1225"
+      { "mode" : "Lab Work", "season" : "Winter 1225"
       , "sourceQuality" : 2
       , "narrative" : "Invent a touch version of Unravelling the Fabric of Imaginem lvl 13.  Exposure 2xp Second Sight. Lab Total 26."
       , "changes" : [ { "ability" : "Second Sight", "xp" : 2 } 
@@ -318,11 +318,11 @@
          }
       ]
       },
-      { "mode" : "Reading ", "season" : "Spring 1225"
+      { "mode" : "Reading", "season" : "Spring 1225"
       , "sourceQuality" : 15
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 15 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Summer 1225"
+      { "mode" : "Lab Work", "season" : "Summer 1225"
       , "sourceQuality" : 2
       , "narrative" : "Lab work. Touch version of Pit of Gaping Earth PeTe15. Exposure 2xp Magic Theory. Lab Total 30."
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
@@ -331,41 +331,41 @@
          }
       ]
       },
-      { "mode" : "Reading ", "season" : "Autumn 1225"
+      { "mode" : "Reading", "season" : "Autumn 1225"
       , "sourceQuality" : 16
       , "narrative" : "Made Potions of Demon's Oblivion "
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
-      { "mode" : "Adventure ", "season" : "Winter 1226"
+      { "mode" : "Adventure", "season" : "Winter 1226"
       , "sourceQuality" : 15
       , "changes" : [ { "ability" : "Second Sight", "xp" : 5 } 
                     , { "ability" : "Parma Magica", "xp" : 5 }
                     , { "ability" : "Leadership", "xp" : 5 } 
                     , { "confidence" : "Confidence", "points" : 5 } ]
       },
-      { "mode" : "Open Arts ", "season" : "Spring 1226"
+      { "mode" : "Open Arts", "season" : "Spring 1226"
       , "sourceQuality" : 2
       , "narrative" : "Open arts for Hiccup."
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Reading ", "season" : "Summer 1226"
+      { "mode" : "Reading", "season" : "Summer 1226"
       , "sourceQuality" : 17
       , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
       },
-      { "mode" : "Reading ", "season" : "Autumn 1226"
+      { "mode" : "Reading", "season" : "Autumn 1226"
       , "sourceQuality" : 16
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Winter 1227"
+      { "mode" : "Lab Work", "season" : "Winter 1227"
       , "sourceQuality" : 2
       , "narrative" : "Training for Hiccup in Magic Theory.  (SQ 8 for Hiccup) Create Safe Cauldron. Using Folio-1109 for lab text. Exposure 2xp Magic Theory. Bonus XP in Hermes Lore. Using bookstand of Hespera"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Reading ", "season" : "Spring 1227"
+      { "mode" : "Reading", "season" : "Spring 1227"
       , "sourceQuality" : 17
       , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Summer 1227"
+      { "mode" : "Lab Work", "season" : "Summer 1227"
       , "sourceQuality" : 2
       , "narrative" : "Learn Wizard's Communion (MuVi 10) - Magic Theory exposure 2 using Bookstand of Hespera"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
@@ -379,29 +379,29 @@
       , "narrative" : "Copy spells (covenant service) "
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
-      { "mode" : "Reading ", "season" : "Winter 1228"
+      { "mode" : "Reading", "season" : "Winter 1228"
       , "sourceQuality" : 16
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Spring 1228"
+      { "mode" : "Lab Work", "season" : "Spring 1228"
       , "sourceQuality" : 3
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
                     , { "ability" : "Hermes Lore", "xp" : 1 } ]
       },
-      { "mode" : "Reading ", "season" : "Summer 1228"
+      { "mode" : "Reading", "season" : "Summer 1228"
       , "sourceQuality" : 13
       , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
-      { "mode" : "Reading ", "season" : "Autumn 1228"
+      { "mode" : "Reading", "season" : "Autumn 1228"
       , "sourceQuality" : 13
       , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
-      { "mode" : "Reading ", "season" : "Winter 1229"
+      { "mode" : "Reading", "season" : "Winter 1229"
       , "sourceQuality" : 19
       , "narrative" : " *Corpus Hermeticum*"
       , "changes" : [ { "art" : "Corpus", "xp" : 19 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Spring 1229"
+      { "mode" : "Lab Work", "season" : "Spring 1229"
       , "sourceQuality" : 3
       , "narrative" : "Training for Hiccup in Magic Theory.  (SQ 8 for Hiccup) Invent spells from Folio. Bonus XP in Hermes Lore"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
@@ -421,16 +421,16 @@
       },
       { "mode" : "Lab work", "season" : "Autumn 1229"
       , "sourceQuality" : 2
-      , "narrative" : "ReCo 43 + Hiccup + bookstand = 51"
-      , "changes" : [ { "ability" : "Magic Theory. Leap of Homecoming + Frog's Legs", "xp" : 2 }
+      , "narrative" : "ReCo 43 + Hiccup + bookstand = 51. Leap of Homecoming + Frog's Legs"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
          ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 15 }
          ,  { "spell" : "Frog's Legs", "tefo" : "ReCo", "level" : 15 }
       ]
       },
       { "mode" : "Lab work", "season" : "Winter 1230"
       , "sourceQuality" : 2
-      , "narrative" : "CrCo 43 + Hiccup + bookstand = 51"
-      , "changes" : [ { "ability" : "Magic Theory. CrCo spells", "xp" : 2 } 
+      , "narrative" : "CrCo spells.  Lab total 43 + Hiccup + bookstand = 51."
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Restoration of the Defiled Body"
            , "tefo" : "CrCo", "level" : 25
            }
@@ -439,7 +439,7 @@
            }
       ]
       },
-      { "mode" : "Reading ", "season" : "Spring 1230"
+      { "mode" : "Reading", "season" : "Spring 1230"
       , "sourceQuality" : 15
       , "narrative" : "L6Q12"
       , "changes" : [ { "ability" : "Hibernia Lore", "xp" : 15 } ]
@@ -459,18 +459,19 @@
       , "narrative" : "Enchanting Familiar "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Teaching   ", "season" : "Spring 1231"
+      { "mode" : "Teaching", "season" : "Spring 1231"
       , "sourceQuality" : 2
       , "narrative" : "Teach Hiccup. Parma to 39xp"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Reading   ", "season" : "Summer 1231"
+      { "mode" : "Reading", "season" : "Summer 1231"
       , "sourceQuality" : 17
-      , "changes" : [ { "ability" : "SOCP Lore.", "xp" : 17 } ]
+      , "changes" : [ { "ability" : "SOCP Lore", "xp" : 17 } ]
       },
-      { "mode" : "Reading   ", "season" : "Autumn 1231"
+      { "mode" : "Reading", "season" : "Autumn 1231"
       , "sourceQuality" : 16
-      , "changes" : [ { "ability" : "SOCP Lore. Reaching 4. ", "xp" : 16 } ]
+      , "narrative" : "SOCP Lore. Reaching 4. "
+      , "changes" : [ { "ability" : "SOCP Lore", "xp" : 16 } ]
       },
       { "mode" : "Initiation", "season" : "Winter 1232"
       , "sourceQuality" : 2
@@ -482,7 +483,7 @@
       , "narrative" : "Good Teacher."
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
       },
-      { "mode" : "Teaching  ", "season" : "Summer 1232"
+      { "mode" : "Teaching", "season" : "Summer 1232"
       , "sourceQuality" : 2
       , "narrative" : "Train Hiccup. Parma to 45xp"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
@@ -535,30 +536,30 @@
       , "narrative" : " *Magic Companion* L15Q13 "
       , "changes" : [ { "art" : "Vim", "xp" : 16 } ]
       },
-      { "mode" : "Reading  ", "season" : "Autumn 1234"
+      { "mode" : "Reading", "season" : "Autumn 1234"
       , "sourceQuality" : 13
       , "narrative" : "Autumn 1234 | Reading  | 13x1½ | Imaginem |"
       , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
-      { "mode" : "Reading  ", "season" : "Winter 1235"
+      { "mode" : "Reading", "season" : "Winter 1235"
       , "sourceQuality" : 13
       , "narrative" : "| Winter 1235 | Reading  | 13x1½ | Imaginem 105x1½xp = 157½ -> 17 (4½)|"
       , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
-      { "mode" : "Teaching  ", "season" : "Spring 1235"
+      { "mode" : "Teaching", "season" : "Spring 1235"
       , "sourceQuality" : 2
       , "narrative" : "Hiccup 11->13"
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work  ", "season" : "Summer 1235"
+      { "mode" : "Lab Work", "season" : "Summer 1235"
       , "sourceQuality" : 2
       , "narrative" : " 93xp->95xp; InMe spells - see below"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Reading ", "season" : "Autumn 1235"
+      { "mode" : "Reading", "season" : "Autumn 1235"
       , "sourceQuality" : 12
       , "narrative" : " 52->64 "
-      , "changes" : [ { "art" : "Rego ", "xp" : 12 } ]
+      , "changes" : [ { "art" : "Rego", "xp" : 12 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1236"
       , "sourceQuality" : 13
@@ -570,27 +571,27 @@
       , "narrative" : "Hiccup 13->15"
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Summer 1236"
+      { "mode" : "Lab Work", "season" : "Summer 1236"
       , "sourceQuality" : 2
       , "narrative" : "Miner's Keen Eye (covenant service) "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Reading ", "season" : "Autumn 1236"
+      { "mode" : "Reading", "season" : "Autumn 1236"
       , "sourceQuality" : 16
       , "narrative" : " 65xp score 10 "
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Winter 1237"
+      { "mode" : "Lab Work", "season" : "Winter 1237"
       , "sourceQuality" : 2
       , "narrative" : "IMAGE FROM THE WIZARD TORN "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Teaching ", "season" : "Spring 1237"
+      { "mode" : "Teaching", "season" : "Spring 1237"
       , "sourceQuality" : 2
       , "narrative" : " (17xp) Hiccup "
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Summer 1237"
+      { "mode" : "Lab Work", "season" : "Summer 1237"
       , "sourceQuality" : 2
       , "narrative" : " (101xp) Eyes of the Eagle at touch InIm30 "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
@@ -599,12 +600,12 @@
          }
          ]
       },
-      { "mode" : "Lab Work ", "season" : "Autumn 1237"
+      { "mode" : "Lab Work", "season" : "Autumn 1237"
       , "sourceQuality" : 2
       , "narrative" : "Leap of Homecoming Touch (starting, not completed)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Winter 1238"
+      { "mode" : "Lab Work", "season" : "Winter 1238"
       , "sourceQuality" : 2
       , "narrative" : "Leap of Homecoming Touch (continued) "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
@@ -613,7 +614,7 @@
          }
       ]
       },
-      { "mode" : "Teaching ", "season" : "Spring 1238"
+      { "mode" : "Teaching", "season" : "Spring 1238"
       , "sourceQuality" : 2
       , "narrative" : " (19xp) Hiccup "
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
@@ -624,7 +625,7 @@
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 4 } 
                     , { "ability" : "Second Sight", "xp" : 4 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Autumn 1238"
+      { "mode" : "Lab Work", "season" : "Autumn 1238"
       , "sourceQuality" : 2
       , "narrative" : "Invent ReVi spells with help from Hiccup and Jimeny and lab text.  Lab total (ReVi) 47 + 11 (Hiccup + Jimeny) +2 text = 60.  Exposure 2xp Magic Theory (-> 107xp)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
@@ -636,42 +637,42 @@
          }
       ]
       },
-      { "mode" : "Reading ", "season" : "Winter 1239"
+      { "mode" : "Reading", "season" : "Winter 1239"
       , "sourceQuality" : 12
       , "narrative" : "SQ 6 doubled by flawless magic | Aegis of the Heath Mastery | Learns Safe Casting |"
       , "changes" : [ { "spell" : "Aegis of the Hearth", "level" : 30,  "xp" : 12 } ]
       },
-      { "mode" : "Teaching ", "season" : "Spring 1239"
+      { "mode" : "Teaching", "season" : "Spring 1239"
       , "sourceQuality" : 2
       , "narrative" : " (21xp) Hiccup.  SOCP Lore"
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Summer 1239"
+      { "mode" : "Lab Work", "season" : "Summer 1239"
       , "sourceQuality" : 2
       , "narrative" : "Com of Heroes. Magic Theory to 109xp"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Autumn 1239"
+      { "mode" : "Lab Work", "season" : "Autumn 1239"
       , "sourceQuality" : 17
       , "narrative" : "Gift of Quickness. Experimentation. Discovery (15xp in MT). Magi Theory to 126xp"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 17 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Winter 1240"
+      { "mode" : "Lab Work", "season" : "Winter 1240"
       , "sourceQuality" : 2
       , "narrative" : "MuIm Spells.  Magic Theory to 128xp"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Teaching ", "season" : "Spring 1240"
+      { "mode" : "Teaching", "season" : "Spring 1240"
       , "sourceQuality" : 2
       , "narrative" : " (23xp) Hiccup."
       , "changes" : [ { "art" : "Teaching", "xp" : 2 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Summer 1240"
+      { "mode" : "Lab Work", "season" : "Summer 1240"
       , "sourceQuality" : 2
       , "narrative" : "Gift of Com. Magic Theory to 130xp "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
-      { "mode" : "Initiation ", "season" : "Autumn 1240"
+      { "mode" : "Initiation", "season" : "Autumn 1240"
       , "sourceQuality" : 2
       , "narrative" : "Cautious Sorcerer "
       , "changes" : [ { "ability" : "SOCP Lore", "xp" : 2 } ]
@@ -760,15 +761,15 @@
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 5 }
                     , { "ability" : "Folk Ken", "xp" : 5 } ]
       },
-      { "mode" : "Reading ", "season" : "Autumn 1244"
+      { "mode" : "Reading", "season" : "Autumn 1244"
       , "sourceQuality" : 11
       , "narrative" : " *Dark Fey of the East* "
       , "changes" : [ { "ability" : "Faerie Lore", "xp" : 11 } ]
       },
-      { "mode" : "Lab Work ", "season" : "Winter 1245"
+      { "mode" : "Lab Work", "season" : "Winter 1245"
       , "sourceQuality" : 2
       , "narrative" : "PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases.  lab total 51. Lab text for Break the Shield."
-      , "changes" : [ { "ability" : "Parma Magica ", "xp" : 2 } 
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Fist of Fey Oblivion"
             , "tefo" : "PeVi", "level" : 5
          }
@@ -790,10 +791,10 @@
                     , { "ability" : "Parma Magica", "xp" : 5 } 
                     , { "ability" : "Faerie Lore", "xp" : 5 } ]
       },
-      { "mode" : "Reading ", "season" : "Summer 1245"
+      { "mode" : "Reading", "season" : "Summer 1245"
       , "sourceQuality" : 14.5
       , "narrative" : "Summa; capped at 19 +1½xp for correspondent (191½xp) "
-      , "changes" : [ { "art" : "Imaginem ", "xp" : 14.5 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 14.5 } ]
       },
       { "mode" : "Copy", "season" : "Autumn 1245"
       , "sourceQuality" : 2
@@ -820,37 +821,37 @@
       , "narrative" : "13 (capped) | Mentem| Mentem L16Q13 to 16 |"
       , "changes" : [ { "art" : "Mentem", "xp" : 13 } ]
       },
-      { "mode" : "Reading ", "season" : "Winter 1247"
+      { "mode" : "Reading", "season" : "Winter 1247"
       , "sourceQuality" : 17
       , "narrative" : "Maine's Tractatus + Book Learner; 8-24=-16 no aging |"
       , "changes" : [ { "art" : "Mentem", "xp" : 17 } ]
       },
-      { "mode" : "Reading ", "season" : "Spring 1247"
+      { "mode" : "Reading", "season" : "Spring 1247"
       , "sourceQuality" : 14
       , "narrative" : "Tractatus *On the Spark* | "
       , "changes" : [ { "art" : "Creo", "xp" : 14 } ]
       },
-      { "mode" : "Reading ", "season" : "Summer 1247"
+      { "mode" : "Reading", "season" : "Summer 1247"
       , "sourceQuality" : 12
       , "narrative" : "Tractatus *From nothing to everything*"
       , "changes" : [ { "art" : "Creo", "xp" : 12 } ]
       },
-      { "mode" : "Author  ", "season" : "Autumn 1247"
+      { "mode" : "Author", "season" : "Autumn 1247"
       , "sourceQuality" : 2
       , "narrative" : "CrMe rituals x4 for Com to +5; (58xp) Tractatus on Corpus Q14 "
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
       },
-      { "mode" : "Reading ", "season" : "Winter 1248"
+      { "mode" : "Reading", "season" : "Winter 1248"
       , "sourceQuality" : 15
       , "narrative" : "Summa L20Q12; no aging (-4) "
       , "changes" : [ { "art" : "Muto", "xp" : 15 } ]
       },
-      { "mode" : "Reading ", "season" : "Spring 1248"
+      { "mode" : "Reading", "season" : "Spring 1248"
       , "sourceQuality" : 18
       , "narrative" : "Oswald's tractatus Q14 + correspondent "
       , "changes" : [ { "art" : "Imaginem", "xp" : 18 } ]
       },
-      { "mode" : "Reading ", "season" : "Summer 1248"
+      { "mode" : "Reading", "season" : "Summer 1248"
       , "sourceQuality" : 18
       , "narrative" : "Maine's tractatus Q14 + correspondent (245½xp) "
       , "changes" : [ { "art" : "Imaginem", "xp" : 18 } ]

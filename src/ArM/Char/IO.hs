@@ -29,6 +29,7 @@ import Text.ParserCombinators.Parsec
 
 import ArM.Char.Character
 import ArM.Char.Markdown
+import ArM.Char.LongSheet
 import ArM.Char.Saga
 import ArM.Char.Spell
 import ArM.BasicIO
@@ -112,4 +113,15 @@ writeCurrent dir saga = mapM wf  cs >> return ()
      where db = spells saga
            cs = currentCharacters saga
            wf c = (writeOList (fn c) $ currentSheet db c)
+           fn c = dir ++ "/" ++ charID c ++ ".md"
+
+-- | Write current charactersheets in Long Format (MarkDown)
+-- File name is derived from the character name.
+writeLong :: String  -- ^ Directory for the output files
+             -> Saga    -- ^ Saga whose characters are written
+             -> IO ()
+writeLong dir saga = mapM wf  cs >> return ()
+     where db = spells saga
+           cs = currentCharacters saga
+           wf c = (writeOList (fn c) $ printSheetMD db c)
            fn c = dir ++ "/" ++ charID c ++ ".md"
