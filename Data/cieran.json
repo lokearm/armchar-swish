@@ -513,13 +513,24 @@
       },
       { "mode" : "Lab Work", "season" : "Summer 1233"
       , "sourceQuality" : 2
-      , "narrative" : "Gift of Perception ++ "
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
+      , "narrative" : "Gift of Perception ++ Lab total 50 incl Hiccup"
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
+           , { "spell" : "Gift of Perception"
+              , "tefo" : "CrMe", "level" : 40
+           }
+           , { "spell" : "By His Works"
+              , "tefo" : "CrMe", "level" : 5
+           }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Autumn 1233"
       , "sourceQuality" : 2
-      , "narrative" : "Ward of Heat and Flames Parma to 51xp "
-      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } ]
+      , "narrative" : "Ward of Heat and Flames Parma to 51xp ; Lab Total 42 + Hiccup (6) + Familiar (4) = 52"
+      , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
+         , { "spell" : "Ward of Heat and Flames"
+            , "tefo" : "ReIg", "level" : 25
+         }
+      ]
       },
       { "mode" : "Reading", "season" : "Winter 1234"
       , "sourceQuality" : 16
@@ -553,8 +564,15 @@
       },
       { "mode" : "Lab Work", "season" : "Summer 1235"
       , "sourceQuality" : 2
-      , "narrative" : " 93xp->95xp; InMe spells - see below"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : " 93xp->95xp; InMe spells: InMe 43 + 9 (Jimeny and Hiccup) = 52 with text"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Posing the Silent Question"
+            , "tefo" : "InMe", "level" : 20
+         }
+         , { "spell" : "Sight of Conflicting Motives"
+            , "tefo" : "InMe", "level" : 15
+         }
+      ]
       },
       { "mode" : "Reading", "season" : "Autumn 1235"
       , "sourceQuality" : 12
@@ -573,8 +591,10 @@
       },
       { "mode" : "Lab Work", "season" : "Summer 1236"
       , "sourceQuality" : 2
-      , "narrative" : "Miner's Keen Eye (covenant service) "
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "Miner's Keen Eye (covenant service)  InTe lab total 52 (incl. Hiccup +7, Jimeny +3)"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Miner's Keen Eye", "tefo" : "InTe", "level" : 25 }
+      ]
       },
       { "mode" : "Reading", "season" : "Autumn 1236"
       , "sourceQuality" : 16
@@ -583,8 +603,12 @@
       },
       { "mode" : "Lab Work", "season" : "Winter 1237"
       , "sourceQuality" : 2
-      , "narrative" : "IMAGE FROM THE WIZARD TORN "
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "IMAGE FROM THE WIZARD TORN: Lab total InIm 50 + 10 (Hiccup/Jimeny) + 1 read imaginem"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+          , { "spell" : "Image from the Wizard Torn"
+             , "tefo" : "InIm", "level" : 30 
+          }
+      ]
       },
       { "mode" : "Teaching", "season" : "Spring 1237"
       , "sourceQuality" : 2
@@ -631,9 +655,11 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Aegis of the Hearth"
             , "tefo" : "ReVi", "level" : 30 
+            , "masteryOption" : [ "Penetration" ]
          }
          , { "spell" : "Watching Ward"
             , "tefo" : "ReVi", "level" : 30 
+            , "masteryOption" : [ "Penetration" ]
          }
       ]
       },
@@ -649,13 +675,22 @@
       },
       { "mode" : "Lab Work", "season" : "Summer 1239"
       , "sourceQuality" : 2
-      , "narrative" : "Com of Heroes. Magic Theory to 109xp"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "Com of the Heroes from text with help from Hiccup and Jimeny (CrMe 47 + Hiccup 8 [spec Creo] + Jimeny 4 = 59; with text +2 = 61) MT to 109xp"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "spell" : "Communication of the Heroes"
+            , "tefo" : "CrMe", "level" : 60
+            , "masteryOption" : [ "Safe Casting" ]
+         }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Autumn 1239"
       , "sourceQuality" : 17
       , "narrative" : "Gift of Quickness. Experimentation. Discovery (15xp in MT). Magi Theory to 126xp"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 17 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 17 } 
+         , { "spell" : "Gift of Quickness (personal range)"
+            , "tefo" : "CrCo", "level" : 30
+            }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1240"
       , "sourceQuality" : 2
@@ -1017,7 +1052,20 @@
       { "mode" : "Lab Work", "season" : "Winter 1255"
       , "sourceQuality" : 2
       , "narrative" : "  ReVi Spells; No Aging (rolled 0)"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
+         , { "spell" : "Circular Ward Against Demons",
+            "tefo" : "ReVi", "level" : 25 
+            , "masteryOption" : [ "Penetration" ]
+         }
+         , { "spell" : "Maintaining the Demanding Spell"
+            , "tefo" : "ReVi", "level" : 21 
+            , "masteryOption" : [ "Quiet Casting" ]
+         }
+         , { "spell" : "Watching Ward"
+            , "tefo" : "ReVi", "level" : 20 
+            , "masteryOption" : [ "Quiet Casting" ]
+         }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1255"
       , "sourceQuality" : 3
