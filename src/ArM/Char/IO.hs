@@ -100,7 +100,7 @@ writeGameStart :: String  -- ^ Directory for the output files
 writeGameStart dir saga = mapM wf  cs >> return ()
      where db = spells saga
            cs = gameStartCharacters saga
-           wf c = (writeLns (fn c) $ gameStartSheet db c)
+           wf c = (writeOList (fn c) $ gameStartSheet db c)
            fn c = dir ++ "/" ++ charID c ++ ".md"
 
 -- | Write current charactersheets in MarkDown
@@ -111,5 +111,5 @@ writeCurrent :: String  -- ^ Directory for the output files
 writeCurrent dir saga = mapM wf  cs >> return ()
      where db = spells saga
            cs = currentCharacters saga
-           wf c = (writeLns (fn c) $ currentSheet db c)
+           wf c = (writeOList (fn c) $ currentSheet db c)
            fn c = dir ++ "/" ++ charID c ++ ".md"

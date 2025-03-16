@@ -30,6 +30,14 @@ data OList = OList [ OList ] | OString String deriving ( Show )
 toOList :: [ String ] -> OList
 toOList= OList . map OString 
 
+-- | Render an OList as a hierarchical markdown list
+indentOList :: OList -> OList
+indentOList = indentOList' "+ "
+
+indentOList' :: String -> OList -> OList
+indentOList' s (OString x) = OString $ s ++ x
+indentOList' s (OList xs) = OList $ map (indentOList' ("    "++s)) xs
+
 writeOListH :: Handle -> OList -> IO ()
 writeOListH h (OString x) = IO.hPutStrLn h x
 writeOListH _ (OList []) = return ()
