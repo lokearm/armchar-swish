@@ -42,6 +42,8 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , defaultPT
                       , spellTeFoLe
                       , spellKeyName
+                      , Age(..)
+                      , Aging(..)
                        ) where
 
 import ArM.GameRules
@@ -196,9 +198,10 @@ instance Show ProtoTrait  where
        | confidence p /= Nothing = 
               fromMaybe "Confidence" (confidence p) ++ ": " ++ show (fromMaybe 0 (score p)) ++ " (" ++
               show ( fromMaybe 0 (points p) ) ++ ")"
+       | aging p /= Nothing = show (aging p)
        | other p /= Nothing = 
                fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
-       | otherwise  = error $ "No Trait for this ProtoTrait"  ++ show p
+       | otherwise  = error $ "No Trait for this ProtoTrait" 
      where si = show . fromMaybe 0
 
 -- | 
@@ -588,7 +591,7 @@ instance TraitLike Trait where
     advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
-    advanceTrait a (AgeTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (AgeTrait x) = trace ("trait>"++show x) $ AgeTrait $ advanceTrait a x
     toTrait = id
 
 updateBonus :: Maybe Int -> Ability -> Ability
@@ -632,8 +635,7 @@ instance TraitLike Art where
 instance TraitLike Spell where
     traitKey x = SpellKey (spellFoTe x) (spellLevel x) (spellName x ) 
     toTrait = SpellTrait
-    advanceTrait a x = trace "Advance spell" $ trace (show a ) $ trace (show x) 
-         $ updateSpellXP y $ updateSpellMastery ms x
+    advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
       where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
             ms = maybeList $ mastery a
 instance TraitLike Reputation where
@@ -718,7 +720,7 @@ instance TraitLike ProtoTrait where
                       , cscore = fromMaybe 0 (score p)
                       , cpoints = fromMaybe 0 (points p) }
       | other p /= Nothing = OtherTraitTrait $ fromJust $ computeTrait p
-      | aging p /= Nothing = toTrait $ fromJust $ aging p
+      | aging p /= Nothing = trace (show $ aging p) $ AgeTrait $ trace "between" $ fromJust $ computeTrait p
       | otherwise  = error "No Trait for this ProtoTrait" 
 
 
@@ -792,29 +794,32 @@ instance FromJSON Age
 
 instance TraitLike Age where
     traitKey _ = AgeKey
-    advanceTrait p x = updateLR (longevity ag ) 
-              $ x { apparentYounger = apparentYounger x + deltaYounger ag }
+    advanceTrait p x = trace (show p) $ trace (show x) $ trace "advance Age" 
+              $ updateLR (longevity ag ) 
+              $ x { apparentYounger = apparentYounger x + del }
           where ag = fromJust $ aging p
                 updateLR Nothing y = y
-                updateLR (Just lr) y = y { longevityRitual = lr }
+                updateLR (Just lr) y = trace ("adv>"++show y) $ y { longevityRitual = lr }
+                del = fromMaybe 0 $ deltaYounger ag
     toTrait = AgeTrait
 
 
 instance TraitType Age where
-    getTrait (AgeTrait x) = Just x
+    getTrait (AgeTrait x) = trace "Age getTrait" $ Just x
     getTrait _ = Nothing
     computeTrait p
        | isNothing (aging p) = Nothing
-       | otherwise = Just $
+       | otherwise = trace "computeTrait Age" $ trace (show ag) $ Just $
           Age { ageYears = 0
                 , ageLimit = fromMaybe 35 $ agingLimit ag
-                , apparentYounger = deltaYounger ag
+                , apparentYounger = fromMaybe 0 $ deltaYounger ag
                 , longevityRitual = (fromMaybe (-1) $ longevity ag)
                 , ageComment = agingComment ag }
           where ag = fromJust $ aging p
 
 data Aging = Aging
-    { deltaYounger   :: Int       -- ^ Should be 1 when age changes and apparent age does not, otherwise 0
+    { deltaYounger   :: Maybe Int   
+        -- ^ Should be 1 when age changes and apparent age does not, otherwise 0
     , agingRollDie   :: Maybe Int    -- ^ aging roll die result
     , agingRoll      :: Maybe Int    -- ^ aging roll total
     , longevity      :: Maybe Int    -- ^ score of new longevity ritual
@@ -827,4 +832,4 @@ instance FromJSON Aging
 instance TraitLike Aging where
     traitKey _ = AgeKey
     advanceTrait _ _ = error "Aging/Aging advancement not implemented"
-    toTrait = error "Aging/Aging advancement not implemented"
+    toTrait = error "Aging toTrait not implemented"

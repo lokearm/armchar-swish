@@ -111,7 +111,8 @@ instance Markdown KeyPair where
 instance Markdown KeyPairList where
    printMD (KeyPairList xs) = OList $ map printMD xs
 instance Markdown Trait where
-   printMD = OString . show 
+   printMD (AgeTrait x) = printMD  x
+   printMD x = OString $ show  x
 instance Markdown ProtoTrait where
    printMD = OString . show 
 
@@ -212,6 +213,13 @@ printCastingTotals c
                 | (fo,ts) <- zip lforms (labTotals c) ]
           lforms = [ "Animal", "Aquam", "Auram", "Corpus", "Herbam", "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
 
+instance Markdown Age where
+   printMD c = OString $ "+ **Age:** " ++ show y ++ "years (apparent age " 
+            ++ show (y - apparentYounger c)  ++ ")" ++ lr
+      where y = ageYears c
+            lrs = longevityRitual c
+            lr | lrs < 0 = ""
+               | otherwise = " Longeevity Ritual: " ++ show lrs
 instance Markdown Confidence where
    printMD c = OString $
              "+ **" ++ cname c ++ "**: " ++ show (cscore c) ++ " ("
