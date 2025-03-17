@@ -218,10 +218,10 @@ instance Markdown CharacterState where
 
 briefTraits :: CharacterSheet -> OList
 briefTraits c = OList
-          [ OString $ "+ **Age:** " ++ show (age c)
+          [ printMD (ageObject c)
           , OList $ map printMD $ confList c
           , OList $ map printMD $ otherList c
-          , OList $ map printMD $ csTraits c
+          -- , OList $ map printMD $ csTraits c
           ]
 printCastingTotals :: CharacterSheet -> [String]
 printCastingTotals c 
@@ -235,7 +235,7 @@ printCastingTotals c
           lforms = [ "Animal", "Aquam", "Auram", "Corpus", "Herbam", "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
 
 instance Markdown Age where
-   printMD c = OString $ "+ **Age:** " ++ show y ++ "years (apparent age " 
+   printMD c = OString $ "+ **Age:** " ++ show y ++ " years (apparent age " 
             ++ show (y - apparentYounger c)  ++ ")" ++ lr
       where y = ageYears c
             lrs = longevityRitual c

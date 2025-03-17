@@ -35,9 +35,8 @@ module ArM.Char.Character ( Character(..)
                           , CharacterType(..)
                           ) where
 
--- module ArM.Char.CharGen (prepareCharacter) where
---
 import Data.Maybe 
+import Data.List
 
 import ArM.Char.Trait
 import ArM.Char.Internal.Character
@@ -115,9 +114,15 @@ prepareCharacter c
 -- virtues and flaws, add XP limits to the advancements, and checks that
 -- the advancement does not overspend XP or exceed other limnits.
 prepareCharGen :: CharacterState -> Advancement -> AugmentedAdvancement
-prepareCharGen cs = validateCharGen sheet . initialLimits vfs . addInferredTraits 
+prepareCharGen cs = validateCharGen sheet . sortInferredTraits . agingYears . initialLimits vfs . addInferredTraits 
           where vfs = vfList sheet
                 sheet = filterCS cs
+
+agingYears :: AugmentedAdvancement -> AugmentedAdvancement
+agingYears x = x { inferredTraits = agePT (fromMaybe 0 $ augYears x): inferredTraits x }
+
+agePT :: Int ->  ProtoTrait
+agePT x = defaultPT { aging = Just $ defaultAging { addYears = Just x } }
 
 -- | Add the Confidence trait to the character state, using 
 addConfidence :: CharacterState -> CharacterState
@@ -259,12 +264,41 @@ applyInGameAdv a cs = applyAdvancement ( prepareAdvancement cs a ) cs
 prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
 prepareAdvancement c = validate . inferSQ . winterEvents c . addInferredTraits
 
+sortInferredTraits :: AugmentedAdvancement -> AugmentedAdvancement
+sortInferredTraits x = x { inferredTraits = sortTraits $ inferredTraits x }
+
 -- | Handle aging and some warping for Winter advancements
 winterEvents :: CharacterState -> AugmentedAdvancement -> AugmentedAdvancement
-winterEvents c a | isWinter $ season a = 
-                        trace ("Winter Season - handle aging" ) $ trace (show c) $ a
+winterEvents c a | isWinter $ season a = trace ("Winter Season - handle aging" ) 
+                   $ sortInferredTraits
+                   $ validateAging (y >= yl) agingOb $ addYear agingOb $ warpingLR a
                  | otherwise = a
-
+        where ageOb = ageObject c
+              y = age c
+              pt = find ( (AgeKey ==) . traitKey ) $ changes a
+              agingOb | isNothing pt = Nothing
+                      | otherwise = aging $ fromJust pt
+              lr | ageOb == Nothing = -1
+                 | otherwise = longevityRitual $ fromJust ageOb
+              yl | ageOb == Nothing = 35
+                 | otherwise = ageLimit $ fromJust ageOb
+              warpingLR x | lr < 0 = trace ("No warping "++show lr) $ x
+                          | otherwise = trace "Warping" $ x { inferredTraits = 
+                                    defaultPT { other = Just "Warping", points = Just 1 }
+                                    :inferredTraits x }
+              addYear o x | addsYear o = x
+                          | otherwise = x { inferredTraits = agePT 1 :inferredTraits x }
+              addsYear Nothing = False
+              addsYear (Just x) | isNothing (addYears x) = False
+                                | fromJust (addYears  x) <= 0 = False
+                                | otherwise = True
+              validateAging False _ x = x
+              validateAging True Nothing x = x { validation = err:validation x }
+              validateAging True (Just ob) x
+                   | isNothing (agingRoll ob) = x { validation = err:validation x }
+                   | otherwise = x { validation = val:validation x }
+              err = ValidationError $ "Older than " ++ show yl ++ ". Aging roll required."
+              val = Validated $ "Aging roll made"
 -- | Calculate initial XP limits on Advancements
 inferSQ :: AugmentedAdvancement -> AugmentedAdvancement
 inferSQ ad = ad { effectiveSQ = esq }
