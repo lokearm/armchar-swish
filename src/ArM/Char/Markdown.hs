@@ -71,16 +71,23 @@ designMD c = OList
 -- | Render the advancement log.
 -- This is two lists of past and future advancement objects
 advancementMD :: Character -> OList
-advancementMD c = OList
-            [ OString "## Past Advancement"
-            , OString ""
-            , OList $ map printMD $ pastAdvancement c
-            , OString ""
-            , OString "## Future Advancement" 
-            , OString ""
-            , OList $ map printMD $ futureAdvancement c
-            , OString ""
-            ]
+advancementMD c = OList [ ao, bo ]
+   where as = pastAdvancement c
+         bs = futureAdvancement c
+         ao | as == [] = OList []
+            | otherwise = OList
+                [ OString "## Past Advancement"
+                , OString ""
+                , OList $ map printMD as
+                , OString ""
+                ]
+         bo | bs == [] = OList []
+            | otherwise = OList
+                [ OString "## Future Advancement"
+                , OString ""
+                , OList $ map printMD bs
+                , OString ""
+                ]
 
 
 -- |
@@ -234,13 +241,14 @@ instance Markdown Character where
    printMD  c = OList
             [ bs 
             , designMD c
-            , OString "## Pregame Development" 
-            , OString ""
-            , OList $ map printMD $ pregameAdvancement c
-            , OString ""
+            , cgs
             , advancementMD c
             ]
        where 
+            cgs | cg == [] = OList []
+                | otherwise = OList [ OString "## Pregame Development", OString ""
+                                    , OList $ map printMD cg, OString "" ]
+            cg = pregameAdvancement c
             bs | isNothing (state c ) = s1
                | otherwise = OList [ s1, s2 ]
             s1 = printMD $ concept  c 
@@ -261,7 +269,11 @@ instance Markdown Character where
 -- | Render art scores as a table
 artMD :: CharacterSheet
       -> OList
-artMD = toOList . artMD'
+artMD c | isMagus c = toOList $ artMD' c
+        | otherwise = OList []
+
+isMagus :: CharacterSheet -> Bool
+isMagus c = csType c == Magus
 
 -- | Render art scores as a table
 artMD' :: CharacterSheet
@@ -350,14 +362,15 @@ instance LongSheet Character where
             [ printMD $ concept c
             , sf 
             , designMD c
-            , OString "## Pregame Development" 
-            , OString ""
-            , OList $ map printMD $ pregameAdvancement c
-            , OString ""
+            , cgs
             , advancementMD c
             ]
         where sf | isNothing (state c) = OList []
                  | otherwise = printSheetMD db $ characterSheet c
+              cgs | cg == [] = OList []
+                  | otherwise = OList [ OString "## Pregame Development", OString ""
+                                      , OList $ map printMD cg, OString "" ]
+              cg = pregameAdvancement c
 
 instance LongSheet CharacterSheet where
    printSheetMD db c' = trace "printSheetMD CharacterSheet" $ OList 
@@ -368,11 +381,12 @@ instance LongSheet CharacterSheet where
                , showlistMD "+ **Virtues and Flaws:** "  $ vfList c
                , indentOList $ OList $ [ OString "**Abilities:**"
                         , OList (map (OString . show) ( abilityList c )) ]
-               , artMD c
-               , printGrimoire $ spellList c
-               , toOList $ printCastingTotals c
+               , mag
                ]
          where c = addCastingScores db c'
+               mag | isMagus c' = OList [ artMD c, printGrimoire $ spellList c, 
+                                          toOList $ printCastingTotals c ]
+                   | otherwise = OString "" 
 
 
 -- | Render a spell trait in Markdown
