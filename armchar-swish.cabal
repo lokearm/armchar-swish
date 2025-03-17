@@ -56,7 +56,6 @@ common armchar-deps
                        , ArM.Char.Internal.Character
                        , ArM.Char.Internal.Advancement
                        , ArM.Char.Trait
-                       , ArM.Char.Aging
                        , ArM.Char.Spell
                        , ArM.Char.Saga
                        , ArM.Char.Validation
