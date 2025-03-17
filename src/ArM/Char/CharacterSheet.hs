@@ -24,7 +24,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , labTotals
                                , techniques
                                , forms
-                               , age
+                               , HasAge(..)
                                ) where
 
 import ArM.Char.Trait
@@ -199,14 +199,22 @@ forms = [ ArtKey fo | fo <- [ "An", "Aq", "Au", "Co", "He", "Ig", "Im", "Me", "T
 -- |
 -- = Character Age 
 
+maybeHead :: [a] -> Maybe a
+maybeHead [] = Nothing
+maybeHead (x:_) = Just x
+
 class HasAge a where
-   age :: a -> Int
+    age :: a -> Int
+    ageObject  ::  a -> Maybe Age
 instance HasAge Character where
     age = age . characterSheet
+    ageObject = ageObject . characterSheet
 instance HasAge CharacterSheet where
-    age = f . fst . filterTrait . csTraits
-      where f [] = -1
-            f (x:_) = ageYears  x
+    age = f . ageObject
+      where f Nothing = -1
+            f (Just x) = ageYears  x
+    ageObject = maybeHead . fst . filterTrait . csTraits
 instance HasAge CharacterState where
     age = age . filterCS
+    ageObject = ageObject . filterCS
 
