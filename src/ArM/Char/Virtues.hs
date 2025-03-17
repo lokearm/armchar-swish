@@ -44,6 +44,10 @@ vl2 = [ ( "Puissant (art)",
               \ x -> defaultPT { art = Just $ vfDetail x, multiplyXP = Just 1.5 } )
      , ( "Affinity with (ability)",
               \ x -> defaultPT { ability = Just $ vfDetail x, multiplyXP = Just 1.5 } )
+     , ( "Faerie Blood",
+              \ _ -> defaultPT { aging = Just $ defaultAging { agingLimit = Just 50, agingBonus = Just 3 } } )
+     , ( "Strong Faerie Blood",
+              \ _ -> defaultPT { aging = Just $ defaultAging { agingBonus = Just 1 } } )
      ]
 
 

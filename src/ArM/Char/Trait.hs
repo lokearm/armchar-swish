@@ -44,6 +44,7 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , spellKeyName
                       , Age(..)
                       , Aging(..)
+                      , defaultAging
                        ) where
 
 import ArM.GameRules
@@ -787,6 +788,7 @@ data Age = Age
     , apparentYounger :: Int      -- ^ difference between age and apparent age
     , ageLimit :: Int
     , longevityRitual :: Int      -- ^ Score of longevity ritual (LR), negative number means none
+    , agingRollBonus :: Int       -- ^ Bonus to aging rolls (excluding LR)
     , ageComment :: Maybe String  -- ^ freeform comment
     } deriving (Show,Ord,Eq,Generic)
 instance ToJSON Age
@@ -795,11 +797,14 @@ instance FromJSON Age
 instance TraitLike Age where
     traitKey _ = AgeKey
     advanceTrait p x = trace (show p) $ trace (show x) $ trace "advance Age" 
-              $ updateLR (longevity ag ) 
+              $ updateLR (longevity ag ) $ updateABonus ( agingBonus ag )
               $ x { apparentYounger = apparentYounger x + del }
           where ag = fromJust $ aging p
                 updateLR Nothing y = y
                 updateLR (Just lr) y = trace ("adv>"++show y) $ y { longevityRitual = lr }
+                updateABonus Nothing y = y
+                updateABonus (Just b) y = trace ("adv>"++show y) 
+                    $ y { agingRollBonus = agingRollBonus y + b }
                 del = fromMaybe 0 $ deltaYounger ag
     toTrait = AgeTrait
 
@@ -814,9 +819,20 @@ instance TraitType Age where
                 , ageLimit = fromMaybe 35 $ agingLimit ag
                 , apparentYounger = fromMaybe 0 $ deltaYounger ag
                 , longevityRitual = (fromMaybe (-1) $ longevity ag)
+                , agingRollBonus = ( fromMaybe 0 $ agingBonus ag ) 
                 , ageComment = agingComment ag }
           where ag = fromJust $ aging p
 
+defaultAging :: Aging
+defaultAging = Aging
+    { deltaYounger   = Nothing
+    , agingRollDie   = Nothing
+    , agingRoll      = Nothing
+    , longevity      = Nothing
+    , agingLimit     = Nothing
+    , agingBonus     = Nothing
+    , agingComment   = Nothing
+    }
 data Aging = Aging
     { deltaYounger   :: Maybe Int   
         -- ^ Should be 1 when age changes and apparent age does not, otherwise 0
@@ -824,6 +840,7 @@ data Aging = Aging
     , agingRoll      :: Maybe Int    -- ^ aging roll total
     , longevity      :: Maybe Int    -- ^ score of new longevity ritual
     , agingLimit     :: Maybe Int    -- ^ freeform comment
+    , agingBonus     :: Maybe Int    -- ^ Bonus to aging rolls (excluding LR)
     , agingComment   :: Maybe String -- ^ age when aging rolls are required
     } deriving (Show,Ord,Eq,Generic)
 instance ToJSON Aging
