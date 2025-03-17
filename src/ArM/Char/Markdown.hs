@@ -367,13 +367,17 @@ class Markdown a => LongSheet a where
 instance LongSheet Character where
    printSheetMD db c = trace "printSheetMD Character" $ OList 
             [ printMD $ concept c
-            , sf 
+            , sf $ state c 
             , designMD c
             , chargenMD c
             , advancementMD c
             ]
-        where sf | isNothing (state c) = OList []
-                 | otherwise = printSheetMD db $ characterSheet c
+        where sf Nothing = OList []
+              sf (Just s) = printSheetMD db s
+instance LongSheet CharacterState where
+   printSheetMD db c = OList [ OString $ "## " ++ (show $ charTime c )
+                             , OString ""
+                             , printSheetMD db $ filterCS c ]
 
 instance LongSheet CharacterSheet where
    printSheetMD db c' = trace "printSheetMD CharacterSheet" $ OList 
