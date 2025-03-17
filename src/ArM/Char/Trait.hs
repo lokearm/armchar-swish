@@ -214,7 +214,7 @@ data TraitKey = AbilityKey String
            | ConfidenceKey String
            | OtherTraitKey String
            | SpecialKey String
-           | AgingKey
+           | AgeKey
            deriving (Show, Ord, Eq,Generic )
 spellKeyName :: TraitKey -> String
 spellKeyName ( SpellKey _ _ n ) = n
@@ -315,7 +315,7 @@ data Trait = AbilityTrait Ability
            | ConfidenceTrait Confidence
            | OtherTraitTrait OtherTrait
            | SpecialTraitTrait SpecialTrait
-           | AgingTrait Age
+           | AgeTrait Age
            deriving (Show, Ord, Eq, Generic)
 instance FromJSON Ability
 instance FromJSON Characteristic 
@@ -575,7 +575,7 @@ instance TraitLike Trait where
     traitKey (OtherTraitTrait x) = traitKey x
     traitKey (ConfidenceTrait x) = traitKey x
     traitKey (SpecialTraitTrait x) = traitKey x
-    traitKey (AgingTrait x) = traitKey x
+    traitKey (AgeTrait x) = traitKey x
     advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (AbilityTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ArtTrait x) = toTrait $ advanceTrait a x
@@ -586,7 +586,7 @@ instance TraitLike Trait where
     advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
-    advanceTrait a (AgingTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (AgeTrait x) = toTrait $ advanceTrait a x
     toTrait = id
 
 updateBonus :: Maybe Int -> Ability -> Ability
@@ -696,7 +696,7 @@ instance TraitLike ProtoTrait where
        | flaw p /= Nothing = VFKey ( fromJust (flaw p) ) (fromMaybe "" $ detail p)
        | confidence p /= Nothing = ConfidenceKey $ fromMaybe "Confidence" $ confidence p
        | other p /= Nothing = OtherTraitKey $ fromJust $ other p
-       | aging p /= Nothing = AgingKey
+       | aging p /= Nothing = AgeKey
        | otherwise  = error "No Trait for this ProtoTrait" 
 
    toTrait p 
@@ -787,9 +787,9 @@ instance ToJSON Age
 instance FromJSON Age 
 
 instance TraitLike Age where
-    traitKey _ = AgingKey
+    traitKey _ = AgeKey
     advanceTrait _ x = x
-    toTrait = AgingTrait
+    toTrait = AgeTrait
 instance TraitType Age where
     getTrait (AgeTrait x) = Just x
     getTrait _ = Nothing
@@ -810,6 +810,6 @@ instance ToJSON Aging
 instance FromJSON Aging 
 
 instance TraitLike Aging where
-    traitKey _ = AgingKey
+    traitKey _ = AgeKey
     advanceTrait _ x = x
     toTrait = error "Not implemented"
