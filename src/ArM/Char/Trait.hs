@@ -783,6 +783,7 @@ advance (x:xs) (y:ys)
 data Age = Age
     { ageYears :: Int             -- ^ character age in years
     , apparentYounger :: Int      -- ^ difference between age and apparent age
+    , agingLimit :: Int
     , ageComment :: Maybe String  -- ^ freeform comment
     } deriving (Show,Ord,Eq,Generic)
 instance ToJSON Age
@@ -799,6 +800,7 @@ instance TraitType Age where
        | isNothing (aging p) = Nothing
        | otherwise = Just $
           Age { ageYears = 0
+                , agingLimit = fromMaybe 35 $ agingLimit ag
                 , apparentYounger = 1
                 , ageComment = Nothing }
 
@@ -806,7 +808,8 @@ data Aging = Aging
     { apparentChange :: Int       -- ^ difference between age and apparent age
     , agingeRollDie  :: Int       -- ^ aging roll die result
     , agingeRoll     :: Int       -- ^ aging roll total
-    , agingComment   :: Maybe String  -- ^ freeform comment
+    , agingLimit     :: Maybe String  -- ^ freeform comment
+    , agingComment   :: Maybe Int  -- ^ age when aging rolls are required
     } deriving (Show,Ord,Eq,Generic)
 instance ToJSON Aging
 instance FromJSON Aging 
