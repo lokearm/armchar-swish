@@ -485,6 +485,8 @@
       , "narrative" : "Puissant SOCP Lore."
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "virtue" : "Puissant (ability)", "detail" : "SOCP Lore" }
+         , { "flaw" : "Vow", "detail" : "against harming ordinary people"
+         , "comment" : "Works a little like a restriction when broken.  Magic can be restored by appropriate penance." }
       ]
       },
       { "mode" : "Initiation", "season" : "Spring 1232"
