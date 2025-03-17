@@ -11,6 +11,8 @@
       , "charGlance" : { }
       , "charData" : {
          "Size" : 0
+	 , "Prophecy" : "*He shall live like his father; die like his father.*  (Astrið. spoken at the Autumn fair 1230)"
+	 , "Background" : "Born after his fathers death in Winter 1230. Astrið read a death prophecy for the newborn Eogan at the fair in 1230.  The covenant has always treated him well, in honour of his father. However, he cannot free himself from his father's fate and has never been able to trust the magi. His mother remarried and he has a couple of half-siblings in the village He has always found himself a bit of an outsider, but found refuge at the kennel when Una was not there. Seeing his aptitude with dogs, Una's mundane assistants trained him."
       }
    },
    "pregameAdvancement" : [
@@ -70,14 +72,16 @@
       , "changes" : 
          [ { "ability" : "Animal Handling", "spec": "Dogs", "xp": 50 }
          , { "ability" : "Animal Ken", "spec": "Canine", "xp": 45 }
-         , { "ability" : "Athletics", "spec": "obstacle race", "xp": 30 }
+         , { "ability" : "Athletics", "spec": "obstacle race", "xp": 15 }
+         , { "ability" : "Bargain", "spec": "Livestock", "xp": 15 }
          , { "ability" : "Brawl", "spec": "dirty fighting", "xp": 15 }
          , { "ability" : "Guile" , "spec" : "Fast talk" , "xp" : 5 }
-         , { "ability" : "Ride", "spec": "Horse training", "xp": 30 }
-         , { "ability" : "Survival", "spec": "Hills", "xp": 45 }
+         , { "ability" : "Ride", "spec": "Horse training", "xp": 50 }
          , { "ability" : "Hunt", "spec": "with dogs", "xp": 75 }
+         , { "ability" : "Leadership", "spec": "in the field", "xp": 15 }
          , { "ability" : "Single Weapon", "spec": "spear", "xp": 5 }
          , { "ability" : "Bows", "spec" : "Shortbow", "xp" : 50 }
+         , { "ability" : "Survival", "spec": "Hills", "xp": 10 }
          ] 
       }
    ],
