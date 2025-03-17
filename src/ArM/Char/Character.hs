@@ -58,13 +58,13 @@ applyAdvancement :: AugmentedAdvancement
                  -> CharacterState 
                  -> (AugmentedAdvancement,CharacterState)
 applyAdvancement a' cs = (a',cs')
-    where cs' = cs { charTime = season a', traits = new, age = ag }
+    where cs' = cs { charTime = season a', traits = new }
           new = advance change tmp
           tmp = sortTraits $ advance inferred old 
           change = sortTraits $ changes a'
           inferred = inferredTraits a'
           old = sortTraits $ traits cs
-          ag = fromMaybe 0 (augYears a') + age cs
+          -- ag = fromMaybe 0 (augYears a') + age cs
 
 
 -- | Infer traits from new virtues and flaws and add them to the advancement.
@@ -262,9 +262,8 @@ prepareAdvancement c = validate . inferSQ . winterEvents c . addInferredTraits
 -- | Handle aging and some warping for Winter advancements
 winterEvents :: CharacterState -> AugmentedAdvancement -> AugmentedAdvancement
 winterEvents c a | isWinter $ season a = 
-                        trace ("Winter Season - handle aging - age " ++ show ag ) a
+                        trace ("Winter Season - handle aging" ) $ trace (show c) $ a
                  | otherwise = a
-    where ag = age c
 
 -- | Calculate initial XP limits on Advancements
 inferSQ :: AugmentedAdvancement -> AugmentedAdvancement

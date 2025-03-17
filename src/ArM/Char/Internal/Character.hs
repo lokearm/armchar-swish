@@ -121,16 +121,15 @@ fullConceptName c = name c ++ (f $ house c)
 data CharacterState = CharacterState 
          { charTime :: SeasonTime
          , charSType :: CharacterType
-         , age :: Int
          , traits :: [ Trait ]
          }  deriving (Eq,Generic,Show)
+
 
 -- | Default (empty) character state object.
 defaultCS :: CharacterState 
 defaultCS = CharacterState 
          { charTime = NoTime
          , charSType = Magus
-         , age = 0
          , traits = [ ]
          }  
 
@@ -142,7 +141,6 @@ instance FromJSON CharacterState where
         -- <$> v .:? "charTime"
         <$> fmap parseSeasonTime ( v .:? "charTime" )
         <*> v .: "charType" 
-        <*> v .: "age" 
         <*> fmap maybeList ( v .:? "traits" )
 
 -- |

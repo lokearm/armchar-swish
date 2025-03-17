@@ -24,6 +24,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , labTotals
                                , techniques
                                , forms
+                               , age
                                ) where
 
 import ArM.Char.Trait
@@ -40,7 +41,6 @@ import Data.List
 -- for different kinds of traits
 data CharacterSheet = CharacterSheet 
          { csType :: CharacterType
-         , csAge :: Int
          , vfList :: [ VF ]
          , charList :: [ Characteristic ]
          , abilityList :: [ Ability ]
@@ -57,7 +57,6 @@ data CharacterSheet = CharacterSheet
 defaultSheet :: CharacterSheet 
 defaultSheet = CharacterSheet 
          { csType = Magus
-         , csAge = 0
          , vfList = [ ]
          , charList = [ ]
          , abilityList = [ ]
@@ -96,7 +95,6 @@ filterCS cs = defaultSheet
                  , confList = x8
                  , otherList = x9
                  , csTraits = y9
-                 , csAge = age cs
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1
@@ -197,3 +195,18 @@ techniques :: [ TraitKey ]
 techniques = [ ArtKey te | te <- [ "Cr", "In", "Mu", "Pe", "Re" ] ]
 forms :: [ TraitKey ]
 forms = [ ArtKey fo | fo <- [ "An", "Aq", "Au", "Co", "He", "Ig", "Im", "Me", "Te", "Vi" ] ]
+
+-- |
+-- = Character Age 
+
+class HasAge a where
+   age :: a -> Int
+instance HasAge Character where
+    age = age . characterSheet
+instance HasAge CharacterSheet where
+    age = f . fst . filterTrait . csTraits
+      where f [] = -1
+            f (x:_) = ageYears  x
+instance HasAge CharacterState where
+    age = age . filterCS
+
