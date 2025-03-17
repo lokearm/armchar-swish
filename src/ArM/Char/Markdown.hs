@@ -61,12 +61,26 @@ currentSheet db c = OList [ baseSheet db c, advancementMD c ]
 -- | Render the char gen design.
 -- This is a list of all the pregame advancement objects.
 designMD :: Character -> OList
-designMD c = OList
+designMD c  | as == [] = OList []
+            | otherwise = OList
             [ OString "## Game start design"
             , OString ""
-            , OList $ map printMD $ pregameDesign c
+            , OList $ map printMD as
             , OString ""
             ]
+            where as = pregameDesign c
+
+-- | Render the char gen design.
+-- This is a list of all the pregame advancement objects.
+chargenMD :: Character -> OList
+chargenMD c | as == [] = OList []
+            | otherwise = OList
+              [ OString "## Char Gen Advancements"
+              , OString ""
+              , OList $ map printMD as
+              , OString ""
+              ]
+            where as = pregameAdvancement c
 
 -- | Render the advancement log.
 -- This is two lists of past and future advancement objects
@@ -241,14 +255,10 @@ instance Markdown Character where
    printMD  c = OList
             [ bs 
             , designMD c
-            , cgs
+            , chargenMD c
             , advancementMD c
             ]
        where 
-            cgs | cg == [] = OList []
-                | otherwise = OList [ OString "## Pregame Development", OString ""
-                                    , OList $ map printMD cg, OString "" ]
-            cg = pregameAdvancement c
             bs | isNothing (state c ) = s1
                | otherwise = OList [ s1, s2 ]
             s1 = printMD $ concept  c 
@@ -256,10 +266,7 @@ instance Markdown Character where
    printMDaug db c = OList
             [ baseSheet db c
             , designMD c
-            , OString "## Pregame Development" 
-            , OString ""
-            , OList $ map printMD $ pregameAdvancement c
-            , OString ""
+            , chargenMD c
             , advancementMD c
             ]
 
@@ -362,15 +369,11 @@ instance LongSheet Character where
             [ printMD $ concept c
             , sf 
             , designMD c
-            , cgs
+            , chargenMD c
             , advancementMD c
             ]
         where sf | isNothing (state c) = OList []
                  | otherwise = printSheetMD db $ characterSheet c
-              cgs | cg == [] = OList []
-                  | otherwise = OList [ OString "## Pregame Development", OString ""
-                                      , OList $ map printMD cg, OString "" ]
-              cg = pregameAdvancement c
 
 instance LongSheet CharacterSheet where
    printSheetMD db c' = trace "printSheetMD CharacterSheet" $ OList 
