@@ -214,6 +214,7 @@ data TraitKey = AbilityKey String
            | ConfidenceKey String
            | OtherTraitKey String
            | SpecialKey String
+           | AgingKey
            deriving (Show, Ord, Eq,Generic )
 spellKeyName :: TraitKey -> String
 spellKeyName ( SpellKey _ _ n ) = n
@@ -314,6 +315,7 @@ data Trait = AbilityTrait Ability
            | ConfidenceTrait Confidence
            | OtherTraitTrait OtherTrait
            | SpecialTraitTrait SpecialTrait
+           | AgingTrait Age
            deriving (Show, Ord, Eq, Generic)
 instance FromJSON Ability
 instance FromJSON Characteristic 
@@ -573,6 +575,7 @@ instance TraitLike Trait where
     traitKey (OtherTraitTrait x) = traitKey x
     traitKey (ConfidenceTrait x) = traitKey x
     traitKey (SpecialTraitTrait x) = traitKey x
+    traitKey (AgingTrait x) = traitKey x
     advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (AbilityTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ArtTrait x) = toTrait $ advanceTrait a x
@@ -583,6 +586,7 @@ instance TraitLike Trait where
     advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (AgingTrait x) = toTrait $ advanceTrait a x
     toTrait = id
 
 updateBonus :: Maybe Int -> Ability -> Ability
@@ -692,6 +696,7 @@ instance TraitLike ProtoTrait where
        | flaw p /= Nothing = VFKey ( fromJust (flaw p) ) (fromMaybe "" $ detail p)
        | confidence p /= Nothing = ConfidenceKey $ fromMaybe "Confidence" $ confidence p
        | other p /= Nothing = OtherTraitKey $ fromJust $ other p
+       | aging p /= Nothing = AgingKey
        | otherwise  = error "No Trait for this ProtoTrait" 
 
    toTrait p 
@@ -711,6 +716,7 @@ instance TraitLike ProtoTrait where
                       , cscore = fromMaybe 0 (score p)
                       , cpoints = fromMaybe 0 (points p) }
       | other p /= Nothing = OtherTraitTrait $ fromJust $ computeTrait p
+      | aging p /= Nothing = toTrait $ fromJust $ aging p
       | otherwise  = error "No Trait for this ProtoTrait" 
 
 
@@ -780,6 +786,11 @@ data Age = Age
 instance ToJSON Age
 instance FromJSON Age 
 
+instance TraitLike Age where
+    traitKey _ = AgingKey
+    advanceTrait _ x = x
+    toTrait = AgingTrait
+
 data Aging = Aging
     { apparentChange :: Int       -- ^ difference between age and apparent age
     , agingeRollDie  :: Int       -- ^ aging roll die result
@@ -788,3 +799,8 @@ data Aging = Aging
     } deriving (Show,Ord,Eq,Generic)
 instance ToJSON Aging
 instance FromJSON Aging 
+
+instance TraitLike Aging where
+    traitKey _ = AgingKey
+    advanceTrait _ x = x
+    toTrait = error "Not implemented"
