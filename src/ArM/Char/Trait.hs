@@ -790,6 +790,15 @@ instance TraitLike Age where
     traitKey _ = AgingKey
     advanceTrait _ x = x
     toTrait = AgingTrait
+instance TraitType Age where
+    getTrait (AgeTrait x) = Just x
+    getTrait _ = Nothing
+    computeTrait p
+       | isNothing (aging p) = Nothing
+       | otherwise = Just $
+          Age { ageYears = 0
+                , apparentYounger = 1
+                , ageComment = Nothing }
 
 data Aging = Aging
     { apparentChange :: Int       -- ^ difference between age and apparent age
