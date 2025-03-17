@@ -74,6 +74,7 @@ data ProtoTrait = ProtoTrait
     , reputation :: Maybe String  -- ^ reputation contents
     , other :: Maybe String       -- ^ other trait, e.g. warping or decrepitude
     , strait :: Maybe String      -- ^ special trait, like Longevity Potion
+    , aging :: Maybe Aging        -- ^ Aging object 
     , spec :: Maybe String        -- ^ specialisation of an ability
     , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
     , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
@@ -91,7 +92,7 @@ data ProtoTrait = ProtoTrait
     , cost :: Maybe Int          -- ^ cost of a virtue or flaw
     , points :: Maybe Int        -- ^ points for confidence/true faith/etc (additive)
     , xp :: Maybe XPType         -- ^ XP to be added to the trait
-    , aging :: Maybe Int         -- ^ aging points for characteristicds (additive)
+    , agingPts :: Maybe Int      -- ^ aging points for characteristicds (additive)
     , multiplicity :: Maybe Int  -- ^ number of types a virtue/flaw is taken;
                                  -- could be negative to remove an existing, but
                                  -- this is not yet implemented
@@ -112,6 +113,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , reputation = Nothing
                              , other = Nothing
                              , strait = Nothing
+                             , aging = Nothing
                              , spec = Nothing
                              , detail = Nothing
                              , appliesTo = Nothing
@@ -126,7 +128,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , cost = Nothing
                              , points = Nothing
                              , xp = Nothing
-                             , aging = Nothing
+                             , agingPts = Nothing
                              , multiplicity = Nothing
                              , comment = Nothing
                              }
@@ -145,6 +147,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "reputation"
         <*> v .:?  "other"
         <*> v .:?  "specialTrait"
+        <*> v .:?  "aging"
         <*> v .:?  "spec"
         <*> v .:?  "detail"
         <*> v .:?  "appliesTo"
@@ -159,7 +162,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "cost"
         <*> v .:?  "points"
         <*> v .:?  "xp"
-        <*> v .:?  "aging"
+        <*> v .:?  "agingPts"
         <*> v .:?  "multiplicity"
         <*> v .:?  "comment"
 
@@ -381,15 +384,11 @@ instance Show Reputation  where
 
 showAging :: ProtoTrait -> String
 showAging p | Nothing == aging p = ""
-            | otherwise = " (" ++ show  pt ++ " aging points)"
-    where pt = maybeInt $ aging p
+            | otherwise = " (" ++ (ishow $ agingPts p) ++ " aging points)"
+    where ishow Nothing = "-"
+          ishow (Just x) = show x
 showXP :: ProtoTrait -> String
 showXP p = " " ++ show ( fromMaybe 0 (xp p) ) ++ "xp"
-
-
-
-
-
 
 -- |
 -- = Filtering and Advancement - the TraitType class
@@ -423,7 +422,7 @@ instance TraitType Characteristic where
        | otherwise = Just $
           Characteristic { characteristicName = fromJust ( characteristic p ) 
                 , charScore = fromMaybe 0 (score p) + fromMaybe 0 (bonusScore p)
-                , agingPoints = maybeInt (aging p) }
+                , agingPoints = maybeInt (agingPts p) }
 instance TraitType VF where
     getTrait (VFTrait x) = Just x
     getTrait _ = Nothing
@@ -770,3 +769,22 @@ advance (x:xs) (y:ys)
     | otherwise = advance xs (adv x y:ys)
     where adv a b = toTrait $ advanceTrait a b
 
+-- |
+-- = Aging
+
+data Age = Age
+    { ageYears :: Int             -- ^ character age in years
+    , apparentYounger :: Int      -- ^ difference between age and apparent age
+    , ageComment :: Maybe String  -- ^ freeform comment
+    } deriving (Show,Ord,Eq,Generic)
+instance ToJSON Age
+instance FromJSON Age 
+
+data Aging = Aging
+    { apparentChange :: Int       -- ^ difference between age and apparent age
+    , agingeRollDie  :: Int       -- ^ aging roll die result
+    , agingeRoll     :: Int       -- ^ aging roll total
+    , agingComment   :: Maybe String  -- ^ freeform comment
+    } deriving (Show,Ord,Eq,Generic)
+instance ToJSON Aging
+instance FromJSON Aging 
