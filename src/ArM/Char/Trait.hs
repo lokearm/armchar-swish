@@ -825,7 +825,8 @@ instance TraitType Age where
 
 defaultAging :: Aging
 defaultAging = Aging
-    { deltaYounger   = Nothing
+    { addYears       = Nothing
+    , deltaYounger   = Nothing
     , agingRollDie   = Nothing
     , agingRoll      = Nothing
     , longevity      = Nothing
@@ -834,7 +835,8 @@ defaultAging = Aging
     , agingComment   = Nothing
     }
 data Aging = Aging
-    { deltaYounger   :: Maybe Int   
+    { addYears       :: Maybe Int
+    , deltaYounger   :: Maybe Int   
         -- ^ Should be 1 when age changes and apparent age does not, otherwise 0
     , agingRollDie   :: Maybe Int    -- ^ aging roll die result
     , agingRoll      :: Maybe Int    -- ^ aging roll total
