@@ -198,6 +198,7 @@ briefTraits :: CharacterSheet -> OList
 briefTraits c = OList
           [ OString $ "+ **Age:** " ++ show (csAge c)
           , OList $ map printMD $ confList c
+          , OList $ map printMD $ otherList c
           , OList $ map printMD $ csTraits c
           ]
 printCastingTotals :: CharacterSheet -> [String]

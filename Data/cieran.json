@@ -450,8 +450,11 @@
       },
       { "mode" : "Adventure", "season" : "Summer 1230"
       , "sourceQuality" : 10
+      , "narrative" : "Cieran seeks a familiar"
       , "changes" : [ { "ability" : "Teaching", "xp" : 5 } 
-                    , { "ability" : "Magic Lore", "spec" : "creatures", "xp" : 5 } ]
+                    , { "ability" : "Magic Lore", "spec" : "creatures", "xp" : 5 } 
+                    , { "confidence" : "Confidence", "points" : 1 }
+      ]
       },
       { "mode" : "Exposure", "season" : "Autumn 1230"
       , "sourceQuality" : 2
@@ -553,8 +556,11 @@
       },
       { "mode" : "Reading", "season" : "Autumn 1234"
       , "sourceQuality" : 13
-      , "narrative" : "Autumn 1234 | Reading  | 13x1½ | Imaginem |"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
+      , "narrative" : "Maine's wedding in Clonmacnoise.  Reading  (13x1½) Imaginem."
+      , "changes" : [ { "art" : "Imaginem", "xp" : 13 } 
+         , { "reputation" : "Friendly druid", "locale" : "Lands of O'Sullivan", 
+            "xp" : 30 }
+      ]
       },
       { "mode" : "Reading", "season" : "Winter 1235"
       , "sourceQuality" : 13
@@ -651,7 +657,10 @@
       , "sourceQuality" : 8
       , "narrative" : "Plus Quest for Cautious Sorcerer. Parma Magica (4 to 55xp)"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 4 } 
-                    , { "ability" : "Second Sight", "xp" : 4 } ]
+                    , { "ability" : "Second Sight", "xp" : 4 } 
+                    , { "reputation" : "Monster hunter"
+                       , "locale" : "Village in Provence", "xp" : 5 }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Autumn 1238"
       , "sourceQuality" : 2
@@ -756,7 +765,9 @@
       { "mode" : "Lab Work", "season" : "Winter 1242"
       , "sourceQuality" : 2
       , "narrative" : "Horror Cabinet Spell  2xp Exposure Magic Theory -> 136xp (score 6)(covenant service).  Lab Total Cr(Re)Im 61 (spells) Experiment adds 7+ with maximum risk Nocturnal +2 gives Rolled *no benefit* lab total 63(66) gaining 28/31 points."
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
+         , { "other" : "Warping", "points" : 1, "comment" : "One botch some time before 1242." }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1242"
       , "sourceQuality" : 2
@@ -958,6 +969,8 @@
          , { "spell" : "Converse with Plant and Tree"
            , "tefo" : "InHe", "level" : 25
          }
+         , { "reputation" : "Crafter of Magic", "locale" : "Hermetic", 
+            "xp" : 20, "comment" : "From Lab Aesthetics" }
          ]
       },
       { "mode" : "Reading", "season" : "Spring 1250"
@@ -1060,7 +1073,10 @@
       , "sourceQuality" : 7
       , "narrative" : "No Aging (rolled 4)"
       , "changes" : [ { "ability" : "Finesse", "spec" : "Precision", "xp" : 5 } 
-                    , { "ability" : "Etiquette", "xp" : 2 } ]
+                    , { "ability" : "Etiquette", "xp" : 2 } 
+                    , { "reputation" : "Friendly druid",
+                       "locale" : "Lands of O'Sullivan", "xp" : 4 }
+      ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"
       , "sourceQuality" : 16

@@ -198,7 +198,7 @@ instance Show ProtoTrait  where
               show ( fromMaybe 0 (points p) ) ++ ")"
        | other p /= Nothing = 
                fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
-       | otherwise  = error "No Trait for this ProtoTrait" 
+       | otherwise  = error $ "No Trait for this ProtoTrait"  ++ show p
      where si = show . fromMaybe 0
 
 -- | 
@@ -296,7 +296,7 @@ data OtherTrait = OtherTrait { trait :: String
                              -- , pts :: Int 
                              , otherExcess :: Int
                              }
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Ord, Eq, Generic)
 data SpecialTrait = SpecialTrait { specialTrait :: String
                              , specialScore :: Maybe Int
                              , specialComment :: Maybe String 
@@ -349,6 +349,8 @@ instance Show VF  where
             f x = " [" ++ x ++ "]"
 instance Show Confidence  where
    show a = cname a ++ ": " ++ show (cscore a) ++ " (" ++ show (cpoints a) ++ ")"
+instance Show OtherTrait  where
+   show a = trait a ++ ": " ++ show (otherScore a) ++ " (" ++ show (otherExcess a) ++ ")"
 instance Show PTrait  where
    show a = ptraitName a ++ " " ++ show (pscore a)
 instance Show Ability  where

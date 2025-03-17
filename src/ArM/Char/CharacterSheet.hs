@@ -49,6 +49,7 @@ data CharacterSheet = CharacterSheet
          , reputationList :: [ Reputation ]
          , ptList :: [ PTrait ]
          , confList :: [ Confidence ]
+         , otherList :: [ OtherTrait ]
          , csTraits :: [ Trait ]
          }  deriving (Eq,Show,Generic)
 
@@ -65,6 +66,7 @@ defaultSheet = CharacterSheet
          , reputationList = []
          , ptList = []
          , confList = []
+         , otherList = [ ]
          , csTraits = [ ]
          }  
 
@@ -92,7 +94,8 @@ filterCS cs = defaultSheet
                  , ptList = x6
                  , charList = x7
                  , confList = x8
-                 , csTraits = y8
+                 , otherList = x9
+                 , csTraits = y9
                  , csAge = age cs
                 }
            where (x1,y1) = filterTrait $ traits cs
@@ -103,6 +106,7 @@ filterCS cs = defaultSheet
                  (x6,y6) = filterTrait y5
                  (x7,y7) = filterTrait y6
                  (x8,y8) = filterTrait y7
+                 (x9,y9) = filterTrait y8
 
 -- | Find a trait, given by a key, from a list of Trait objects.
 findTrait :: (TraitLike a) => TraitKey -> [a] -> Maybe a
