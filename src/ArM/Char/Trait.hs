@@ -783,7 +783,8 @@ advance (x:xs) (y:ys)
 data Age = Age
     { ageYears :: Int             -- ^ character age in years
     , apparentYounger :: Int      -- ^ difference between age and apparent age
-    , agingLimit :: Int
+    , ageLimit :: Int
+    , longevityRitual :: Int      -- ^ Score of longevity ritual (LR), negative number means none
     , ageComment :: Maybe String  -- ^ freeform comment
     } deriving (Show,Ord,Eq,Generic)
 instance ToJSON Age
@@ -791,8 +792,14 @@ instance FromJSON Age
 
 instance TraitLike Age where
     traitKey _ = AgeKey
-    advanceTrait _ x = x
+    advanceTrait p x = updateLR (longevity ag ) 
+              $ x { apparentYounger = apparentYounger x + deltaYounger ag }
+          where ag = fromJust $ aging p
+                updateLR Nothing y = y
+                updateLR (Just lr) y = y { longevityRitual = lr }
     toTrait = AgeTrait
+
+
 instance TraitType Age where
     getTrait (AgeTrait x) = Just x
     getTrait _ = Nothing
@@ -800,21 +807,24 @@ instance TraitType Age where
        | isNothing (aging p) = Nothing
        | otherwise = Just $
           Age { ageYears = 0
-                , agingLimit = fromMaybe 35 $ agingLimit ag
-                , apparentYounger = 1
-                , ageComment = Nothing }
+                , ageLimit = fromMaybe 35 $ agingLimit ag
+                , apparentYounger = deltaYounger ag
+                , longevityRitual = (fromMaybe (-1) $ longevity ag)
+                , ageComment = agingComment ag }
+          where ag = fromJust $ aging p
 
 data Aging = Aging
-    { apparentChange :: Int       -- ^ difference between age and apparent age
-    , agingeRollDie  :: Int       -- ^ aging roll die result
-    , agingeRoll     :: Int       -- ^ aging roll total
-    , agingLimit     :: Maybe String  -- ^ freeform comment
-    , agingComment   :: Maybe Int  -- ^ age when aging rolls are required
+    { deltaYounger   :: Int       -- ^ Should be 1 when age changes and apparent age does not, otherwise 0
+    , agingRollDie   :: Maybe Int    -- ^ aging roll die result
+    , agingRoll      :: Maybe Int    -- ^ aging roll total
+    , longevity      :: Maybe Int    -- ^ score of new longevity ritual
+    , agingLimit     :: Maybe Int    -- ^ freeform comment
+    , agingComment   :: Maybe String -- ^ age when aging rolls are required
     } deriving (Show,Ord,Eq,Generic)
 instance ToJSON Aging
 instance FromJSON Aging 
 
 instance TraitLike Aging where
     traitKey _ = AgeKey
-    advanceTrait _ x = x
-    toTrait = error "Not implemented"
+    advanceTrait _ _ = error "Aging/Aging advancement not implemented"
+    toTrait = error "Aging/Aging advancement not implemented"

@@ -795,8 +795,10 @@
       },
       { "mode" : "Exposure", "season" : "Summer 1242"
       , "sourceQuality" : 2
-      , "narrative" : "Lab Assistance | | | Longevity Ritual.  2xp Exposure Magic Theory -> 7 (140xp)|"
-      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
+      , "narrative" : "Lab Assistance. Longevity Ritual.  Exposure Magic Theory -> 7 (140xp)|"
+      , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
+         , { "aging" : { "longevity" : 22 } 
+         } ]
       },
       { "mode" : "Lab work", "season" : "Autumn 1242"
       , "sourceQuality" : 2
@@ -806,7 +808,14 @@
       { "mode" : "Reading", "season" : "Winter 1243"
       , "sourceQuality" : 16
       , "narrative" : " *The Mind's Eye* L16Q13 -> 81xp | No aging"
-      , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
+      , "changes" : [ { "art" : "Mentem", "xp" : 16 } 
+         , { "aging" : { "deltaYounger" : 1
+            , "agingRollDie" : 0
+            , "agingRoll" : 0
+            , "agingComment" : "No aging. Rolls not recorded"
+         } 
+         }
+      ]
       },
       { "mode" : "Reading", "season" : "Spring 1243"
       , "sourceQuality" : 17
@@ -826,7 +835,13 @@
       { "mode" : "Reading", "season" : "Winter 1244"
       , "sourceQuality" : 17
       , "narrative" : "Maine's Tractatus on Creo Vol I (to 16  or 137xp)| No apparent aging |"
-      , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
+      , "changes" : [ { "art" : "Creo", "xp" : 17 } 
+         , { "aging" : { "deltaYounger" : 1
+            , "agingRollDie" : 0
+            , "agingRoll" : 0
+            , "agingComment" : "No aging. Rolls not recorded"
+         } }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1244"
       , "sourceQuality" : 2
@@ -864,6 +879,11 @@
          , { "spell" : "Break the Shield"
             , "tefo" : "PeVi", "level" : 10
          }
+         , { "aging" : { "deltaYounger" : 0
+            , "agingRollDie" : 28
+            , "agingRoll" : 4
+            , "agingComment" : "Apparent age increases"
+         } } 
         ]
       },
       { "mode" : "Adventure", "season" : "Spring 1245"
@@ -887,7 +907,14 @@
       { "mode" : "Reading", "season" : "Winter 1246"
       , "sourceQuality" : 16
       , "narrative" : "| Win/Spr/Sum 1246 | Reading  | 3x16 | Mentem| Mentem L16Q13; 3x (13+3) = 42xp (81->123) 15 | no aging|"
-      , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
+      , "changes" : [ { "art" : "Mentem", "xp" : 16 } 
+         , { "aging" : { "deltaYounger" : 1
+            , "agingRollDie" : 0
+            , "agingRoll" : 0
+            , "agingComment" : "No aging. Rolls not recorded"
+         } 
+         }
+      ]
       },
       { "mode" : "Reading", "season" : "Spring 1246"
       , "sourceQuality" : 16
@@ -907,11 +934,18 @@
       { "mode" : "Reading", "season" : "Winter 1247"
       , "sourceQuality" : 17
       , "narrative" : "Maine's Tractatus + Book Learner; 8-24=-16 no aging |"
-      , "changes" : [ { "art" : "Mentem", "xp" : 17 } ]
+      , "changes" : [ { "art" : "Mentem", "xp" : 17 }
+         , { "aging" : { "deltaYounger" : 1
+            , "agingRollDie" : 8
+            , "agingRoll" : -16
+            , "agingComment" : "No aging. Rolls not recorded"
+         } 
+         } 
+      ]
       },
       { "mode" : "Reading", "season" : "Spring 1247"
       , "sourceQuality" : 14
-      , "narrative" : "Tractatus *On the Spark* | "
+      , "narrative" : "Tractatus *On the Spark*"
       , "changes" : [ { "art" : "Creo", "xp" : 14 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1247"
@@ -927,7 +961,14 @@
       { "mode" : "Reading", "season" : "Winter 1248"
       , "sourceQuality" : 15
       , "narrative" : "Summa L20Q12; no aging (-4) "
-      , "changes" : [ { "art" : "Muto", "xp" : 15 } ]
+      , "changes" : [ { "art" : "Muto", "xp" : 15 } 
+         , { "aging" : { "deltaYounger" : 1
+            , "agingRollDie" : 0
+            , "agingRoll" : -4
+            , "agingComment" : "No aging. Die not recorded"
+         } 
+         } 
+      ]
       },
       { "mode" : "Reading", "season" : "Spring 1248"
       , "sourceQuality" : 18
@@ -953,7 +994,14 @@
       { "mode" : "Lab Work", "season" : "Winter 1249"
       , "sourceQuality" : 3
       , "narrative" : " 254½xp Invisibility Quartz for Sean; see below ; no aging (-18)"
-      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } ]
+      , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
+         , { "aging" : { "deltaYounger" : 1
+            , "agingRollDie" : 0
+            , "agingRoll" : -18
+            , "agingComment" : "No aging. Die not recorded"
+         } 
+         } 
+      ]
       },
       { "mode" : "Reading", "season" : "Spring 1249"
       , "sourceQuality" : 16
