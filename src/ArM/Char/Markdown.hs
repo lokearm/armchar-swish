@@ -324,10 +324,14 @@ instance Markdown AugmentedAdvancement where
        [ OString $ showTime xps (season a) (mode a) y 
        , OList [ stringMD $ narrative a ]
        , OList $ map printMD $ changes a
+       , infl
        , OList $ map (OString . show) $ validation a
        ]
       where xps = showSQ (sourceQuality a) (effectiveSQ a)
             y = augYears a
+            inf = inferredTraits a
+            infl | inf == [] = OList []
+                 | otherwise = OList [ OString "Inferred traits", OList $ map printMD inf ]
 
 
 -- | Render the season and mode of an advancement
