@@ -1051,7 +1051,7 @@
       },
       { "mode" : "Lab Work", "season" : "Spring 1251"
       , "sourceQuality" : 3
-      , "narrative" : "InIm spells below $\to$  281½.  Lab total 71"
+      , "narrative" : "InIm spells below ->  281½.  Lab total 71"
       , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
          , { "spell" : "Palm of Seeing (Sun duration)"
             , "tefo" : "InIm", "level" : 20 }
@@ -1100,12 +1100,12 @@
       },
       { "mode" : "Reading", "season" : "Winter 1253"
       , "sourceQuality" : 13
-      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent ($88\to114$).  Aging roll -21"
+      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent (88->114).  Aging roll -21"
       , "changes" : [ { "art" : "Rego", "xp" : 13 } ]
       },
       { "mode" : "Reading", "season" : "Spring 1253"
       , "sourceQuality" : 13
-      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent ($88\to114$)"
+      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent (88->114)"
       , "changes" : [ { "art" : "Rego", "xp" : 13 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1253"

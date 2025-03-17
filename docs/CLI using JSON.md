@@ -30,13 +30,8 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Flawless magic
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
-	+ [ ] Warping
-		+ [ ] Check for LR and warp in Winter
-		+ [ ] Check warping for Cieran
-	+ [ ] Aging
-		+ [ ] validate presence of aging roll in Winter
-		+ [ ] Record apparent age
-		+ [ ] Decrepitude
+		+ [ ] Add aging rolls
+	+ [ ] Decrepitude
 	+ [ ] Compute Combat Stats
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant

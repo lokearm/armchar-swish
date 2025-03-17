@@ -292,11 +292,11 @@ winterEvents c a | isWinter $ season a = trace ("Winter Season - handle aging" )
               addsYear (Just x) | isNothing (addYears x) = False
                                 | fromJust (addYears  x) <= 0 = False
                                 | otherwise = True
-              validateAging False _ x = x
-              validateAging True Nothing x = x { validation = err:validation x }
+              validateAging False _ x =  x
+              validateAging True Nothing x =  x { validation = err:validation x }
               validateAging True (Just ob) x
                    | isNothing (agingRoll ob) = x { validation = err:validation x }
-                   | otherwise = x { validation = val:validation x }
+                   | otherwise =  x { validation = val:validation x }
               err = ValidationError $ "Older than " ++ show yl ++ ". Aging roll required."
               val = Validated $ "Aging roll made"
 -- | Calculate initial XP limits on Advancements
