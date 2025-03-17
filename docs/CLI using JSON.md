@@ -57,6 +57,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Refactor and document code
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
+	+ [ ] Remove trait when advancing
 	+ [ ] Step 3. Virtues and Flaws - Special cases
 		+ [ ] Linguist
 		+ [ ] Great/Poor Characteristic

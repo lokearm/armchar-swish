@@ -639,7 +639,21 @@ instance TraitLike Reputation where
 instance TraitLike Characteristic where
     traitKey x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
-    advanceTrait _ x = trace "Warning! Advancement not implemented for characteristics"  x
+    advanceTrait a =  agingChar apts . newCharScore newscore
+       where newscore = score a
+             apts = agingPts a
+agingChar  :: Maybe Int -> Characteristic -> Characteristic
+agingChar  Nothing x = x
+agingChar  (Just pt) x 
+      | newpoints > sc = x { charScore = sc-1, agingPoints = newpoints - (asc-1) }
+      | otherwise = x { agingPoints = newpoints }
+    where newpoints = pt + agingPoints x
+          sc = charScore x
+          asc = abs sc
+newCharScore  :: Maybe Int -> Characteristic -> Characteristic
+newCharScore  Nothing x = x
+newCharScore  (Just s) x = x { charScore = s }
+
 instance TraitLike Confidence where
     traitKey p = ConfidenceKey $ cname p
     toTrait = ConfidenceTrait
