@@ -797,14 +797,18 @@ instance FromJSON Age
 instance TraitLike Age where
     traitKey _ = AgeKey
     advanceTrait p x = trace (show p) $ trace (show x) $ trace "advance Age" 
-              $ updateLR (longevity ag ) $ updateABonus ( agingBonus ag )
-              $ x { apparentYounger = apparentYounger x + del }
+                     $ updateLR (longevity ag ) 
+                     $ updateABonus ( agingBonus ag )
+                     $ updateAge ( addYears ag )
+                     $ x { apparentYounger = apparentYounger x + del }
           where ag = fromJust $ aging p
                 updateLR Nothing y = y
                 updateLR (Just lr) y = trace ("adv>"++show y) $ y { longevityRitual = lr }
                 updateABonus Nothing y = y
                 updateABonus (Just b) y = trace ("adv>"++show y) 
                     $ y { agingRollBonus = agingRollBonus y + b }
+                updateAge Nothing y = y
+                updateAge (Just b) y = y { ageYears = ageYears y + b }
                 del = fromMaybe 0 $ deltaYounger ag
     toTrait = AgeTrait
 
@@ -815,7 +819,7 @@ instance TraitType Age where
     computeTrait p
        | isNothing (aging p) = Nothing
        | otherwise = trace "computeTrait Age" $ trace (show ag) $ Just $
-          Age { ageYears = 0
+          Age { ageYears = fromMaybe 0 $ addYears ag
                 , ageLimit = fromMaybe 35 $ agingLimit ag
                 , apparentYounger = fromMaybe 0 $ deltaYounger ag
                 , longevityRitual = (fromMaybe (-1) $ longevity ag)
