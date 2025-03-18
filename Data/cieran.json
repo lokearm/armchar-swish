@@ -349,6 +349,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Arrow of Gaping Earth"
             , "tefo" : "PeTe", "level" : 15
+	    , "mastery" : [ "Quiet Casting" ]
          }
       ]
       },
@@ -392,6 +393,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Wizard's Communion"
             , "tefo" : "MuVi", "level" : 10
+	    , "mastery" : [ "Fast Casting" ]
          }
       ]
       },
@@ -1162,6 +1164,7 @@
       , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
          , { "spell" : "Confusion of the Insane Vibrations"
            , "tefo" : "ReIm", "level" : 35
+	    , "mastery" : [ "Penetration" ]
            }
                     ]
       },
