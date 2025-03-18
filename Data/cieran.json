@@ -444,7 +444,8 @@
       , "narrative" : "ReCo 43 + Hiccup + bookstand = 51. Leap of Homecoming + Frog's Legs"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
          ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 35 }
-         ,  { "spell" : "Gift of the Frog's Legs", "tefo" : "ReCo", "level" : 15 }
+         ,  { "spell" : "Gift of the Frog's Legs", "tefo" : "ReCo", "level" : 15
+	    , "mastery" : [ "Still Casting" ] }
       ]
       },
       { "mode" : "Lab work", "season" : "Winter 1230"
@@ -550,9 +551,11 @@
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
            , { "spell" : "Gift of Perception"
               , "tefo" : "CrMe", "level" : 40
+	    , "mastery" : [ "Quiet Casting" ] 
            }
            , { "spell" : "By His Works"
               , "tefo" : "CrMe", "level" : 5
+	    , "mastery" : [ "Quiet Casting" ] 
            }
       ]
       },
@@ -734,6 +737,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 17 } 
          , { "spell" : "Gift of Quickness (personal range)"
             , "tefo" : "CrCo", "level" : 30
+            , "mastery" : [ "Safe Casting" ]
             }
       ]
       },
@@ -762,6 +766,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Gift of Communication"
             , "tefo" : "CrMe", "level" : 40
+            , "mastery" : [ "Safe Casting" ]
          }
       ]
       },
