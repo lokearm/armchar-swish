@@ -618,9 +618,11 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Posing the Silent Question"
             , "tefo" : "InMe", "level" : 20
+                       , "mastery" : [ "Quiet Casting" ] 
          }
          , { "spell" : "Sight of Conflicting Motives"
             , "tefo" : "InMe", "level" : 15
+                       , "mastery" : [ "Quiet Casting" ] 
          }
       ]
       },
