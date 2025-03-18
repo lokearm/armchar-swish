@@ -25,6 +25,20 @@ both are currently incomplete and on hold.
 This has been removed from the main branch, but exist on the swish
 branch.  See also [CLI with Swish](docs/CLI%20with%20Swish.md).
 
+## Download
+
+This is still pre-release, but pre-compiled binaries can be
+downloaded the last workflow run. 
+
+1.  Choose the Actions tab (above).
+2.  Choose the Build workflow on the left hand side.
+3.  Choose the last (top of the list) run that is marked green.
+4.  Find the artifacts at the bottom of the page.  There should be
+    three of them, for Ubuntu, MacOS, and Windows.
+
+Unzipping the archive, you will find a single executable to run
+from the command line.
+
 ## Usage
 
 The following command builds a single character, in this case Eogan
@@ -46,3 +60,11 @@ Not the three directory options,
 + `LongSheet` for more verbose characters.
 
 The test files are included in the distribution.
+
+## Build
+
+If you want to build the software yourself, you should download the Haskell
+Platform.  To build and run the example above, use for instance,
+```
+cabal run armchar -- -c Data/eogan.json -o eogan.md  -t "Summer 1255" -T summer1255eogan.md
+```
