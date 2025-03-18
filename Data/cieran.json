@@ -335,6 +335,7 @@
       , "changes" : [ { "ability" : "Second Sight", "xp" : 2 } 
          , { "spell" : "Tearing the Fabric of Imaginem"
             , "tefo" : "PeVi", "level" : 13
+            , "mastery" : [ "Quiet Casting" ]
          }
       ]
       },
