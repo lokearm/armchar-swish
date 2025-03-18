@@ -27,6 +27,10 @@ copyright:           2022 Hans Georg Schaathun
 build-type:          Simple
 extra-source-files:  CHANGELOG.md, README.md
 
+source-repository head
+   type:     git
+   location: https://github.com/lokegamer/armchar-swish
+
 common deps
   -- documentation:       True
   other-modules:       ArM.Debug.NoTrace
@@ -35,7 +39,7 @@ common deps
                        , ArM.GameRules
                        , ArM.BasicIO
   -- other-extensions:
-  build-depends:       base >=4.13 
+  build-depends:       base >=4.13  && < 5.0
                        , scientific >= 0.3.7
                        , text >= 1.2.4.0
                        , containers >= 0.6
