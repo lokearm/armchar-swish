@@ -28,7 +28,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
-		+ [ ] mastery options
 	+ [ ] Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
