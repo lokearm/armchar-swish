@@ -31,6 +31,8 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Review Cieran's ingame advancements
 		+ [ ] Add aging rolls
 	+ [ ] Decrepitude
+		+ [ ] make old grog test file
+		+ [ ] verify
 	+ [ ] Compute Combat Stats
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
@@ -58,7 +60,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Read CharacterState from JSON
 	+ [ ] Pretty print spells for reference
 	+ [ ] Count xp total (ingame) for validationparallel
-	+ [ ] Process characters in 
 + [ ] Phase 5. Integer XP
 	+ [ ] handle Correspondent (which goes beyond cap)
 
