@@ -379,7 +379,7 @@ instance LongSheet CharacterSheet where
                , mag
                ]
          where c = addCastingScores db c'
-               mag | isMagus c' = OList [ artMD c, printGrimoire $ spellList c, 
+               mag | isMagus c' = OList [ artMD c, printFullGrimoire db $ spellList c, 
                                           toOList $ printCastingTotals c ]
                    | otherwise = OString "" 
 
@@ -434,6 +434,17 @@ spellMD s = OList [ OString $ show s
      where f "" = OList [] 
            f x = OString x
 
+-- | Render a spell trait in Markdown
+-- The result should normally be subject to indentOList to make an hierarchical
+-- list.
+spellDescMD :: (Spell,Maybe SpellRecord) -> OList
+spellDescMD (s,sr) = OList [ OString $ show s
+                  , OList [ masteryMD s, f $ spellTComment s ]
+                  , coreSpellRecordMD sr
+                  ]
+     where f "" = OList [] 
+           f x = OString x
+
 -- | Set all information from mastery on one line.
 -- This includes mastery score, xp, and mastery options.
 masteryMD :: Spell -> OList
@@ -455,7 +466,34 @@ printGrimoire xs = OList [ OString "## Grimoire"
                             ++ " levels of spells."
                          ]
 
+-- | Set a list of spells.
+-- Each spell is set using `spellMD`, and the result is indented as a
+-- hierarchical list.
+printFullGrimoire :: SpellDB -> [Spell] -> OList
+printFullGrimoire db xs = OList [ OString "## Grimoire"
+                         , OString ""
+                         , OList $ map (indentOList . spellDescMD) ys 
+                         , OString ""
+                         , OString $ "Total: " ++show (totalLevels xs)  
+                            ++ " levels of spells."
+                         ]
+   where ys = [ (x,spellLookup (traitKey x) db ) | x <- xs ]
+
 
 -- | Return the sum of levels in the list of spells.
 totalLevels :: [Spell] -> Int
 totalLevels = sum . map spellLevel
+
+coreSpellRecordMD :: Maybe SpellRecord -> OList
+coreSpellRecordMD Nothing = OList []
+coreSpellRecordMD sr = OList [ reqstr
+                             , OString (show $ rdt sp)
+                             , OString (show $ specialSpell sp)
+                             , OString (description sp)
+                             , OString (design sp)
+                             , OString (cite sp)
+                    ]
+   where req = techniqueReq sp ++ formReq sp
+         sp = fromJust sr
+         reqstr | req == [] = OList []
+                | otherwise = OString $ "Req. " ++ show req
