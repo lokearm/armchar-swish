@@ -1163,7 +1163,7 @@
                , "agingRollDie" : 4
                , "agingRoll" : -1
                , "agingComment" : "No aging."
-	    }
+	    } }
       ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"
@@ -1201,7 +1201,7 @@
                , "agingRollDie" : 0
                , "agingRoll" : -1
                , "agingComment" : "No aging."
-	    }
+	    } }
       ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1255"

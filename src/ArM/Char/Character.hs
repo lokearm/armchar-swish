@@ -155,7 +155,9 @@ prepareCharGen cs = validateCharGen sheet   -- Validate integrity of the advance
 
 -- | Infer an aging trait advancing the age according to the advancement
 agingYears :: AugmentedAdvancement -> AugmentedAdvancement
-agingYears x = x { inferredTraits = agePT (fromMaybe 0 $ augYears x): inferredTraits x }
+agingYears x | y > 0 = x { inferredTraits = agePT y: inferredTraits x }
+             | otherwise = x
+   where y = fromMaybe 0 $ augYears x
 
 -- | Return a `ProtoTrait` for aging advancing a number of years.
 agePT :: Int -- ^ Number of years
@@ -325,8 +327,8 @@ winterEvents c a | isWinter $ season a
                       | otherwise = aging $ fromJust pt
               lr | ageOb == Nothing = -1
                  | otherwise = longevityRitual $ fromJust ageOb
-              yl | ageOb == Nothing = 35
-                 | otherwise = ageLimit $ fromJust ageOb
+              yl | ageOb == Nothing = trace "No age object" 35
+                 | otherwise = trace ("yl> "++show ageOb) $ ageLimit $ fromJust ageOb
               warpingLR x | lr < 0 = x
                           | otherwise = x { inferredTraits = 
                                     defaultPT { other = Just "Warping", points = Just 1 }

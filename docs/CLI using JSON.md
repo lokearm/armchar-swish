@@ -30,7 +30,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [x] Bug fix: Aging validation always reports error
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
-		+ [ ] Add aging rolls
 		+ [ ] mastery options
 	+ [ ] Decrepitude
 		+ [ ] make old grog test file
