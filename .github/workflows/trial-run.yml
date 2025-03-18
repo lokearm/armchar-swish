@@ -1,0 +1,23 @@
+
+name: Trial Build
+
+on: 
+   push:
+     branches: [main]
+
+jobs:
+  linux:
+
+    runs-on: ${{ matrix.os }}
+    env:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Project
+        uses: ./.github/actions/build-linux
+        with:
+           compiler-version: ${{ matrix.compiler-version }}
+           python-version: ${{ matrix.python-version }}

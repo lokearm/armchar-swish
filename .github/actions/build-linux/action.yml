@@ -1,0 +1,31 @@
+name: 'Linux Build'
+
+description: Build the project on Linux
+
+inputs:
+  compiler-version:
+    default: 10
+  python-version:
+    required: false
+    default: '3.10'
+
+
+
+runs:
+    using: "composite"
+
+    steps:
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v5
+        with:
+          architecture: 'x64'
+
+      - name: Install prerequisites
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y 
+      - name: Build
+        shell: bash
+        run: |
+          cabal build armchar

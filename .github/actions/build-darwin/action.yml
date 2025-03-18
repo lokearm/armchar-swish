@@ -1,0 +1,55 @@
+name: 'Macos Build'
+
+description: Build the project on Macos
+
+inputs:
+  compiler-version:
+    default: 14
+  python-version:
+    required: false
+    default: '3.10'
+
+runs:
+    using: "composite"
+    steps:
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          architecture: 'x64'
+
+      - name: Install prerequisites
+        shell: bash
+        run: |
+          pip3 install -r requirements.txt
+          conan profile new default --detect
+          conan profile update settings.compiler.version=${{ inputs.compiler-version }} default
+          # brew install gettext
+          # brew link gettext --force
+      - name: Run conan
+        shell: bash
+        run: |
+          conan install . -s build_type=Release -if build -b missing
+      - name: Configure and build
+        shell: bash
+        run: |
+          cmake . -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+      - name: Make Python Distribution
+        shell: bash
+        run: |
+           mkdir -p dist/CosmoSimPy/CosmoSim
+           cp build/lib/CosmoSimPy.*.so dist/CosmoSimPy/CosmoSim/
+      - uses: kenchan0130/actions-system-info@master
+        id: system-info
+      - name: Archive Python link library
+        uses: actions/upload-artifact@v4
+        with:
+          name: CosmoSimPy-macos-${{ steps.system-info.outputs.release }}-python${{ inputs.python-version }}
+          path: build/lib/CosmoSimPy.*.so
+      - name: Test
+        shell: bash
+        run: |
+          pip3 install -r requirements.txt
+          cp build/lib/CosmoSimPy.*.so CosmoSimPy/CosmoSim
+          python3 CosmoSimPy/datagen.py
