@@ -443,9 +443,12 @@
       , "sourceQuality" : 2
       , "narrative" : "ReCo 43 + Hiccup + bookstand = 51. Leap of Homecoming + Frog's Legs"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
-         ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 35 }
+         ,  { "spell" : "Leap of Homecoming", "tefo" : "ReCo", "level" : 35 
+	    , "mastery" : [ "Still Casting" ] 
+	 }
          ,  { "spell" : "Gift of the Frog's Legs", "tefo" : "ReCo", "level" : 15
-	    , "mastery" : [ "Still Casting" ] }
+	    , "mastery" : [ "Still Casting" ] 
+	 }
       ]
       },
       { "mode" : "Lab work", "season" : "Winter 1230"
@@ -564,6 +567,7 @@
       , "narrative" : "Ward of Heat and Flames Parma to 51xp ; Lab Total 42 + Hiccup (6) + Familiar (4) = 52"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Ward of Heat and Flames"
+	    , "mastery" : [ "Fast Casting" ]
             , "tefo" : "ReIg", "level" : 25
          }
       ]
@@ -673,6 +677,7 @@
       , "narrative" : "Leap of Homecoming Touch (continued) "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Leap of Homecoming (touch)"
+	    , "mastery" : [ "Still Casting" ] 
             , "tefo": "ReCo", "level" : 40
          }
       ]
@@ -877,6 +882,7 @@
       , "narrative" : "CrIg Attack Spell. Parma to 57xp "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , {  "spell" : "Arrow of Fiery Ribbons"
+	    , "mastery" : [ "Penetration" ]
             , "tefo" : "CrIg", "level" : 30
          }
       ]
@@ -1058,6 +1064,7 @@
       , "narrative" : "no aging (-18); invent InHe25 Converse with Plant and Tree"
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Converse with Plant and Tree"
+	    , "mastery" : [ "Penetration" ] 
            , "tefo" : "InHe", "level" : 25
          }
          , { "reputation" : "Crafter of Magic", "locale" : "Hermetic", 
@@ -1102,11 +1109,14 @@
       , "narrative" : "InIm spells below ->  281½.  Lab total 71"
       , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
          , { "spell" : "Palm of Seeing (Sun duration)"
-            , "tefo" : "InIm", "level" : 20 }
+            , "tefo" : "InIm", "level" : 20
+           , "mastery" : [ "Penetration" ] }
          , { "spell" : "Brushstrokes Revealed"
-            , "tefo" : "InIm", "level" : 10 }
+            , "tefo" : "InIm", "level" : 10 
+           , "mastery" : [ "Penetration" ] }
          , { "spell" : "Prying Eyes"
-            , "tefo" : "InIm", "level" : 5 }
+            , "tefo" : "InIm", "level" : 5 
+           , "mastery" : [ "Penetration" ] }
       ]
       },
       { "mode" : "Reading", "season" : "Summer 1251"
