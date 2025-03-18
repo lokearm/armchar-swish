@@ -27,6 +27,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
 	+ [x] Flawless magic
+	+ [ ] Bug fix: Aging validation always reports error
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
 		+ [ ] Add aging rolls
