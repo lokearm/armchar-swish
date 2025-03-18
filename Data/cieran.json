@@ -271,9 +271,11 @@
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 }
           , { "spell" : "Sense the Nature of Vis"
              , "tefo" : "InVi", "level" : 5
+	     , "mastery" : [ "Quiet Casting" ]
           }
           , { "spell" : "Piercing the Magical Veil"
              , "tefo" : "InVi", "level" : 20
+	     , "mastery" : [ "Quiet Casting" ]
           }
       ]
       },
@@ -283,6 +285,7 @@
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Stone Tell of the Mind that Sits"
             , "tefo" : "InTe", "level" : 30
+           , "mastery" : [ "Penetration" ] 
          }
       ]
       },
@@ -293,12 +296,15 @@
          , { "confidence" : "Confidence", "points" : 2 }
          , { "spell" : "Spot the Presence of Vis"
            , "tefo" : "InVi", "level" : 5
+	     , "mastery" : [ "Quiet Casting" ]
            }
          , { "spell" : "Scales of Magical Weight"
            , "tefo" : "InVi", "level" : 5
+	     , "mastery" : [ "Quiet Casting" ]
            }
          , { "spell" : "Piercing the Faerie Veil"
            , "tefo" : "InVi", "level" : 20
+	     , "mastery" : [ "Quiet Casting" ]
            }
       ]
       },
@@ -403,6 +409,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
                     , { "spell" : "Sense of the Lingering Magic", 
                        "tefo" : "InVi", "level" : 30
+	     , "mastery" : [ "Penetration" ]
                     } 
       ]
       },
@@ -636,7 +643,9 @@
       , "sourceQuality" : 2
       , "narrative" : "Miner's Keen Eye (covenant service)  InTe lab total 52 (incl. Hiccup +7, Jimeny +3)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
-         , { "spell" : "Miner's Keen Eye", "tefo" : "InTe", "level" : 25 }
+         , { "spell" : "Miner's Keen Eye", "tefo" : "InTe", "level" : 25 
+           , "mastery" : [ "Penetration" ] 
+	 }
       ]
       },
       { "mode" : "Reading", "season" : "Autumn 1236"
@@ -650,6 +659,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
           , { "spell" : "Image from the Wizard Torn"
              , "tefo" : "ReIm", "level" : 30 
+           , "mastery" : [ "Quiet Casting" ] 
           }
       ]
       },
