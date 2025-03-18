@@ -45,7 +45,7 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import ArM.Helper
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- | Apply advancement
 -- This function is generic, and used for both chargen and ingame 
@@ -98,7 +98,7 @@ flawlessSpells' (y:ys) = f y:flawlessSpells' ys
 
 -- | Does the character have Flawless Magic?
 hasFlawless :: CharacterState -> Bool
-hasFlawless c | ttrace fms == [] = False
+hasFlawless c | fms == [] = False
               | otherwise = True
     where ts = vfList $ filterCS c
           fms = filter ((=="Flawless Magic") . vfname ) ts
