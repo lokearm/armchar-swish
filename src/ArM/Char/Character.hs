@@ -368,7 +368,6 @@ stepCharacter c = c { state = Just cs
                             , pastAdvancement = (a:xs)
                             , futureAdvancement = ys 
                             }
-            where y = head $ futureAdvancement c
-                  ys = tail $ futureAdvancement c
+            where (y:ys) = futureAdvancement c
                   xs = pastAdvancement c
                   (a,cs) = applyInGameAdv y (fromJust $ state c)

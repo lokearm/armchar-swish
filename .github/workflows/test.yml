@@ -67,6 +67,17 @@ jobs:
       - name: Build
         run: cabal build all
 
+      - name: Install
+        run: |
+          mkdir dist
+          cabal install armchar--install-method=copy --overwrite-policy=always --installdir=dist
+          ls -l dist
+      - name: Archive Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: armchar
+          path: dist/armchar
+
       - name: Run tests
         run: cabal test all
 
