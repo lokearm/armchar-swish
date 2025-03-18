@@ -328,7 +328,7 @@ winterEvents c a | isWinter $ season a
               lr | ageOb == Nothing = -1
                  | otherwise = longevityRitual $ fromJust ageOb
               yl | ageOb == Nothing = trace "No age object" 35
-                 | otherwise = trace ("yl> "++show ageOb) $ ageLimit $ fromJust ageOb
+                 | otherwise = ageLimit $ fromJust ageOb
               warpingLR x | lr < 0 = x
                           | otherwise = x { inferredTraits = 
                                     defaultPT { other = Just "Warping", points = Just 1 }

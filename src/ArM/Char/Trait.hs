@@ -349,11 +349,13 @@ instance ToJSON Trait
 -- == Show instances
 
 instance Show VF  where
-   show a = vfname a ++ f sp 
-          ++ " (" ++ show (vfcost a) ++ ")"
+   show a = vfname a ++ f sp ++ " (" ++ cst ++ ")"
       where sp = vfDetail a
             f "" = ""
             f x = " [" ++ x ++ "]"
+            cst | m == 1 = show (vfcost a) 
+                | otherwise = show (vfcost a) ++ "x" ++ show m
+            m = vfMultiplicity a
 instance Show Confidence  where
    show a = cname a ++ ": " ++ show (cscore a) ++ " (" ++ show (cpoints a) ++ ")"
 instance Show OtherTrait  where
@@ -619,6 +621,7 @@ instance TraitLike PTrait where
 instance TraitLike VF where
     traitKey x = VFKey (vfname x) (vfDetail x)
     toTrait = VFTrait
+    advanceTrait a x = x { vfMultiplicity = vfMultiplicity x + (fromMaybe 1 $ multiplicity a) }
 instance TraitLike Ability where
     traitKey x = AbilityKey $ abilityName x
     toTrait = AbilityTrait

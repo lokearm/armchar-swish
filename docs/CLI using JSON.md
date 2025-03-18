@@ -26,20 +26,19 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
-	+ [x] Flawless magic
-	+ [x] Bug fix: Aging validation always reports error
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
 		+ [ ] mastery options
 	+ [ ] Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
+	+ [ ] Sort Characteristics
 	+ [ ] Compute Combat Stats
 		+ [ ] CSV weapons table
 		+ [ ] Weapon type
 		+ [ ] Characters may have equipment
-	+ [x] Pretty print Aging in advancement log
 	+ [ ] Great/Poor Characteristic (current warning)
+	+ [ ] Handle multiple instances of the same virtue/flaw
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
@@ -63,7 +62,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 4.  CharacterState in JSON
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
-	+ [ ] Pretty print spells for reference
 	+ [ ] Count xp total (ingame) for validationparallel
 + [ ] Phase 5. Integer XP
 	+ [ ] handle Correspondent (which goes beyond cap)
