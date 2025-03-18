@@ -121,6 +121,12 @@ class Markdown a where
                 -> OList      -- ^ list of lines for output
      printMDaug _ = printMD
 
+instance Markdown a => Markdown (Maybe a) where
+   printMD Nothing = OList []
+   printMD (Just x) = printMD x
+   printMDaug _ Nothing = OList []
+   printMDaug db (Just x) = printMDaug db x
+
 instance Markdown FieldValue where
    printMD  = OString . show
 
@@ -137,11 +143,6 @@ instance Markdown Trait where
 instance Markdown ProtoTrait where
    printMD = OString . show 
 
-instance Markdown a => Markdown (Maybe a) where
-   printMD Nothing = OList []
-   printMD (Just x) = printMD x
-   printMDaug _ Nothing = OList []
-   printMDaug db (Just x) = printMDaug db x
 
 -- | Render a list of objects as a comma-separated list on a single
 -- line/paragraph.  This works for any instance of `Show`.
@@ -153,12 +154,39 @@ showlistMD s xs = OList [ OString s
 
 -- | Render a Maybe String as an OList.
 -- Nothing becomes an empty OList and a Just object becomes a single line.
+-- Note that this is different from the generic instance for Maybe, because
+-- of the difficulties making an instance for String.
 stringMD :: Maybe String -> OList
 stringMD Nothing = OList []
 stringMD (Just x) = OString x
 
 -- |
--- Markdown for the Character types
+-- - Markdown for the Character types
+-- 
+-- The `CharacterConcept` is set as a description list.
+-- 
+-- This may cause problems with long text values.  It would be worth distinguishing
+-- between more fields and use a differfent formatting where long text is expected.
+
+instance Markdown Character where
+   printMD  c = OList
+            [ bs 
+            , designMD c
+            , chargenMD c
+            , advancementMD c
+            ]
+       where 
+            bs | isNothing (state c ) = s1
+               | otherwise = OList [ s1, s2 ]
+            s1 = printMD $ concept  c 
+            s2 = printMD $ state  c 
+   printMDaug db c = OList
+            [ baseSheet db c
+            , designMD c
+            , chargenMD c
+            , advancementMD c
+            ]
+
 
 instance Markdown CharacterConcept where
    printMD c = OList
@@ -214,8 +242,9 @@ instance Markdown CharacterState where
        ]
 
 -- |
--- == Markdown for Certain Traits
+-- == Markdown for Age, Confidence, Warping, and Decreptitude
 
+-- | Print age, confidence, warping, and decrepitude as bullt points
 briefTraits :: CharacterSheet -> OList
 briefTraits c = OList
           [ printMD (ageObject c)
@@ -223,6 +252,8 @@ briefTraits c = OList
           , OList $ map printMD $ otherList c
           -- , OList $ map printMD $ csTraits c
           ]
+
+-- | Print a table of casting totals for every TeFo combination.
 printCastingTotals :: CharacterSheet -> [String]
 printCastingTotals c 
              | Magus /= csType c = []
@@ -250,62 +281,7 @@ instance Markdown OtherTrait where
              "+ **" ++ trait c ++ "**: " ++ show (otherScore c) ++ " ("
              ++ show (otherExcess c) ++ ")" 
 
- 
-instance Markdown Character where
-   printMD  c = OList
-            [ bs 
-            , designMD c
-            , chargenMD c
-            , advancementMD c
-            ]
-       where 
-            bs | isNothing (state c ) = s1
-               | otherwise = OList [ s1, s2 ]
-            s1 = printMD $ concept  c 
-            s2 = printMD $ state  c 
-   printMDaug db c = OList
-            [ baseSheet db c
-            , designMD c
-            , chargenMD c
-            , advancementMD c
-            ]
 
--- |
--- == Pretty print arts
-
--- | Render art scores as a table
-artMD :: CharacterSheet
-      -> OList
-artMD c | isMagus c = toOList $ artMD' c
-        | otherwise = OList []
-
-isMagus :: CharacterSheet -> Bool
-isMagus c = csType c == Magus
-
--- | Render art scores as a table
-artMD' :: CharacterSheet
-      -> [ String ]
-artMD' = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
-   where h1 = "| Art  | Score | XP |" 
-         h2 = "| -: | -: | -: |"
-
--- | List of arts defined in *Ars Magica*
-arts :: [ String ]
-arts = [ "Creo", "Intellego", "Muto", "Perdo", "Rego",
-         "Animal", "Aquam", "Auram", "Corpus", "Herbam", 
-         "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
-
--- | Map assigning sort index to each Art
-sMap :: M.Map String Int 
-sMap = M.fromList $ zip arts [1..15]
-
--- | Sort a list of arts in canonical order
-sortArts :: [Art] -> [Art]
-sortArts = sortOn ( fromMaybe 0 . ( \ x -> M.lookup x sMap ) . artName)
-
--- | Auxiliary for `artMD`, rendering a single line in the table
-artLine :: Art -> String
-artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
 
 -- |
 -- = Advancements
@@ -362,8 +338,16 @@ instance Markdown Advancement where
 -- = Long Sheet Format
 
 
+-- | The `LongSheet` class is similar to `Markdown`, but is
+-- intended to make a longer output with both more space and more
+-- verbose text.  
+--
+-- In the current impplementation, it is only the character state
+-- which is made longer, by setting abilities and spells as bullet
+-- points instead of a single paragraph for the full list.
 class Markdown a => LongSheet a where
-   printSheetMD :: SpellDB
+   -- | By default `printSheetMD` is identical to `printMDaug`
+   printSheetMD :: SpellDB -- ^ spell database
                 -> a       -- ^ object to render
                 -> OList   -- ^ list of lines for output
    printSheetMD = printMDaug
@@ -399,19 +383,59 @@ instance LongSheet CharacterSheet where
                                           toOList $ printCastingTotals c ]
                    | otherwise = OString "" 
 
+-- |
+-- == Pretty print arts
+
+-- | Render art scores as a table
+artMD :: CharacterSheet
+      -> OList
+artMD c | isMagus c = toOList $ artMD' c
+        | otherwise = OList []
+
+isMagus :: CharacterSheet -> Bool
+isMagus c = csType c == Magus
+
+-- | Render art scores as a table
+artMD' :: CharacterSheet
+      -> [ String ]
+artMD' = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
+   where h1 = "| Art  | Score | XP |" 
+         h2 = "| -: | -: | -: |"
+
+-- | List of arts defined in *Ars Magica*
+arts :: [ String ]
+arts = [ "Creo", "Intellego", "Muto", "Perdo", "Rego",
+         "Animal", "Aquam", "Auram", "Corpus", "Herbam", 
+         "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
+
+-- | Map assigning sort index to each Art
+sMap :: M.Map String Int 
+sMap = M.fromList $ zip arts [1..15]
+
+-- | Sort a list of arts in canonical order
+sortArts :: [Art] -> [Art]
+sortArts = sortOn ( fromMaybe 0 . ( \ x -> M.lookup x sMap ) . artName)
+
+-- | Auxiliary for `artMD`, rendering a single line in the table
+artLine :: Art -> String
+artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
+
+
+-- |
+-- == Render Spells
 
 -- | Render a spell trait in Markdown
 -- The result should normally be subject to indentOList to make an hierarchical
 -- list.
 spellMD :: Spell -> OList
 spellMD s = OList [ OString $ show s
-                  , OList
-                    [ masteryMD s
-                    , f $ spellTComment s
-                    ]
+                  , OList [ masteryMD s, f $ spellTComment s ]
                   ]
      where f "" = OList [] 
            f x = OString x
+
+-- | Set all information from mastery on one line.
+-- This includes mastery score, xp, and mastery options.
 masteryMD :: Spell -> OList
 masteryMD s | 0 == masteryScore s && 0 == spellExcessXP s = OList []
             | otherwise = OString
@@ -419,6 +443,9 @@ masteryMD s | 0 == masteryScore s && 0 == spellExcessXP s = OList []
                           ++ " (" ++ show (spellExcessXP s) ++ "xp) "
                           ++ show (masteryOptions s)
 
+-- | Set a list of spells.
+-- Each spell is set using `spellMD`, and the result is indented as a
+-- hierarchical list.
 printGrimoire :: [Spell] -> OList
 printGrimoire xs = OList [ OString "## Grimoire"
                          , OString ""
@@ -429,7 +456,6 @@ printGrimoire xs = OList [ OString "## Grimoire"
                          ]
 
 
+-- | Return the sum of levels in the list of spells.
 totalLevels :: [Spell] -> Int
 totalLevels = sum . map spellLevel
-
-

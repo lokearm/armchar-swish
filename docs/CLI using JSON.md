@@ -26,7 +26,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
-	+ [ ] Validate Eogan build
 	+ [ ] Flawless magic
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
