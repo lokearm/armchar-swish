@@ -104,17 +104,29 @@
          , { "ability" : "Penetration", "spec" : "Rego", "xp": 5 }
          , { "ability" : "Bows", "spec" : "Longbow", "xp": 30 }
          , { "ability" : "Thrown Weapon", "spec" : "Dart", "xp": 5 }
-         , { "spell" : "Wound without Cause", "tefo" : "PeCo", "level" : 20  }
-         , { "spell" : "Spasms of the Uncontrolled Body", "tefo" : "ReCo", "level" : 5  }
-         , { "spell" : "Lamp till Morning without Flame", "tefo" : "CrIg", "level" : 15  }
-         , { "spell" : "Veil of Invisibility", "tefo" : "PeIm", "level" : 20  }
-         , { "spell" : "Clarity of Public Speech", "tefo" : "CrIm", "level" : 10  }
-         , { "spell" : "Aura of Ennobled Presence", "tefo" : "MuIm", "level" : 10  }
-         , { "spell" : "Trust of the Childlike Faith", "tefo" : "PeMe", "level" : 10  }
-         , { "spell" : "Arrow of Peaceful Slumber", "tefo" : "ReMe", "level" : 15  }
-         , { "spell" : "Touch of Slumber", "tefo" : "ReMe", "level" : 5  }
-         , { "spell" : "Obliteration of the Metallic Barrier", "tefo" : "PeTe", "level" : 20  }
-         , { "spell" : "End of the Mighty Castle", "tefo" : "PeTe", "level" : 20  }
+         , { "spell" : "Wound without Cause", "tefo" : "PeCo", "level" : 20  
+           , "mastery" : [ "Penetration" ] }
+         , { "spell" : "Spasms of the Uncontrolled Body", "tefo" : "ReCo", "level" : 5  
+           , "mastery" : [ "Penetration" ] }
+         , { "spell" : "Lamp till Morning without Flame", "tefo" : "CrIg", "level" : 15  
+           , "mastery" : [ "Still Casting" ] 
+           }
+         , { "spell" : "Veil of Invisibility", "tefo" : "PeIm", "level" : 20
+           , "mastery" : [ "Quite Casting" ] }
+         , { "spell" : "Clarity of Public Speech", "tefo" : "CrIm", "level" : 10
+           , "mastery" : [ "Penetration" ] }
+         , { "spell" : "Aura of Ennobled Presence", "tefo" : "MuIm", "level" : 10 
+                       , "mastery" : [ "Quiet Casting" ] }
+         , { "spell" : "Trust of the Childlike Faith", "tefo" : "PeMe", "level" : 10
+           , "mastery" : [ "Penetration" ] }
+         , { "spell" : "Arrow of Peaceful Slumber", "tefo" : "ReMe", "level" : 15
+           , "mastery" : [ "Penetration" ] }
+         , { "spell" : "Touch of Slumber", "tefo" : "ReMe", "level" : 5
+           , "mastery" : [ "Penetration" ] }
+         , { "spell" : "Obliteration of the Metallic Barrier", "tefo" : "PeTe", "level" : 20
+           , "mastery" : [ "Penetration" ] }
+         , { "spell" : "End of the Mighty Castle", "tefo" : "PeTe", "level" : 20
+           , "mastery" : [ "Penetration" ] }
          ] 
       }
    ],
@@ -412,9 +424,11 @@
                     , { "ability" : "Hermes Lore", "xp" : 1 } 
                     , { "spell" : "Circle of Undisturbed Rest"
                        , "tefo" : "ReIm", "level" : 10
+                       , "mastery" : [ "Quiet Casting" ] 
                     } 
                     , { "spell" : "Willful Sidestep"
                        , "tefo" : "ReIm", "level" : 20
+                       , "mastery" : [ "Quiet Casting" ]
                     } 
       ]
       },
@@ -437,9 +451,11 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Restoration of the Defiled Body"
            , "tefo" : "CrCo", "level" : 25
+           , "mastery" : [ "Penetration" ]
            }
          , { "spell" : "Improved Purification of the Festering Wounds"
            , "tefo" : "CrCo", "level" : 25
+           , "mastery" : [ "Penetration" ]
            }
       ]
       },
@@ -726,6 +742,7 @@
          }
          , { "spell" : "Disguise of the Transformed Image"
             , "tefo" : "MuIm", "level" : 15
+            , "mastery" : [ "Quite Casting" ] 
          }
       ]
       },
@@ -987,7 +1004,9 @@
          , { "spell" : "Ogre's Stench"
             , "tefo" : "MuIm", "level" : 25 }
          , { "spell" : "Aura of the Trustful Merchant"
-            , "tefo" : "MuIm", "level" : 10 }
+            , "tefo" : "MuIm", "level" : 10 
+            , "mastery" : [ "Quiet Casting" ]
+         }
 
       ]
       },
