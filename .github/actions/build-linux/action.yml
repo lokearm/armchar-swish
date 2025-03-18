@@ -2,8 +2,6 @@ name: 'Linux Build'
 
 description: Build the project on Linux
 
-inputs:
-
 runs:
     using: "composite"
 
