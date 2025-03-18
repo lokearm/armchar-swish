@@ -88,13 +88,13 @@ flawlessSpells True  x = x { inferredTraits = a ++ b }
 -- Auxiliary for `flawlessSpells`
 flawlessSpells' :: [ProtoTrait] -> [ProtoTrait]
 flawlessSpells' [] = []
-flawlessSpells' (y:ys) = f y:flawlessSpells' ys
-    where f x | isNothing (spell x) = x
-              | otherwise = defaultPT { spell = spell x, level = level x
+flawlessSpells' (x:xs) | isNothing (spell x) = ys
+                       | otherwise = y:ys
+    where ys = flawlessSpells' xs
+          y = defaultPT { spell = spell x, level = level x
                                       , tefo = tefo x
                                       , flawless = Just True
-              }
-
+                                      }
 
 -- | Does the character have Flawless Magic?
 hasFlawless :: CharacterState -> Bool
