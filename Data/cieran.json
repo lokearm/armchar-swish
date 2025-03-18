@@ -664,6 +664,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
          , { "spell" : "Eyes of the Eagle (touch)"
             , "tefo" : "InIm", "level" : 30 
+	    , "mastery" : [ "Quiet Casting" ]
          }
          ]
       },
