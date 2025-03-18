@@ -3,13 +3,6 @@ name: 'Linux Build'
 description: Build the project on Linux
 
 inputs:
-  compiler-version:
-    default: 10
-  python-version:
-    required: false
-    default: '3.10'
-
-
 
 runs:
     using: "composite"
