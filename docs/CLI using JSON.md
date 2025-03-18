@@ -34,6 +34,9 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] make old grog test file
 		+ [ ] verify
 	+ [ ] Compute Combat Stats
+		+ [ ] CSV weapons table
+		+ [ ] Weapon type
+		+ [ ] Characters may have equipment
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
