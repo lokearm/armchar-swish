@@ -379,7 +379,7 @@ instance LongSheet CharacterSheet where
                , mag
                ]
          where c = addCastingScores db c'
-               mag | isMagus c' = OList [ artMD c, printGrimoire $ spellList c, 
+               mag | isMagus c' = OList [ artMD c, printFullGrimoire db $ spellList c, 
                                           toOList $ printCastingTotals c ]
                    | otherwise = OString "" 
 
@@ -424,12 +424,14 @@ artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show
 -- |
 -- == Render Spells
 
+
 -- | Render a spell trait in Markdown
 -- The result should normally be subject to indentOList to make an hierarchical
 -- list.
-spellMD :: Spell -> OList
-spellMD s = OList [ OString $ show s
+spellDescMD :: (Spell,Maybe SpellRecord) -> OList
+spellDescMD (s,sr) = OList [ OString $ show s
                   , OList [ masteryMD s, f $ spellTComment s ]
+                  , coreSpellRecordMD sr
                   ]
      where f "" = OList [] 
            f x = OString x
@@ -443,6 +445,52 @@ masteryMD s | 0 == masteryScore s && 0 == spellExcessXP s = OList []
                           ++ " (" ++ show (spellExcessXP s) ++ "xp) "
                           ++ show (masteryOptions s)
 
+
+-- | Set a list of spells.
+-- Each spell is set using `spellMD`, and the result is indented as a
+-- hierarchical list.
+printFullGrimoire :: SpellDB -> [Spell] -> OList
+printFullGrimoire db xs = OList [ OString "## Grimoire"
+                         , OString ""
+                         , OList $ map (indentOList . spellDescMD) ys 
+                         , OString ""
+                         , OString $ "Total: " ++show (totalLevels xs)  
+                            ++ " levels of spells."
+                         ]
+   where ys = [ (x,spellLookup (traitKey x) db ) | x <- xs ]
+
+
+-- | Return the sum of levels in the list of spells.
+totalLevels :: [Spell] -> Int
+totalLevels = sum . map spellLevel
+
+coreSpellRecordMD :: Maybe SpellRecord -> OList
+coreSpellRecordMD Nothing = OList []
+coreSpellRecordMD sr = OList [ reqstr
+                             , OString $ (show $ rdt sp)
+                               ++ (foldl (++) "" $ map (", "++) $  specialSpell sp)
+                             , os (description sp)
+                             , os (design sp)
+                             , os (cite sp)
+                    ]
+   where req = techniqueReq sp ++ formReq sp
+         sp = fromJust sr
+         os "" = OList []
+         os x = trace x $ OString x
+         reqstr | req == [] = OList []
+                | otherwise = OString $ "Req. " ++ show req
+
+{-
+-- | Render a spell trait in Markdown
+-- The result should normally be subject to indentOList to make an hierarchical
+-- list.
+spellMD :: Spell -> OList
+spellMD s = OList [ OString $ show s
+                  , OList [ masteryMD s, f $ spellTComment s ]
+                  ]
+     where f "" = OList [] 
+           f x = OString x
+
 -- | Set a list of spells.
 -- Each spell is set using `spellMD`, and the result is indented as a
 -- hierarchical list.
@@ -454,8 +502,4 @@ printGrimoire xs = OList [ OString "## Grimoire"
                          , OString $ "Total: " ++show (totalLevels xs)  
                             ++ " levels of spells."
                          ]
-
-
--- | Return the sum of levels in the list of spells.
-totalLevels :: [Spell] -> Int
-totalLevels = sum . map spellLevel
+-}
