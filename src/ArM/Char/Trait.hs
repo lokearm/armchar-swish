@@ -86,6 +86,7 @@ data ProtoTrait = ProtoTrait
     , tefo :: Maybe String     -- ^ technique/form of a spell
     , locale :: Maybe String   -- ^ locale/domain of a reputation
     , mastery :: Maybe [ String ]   -- ^ mastery options for a spell
+    , flawless :: Maybe Bool   -- ^ for a spell, if flawless magic applies
     , score :: Maybe Int       -- ^ new score to replace the old one
     , bonusScore :: Maybe Int  -- ^ bonus from puissant; should also be used on initial 
                                -- characteristics for the bonus from Strong Faerie Blood
@@ -125,6 +126,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , tefo = Nothing
                              , locale = Nothing
                              , mastery = Nothing
+                             , flawless = Nothing
                              , score = Nothing
                              , bonusScore = Nothing
                              , multiplyXP = Nothing
@@ -159,6 +161,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "tefo"
         <*> v .:?  "locale"
         <*> v .:?  "mastery"
+        <*> v .:?  "flawless"
         <*> v .:?  "score"
         <*> v .:?  "bonusScore"
         <*> v .:?  "multiplyXP"
@@ -485,11 +488,17 @@ instance TraitType Spell where
                       , masteryScore = s
                       , masteryOptions = maybeList (mastery p)
                       , spellExcessXP = y
-                      , spellMultiplier = fromMaybe 1.0 $ multiplyXP p
+                      , spellMultiplier = m
                       , spellCastingScore = Nothing
                       , spellTComment = fromMaybe "" $ comment p
                       }
-                (s,y) = getAbilityScore (xp p)
+                (s',y) = getAbilityScore (xp p)
+                fless = fromMaybe False $ flawless p
+                m | fless = 2
+                  | otherwise = fromMaybe 1.0 $ multiplyXP p
+                s | s' > 0 = s'
+                  | fless = 1
+                  | otherwise = 0
 instance TraitType Reputation where
     getTrait (ReputationTrait x) = Just x
     getTrait _ = Nothing
@@ -636,9 +645,16 @@ instance TraitLike Art where
 instance TraitLike Spell where
     traitKey x = SpellKey (spellFoTe x) (spellLevel x) (spellName x ) 
     toTrait = SpellTrait
-    advanceTrait a x = updateSpellXP y $ updateSpellMastery ms x
-      where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
+    advanceTrait a x = updateSpellXP y           -- add XP and update score
+                     $ updateSpellMastery ms     -- add new mastery options
+                     $ um (multiplyXP a)         -- update multiplier 
+                     x
+      -- where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
+      where y = calcXP m (spellExcessXP x) (xp a) 
+            m = spellMultiplier x
             ms = maybeList $ mastery a
+            um Nothing ab = ab 
+            um abm ar = ar { spellMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Reputation where
     traitKey x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
@@ -650,6 +666,8 @@ instance TraitLike Characteristic where
     advanceTrait a =  agingChar apts . newCharScore newscore
        where newscore = score a
              apts = agingPts a
+
+-- | Add aging points to a characteristic and reduce it if necessary
 agingChar  :: Maybe Int -> Characteristic -> Characteristic
 agingChar  Nothing x = x
 agingChar  (Just pt) x 
@@ -658,6 +676,9 @@ agingChar  (Just pt) x
     where newpoints = pt + agingPoints x
           sc = charScore x
           asc = abs sc
+
+-- | Change the score of a characteristic.
+-- This applies typically as a result of CrMe/CrCo rituals.
 newCharScore  :: Maybe Int -> Characteristic -> Characteristic
 newCharScore  Nothing x = x
 newCharScore  (Just s) x = x { charScore = s }
