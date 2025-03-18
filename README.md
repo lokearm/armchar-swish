@@ -11,15 +11,17 @@ essentially
 This provides a CLI tool to produce character sheets and validation
 reports from the character defined in JSON.
 
+
+Further documentation on the
+[CLI using JSON](docs/CLI%20using%20JSON.md)
+is found in the docs hierarchy.  
+Sample character files are found in the `Data` subdirectory.
+
+
 Previous attempts used data files in RDF and the Swish library.
 One problem with this approach is the computational complexity
 of logic inference on RDF graphs.  The code includes attempts
 on both a client/server solution and a standalone CLI tool, but
 both are currently incomplete and on hold.
-
-Further documentation is found in the docs hierarchy.  
-
-+ [CLI using JSON](docs/CLI%20using%20JSON.md)
-+ [CLI with Swish](docs/CLI%20with%20Swish.md)
-
-Sample character files are found in the `Data` subdirectory.
+This has been removed from the main branch, but exist on the swish
+branch.  See also [CLI with Swish](docs/CLI%20with%20Swish.md).
