@@ -1037,7 +1037,9 @@
       , "narrative" : " 250xp incl. affinity and correspondent; MuIm Lab total 62.  Warping roll 3"
       , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
          , { "spell" : "Ogre's Stench"
-            , "tefo" : "MuIm", "level" : 25 }
+            , "tefo" : "MuIm", "level" : 25
+	    , "mastery" : [ "Quiet Casting" ]
+	    }
          , { "spell" : "Aura of the Trustful Merchant"
             , "tefo" : "MuIm", "level" : 10 
             , "mastery" : [ "Quiet Casting" ]
@@ -1199,9 +1201,11 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Opening the Intangible Tunnel"
             , "tefo" : "ReVi", "level" : 20
+	    , "mastery" : [ "Quiet Casting" ]
          }
          , { "spell" : "The Minute of Reckoning"
             , "tefo" : "ReVi", "level" : 5
+	    , "mastery" : [ "Quiet Casting" ]
          }
       ]
       },
