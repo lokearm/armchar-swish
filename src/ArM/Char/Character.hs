@@ -45,7 +45,7 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import ArM.Helper
 
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- | Apply advancement
 -- This function is generic, and used for both chargen and ingame 
@@ -76,6 +76,34 @@ addInferredTraits a = defaultAA { inferredTraits = f a
               | isWinter $ season a = Just 1
               | otherwise = Nothing
 
+-- | Inferred spell traits if Flawless Magic applies
+flawlessSpells :: Bool -> AugmentedAdvancement -> AugmentedAdvancement
+flawlessSpells False x = x
+flawlessSpells True  x = x { inferredTraits = a ++ b }
+     where a = flawlessSpells' $ changes $ advancement x
+           b = inferredTraits x
+          
+
+-- | Inferred spell traits implementing Flawless Magic.
+-- Auxiliary for `flawlessSpells`
+flawlessSpells' :: [ProtoTrait] -> [ProtoTrait]
+flawlessSpells' [] = []
+flawlessSpells' (y:ys) = f y:flawlessSpells' ys
+    where f x | isNothing (spell x) = x
+              | otherwise = defaultPT { spell = spell x, level = level x
+                                      , tefo = tefo x
+                                      , flawless = Just True
+              }
+
+
+-- | Does the character have Flawless Magic?
+hasFlawless :: CharacterState -> Bool
+hasFlawless c | ttrace fms == [] = False
+              | otherwise = True
+    where ts = vfList $ filterCS c
+          fms = filter ((=="Flawless Magic") . vfname ) ts
+
+
 -- | Get the virtues and flaws from a list of ProtoTrait objects, and convert them to
 -- VF objects
 getVF :: [ ProtoTrait ] -> [ VF ]
@@ -85,6 +113,10 @@ getVF (p:ps) | isJust (virtue p) = g p:getVF ps
              | otherwise = getVF ps
     where g = fromJust . computeTrait
 
+
+-- | Sort the `inferredTraits` field of an `AugmentedAdvancement`
+sortInferredTraits :: AugmentedAdvancement -> AugmentedAdvancement
+sortInferredTraits x = x { inferredTraits = sortTraits $ inferredTraits x }
 
 -- |
 -- = Char Gen
@@ -116,6 +148,7 @@ prepareCharGen cs = validateCharGen sheet   -- Validate integrity of the advance
                   . sortInferredTraits      -- Restore sort order on inferred traits
                   . agingYears              -- add years of aging as an inferred trait
                   . initialLimits vfs       -- add XP limits etc to the advancement
+                  . flawlessSpells (hasFlawless cs)
                   . addInferredTraits       -- infer traits from virtues and flaws
           where vfs = vfList sheet
                 sheet = filterCS cs
@@ -267,11 +300,13 @@ applyInGameAdv a cs = applyAdvancement ( prepareAdvancement cs a ) cs
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
-prepareAdvancement c = validate . inferSQ . winterEvents c . addInferredTraits
+prepareAdvancement c = validate 
+                     . sortInferredTraits   -- sort inferred traits
+                     . inferSQ
+                     . winterEvents c 
+                     . flawlessSpells (hasFlawless c)
+                     . addInferredTraits
 
--- | Sort the `inferredTraits` field of an `AugmentedAdvancement`
-sortInferredTraits :: AugmentedAdvancement -> AugmentedAdvancement
-sortInferredTraits x = x { inferredTraits = sortTraits $ inferredTraits x }
 
 -- | Handle aging and some warping for Winter advancements.
 -- Non-winter advancements are left unmodified.
@@ -279,8 +314,7 @@ winterEvents :: CharacterState       -- ^ Current Character State
              -> AugmentedAdvancement -- ^ Advancement 
              -> AugmentedAdvancement -- ^ modified Advancement
 winterEvents c a | isWinter $ season a  
-                   = sortInferredTraits   -- sort inferred traits
-                   $ validateAging (y >= yl) agingOb  -- ^ check for aging roll is made if required
+                   = validateAging (y >= yl) agingOb  -- ^ check for aging roll is made if required
                    $ addYear agingOb                  -- ^ add a yer of aging
                    $ warpingLR a                      -- ^ add warping point for LR
                  | otherwise = a

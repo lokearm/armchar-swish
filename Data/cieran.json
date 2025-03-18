@@ -683,13 +683,13 @@
       ]
       },
       { "mode" : "Reading", "season" : "Winter 1239"
-      , "sourceQuality" : 12
+      , "sourceQuality" : 6
       , "narrative" : "SQ 6 doubled by flawless magic. Aegis of the Heath Mastery. Learns Safe Casting."
       , "changes" : [ 
           { "spell" : "Aegis of the Hearth"
             , "tefo" : "ReVi", "level" : 30 
             , "masteryOption" : [ "Safe Casting" ]
-            , "xp" : 12
+            , "xp" : 6
          }
       ]
       },

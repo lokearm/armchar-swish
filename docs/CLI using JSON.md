@@ -26,10 +26,11 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
-	+ [ ] Flawless magic
+	+ [x] Flawless magic
 	+ [ ] Pretty print grimoire with details from DB
 	+ [ ] Review Cieran's ingame advancements
 		+ [ ] Add aging rolls
+		+ [ ] mastery options
 	+ [ ] Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
@@ -37,6 +38,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] CSV weapons table
 		+ [ ] Weapon type
 		+ [ ] Characters may have equipment
+	+ [ ] Pretty print Aging in advancement log
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character

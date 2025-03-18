@@ -601,7 +601,7 @@ instance TraitLike Trait where
     advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
-    advanceTrait a (AgeTrait x) = trace ("trait>"++show x) $ AgeTrait $ advanceTrait a x
+    advanceTrait a (AgeTrait x) = AgeTrait $ advanceTrait a x
     toTrait = id
 
 updateBonus :: Maybe Int -> Ability -> Ability
@@ -742,7 +742,7 @@ instance TraitLike ProtoTrait where
                       , cscore = fromMaybe 0 (score p)
                       , cpoints = fromMaybe 0 (points p) }
       | other p /= Nothing = OtherTraitTrait $ fromJust $ computeTrait p
-      | aging p /= Nothing = trace (show $ aging p) $ AgeTrait $ trace "between" $ fromJust $ computeTrait p
+      | aging p /= Nothing = AgeTrait $ fromJust $ computeTrait p
       | otherwise  = error "No Trait for this ProtoTrait" 
 
 
@@ -835,7 +835,7 @@ instance TraitLike Age where
 
 
 instance TraitType Age where
-    getTrait (AgeTrait x) = trace "Age getTrait" $ Just x
+    getTrait (AgeTrait x) = Just x
     getTrait _ = Nothing
     computeTrait p
        | isNothing (aging p) = Nothing
