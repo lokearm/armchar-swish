@@ -207,9 +207,11 @@
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } 
            , { "spell" : "Fist of Demon's Oblivion"
               , "tefo" : "PeVi", "level" : 5
+           , "mastery" : [ "Penetration" ] 
               }
            , { "spell" : "Fist of Demon's Oblivion"
               , "tefo" : "PeVi", "level" : 15
+           , "mastery" : [ "Penetration" ] 
               }
           ]
       },
@@ -523,10 +525,12 @@
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Circle of Demon's Oblivion"
             , "tefo" : "PeVi", "level" : 5
+           , "mastery" : [ "Penetration" ] 
             , "comment" : "PeVi 5 [Base 10 (generic), -1 touch]: Range: Touch, Duration: Mom, Target: Circle. Destroys ten points of might to any infernal being inside the circle.  Lab Total 42 including similar spell L15 (+6 with Hiccup).  Casting Total 27 within covenant aura (Pen +44 w/o die)."
          }
          , { "spell" : "Circle of Demon's Oblivion"
             , "tefo" : "PeVi", "level" : 15
+           , "mastery" : [ "Penetration" ] 
          }
       ]
       },
@@ -889,15 +893,19 @@
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Fist of Fey Oblivion"
             , "tefo" : "PeVi", "level" : 5
+           , "mastery" : [ "Penetration" ] 
          }
          , { "spell" : "Fist of Magic Oblivion"
             , "tefo" : "PeVi", "level" : 5
+           , "mastery" : [ "Penetration" ]
          }
          , { "spell" : "Circle of Fey Oblivion"
             , "tefo" : "PeVi", "level" : 10
+           , "mastery" : [ "Penetration" ]
          }
          , { "spell" : "Break the Shield"
             , "tefo" : "PeVi", "level" : 10
+           , "mastery" : [ "Penetration" ]
          }
          , { "aging" : { "deltaYounger" : 0
             , "agingRollDie" : 28
