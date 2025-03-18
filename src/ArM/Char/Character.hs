@@ -10,22 +10,18 @@
 --
 -- Description :  Types to represent Characters and functions for advancement.
 --
--- This module contains types to process characters, including 
--- persistence in JSON and advancement.
+-- This module contains exports the types to process characters and 
+-- advancement, including persistence in JSON and advancement.
 --
 -----------------------------------------------------------------------------
 module ArM.Char.Character ( Character(..)
-                          , defaultCharacter
                           , CharacterConcept(..)
-                          , defaultConcept
                           , CharacterState(..)
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
-                          , prepareCharacter
                           , fullName
                           , fullConceptName
-                          , advanceCharacter
                           , isGrog
                           , parseSeasonTime
                           , SeasonTime(..)
@@ -33,6 +29,8 @@ module ArM.Char.Character ( Character(..)
                           , AugmentedAdvancement(..)
                           , AdvancementLike(..)
                           , CharacterType(..)
+                          , prepareCharacter
+                          , advanceCharacter
                           ) where
 
 import Data.Maybe 
@@ -47,7 +45,7 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import ArM.Helper
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- | Apply advancement
 -- This function is generic, and used for both chargen and ingame 
@@ -114,14 +112,21 @@ prepareCharacter c
 -- virtues and flaws, add XP limits to the advancements, and checks that
 -- the advancement does not overspend XP or exceed other limnits.
 prepareCharGen :: CharacterState -> Advancement -> AugmentedAdvancement
-prepareCharGen cs = validateCharGen sheet . sortInferredTraits . agingYears . initialLimits vfs . addInferredTraits 
+prepareCharGen cs = validateCharGen sheet   -- Validate integrity of the advancement
+                  . sortInferredTraits      -- Restore sort order on inferred traits
+                  . agingYears              -- add years of aging as an inferred trait
+                  . initialLimits vfs       -- add XP limits etc to the advancement
+                  . addInferredTraits       -- infer traits from virtues and flaws
           where vfs = vfList sheet
                 sheet = filterCS cs
 
+-- | Infer an aging trait advancing the age according to the advancement
 agingYears :: AugmentedAdvancement -> AugmentedAdvancement
 agingYears x = x { inferredTraits = agePT (fromMaybe 0 $ augYears x): inferredTraits x }
 
-agePT :: Int ->  ProtoTrait
+-- | Return a `ProtoTrait` for aging advancing a number of years.
+agePT :: Int -- ^ Number of years
+      ->  ProtoTrait -- ^ Resulting ProtoTrait
 agePT x = defaultPT { aging = Just $ defaultAging { addYears = Just x } }
 
 -- | Add the Confidence trait to the character state, using 
@@ -264,14 +269,20 @@ applyInGameAdv a cs = applyAdvancement ( prepareAdvancement cs a ) cs
 prepareAdvancement :: CharacterState -> Advancement -> AugmentedAdvancement
 prepareAdvancement c = validate . inferSQ . winterEvents c . addInferredTraits
 
+-- | Sort the `inferredTraits` field of an `AugmentedAdvancement`
 sortInferredTraits :: AugmentedAdvancement -> AugmentedAdvancement
 sortInferredTraits x = x { inferredTraits = sortTraits $ inferredTraits x }
 
--- | Handle aging and some warping for Winter advancements
-winterEvents :: CharacterState -> AugmentedAdvancement -> AugmentedAdvancement
-winterEvents c a | isWinter $ season a = trace ("Winter Season - handle aging" ) 
-                   $ sortInferredTraits
-                   $ validateAging (y >= yl) agingOb $ addYear agingOb $ warpingLR a
+-- | Handle aging and some warping for Winter advancements.
+-- Non-winter advancements are left unmodified.
+winterEvents :: CharacterState       -- ^ Current Character State
+             -> AugmentedAdvancement -- ^ Advancement 
+             -> AugmentedAdvancement -- ^ modified Advancement
+winterEvents c a | isWinter $ season a  
+                   = sortInferredTraits   -- sort inferred traits
+                   $ validateAging (y >= yl) agingOb  -- ^ check for aging roll is made if required
+                   $ addYear agingOb                  -- ^ add a yer of aging
+                   $ warpingLR a                      -- ^ add warping point for LR
                  | otherwise = a
         where ageOb = ageObject c
               y = age c
@@ -282,8 +293,8 @@ winterEvents c a | isWinter $ season a = trace ("Winter Season - handle aging" )
                  | otherwise = longevityRitual $ fromJust ageOb
               yl | ageOb == Nothing = 35
                  | otherwise = ageLimit $ fromJust ageOb
-              warpingLR x | lr < 0 = trace ("No warping "++show lr) $ x
-                          | otherwise = trace "Warping" $ x { inferredTraits = 
+              warpingLR x | lr < 0 = x
+                          | otherwise = x { inferredTraits = 
                                     defaultPT { other = Just "Warping", points = Just 1 }
                                     :inferredTraits x }
               addYear o x | addsYear o = x
@@ -299,6 +310,7 @@ winterEvents c a | isWinter $ season a = trace ("Winter Season - handle aging" )
                    | otherwise =  x { validation = val:validation x }
               err = ValidationError $ "Older than " ++ show yl ++ ". Aging roll required."
               val = Validated $ "Aging roll made"
+
 -- | Calculate initial XP limits on Advancements
 inferSQ :: AugmentedAdvancement -> AugmentedAdvancement
 inferSQ ad = ad { effectiveSQ = esq }
