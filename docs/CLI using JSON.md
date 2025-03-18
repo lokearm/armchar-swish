@@ -39,7 +39,8 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] CSV weapons table
 		+ [ ] Weapon type
 		+ [ ] Characters may have equipment
-	+ [ ] Pretty print Aging in advancement log
+	+ [x] Pretty print Aging in advancement log
+	+ [ ] Great/Poor Characteristic (current warning)
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
@@ -58,7 +59,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Remove trait when advancing
 	+ [ ] Step 3. Virtues and Flaws - Special cases
 		+ [ ] Linguist
-		+ [ ] Great/Poor Characteristic
 		+ [ ] Inventive Genius
 		+ [ ] Infer Second Sight from Strong Faerie Blood
 	+ [ ] Step 4.  CharacterState in JSON

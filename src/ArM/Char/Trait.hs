@@ -202,7 +202,7 @@ instance Show ProtoTrait  where
        | confidence p /= Nothing = 
               fromMaybe "Confidence" (confidence p) ++ ": " ++ show (fromMaybe 0 (score p)) ++ " (" ++
               show ( fromMaybe 0 (points p) ) ++ ")"
-       | aging p /= Nothing = show (aging p)
+       | aging p /= Nothing = show (fromJust $ aging p)
        | other p /= Nothing = 
                fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
        | otherwise  = error $ "No Trait for this ProtoTrait" 
@@ -866,7 +866,7 @@ data Aging = Aging
     , agingLimit     :: Maybe Int    -- ^ freeform comment
     , agingBonus     :: Maybe Int    -- ^ Bonus to aging rolls (excluding LR)
     , agingComment   :: Maybe String -- ^ age when aging rolls are required
-    } deriving (Show,Ord,Eq,Generic)
+    } deriving (Ord,Eq,Generic)
 instance ToJSON Aging
 instance FromJSON Aging 
 
@@ -874,3 +874,20 @@ instance TraitLike Aging where
     traitKey _ = AgeKey
     advanceTrait _ _ = error "Aging/Aging advancement not implemented"
     toTrait = error "Aging toTrait not implemented"
+instance Show Aging where
+    show x = "Aging " ++ y ++ lr ++ roll ++ lim ++ b ++ fromMaybe "" (agingComment x)
+       where y | isNothing (addYears x) = ""
+               | otherwise = show yr ++ " years; apparent " 
+                    ++ show (yr-del) ++ " years."
+             yr = fromJust $ addYears x
+             del = fromMaybe 0 $ deltaYounger x
+             lr | isNothing (longevity x) = ""
+               | otherwise = " LR " ++ show (fromJust $ longevity x) ++ "; "
+             lim | isNothing (agingLimit x) = ""
+                | otherwise = "(limit " ++ show (fromJust $ agingLimit x) ++ ") "
+             b | isNothing (agingBonus x) = ""
+                | otherwise = "(bonus " ++ show (fromJust $ agingBonus x) ++ ") "
+             roll | isNothing (agingRoll x) = " No roll. "
+                | otherwise = "Rolled " ++ show (fromJust $ agingRoll x) ++ " ("
+                           ++ show (fromMaybe (-1) $ agingRollDie x) ++ ") "
+
