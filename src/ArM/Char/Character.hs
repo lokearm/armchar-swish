@@ -230,10 +230,11 @@ calculateVFCost a = ( sum $ filter (<0) rs, sum $ filter (>0) rs )
 
 -- | Extract the virtue/flaw cost from a ProtoType; zero for other types of traits.
 regCost :: ProtoTrait -> Int
-regCost p | isJust (virtue p) = f p
-          | isJust (flaw p) = f p
+regCost p | isJust (virtue p) = m p * f p
+          | isJust (flaw p) = m p * f p
           | otherwise = 0
         where f = fromMaybe 0 . cost 
+              m = fromMaybe 1 . multiplicity
 
 -- | Validate points spent on characterics.
 validateChar :: CharacterSheet -> AugmentedAdvancement -> AugmentedAdvancement

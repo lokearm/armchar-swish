@@ -54,10 +54,15 @@
          [ { "ability" : "Animal Handling", "spec": "Dogs", "xp": 50 }
          , { "ability" : "Animal Ken", "spec": "Canine", "xp": 45 }
          , { "ability" : "Athletics", "spec": "obstacle race", "xp": 30 }
-         , { "ability" : "Awareness", "spec": "obstacle race", "xp": 35 }
+         , { "ability" : "Awareness", "spec": "Keen sight", "xp": 35 }
+         , { "ability" : "Carouse", "spec": "Hold liquor", "xp": 5 }
+         , { "ability" : "Chirurgy", "spec": "First aid", "xp": 5 }
+         , { "ability" : "Bargain", "spec": "Avoid cheats", "xp": 5 }
+         , { "ability" : "Folk ken", "spec": "Judge of character", "xp": 5 }
          , { "ability" : "Ride", "spec": "Horse training", "xp": 5 }
          , { "ability" : "Survival", "spec": "Hills", "xp": 45 }
-         , { "ability" : "Hunt", "spec": "with dogs", "xp": 75 }
+         , { "ability" : "Hunt", "spec": "Track", "xp": 75 }
+         , { "ability" : "Legerdemain", "spec": "pickpocket", "xp": 50 }
          , { "ability" : "Stealth", "spec": "with dogs", "xp": 35 }
          , { "ability" : "Swim", "spec": "survival", "xp": 5 }
          , { "ability" : "Single Weapon", "spec": "spear", "xp": 30 }
@@ -67,7 +72,7 @@
    ],
    "futureAdvancement" : [
       { "mode" : "Adventure"
-      , "season" : "Spring 1220"
+      , "season" : "Winter 1247"
       , "sourceQuality" : 10
       , "changes" : 
          [ { "ability" : "Animal Handling", "xp": 5 }
@@ -75,7 +80,21 @@
          ] 
       },
       { "mode" : "Practice"
-      , "season" : "Summer 1220"
+      , "season" : "Summer 1247"
+      , "sourceQuality" : 4
+      , "changes" : 
+         [ { "ability" : "Music", "xp": 4 }
+         ] 
+      },
+      { "mode" : "Exposure"
+      , "season" : "Summer 1247"
+      , "sourceQuality" : 2
+      , "changes" : 
+         [ { "ability" : "Hunt", "xp": 2 }
+         ] 
+      },
+      { "mode" : "Practice"
+      , "season" : "Summer 1247"
       , "sourceQuality" : 4
       , "changes" : 
          [ { "ability" : "Music", "xp": 4 }

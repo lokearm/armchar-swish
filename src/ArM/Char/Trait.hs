@@ -195,9 +195,12 @@ instance Show ProtoTrait  where
               " [" ++ maybeShow (locale p) ++ "]" ++ showXP p
        | virtue p /= Nothing = 
               "Virtue: " ++ fromJust (virtue p) ++ " ("
-              ++ show ( fromMaybe 0 (cost p) ) ++ ")"
+              ++ show ( fromMaybe 0 (cost p) ) 
+              ++ mul (multiplicity p)
+              ++ ")"
        | flaw p /= Nothing = 
               "Flaw: " ++ fromJust (flaw p) ++ " ("
+              ++ mul (multiplicity p)
               ++ show ( fromMaybe 0 (cost p) ) ++ ")"
        | confidence p /= Nothing = 
               fromMaybe "Confidence" (confidence p) ++ ": " ++ show (fromMaybe 0 (score p)) ++ " (" ++
@@ -207,6 +210,8 @@ instance Show ProtoTrait  where
                fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
        | otherwise  = error $ "No Trait for this ProtoTrait" 
      where si = show . fromMaybe 0
+           mul Nothing = ""
+           mul (Just x) = " x" ++ show x
 
 -- | 
 -- = Trait

@@ -31,7 +31,7 @@ import ArM.Char.Spell
 import ArM.GameRules
 import ArM.BasicIO
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- |
 -- = Rendering the Character Sheet
@@ -353,7 +353,7 @@ class Markdown a => LongSheet a where
    printSheetMD = printMDaug
 
 instance LongSheet Character where
-   printSheetMD db c = trace "printSheetMD Character" $ OList 
+   printSheetMD db c = OList 
             [ printMD $ concept c
             , sf $ state c 
             , designMD c
@@ -368,7 +368,7 @@ instance LongSheet CharacterState where
                              , printSheetMD db $ filterCS c ]
 
 instance LongSheet CharacterSheet where
-   printSheetMD db c' = trace "printSheetMD CharacterSheet" $ OList 
+   printSheetMD db c' = OList 
                [ briefTraits c
                , showlistMD "+ **Characteristics:** "  $ charList c
                , showlistMD "+ **Personality Traits:** "  $ ptList c
@@ -476,7 +476,7 @@ coreSpellRecordMD sr = OList [ reqstr
    where req = techniqueReq sp ++ formReq sp
          sp = fromJust sr
          os "" = OList []
-         os x = trace x $ OString x
+         os x = OString x
          reqstr | req == [] = OList []
                 | otherwise = OString $ "Req. " ++ show req
 
