@@ -739,6 +739,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Sight of the Warm Surface"
             , "tefo" : "MuIm", "level" : 15
+            , "mastery" : [ "Quiet Casting" ]
          }
          , { "spell" : "Disguise of the Transformed Image"
             , "tefo" : "MuIm", "level" : 15
@@ -800,13 +801,15 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Horror Cabinet"
             , "tefo" : "CrIm", "level" : 35
+            , "mastery" : [ "Quiet Casting" ]
          }
          , { "spell" : "False Window"
-
             , "tefo" : "CrIm", "level" : 5
+            , "mastery" : [ "Quiet Casting" ]
          }
          , { "spell" : "Smoke of Escaping"
             , "tefo" : "CrIm", "level" : 5
+            , "mastery" : [ "Quiet Casting" ]
          }
       ]
       },
@@ -1229,12 +1232,15 @@
       , "changes" : [ { "art" : "Imaginem", "xp" : 3 } 
          , { "spell" : "Book of Images"
             , "tefo" : "CrIm", "level" : 15
+            , "mastery" : [ "Quiet Casting" ]
          }
          , { "spell" : "The Shadow of Human Life"
             , "tefo" : "CrIm", "level" : 40
+            , "mastery" : [ "Quiet Casting" ]
          }
          , { "spell" : "The Studious Doppleganger"
             , "tefo" : "CrIm", "level" : 5
+            , "mastery" : [ "Quiet Casting" ]
          }
       ]
       }
