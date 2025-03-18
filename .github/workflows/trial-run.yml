@@ -4,7 +4,7 @@ name: Trial Build
 on: 
    push:
      workflow_dispatch:
-     branches: [main]
+       # branches: [main]
 
 jobs:
   linux:
