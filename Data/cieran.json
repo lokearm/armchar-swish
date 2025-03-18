@@ -1027,6 +1027,12 @@
          }
          , { "reputation" : "Crafter of Magic", "locale" : "Hermetic", 
             "xp" : 20, "comment" : "From Lab Aesthetics" }
+            , { "aging" : { "deltaYounger" : 1
+               , "agingRollDie" : -1
+               , "agingRoll" : -18
+               , "agingComment" : "No aging."
+	    }
+	    }
          ]
       },
       { "mode" : "Reading", "season" : "Spring 1250"
@@ -1047,7 +1053,14 @@
       { "mode" : "Reading", "season" : "Winter 1251"
       , "sourceQuality" : 16
       , "narrative" : "Summa L15Q13 + Book Learner 96 -> 112; no aging -20"
-      , "changes" : [ { "art" : "Intellego", "xp" : 16 } ]
+      , "changes" : [ { "art" : "Intellego", "xp" : 16 } 
+            , { "aging" : { "deltaYounger" : 1
+               , "agingRollDie" : -1
+               , "agingRoll" : -20
+               , "agingComment" : "No aging."
+	    }
+	    }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1251"
       , "sourceQuality" : 3
@@ -1073,7 +1086,14 @@
       { "mode" : "Reading", "season" : "Winter 1252"
       , "sourceQuality" : 12
       , "narrative" : "no aging -16"
-      , "changes" : [ { "art" : "Rego", "xp" : 12 } ]
+      , "changes" : [ { "art" : "Rego", "xp" : 12 } 
+            , { "aging" : { "deltaYounger" : 1
+               , "agingRollDie" : -1
+               , "agingRoll" : -16
+               , "agingComment" : "No aging."
+	    }
+	    }
+      ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1252"
       , "sourceQuality" : 3
@@ -1101,7 +1121,14 @@
       { "mode" : "Reading", "season" : "Winter 1253"
       , "sourceQuality" : 13
       , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent (88->114).  Aging roll -21"
-      , "changes" : [ { "art" : "Rego", "xp" : 13 } ]
+      , "changes" : [ { "art" : "Rego", "xp" : 13 } 
+            , { "aging" : { "deltaYounger" : 1
+               , "agingRollDie" : -1
+               , "agingRoll" : -21
+               , "agingComment" : "No aging."
+	    }
+         } 
+      ]
       },
       { "mode" : "Reading", "season" : "Spring 1253"
       , "sourceQuality" : 13
