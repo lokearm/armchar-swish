@@ -1159,6 +1159,11 @@
                     , { "ability" : "Etiquette", "xp" : 2 } 
                     , { "reputation" : "Friendly druid",
                        "locale" : "Lands of O'Sullivan", "xp" : 4 }
+            , { "aging" : { "deltaYounger" : 1
+               , "agingRollDie" : 4
+               , "agingRoll" : -1
+               , "agingComment" : "No aging."
+	    }
       ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"
@@ -1192,6 +1197,11 @@
             , "tefo" : "ReVi", "level" : 20 
             , "mastery" : [ "Quiet Casting" ]
          }
+            , { "aging" : { "deltaYounger" : 1
+               , "agingRollDie" : 0
+               , "agingRoll" : -1
+               , "agingComment" : "No aging."
+	    }
       ]
       },
       { "mode" : "Lab Work", "season" : "Spring 1255"
