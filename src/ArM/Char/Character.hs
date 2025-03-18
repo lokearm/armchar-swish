@@ -45,7 +45,7 @@ import ArM.Char.Virtues
 import ArM.GameRules
 import ArM.Helper
 
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- | Apply advancement
 -- This function is generic, and used for both chargen and ingame 
@@ -338,9 +338,9 @@ winterEvents c a | isWinter $ season a
                                 | fromJust (addYears  x) <= 0 = False
                                 | otherwise = True
               validateAging False _ x =  x
-              validateAging True Nothing x =  x { validation = err:validation x }
+              validateAging True Nothing x = trace ("No aging> "++show a) $ x { validation = err:validation x }
               validateAging True (Just ob) x
-                   | isNothing (agingRoll ob) = x { validation = err:validation x }
+                   | isNothing (agingRoll ob) = trace ("No roll> "++show x) $ x { validation = err:validation x }
                    | otherwise =  x { validation = val:validation x }
               err = ValidationError $ "Older than " ++ show yl ++ ". Aging roll required."
               val = Validated $ "Aging roll made"
