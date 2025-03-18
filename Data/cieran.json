@@ -674,11 +674,11 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Aegis of the Hearth"
             , "tefo" : "ReVi", "level" : 30 
-            , "masteryOption" : [ "Penetration" ]
+            , "mastery" : [ "Penetration" ]
          }
          , { "spell" : "Watching Ward"
             , "tefo" : "ReVi", "level" : 30 
-            , "masteryOption" : [ "Penetration" ]
+            , "mastery" : [ "Penetration" ]
          }
       ]
       },
@@ -688,7 +688,7 @@
       , "changes" : [ 
           { "spell" : "Aegis of the Hearth"
             , "tefo" : "ReVi", "level" : 30 
-            , "masteryOption" : [ "Safe Casting" ]
+            , "mastery" : [ "Safe Casting" ]
             , "xp" : 6
          }
       ]
@@ -704,7 +704,7 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } 
          , { "spell" : "Communication of the Heroes"
             , "tefo" : "CrMe", "level" : 60
-            , "masteryOption" : [ "Safe Casting" ]
+            , "mastery" : [ "Safe Casting" ]
          }
       ]
       },
@@ -1155,15 +1155,15 @@
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
          , { "spell" : "Circular Ward Against Demons",
             "tefo" : "ReVi", "level" : 25 
-            , "masteryOption" : [ "Penetration" ]
+            , "mastery" : [ "Penetration" ]
          }
          , { "spell" : "Maintaining the Demanding Spell"
             , "tefo" : "ReVi", "level" : 21 
-            , "masteryOption" : [ "Quiet Casting" ]
+            , "mastery" : [ "Quiet Casting" ]
          }
          , { "spell" : "Watching Ward"
             , "tefo" : "ReVi", "level" : 20 
-            , "masteryOption" : [ "Quiet Casting" ]
+            , "mastery" : [ "Quiet Casting" ]
          }
       ]
       },

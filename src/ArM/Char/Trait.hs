@@ -486,7 +486,7 @@ instance TraitType Spell where
                       , spellTeFo = fromMaybe "TeFo" $ tefo p
                       , spellXP = fromMaybe 0 (xp p)
                       , masteryScore = s
-                      , masteryOptions = maybeList (mastery p)
+                      , masteryOptions = fromMaybe [] (mastery p)
                       , spellExcessXP = y
                       , spellMultiplier = m
                       , spellCastingScore = Nothing
@@ -652,7 +652,7 @@ instance TraitLike Spell where
       -- where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
       where y = calcXP m (spellExcessXP x) (xp a) 
             m = spellMultiplier x
-            ms = maybeList $ mastery a
+            ms = fromMaybe [] $ mastery a
             um Nothing ab = ab 
             um abm ar = ar { spellMultiplier = fromMaybe 1.0 abm }
 instance TraitLike Reputation where
