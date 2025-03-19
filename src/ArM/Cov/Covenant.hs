@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Types.Character
+-- Module      :  ArM.Cov.Covenant
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -14,32 +14,44 @@
 -- persistence in JSON and advancement.
 --
 -----------------------------------------------------------------------------
-module ArM.Types.Covenant where
+module ArM.Cov.Covenant where
 
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
 
 import ArM.Char.Trait
-import ArM.Types.Advancement
-import ArM.Types.KeyPair
-import ArM.Helper
+import ArM.Char.Character
+-- import ArM.Types.Character
+-- import ArM.Types.Advancement
+-- import ArM.Types.KeyPair
+-- import ArM.Helper
 
 -- import ArM.Debug.Trace
 
+data Covenant = Covenant 
+         { covenantConcept :: CovenantConcept
+         , covenantState :: CovenantState
+         , pastCovAdvancement :: [ AugmentedAdvancement ]
+         , futureCovAdvancement :: [ Advancement ]
+       }  deriving (Eq,Generic,Show)
+instance ToJSON Covenant 
+instance FromJSON Covenant 
 
 data CovenantConcept = CovenantConcept 
          { covName :: String
          , covConcept :: Maybe String
          , covFounded :: Maybe Int
+         , covAppearance :: Maybe String
          , covData :: KeyPairList
        }  deriving (Eq,Generic)
 
--- | Default (empty) character concept object.
+-- | Default (empty) covenant concept object.
 defaultCovConcept :: CovenantConcept 
 defaultCovConcept = CovenantConcept { covName = "Player Covenant"
                                   , covConcept = Nothing
                                   , covFounded = Nothing
+                                  , covAppearance = Nothing
                                   , covData = KeyPairList []
        }  
 
@@ -55,3 +67,24 @@ instance Show CovenantConcept where
     where sf Nothing = "-"
           sf (Just x ) = show x
 
+data CovenantState = CovenantState 
+         { covTime :: SeasonTime
+         , covenFolk :: [ Character ]
+         , library :: [ Book ]
+       }  deriving (Eq,Generic,Show)
+
+
+instance ToJSON CovenantState
+instance FromJSON CovenantState
+
+data Book = Book
+         { title :: String
+         , topic :: TraitKey
+         , quality :: Int
+         , bookLevel :: Maybe Int
+         , author :: String
+         , year :: Int
+         , annotation :: String
+       }  deriving (Eq,Generic,Show)
+instance ToJSON Book
+instance FromJSON Book

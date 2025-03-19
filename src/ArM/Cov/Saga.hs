@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Char.Saga
+-- Module      :  ArM.Cov.Saga
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -11,7 +11,7 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Saga where
+module ArM.Cov.Saga where
 
 -- import Data.Maybe 
 import Data.Aeson 
@@ -21,6 +21,7 @@ import ArM.Char.Trait
 import ArM.Char.Character
 import ArM.Types.Advancement
 import ArM.Char.Spell
+import ArM.Cov.Covenant
 
 -- import ArM.Debug.Trace
 --
@@ -45,37 +46,6 @@ data SagaFile = SagaFile
 instance ToJSON SagaFile 
 instance FromJSON SagaFile 
 
-data Covenant = Covenant 
-         { covName :: String
-         , covenantConcept :: KeyPairList
-         , covAppearance :: Maybe String
-         , founded :: Maybe Int
-         , covData :: KeyPairList
-         , covenantState :: CovenantState
-         , pastCovAdvancement :: [ AugmentedAdvancement ]
-         , futureCovAdvancement :: [ Advancement ]
-       }  deriving (Eq,Generic,Show)
-instance ToJSON Covenant 
-instance FromJSON Covenant 
-
-data CovenantState = CovenantState
-         { library :: [Book]
-         , covenfolk :: [Character]
-         }  deriving (Eq,Generic,Show)
-instance ToJSON CovenantState
-instance FromJSON CovenantState
-
-data Book = Book
-         { title :: String
-         , topic :: TraitKey
-         , quality :: Int
-         , bookLevel :: Maybe Int
-         , author :: String
-         , year :: Int
-         , annotation :: String
-       }  deriving (Eq,Generic,Show)
-instance ToJSON Book
-instance FromJSON Book
 
 augHead :: SeasonTime -> Maybe String -> String
 augHead NoTime Nothing = ("??" )

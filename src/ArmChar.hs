@@ -19,7 +19,7 @@ import ArM.Debug.Trace
 import ArM.Char.IO
 import ArM.Char.Character
 import ArM.Char.Markdown
-import ArM.Char.Saga
+import ArM.Cov.Saga
 
 -- import Data.Aeson (decode)
 

@@ -28,7 +28,7 @@ import Text.ParserCombinators.Parsec
 
 import ArM.Char.Character
 import ArM.Char.Markdown
-import ArM.Char.Saga
+import ArM.Cov.Saga
 import ArM.Char.Spell
 import ArM.BasicIO
 

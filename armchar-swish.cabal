@@ -59,10 +59,10 @@ common armchar-deps
                        , ArM.Types.KeyPair
                        , ArM.Types.Character
                        , ArM.Types.Advancement
-                       , ArM.Types.Covenant
+                       , ArM.Cov.Covenant
+                       , ArM.Cov.Saga
                        , ArM.Char.Trait
                        , ArM.Char.Spell
-                       , ArM.Char.Saga
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown

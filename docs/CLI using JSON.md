@@ -8,7 +8,7 @@ aliases:
 + Dedicated Libraries: `ArM/Char`
 + Also reuses some libraries from the swish model
 + See also [[Character Generation Process]]
-+ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]] (canvas
++ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]] (canvas)
 + [[Types for JSON]]
 
 
@@ -32,7 +32,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] verify
 	+ [ ] Sort Characteristics
 	+ [ ] Compute Combat Stats
-		+ [ ] CSV weapons table
+		+ [x] CSV weapons table
 		+ [ ] Weapon type
 		+ [ ] Characters may have equipment
 	+ [ ] Great/Poor Characteristic (current warning)

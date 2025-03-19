@@ -32,12 +32,14 @@ type CharTime = SeasonTime
 -- This must be changed for the standard calendare.
 -- data Season = Spring | Summer | Autumn | Winter | NoSeason
 data Season = Winter | Spring | Summer | Autumn  | NoSeason
-     deriving (Show,Ord,Eq,Read)
+     deriving (Show,Ord,Eq,Read,Generic)
 
 instance ToJSON SeasonTime where
    toJSON = toJSON . show
+instance FromJSON SeasonTime 
+instance FromJSON Season
 
-data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq)
+data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq,Generic)
 isWinter :: SeasonTime -> Bool
 isWinter (SeasonTime Winter _) = True
 isWinter _ = False
