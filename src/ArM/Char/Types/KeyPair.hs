@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Types.KeyPair
+-- Module      :  ArM.Char.Types.KeyPair
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
 -----------------------------------------------------------------------------
-module ArM.Types.KeyPair where
+module ArM.Char.Types.KeyPair where
 
 import Data.Aeson
 import Data.Aeson.Key

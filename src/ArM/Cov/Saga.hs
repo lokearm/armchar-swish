@@ -17,9 +17,9 @@ module ArM.Cov.Saga where
 import Data.Aeson 
 import GHC.Generics
 
-import ArM.Char.Trait
+-- import ArM.Char.Trait
 import ArM.Char.Character
-import ArM.Types.Advancement
+import ArM.Char.Types.Advancement
 import ArM.Char.Spell
 import ArM.Cov.Covenant
 

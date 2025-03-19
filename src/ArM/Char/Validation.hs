@@ -19,7 +19,7 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Validation (validate,validateXP) where
 
-import ArM.Types.Advancement
+import ArM.Char.Types.Advancement
 import ArM.Char.Trait
 import ArM.GameRules
 

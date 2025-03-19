@@ -37,8 +37,8 @@ import Data.Maybe
 import Data.List
 
 import ArM.Char.Trait
-import ArM.Types.Character
-import ArM.Types.Advancement
+import ArM.Char.Types.Character
+import ArM.Char.Types.Advancement
 import ArM.Char.CharacterSheet
 import ArM.Char.Validation
 import ArM.Char.Virtues

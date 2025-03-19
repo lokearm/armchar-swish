@@ -29,7 +29,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
 
 import ArM.Char.Trait
 import ArM.Char.Spell
-import ArM.Types.Character
+import ArM.Char.Types.Character
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe

@@ -17,7 +17,7 @@ module ArM.Char.Virtues (inferTraits
                         , appSQ
                         ) where
 
-import ArM.Types.Advancement
+import ArM.Char.Types.Advancement
 import ArM.Char.Trait
 import ArM.Helper
 import ArM.GameRules
