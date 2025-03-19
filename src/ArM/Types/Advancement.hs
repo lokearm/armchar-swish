@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Char.Internal.Advancement
+-- Module      :  ArM.Types.Advancement
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -11,7 +11,7 @@
 -- Description :  The Advancement types representing changes over a season.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Internal.Advancement where
+module ArM.Types.Advancement where
 
 import ArM.Helper
 import ArM.Char.Trait

@@ -19,7 +19,7 @@ import GHC.Generics
 
 import ArM.Char.Trait
 import ArM.Char.Character
-import ArM.Char.Internal.Advancement
+import ArM.Types.Advancement
 import ArM.Char.Spell
 
 -- import ArM.Debug.Trace

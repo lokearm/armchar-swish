@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Char.Internal.Character
+-- Module      :  ArM.Types.Character
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -14,7 +14,7 @@
 -- persistence in JSON and advancement.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Internal.Character ( Character(..)
+module ArM.Types.Character ( Character(..)
                           , defaultCharacter
                           , CharacterType(..)
                           , CharacterConcept(..)
@@ -35,10 +35,9 @@ import Data.Aeson
 -- import Data.Aeson.Types (Parser)
 
 import ArM.Char.Trait
-import ArM.Char.Internal.Advancement
-import ArM.Char.Internal.KeyPair
+import ArM.Types.Advancement
+import ArM.Types.KeyPair
 -- import ArM.Debug.Trace
--- import ArM.Types.Season
 import ArM.Helper
 
 
