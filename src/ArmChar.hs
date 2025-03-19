@@ -16,7 +16,7 @@ import System.Console.GetOpt
 import ArM.BasicIO
 import ArM.Debug.Time
 import ArM.Debug.Trace
-import ArM.Char.IO
+import ArM.IO
 import ArM.Char.Character
 import ArM.Char.Markdown
 import ArM.Cov.Saga

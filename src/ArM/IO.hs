@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Char.IO
+-- Module      :  ArM.IO
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -16,7 +16,7 @@
 -- in JSON, including Character and Covenant.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.IO where
+module ArM.IO where
 
 -- import qualified System.IO as IO -- for file IO
 import Data.Maybe 
