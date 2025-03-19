@@ -29,6 +29,14 @@ import ArM.Char.Character
 
 -- import ArM.Debug.Trace
 
+-- | ID of a character.
+-- This is currently implemented as the name.
+data CharacterID = CharacterID String
+
+-- | get the ID of a character.
+characterID :: Character -> CharacterID
+characterID = CharacterID . charID
+
 data Covenant = Covenant 
          { covenantConcept :: CovenantConcept
          , covenantState :: CovenantState
@@ -69,6 +77,7 @@ instance Show CovenantConcept where
 
 data CovenantState = CovenantState 
          { covTime :: SeasonTime
+         , covenFolkID :: [ CharacterID ]
          , covenFolk :: [ Character ]
          , library :: [ Book ]
        }  deriving (Eq,Generic,Show)
@@ -76,6 +85,26 @@ data CovenantState = CovenantState
 
 instance ToJSON CovenantState
 instance FromJSON CovenantState
+
+-- | Advancement (changes) to a covenant.
+data Advancement = Advancement 
+     { caSeason :: SeasonTime    -- ^ season or development stage
+     , caNarrative :: Maybe String -- ^ freeform description of the activities
+     , joining :: [ CharacterID ]
+     , leaving :: [ CharacterID ]
+     , acquired :: [ Book ]
+     , lost :: [ Book ]
+     }
+   deriving (Eq,Generic,Show)
+
+defaultAdv = Advancement 
+     { caSeason = NoTime
+     , caNarrative = Nothing
+     , joining = []
+     , leaving = []
+     , acquired = []
+     , lost = []
+     }
 
 data Book = Book
          { title :: String
