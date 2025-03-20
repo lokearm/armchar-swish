@@ -17,11 +17,17 @@ import ArM.Helper
 import ArM.Char.Trait
 import ArM.GameRules
 
-import Data.Aeson
+import Data.Aeson 
+import Data.Aeson.Types                          ( Parser )
+
 import GHC.Generics
 import Data.List.Split
-import Text.Read
+import Text.Read             (readMaybe)
 
+import qualified Data.HashMap.Lazy as HML        ( lookup )
+import Data.Text.Lazy                            ( fromStrict, unpack, pack )
+
+import Control.Applicative                       ( empty, pure, (<$>), (<*>) )
 
 -- type CharTime = Maybe String
 
@@ -35,11 +41,12 @@ data Season = Winter | Spring | Summer | Autumn  | NoSeason
 
 instance ToJSON SeasonTime where
    toJSON = toJSON . show
-instance FromJSON SeasonTime 
+-- instance FromJSON SeasonTime 
 instance ToJSON Season
-instance FromJSON Season
-{-
-instance FromJSON YesNo where
+
+
+
+instance FromJSON SeasonTime where
 
     -- parseJSON takes a Value, it could be one of follwing data constructors:
     -- Object, Array, String, Number, Bool or Null.
@@ -51,24 +58,37 @@ instance FromJSON YesNo where
     -- We should use strict Text for key:
     parseJSON (Object o) = case HML.lookup (pack "type") o of
         -- value of entity has type Value
-        Just (String t) -> fromString (TL.unpack (TL.fromStrict t))
+        Just (String t) -> fromString (unpack (fromStrict t))
         Just (Number n) -> fromNum n
         -- Other cases are invalid
         _               -> empty
-        where fromString :: String -> Parser YesNo
-              fromString "yes" = pure Yes
-              fromString "no"  = pure No
-              fromString _     = empty
-              fromNum n
-                  | n == 1 || n == 1.0 = pure Yes
-                  | n == 0 || n == 0.0 = pure No
-                  | otherwise = empty
--}
+        where fromString :: String -> Parser SeasonTime
+              fromString "GameStart" = pure GameStart
+              fromString "Game Start" = pure GameStart
+              fromString "Start" = pure GameStart
+              fromString s     = pure $ parseST s
+              fromString _     = pure NoTime
+              fromNum n = pure $ SeasonTime NoSeason $ round n
+
 data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq,Generic)
 isWinter :: SeasonTime -> Bool
 isWinter (SeasonTime Winter _) = True
 isWinter _ = False
 
+parseST :: String -> SeasonTime
+parseST  "GameStart" = GameStart
+parseST  "Game Start" = GameStart
+parseST  s = fy ys
+    where xs = splitOn " " s
+          ys = map readMaybe xs :: [Maybe Int]
+          ss = map readMaybe xs :: [Maybe Season]
+          fs [] = NoSeason
+          fs (Nothing:rest) = fs rest
+          fs (Just r:_) = r
+          st = fs ss
+          fy [] = NoTime
+          fy (Nothing:rest) = fy rest
+          fy (Just r:_) = SeasonTime st r
 parseSeasonTime :: Maybe String -> SeasonTime
 parseSeasonTime Nothing = NoTime
 parseSeasonTime (Just "GameStart") = GameStart
