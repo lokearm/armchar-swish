@@ -40,7 +40,10 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 + [ ] Phase 2. Covenant
 	+ [x] Parse SeasonTime
 	+ [ ] Develop [[Saga object]]
+		+ [ ] single call to advance saga
+		+ [ ] current and tentative season
 	+ [ ] Hyperlinked web site
+		+ [ ] Front page listing characters
 	+ [ ] Build website in github runners
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
