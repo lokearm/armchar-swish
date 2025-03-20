@@ -29,11 +29,23 @@ import ArM.Char.Character
 
 -- import ArM.Debug.Trace
 
+-- | ID of a character.
+-- This is currently implemented as the name.
+data CharacterID = CharacterID String
+    deriving ( Show, Ord, Eq, Generic )
+
+instance ToJSON CharacterID
+instance FromJSON CharacterID
+
+-- | get the ID of a character.
+characterID :: Character -> CharacterID
+characterID = CharacterID . charID
+
 data Covenant = Covenant 
          { covenantConcept :: CovenantConcept
          , covenantState :: CovenantState
-         , pastCovAdvancement :: [ AugmentedAdvancement ]
-         , futureCovAdvancement :: [ Advancement ]
+         , pastCovAdvancement :: [ CovAdvancement ]
+         , futureCovAdvancement :: [ CovAdvancement ]
        }  deriving (Eq,Generic,Show)
 instance ToJSON Covenant 
 instance FromJSON Covenant 
@@ -69,6 +81,7 @@ instance Show CovenantConcept where
 
 data CovenantState = CovenantState 
          { covTime :: SeasonTime
+         , covenFolkID :: [ CharacterID ]
          , covenFolk :: [ Character ]
          , library :: [ Book ]
        }  deriving (Eq,Generic,Show)
@@ -76,6 +89,29 @@ data CovenantState = CovenantState
 
 instance ToJSON CovenantState
 instance FromJSON CovenantState
+
+-- | Advancement (changes) to a covenant.
+data CovAdvancement = CovAdvancement 
+     { caSeason :: SeasonTime    -- ^ season or development stage
+     , caNarrative :: Maybe String -- ^ freeform description of the activities
+     , joining :: [ CharacterID ]
+     , leaving :: [ CharacterID ]
+     , acquired :: [ Book ]
+     , lost :: [ Book ]
+     }
+   deriving (Eq,Generic,Show)
+
+defaultAdv :: CovAdvancement 
+defaultAdv = CovAdvancement 
+     { caSeason = NoTime
+     , caNarrative = Nothing
+     , joining = []
+     , leaving = []
+     , acquired = []
+     , lost = []
+     }
+instance ToJSON CovAdvancement
+instance FromJSON CovAdvancement
 
 data Book = Book
          { title :: String

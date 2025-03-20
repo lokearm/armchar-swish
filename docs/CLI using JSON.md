@@ -37,6 +37,11 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 		+ [ ] Characters may have equipment
 	+ [ ] Great/Poor Characteristic (current warning)
 	+ [ ] Handle multiple instances of the same virtue/flaw
++ [ ] Phase 2. Covenant
+	+ [ ] Parse SeasonTime
+	+ [ ] Develop [[Saga object]]
+	+ [ ] Hyperlinked web site
+	+ [ ] Build website in github runners
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
@@ -46,8 +51,6 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
-	+ [ ] Develop [[Saga object]]
-	+ [ ] Hyperlinked web site
 + [ ] Phase 4. Polish
 	+ [ ] Refactor and document code
 	+ [ ] Comment field on traits
