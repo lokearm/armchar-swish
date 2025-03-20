@@ -17,6 +17,14 @@ experimenting with different approaches.
     1. [[CLI with Swish]]
 2. [[CLI using JSON]]
 
++ github repoes and branches
+	+ https://github.com/lokegamer/armchar-swish
+		+ main - stable
+		+ develop - development
+		+ swish - branched before the old client/server and swish code was purged
+	+ git@github.com:hgeorgsch/armchar-swish.git
+		+ old repo, focusing on the client/server architecture
+		+ Note that these two repoes share a root
 
 ## Ars Magica  Notes
 
