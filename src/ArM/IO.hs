@@ -69,7 +69,9 @@ loadSaga :: SagaFile -> IO Saga
 loadSaga saga = do
    db <- readSpellDB $ spellFile saga
    cs <- mapM readCharacter $ characterFiles saga
-   return   Saga { covenants = []  
+   return
+     $ advanceSaga saga
+     $ Saga { covenants = []  
            , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
            , currentCharacters = []
            , spells = fromJust db }

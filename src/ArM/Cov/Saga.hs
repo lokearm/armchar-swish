@@ -36,11 +36,15 @@ data Saga = Saga
          , spells :: SpellDB
        }  deriving (Eq,Show)
 
-advanceSaga :: SeasonTime -> Saga -> Saga
-advanceSaga t saga = saga { currentCharacters = map (advanceCharacter t) ( gameStartCharacters saga ) }
+advanceSaga' :: SeasonTime -> Saga -> Saga
+advanceSaga' t saga = saga { currentCharacters = map (advanceCharacter t) ( gameStartCharacters saga ) }
+
+advanceSaga :: SagaFile -> Saga -> Saga
+advanceSaga t saga = advanceSaga' (currentSeason t) saga
 
 data SagaFile = SagaFile 
-         { covenantFiles :: [String]
+         { currentSeason :: SeasonTime
+         , covenantFiles :: [String]
          , characterFiles :: [String]
          , spellFile :: String
        }  deriving (Eq,Generic,Show)
