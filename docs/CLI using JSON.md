@@ -38,7 +38,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Great/Poor Characteristic (current warning)
 	+ [ ] Handle multiple instances of the same virtue/flaw
 + [ ] Phase 2. Covenant
-	+ [ ] Parse SeasonTime
+	+ [x] Parse SeasonTime
 	+ [ ] Develop [[Saga object]]
 	+ [ ] Hyperlinked web site
 	+ [ ] Build website in github runners
