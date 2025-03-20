@@ -1,5 +1,7 @@
 {
    "currentSeason" : "Summer 1254"
+   , "currentDirectory" : "Hibernia/Current"
+   , "gamestartDirectory" : "Hibernia/GameStart"
    , "covenantFiles" : []
    , "characterFiles" : [ "Data/cieran.json", "Data/eogan.json", "Data/tessa.json" ]
    , "spellFile" : "Data/spells.csv"

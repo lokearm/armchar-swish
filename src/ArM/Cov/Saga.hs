@@ -31,6 +31,8 @@ import ArM.Cov.Covenant
 
 data Saga = Saga 
          { covenants :: [Covenant]
+         , currentDir :: Maybe String
+         , gamestartDir :: Maybe String
          , gameStartCharacters :: [Character]
          , currentCharacters :: [Character]
          , spells :: SpellDB
@@ -44,6 +46,8 @@ advanceSaga t saga = advanceSaga' (currentSeason t) saga
 
 data SagaFile = SagaFile 
          { currentSeason :: SeasonTime
+         , currentDirectory :: Maybe String
+         , gamestartDirectory :: Maybe String
          , covenantFiles :: [String]
          , characterFiles :: [String]
          , spellFile :: String

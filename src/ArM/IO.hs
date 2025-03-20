@@ -33,7 +33,7 @@ import ArM.Char.Spell
 import ArM.BasicIO
 import ArM.Helper
 
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- |
 -- = Read Saga Files
@@ -58,9 +58,32 @@ loadSaga saga = do
    return
      $ advanceSaga saga
      $ Saga { covenants = []  
+           , currentDir = currentDirectory saga
+           , gamestartDir = gamestartDirectory saga
            , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
            , currentCharacters = []
            , spells = fromJust db }
+
+longSheet :: String -> Saga -> IO Saga
+longSheet dir s = trace "Write longSheet" $ writeLong dir s >> return s
+
+
+writeSaga :: Saga -> IO ()
+writeSaga saga = do
+   writeGameStart gsf  saga
+   writeCurrent cdir  saga
+   writeLns (gsf ++ "/errors.md") $
+                  "# Errors in Character Design":"":pregameErrors saga
+   writeLns (cdir ++ "/errors.md") $
+                  "# Errors in Advancement":"":ingameErrors saga
+   _ <- longSheet longDir saga
+
+   return () 
+        where gsf = fromJust $ gamestartDir saga
+              cdir = fromJust $ currentDir saga
+              longDir = cdir ++ "/LongSheet/"
+
+
 
 -- |
 -- == Read Character Data

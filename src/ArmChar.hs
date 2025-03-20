@@ -15,18 +15,14 @@ import System.Console.GetOpt
 
 import ArM.BasicIO
 import ArM.Debug.Time
-import ArM.Debug.Trace
 import ArM.IO
 import ArM.Char.Character
 import ArM.Char.Markdown
-import ArM.Cov.Saga
 
--- import Data.Aeson (decode)
 
--- import qualified Data.Text as T
 import Data.Maybe (fromJust)
 
--- import qualified Data.ByteString.Lazy as LB
+-- import ArM.Debug.Trace
 
 data Options = Options 
   { sagaFile :: Maybe String
@@ -36,9 +32,6 @@ data Options = Options
   , spellDBFile :: Maybe String
   , debugFile  :: Maybe String
   , seasonFile  :: Maybe String
-  , gameStartDir  :: Maybe String
-  , currentDir  :: Maybe String
-  , longDir  :: Maybe String
   , advanceSeason  :: Maybe String
 } deriving (Show)
 defaultOptions :: Options
@@ -50,9 +43,6 @@ defaultOptions = Options
   , spellDBFile = Nothing
   , debugFile  = Nothing
   , seasonFile  = Nothing
-  , gameStartDir  = Nothing
-  , currentDir  = Nothing
-  , longDir  = Nothing
   , advanceSeason  = Nothing
 }
 
@@ -62,15 +52,6 @@ options =
     [ Option ['c']     ["character"] (ReqArg 
             (\arg opt -> opt { charFile = Just arg })
             "FILE") "character file"
-    , Option ['d']     ["long-dir"] (ReqArg 
-            (\arg opt -> opt { longDir = Just arg })
-            "FILE") "directory for long character sheets"
-    , Option ['D']     ["current-dir"] (ReqArg 
-            (\arg opt -> opt { currentDir = Just arg })
-            "FILE") "directory for current character sheets"
-    , Option ['g']     ["game-start-dir"] (ReqArg 
-            (\arg opt -> opt { gameStartDir = Just arg })
-            "FILE") "JSON output file"
     , Option ['j']     ["json"] (ReqArg 
             (\arg opt -> opt { jsonFile = Just arg })
             "FILE") "JSON output file"
@@ -120,10 +101,6 @@ advChar sn fn cs0 = do
    where seasn = parseSeasonTime sn
          cs = advanceCharacter seasn cs0
 
-longSheet :: Maybe String -> Saga -> IO Saga
-longSheet Nothing s = trace "No longSheet file" $ return s
-longSheet (Just dir) s = trace "Write longSheet" $ writeLong dir s >> return s
-
 main' :: Options -> IO ()
 main' opts | charFile opts /= Nothing = do 
      putStrLn $ "Reading file " ++ fn
@@ -145,13 +122,6 @@ main' opts | sagaFile opts /= Nothing = do
      case saga of
         Nothing -> error "Could not read Saga file"
         (Just s1) -> do
-               writeGameStart gsf  s1
-               writeLns (gsf ++ "/errors.md") $ 
-                  "# Errors in Character Design":"":pregameErrors s1
-               _ <- longSheet (longDir opts ) s1
-               writeLns (cdir ++ "/errors.md") $ 
-                  "# Errors in Advancement":"":ingameErrors s1
+               writeSaga s1
                return ()
-        where gsf = fromJust $ gameStartDir opts
-              cdir = fromJust $ currentDir opts
 main' _ | otherwise = error "Not implemented!" 
