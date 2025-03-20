@@ -43,7 +43,7 @@ readSagaFile :: String -- ^ Filename
 readSagaFile fn = LB.readFile fn >>= return . decode
 
 -- | Load the saga and its constituent objects from the given file.
--- This calls both `readSagaFile` and `loadSaga`
+-- This calls both `readSagaFile` and `loadSaga`.
 readSaga :: String -- ^ Filename
          -> IO (Maybe Saga)
 readSaga fn = readSagaFile fn >>= passMaybe loadSaga
