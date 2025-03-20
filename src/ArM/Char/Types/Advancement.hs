@@ -60,6 +60,10 @@ isWinter _ = False
 parseST :: String -> SeasonTime
 parseST  "GameStart" = GameStart
 parseST  "Game Start" = GameStart
+parseST  "Start" = GameStart
+parseST  "Notime" = NoTime
+parseST  "NoTime" = NoTime
+parseST  "N/A" = NoTime
 parseST  s = fy ys
     where xs = splitOn " " s
           ys = map readMaybe xs :: [Maybe Int]
