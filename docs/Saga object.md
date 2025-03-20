@@ -8,3 +8,8 @@ tags:
 	+ Characters at different stages?
 	+ Joint advancement?
 	+ Merging of error reports
++ saga is always stored with an initial state
++ advance saga
+	+ advance characters in season $N$ first
+	+ then advance covenant for season $N$
+	+ need to advance one season at a time, in case of inter-dependencies
