@@ -38,7 +38,32 @@ instance ToJSON SeasonTime where
 instance FromJSON SeasonTime 
 instance ToJSON Season
 instance FromJSON Season
+{-
+instance FromJSON YesNo where
 
+    -- parseJSON takes a Value, it could be one of follwing data constructors:
+    -- Object, Array, String, Number, Bool or Null.
+    -- First of all we expect an Object, it is defined as Object !Object,
+    -- where second Object is just a type synonym for HashMap Text Value. In
+    -- our case we should choose somehow our Haskell value constructor
+    -- according to recieved value.
+    -- So, `o` is actually a HashMap, and all we need is to lookup key "type"
+    -- We should use strict Text for key:
+    parseJSON (Object o) = case HML.lookup (pack "type") o of
+        -- value of entity has type Value
+        Just (String t) -> fromString (TL.unpack (TL.fromStrict t))
+        Just (Number n) -> fromNum n
+        -- Other cases are invalid
+        _               -> empty
+        where fromString :: String -> Parser YesNo
+              fromString "yes" = pure Yes
+              fromString "no"  = pure No
+              fromString _     = empty
+              fromNum n
+                  | n == 1 || n == 1.0 = pure Yes
+                  | n == 0 || n == 0.0 = pure No
+                  | otherwise = empty
+-}
 data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq,Generic)
 isWinter :: SeasonTime -> Bool
 isWinter (SeasonTime Winter _) = True
