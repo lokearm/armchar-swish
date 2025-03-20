@@ -24,13 +24,14 @@ module ArM.Char.Character ( Character(..)
                           , fullConceptName
                           , isGrog
                           , parseSeasonTime
-                          , SeasonTime(..)
                           , Advancement(..)
                           , AugmentedAdvancement(..)
                           , AdvancementLike(..)
                           , CharacterType(..)
                           , prepareCharacter
                           , advanceCharacter
+                          , Season(..)
+                          , SeasonTime(..)
                           ) where
 
 import Data.Maybe 

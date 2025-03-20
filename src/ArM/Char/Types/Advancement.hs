@@ -23,7 +23,6 @@ import Data.List.Split
 import Text.Read
 
 
-type CharTime = SeasonTime 
 -- type CharTime = Maybe String
 
 -- | Season of the year.
@@ -37,6 +36,7 @@ data Season = Winter | Spring | Summer | Autumn  | NoSeason
 instance ToJSON SeasonTime where
    toJSON = toJSON . show
 instance FromJSON SeasonTime 
+instance ToJSON Season
 instance FromJSON Season
 
 data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq,Generic)

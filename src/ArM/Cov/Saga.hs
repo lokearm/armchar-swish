@@ -26,6 +26,8 @@ import ArM.Cov.Covenant
 -- import ArM.Debug.Trace
 --
 
+-- |
+-- = Saga objects
 
 data Saga = Saga 
          { covenants :: [Covenant]
@@ -46,16 +48,22 @@ data SagaFile = SagaFile
 instance ToJSON SagaFile 
 instance FromJSON SagaFile 
 
+-- |
+-- = Advancement
 
-augHead :: SeasonTime -> Maybe String -> String
-augHead NoTime Nothing = ("??" )
-augHead x Nothing = (show x )
-augHead NoTime (Just x) = x
-augHead x (Just z) = (show x  ++ " " ++ z)
+-- |
+-- = Error reports
 
+
+-- | Get errors from the ingam advancements of a given character.
 pregameCharErrors :: Character -> [(String,[String])]
 pregameCharErrors c = renderCharErrors c $ pregameDesign c
 
+-- | Get errors from the ingam advancements of a given character.
+ingameCharErrors :: Character -> [(String,[String])]
+ingameCharErrors c = renderCharErrors c $ pastAdvancement c
+
+-- | Format strins for `pregameCharErrors` and `ingameCharErrors`
 renderCharErrors :: Character -> [AugmentedAdvancement] -> [(String,[String])]
 renderCharErrors c as = ff $ map f as
    where f a = (charID c ++ ": " ++ augHead (season a) (mode a)
@@ -64,9 +72,14 @@ renderCharErrors c as = ff $ map f as
          ff (x:xs) = x:ff xs
          ff [] = []
 
-ingameCharErrors :: Character -> [(String,[String])]
-ingameCharErrors c = renderCharErrors c $ pastAdvancement c
+-- | Format a header for `rencerCharErrors`
+augHead :: SeasonTime -> Maybe String -> String
+augHead NoTime Nothing = ("??" )
+augHead x Nothing = (show x )
+augHead NoTime (Just x) = x
+augHead x (Just z) = (show x  ++ " " ++ z)
 
+-- | Get errors from a list of Validation objects
 filterError :: [Validation] -> [String]
 filterError (Validated _:xs) = filterError xs
 filterError (ValidationError x:xs) = x:filterError xs
