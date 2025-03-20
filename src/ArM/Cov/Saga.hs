@@ -13,7 +13,7 @@
 -----------------------------------------------------------------------------
 module ArM.Cov.Saga where
 
--- import Data.Maybe 
+import Data.Maybe 
 import Data.Aeson 
 import GHC.Generics
 
@@ -23,6 +23,7 @@ import ArM.Char.Types.Advancement
 import ArM.Char.Spell
 import ArM.Char.Markdown
 import ArM.Cov.Covenant
+import ArM.BasicIO
 
 -- import ArM.Debug.Trace
 --
@@ -34,6 +35,7 @@ import ArM.Cov.Covenant
 -- Multiple files have to be loaded to generate a Saga object from a `SagaFile`.
 data Saga = Saga 
          { sagaTitle :: String
+         , seasonTime :: SeasonTime
          , covenants :: [Covenant]
          , currentDir :: Maybe String
          , gamestartDir :: Maybe String
@@ -41,6 +43,21 @@ data Saga = Saga
          , currentCharacters :: [Character]
          , spells :: SpellDB
        }  deriving (Eq,Show)
+
+sagaIndex :: Saga -> OList
+sagaIndex saga = OList 
+        [ OString $ "# " ++ sagaTitle saga
+        , OString ""
+        , OString "Current Season"
+        , OString $ ": [" ++ show (seasonTime saga ) ++ "](" ++ cd ++"/index.md)"
+        , OString ""
+        , OString "Gams Start"
+        , OString $ ": [Game Start](" ++ gsd ++"index.md)"
+        ]
+   where gsd | isNothing (gamestartDir saga) = ""
+             | otherwise = (fromJust $ gamestartDir saga) ++ "/"
+         cd | isNothing (currentDir saga) = ""
+            | otherwise = (fromJust $ currentDir saga) ++ "/"
 
 advanceSaga' :: SeasonTime -> Saga -> Saga
 advanceSaga' t saga = saga { currentCharacters = map (advanceCharacter t) ( gameStartCharacters saga ) }
@@ -53,7 +70,7 @@ advanceSaga t saga = advanceSaga' (currentSeason t) saga
 -- other data in the saga.
 data SagaFile = SagaFile 
          { title :: String
-	 , currentSeason :: SeasonTime
+         , currentSeason :: SeasonTime
          , currentDirectory :: Maybe String
          , gamestartDirectory :: Maybe String
          , covenantFiles :: [String]

@@ -59,6 +59,8 @@ loadSaga saga = do
      $ advanceSaga saga
      $ Saga { covenants = []  
            , currentDir = currentDirectory saga
+           , sagaTitle = title saga
+           , seasonTime = currentSeason saga
            , gamestartDir = gamestartDirectory saga
            , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
            , currentCharacters = []
