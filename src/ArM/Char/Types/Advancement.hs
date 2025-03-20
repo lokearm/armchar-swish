@@ -18,16 +18,16 @@ import ArM.Char.Trait
 import ArM.GameRules
 
 import Data.Aeson 
-import Data.Aeson.Types                          ( Parser )
+-- import Data.Aeson.Types                          ( Parser )
+import Control.Monad
 
 import GHC.Generics
 import Data.List.Split
 import Text.Read             (readMaybe)
 
-import qualified Data.HashMap.Lazy as HML        ( lookup )
-import Data.Text.Lazy                            ( fromStrict, unpack, pack )
+import Data.Text.Lazy                            ( fromStrict, unpack )
 
-import Control.Applicative                       ( empty, pure, (<$>), (<*>) )
+-- import Control.Applicative                       ( empty, pure, (<$>), (<*>) )
 
 -- type CharTime = Maybe String
 
@@ -48,27 +48,9 @@ instance ToJSON Season
 
 instance FromJSON SeasonTime where
 
-    -- parseJSON takes a Value, it could be one of follwing data constructors:
-    -- Object, Array, String, Number, Bool or Null.
-    -- First of all we expect an Object, it is defined as Object !Object,
-    -- where second Object is just a type synonym for HashMap Text Value. In
-    -- our case we should choose somehow our Haskell value constructor
-    -- according to recieved value.
-    -- So, `o` is actually a HashMap, and all we need is to lookup key "type"
-    -- We should use strict Text for key:
-    parseJSON (Object o) = case HML.lookup (pack "type") o of
-        -- value of entity has type Value
-        Just (String t) -> fromString (unpack (fromStrict t))
-        Just (Number n) -> fromNum n
-        -- Other cases are invalid
-        _               -> empty
-        where fromString :: String -> Parser SeasonTime
-              fromString "GameStart" = pure GameStart
-              fromString "Game Start" = pure GameStart
-              fromString "Start" = pure GameStart
-              fromString s     = pure $ parseST s
-              fromString _     = pure NoTime
-              fromNum n = pure $ SeasonTime NoSeason $ round n
+    parseJSON (Number n) = pure $ SeasonTime NoSeason $ round n
+    parseJSON (String t) = pure $ parseST (unpack (fromStrict t))
+    parseJSON _ = mzero
 
 data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq,Generic)
 isWinter :: SeasonTime -> Bool
@@ -91,20 +73,7 @@ parseST  s = fy ys
           fy (Just r:_) = SeasonTime st r
 parseSeasonTime :: Maybe String -> SeasonTime
 parseSeasonTime Nothing = NoTime
-parseSeasonTime (Just "GameStart") = GameStart
-parseSeasonTime (Just "Game Start") = GameStart
-parseSeasonTime (Just s) = fy ys
-    where xs = splitOn " " s
-          ys = map readMaybe xs :: [Maybe Int]
-          ss = map readMaybe xs :: [Maybe Season]
-          fs [] = NoSeason
-          fs (Nothing:rest) = fs rest
-          fs (Just r:_) = r
-          st = fs ss
-          fy [] = NoTime
-          fy (Nothing:rest) = fy rest
-          fy (Just r:_) = SeasonTime st r
-
+parseSeasonTime (Just s) = parseST s
 
 instance Show SeasonTime where
    show GameStart = "Game Start"
