@@ -17,11 +17,17 @@ import ArM.Helper
 import ArM.Char.Trait
 import ArM.GameRules
 
-import Data.Aeson
+import Data.Aeson 
+-- import Data.Aeson.Types                          ( Parser )
+import Control.Monad
+
 import GHC.Generics
 import Data.List.Split
-import Text.Read
+import Text.Read             (readMaybe)
 
+import Data.Text.Lazy                            ( fromStrict, unpack )
+
+-- import Control.Applicative                       ( empty, pure, (<$>), (<*>) )
 
 -- type CharTime = Maybe String
 
@@ -35,20 +41,30 @@ data Season = Winter | Spring | Summer | Autumn  | NoSeason
 
 instance ToJSON SeasonTime where
    toJSON = toJSON . show
-instance FromJSON SeasonTime 
+-- instance FromJSON SeasonTime 
 instance ToJSON Season
-instance FromJSON Season
+
+
+
+instance FromJSON SeasonTime where
+
+    parseJSON (Number n) = pure $ SeasonTime NoSeason $ round n
+    parseJSON (String t) = pure $ parseST (unpack (fromStrict t))
+    parseJSON _ = mzero
 
 data SeasonTime = SeasonTime Season Int | GameStart | NoTime deriving (Eq,Generic)
 isWinter :: SeasonTime -> Bool
 isWinter (SeasonTime Winter _) = True
 isWinter _ = False
 
-parseSeasonTime :: Maybe String -> SeasonTime
-parseSeasonTime Nothing = NoTime
-parseSeasonTime (Just "GameStart") = GameStart
-parseSeasonTime (Just "Game Start") = GameStart
-parseSeasonTime (Just s) = fy ys
+parseST :: String -> SeasonTime
+parseST  "GameStart" = GameStart
+parseST  "Game Start" = GameStart
+parseST  "Start" = GameStart
+parseST  "Notime" = NoTime
+parseST  "NoTime" = NoTime
+parseST  "N/A" = NoTime
+parseST  s = fy ys
     where xs = splitOn " " s
           ys = map readMaybe xs :: [Maybe Int]
           ss = map readMaybe xs :: [Maybe Season]
@@ -59,7 +75,9 @@ parseSeasonTime (Just s) = fy ys
           fy [] = NoTime
           fy (Nothing:rest) = fy rest
           fy (Just r:_) = SeasonTime st r
-
+parseSeasonTime :: Maybe String -> SeasonTime
+parseSeasonTime Nothing = NoTime
+parseSeasonTime (Just s) = parseST s
 
 instance Show SeasonTime where
    show GameStart = "Game Start"
