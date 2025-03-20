@@ -1,5 +1,6 @@
 {
-   "covenantFiles" : []
+   "currentSeason" : "Summer 1254"
+   , "covenantFiles" : []
    , "characterFiles" : [ "Data/cieran.json", "Data/eogan.json", "Data/tessa.json" ]
    , "spellFile" : "Data/spells.csv"
 }
