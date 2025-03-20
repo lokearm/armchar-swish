@@ -32,6 +32,10 @@ import ArM.Char.Character
 -- | ID of a character.
 -- This is currently implemented as the name.
 data CharacterID = CharacterID String
+    deriving ( Show, Ord, Eq, Generic )
+
+instance ToJSON CharacterID
+instance FromJSON CharacterID
 
 -- | get the ID of a character.
 characterID :: Character -> CharacterID
@@ -40,8 +44,8 @@ characterID = CharacterID . charID
 data Covenant = Covenant 
          { covenantConcept :: CovenantConcept
          , covenantState :: CovenantState
-         , pastCovAdvancement :: [ AugmentedAdvancement ]
-         , futureCovAdvancement :: [ Advancement ]
+         , pastCovAdvancement :: [ CovAdvancement ]
+         , futureCovAdvancement :: [ CovAdvancement ]
        }  deriving (Eq,Generic,Show)
 instance ToJSON Covenant 
 instance FromJSON Covenant 
@@ -87,7 +91,7 @@ instance ToJSON CovenantState
 instance FromJSON CovenantState
 
 -- | Advancement (changes) to a covenant.
-data Advancement = Advancement 
+data CovAdvancement = CovAdvancement 
      { caSeason :: SeasonTime    -- ^ season or development stage
      , caNarrative :: Maybe String -- ^ freeform description of the activities
      , joining :: [ CharacterID ]
@@ -97,7 +101,8 @@ data Advancement = Advancement
      }
    deriving (Eq,Generic,Show)
 
-defaultAdv = Advancement 
+defaultAdv :: CovAdvancement 
+defaultAdv = CovAdvancement 
      { caSeason = NoTime
      , caNarrative = Nothing
      , joining = []
@@ -105,6 +110,8 @@ defaultAdv = Advancement
      , acquired = []
      , lost = []
      }
+instance ToJSON CovAdvancement
+instance FromJSON CovAdvancement
 
 data Book = Book
          { title :: String
