@@ -30,6 +30,8 @@ import ArM.Cov.Covenant
 -- |
 -- = Saga objects
 
+-- | A Saga as it is processed in memory.
+-- Multiple files have to be loaded to generate a Saga object from a `SagaFile`.
 data Saga = Saga 
          { sagaTitle :: String
          , covenants :: [Covenant]
@@ -46,6 +48,9 @@ advanceSaga' t saga = saga { currentCharacters = map (advanceCharacter t) ( game
 advanceSaga :: SagaFile -> Saga -> Saga
 advanceSaga t saga = advanceSaga' (currentSeason t) saga
 
+-- | A Saga as it is stored on file.
+-- The main purpose here is to identify all the files used for characters and
+-- other data in the saga.
 data SagaFile = SagaFile 
          { title :: String
 	 , currentSeason :: SeasonTime
