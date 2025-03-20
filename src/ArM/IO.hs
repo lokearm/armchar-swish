@@ -31,38 +31,24 @@ import ArM.Char.Markdown
 import ArM.Cov.Saga
 import ArM.Char.Spell
 import ArM.BasicIO
+import ArM.Helper
 
 -- import ArM.Debug.Trace
 
--- | Read a character from JSON.  Return Maybe Character
-readCharacter :: String -- ^ Filename
-              -> IO (Maybe Character)
-readCharacter fn = LB.readFile fn 
-            >>= return . prepMaybe . decode
-   where prepMaybe Nothing = Nothing
-         prepMaybe (Just x) = Just $ prepareCharacter x
-
--- | Read a saga from JSON.  Return Maybe Saga
+-- |
+-- = Read Saga Files
+-- | Read a saga from JSON.  Return Maybe SagaFile
 readSagaFile :: String -- ^ Filename
              -> IO (Maybe SagaFile)
 readSagaFile fn = LB.readFile fn >>= return . decode
 
 -- | Load the saga and its constituent objects from the given file.
+-- This calls both `readSagaFile` and `loadSaga`
 readSaga :: String -- ^ Filename
          -> IO (Maybe Saga)
 readSaga fn = readSagaFile fn >>= passMaybe loadSaga
 
--- | Skip Nothing values and apply the give function on Just-objects.
-passMaybe :: (Monad m) => (a -> m b) -> Maybe a -> m (Maybe b)
-passMaybe _ Nothing = return Nothing
-passMaybe g (Just x) = fmap Just $ g x
 
--- | Read spells from CSV.  Return Maybe SpellDB.
-readSpellDB :: String -- ^ Filename
-              -> IO (Maybe SpellDB)
-readSpellDB fn = parseFromFile CSV.csvFile fn >>= return . Just . spellDB . g
-  where g (Left _) = [[]]
-        g (Right x) = x
 
 -- | Load constituent objects for a saga.
 loadSaga :: SagaFile -> IO Saga
@@ -75,6 +61,21 @@ loadSaga saga = do
            , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
            , currentCharacters = []
            , spells = fromJust db }
+
+-- |
+-- == Read Character Data
+
+-- | Read a character from JSON.  Return Maybe Character
+readCharacter :: String -- ^ Filename
+              -> IO (Maybe Character)
+readCharacter fn = LB.readFile fn 
+            >>= return . prepMaybe . decode
+   where prepMaybe Nothing = Nothing
+         prepMaybe (Just x) = Just $ prepareCharacter x
+
+
+-- |
+-- = Write Character Sheets
 
 -- | Write a charactersheet in MarkDown, with both ingame and pregame logs.
 -- This is currently not used.
@@ -125,3 +126,13 @@ writeLong dir saga = mapM wf  cs >> return ()
            cs = currentCharacters saga
            wf c = (writeOList (fn c) $ printSheetMD db c)
            fn c = dir ++ "/" ++ charID c ++ ".md"
+
+-- |
+-- = Read resources from CSV
+
+-- | Read spells from CSV.  Return Maybe SpellDB.
+readSpellDB :: String -- ^ Filename
+              -> IO (Maybe SpellDB)
+readSpellDB fn = parseFromFile CSV.csvFile fn >>= return . Just . spellDB . g
+  where g (Left _) = [[]]
+        g (Right x) = x

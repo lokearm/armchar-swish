@@ -58,3 +58,8 @@ uniqueSort = f . sort
           f (x:[]) = x:[]
           f (x:y:ys) | x == y = f (y:ys)
                      | otherwise = x:f (y:ys)
+
+-- | Skip Nothing values and apply the give function on Just-objects.
+passMaybe :: (Monad m) => (a -> m b) -> Maybe a -> m (Maybe b)
+passMaybe _ Nothing = return Nothing
+passMaybe g (Just x) = fmap Just $ g x
