@@ -21,6 +21,7 @@ import GHC.Generics
 import ArM.Char.Character
 import ArM.Char.Types.Advancement
 import ArM.Char.Spell
+import ArM.Char.Markdown
 import ArM.Cov.Covenant
 
 -- import ArM.Debug.Trace
@@ -30,7 +31,8 @@ import ArM.Cov.Covenant
 -- = Saga objects
 
 data Saga = Saga 
-         { covenants :: [Covenant]
+         { sagaTitle :: String
+         , covenants :: [Covenant]
          , currentDir :: Maybe String
          , gamestartDir :: Maybe String
          , gameStartCharacters :: [Character]
@@ -45,7 +47,8 @@ advanceSaga :: SagaFile -> Saga -> Saga
 advanceSaga t saga = advanceSaga' (currentSeason t) saga
 
 data SagaFile = SagaFile 
-         { currentSeason :: SeasonTime
+         { title :: String
+	 , currentSeason :: SeasonTime
          , currentDirectory :: Maybe String
          , gamestartDirectory :: Maybe String
          , covenantFiles :: [String]
@@ -55,6 +58,11 @@ data SagaFile = SagaFile
 
 instance ToJSON SagaFile 
 instance FromJSON SagaFile 
+
+instance Markdown Saga where
+    printMD saga = OList 
+        [ OString $ "# " ++ sagaTitle saga
+        ]
 
 -- |
 -- = Advancement
