@@ -1,5 +1,6 @@
 {
-   "currentSeason" : "Summer 1254"
+   "title" : "Hibernia Saga (Contested Lands)"
+   , "currentSeason" : "Summer 1254"
    , "currentDirectory" : "Hibernia/Current"
    , "gamestartDirectory" : "Hibernia/GameStart"
    , "covenantFiles" : []
