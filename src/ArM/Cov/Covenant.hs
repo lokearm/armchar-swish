@@ -22,6 +22,8 @@ import Data.Maybe
 
 import ArM.Char.Trait
 import ArM.Char.Character
+import ArM.Char.Markdown
+import ArM.BasicIO
 -- import ArM.Types.Character
 -- import ArM.Types.Advancement
 -- import ArM.Types.KeyPair
@@ -124,3 +126,21 @@ data Book = Book
        }  deriving (Eq,Generic,Show)
 instance ToJSON Book
 instance FromJSON Book
+
+instance LongSheet CovenantConcept
+instance Markdown CovenantConcept where
+    printMD cov = OList  []
+
+instance LongSheet CovenantState
+instance Markdown CovenantState where
+    printMD cov = OList  []
+
+instance LongSheet Covenant 
+instance Markdown Covenant where
+    printMD cov = OList 
+        [ OString $ "# " ++ (covName $ covenantConcept cov )
+        , OString ""
+        , printMD $ covenantConcept cov
+        , OString ""
+        , printMD $ covenantState cov
+        ]
