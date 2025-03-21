@@ -14,6 +14,7 @@ module ArM.Helper where
 
 import Data.Maybe (fromMaybe)
 import Data.List (sort)
+import qualified Network.URI.Encode as URI
 
 -- | Get a list from a maybe-list, mapping Nothing to the empty list.
 maybeList :: Maybe [a] -> [a]
@@ -63,3 +64,7 @@ uniqueSort = f . sort
 passMaybe :: (Monad m) => (a -> m b) -> Maybe a -> m (Maybe b)
 passMaybe _ Nothing = return Nothing
 passMaybe g (Just x) = fmap Just $ g x
+
+-- | Set a markdown link, escaping spaces in the link.
+markdownLink :: String -> String -> String
+markdownLink txt lnk = "[" ++ txt ++ "](" ++ URI.encode lnk ++ ")"

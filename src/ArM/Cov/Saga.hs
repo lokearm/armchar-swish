@@ -16,7 +16,6 @@ module ArM.Cov.Saga where
 import Data.Maybe 
 import Data.Aeson 
 import GHC.Generics
-import qualified Network.URI.Encode as URI
 
 -- import ArM.Char.Trait
 import ArM.Char.Character
@@ -25,6 +24,7 @@ import ArM.Char.Spell
 import ArM.Char.Markdown
 import ArM.Cov.Covenant
 import ArM.BasicIO
+import ArM.Helper
 
 
 
@@ -52,22 +52,20 @@ sagaIndex saga = OList
         [ OString $ "# " ++ sagaTitle saga
         , OString ""
         , OString "Current Season"
-        , OString $ ": [" ++ show (seasonTime saga ) ++ "](" ++ cd ++"/index.md)"
+        , OString $ markdownLink (show $ seasonTime saga ) (cd ++"index.md")
         , OString ""
         , OString "Game Start"
-        , OString $ ": [Game Start](" ++ gsd ++"index.md)"
+        , OString $ ": markdownLink "Game Start"  (gsd ++ "index.md")
         ]
    where gsd | isNothing (gamestartDir saga) = ""
              | otherwise = (fromJust $ gamestartDir saga) ++ "/"
          cd | isNothing (currentDir saga) = ""
             | otherwise = (fromJust $ currentDir saga) ++ "/"
 
-link :: String -> String -> String
-link txt lnk = "[" ++ txt ++ "](" ++ lnk ++ ")"
 covenantLink :: Covenant -> String
-covenantLink cov = link txt lnk
+covenantLink cov = markdownLink txt lnk
    where txt = covenantName cov ++ " " ++ covenantSeason cov
-         lnk = URI.encode $ covenantName cov ++ ".md"
+         lnk =  covenantName cov ++ ".md"
 
 advanceSaga' :: SeasonTime -> Saga -> Saga
 advanceSaga' t saga = saga { currentCharacters = map (advanceCharacter t) ( gameStartCharacters saga ) }
