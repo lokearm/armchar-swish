@@ -27,24 +27,23 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Review Cieran's ingame
-	+ [ ] Decrepitude
-		+ [ ] make old grog test file
-		+ [ ] verify
-	+ [ ] Sort Characteristics
-	+ [ ] Compute Combat Stats
+	+ [ ] Step 2. Compute Combat Stats
 		+ [x] CSV weapons table
 		+ [ ] Weapon type
 		+ [ ] Characters may have equipment
-	+ [ ] Great/Poor Characteristic (current warning)
-	+ [ ] Handle multiple instances of the same virtue/flaw
-+ [ ] Phase 2. Covenant
-	+ [x] Parse SeasonTime
-	+ [ ] Develop [[Saga object]]
+	+ [ ] Step 3. Characteristics
+		+ [ ] Sort Characteristics
+		+ [ ] Great/Poor Characteristic (current warning)
+		+ [ ] Handle multiple instances of the same virtue/flaw
+	+ [ ] Step 4. Develop [[Saga object]]
 		+ [ ] single call to advance saga
 		+ [ ] current and tentative season
 	+ [x] Hyperlinked web site
 		+ [x] Front page listing characters
-	+ [ ] Build website in github runners
+	+ [ ] Step 5. Build website in github runners
+	+ [ ] Step 6. Decrepitude
+		+ [ ] make old grog test file
+		+ [ ] verify
 + [ ] Phase 3. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
