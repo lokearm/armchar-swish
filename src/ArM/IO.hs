@@ -83,6 +83,8 @@ writeSaga saga = do
    writeGameStart gsf  saga
    writeCurrent cdir  saga
    writeOList (rootDir saga ++ "/index.md") $ sagaIndex saga
+   writeOList (gamestartDir saga ++ "/index.md") $ sagaGameStartIndex saga
+   writeOList (currentDir saga ++ "/index.md") $ sagaCurrentIndex saga
    writeLns (gsf ++ "/errors.md") $
                   "# Errors in Character Design":"":pregameErrors saga
    writeLns (cdir ++ "/errors.md") $

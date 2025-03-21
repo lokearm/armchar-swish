@@ -51,6 +51,19 @@ gamestartDir saga = rootDir saga ++ "/GameStart/"
 currentDir :: Saga -> String
 currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime saga) ++ "/"
 
+sagaGameStartIndex :: Saga -> OList
+sagaGameStartIndex saga = OList 
+        [ OString $ "# " ++ sagaTitle saga ++ " - Game Start"
+        , OString ""
+        , characterIndex $ gameStartCharacters saga
+        ]
+sagaCurrentIndex :: Saga -> OList
+sagaCurrentIndex saga = OList 
+        [ OString $ "# " ++ sagaTitle saga ++ " - " ++ (show $ seasonTime saga)
+        , OString ""
+        , characterIndex $ currentCharacters saga
+        ]
+
 sagaIndex :: Saga -> OList
 sagaIndex saga = OList 
         [ OString $ "# " ++ sagaTitle saga
