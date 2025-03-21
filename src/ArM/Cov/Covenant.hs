@@ -43,6 +43,9 @@ instance FromJSON CharacterID
 characterID :: Character -> CharacterID
 characterID = CharacterID . charID
 
+-- |
+-- = Covenant Object
+
 data Covenant = Covenant 
          { covenantConcept :: CovenantConcept
          , covenantState :: CovenantState
@@ -51,6 +54,19 @@ data Covenant = Covenant
        }  deriving (Eq,Generic,Show)
 instance ToJSON Covenant 
 instance FromJSON Covenant 
+
+instance LongSheet Covenant 
+instance Markdown Covenant where
+    printMD cov = OList 
+        [ OString $ "# " ++ (covName $ covenantConcept cov )
+        , OString ""
+        , printMD $ covenantConcept cov
+        , OString ""
+        , printMD $ covenantState cov
+        ]
+
+-- |
+-- = CovenantConcept Object
 
 data CovenantConcept = CovenantConcept 
          { covName :: String
@@ -81,6 +97,23 @@ instance Show CovenantConcept where
     where sf Nothing = "-"
           sf (Just x ) = show x
 
+instance LongSheet CovenantConcept
+instance Markdown CovenantConcept where
+    printMD cov = OList  
+       [ OString $ fromMaybe "" $ covConcept cov
+       , OString ""
+       , OString $ "*Founded* " ++ (show $ covFounded cov)
+       , OString ""
+       , OString app
+       ]
+       where app | isNothing (covAppearance cov) = ""
+                 | otherwise = "**Appearance** " ++ (fromJust $ covAppearance cov)
+
+
+
+-- |
+-- = CovenantState Object
+
 data CovenantState = CovenantState 
          { covTime :: SeasonTime
          , covenFolkID :: [ CharacterID ]
@@ -91,6 +124,15 @@ data CovenantState = CovenantState
 
 instance ToJSON CovenantState
 instance FromJSON CovenantState
+
+instance LongSheet CovenantState
+instance Markdown CovenantState where
+    printMD cov = OList  
+        [ OString $ "## " ++ (show $ covTime cov)
+        ]
+
+-- |
+-- = Advancement and Traits
 
 -- | Advancement (changes) to a covenant.
 data CovAdvancement = CovAdvancement 
@@ -127,20 +169,3 @@ data Book = Book
 instance ToJSON Book
 instance FromJSON Book
 
-instance LongSheet CovenantConcept
-instance Markdown CovenantConcept where
-    printMD cov = OList  []
-
-instance LongSheet CovenantState
-instance Markdown CovenantState where
-    printMD cov = OList  []
-
-instance LongSheet Covenant 
-instance Markdown Covenant where
-    printMD cov = OList 
-        [ OString $ "# " ++ (covName $ covenantConcept cov )
-        , OString ""
-        , printMD $ covenantConcept cov
-        , OString ""
-        , printMD $ covenantState cov
-        ]
