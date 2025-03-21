@@ -15,6 +15,7 @@ module ArM.Helper where
 import Data.Maybe (fromMaybe)
 import Data.List (sort)
 import qualified Network.URI.Encode as URI
+import ArM.BasicIO
 
 -- | Get a list from a maybe-list, mapping Nothing to the empty list.
 maybeList :: Maybe [a] -> [a]
@@ -68,3 +69,7 @@ passMaybe g (Just x) = fmap Just $ g x
 -- | Set a markdown link, escaping spaces in the link.
 markdownLink :: String -> String -> String
 markdownLink txt lnk = "[" ++ txt ++ "](" ++ URI.encode lnk ++ ")"
+
+-- | Set an item for a description list in markdown 
+markdownDL :: String -> String -> OList
+markdownDL t d = OList [ OString t, OString (": "++d), OString "" ]

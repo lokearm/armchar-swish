@@ -55,17 +55,14 @@ sagaIndex :: Saga -> OList
 sagaIndex saga = OList 
         [ OString $ "# " ++ sagaTitle saga
         , OString ""
-        , OString "Current Season"
-        , OString $ markdownLink (show $ seasonTime saga ) (cd ++"index.md")
-        , OString ""
-        , OString "Error Report"
-        , OString $ markdownLink "Ingame Advancement"  (cd ++ "errors.md")
-        , OString ""
-        , OString "Game Start"
-        , OString $ markdownLink "Game Start"  (gsd ++ "index.md")
-        , OString ""
-        , OString "Error Report"
-        , OString $ markdownLink "Game Start"  (gsd ++ "errors.md")
+        , markdownDL "Current Season"
+            $ markdownLink (show $ seasonTime saga ) (cd ++"index.md")
+        , markdownDL "Error Report"
+            $ markdownLink "Ingame Advancement"  (cd ++ "errors.md")
+        , markdownDL "Game Start"
+            $ markdownLink "Game Start"  (gsd ++ "index.md")
+        , markdownDL "Error Report"
+            $ markdownLink "Game Start"  (gsd ++ "errors.md")
         ]
    where gsd = gamestartDir saga
          cd = currentDir saga
