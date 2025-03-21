@@ -1,6 +1,5 @@
 
 
-mkdir -p Hibernia/GameStart Hibernia/Current/LongSheet
 cabal run armchar -- -s Data/hibernia.json 
 
 for d in Hibernia/GameStart Hibernia/Current Hibernia/Current/LongSheet

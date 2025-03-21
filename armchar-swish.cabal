@@ -50,6 +50,7 @@ common deps
                        , split >= 0.2.3
                        , utf8-string >= 1.0.2
 		       , uri-encode >= 1.5
+                       , directory >= 1.3
   hs-source-dirs:      . , ./src
   default-language:    Haskell2010
 

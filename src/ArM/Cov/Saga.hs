@@ -55,7 +55,7 @@ sagaIndex saga = OList
         , OString $ markdownLink (show $ seasonTime saga ) (cd ++"index.md")
         , OString ""
         , OString "Game Start"
-        , OString $ ": markdownLink "Game Start"  (gsd ++ "index.md")
+        , OString $ markdownLink "Game Start"  (gsd ++ "index.md")
         ]
    where gsd | isNothing (gamestartDir saga) = ""
              | otherwise = (fromJust $ gamestartDir saga) ++ "/"

@@ -25,6 +25,7 @@ import qualified Data.CSV as CSV
 import qualified Data.ByteString.Lazy as LB
 
 import Text.ParserCombinators.Parsec
+import System.Directory
 
 import ArM.Char.Character
 import ArM.Char.Markdown
@@ -72,6 +73,9 @@ longSheet dir s = trace "Write longSheet" $ writeLong dir s >> return s
 
 writeSaga :: Saga -> IO ()
 writeSaga saga = do
+   createDirectoryIfMissing True gsf
+   createDirectoryIfMissing True cdir
+   createDirectoryIfMissing True longDir
    writeGameStart gsf  saga
    writeCurrent cdir  saga
    writeLns (gsf ++ "/errors.md") $
