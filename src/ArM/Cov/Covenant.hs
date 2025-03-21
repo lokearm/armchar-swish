@@ -65,6 +65,11 @@ instance Markdown Covenant where
         , printMD $ covenantState cov
         ]
 
+covenantName :: Covenant -> String
+covenantName = covName . covenantConcept
+covenantSeason :: Covenant -> String
+covenantSeason = show . covTime . covenantState
+
 -- |
 -- = CovenantConcept Object
 
