@@ -59,15 +59,19 @@ loadSaga saga = do
    return
      $ advanceSaga saga
      $ Saga { covenants = []  
-           , currentDir = currentDirectory saga
+           , rootDir = fromMaybe "/tmp/" $ rootDirectory saga
            , sagaTitle = title saga
            , seasonTime = currentSeason saga
-           , gamestartDir = gamestartDirectory saga
            , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
            , currentCharacters = []
            , spells = fromJust db }
 
-longSheet :: String -> Saga -> IO Saga
+-- | -- Write write character sheets (long format) for the characters in the
+-- given saga to the given directory.
+-- File names are derived from character names.
+longSheet :: String    -- ^ Directory name
+          -> Saga      -- ^ Saga whose characters to write
+          -> IO Saga
 longSheet dir s = trace "Write longSheet" $ writeLong dir s >> return s
 
 
@@ -78,6 +82,7 @@ writeSaga saga = do
    createDirectoryIfMissing True longDir
    writeGameStart gsf  saga
    writeCurrent cdir  saga
+   writeOList (rootDir saga ++ "/index.md") $ sagaIndex saga
    writeLns (gsf ++ "/errors.md") $
                   "# Errors in Character Design":"":pregameErrors saga
    writeLns (cdir ++ "/errors.md") $
@@ -85,8 +90,8 @@ writeSaga saga = do
    _ <- longSheet longDir saga
 
    return () 
-        where gsf = fromJust $ gamestartDir saga
-              cdir = fromJust $ currentDir saga
+        where gsf = gamestartDir saga
+              cdir = currentDir saga
               longDir = cdir ++ "/LongSheet/"
 
 

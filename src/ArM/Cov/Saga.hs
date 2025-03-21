@@ -13,7 +13,7 @@
 -----------------------------------------------------------------------------
 module ArM.Cov.Saga where
 
-import Data.Maybe 
+-- import Data.Maybe 
 import Data.Aeson 
 import GHC.Generics
 
@@ -40,12 +40,16 @@ data Saga = Saga
          { sagaTitle :: String
          , seasonTime :: SeasonTime
          , covenants :: [Covenant]
-         , currentDir :: Maybe String
-         , gamestartDir :: Maybe String
+         , rootDir :: String
          , gameStartCharacters :: [Character]
          , currentCharacters :: [Character]
          , spells :: SpellDB
        }  deriving (Eq,Show)
+
+gamestartDir :: Saga -> String
+gamestartDir saga = rootDir saga ++ "/GameStart/"
+currentDir :: Saga -> String
+currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime saga) ++ "/"
 
 sagaIndex :: Saga -> OList
 sagaIndex saga = OList 
@@ -63,10 +67,8 @@ sagaIndex saga = OList
         , OString "Error Report"
         , OString $ markdownLink "Game Start"  (gsd ++ "errors.md")
         ]
-   where gsd | isNothing (gamestartDir saga) = ""
-             | otherwise = (fromJust $ gamestartDir saga) ++ "/"
-         cd | isNothing (currentDir saga) = ""
-            | otherwise = (fromJust $ currentDir saga) ++ "/"
+   where gsd = gamestartDir saga
+         cd = currentDir saga
 
 covenantLink :: Covenant -> String
 covenantLink cov = markdownLink txt lnk
@@ -85,8 +87,7 @@ advanceSaga t saga = advanceSaga' (currentSeason t) saga
 data SagaFile = SagaFile 
          { title :: String
          , currentSeason :: SeasonTime
-         , currentDirectory :: Maybe String
-         , gamestartDirectory :: Maybe String
+         , rootDirectory :: Maybe String
          , covenantFiles :: [String]
          , characterFiles :: [String]
          , spellFile :: String
