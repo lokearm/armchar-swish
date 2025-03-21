@@ -75,12 +75,10 @@ sagaIndex :: Saga -> OList
 sagaIndex saga = OList 
         [ OString $ "# " ++ sagaTitle saga
         , OString ""
-        , markdownDL "Current Season" $ wikiLink (sagaStateName saga) 
-        , markdownDL "Error Report"
-            $ wikiLink (sagaStateName saga ++ " Errors") 
-        , markdownDL "Game Start" $ wikiLink (sagaStartName saga) 
-        , markdownDL "Error Report"
-            $ wikiLink (sagaStartName saga ++ " Errors") 
+        , OString $ "+ " ++ wikiLink (sagaStateName saga) 
+        , OString $ "+ " ++ wikiLink (sagaStateName saga ++ " Errors") 
+        , OString $ "+ " ++ wikiLink (sagaStartName saga) 
+        , OString $ "+ " ++ wikiLink (sagaStartName saga ++ " Errors") 
         ]
 
 covenantLink :: Covenant -> String
