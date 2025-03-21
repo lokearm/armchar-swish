@@ -26,10 +26,7 @@ import ArM.Cov.Covenant
 import ArM.BasicIO
 import ArM.Helper
 
-
-
 -- import ArM.Debug.Trace
---
 
 -- |
 -- = Saga objects
@@ -46,33 +43,8 @@ data Saga = Saga
          , spells :: SpellDB
        }  deriving (Eq,Show)
 
-sagaStateName :: Saga -> String
-sagaStateName s = sagaTitle s ++ " - " ++ (show $ seasonTime s)
-
-sagaStartName :: Saga -> String
-sagaStartName s = sagaTitle s ++ " - Game Start"
-
-
-gamestartDir :: Saga -> String
-gamestartDir saga = rootDir saga ++ "/GameStart/"
-currentDir :: Saga -> String
-currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime saga) ++ "/"
-
-sagaGameStartIndex :: Saga -> OList
-sagaGameStartIndex saga = OList 
-        [ OString $ "# " ++ sagaTitle saga ++ " - Game Start"
-        , OString ""
-        , characterIndex $ gameStartCharacters saga
-        ]
-sagaCurrentIndex :: Saga -> OList
-sagaCurrentIndex saga = OList 
-        [ OString $ "# " ++ sagaTitle saga ++ " - " ++ (show $ seasonTime saga)
-        , OString ""
-        , characterIndex $ currentCharacters saga
-        ]
-
-sagaIndex :: Saga -> OList
-sagaIndex saga = OList 
+instance Markdown Saga where
+    printMD saga = OList 
         [ OString $ "# " ++ sagaTitle saga
         , OString ""
         , OString $ "+ " ++ wikiLink (sagaStateName saga) 
@@ -81,15 +53,46 @@ sagaIndex saga = OList
         , OString $ "+ " ++ wikiLink (sagaStartName saga ++ " Errors") 
         ]
 
-covenantLink :: Covenant -> String
-covenantLink cov = wikiLink txt 
-   where txt = covenantName cov ++ " " ++ covenantSeason cov
+-- | Get the name of the Saga
+sagaStateName :: Saga -> String
+sagaStateName s = sagaTitle s ++ " - " ++ (show $ seasonTime s)
 
-advanceSaga' :: SeasonTime -> Saga -> Saga
-advanceSaga' t saga = saga { currentCharacters = map (advanceCharacter t) ( gameStartCharacters saga ) }
+-- | Get a string identifying the Saga State, i.e. name and season.
+sagaStartName :: Saga -> String
+sagaStartName s = sagaTitle s ++ " - Game Start"
 
-advanceSaga :: SagaFile -> Saga -> Saga
-advanceSaga t saga = advanceSaga' (currentSeason t) saga
+
+-- | Directory for Game Start sheet
+gamestartDir :: Saga -> String
+gamestartDir saga = rootDir saga ++ "/GameStart/"
+
+-- | Directory for Current state
+currentDir :: Saga -> String
+currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime saga) ++ "/"
+
+-- | Make the index page for the game start description
+sagaGameStartIndex :: Saga -> OList
+sagaGameStartIndex saga = OList 
+        [ OString $ "# " ++ sagaTitle saga ++ " - Game Start"
+        , OString ""
+        , characterIndex $ gameStartCharacters saga
+        ]
+
+-- | Make the index page for the current state
+sagaCurrentIndex :: Saga -> OList
+sagaCurrentIndex saga = OList 
+        [ OString $ "# " ++ sagaTitle saga ++ " - " ++ (show $ seasonTime saga)
+        , OString ""
+        , characterIndex $ currentCharacters saga
+        ]
+
+-- | Make the top level index page (alias for `printMD`)
+sagaIndex :: Saga -> OList
+sagaIndex = printMD
+
+-- |
+-- == SagaFile object
+
 
 -- | A Saga as it is stored on file.
 -- The main purpose here is to identify all the files used for characters and
@@ -106,13 +109,16 @@ data SagaFile = SagaFile
 instance ToJSON SagaFile 
 instance FromJSON SagaFile 
 
-instance Markdown Saga where
-    printMD saga = OList 
-        [ OString $ "# " ++ sagaTitle saga
-        ]
 
 -- |
 -- = Advancement
+
+advanceSaga' :: SeasonTime -> Saga -> Saga
+advanceSaga' t saga = saga { currentCharacters =
+                             map (advanceCharacter t) ( gameStartCharacters saga ) }
+
+advanceSaga :: SagaFile -> Saga -> Saga
+advanceSaga t saga = advanceSaga' (currentSeason t) saga
 
 
 -- |
@@ -120,7 +126,6 @@ instance Markdown Saga where
 
 -- |
 -- == Error reports
-
 
 -- | Get errors from the ingam advancements of a given character.
 pregameCharErrors :: Character -> [(String,[String])]

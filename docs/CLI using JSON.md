@@ -12,17 +12,6 @@ aliases:
 + [[Types for JSON]]
 
 
-## Command Line Syntax
-
-```
-armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eogan.pdf eogan.md  
-```
-
-+ `-c FILE` read the character from `FILE`
-+ `-o FILE` write a formatted character sheet at Game Start to `FILE`
-+ `-j FILE` write character state as calculated at Game Start to `FILE` in JSON
-+ Debug options
-	+ `-O FILE` write markdown of the character before the sheet is computed
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
@@ -38,13 +27,11 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 4. Develop [[Saga object]]
 		+ [ ] single call to advance saga
 		+ [ ] current and tentative season
-	+ [x] Hyperlinked web site
-		+ [x] Front page listing characters
 	+ [ ] Step 5. Build website in github runners
 	+ [ ] Step 6. Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
-+ [ ] Phase 3. Covenant
++ [ ] Phase 2. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Covenant data model - analogous to Character
 		+ [ ] Book resource
@@ -53,7 +40,7 @@ armchar -- -c eogan.json -o eogan.md -O test.md -j test.json   && pandoc -o eoga
 	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
-+ [ ] Phase 4. Polish
++ [ ] Phase 3. Polish
 	+ [ ] Refactor and document code
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen

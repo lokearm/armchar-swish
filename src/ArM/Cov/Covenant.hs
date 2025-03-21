@@ -27,7 +27,7 @@ import ArM.BasicIO
 -- import ArM.Types.Character
 -- import ArM.Types.Advancement
 -- import ArM.Types.KeyPair
--- import ArM.Helper
+import ArM.Helper
 
 -- import ArM.Debug.Trace
 
@@ -65,10 +65,18 @@ instance Markdown Covenant where
         , printMD $ covenantState cov
         ]
 
+-- | Get the name of the covenant
 covenantName :: Covenant -> String
 covenantName = covName . covenantConcept
+
+-- | Get a string identifying the covenant and state, i.e. name and season
 covenantSeason :: Covenant -> String
 covenantSeason = show . covTime . covenantState
+
+-- | Get the markdown for a link to the covenant
+covenantLink :: Covenant -> String
+covenantLink cov = wikiLink txt 
+   where txt = covenantName cov ++ " " ++ covenantSeason cov
 
 -- |
 -- = CovenantConcept Object
