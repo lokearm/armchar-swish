@@ -46,6 +46,13 @@ data Saga = Saga
          , spells :: SpellDB
        }  deriving (Eq,Show)
 
+sagaStateName :: Saga -> String
+sagaStateName s = sagaTitle s ++ " - " ++ (show $ seasonTime s)
+
+sagaStartName :: Saga -> String
+sagaStartName s = sagaTitle s ++ " - Game Start"
+
+
 gamestartDir :: Saga -> String
 gamestartDir saga = rootDir saga ++ "/GameStart/"
 currentDir :: Saga -> String
@@ -68,22 +75,19 @@ sagaIndex :: Saga -> OList
 sagaIndex saga = OList 
         [ OString $ "# " ++ sagaTitle saga
         , OString ""
-        , markdownDL "Current Season"
-            $ markdownLink (show $ seasonTime saga ) (cd ++"index.md")
+        , markdownDL "Current Season" $ wikiLink (sagaStateName saga) 
         , markdownDL "Error Report"
-            $ markdownLink "Ingame Advancement"  (cd ++ "errors.md")
-        , markdownDL "Game Start"
-            $ markdownLink "Game Start"  (gsd ++ "index.md")
+            $ wikiLink (sagaStateName saga ++ " Errors") 
+        , markdownDL "Game Start" $ wikiLink (sagaStartName saga) 
         , markdownDL "Error Report"
-            $ markdownLink "Game Start"  (gsd ++ "errors.md")
+            $ wikiLink (sagaStartName saga ++ " Errors") 
         ]
    where gsd = gamestartDir saga
          cd = currentDir saga
 
 covenantLink :: Covenant -> String
-covenantLink cov = markdownLink txt lnk
+covenantLink cov = wikiLink txt 
    where txt = covenantName cov ++ " " ++ covenantSeason cov
-         lnk =  covenantName cov ++ ".md"
 
 advanceSaga' :: SeasonTime -> Saga -> Saga
 advanceSaga' t saga = saga { currentCharacters = map (advanceCharacter t) ( gameStartCharacters saga ) }
@@ -178,7 +182,7 @@ charFileName = (++".md") . fullName
 
 -- | Write a single item for `characterIndex`
 characterIndexLine :: Character -> OList
-characterIndexLine c = OString $ "+ " ++ markdownLink (fullName c) (charFileName c)
+characterIndexLine c = OString $ "+ " ++ wikiLink (characterStateName c) 
 
 -- | Write a bullet list of links for a list of characters
 characterIndex :: [Character] -> OList

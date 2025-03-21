@@ -22,6 +22,7 @@ module ArM.Char.Character ( Character(..)
                           , FieldValue(..)
                           , fullName
                           , fullConceptName
+                          , characterStateName
                           , isGrog
                           , parseSeasonTime
                           , Advancement(..)
@@ -47,6 +48,14 @@ import ArM.GameRules
 import ArM.Helper
 
 import ArM.Debug.Trace
+
+characterStateName :: Character -> String
+characterStateName c = fullName c ++ " - " ++ t
+   where t | isNothing $ state c = "raw"
+           | otherwise = show ( charTime $ fromJust $ state c )
+
+-- |
+-- = Advancements
 
 -- | Apply advancement
 -- This function is generic, and used for both chargen and ingame 
@@ -120,7 +129,7 @@ sortInferredTraits :: AugmentedAdvancement -> AugmentedAdvancement
 sortInferredTraits x = x { inferredTraits = sortTraits $ inferredTraits x }
 
 -- |
--- = Char Gen
+-- == Char Gen
 
 -- | Compute the initial state if no state is recorded.
 --
@@ -191,7 +200,7 @@ applyCGA' (xs,y:ys,cs) = applyCGA' (a':xs,ys,cs')
     where (a',cs') = applyCharGenAdv y cs
 
 -- |
--- = Validation
+-- == Validation
 
 -- | validate an advancement, adding results to the validation field
 validateCharGen :: CharacterSheet -> AugmentedAdvancement -> AugmentedAdvancement
@@ -294,7 +303,7 @@ calculateLevels :: Advancement -> Int
 calculateLevels = sum . map ( fromMaybe 0 . level ) . changes
 
 -- |
--- = Advancement in Game
+-- == Advancement in Game
 
 
 -- | Apply advancement

@@ -82,6 +82,10 @@ uniqueSort = f . sort
 markdownLink :: String -> String -> String
 markdownLink txt lnk = "[" ++ txt ++ "](" ++ URI.encode lnk ++ ")"
 
+-- | Set a markdown link, escaping spaces in the link.
+wikiLink :: String -> String
+wikiLink txt = "[[" ++ txt ++ "]]"
+
 -- | Set an item for a description list in markdown 
 markdownDL :: String -> String -> OList
 markdownDL t d = OList [ OString t, OString (": "++d), OString "" ]
