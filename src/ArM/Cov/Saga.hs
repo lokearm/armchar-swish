@@ -101,8 +101,12 @@ instance Markdown Saga where
 -- |
 -- = Advancement
 
+
 -- |
--- = Error reports
+-- = Other Markdown Output
+
+-- |
+-- == Error reports
 
 
 -- | Get errors from the ingam advancements of a given character.
@@ -150,3 +154,20 @@ ingameErrors saga = foldl (++) [] $ map formatOutput vvs
           vs = map ingameCharErrors  cs
           vvs = foldl (++) [] vs
           formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
+
+-- | Character Index
+-- ==
+
+-- | Return the canonical file name for the character, without directory.
+-- This is currently the full name with a ".md" suffix.
+charFileName :: Character -> String
+charFileName = (++".md") . fullName 
+
+-- | Write a single item for `characterIndex`
+characterIndexLine :: Character -> OList
+characterIndexLine c = OString $ "+ " ++ markdownLink (fullName c) (charFileName c)
+
+-- | Write a bullet list of links for a list of characters
+characterIndex :: [Character] -> OList
+characterIndex = OList . map characterIndexLine 
+
