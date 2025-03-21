@@ -23,6 +23,7 @@ module ArM.Char.Character ( Character(..)
                           , fullName
                           , fullConceptName
                           , characterStateName
+                          , characterStartName
                           , isGrog
                           , parseSeasonTime
                           , Advancement(..)
@@ -53,6 +54,8 @@ characterStateName :: Character -> String
 characterStateName c = fullName c ++ " - " ++ t
    where t | isNothing $ state c = "raw"
            | otherwise = show ( charTime $ fromJust $ state c )
+characterStartName :: Character -> String
+characterStartName c = fullName c ++ " - " ++ "Game Start"
 
 -- |
 -- = Advancements

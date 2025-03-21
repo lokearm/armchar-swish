@@ -82,8 +82,6 @@ sagaIndex saga = OList
         , markdownDL "Error Report"
             $ wikiLink (sagaStartName saga ++ " Errors") 
         ]
-   where gsd = gamestartDir saga
-         cd = currentDir saga
 
 covenantLink :: Covenant -> String
 covenantLink cov = wikiLink txt 

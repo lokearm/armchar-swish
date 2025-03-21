@@ -83,11 +83,11 @@ writeSaga saga = do
    writeGameStart gsf  saga
    writeCurrent cdir  saga
    writeOList (rootDir saga ++ "/index.md") $ sagaIndex saga
-   writeOList (gamestartDir saga ++ "/index.md") $ sagaGameStartIndex saga
-   writeOList (currentDir saga ++ "/index.md") $ sagaCurrentIndex saga
-   writeLns (gsf ++ "/errors.md") $
+   writeOList (gsf ++ sagaStartName saga ++ ".md") $ sagaGameStartIndex saga
+   writeOList (cdir ++ sagaStateName saga ++ ".md") $ sagaCurrentIndex saga
+   writeLns (gsf ++ sagaStartName saga ++ " Errors.md" ) $
                   "# Errors in Character Design":"":pregameErrors saga
-   writeLns (cdir ++ "/errors.md") $
+   writeLns (cdir ++ sagaStateName saga ++ " Errors.md" ) $
                   "# Errors in Advancement":"":ingameErrors saga
    _ <- longSheet longDir saga
 
@@ -139,7 +139,7 @@ writeGameStart dir saga = mapM wf  cs >> return ()
      where db = spells saga
            cs = gameStartCharacters saga
            wf c = (writeOList (fn c) $ gameStartSheet db c)
-           fn c = dir ++ "/" ++ charID c ++ ".md"
+           fn c = dir ++ "/" ++ characterStartName c ++ ".md"
 
 -- | Write current charactersheets in MarkDown
 -- File name is derived from the character name.
@@ -150,7 +150,7 @@ writeCurrent dir saga = mapM wf  cs >> return ()
      where db = spells saga
            cs = currentCharacters saga
            wf c = (writeOList (fn c) $ currentSheet db c)
-           fn c = dir ++ "/" ++ charID c ++ ".md"
+           fn c = dir ++ "/" ++ characterStateName c ++ ".md"
 
 -- | Write current charactersheets in Long Format (MarkDown)
 -- File name is derived from the character name.
