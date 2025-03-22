@@ -31,21 +31,12 @@ import ArM.Helper
 
 -- import ArM.Debug.Trace
 
--- | ID of a character.
--- This is currently implemented as the name.
-data CharacterID = CharacterID String
-    deriving ( Show, Ord, Eq, Generic )
-
-instance ToJSON CharacterID
-instance FromJSON CharacterID
-
--- | get the ID of a character.
-characterID :: Character -> CharacterID
-characterID = CharacterID . charID
 
 -- |
 -- = Covenant Object
 
+-- | A Covenant consists of a state and a timeless concept, as well as
+-- lists of advancement which define the evolution of states
 data Covenant = Covenant 
          { covenantConcept :: CovenantConcept
          , covenantState :: CovenantState
@@ -64,6 +55,20 @@ instance Markdown Covenant where
         , OString ""
         , printMD $ covenantState cov
         ]
+
+-- | ID of a Covenant.
+-- This is currently implemented as the name.
+-- It is used to reference the covenant, independtly of state, from other
+-- objects.
+data CovenantID = CovenantID String
+    deriving ( Show, Ord, Eq, Generic )
+
+instance ToJSON CovenantID
+instance FromJSON CovenantID
+
+-- | get the ID of a character.
+covenantID :: Covenant -> CovenantID
+covenantID = CovenantID . covenantName
 
 -- | Get the name of the covenant
 covenantName :: Covenant -> String
@@ -121,8 +126,6 @@ instance Markdown CovenantConcept where
        ]
        where app | isNothing (covAppearance cov) = ""
                  | otherwise = "**Appearance** " ++ (fromJust $ covAppearance cov)
-
-
 
 -- |
 -- = CovenantState Object

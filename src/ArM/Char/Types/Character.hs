@@ -16,6 +16,8 @@
 -----------------------------------------------------------------------------
 module ArM.Char.Types.Character ( Character(..)
                           , defaultCharacter
+                          , CharacterID(..)
+                          , characterID
                           , CharacterType(..)
                           , CharacterConcept(..)
                           , defaultConcept
@@ -48,6 +50,22 @@ isGrog c | charType (concept c) == Grog = True
 isMagus :: Character -> Bool
 isMagus c | charType (concept c) == Magus = True
           | otherwise = False
+-- | 
+-- = CharacterID
+
+-- | ID of a character.
+-- This is currently implemented as the name.
+-- The ID is used to refer to the character from other characters and
+-- covenants, independently of the current state.
+data CharacterID = CharacterID String
+    deriving ( Show, Ord, Eq, Generic )
+
+instance ToJSON CharacterID
+instance FromJSON CharacterID
+
+-- | get the ID of a character.
+characterID :: Character -> CharacterID
+characterID = CharacterID . charID
 
 -- |
 -- = CharacterConcept

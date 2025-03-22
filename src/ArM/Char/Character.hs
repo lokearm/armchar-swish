@@ -17,6 +17,8 @@
 module ArM.Char.Character ( Character(..)
                           , CharacterConcept(..)
                           , CharacterState(..)
+                          , CharacterID(..)
+                          , characterID
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
