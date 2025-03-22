@@ -21,8 +21,6 @@ module ArM.Char.Markdown ( Markdown(..)
                          ) where
 
 import Data.Maybe 
-import Data.List 
-import qualified Data.Map as M
 
 import ArM.Char.Character 
 import ArM.Char.CharacterSheet
@@ -219,13 +217,13 @@ instance Markdown CharacterConcept where
 instance Markdown CharacterSheet where
    printMD c = OList 
                [ briefTraits c
-               , showlistMD "+ **Characteristics:** "  $ charList c
-               , showlistMD "+ **Personality Traits:** "  $ ptList c
-               , showlistMD "+ **Reputations:** "  $ reputationList c
-               , showlistMD "+ **Virtues and Flaws:** "  $ vfList c
-               , showlistMD "+ **Abilities:** "  $ abilityList c
-               , showlistMD "+ **Arts:** "  $ sortArts $ artList c
-               , showlistMD "+ **Spells:** "  $ spellList c
+               , showlistMD "+ **Characteristics:** "  $ sortTraits $ charList c
+               , showlistMD "+ **Personality Traits:** "  $ sortTraits $ ptList c
+               , showlistMD "+ **Reputations:** "  $ sortTraits $ reputationList c
+               , showlistMD "+ **Virtues and Flaws:** "  $ sortTraits $ vfList c
+               , showlistMD "+ **Abilities:** "  $ sortTraits $ abilityList c
+               , showlistMD "+ **Arts:** "  $ sortTraits $ artList c
+               , showlistMD "+ **Spells:** "  $ sortTraits $ spellList c
                , toOList $ printCastingTotals c
                ]
    printMDaug db = printMD . addCastingScores db
@@ -371,16 +369,16 @@ instance LongSheet CharacterState where
 instance LongSheet CharacterSheet where
    printSheetMD db c' = OList 
                [ briefTraits c
-               , showlistMD "+ **Characteristics:** "  $ charList c
-               , showlistMD "+ **Personality Traits:** "  $ ptList c
-               , showlistMD "+ **Reputations:** "  $ reputationList c
-               , showlistMD "+ **Virtues and Flaws:** "  $ vfList c
+               , showlistMD "+ **Characteristics:** "  $ sortTraits $ charList c
+               , showlistMD "+ **Personality Traits:** "  $ sortTraits $ ptList c
+               , showlistMD "+ **Reputations:** "  $ sortTraits $ reputationList c
+               , showlistMD "+ **Virtues and Flaws:** "  $ sortTraits $ vfList c
                , indentOList $ OList $ [ OString "**Abilities:**"
-                        , OList (map (OString . show) ( abilityList c )) ]
+                        , OList (map (OString . show) ( sortTraits $ abilityList c )) ]
                , mag
                ]
          where c = addCastingScores db c'
-               mag | isMagus c' = OList [ artMD c, printFullGrimoire db $ spellList c, 
+               mag | isMagus c' = OList [ artMD c, printFullGrimoire db $ sortTraits $ spellList c, 
                                           toOList $ printCastingTotals c ]
                    | otherwise = OString "" 
 
@@ -396,23 +394,10 @@ artMD c | isMagus c = toOList $ artMD' c
 -- | Render art scores as a table
 artMD' :: CharacterSheet
       -> [ String ]
-artMD' = ("":) . (h1:) . (h2:) . map artLine . sortArts . artList 
+artMD' = ("":) . (h1:) . (h2:) . map artLine . sortTraits . artList 
    where h1 = "| Art  | Score | XP |" 
          h2 = "| -: | -: | -: |"
 
--- | List of arts defined in *Ars Magica*
-arts :: [ String ]
-arts = [ "Creo", "Intellego", "Muto", "Perdo", "Rego",
-         "Animal", "Aquam", "Auram", "Corpus", "Herbam", 
-         "Ignem", "Imaginem", "Mentem", "Terram", "Vim" ]
-
--- | Map assigning sort index to each Art
-sMap :: M.Map String Int 
-sMap = M.fromList $ zip arts [1..15]
-
--- | Sort a list of arts in canonical order
-sortArts :: [Art] -> [Art]
-sortArts = sortOn ( fromMaybe 0 . ( \ x -> M.lookup x sMap ) . artName)
 
 -- | Auxiliary for `artMD`, rendering a single line in the table
 artLine :: Art -> String

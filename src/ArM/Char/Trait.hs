@@ -254,7 +254,7 @@ data TraitKey = AbilityKey String
 instance Ord TraitKey where
    compare (AbilityKey x) (AbilityKey y) = compare x y
    compare (CharacteristicKey x) (CharacteristicKey y) = compare (charIdx x) (charIdx y)
-   compare (ArtKey x) (ArtKey y) = compare x y
+   compare (ArtKey x) (ArtKey y) = compare (artIdx x) (artIdx y)
    compare (SpellKey x1 x2 x3) (SpellKey y1 y2 y3) = compare (x1,x2,x3) (y1,y2,y3)
    compare (PTraitKey x) (PTraitKey y) = compare x y
    compare (ReputationKey x1 x2) (ReputationKey y1 y2) = compare (x1,x2) (y1,y2)
@@ -285,6 +285,26 @@ instance Ord TraitKey where
    compare _ (SpecialKey _) = GT
    -- compare AgeKey _ = GT
    -- compare _ AgeKey = LT
+
+-- | List of arts defined in *Ars Magica*
+artIdx :: String -> Int
+artIdx "Cr" = 1
+artIdx "In" = 2
+artIdx "Mu" = 3
+artIdx "Pe" = 4
+artIdx "Re" = 5
+artIdx "An" = 11
+artIdx "Aq" = 12
+artIdx "Au" = 13
+artIdx "Co" = 14
+artIdx "He" = 15
+artIdx "Ig" = 16
+artIdx "Im" = 17
+artIdx "Me" = 18
+artIdx "Te" = 19
+artIdx "Vi" = 20
+artIdx _    = 100
+
 spellKeyName :: TraitKey -> String
 spellKeyName ( SpellKey _ _ n ) = n
 spellKeyName _ = "Error!"
@@ -327,6 +347,7 @@ data Art = Art { artName :: String
            deriving (Eq, Generic)
 instance Ord Art where
      compare x y = compare (traitKey x) (traitKey y)
+
 data Spell = Spell { spellName :: String
                    , spellTeFo :: String
                    , spellLevel :: Int
