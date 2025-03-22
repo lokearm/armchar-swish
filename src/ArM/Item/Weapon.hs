@@ -10,7 +10,7 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Trait where
+module ArM.Item.Weapon where
 
 import ArM.Helper
 

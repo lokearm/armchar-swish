@@ -495,7 +495,7 @@ instance Show Art  where
             f x = " [xp x" ++ show x ++  "]"
 instance Show Reputation  where
    show a = reputationName a ++ " [" ++ (repLocale a) ++ "] "
-          ++ show (repScore a) ++ " (" ++ show (repExcessXP a) ++ ") "
+          ++ show (repScore a) ++ " (" ++ showNum (repExcessXP a) ++ ") "
 
 showAging :: ProtoTrait -> String
 showAging p | Nothing == aging p = ""
