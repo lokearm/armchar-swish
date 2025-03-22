@@ -14,22 +14,23 @@
 -- persistence in JSON and advancement.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Types.Character ( Character(..)
+module ArM.Char.Types.Character
+                          ( Character(..)
                           , defaultCharacter
                           , CharacterID(..)
                           , characterID
-                          , CharacterType(..)
                           , CharacterConcept(..)
                           , defaultConcept
                           , CharacterState(..)
+                          , defaultCS
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
                           , fullName
                           , fullConceptName
+                          , CharacterType(..)
                           , isGrog
                           , isMagus
-                          , defaultCS
                           ) where
 
 import GHC.Generics
@@ -42,16 +43,55 @@ import ArM.Char.Types.KeyPair
 -- import ArM.Debug.Trace
 import ArM.Helper
 
+-- |
+-- = Character
+
+-- | The Character object includes both state information and
+-- timeless concept information, as well as the advancements
+-- defining the evolution through states.
+data Character = Character 
+         { charID :: String
+         , concept :: CharacterConcept
+         , state :: Maybe CharacterState
+         , pregameDesign :: [ AugmentedAdvancement ]
+         , pregameAdvancement :: [ Advancement ]
+         , pastAdvancement :: [ AugmentedAdvancement ]
+         , futureAdvancement :: [ Advancement ]
+         }  deriving (Eq,Generic)
 
 
-isGrog :: Character -> Bool
-isGrog c | charType (concept c) == Grog = True
-         | otherwise = False
-isMagus :: Character -> Bool
-isMagus c | charType (concept c) == Magus = True
-          | otherwise = False
+-- | Default (empty) character object.
+defaultCharacter :: Character 
+defaultCharacter = Character { charID = "N/A"
+                             , concept = defaultConcept
+                             , state = Nothing
+                             , pregameDesign = [ ]
+                             , pregameAdvancement = [ ]
+                             , pastAdvancement = [ ]
+                             , futureAdvancement = [ ]
+       }  
+
+instance Show Character where
+   show = show . concept 
+
+
+instance ToJSON Character where
+    -- For efficiency - Not required
+    toEncoding = genericToEncoding defaultOptions
+
+instance FromJSON Character where
+    parseJSON = withObject "Character" $ \v -> Character
+        <$> v .: "charID"
+        <*> v .: "concept"
+        <*> v .:? "state" 
+        <*> fmap maybeList ( v .:? "pregameDesign" )
+        <*> fmap maybeList ( v .:? "pregameAdvancement" )
+        <*> fmap maybeList ( v .:? "pastAdvancement" )
+        <*> fmap maybeList ( v .:? "futureAdvancement" )
+
+
 -- | 
--- = CharacterID
+-- == Name and identity
 
 -- | ID of a character.
 -- This is currently implemented as the name.
@@ -67,14 +107,41 @@ instance FromJSON CharacterID
 characterID :: Character -> CharacterID
 characterID = CharacterID . charID
 
+-- | Return the name of the character as a string, including house affiliation
+-- if defined.
+fullName :: Character -> String
+fullName = fullConceptName . concept
+
+-- | Return the name of the character as a string, including house affiliation
+-- if defined.
+fullConceptName :: CharacterConcept -> String
+fullConceptName c = name c ++ (f $ house c)
+      where f Nothing = ""
+            f (Just x) | take 2 x == "ex" = " " ++ x
+                       | otherwise  = " ex " ++ x
+
 -- |
 -- = CharacterConcept
 
+
+-- | The CharacterType distinguishes between Magus, Companion, and Grog.
+-- One may want to extend it for magic and faerie charaacters as well as
+-- NPCs.
 data CharacterType = Magus | Companion | Grog
        deriving (Eq,Generic,Show)
 instance ToJSON CharacterType
 instance FromJSON CharacterType
 
+-- | Is the character a grog or not?
+isGrog :: Character -> Bool
+isGrog c | charType (concept c) == Grog = True
+         | otherwise = False
+-- | Is the character a magus or not?
+isMagus :: Character -> Bool
+isMagus c | charType (concept c) == Magus = True
+          | otherwise = False
+
+-- | The CharacterConcept is the timeless information about the character.
 data CharacterConcept = CharacterConcept 
          { name :: String
          , charType :: CharacterType
@@ -123,18 +190,13 @@ instance Show CharacterConcept where
    show c = fullConceptName c ++ "\n"
          ++ ( show $ charGlance c ) ++ ( show $ charData c )
 
--- | Return the name of the character as a string, including house affiliation
--- if defined.
-fullConceptName :: CharacterConcept -> String
-fullConceptName c = name c ++ (f $ house c)
-      where f Nothing = ""
-            f (Just x) | take 2 x == "ex" = " " ++ x
-                       | otherwise  = " ex " ++ x
 
 
 -- |
 -- = CharacterState
 
+-- | The Character state is the stats of the character at a particular
+-- point in time.
 data CharacterState = CharacterState 
          { charTime :: SeasonTime
          , charSType :: CharacterType
@@ -159,51 +221,4 @@ instance FromJSON CharacterState where
         <$> fmap parseSeasonTime ( v .:? "charTime" )
         <*> v .: "charType" 
         <*> fmap maybeList ( v .:? "traits" )
-
--- |
--- = Character
-
-data Character = Character 
-         { charID :: String
-         , concept :: CharacterConcept
-         , state :: Maybe CharacterState
-         , pregameDesign :: [ AugmentedAdvancement ]
-         , pregameAdvancement :: [ Advancement ]
-         , pastAdvancement :: [ AugmentedAdvancement ]
-         , futureAdvancement :: [ Advancement ]
-         }  deriving (Eq,Generic)
-
-
--- | Default (empty) character object.
-defaultCharacter :: Character 
-defaultCharacter = Character { charID = "N/A"
-                             , concept = defaultConcept
-                             , state = Nothing
-                             , pregameDesign = [ ]
-                             , pregameAdvancement = [ ]
-                             , pastAdvancement = [ ]
-                             , futureAdvancement = [ ]
-       }  
-
-instance Show Character where
-   show = show . concept 
-
--- | Return the name of the character as a string, including house affiliation
--- if defined.
-fullName :: Character -> String
-fullName = fullConceptName . concept
-
-instance ToJSON Character where
-    -- For efficiency - Not required
-    toEncoding = genericToEncoding defaultOptions
-
-instance FromJSON Character where
-    parseJSON = withObject "Character" $ \v -> Character
-        <$> v .: "charID"
-        <*> v .: "concept"
-        <*> v .:? "state" 
-        <*> fmap maybeList ( v .:? "pregameDesign" )
-        <*> fmap maybeList ( v .:? "pregameAdvancement" )
-        <*> fmap maybeList ( v .:? "pastAdvancement" )
-        <*> fmap maybeList ( v .:? "futureAdvancement" )
 
