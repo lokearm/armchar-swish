@@ -16,12 +16,14 @@ aliases:
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Review Cieran's ingame
+		+ [ ] Add stat boost rituals
+		+ [ ] Add confidence
 	+ [ ] Step 2. Compute Combat Stats
 		+ [x] CSV weapons table
 		+ [ ] Weapon type
 		+ [ ] Characters may have equipment
 	+ [ ] Step 3. Characteristics
-		+ [ ] Sort Characteristics
+		+ [x] Sort Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw
 	+ [ ] Step 4. Develop [[Saga object]]

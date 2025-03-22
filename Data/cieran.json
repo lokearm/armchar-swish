@@ -1015,7 +1015,9 @@
       { "mode" : "Author", "season" : "Autumn 1247"
       , "sourceQuality" : 2
       , "narrative" : "CrMe rituals x4 for Com to +5; (58xp) Tractatus on Corpus Q14 "
-      , "changes" : [ { "ability" : "Latin", "xp" : 2 } ]
+      , "changes" : [ { "ability" : "Latin", "xp" : 2 } 
+	            , { "characteristic" : "Com", "score" : 5 }
+                    ]
       },
       { "mode" : "Reading", "season" : "Winter 1248"
       , "sourceQuality" : 15

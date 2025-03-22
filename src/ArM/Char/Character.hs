@@ -46,13 +46,17 @@ import ArM.Helper
 
 import ArM.Debug.Trace
 
+-- | Character name with state identifier (current season)
 characterStateName :: Character -> String
 characterStateName c = fullName c ++ " - " ++ t
    where t | isNothing $ state c = "raw"
            | otherwise = show ( charTime $ fromJust $ state c )
+
+-- | Character name with state identifier at Game Start
 characterStartName :: Character -> String
 characterStartName c = fullName c ++ " - " ++ "Game Start"
 
+-- | The first season the character is played
 characterEntryTime :: Character -> SeasonTime
 characterEntryTime c | tm == NoTime = f $ futureAdvancement c
                      | otherwise = tm
