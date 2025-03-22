@@ -172,21 +172,47 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "multiplicity"
         <*> v .:?  "comment"
 
+showBonusScore :: ProtoTrait -> String
+showBonusScore pt | isNothing b = ""
+                  | otherwise = " Bonus " ++ showSigned (fromJust b)
+   where b = bonusScore pt
+showMult :: ProtoTrait -> String
+showMult pt | isNothing b = ""
+            | otherwise = " x" ++ show (fromJust b) ++ "xp"
+   where b = multiplyXP pt
+showFlawless :: ProtoTrait -> String
+showFlawless pt | Just True == flawless pt = " with flawless magic"
+                | otherwise = ""
+showSpec :: ProtoTrait -> String
+showSpec pt | isNothing sp = ""
+            | otherwise = " [" ++ fromJust sp ++ "]"
+   where sp = spec pt
+showXP :: ProtoTrait -> String
+showXP p = " " ++ ishow ( fromMaybe 0 (xp p) ) ++ "xp"
+    where ishow x | isInt x = show ( round x :: Int )
+                  | otherwise = show x
+          isInt x = x == fromInteger (round x)
+showMastery :: Maybe [String] -> String
+showMastery Nothing = ""
+showMastery (Just []) = ""
+showMastery (Just (x:xs)) = ' ':(foldl (++) x $ map (", "++) xs)
+
 instance Show ProtoTrait  where
    show p 
        | ability p /= Nothing = 
-           "Ability: " ++ fromJust ( ability p )  ++ 
-           " [" ++ show ( spec p ) ++ "]" ++ showXP p
-           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
+           "Ability: " ++ fromJust ( ability p )  ++ showSpec p
+           ++ showXP p
+           ++ showBonusScore p ++ "; " ++ showMult p
        | characteristic p /= Nothing =
            "Characteristic: " ++ fromJust ( characteristic p )  ++
            " " ++ show ( fromMaybe 0 (score p) ) ++ showAging p 
        | art p /= Nothing = 
            "Art: " ++ fromJust ( art p ) ++ showXP p
-           ++ " [" ++ si (bonusScore p) ++ "; " ++ maybeShow (multiplyXP p) ++ "]"
+           ++ showBonusScore p ++ "; " ++ showMult p
        | spell p /= Nothing =
               "Spell: " ++ fromJust (spell p) ++ showXP p
-                    ++ maybeShow (mastery p)
+                    ++ showMastery (mastery p) ++ showMult p
+                    ++ showFlawless p
        | ptrait p /= Nothing = 
               "Personality Trait: " ++ fromJust (ptrait p)
                      ++ " " ++ maybeShow (score p)
@@ -209,8 +235,7 @@ instance Show ProtoTrait  where
        | other p /= Nothing = 
                fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
        | otherwise  = error $ "No Trait for this ProtoTrait" 
-     where si = show . fromMaybe 0
-           mul Nothing = ""
+     where mul Nothing = ""
            mul (Just x) = " x" ++ show x
 
 -- | 
@@ -405,8 +430,7 @@ showAging p | Nothing == aging p = ""
             | otherwise = " (" ++ (ishow $ agingPts p) ++ " aging points)"
     where ishow Nothing = "-"
           ishow (Just x) = show x
-showXP :: ProtoTrait -> String
-showXP p = " " ++ show ( fromMaybe 0 (xp p) ) ++ "xp"
+
 
 -- |
 -- = Filtering and Advancement - the TraitType class
