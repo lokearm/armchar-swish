@@ -378,8 +378,11 @@ instance LongSheet CharacterSheet where
                , mag
                ]
          where c = addCastingScores db c'
-               mag | isMagus c' = OList [ artMD c, printFullGrimoire db $ sortTraits $ spellList c, 
-                                          toOList $ printCastingTotals c ]
+               mag | isMagus c' = OList [ artMD c
+                                        , OString ""
+                                        , printFullGrimoire db $ sortTraits $ spellList c 
+                                        , OString ""
+                                        , toOList $ printCastingTotals c ]
                    | otherwise = OString "" 
 
 -- |
