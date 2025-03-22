@@ -28,6 +28,7 @@ module ArM.Char.Character ( module ArM.Char.Types.Character
                           , advanceCharacter
                           , Season(..)
                           , SeasonTime(..)
+                          , characterEntryTime
                           ) where
 
 import Data.Maybe 
@@ -51,6 +52,13 @@ characterStateName c = fullName c ++ " - " ++ t
            | otherwise = show ( charTime $ fromJust $ state c )
 characterStartName :: Character -> String
 characterStartName c = fullName c ++ " - " ++ "Game Start"
+
+characterEntryTime :: Character -> SeasonTime
+characterEntryTime c | tm == NoTime = f $ futureAdvancement c
+                     | otherwise = tm
+     where tm = entryTime c
+           f [] = tm
+           f (x:_) = season x
 
 -- |
 -- = Advancements
@@ -140,10 +148,13 @@ prepareCharacter c
             | otherwise = c { state = newstate
                             , pregameDesign = xs
                             , pregameAdvancement = []
+                            , entryTime = f $ futureAdvancement c
                             }
             where as = pregameAdvancement  c 
                   (xs,cs) = applyCGA as defaultCS { charSType = charType $ concept c }
                   newstate = Just $ addConfidence $ cs { charTime = GameStart }
+                  f [] = NoTime
+                  f (x:_) = season x
 
 -- | Augment and amend the advancements based on current virtues and flaws.
 --

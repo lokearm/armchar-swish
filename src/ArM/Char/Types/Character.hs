@@ -33,14 +33,15 @@ import ArM.Helper
 -- timeless concept information, as well as the advancements
 -- defining the evolution through states.
 data Character = Character 
-         { charID :: String
-         , concept :: CharacterConcept
-         , state :: Maybe CharacterState
-         , pregameDesign :: [ AugmentedAdvancement ]
-         , pregameAdvancement :: [ Advancement ]
-         , pastAdvancement :: [ AugmentedAdvancement ]
-         , futureAdvancement :: [ Advancement ]
-         }  deriving (Eq,Generic)
+    { charID :: String              -- ^ character ID, used to cross-reference
+    , concept :: CharacterConcept   -- ^ concept is the timeless features of the character
+    , state :: Maybe CharacterState -- ^ current state of the character
+    , entryTime :: SeasonTime       -- ^ First season the character is in play
+    , pregameDesign :: [ AugmentedAdvancement ]    -- ^ chargen already processed
+    , pregameAdvancement :: [ Advancement ]        -- ^ chargen left to process
+    , pastAdvancement :: [ AugmentedAdvancement ]  -- ^ past advancement (in game), most recent first
+    , futureAdvancement :: [ Advancement ]         -- ^ future advancement (in game), next one firstk
+    }  deriving (Eq,Generic)
 
 
 -- | Default (empty) character object.
@@ -48,6 +49,7 @@ defaultCharacter :: Character
 defaultCharacter = Character { charID = "N/A"
                              , concept = defaultConcept
                              , state = Nothing
+                             , entryTime = NoTime
                              , pregameDesign = [ ]
                              , pregameAdvancement = [ ]
                              , pastAdvancement = [ ]
@@ -67,6 +69,7 @@ instance FromJSON Character where
         <$> v .: "charID"
         <*> v .: "concept"
         <*> v .:? "state" 
+        <*> fmap ( fromMaybe NoTime) (v .:? "entryTime" )
         <*> fmap maybeList ( v .:? "pregameDesign" )
         <*> fmap maybeList ( v .:? "pregameAdvancement" )
         <*> fmap maybeList ( v .:? "pastAdvancement" )
