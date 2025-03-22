@@ -63,18 +63,19 @@
          [ { "ability" : "Stealth", "spec" : "Hiding", "xp" : 5 }
          , { "ability" : "Awareness" , "spec" : "Good ears" , "xp" : 5 }
          , { "ability" : "Survival", "spec": "Hills", "xp": 5 }
-         , { "ability" : "Munster Lore" , "spec" : "Outback" , "xp" : 15 }
+         , { "ability" : "Munster Lore" , "spec" : "Outback" , "xp" : 5 }
          , { "ability" : "Covenant Lore" , "spec" : "Hierarchies" , "xp" : 15 }
+         , { "ability" : "Brawl", "spec": "Dirty fighting", "xp": 5 }
+         , { "ability" : "Charm", "spec": "Animals", "xp": 5 }
          ] 
       },
       { "mode" : "Later Life"
-      , "years" : 20
+      , "years" : 19
       , "changes" : 
          [ { "ability" : "Animal Handling", "spec": "Dogs", "xp": 50 }
          , { "ability" : "Animal Ken", "spec": "Canine", "xp": 45 }
          , { "ability" : "Athletics", "spec": "obstacle race", "xp": 15 }
          , { "ability" : "Bargain", "spec": "Livestock", "xp": 15 }
-         , { "ability" : "Brawl", "spec": "dirty fighting", "xp": 15 }
          , { "ability" : "Guile" , "spec" : "Fast talk" , "xp" : 5 }
          , { "ability" : "Ride", "spec": "Horse training", "xp": 50 }
          , { "ability" : "Hunt", "spec": "with dogs", "xp": 75 }
