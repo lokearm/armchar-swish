@@ -61,13 +61,14 @@ common armchar-deps
                        , ArM.Char.Types.KeyPair
                        , ArM.Char.Types.Character
                        , ArM.Char.Types.Advancement
-                       , ArM.Cov.Covenant
-                       , ArM.Cov.Saga
                        , ArM.Char.Trait
                        , ArM.Char.Spell
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown
+                       , ArM.Cov.Covenant
+                       , ArM.Cov.Saga
+                       , ArM.Item.Weapon
                        , ArM.IO
                        , ArM.Helper
   build-depends:       cassava >= 0.5.3
