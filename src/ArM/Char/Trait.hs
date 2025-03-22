@@ -101,7 +101,7 @@ data ProtoTrait = ProtoTrait
                                  -- could be negative to remove an existing, but
                                  -- this is not yet implemented
     , comment :: Maybe String    -- ^ freeform comment
-    } deriving (Ord,Eq,Generic)
+    } deriving (Eq,Generic)
 
 -- | Default ProtoTrait object, used internally for step-by-step construction of
 -- new objects.
@@ -250,10 +250,55 @@ data TraitKey = AbilityKey String
            | OtherTraitKey String
            | SpecialKey String
            | AgeKey
-           deriving (Show, Ord, Eq,Generic )
+           deriving (Show, Eq,Generic )
+instance Ord TraitKey where
+   compare (AbilityKey x) (AbilityKey y) = compare x y
+   compare (CharacteristicKey x) (CharacteristicKey y) = compare (charIdx x) (charIdx y)
+   compare (ArtKey x) (ArtKey y) = compare x y
+   compare (SpellKey x1 x2 x3) (SpellKey y1 y2 y3) = compare (x1,x2,x3) (y1,y2,y3)
+   compare (PTraitKey x) (PTraitKey y) = compare x y
+   compare (ReputationKey x1 x2) (ReputationKey y1 y2) = compare (x1,x2) (y1,y2)
+   compare (VFKey x1 x2) (VFKey y1 y2) = compare (x1,x2) (y1,y2)
+   compare (ConfidenceKey x) (ConfidenceKey y) = compare x y
+   compare (OtherTraitKey x) (OtherTraitKey y) = compare x y
+   compare (SpecialKey x) (SpecialKey y) = compare x y
+   compare AgeKey AgeKey = EQ
+   compare (AbilityKey _) _ = LT
+   compare _ (AbilityKey _) = GT
+   compare (CharacteristicKey _) _ = LT
+   compare _ (CharacteristicKey _) = GT
+   compare (ArtKey _) _ = LT
+   compare _ (ArtKey _) = GT
+   compare (SpellKey _ _ _) _ = LT
+   compare _ (SpellKey _ _ _) = GT
+   compare (PTraitKey _) _ = LT
+   compare _ (PTraitKey _) = GT
+   compare (ReputationKey _ _) _ = LT
+   compare _ (ReputationKey _ _) = GT
+   compare (VFKey _ _) _ = LT
+   compare _ (VFKey _ _) = GT
+   compare (ConfidenceKey _) _ = LT
+   compare _ (ConfidenceKey _) = GT
+   compare (OtherTraitKey _) _ = LT
+   compare _ (OtherTraitKey _) = GT
+   compare (SpecialKey _) _ = LT
+   compare _ (SpecialKey _) = GT
+   -- compare AgeKey _ = GT
+   -- compare _ AgeKey = LT
 spellKeyName :: TraitKey -> String
 spellKeyName ( SpellKey _ _ n ) = n
 spellKeyName _ = "Error!"
+
+charIdx :: String -> Int
+charIdx "Int" = 1
+charIdx "Per" = 2
+charIdx "Pre" = 3
+charIdx "Com" = 4
+charIdx "Str" = 5
+charIdx "Sta" = 6
+charIdx "Dex" = 7
+charIdx "Qik" = 8
+charIdx _ = 9
 
 instance ToJSON TraitKey
 instance FromJSON TraitKey
@@ -269,7 +314,9 @@ data Ability = Ability { abilityName :: String
 data Characteristic = Characteristic { characteristicName :: String
                                      , charScore :: Int
                                      , agingPoints :: Int }
-           deriving (Ord, Eq, Generic)
+           deriving (Eq, Generic)
+instance Ord Characteristic where
+     compare x y = compare (traitKey x) (traitKey y)
 data Art = Art { artName :: String
                , artXP :: XPType 
                , artScore :: Int 
@@ -277,7 +324,9 @@ data Art = Art { artName :: String
                , artMultiplier :: Float
                , artExcessXP :: XPType 
                }
-           deriving (Ord, Eq, Generic)
+           deriving (Eq, Generic)
+instance Ord Art where
+     compare x y = compare (traitKey x) (traitKey y)
 data Spell = Spell { spellName :: String
                    , spellTeFo :: String
                    , spellLevel :: Int
@@ -351,7 +400,11 @@ data Trait = AbilityTrait Ability
            | OtherTraitTrait OtherTrait
            | SpecialTraitTrait SpecialTrait
            | AgeTrait Age
-           deriving (Show, Ord, Eq, Generic)
+           deriving (Show, Eq, Generic)
+instance Ord Trait where
+     compare x y = compare (traitKey x) (traitKey y)
+instance Ord ProtoTrait where
+     compare x y = compare (traitKey x) (traitKey y)
 instance FromJSON Ability
 instance FromJSON Characteristic 
 instance FromJSON Art 
@@ -595,9 +648,7 @@ instance TraitType SpecialTrait where
 
 sortTraits :: TraitLike t => [ t ] -> [ t ]
 sortTraits = sortBy f
-       where f x y | x <: y = LT
-                   | y <: x = GT
-                   | otherwise = EQ
+       where f x y = compare (traitKey x) (traitKey y)
 
 -- |
 -- == the TraitLike class
