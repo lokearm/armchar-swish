@@ -270,7 +270,7 @@ instance Markdown Age where
       where y = ageYears c
             lrs = longevityRitual c
             lr | lrs < 0 = ""
-               | otherwise = " Longeevity Ritual: " ++ show lrs
+               | otherwise = " Longevity Ritual: " ++ show lrs
 instance Markdown Confidence where
    printMD c = OString $
              "+ **" ++ cname c ++ "**: " ++ show (cscore c) ++ " ("
