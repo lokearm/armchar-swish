@@ -14,24 +14,16 @@
 -- advancement, including persistence in JSON and advancement.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Character ( Character(..)
-                          , CharacterConcept(..)
-                          , CharacterState(..)
-                          , CharacterID(..)
-                          , characterID
+module ArM.Char.Character ( module ArM.Char.Types.Character
                           , KeyPairList(..)
                           , KeyPair(..)
                           , FieldValue(..)
-                          , fullName
-                          , fullConceptName
                           , characterStateName
                           , characterStartName
-                          , isGrog
                           , parseSeasonTime
                           , Advancement(..)
                           , AugmentedAdvancement(..)
                           , AdvancementLike(..)
-                          , CharacterType(..)
                           , prepareCharacter
                           , advanceCharacter
                           , Season(..)
@@ -44,6 +36,7 @@ import Data.List
 import ArM.Char.Trait
 import ArM.Char.Types.Character
 import ArM.Char.Types.Advancement
+import ArM.Char.Types.KeyPair
 import ArM.Char.CharacterSheet
 import ArM.Char.Validation
 import ArM.Char.Virtues

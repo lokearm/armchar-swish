@@ -81,6 +81,9 @@ instance ToJSON CharacterSheet where
     toEncoding = genericToEncoding defaultOptions
 instance FromJSON CharacterSheet 
 
+instance CharacterLike CharacterSheet where
+     characterType = csType
+
 -- | Get the CharacterSheet corresponding to a given CharacterState.
 filterCS :: CharacterState -> CharacterSheet
 filterCS cs = defaultSheet  

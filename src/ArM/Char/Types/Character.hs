@@ -14,28 +14,11 @@
 -- persistence in JSON and advancement.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Types.Character
-                          ( Character(..)
-                          , defaultCharacter
-                          , CharacterID(..)
-                          , characterID
-                          , CharacterConcept(..)
-                          , defaultConcept
-                          , CharacterState(..)
-                          , defaultCS
-                          , KeyPairList(..)
-                          , KeyPair(..)
-                          , FieldValue(..)
-                          , fullName
-                          , fullConceptName
-                          , CharacterType(..)
-                          , isGrog
-                          , isMagus
-                          ) where
+module ArM.Char.Types.Character where
 
 import GHC.Generics
 import Data.Aeson
--- import Data.Aeson.Types (Parser)
+import Data.Maybe
 
 import ArM.Char.Trait
 import ArM.Char.Types.Advancement
@@ -120,6 +103,11 @@ fullConceptName c = name c ++ (f $ house c)
             f (Just x) | take 2 x == "ex" = " " ++ x
                        | otherwise  = " ex " ++ x
 
+characterSeason :: Character -> SeasonTime
+characterSeason c | isNothing st = NoTime
+                  | otherwise = charTime $ fromJust st
+           where st = state c
+
 -- |
 -- = CharacterConcept
 
@@ -132,14 +120,19 @@ data CharacterType = Magus | Companion | Grog
 instance ToJSON CharacterType
 instance FromJSON CharacterType
 
--- | Is the character a grog or not?
-isGrog :: Character -> Bool
-isGrog c | charType (concept c) == Grog = True
-         | otherwise = False
--- | Is the character a magus or not?
-isMagus :: Character -> Bool
-isMagus c | charType (concept c) == Magus = True
-          | otherwise = False
+class CharacterLike ct where
+     characterType :: ct -> CharacterType
+     -- | Is the character a grog or not?
+     isGrog :: ct -> Bool
+     isGrog c | characterType c == Grog = True
+              | otherwise = False
+     -- | Is the character a magus or not?
+     isMagus :: ct -> Bool
+     isMagus c | characterType c == Magus = True
+               | otherwise = False
+instance CharacterLike Character where
+     characterType = charType . concept
+
 
 -- | The CharacterConcept is the timeless information about the character.
 data CharacterConcept = CharacterConcept 

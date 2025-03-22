@@ -392,9 +392,6 @@ artMD :: CharacterSheet
 artMD c | isMagus c = toOList $ artMD' c
         | otherwise = OList []
 
-isMagus :: CharacterSheet -> Bool
-isMagus c = csType c == Magus
-
 -- | Render art scores as a table
 artMD' :: CharacterSheet
       -> [ String ]
