@@ -394,7 +394,7 @@ instance Show Ability  where
    show a = abilityName a ++ " [" ++ showspec sp ++ "] "
           ++ show (abilityScore a) 
           ++ showBonus (abilityBonus a)
-          ++ " (" ++ show (abilityExcessXP a) ++ "xp)"
+          ++ " (" ++ showNum (abilityExcessXP a) ++ "xp)"
           ++ f (abilityMultiplier a)
       where showspec Nothing = "  --  "
             showspec (Just s) = s
@@ -415,7 +415,7 @@ instance Show Art  where
    show a = artName a ++ " " 
           ++ show (artScore a) 
           ++ showBonus (artBonus a)
-          ++ " (" ++ show (artExcessXP a) ++ "xp) "
+          ++ " (" ++ showNum (artExcessXP a) ++ "xp) "
           ++ f (artMultiplier a)
       where f 1 = ""
             f x = " [xp x" ++ show x ++  "]"

@@ -30,6 +30,7 @@ import ArM.Char.Trait
 import ArM.Char.Spell
 import ArM.GameRules
 import ArM.BasicIO
+import ArM.Helper
 
 -- import ArM.Debug.Trace
 
@@ -415,7 +416,7 @@ sortArts = sortOn ( fromMaybe 0 . ( \ x -> M.lookup x sMap ) . artName)
 
 -- | Auxiliary for `artMD`, rendering a single line in the table
 artLine :: Art -> String
-artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show (artExcessXP ar) ++ " |"
+artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ showNum (artExcessXP ar) ++ " |"
 
 
 -- |
