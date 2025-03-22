@@ -29,10 +29,6 @@ maybeHead (x:_) = Just x
 maybeList :: Maybe [a] -> [a]
 maybeList = fromMaybe []
 
--- | Get a number from a maybe-number, mapping Nothing to zero.
-maybeInt :: Num a => Maybe a -> a
-maybeInt = fromMaybe 0
-
 -- | Add maybe-integers, treating Nothing as zero.
 maybeAdd :: Num a => Maybe a -> Maybe a -> Maybe a
 maybeAdd Nothing Nothing = Nothing 

@@ -462,7 +462,7 @@ instance TraitType Characteristic where
        | otherwise = Just $
           Characteristic { characteristicName = fromJust ( characteristic p ) 
                 , charScore = fromMaybe 0 (score p) + fromMaybe 0 (bonusScore p)
-                , agingPoints = maybeInt (agingPts p) }
+                , agingPoints = fromMaybe 0 (agingPts p) }
 instance TraitType VF where
     getTrait (VFTrait x) = Just x
     getTrait _ = Nothing
@@ -470,7 +470,7 @@ instance TraitType VF where
        | virtue p /= Nothing = Just $ vf1 { vfname = fromJust (virtue p) }
        | flaw p /= Nothing = Just $ vf1 { vfname = fromJust (flaw p) }
        | otherwise = Nothing
-      where vf1 = VF { vfname = "", vfcost = maybeInt (cost p), vfDetail = fromMaybe "" $ detail p
+      where vf1 = VF { vfname = "", vfcost = fromMaybe 0 (cost p), vfDetail = fromMaybe "" $ detail p
                     , vfAppliesTo = Nothing
                     , vfMultiplicity = fromMaybe 1 $ multiplicity p
                     , vfComment = fromMaybe "" $ comment p }
@@ -482,7 +482,7 @@ instance TraitType Ability where
        | otherwise = Just $
            Ability { abilityName = fromJust ( ability p ) 
                 , speciality = spec p
-                , abilityXP = maybeInt (xp p)
+                , abilityXP = fromMaybe 0 (xp p)
                 , abilityScore = s
                 , abilityExcessXP = y
                 , abilityBonus = fromMaybe 0 $ bonusScore p
