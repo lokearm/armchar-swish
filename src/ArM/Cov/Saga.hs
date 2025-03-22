@@ -35,12 +35,22 @@ import ArM.Helper
 -- Multiple files have to be loaded to generate a Saga object from a `SagaFile`.
 data Saga = Saga 
          { sagaTitle :: String
-         , seasonTime :: SeasonTime
-         , covenants :: [Covenant]
+         , sagaState :: SagaState
          , rootDir :: String
          , gameStartCharacters :: [Character]
-         , currentCharacters :: [Character]
+         , gameStartCovenants :: [Covenant]
          , spells :: SpellDB
+       }  deriving (Eq,Show)
+
+currentCharacters :: Saga -> [Character]
+currentCharacters = characters . sagaState
+currentCovenants :: Saga -> [Covenant]
+currentCovenants = covenants . sagaState
+
+data SagaState = SagaState 
+         { seasonTime :: SeasonTime
+         , covenants :: [Covenant]
+         , characters :: [Character]
        }  deriving (Eq,Show)
 
 instance Markdown Saga where
@@ -55,7 +65,7 @@ instance Markdown Saga where
 
 -- | Get the name of the Saga
 sagaStateName :: Saga -> String
-sagaStateName s = sagaTitle s ++ " - " ++ (show $ seasonTime s)
+sagaStateName s = sagaTitle s ++ " - " ++ (show $ seasonTime $ sagaState s)
 
 -- | Get a string identifying the Saga State, i.e. name and season.
 sagaStartName :: Saga -> String
@@ -68,7 +78,7 @@ gamestartDir saga = rootDir saga ++ "/GameStart/"
 
 -- | Directory for Current state
 currentDir :: Saga -> String
-currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime saga) ++ "/"
+currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime $ sagaState saga) ++ "/"
 
 -- | Make the index page for the game start description
 sagaGameStartIndex :: Saga -> OList
@@ -81,7 +91,7 @@ sagaGameStartIndex saga = OList
 -- | Make the index page for the current state
 sagaCurrentIndex :: Saga -> OList
 sagaCurrentIndex saga = OList 
-        [ OString $ "# " ++ sagaTitle saga ++ " - " ++ (show $ seasonTime saga)
+        [ OString $ "# " ++ sagaTitle saga ++ " - " ++ (show $ seasonTime $ sagaState saga)
         , OString ""
         , characterIndex $ currentCharacters saga
         ]
@@ -113,9 +123,11 @@ instance FromJSON SagaFile
 -- |
 -- = Advancement
 
-advanceSaga' :: SeasonTime -> Saga -> Saga
-advanceSaga' t saga = saga { currentCharacters =
+advanceSagaState :: Saga -> SeasonTime -> SagaState -> SagaState
+advanceSagaState saga t st = st { characters =
                              map (advanceCharacter t) ( gameStartCharacters saga ) }
+advanceSaga' :: SeasonTime -> Saga -> Saga
+advanceSaga' t saga = saga { sagaState = advanceSagaState saga t (sagaState saga) }
 
 advanceSaga :: SagaFile -> Saga -> Saga
 advanceSaga t saga = advanceSaga' (currentSeason t) saga

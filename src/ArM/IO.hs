@@ -58,12 +58,15 @@ loadSaga saga = do
    cs <- mapM readCharacter $ characterFiles saga
    return
      $ advanceSaga saga
-     $ Saga { covenants = []  
-           , rootDir = fromMaybe "/tmp/" $ rootDirectory saga
+     $ Saga { rootDir = fromMaybe "/tmp/" $ rootDirectory saga
+           , sagaState = SagaState
+              { covenants = []  
+              , characters = []  
+              , seasonTime = currentSeason saga
+              }
            , sagaTitle = title saga
-           , seasonTime = currentSeason saga
            , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
-           , currentCharacters = []
+           , gameStartCovenants = []
            , spells = fromJust db }
 
 -- | -- Write write character sheets (long format) for the characters in the
