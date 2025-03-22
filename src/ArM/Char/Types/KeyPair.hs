@@ -6,6 +6,8 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
+-- Description :  Generic type for Key/Value pairs.
+--
 -----------------------------------------------------------------------------
 module ArM.Char.Types.KeyPair where
 
