@@ -188,10 +188,8 @@ showSpec pt | isNothing sp = ""
             | otherwise = " [" ++ fromJust sp ++ "]"
    where sp = spec pt
 showXP :: ProtoTrait -> String
-showXP p = " " ++ ishow ( fromMaybe 0 (xp p) ) ++ "xp"
-    where ishow x | isInt x = show ( round x :: Int )
-                  | otherwise = show x
-          isInt x = x == fromInteger (round x)
+showXP p = " " ++ showNum ( fromMaybe 0 (xp p) ) ++ "xp"
+
 showMastery :: Maybe [String] -> String
 showMastery Nothing = ""
 showMastery (Just []) = ""
