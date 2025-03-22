@@ -20,6 +20,11 @@ import ArM.BasicIO
 -- |
 -- = Convenience functions for Maybe
 
+-- | return the head of a list or Nothing if the list is empty
+maybeHead :: [a] -> Maybe a
+maybeHead [] = Nothing
+maybeHead (x:_) = Just x
+
 -- | Get a list from a maybe-list, mapping Nothing to the empty list.
 maybeList :: Maybe [a] -> [a]
 maybeList = fromMaybe []
@@ -89,3 +94,4 @@ wikiLink txt = "[[" ++ txt ++ "]]"
 -- | Set an item for a description list in markdown 
 markdownDL :: String -> String -> OList
 markdownDL t d = OList [ OString t, OString (": "++d), OString "" ]
+

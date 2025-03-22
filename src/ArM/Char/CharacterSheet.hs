@@ -7,9 +7,11 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Description :  CharacterSheet is an alternative representation of CharacterState
+-- Description :  Alternative representations of CharacterState
 --
--- CharacterSheet is a façade exposing lists for each kind of trait.
+-- The CharacterSheet type is a façade exposing lists for each kind of trait.
+-- The module also includes convenience functions to calculate derived stats
+-- such as casting totals.
 --
 -----------------------------------------------------------------------------
 module ArM.Char.CharacterSheet ( CharacterSheet(..)
@@ -30,6 +32,8 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
 import ArM.Char.Trait
 import ArM.Char.Spell
 import ArM.Char.Types.Character
+import ArM.Helper
+
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
@@ -202,9 +206,6 @@ forms = [ ArtKey fo | fo <- [ "An", "Aq", "Au", "Co", "He", "Ig", "Im", "Me", "T
 -- |
 -- = Character Age 
 
-maybeHead :: [a] -> Maybe a
-maybeHead [] = Nothing
-maybeHead (x:_) = Just x
 
 class HasAge a where
     age :: a -> Int
