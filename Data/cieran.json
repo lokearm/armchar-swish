@@ -907,7 +907,9 @@
       , "sourceQuality" : 10
       , "narrative" : "Midsummer Fair: Parma Magica (5), Folk Ken (5) + one confidence point "
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 5 }
-                    , { "ability" : "Folk Ken", "xp" : 5 } ]
+                    , { "ability" : "Folk Ken", "xp" : 5 } 
+                    , { "confidence" : "Confidence", "points" : 1 }
+      ]
       },
       { "mode" : "Reading", "season" : "Autumn 1244"
       , "sourceQuality" : 11
@@ -946,7 +948,9 @@
       , "narrative" : " 4 conf pts "
       , "changes" : [ { "ability" : "Second Sight", "xp" : 5 }
                     , { "ability" : "Parma Magica", "xp" : 5 } 
-                    , { "ability" : "Faerie Lore", "xp" : 5 } ]
+                    , { "ability" : "Faerie Lore", "xp" : 5 } 
+                    , { "confidence" : "Confidence", "points" : 4 }
+		    ]
       },
       { "mode" : "Reading", "season" : "Summer 1245"
       , "sourceQuality" : 13
