@@ -45,6 +45,9 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Age(..)
                       , Aging(..)
                       , defaultAging
+		      , Possession(..)
+		      , Weapon(..)
+		      , Armour(..)
                        ) where
 
 import ArM.GameRules
