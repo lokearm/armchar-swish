@@ -45,16 +45,19 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Age(..)
                       , Aging(..)
                       , defaultAging
-		      , Possession(..)
-		      , Weapon(..)
-		      , Armour(..)
+                      , Possession(..)
+                      , Weapon(..)
+                      , Armour(..)
                        ) where
 
 import ArM.GameRules
 import ArM.Helper
 
 import GHC.Generics
+import Data.Text.Lazy                            ( fromStrict, unpack )
 import Data.Aeson
+import Data.Aeson.Types
+import Control.Monad
 import Data.Maybe 
 import Data.List (sortBy)
 
@@ -81,6 +84,7 @@ data ProtoTrait = ProtoTrait
     , other :: Maybe String       -- ^ other trait, e.g. warping or decrepitude
     , strait :: Maybe String      -- ^ special trait, like Longevity Potion
     , aging :: Maybe Aging        -- ^ Aging object 
+    , possession :: Maybe Possession -- ^ Possesion includes weapon, vis, equipment, etc.
     , spec :: Maybe String        -- ^ specialisation of an ability
     , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
     , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
@@ -121,6 +125,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , other = Nothing
                              , strait = Nothing
                              , aging = Nothing
+                             , possession = Nothing
                              , spec = Nothing
                              , detail = Nothing
                              , appliesTo = Nothing
@@ -156,6 +161,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "other"
         <*> v .:?  "specialTrait"
         <*> v .:?  "aging"
+        <*> v .:?  "possession"
         <*> v .:?  "spec"
         <*> v .:?  "detail"
         <*> v .:?  "appliesTo"
@@ -1026,22 +1032,69 @@ data Armour = Armour
     , armourProtection :: Int
     , armourCost :: String
     } deriving ( Show, Ord, Eq, Generic )
+data Vis = Vis
+    { visArt :: String
+    , visDescription :: Maybe String
+    } deriving ( Show, Ord, Eq, Generic )
 
 data Possession = WeaponPossession Weapon 
-               | Possession String 
-               | VisPossession String 
-               | ArmourPossession Armour 
+                | Possession String 
+                | VisPossession Vis 
+                | ArmourPossession Armour 
+                | StandardPossession StandardItem
     deriving ( Show, Ord, Eq, Generic )
-instance FromJSON Possession 
-instance ToJSON Possession 
+data StandardItem = StandardItem { weapon :: Maybe String, armour :: Maybe String }
+    deriving ( Show, Ord, Eq, Generic )
+instance FromJSON Possession where
+    parseJSON (String t) = pure $ Possession (unpack (fromStrict t))
+    parseJSON (Object v) | isJust w = pure $ WeaponPossession $ fromJust w
+                         | isJust ar = pure $ ArmourPossession $ fromJust ar
+                         | isJust std = pure $ StandardPossession $ fromJust std
+                         | isJust vis = pure $ VisPossession $ fromJust vis
+                         | otherwise = mzero
+       where w = parseWeapon ob
+             ar = parseArmour ob
+             std = parseStd ob
+             vis = parseVis ob
+             ob = Object v
+    parseJSON _ = mzero
+parseWeapon :: Value -> Maybe Weapon
+parseWeapon = parseMaybe parseJSON
+parseArmour :: Value -> Maybe Armour
+parseArmour = parseMaybe parseJSON
+parseStd :: Value -> Maybe StandardItem
+parseStd = parseMaybe parseJSON
+parseVis :: Value -> Maybe Vis
+parseVis = parseMaybe parseJSON
+
+           -- return $ Possession "Nothing"
+                -- w <- v :.? "weaponName"
+                         -- | isJust ar = pure $ ArmourPossession $ fromJust ar
+                         -- | isJust vis = pure $ VisPossession $ fromJust vis
+                         -- | isJust std = pure $ StandardPossession $ fromJust std
+      -- where ob = Object v
+instance ToJSON Possession where
+    toJSON (WeaponPossession x) = toJSON x
+    toJSON (ArmourPossession x) = toJSON x
+    toJSON (StandardPossession x) = toJSON x
+    toJSON (Possession x) = toJSON x
+    toJSON (VisPossession x) = toJSON x
+instance FromJSON Vis 
+instance ToJSON Vis 
 instance FromJSON Weapon 
 instance ToJSON Weapon 
 instance FromJSON Armour 
 instance ToJSON Armour 
+instance FromJSON StandardItem 
+instance ToJSON StandardItem 
 instance TraitLike Possession where
     traitKey (WeaponPossession x) = PossessionKey (weaponName x)
     traitKey (ArmourPossession x) = PossessionKey (armourName x)
+    traitKey (StandardPossession x) = PossessionKey y
+        where y | isJust (weapon x) = "Weapon: " ++ (fromJust $ weapon x)
+                | isJust (armour x) = "Armour: " ++ (fromJust $ armour x)
+                | otherwise         = "Nothing"
     traitKey (Possession x) = PossessionKey x
-    traitKey (VisPossession x) = PossessionKey x
+    traitKey (VisPossession x) = PossessionKey $ show x
     advanceTrait _ _ = error "Possession is not advanced."
     toTrait x = PossessionTrait x 1
