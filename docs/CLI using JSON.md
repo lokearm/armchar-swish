@@ -20,7 +20,7 @@ aliases:
 		+ [ ] Add confidence
 	+ [ ] Step 2. Compute Combat Stats
 		+ [x] CSV weapons table
-		+ [ ] Weapon type
+		+ [x] Weapon type
 		+ [ ] Characters may have equipment
 	+ [ ] Step 3. Characteristics
 		+ [x] Sort Characteristics
