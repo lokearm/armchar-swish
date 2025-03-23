@@ -249,6 +249,7 @@ data TraitKey = AbilityKey String
            | ConfidenceKey String
            | OtherTraitKey String
            | SpecialKey String
+           | PossessionKey String
            | AgeKey
            deriving (Show, Eq,Generic )
 instance Ord TraitKey where
@@ -262,6 +263,7 @@ instance Ord TraitKey where
    compare (ConfidenceKey x) (ConfidenceKey y) = compare x y
    compare (OtherTraitKey x) (OtherTraitKey y) = compare x y
    compare (SpecialKey x) (SpecialKey y) = compare x y
+   compare (PossessionKey x) (PossessionKey y) = compare x y
    compare AgeKey AgeKey = EQ
    compare (AbilityKey _) _ = LT
    compare _ (AbilityKey _) = GT
@@ -283,6 +285,8 @@ instance Ord TraitKey where
    compare _ (OtherTraitKey _) = GT
    compare (SpecialKey _) _ = LT
    compare _ (SpecialKey _) = GT
+   compare (PossessionKey _) _ = LT
+   compare _ (PossessionKey _) = GT
    -- compare AgeKey _ = GT
    -- compare _ AgeKey = LT
 
@@ -420,6 +424,7 @@ data Trait = AbilityTrait Ability
            | ConfidenceTrait Confidence
            | OtherTraitTrait OtherTrait
            | SpecialTraitTrait SpecialTrait
+           | PossessionTrait { item :: Possession, count :: Int }
            | AgeTrait Age
            deriving (Show, Eq, Generic)
 instance Ord Trait where
@@ -691,6 +696,7 @@ instance TraitLike Trait where
     traitKey (OtherTraitTrait x) = traitKey x
     traitKey (ConfidenceTrait x) = traitKey x
     traitKey (SpecialTraitTrait x) = traitKey x
+    traitKey (PossessionTrait x _) = traitKey x
     traitKey (AgeTrait x) = traitKey x
     advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (AbilityTrait x) = toTrait $ advanceTrait a x
@@ -702,6 +708,7 @@ instance TraitLike Trait where
     advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
+    advanceTrait a (PossessionTrait x c) = PossessionTrait x (c+(fromMaybe 1 $ multiplicity a))
     advanceTrait a (AgeTrait x) = AgeTrait $ advanceTrait a x
     toTrait = id
 
@@ -993,3 +1000,45 @@ instance Show Aging where
                 | otherwise = "Rolled " ++ show (fromJust $ agingRoll x) ++ " ("
                            ++ show (fromMaybe (-1) $ agingRollDie x) ++ ") "
 
+
+-- |
+-- = Weapons and other Possessions
+
+
+data Weapon = Weapon
+    { weaponName :: String
+    , weaponAbility :: String
+    , init :: Int
+    , atk :: Maybe Int
+    , def :: Maybe Int
+    , dam :: Maybe Int
+    , str :: Maybe Int
+    , range :: Maybe Int
+    , load ::  Int
+    , weaponCost :: String
+    } deriving ( Show, Ord, Eq, Generic )
+data Armour = Armour
+    { armourName :: String
+    , armourLoad :: Int
+    , armourProtection :: Int
+    , armourCost :: String
+    } deriving ( Show, Ord, Eq, Generic )
+
+data Possession = WeaponPossession Weapon 
+               | Possession String 
+               | VisPossession String 
+               | ArmourPossession Armour 
+    deriving ( Show, Ord, Eq, Generic )
+instance FromJSON Possession 
+instance ToJSON Possession 
+instance FromJSON Weapon 
+instance ToJSON Weapon 
+instance FromJSON Armour 
+instance ToJSON Armour 
+instance TraitLike Possession where
+    traitKey (WeaponPossession x) = PossessionKey (weaponName x)
+    traitKey (ArmourPossession x) = PossessionKey (armourName x)
+    traitKey (Possession x) = PossessionKey x
+    traitKey (VisPossession x) = PossessionKey x
+    advanceTrait _ _ = error "Possession is not advanced."
+    toTrait x = PossessionTrait x 1

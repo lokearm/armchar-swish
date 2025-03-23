@@ -68,7 +68,6 @@ common armchar-deps
                        , ArM.Char.Markdown
                        , ArM.Cov.Covenant
                        , ArM.Cov.Saga
-                       , ArM.Item.Weapon
                        , ArM.IO
                        , ArM.Helper
   build-depends:       cassava >= 0.5.3
