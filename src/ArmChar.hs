@@ -102,21 +102,6 @@ advChar sn fn cs0 = do
          cs = advanceCharacter seasn cs0
 
 main' :: Options -> IO ()
-main' opts | charFile opts /= Nothing = do 
-     putStrLn $ "Reading file " ++ fn
-     t <- readCharacter fn
-     db' <- readSpell $ spellDBFile opts
-     let char = fromJust t  
-     let db = fromJust db'
-     let cs = prepareCharacter char
-     writeMaybeOList ( debugFile opts ) $ printMDaug db char
-     writeMaybeOList ( outFile opts ) $ printMDaug db cs
-     writeMaybeJSON ( jsonFile opts ) cs 
-     advChar ( advanceSeason opts ) (seasonFile opts) cs
-     return ()
-   where fn = fromJust $ charFile opts
-         readSpell Nothing = return Nothing
-         readSpell (Just f) = readSpellDB f
 main' opts | sagaFile opts /= Nothing = do 
      saga <- readSaga $ fromJust $ sagaFile opts
      case saga of

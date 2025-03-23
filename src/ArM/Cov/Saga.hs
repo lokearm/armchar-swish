@@ -20,7 +20,8 @@ import GHC.Generics
 -- import ArM.Char.Trait
 import ArM.Char.Character
 import ArM.Char.Types.Advancement
-import ArM.Char.Spell
+import ArM.DB.Spell
+import ArM.DB.Weapon
 import ArM.Char.Markdown
 import ArM.Cov.Covenant
 import ArM.BasicIO
@@ -40,6 +41,8 @@ data Saga = Saga
          , gameStartCharacters :: [Character]
          , gameStartCovenants :: [Covenant]
          , spells :: SpellDB
+         , weapons :: WeaponDB
+         , armour :: ArmourDB
        }  deriving (Eq,Show)
 
 currentCharacters :: Saga -> [Character]
@@ -114,6 +117,8 @@ data SagaFile = SagaFile
          , covenantFiles :: [String]
          , characterFiles :: [String]
          , spellFile :: String
+         , weaponFile :: String
+         , armourFile :: String
        }  deriving (Eq,Generic,Show)
 
 instance ToJSON SagaFile 

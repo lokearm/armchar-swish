@@ -7,4 +7,6 @@
    , "covenantFiles" : []
    , "characterFiles" : [ "Data/cieran.json", "Data/eogan.json", "Data/tessa.json" ]
    , "spellFile" : "Data/spells.csv"
+   , "weaponFile" : "Data/weapons.csv"
+   , "armourFile" : "Data/armour.csv"
 }

@@ -62,6 +62,7 @@ import Data.Maybe
 import Data.List (sortBy)
 
 import ArM.Debug.Trace
+import ArM.DB.Weapon
 
 -- | 
 -- = ProtoTrait
@@ -1014,24 +1015,6 @@ instance Show Aging where
 -- = Weapons and other Possessions
 
 
-data Weapon = Weapon
-    { weaponName :: String
-    , weaponAbility :: String
-    , init :: Int
-    , atk :: Maybe Int
-    , def :: Maybe Int
-    , dam :: Maybe Int
-    , str :: Maybe Int
-    , range :: Maybe Int
-    , load ::  Int
-    , weaponCost :: String
-    } deriving ( Show, Ord, Eq, Generic )
-data Armour = Armour
-    { armourName :: String
-    , armourLoad :: Int
-    , armourProtection :: Int
-    , armourCost :: String
-    } deriving ( Show, Ord, Eq, Generic )
 data Vis = Vis
     { visArt :: String
     , visDescription :: Maybe String
@@ -1067,12 +1050,6 @@ parseStd = parseMaybe parseJSON
 parseVis :: Value -> Maybe Vis
 parseVis = parseMaybe parseJSON
 
-           -- return $ Possession "Nothing"
-                -- w <- v :.? "weaponName"
-                         -- | isJust ar = pure $ ArmourPossession $ fromJust ar
-                         -- | isJust vis = pure $ VisPossession $ fromJust vis
-                         -- | isJust std = pure $ StandardPossession $ fromJust std
-      -- where ob = Object v
 instance ToJSON Possession where
     toJSON (WeaponPossession x) = toJSON x
     toJSON (ArmourPossession x) = toJSON x
@@ -1081,10 +1058,6 @@ instance ToJSON Possession where
     toJSON (VisPossession x) = toJSON x
 instance FromJSON Vis 
 instance ToJSON Vis 
-instance FromJSON Weapon 
-instance ToJSON Weapon 
-instance FromJSON Armour 
-instance ToJSON Armour 
 instance FromJSON StandardItem 
 instance ToJSON StandardItem 
 instance TraitLike Possession where

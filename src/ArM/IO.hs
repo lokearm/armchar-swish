@@ -21,16 +21,18 @@ module ArM.IO where
 -- import qualified System.IO as IO -- for file IO
 import Data.Maybe 
 import Data.Aeson (decode)
-import qualified Data.CSV as CSV
+-- import qualified Data.CSV as CSV
 import qualified Data.ByteString.Lazy as LB
 
-import Text.ParserCombinators.Parsec
+-- import Text.ParserCombinators.Parsec
 import System.Directory
 
 import ArM.Char.Character
 import ArM.Char.Markdown
 import ArM.Cov.Saga
-import ArM.Char.Spell
+import ArM.DB.CSV
+import ArM.DB.Spell
+import ArM.DB.Weapon()
 import ArM.BasicIO
 import ArM.Helper
 
@@ -50,11 +52,12 @@ readSaga :: String -- ^ Filename
 readSaga fn = readSagaFile fn >>= passMaybe loadSaga
 
 
-
 -- | Load constituent objects for a saga.
 loadSaga :: SagaFile -> IO Saga
 loadSaga saga = do
-   db <- readSpellDB $ spellFile saga
+   db <- readDB $ spellFile saga
+   wdb <- readDB $ weaponFile saga
+   adb <- readDB $ armourFile saga
    cs <- mapM readCharacter $ characterFiles saga
    return
      $ advanceSaga saga
@@ -67,7 +70,10 @@ loadSaga saga = do
            , sagaTitle = title saga
            , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
            , gameStartCovenants = []
-           , spells = fromJust db }
+           , spells = fromJust db 
+           , weapons = fromJust wdb
+           , armour = fromJust adb
+           }
 
 -- | -- Write write character sheets (long format) for the characters in the
 -- given saga to the given directory.
@@ -166,12 +172,3 @@ writeLong dir saga = mapM wf  cs >> return ()
            wf c = (writeOList (fn c) $ printSheetMD db c)
            fn c = dir ++ "/" ++ charID c ++ ".md"
 
--- |
--- = Read resources from CSV
-
--- | Read spells from CSV.  Return Maybe SpellDB.
-readSpellDB :: String -- ^ Filename
-              -> IO (Maybe SpellDB)
-readSpellDB fn = parseFromFile CSV.csvFile fn >>= return . Just . spellDB . g
-  where g (Left _) = [[]]
-        g (Right x) = x

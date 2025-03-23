@@ -62,7 +62,9 @@ common armchar-deps
                        , ArM.Char.Types.Character
                        , ArM.Char.Types.Advancement
                        , ArM.Char.Trait
-                       , ArM.Char.Spell
+                       , ArM.DB.CSV
+                       , ArM.DB.Spell
+                       , ArM.DB.Weapon
                        , ArM.Char.Validation
                        , ArM.Char.Virtues
                        , ArM.Char.Markdown

@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Char.Spell
+-- Module      :  ArM.DB.Spell
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 --
@@ -12,17 +12,19 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Spell ( SpellRecord(..)
+module ArM.DB.Spell ( SpellRecord(..)
                        , spellDB
                        , spellLookup
                        , SpellDB
                        ) where
 
+import ArM.DB.CSV
 import ArM.Char.Trait
 import GHC.Generics
 import Data.List.Split
 import Text.Read
 import qualified Data.Map as M
+-- import Data.Maybe
 
 -- import ArM.Debug.Trace
 
@@ -49,8 +51,32 @@ data SpellRecord = SpellRecord
     } deriving (Ord, Eq, Generic, Show)
 
 -- | Default SpellRecord object as a starting point for step-by-step construction.
-defaultSR :: SpellRecord
-defaultSR = SpellRecord
+
+type SpellDB = M.Map String SpellRecord
+
+-- | Create a `Data.Map.Map` of SpellRecord objects.  
+-- The input is the output from `Data.CSV.csvFile`
+spellDB :: [[String]] -> SpellDB
+spellDB = M.fromList . map ( \ x -> (spellRecordName x,x) ) . map fromCSVline
+
+instance ArMCSV SpellRecord where
+   fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:x13:x14:x15:_) =
+      defaultObject { spellRecordName = x1 
+                , spellRecordTeFo = x2
+                , lvl = readMaybe x7
+                , technique = x3
+                , techniqueReq = filter (/="") $ splitOn ";" x4
+                , form = x5
+                , formReq = filter (/="") $ splitOn ";" x6
+                , rdt = (x8, x9, x10)
+                , specialSpell =  filter (/="") $ splitOn ";" x11
+                , description = x12
+                , design = x13
+                , spellComment = x14
+                , cite = x15
+                }
+   fromCSVline _ = defaultObject
+   defaultObject = SpellRecord
                    { spellRecordName = ""
                    , spellRecordTeFo = ""
                    , lvl = Nothing
@@ -65,33 +91,7 @@ defaultSR = SpellRecord
                    , spellComment = ""
                    , cite = ""
                    }
-
-type SpellDB = M.Map String SpellRecord
-
--- | Create a `Data.Map.Map` of SpellRecord objects.  
--- The input is the output from `Data.CSV.csvFile`
-spellDB :: [[String]] -> SpellDB
-spellDB = M.fromList . map ( \ x -> (spellRecordName x,x) ) . map fromCSVline
-
--- | Parse the cells of one line from the CSV file into a SpellRecord object.
-fromCSVline :: [String] -> SpellRecord
-fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11:x12:x13:x14:x15:_) =
-      defaultSR { spellRecordName = x1 
-                , spellRecordTeFo = x2
-                , lvl = readMaybe x7
-                , technique = x3
-                , techniqueReq = filter (/="") $ splitOn ";" x4
-                , form = x5
-                , formReq = filter (/="") $ splitOn ";" x6
-                , rdt = (x8, x9, x10)
-                , specialSpell =  filter (/="") $ splitOn ";" x11
-                , description = x12
-                , design = x13
-                , spellComment = x14
-                , cite = x15
-                }
-fromCSVline _ = defaultSR
-
+   getID = spellRecordName
 spellLookup :: TraitKey -> SpellDB -> Maybe SpellRecord
 spellLookup = M.lookup . spellKeyName
    

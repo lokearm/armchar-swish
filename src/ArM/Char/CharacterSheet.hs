@@ -30,8 +30,8 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                ) where
 
 import ArM.Char.Trait
-import ArM.Char.Spell
 import ArM.Char.Types.Character
+import ArM.DB.Spell
 import ArM.Helper
 
 import GHC.Generics
