@@ -91,7 +91,7 @@ data ProtoTrait = ProtoTrait
     , other :: Maybe String       -- ^ other trait, e.g. warping or decrepitude
     , strait :: Maybe String      -- ^ special trait, like Longevity Potion
     , aging :: Maybe Aging        -- ^ Aging object 
-    , possession :: Maybe Possession -- ^ Possesion includes weapon, vis, equipment, etc.
+    , possession :: Maybe Item    -- ^ Possesion includes weapon, vis, equipment, etc.
     , spec :: Maybe String        -- ^ specialisation of an ability
     , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
     , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
@@ -245,6 +245,7 @@ instance Show ProtoTrait  where
        | confidence p /= Nothing = 
               fromMaybe "Confidence" (confidence p) ++ ": " ++ show (fromMaybe 0 (score p)) ++ " (" ++
               show ( fromMaybe 0 (points p) ) ++ ")"
+       | possession p /= Nothing = show (fromJust $ possession p)
        | aging p /= Nothing = show (fromJust $ aging p)
        | other p /= Nothing = 
                fromJust (other p) ++ " " ++ show ( fromMaybe 0 ( points p ) )
@@ -275,6 +276,7 @@ instance TraitClass ProtoTrait where
        | flaw p /= Nothing = VFKey ( fromJust (flaw p) ) (fromMaybe "" $ detail p)
        | confidence p /= Nothing = ConfidenceKey $ fromMaybe "Confidence" $ confidence p
        | other p /= Nothing = OtherTraitKey $ fromJust $ other p
+       | possession p /= Nothing = traitKey $ fromJust $ possession p
        | aging p /= Nothing = AgeKey
        | otherwise  = error "No Trait for this ProtoTrait" 
 
@@ -295,6 +297,7 @@ instance TraitClass ProtoTrait where
                       , cscore = fromMaybe 0 (score p)
                       , cpoints = fromMaybe 0 (points p) }
       | other p /= Nothing = OtherTraitTrait $ fromJust $ computeTrait p
+      | possession p /= Nothing = PossessionTrait $ fromJust $ computeTrait p
       | aging p /= Nothing = AgeTrait $ fromJust $ computeTrait p
       | otherwise  = error "No Trait for this ProtoTrait" 
    getTrait _ = Nothing
@@ -538,6 +541,11 @@ instance TraitType Trait where
 
 instance TraitType Possession where
     advanceTrait p x = x { itemCount = itemCount x + (fromMaybe 1 $ multiplicity p) }
+    computeTrait p
+       | isNothing (possession p) = Nothing
+       | otherwise = Just $ Possession 
+                   { item = fromJust (possession p)
+                   , itemCount = fromMaybe 0 $ multiplicity p }
 
 instance TraitType Age where
     advanceTrait p x = updateLR (longevity ag ) 
