@@ -1035,20 +1035,17 @@ instance FromJSON Possession where
                          | isJust std = pure $ StandardPossession $ fromJust std
                          | isJust vis = pure $ VisPossession $ fromJust vis
                          | otherwise = mzero
-       where w = parseWeapon ob
-             ar = parseArmour ob
-             std = parseStd ob
-             vis = parseVis ob
+       where w = parseAny ob
+             ar = parseAny ob
+             std = parseAny ob
+             vis = parseAny ob
              ob = Object v
     parseJSON _ = mzero
-parseWeapon :: Value -> Maybe Weapon
-parseWeapon = parseMaybe parseJSON
-parseArmour :: Value -> Maybe Armour
-parseArmour = parseMaybe parseJSON
-parseStd :: Value -> Maybe StandardItem
-parseStd = parseMaybe parseJSON
-parseVis :: Value -> Maybe Vis
-parseVis = parseMaybe parseJSON
+
+-- | Parse JSON or return Nothing.
+-- This is a helper for the FromJSON instance of Possession.
+parseAny :: FromJSON a => Value -> Maybe a
+parseAny = parseMaybe parseJSON
 
 instance ToJSON Possession where
     toJSON (WeaponPossession x) = toJSON x
