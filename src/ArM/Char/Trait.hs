@@ -350,8 +350,19 @@ instance Show Aging where
 
 
 -- |
--- = Filtering and Advancement - the TraitType class
+-- = Advancement - the TraitType class
 
+Advancement of traits is based `ProtoTrait` objects representing
+changes in objects.  The `TraitType` class provides two functions.
+Firstly `advanceTrait` applies a `ProtoTrait` to a `Trait` to advance
+it to a new `Trait`.  Secondly, `computeTrait` creates a previously
+non-existing trait from a `ProtoTrait`.
+
+These functions are implemented for each type representing a kind of 
+trait.
+
+-- | The `TraitType` class provides the methods to advance traits
+-- using `ProtoTrait` objects.
 class TraitType t where
 
     -- | Convert a ProtoTrait (advancement) to a new trait object.
@@ -509,9 +520,6 @@ instance TraitType SpecialTrait where
        | otherwise = Nothing
     advanceTrait a _ = fromJust $ computeTrait a
 
-
--- |
--- == the TraitLike class
 
 instance TraitType Trait where
     advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
