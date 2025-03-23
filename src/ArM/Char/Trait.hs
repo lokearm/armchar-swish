@@ -351,15 +351,15 @@ instance Show Aging where
 
 -- |
 -- = Advancement - the TraitType class
-
-Advancement of traits is based `ProtoTrait` objects representing
-changes in objects.  The `TraitType` class provides two functions.
-Firstly `advanceTrait` applies a `ProtoTrait` to a `Trait` to advance
-it to a new `Trait`.  Secondly, `computeTrait` creates a previously
-non-existing trait from a `ProtoTrait`.
-
-These functions are implemented for each type representing a kind of 
-trait.
+--
+-- Advancement of traits is based `ProtoTrait` objects representing
+-- changes in objects.  The `TraitType` class provides two functions.
+-- Firstly `advanceTrait` applies a `ProtoTrait` to a `Trait` to advance
+-- it to a new `Trait`.  Secondly, `computeTrait` creates a previously
+-- non-existing trait from a `ProtoTrait`.
+--
+-- These functions are implemented for each type representing a kind of 
+-- trait.
 
 -- | The `TraitType` class provides the methods to advance traits
 -- using `ProtoTrait` objects.
@@ -532,12 +532,12 @@ instance TraitType Trait where
     advanceTrait a (OtherTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
-    advanceTrait a (PossessionTrait x c) = PossessionTrait x (c+(fromMaybe 1 $ multiplicity a))
+    advanceTrait a (PossessionTrait x) =  toTrait $ advanceTrait a x
     advanceTrait a (AgeTrait x) = AgeTrait $ advanceTrait a x
     computeTrait = Just . toTrait
 
 instance TraitType Possession where
-    advanceTrait _ _ = error "Possession is not advanced."
+    advanceTrait p x = x { itemCount = itemCount x + (fromMaybe 1 $ multiplicity p) }
 
 instance TraitType Age where
     advanceTrait p x = updateLR (longevity ag ) 

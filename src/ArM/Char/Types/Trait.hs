@@ -44,7 +44,7 @@ data Trait = AbilityTrait Ability
            | ConfidenceTrait Confidence
            | OtherTraitTrait OtherTrait
            | SpecialTraitTrait SpecialTrait
-           | PossessionTrait { item :: Possession, count :: Int }
+           | PossessionTrait Possession
            | AgeTrait Age
            deriving (Show, Eq, Generic)
 instance Ord Trait where
@@ -212,20 +212,24 @@ data Vis = Vis
     , visDescription :: Maybe String
     } deriving ( Show, Ord, Eq, Generic )
 
-data Possession = WeaponPossession Weapon 
-                | Possession String 
-                | VisPossession Vis 
-                | ArmourPossession Armour 
-                | StandardPossession StandardItem
+data Possession = Possession { item :: Item, itemCount :: Int }
+    deriving ( Show, Ord, Eq, Generic )
+instance FromJSON Possession 
+instance ToJSON Possession 
+data Item = WeaponItem Weapon 
+          | Item String 
+          | VisItem Vis 
+          | ArmourItem Armour 
+          | StdItem StandardItem
     deriving ( Show, Ord, Eq, Generic )
 data StandardItem = StandardItem { weapon :: Maybe String, armour :: Maybe String }
     deriving ( Show, Ord, Eq, Generic )
-instance FromJSON Possession where
-    parseJSON (String t) = pure $ Possession (unpack (fromStrict t))
-    parseJSON (Object v) | isJust w = pure $ WeaponPossession $ fromJust w
-                         | isJust ar = pure $ ArmourPossession $ fromJust ar
-                         | isJust std = pure $ StandardPossession $ fromJust std
-                         | isJust vis = pure $ VisPossession $ fromJust vis
+instance FromJSON Item where
+    parseJSON (String t) = pure $ Item (unpack (fromStrict t))
+    parseJSON (Object v) | isJust w = pure $ WeaponItem $ fromJust w
+                         | isJust ar = pure $ ArmourItem $ fromJust ar
+                         | isJust std = pure $ StdItem $ fromJust std
+                         | isJust vis = pure $ VisItem $ fromJust vis
                          | otherwise = mzero
        where w = parseAny ob
              ar = parseAny ob
@@ -235,16 +239,16 @@ instance FromJSON Possession where
     parseJSON _ = mzero
 
 -- | Parse JSON or return Nothing.
--- This is a helper for the FromJSON instance of Possession.
+-- This is a helper for the FromJSON instance of Item.
 parseAny :: FromJSON a => Value -> Maybe a
 parseAny = parseMaybe parseJSON
 
-instance ToJSON Possession where
-    toJSON (WeaponPossession x) = toJSON x
-    toJSON (ArmourPossession x) = toJSON x
-    toJSON (StandardPossession x) = toJSON x
-    toJSON (Possession x) = toJSON x
-    toJSON (VisPossession x) = toJSON x
+instance ToJSON Item where
+    toJSON (WeaponItem x) = toJSON x
+    toJSON (ArmourItem x) = toJSON x
+    toJSON (StdItem x) = toJSON x
+    toJSON (Item x) = toJSON x
+    toJSON (VisItem x) = toJSON x
 instance FromJSON Vis 
 instance ToJSON Vis 
 instance FromJSON StandardItem 
@@ -293,7 +297,7 @@ instance TraitClass Trait where
     traitKey (OtherTraitTrait x) = traitKey x
     traitKey (ConfidenceTrait x) = traitKey x
     traitKey (SpecialTraitTrait x) = traitKey x
-    traitKey (PossessionTrait x _) = traitKey x
+    traitKey (PossessionTrait x) = traitKey x
     traitKey (AgeTrait x) = traitKey x
     toTrait = id
     getTrait = Just . id
@@ -356,16 +360,21 @@ instance TraitClass Age where
     getTrait _ = Nothing
 
 instance TraitClass Possession where
-    traitKey (WeaponPossession x) = PossessionKey (weaponName x)
-    traitKey (ArmourPossession x) = PossessionKey (armourName x)
-    traitKey (StandardPossession x) = PossessionKey y
+    traitKey = traitKey . item
+    getTrait (PossessionTrait x) = Just x
+    getTrait _ = Nothing
+    toTrait = PossessionTrait
+instance TraitClass Item where
+    traitKey (WeaponItem x) = PossessionKey (weaponName x)
+    traitKey (ArmourItem x) = PossessionKey (armourName x)
+    traitKey (StdItem x) = PossessionKey y
         where y | isJust (weapon x) = "Weapon: " ++ (fromJust $ weapon x)
                 | isJust (armour x) = "Armour: " ++ (fromJust $ armour x)
                 | otherwise         = "Nothing"
-    traitKey (Possession x) = PossessionKey x
-    traitKey (VisPossession x) = PossessionKey $ show x
-    toTrait x = PossessionTrait x 1
-    getTrait (PossessionTrait x _) = Just x
+    traitKey (Item x) = PossessionKey x
+    traitKey (VisItem x) = PossessionKey $ show x
+    toTrait x = PossessionTrait $ Possession x 1
+    getTrait (PossessionTrait x) = Just $ item x
     getTrait _ = Nothing
 
 

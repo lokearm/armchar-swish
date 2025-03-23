@@ -15,7 +15,6 @@ aliases:
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
-	+ [ ] Fix PossessionTrait type to catch multiplicity
 	+ [ ] Review Cieran's ingame
 		+ [ ] Add stat boost rituals
 		+ [ ] Add confidence
