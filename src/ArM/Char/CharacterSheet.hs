@@ -7,7 +7,6 @@
 --
 -- Maintainer  :  hg+gamer@schaathun.net
 --
--- Description :  Alternative representations of CharacterState
 --
 -- The CharacterSheet type is a façade exposing lists for each kind of trait.
 -- The module also includes convenience functions to calculate derived stats
@@ -31,6 +30,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
 
 import ArM.Char.Trait
 import ArM.Char.Types.Character
+import ArM.Char.Types.Trait
 import ArM.DB.Spell
 import ArM.Helper
 
@@ -114,7 +114,7 @@ filterCS cs = defaultSheet
                  (x9,y9) = filterTrait y8
 
 -- | Find a trait, given by a key, from a list of Trait objects.
-findTrait :: (TraitLike a) => TraitKey -> [a] -> Maybe a
+findTrait :: (TraitClass a) => TraitKey -> [a] -> Maybe a
 findTrait k = find ( (k==) . traitKey )
 
 

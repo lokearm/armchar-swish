@@ -25,6 +25,7 @@ import Data.Maybe
 import ArM.Char.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
+import ArM.Char.Types.Trait
 import ArM.DB.Spell
 import ArM.GameRules
 import ArM.BasicIO

@@ -62,6 +62,8 @@ common armchar-deps
                        , ArM.Char.Types.Character
                        , ArM.Char.Types.Advancement
                        , ArM.Char.Trait
+                       , ArM.Char.Types.Trait
+                       , ArM.Char.Types.TraitKey
                        , ArM.DB.CSV
                        , ArM.DB.Spell
                        , ArM.DB.Weapon
