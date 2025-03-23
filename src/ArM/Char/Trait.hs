@@ -298,6 +298,7 @@ instance TraitClass ProtoTrait where
       | other p /= Nothing = OtherTraitTrait $ fromJust $ computeTrait p
       | aging p /= Nothing = AgeTrait $ fromJust $ computeTrait p
       | otherwise  = error "No Trait for this ProtoTrait" 
+   getTrait _ = Nothing
 
 
 
@@ -305,22 +306,7 @@ instance TraitClass ProtoTrait where
 -- = Filtering and Advancement - the TraitType class
 
 class TraitType t where
-    -- | Extract traits of the given type from a generic list of Trait objects.
-    -- It returns a pair of lists with the selected traits in the first list
-    -- and the remaining traits in the other.
-    filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
-    filterTrait ts = y where (_,y) = filterTrait' (ts,([],[]))
 
-    -- | Recursive helper for `filterTrait`
-    filterTrait' :: ( [ Trait ], ( [ t ], [ Trait ] ) )
-                  -> ( [ Trait ], ( [ t ], [ Trait ] ) )
-    filterTrait' ([],y) = ([],y)
-    filterTrait' (x:xs,(ys,zs)) | isNothing ab  = filterTrait' (xs,(ys,x:zs))
-                                | otherwise = filterTrait' (xs,(fromJust ab:ys,zs))
-        where ab = getTrait x
-
-    -- | Return the specific trait from the generic Trait, or Nothing if the type does not match.
-    getTrait :: Trait -> Maybe t
 
     -- | Convert a ProtoTrait (advancement) to a new trait object.
     computeTrait :: ProtoTrait -> Maybe t
@@ -331,8 +317,6 @@ class TraitLike t where
     advanceTrait _ x = x
 
 instance TraitType Characteristic where
-    getTrait (CharacteristicTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p
        | characteristic p == Nothing = Nothing
        | otherwise = Just $
@@ -340,8 +324,6 @@ instance TraitType Characteristic where
                 , charScore = fromMaybe 0 (score p) + fromMaybe 0 (bonusScore p)
                 , agingPoints = fromMaybe 0 (agingPts p) }
 instance TraitType VF where
-    getTrait (VFTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p 
        | virtue p /= Nothing = Just $ vf1 { vfname = fromJust (virtue p) }
        | flaw p /= Nothing = Just $ vf1 { vfname = fromJust (flaw p) }
@@ -351,8 +333,6 @@ instance TraitType VF where
                     , vfMultiplicity = fromMaybe 1 $ multiplicity p
                     , vfComment = fromMaybe "" $ comment p }
 instance TraitType Ability where
-    getTrait (AbilityTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p
        | ability p == Nothing = Nothing
        | otherwise = Just $
@@ -366,8 +346,6 @@ instance TraitType Ability where
                 }
      where (s,y) = getAbilityScore (xp p)
 instance TraitType Art where
-    getTrait (ArtTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p
         | art p == Nothing = Nothing
         | otherwise = Just $
@@ -382,8 +360,6 @@ instance TraitType Art where
            s = scoreFromXP x
            x = fromMaybe 0 (xp p) 
 instance TraitType Spell where
-    getTrait (SpellTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p | spell p == Nothing = Nothing
                    | otherwise =  Just sp 
           where sp = Spell { spellName = fromJust (spell p)
@@ -405,8 +381,6 @@ instance TraitType Spell where
                   | fless = 1
                   | otherwise = 0
 instance TraitType Reputation where
-    getTrait (ReputationTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p
        | reputation p == Nothing = Nothing
        | otherwise = Just $
@@ -418,16 +392,12 @@ instance TraitType Reputation where
                       }
      where (s,y) = getAbilityScore (xp p)
 instance TraitType PTrait where
-    getTrait (PTraitTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p 
        | ptrait p /= Nothing = Just $ PTrait 
                            { ptraitName = fromJust ( ptrait p )
                            , pscore = fromMaybe 0 (score p) }
        | otherwise = Nothing
 instance TraitType Confidence where
-    getTrait (ConfidenceTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p 
        | confidence p /= Nothing = Just $ Confidence 
                            { cname = fromMaybe "Confidence" ( confidence p )
@@ -436,8 +406,6 @@ instance TraitType Confidence where
                            }
        | otherwise = Nothing
 instance TraitType OtherTrait where
-    getTrait (OtherTraitTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p 
        | other p /= Nothing = Just $ OtherTrait 
                            { trait = fromJust ( other p )
@@ -446,8 +414,6 @@ instance TraitType OtherTrait where
                            }
        | otherwise = Nothing
 instance TraitType SpecialTrait where
-    getTrait (SpecialTraitTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p 
        | strait p /= Nothing = Just $ SpecialTrait 
                            { specialTrait = fromJust ( strait p )
@@ -650,6 +616,7 @@ instance FromJSON Aging
 instance TraitClass Aging where
     traitKey _ = AgeKey
     toTrait = error "Aging toTrait not implemented"
+    getTrait _ = Nothing
 instance Show Aging where
     show x = "Aging " ++ y ++ lr ++ roll ++ lim ++ b ++ fromMaybe "" (agingComment x)
        where y | isNothing (addYears x) = ""
@@ -689,8 +656,6 @@ instance TraitLike Age where
 
 
 instance TraitType Age where
-    getTrait (AgeTrait x) = Just x
-    getTrait _ = Nothing
     computeTrait p
        | isNothing (aging p) = Nothing
        | otherwise =  Just $ Age { ageYears = fromMaybe 0 $ addYears ag

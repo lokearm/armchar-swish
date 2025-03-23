@@ -250,23 +250,37 @@ instance ToJSON Vis
 instance FromJSON StandardItem 
 instance ToJSON StandardItem 
 
-instance TraitClass Possession where
-    traitKey (WeaponPossession x) = PossessionKey (weaponName x)
-    traitKey (ArmourPossession x) = PossessionKey (armourName x)
-    traitKey (StandardPossession x) = PossessionKey y
-        where y | isJust (weapon x) = "Weapon: " ++ (fromJust $ weapon x)
-                | isJust (armour x) = "Armour: " ++ (fromJust $ armour x)
-                | otherwise         = "Nothing"
-    traitKey (Possession x) = PossessionKey x
-    traitKey (VisPossession x) = PossessionKey $ show x
-    toTrait x = PossessionTrait x 1
-
 -- |
 -- = TraitClass 
 
+-- | `TraitClass` provides the functions to get the search key (TraitKey),
+-- to wrap and unwrap traits in the generic `Trait` type, and to filter
+-- traits of different types.
+-- 
+-- `ProtoTrait` and its constituent types may also implement TraitClass
+-- but `getTrait` may then always return Nothing.
 class TraitClass t where
+    -- | Get the key of the trait
     traitKey :: t -> TraitKey
+    -- | Wrap the trait as a generic `Trait` object.
     toTrait :: t -> Trait
+    -- | Return the specific trait from the generic Trait,
+    -- or Nothing if the type does not match.
+    getTrait :: Trait -> Maybe t
+
+    -- | Extract traits of the given type from a generic list of Trait objects.
+    -- It returns a pair of lists with the selected traits in the first list
+    -- and the remaining traits in the other.
+    filterTrait :: [ Trait ] -> ( [ t ], [ Trait ] )
+    filterTrait ts = y where (_,y) = filterTrait' (ts,([],[]))
+
+    -- | Recursive helper for `filterTrait`
+    filterTrait' :: ( [ Trait ], ( [ t ], [ Trait ] ) )
+                  -> ( [ Trait ], ( [ t ], [ Trait ] ) )
+    filterTrait' ([],y) = ([],y)
+    filterTrait' (x:xs,(ys,zs)) | isNothing ab  = filterTrait' (xs,(ys,x:zs))
+                                | otherwise = filterTrait' (xs,(fromJust ab:ys,zs))
+        where ab = getTrait x
 
 instance TraitClass Trait where
     traitKey (CharacteristicTrait x) = traitKey x
@@ -282,41 +296,78 @@ instance TraitClass Trait where
     traitKey (PossessionTrait x _) = traitKey x
     traitKey (AgeTrait x) = traitKey x
     toTrait = id
+    getTrait = Just . id
 
 instance TraitClass Ability where
     traitKey x = AbilityKey $ abilityName x
     toTrait = AbilityTrait
+    getTrait (AbilityTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass Art where
     traitKey x = ArtKey $ take 2 $ artName x
     toTrait = ArtTrait
+    getTrait (ArtTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass Spell where
     traitKey x = SpellKey (spellFoTe x) (spellLevel x) (spellName x ) 
     toTrait = SpellTrait
+    getTrait (SpellTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass VF where
     traitKey x = VFKey (vfname x) (vfDetail x)
     toTrait = VFTrait
+    getTrait (VFTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass PTrait where
     traitKey x = PTraitKey $ ptraitName x
     toTrait = PTraitTrait
+    getTrait (PTraitTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass Reputation where
     traitKey x = ReputationKey ( reputationName x ) ( repLocale x )
     toTrait = ReputationTrait
+    getTrait (ReputationTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass Characteristic where
     traitKey x = CharacteristicKey ( characteristicName x ) 
     toTrait = CharacteristicTrait
+    getTrait (CharacteristicTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass Confidence where
     traitKey p = ConfidenceKey $ cname p
     toTrait = ConfidenceTrait
+    getTrait (ConfidenceTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass OtherTrait where
     traitKey x = OtherTraitKey ( trait x ) 
     toTrait = OtherTraitTrait
+    getTrait (OtherTraitTrait x) = Just x
+    getTrait _ = Nothing
 instance TraitClass SpecialTrait where
     traitKey x = SpecialKey ( specialTrait x ) 
     toTrait = SpecialTraitTrait
+    getTrait (SpecialTraitTrait x) = Just x
+    getTrait _ = Nothing
 
 instance TraitClass Age where
     traitKey _ = AgeKey
     toTrait = AgeTrait
+    getTrait (AgeTrait x) = Just x
+    getTrait _ = Nothing
+
+instance TraitClass Possession where
+    traitKey (WeaponPossession x) = PossessionKey (weaponName x)
+    traitKey (ArmourPossession x) = PossessionKey (armourName x)
+    traitKey (StandardPossession x) = PossessionKey y
+        where y | isJust (weapon x) = "Weapon: " ++ (fromJust $ weapon x)
+                | isJust (armour x) = "Armour: " ++ (fromJust $ armour x)
+                | otherwise         = "Nothing"
+    traitKey (Possession x) = PossessionKey x
+    traitKey (VisPossession x) = PossessionKey $ show x
+    toTrait x = PossessionTrait x 1
+    getTrait (PossessionTrait x _) = Just x
+    getTrait _ = Nothing
+
 
 -- |
 -- == Sorting 
