@@ -221,9 +221,21 @@ data Item = WeaponItem Weapon
           | VisItem Vis 
           | ArmourItem Armour 
           | StdItem StandardItem
-    deriving ( Show, Ord, Eq, Generic )
+    deriving ( Ord, Eq, Generic )
 data StandardItem = StandardItem { weapon :: Maybe String, armour :: Maybe String }
-    deriving ( Show, Ord, Eq, Generic )
+    deriving ( Ord, Eq, Generic )
+
+instance Show Item where
+    show (Item s ) = s
+    show (WeaponItem s ) = show s
+    show (ArmourItem s ) = show s
+    show (VisItem s ) = show s
+    show (StdItem s ) = show s
+instance Show StandardItem where
+    show i | isJust (weapon i)  = "Weapon: " ++ (fromJust $ weapon i)
+           | isJust (armour i)  = "Armour: " ++ (fromJust $ armour i)
+           | otherwise  = "No item"
+
 instance FromJSON Item where
     parseJSON (String t) = pure $ Item (unpack (fromStrict t))
     parseJSON (Object v) | isJust w = pure $ WeaponItem $ fromJust w
