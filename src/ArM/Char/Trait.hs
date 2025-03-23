@@ -36,7 +36,6 @@ module ArM.Char.Trait ( ProtoTrait(..)
                       , Reputation(..)
                       , VF(..)
                       , sortTraits
-                      , TraitLike(..)
                       , TraitType(..)
                       , advance
                       , defaultPT
@@ -300,6 +299,54 @@ instance TraitClass ProtoTrait where
       | otherwise  = error "No Trait for this ProtoTrait" 
    getTrait _ = Nothing
 
+-- |
+-- == Aging
+
+defaultAging :: Aging
+defaultAging = Aging
+    { addYears       = Nothing
+    , deltaYounger   = Nothing
+    , agingRollDie   = Nothing
+    , agingRoll      = Nothing
+    , longevity      = Nothing
+    , agingLimit     = Nothing
+    , agingBonus     = Nothing
+    , agingComment   = Nothing
+    }
+data Aging = Aging
+    { addYears       :: Maybe Int
+    , deltaYounger   :: Maybe Int   
+        -- ^ Should be 1 when age changes and apparent age does not, otherwise 0
+    , agingRollDie   :: Maybe Int    -- ^ aging roll die result
+    , agingRoll      :: Maybe Int    -- ^ aging roll total
+    , longevity      :: Maybe Int    -- ^ score of new longevity ritual
+    , agingLimit     :: Maybe Int    -- ^ freeform comment
+    , agingBonus     :: Maybe Int    -- ^ Bonus to aging rolls (excluding LR)
+    , agingComment   :: Maybe String -- ^ age when aging rolls are required
+    } deriving (Ord,Eq,Generic)
+instance ToJSON Aging
+instance FromJSON Aging 
+
+instance TraitClass Aging where
+    traitKey _ = AgeKey
+    toTrait p = AgeTrait $ fromJust $ computeTrait $ defaultPT { aging = Just p } 
+    getTrait _ = Nothing
+instance Show Aging where
+    show x = "Aging " ++ y ++ lr ++ roll ++ lim ++ b ++ fromMaybe "" (agingComment x)
+       where y | isNothing (addYears x) = ""
+               | otherwise = show yr ++ " years; apparent " 
+                    ++ show (yr-del) ++ " years."
+             yr = fromJust $ addYears x
+             del = fromMaybe 0 $ deltaYounger x
+             lr | isNothing (longevity x) = ""
+               | otherwise = " LR " ++ show (fromJust $ longevity x) ++ "; "
+             lim | isNothing (agingLimit x) = ""
+                | otherwise = "(limit " ++ show (fromJust $ agingLimit x) ++ ") "
+             b | isNothing (agingBonus x) = ""
+                | otherwise = "(bonus " ++ show (fromJust $ agingBonus x) ++ ") "
+             roll | isNothing (agingRoll x) = " No roll. "
+                | otherwise = "Rolled " ++ show (fromJust $ agingRoll x) ++ " ("
+                           ++ show (fromMaybe (-1) $ agingRollDie x) ++ ") "
 
 
 -- |
@@ -307,11 +354,9 @@ instance TraitClass ProtoTrait where
 
 class TraitType t where
 
-
     -- | Convert a ProtoTrait (advancement) to a new trait object.
     computeTrait :: ProtoTrait -> Maybe t
 
-class TraitLike t where
     -- | Advance a trait using changes defined by a ProtoTrait.
     advanceTrait :: ProtoTrait -> t -> t
     advanceTrait _ x = x
@@ -323,6 +368,10 @@ instance TraitType Characteristic where
           Characteristic { characteristicName = fromJust ( characteristic p ) 
                 , charScore = fromMaybe 0 (score p) + fromMaybe 0 (bonusScore p)
                 , agingPoints = fromMaybe 0 (agingPts p) }
+    advanceTrait a =  agingChar apts . newCharScore newscore
+       where newscore = score a
+             apts = agingPts a
+
 instance TraitType VF where
     computeTrait p 
        | virtue p /= Nothing = Just $ vf1 { vfname = fromJust (virtue p) }
@@ -332,6 +381,7 @@ instance TraitType VF where
                     , vfAppliesTo = Nothing
                     , vfMultiplicity = fromMaybe 1 $ multiplicity p
                     , vfComment = fromMaybe "" $ comment p }
+    advanceTrait a x = x { vfMultiplicity = vfMultiplicity x + (fromMaybe 1 $ multiplicity a) }
 instance TraitType Ability where
     computeTrait p
        | ability p == Nothing = Nothing
@@ -344,7 +394,15 @@ instance TraitType Ability where
                 , abilityBonus = fromMaybe 0 $ bonusScore p
                 , abilityMultiplier = fromMaybe 1.0 $ multiplyXP p
                 }
-     where (s,y) = getAbilityScore (xp p)
+      where (s,y) = getAbilityScore (xp p)
+    advanceTrait a x = 
+          updateBonus (bonusScore a) $ um (multiplyXP a) $
+          updateAbilitySpec (spec a) $ updateAbilityXP lim y x
+      where y = calcXP m (abilityExcessXP x) (xp a) 
+            m = abilityMultiplier x
+            um Nothing ab = ab 
+            um abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
+            lim = levelCap a
 instance TraitType Art where
     computeTrait p
         | art p == Nothing = Nothing
@@ -356,9 +414,17 @@ instance TraitType Art where
                 , artBonus = fromMaybe 0 $ bonusScore p
                 , artMultiplier = fromMaybe 1.0 $ multiplyXP p
                 }
-     where y = x - pyramidScore s
-           s = scoreFromXP x
-           x = fromMaybe 0 (xp p) 
+       where y = x - pyramidScore s
+             s = scoreFromXP x
+             x = fromMaybe 0 (xp p) 
+    advanceTrait a x = 
+          updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
+          updateArtXP lim y x 
+      where y = calcXP m (artExcessXP x) (xp a) 
+            m = artMultiplier x
+            um Nothing ab = ab 
+            um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
+            lim = levelCap a
 instance TraitType Spell where
     computeTrait p | spell p == Nothing = Nothing
                    | otherwise =  Just sp 
@@ -380,6 +446,16 @@ instance TraitType Spell where
                 s | s' > 0 = s'
                   | fless = 1
                   | otherwise = 0
+    advanceTrait a x = updateSpellXP y           -- add XP and update score
+                     $ updateSpellMastery ms     -- add new mastery options
+                     $ um (multiplyXP a)         -- update multiplier 
+                     x
+      -- where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
+      where y = calcXP m (spellExcessXP x) (xp a) 
+            m = spellMultiplier x
+            ms = fromMaybe [] $ mastery a
+            um Nothing ab = ab 
+            um abm ar = ar { spellMultiplier = fromMaybe 1.0 abm }
 instance TraitType Reputation where
     computeTrait p
        | reputation p == Nothing = Nothing
@@ -390,13 +466,16 @@ instance TraitType Reputation where
                       , repScore = s
                       , repExcessXP = y
                       }
-     where (s,y) = getAbilityScore (xp p)
+      where (s,y) = getAbilityScore (xp p)
+    advanceTrait a x = updateRepXP y x
+      where y = (repExcessXP x) + (fromMaybe 0 $ xp a)
 instance TraitType PTrait where
     computeTrait p 
        | ptrait p /= Nothing = Just $ PTrait 
                            { ptraitName = fromJust ( ptrait p )
                            , pscore = fromMaybe 0 (score p) }
        | otherwise = Nothing
+    advanceTrait _ x = trace "Warning! Advancement not implemented for personality traits"  x
 instance TraitType Confidence where
     computeTrait p 
        | confidence p /= Nothing = Just $ Confidence 
@@ -405,6 +484,11 @@ instance TraitType Confidence where
                            , cpoints = fromMaybe 0 (points p) 
                            }
        | otherwise = Nothing
+    advanceTrait a = updateCScore (score a) . updateCPoints (points a) 
+       where updateCScore Nothing x = x
+             updateCScore (Just y) x = x { cscore = y }
+             updateCPoints Nothing x = x
+             updateCPoints (Just y) x = x { cpoints = y + cpoints x }
 instance TraitType OtherTrait where
     computeTrait p 
        | other p /= Nothing = Just $ OtherTrait 
@@ -413,6 +497,8 @@ instance TraitType OtherTrait where
                            , otherExcess = fromMaybe 0 (points p) 
                            }
        | otherwise = Nothing
+    advanceTrait a x = updateOther y x
+      where y = otherExcess x + (fromMaybe 0 $ points a)
 instance TraitType SpecialTrait where
     computeTrait p 
        | strait p /= Nothing = Just $ SpecialTrait 
@@ -421,13 +507,13 @@ instance TraitType SpecialTrait where
                            , specialComment = comment p
                            }
        | otherwise = Nothing
-
+    advanceTrait a _ = fromJust $ computeTrait a
 
 
 -- |
 -- == the TraitLike class
 
-instance TraitLike Trait where
+instance TraitType Trait where
     advanceTrait a (CharacteristicTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (AbilityTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (ArtTrait x) = toTrait $ advanceTrait a x
@@ -440,93 +526,51 @@ instance TraitLike Trait where
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (PossessionTrait x c) = PossessionTrait x (c+(fromMaybe 1 $ multiplicity a))
     advanceTrait a (AgeTrait x) = AgeTrait $ advanceTrait a x
+    computeTrait = Just . toTrait
 
-updateBonus :: Maybe Int -> Ability -> Ability
-updateBonus Nothing a = a 
-updateBonus (Just x) a = a { abilityBonus = x + abilityBonus a }
+instance TraitType Possession where
+    advanceTrait _ _ = error "Possession is not advanced."
 
-updateArtBonus :: Maybe Int -> Art -> Art
-updateArtBonus Nothing a = a 
-updateArtBonus (Just x) a = a { artBonus = x + artBonus a }
+instance TraitType Age where
+    advanceTrait p x = updateLR (longevity ag ) 
+                     $ updateABonus ( agingBonus ag )
+                     $ updateAge ( addYears ag )
+                     $ x { apparentYounger = apparentYounger x + del }
+          where ag = fromJust $ aging p
+                updateLR Nothing y = y
+                updateLR (Just lr) y = y { longevityRitual = lr }
+                updateABonus Nothing y = y
+                updateABonus (Just b) y = y { agingRollBonus = agingRollBonus y + b }
+                updateAge Nothing y = y
+                updateAge (Just b) y = y { ageYears = ageYears y + b }
+                del = fromMaybe 0 $ deltaYounger ag
 
-instance TraitLike PTrait where
-    advanceTrait _ x = trace "Warning! Advancement not implemented for personality traits"  x
-instance TraitLike VF where
-    advanceTrait a x = x { vfMultiplicity = vfMultiplicity x + (fromMaybe 1 $ multiplicity a) }
-instance TraitLike Ability where
-    advanceTrait a x = 
-          updateBonus (bonusScore a) $ um (multiplyXP a) $
-          updateAbilitySpec (spec a) $ updateAbilityXP lim y x
-      where y = calcXP m (abilityExcessXP x) (xp a) 
-            m = abilityMultiplier x
-            um Nothing ab = ab 
-            um abm ab = ab { abilityMultiplier = fromMaybe 1.0 abm }
-            lim = levelCap a
-instance TraitLike Art where
-    advanceTrait a x = 
-          updateArtBonus (bonusScore a) $ um (multiplyXP a) $ 
-          updateArtXP lim y x 
-      where y = calcXP m (artExcessXP x) (xp a) 
-            m = artMultiplier x
-            um Nothing ab = ab 
-            um abm ar = ar { artMultiplier = fromMaybe 1.0 abm }
-            lim = levelCap a
 
-instance TraitLike Spell where
-    advanceTrait a x = updateSpellXP y           -- add XP and update score
-                     $ updateSpellMastery ms     -- add new mastery options
-                     $ um (multiplyXP a)         -- update multiplier 
-                     x
-      -- where y = (spellExcessXP x) + (fromMaybe 0 $ xp a)
-      where y = calcXP m (spellExcessXP x) (xp a) 
-            m = spellMultiplier x
-            ms = fromMaybe [] $ mastery a
-            um Nothing ab = ab 
-            um abm ar = ar { spellMultiplier = fromMaybe 1.0 abm }
-instance TraitLike Reputation where
-    advanceTrait a x = updateRepXP y x
-      where y = (repExcessXP x) + (fromMaybe 0 $ xp a)
-instance TraitLike Characteristic where
-    advanceTrait a =  agingChar apts . newCharScore newscore
-       where newscore = score a
-             apts = agingPts a
+    computeTrait p
+       | isNothing (aging p) = Nothing
+       | otherwise =  Just $ Age { ageYears = fromMaybe 0 $ addYears ag
+                , ageLimit = fromMaybe 35 $ agingLimit ag
+                , apparentYounger = fromMaybe 0 $ deltaYounger ag
+                , longevityRitual = (fromMaybe (-1) $ longevity ag)
+                , agingRollBonus = ( fromMaybe 0 $ agingBonus ag ) 
+                , ageComment = agingComment ag }
+          where ag = fromJust $ aging p
 
--- | Add aging points to a characteristic and reduce it if necessary
-agingChar  :: Maybe Int -> Characteristic -> Characteristic
-agingChar  Nothing x = x
-agingChar  (Just pt) x 
-      | newpoints > sc = x { charScore = sc-1, agingPoints = newpoints - (asc-1) }
-      | otherwise = x { agingPoints = newpoints }
-    where newpoints = pt + agingPoints x
-          sc = charScore x
-          asc = abs sc
+-- |
+-- = Advancement
 
--- | Change the score of a characteristic.
--- This applies typically as a result of CrMe/CrCo rituals.
-newCharScore  :: Maybe Int -> Characteristic -> Characteristic
-newCharScore  Nothing x = x
-newCharScore  (Just s) x = x { charScore = s }
-
-instance TraitLike Confidence where
-    advanceTrait a = updateCScore (score a) . updateCPoints (points a) 
-       where updateCScore Nothing x = x
-             updateCScore (Just y) x = x { cscore = y }
-             updateCPoints Nothing x = x
-             updateCPoints (Just y) x = x { cpoints = y + cpoints x }
-instance TraitLike OtherTrait where
-    advanceTrait a x = updateOther y x
-      where y = otherExcess x + (fromMaybe 0 $ points a)
-instance TraitLike SpecialTrait where
-    advanceTrait a _ = fromJust $ computeTrait a
-
-updateOther :: Int -> OtherTrait -> OtherTrait
-updateOther x ab
-    | x < tr = ab { otherExcess = x }
-    | otherwise = updateOther (x-tr) 
-                $ ab { otherScore = sc+1, otherExcess = 0 }
-    where sc = otherScore ab
-          tr = (sc+1)*5
-
+-- | Apply a list of ProtoTrait advancements to a list of Traits.
+--
+-- This is the main function used by other modules when characters are
+-- advanced.
+advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
+advance [] ys = ys
+advance (x:xs) [] = advance xs [toTrait x]
+advance (x:xs) (y:ys) 
+    | x <: y = advance xs (toTrait x:y:ys)
+    | y <: x = y:advance (x:xs) ys
+    | otherwise = advance xs (adv x y:ys)
+    where adv a b = toTrait $ advanceTrait a b
 
 -- |
 -- == Auxiliary update functions
@@ -567,101 +611,34 @@ updateSpellXP x ab | x < tr = ab { spellExcessXP = x }
 updateSpellMastery :: [String] -> Spell -> Spell
 updateSpellMastery ms t = t { masteryOptions = (masteryOptions t) ++ ms }
 
--- |
--- = Advancement
+updateOther :: Int -> OtherTrait -> OtherTrait
+updateOther x ab
+    | x < tr = ab { otherExcess = x }
+    | otherwise = updateOther (x-tr) 
+                $ ab { otherScore = sc+1, otherExcess = 0 }
+    where sc = otherScore ab
+          tr = (sc+1)*5
 
--- | Apply a list of ProtoTrait advancements to a list of Traits.
---
--- This is the main function used by other modules when characters are
--- advanced.
-advance :: [ ProtoTrait ] -> [ Trait ] -> [ Trait ]
-advance [] ys = ys
-advance (x:xs) [] = advance xs [toTrait x]
-advance (x:xs) (y:ys) 
-    | x <: y = advance xs (toTrait x:y:ys)
-    | y <: x = y:advance (x:xs) ys
-    | otherwise = advance xs (adv x y:ys)
-    where adv a b = toTrait $ advanceTrait a b
+updateBonus :: Maybe Int -> Ability -> Ability
+updateBonus Nothing a = a 
+updateBonus (Just x) a = a { abilityBonus = x + abilityBonus a }
 
--- |
--- = Aging
+updateArtBonus :: Maybe Int -> Art -> Art
+updateArtBonus Nothing a = a 
+updateArtBonus (Just x) a = a { artBonus = x + artBonus a }
 
+-- | Add aging points to a characteristic and reduce it if necessary
+agingChar  :: Maybe Int -> Characteristic -> Characteristic
+agingChar  Nothing x = x
+agingChar  (Just pt) x 
+      | newpoints > sc = x { charScore = sc-1, agingPoints = newpoints - (asc-1) }
+      | otherwise = x { agingPoints = newpoints }
+    where newpoints = pt + agingPoints x
+          sc = charScore x
+          asc = abs sc
 
-
-defaultAging :: Aging
-defaultAging = Aging
-    { addYears       = Nothing
-    , deltaYounger   = Nothing
-    , agingRollDie   = Nothing
-    , agingRoll      = Nothing
-    , longevity      = Nothing
-    , agingLimit     = Nothing
-    , agingBonus     = Nothing
-    , agingComment   = Nothing
-    }
-data Aging = Aging
-    { addYears       :: Maybe Int
-    , deltaYounger   :: Maybe Int   
-        -- ^ Should be 1 when age changes and apparent age does not, otherwise 0
-    , agingRollDie   :: Maybe Int    -- ^ aging roll die result
-    , agingRoll      :: Maybe Int    -- ^ aging roll total
-    , longevity      :: Maybe Int    -- ^ score of new longevity ritual
-    , agingLimit     :: Maybe Int    -- ^ freeform comment
-    , agingBonus     :: Maybe Int    -- ^ Bonus to aging rolls (excluding LR)
-    , agingComment   :: Maybe String -- ^ age when aging rolls are required
-    } deriving (Ord,Eq,Generic)
-instance ToJSON Aging
-instance FromJSON Aging 
-
-instance TraitClass Aging where
-    traitKey _ = AgeKey
-    toTrait = error "Aging toTrait not implemented"
-    getTrait _ = Nothing
-instance Show Aging where
-    show x = "Aging " ++ y ++ lr ++ roll ++ lim ++ b ++ fromMaybe "" (agingComment x)
-       where y | isNothing (addYears x) = ""
-               | otherwise = show yr ++ " years; apparent " 
-                    ++ show (yr-del) ++ " years."
-             yr = fromJust $ addYears x
-             del = fromMaybe 0 $ deltaYounger x
-             lr | isNothing (longevity x) = ""
-               | otherwise = " LR " ++ show (fromJust $ longevity x) ++ "; "
-             lim | isNothing (agingLimit x) = ""
-                | otherwise = "(limit " ++ show (fromJust $ agingLimit x) ++ ") "
-             b | isNothing (agingBonus x) = ""
-                | otherwise = "(bonus " ++ show (fromJust $ agingBonus x) ++ ") "
-             roll | isNothing (agingRoll x) = " No roll. "
-                | otherwise = "Rolled " ++ show (fromJust $ agingRoll x) ++ " ("
-                           ++ show (fromMaybe (-1) $ agingRollDie x) ++ ") "
-
-
-instance TraitLike Aging where
-    advanceTrait _ _ = error "Aging/Aging advancement not implemented"
-instance TraitLike Possession where
-    advanceTrait _ _ = error "Possession is not advanced."
-
-instance TraitLike Age where
-    advanceTrait p x = updateLR (longevity ag ) 
-                     $ updateABonus ( agingBonus ag )
-                     $ updateAge ( addYears ag )
-                     $ x { apparentYounger = apparentYounger x + del }
-          where ag = fromJust $ aging p
-                updateLR Nothing y = y
-                updateLR (Just lr) y = y { longevityRitual = lr }
-                updateABonus Nothing y = y
-                updateABonus (Just b) y = y { agingRollBonus = agingRollBonus y + b }
-                updateAge Nothing y = y
-                updateAge (Just b) y = y { ageYears = ageYears y + b }
-                del = fromMaybe 0 $ deltaYounger ag
-
-
-instance TraitType Age where
-    computeTrait p
-       | isNothing (aging p) = Nothing
-       | otherwise =  Just $ Age { ageYears = fromMaybe 0 $ addYears ag
-                , ageLimit = fromMaybe 35 $ agingLimit ag
-                , apparentYounger = fromMaybe 0 $ deltaYounger ag
-                , longevityRitual = (fromMaybe (-1) $ longevity ag)
-                , agingRollBonus = ( fromMaybe 0 $ agingBonus ag ) 
-                , ageComment = agingComment ag }
-          where ag = fromJust $ aging p
+-- | Change the score of a characteristic.
+-- This applies typically as a result of CrMe/CrCo rituals.
+newCharScore  :: Maybe Int -> Characteristic -> Characteristic
+newCharScore  Nothing x = x
+newCharScore  (Just s) x = x { charScore = s }
