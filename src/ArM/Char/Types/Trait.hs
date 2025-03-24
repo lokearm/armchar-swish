@@ -216,25 +216,31 @@ data CombatOption = CombatOption
 -- |
 -- == Weapons and other Possessions
 
-
+-- | A `Possession` is any kind of device that can be acquired, lost,
+-- given, or traded.  It is treated like inherent traits in the data
+-- model.  Possessions comprise weapons, armour, vis, magic devices,
+-- equipment, and any physical object that should be recorded
+-- on the characters sheet.
 data Possession = Possession 
-     { itemName :: String     -- ^ Name identifying the unique item
+     { itemName :: String           -- ^ Name identifying the unique item
      , weaponStats :: [ Weapon ]    -- ^ List of applicable Weapon stat objects
      , weapon :: [ String ]         -- ^ List of standard weapon stats that apply
      , armourStats :: [ Armour ]    -- ^ List of applicable Weapon stat objects
      , armour :: [ String ]         -- ^ List of standard weapon stats that apply
      , itemDescription :: String    -- ^ Description of the Item
-     , visArt :: String
-     , itemCount :: Int }
-    deriving ( Ord, Eq, Generic )
+     , visArt :: Maybe String       -- ^ Relevant art if the item is raw vis
+     , itemCount :: Int             -- ^ Number of items possessed, default 1.
+     }
+    deriving ( Show, Ord, Eq, Generic )
 instance FromJSON Possession 
 instance ToJSON Possession 
 
+{-
 instance Show Possession where
     show p = show (itemName p) ++ cnt
        where cnt | itemCount p == 1 = ""
                  | otherwise = " (" ++ show (itemCount p) ++ ")"
-
+-}
 
 -- |
 -- = TraitClass 
