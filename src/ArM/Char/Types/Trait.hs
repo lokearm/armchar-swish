@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  ArM.Char.Types.Trait
@@ -25,6 +26,9 @@ import ArM.DB.Weapon
 
 import GHC.Generics
 import Data.Aeson
+-- import Data.Aeson.Types
+import Data.Text.Lazy                            ( fromStrict, unpack )
+import Control.Monad
 import Data.Maybe
 import Data.List (sortBy)
 
@@ -231,16 +235,45 @@ data Possession = Possession
      , visArt :: Maybe String       -- ^ Relevant art if the item is raw vis
      , itemCount :: Int             -- ^ Number of items possessed, default 1.
      }
-    deriving ( Show, Ord, Eq, Generic )
-instance FromJSON Possession 
+    deriving ( Ord, Eq, Generic )
+defaultPossession :: Possession 
+defaultPossession = Possession 
+     { itemName = "No name"
+     , weaponStats = []
+     , weapon = []
+     , armourStats = []
+     , armour = []
+     , itemDescription = ""
+     , visArt = Nothing
+     , itemCount = 1
+     }
 instance ToJSON Possession 
 
-{-
+instance FromJSON Possession where
+    parseJSON (String t) = pure $ defaultPossession { itemName = (unpack (fromStrict t)) }
+    parseJSON (Object v) = fmap fixPossessionName $ Possession 
+       <$> v .:? "name" .!= ""
+       <*> v .:? "weaponStats" .!= []
+       <*> v .:? "weapon" .!= []
+       <*> v .:? "armourStats" .!= []
+       <*> v .:? "armour" .!= []
+       <*> v .:? "description" .!= ""
+       <*> v .:? "art"
+       <*> v .:? "count" .!= 1
+    parseJSON _ = mzero
+
+fixPossessionName :: Possession -> Possession 
+fixPossessionName p | itemName p /= "" = p
+                    | otherwise = p { itemName = n }
+            where n | weapon p /= [] = head $ weapon p
+                    | armour p /= [] = head $ armour p
+                    | isJust (visArt p) = fromJust (visArt p) ++ " vis"
+                    | otherwise = "Item"
+
 instance Show Possession where
-    show p = show (itemName p) ++ cnt
+    show p = itemName p ++ cnt
        where cnt | itemCount p == 1 = ""
                  | otherwise = " (" ++ show (itemCount p) ++ ")"
--}
 
 -- |
 -- = TraitClass 
