@@ -18,7 +18,7 @@ aliases:
 	+ [ ] Step 1. Review Cieran's ingame
 		+ [ ] Add stat boost rituals
 		+ [ ] Add confidence
-	+ [ ] Step 2. Compute Combat Stats
+	+ [ ] Step 2. Compute [[Combat Stats]]
 		+ [ ] Calculate Combat stats from Possessions
 		+ [ ] Show combat stats on sheet
 	+ [ ] Step 3. Characteristics
