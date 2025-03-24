@@ -202,6 +202,19 @@ instance Show Reputation  where
    show a = reputationName a ++ " [" ++ (repLocale a) ++ "] "
           ++ show (repScore a) ++ " (" ++ showNum (repExcessXP a) ++ ") "
 
+-- |
+-- == Combat Options
+
+-- | A CombatOption is a combination of weapons for which to list combat stats.
+--
+-- It needs to link with a `Weapon` (and optionally a shield) which may be
+-- generic or unique.  If the weapon can be used in different modes, the
+-- ability has to be linked as well.
+data CombatOption = CombatOption 
+     { combatWeapon :: String        -- ^ The main weapon
+     , combatShield :: Maybe String  -- ^ A Shield is optional
+     , combatAbility :: String
+     }
 
 -- |
 -- == Weapons and other Possessions
