@@ -568,8 +568,7 @@ advance (x:xs) [] = advance xs [toTrait x]
 advance (x:xs) (y:ys) 
     | x <: y = advance xs (toTrait x:y:ys)
     | y <: x = y:advance (x:xs) ys
-    | otherwise = advance xs (adv x y:ys)
-    where adv a b = toTrait $ advanceTrait a b
+    | otherwise = advance xs (advanceTrait x y:ys)
 
 -- |
 -- == Auxiliary update functions
