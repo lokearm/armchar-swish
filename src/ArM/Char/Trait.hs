@@ -78,7 +78,7 @@ data ProtoTrait = ProtoTrait
     , other :: Maybe String       -- ^ other trait, e.g. warping or decrepitude
     , strait :: Maybe String      -- ^ special trait, like Longevity Potion
     , aging :: Maybe Aging        -- ^ Aging object 
-    , possession :: Maybe Item    -- ^ Possesion includes weapon, vis, equipment, etc.
+    , possession :: Maybe Possession -- ^ Possesion includes weapon, vis, equipment, etc.
     , spec :: Maybe String        -- ^ specialisation of an ability
     , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
     , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
@@ -528,11 +528,7 @@ instance TraitType Trait where
 
 instance TraitType Possession where
     advanceTrait p x = x { itemCount = itemCount x + (fromMaybe 1 $ multiplicity p) }
-    computeTrait p
-       | isNothing (possession p) = Nothing
-       | otherwise = Just $ Possession 
-                   { item = fromJust (possession p)
-                   , itemCount = fromMaybe 1 $ multiplicity p }
+    computeTrait = possession
 
 instance TraitType Age where
     advanceTrait p x = updateLR (longevity ag ) 

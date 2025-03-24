@@ -127,7 +127,7 @@
            , "mastery" : [ "Penetration" ] }
          , { "spell" : "End of the Mighty Castle", "tefo" : "PeTe", "level" : 20
            , "mastery" : [ "Penetration" ] }
-         , { "possession" : { "weapon" : "Longbow" } }
+         , { "possession" : { "standardWeapon" : [ "Longbow" ] } }
          , { "possession" : "Lantern", "multiplicity" : 1 }
          , { "possession" : "Casting tools: Mirror, Copper ring, Cow horn, Leather glove, small pouch of down, small crystal, piece of amber, comb, fan, earring, small brass bell, rabbit bone, cypress wand (8\"), sea shell, glass vial, dog's tooth" }
          ] 

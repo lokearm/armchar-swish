@@ -24,12 +24,9 @@ import ArM.Char.Types.TraitKey
 import ArM.DB.Weapon
 
 import GHC.Generics
-import Data.Text.Lazy                            ( fromStrict, unpack )
 import Data.Aeson
-import Data.Aeson.Types
 import Data.Maybe
 import Data.List (sortBy)
-import Control.Monad
 
 -- |
 -- = The Trait Type
@@ -220,68 +217,24 @@ data CombatOption = CombatOption
 -- == Weapons and other Possessions
 
 
-data Vis = Vis
-    { visArt :: String
-    , visDescription :: Maybe String
-    } deriving ( Show, Ord, Eq, Generic )
-
-data Possession = Possession { item :: Item, itemCount :: Int }
+data Possession = Possession 
+     { itemName :: String     -- ^ Name identifying the unique item
+     , weaponStats :: [ Weapon ]    -- ^ List of applicable Weapon stat objects
+     , weapon :: [ String ]         -- ^ List of standard weapon stats that apply
+     , armourStats :: [ Armour ]    -- ^ List of applicable Weapon stat objects
+     , armour :: [ String ]         -- ^ List of standard weapon stats that apply
+     , itemDescription :: String    -- ^ Description of the Item
+     , visArt :: String
+     , itemCount :: Int }
     deriving ( Ord, Eq, Generic )
 instance FromJSON Possession 
 instance ToJSON Possession 
-data Item = WeaponItem Weapon 
-          | Item String 
-          | VisItem Vis 
-          | ArmourItem Armour 
-          | StdItem StandardItem
-    deriving ( Ord, Eq, Generic )
-data StandardItem = StandardItem { weapon :: Maybe String, armour :: Maybe String }
-    deriving ( Ord, Eq, Generic )
 
 instance Show Possession where
-    show p = show (item p) ++ cnt
+    show p = show (itemName p) ++ cnt
        where cnt | itemCount p == 1 = ""
                  | otherwise = " (" ++ show (itemCount p) ++ ")"
-instance Show Item where
-    show (Item s ) = s
-    show (WeaponItem s ) = show s
-    show (ArmourItem s ) = show s
-    show (VisItem s ) = show s
-    show (StdItem s ) = show s
-instance Show StandardItem where
-    show i | isJust (weapon i)  = "Weapon: " ++ (fromJust $ weapon i)
-           | isJust (armour i)  = "Armour: " ++ (fromJust $ armour i)
-           | otherwise  = "No item"
 
-instance FromJSON Item where
-    parseJSON (String t) = pure $ Item (unpack (fromStrict t))
-    parseJSON (Object v) | isJust w = pure $ WeaponItem $ fromJust w
-                         | isJust ar = pure $ ArmourItem $ fromJust ar
-                         | isJust std = pure $ StdItem $ fromJust std
-                         | isJust vis = pure $ VisItem $ fromJust vis
-                         | otherwise = mzero
-       where w = parseAny ob
-             ar = parseAny ob
-             std = parseAny ob
-             vis = parseAny ob
-             ob = Object v
-    parseJSON _ = mzero
-
--- | Parse JSON or return Nothing.
--- This is a helper for the FromJSON instance of Item.
-parseAny :: FromJSON a => Value -> Maybe a
-parseAny = parseMaybe parseJSON
-
-instance ToJSON Item where
-    toJSON (WeaponItem x) = toJSON x
-    toJSON (ArmourItem x) = toJSON x
-    toJSON (StdItem x) = toJSON x
-    toJSON (Item x) = toJSON x
-    toJSON (VisItem x) = toJSON x
-instance FromJSON Vis 
-instance ToJSON Vis 
-instance FromJSON StandardItem 
-instance ToJSON StandardItem 
 
 -- |
 -- = TraitClass 
@@ -389,23 +342,10 @@ instance TraitClass Age where
     getTrait _ = Nothing
 
 instance TraitClass Possession where
-    traitKey = traitKey . item
+    traitKey x = PossessionKey $ itemName x
     getTrait (PossessionTrait x) = Just x
     getTrait _ = Nothing
     toTrait = PossessionTrait
-instance TraitClass Item where
-    traitKey (WeaponItem x) = PossessionKey (weaponName x)
-    traitKey (ArmourItem x) = PossessionKey (armourName x)
-    traitKey (StdItem x) = PossessionKey y
-        where y | isJust (weapon x) = "Weapon: " ++ (fromJust $ weapon x)
-                | isJust (armour x) = "Armour: " ++ (fromJust $ armour x)
-                | otherwise         = "Nothing"
-    traitKey (Item x) = PossessionKey x
-    traitKey (VisItem x) = PossessionKey $ show x
-    toTrait x = PossessionTrait $ Possession x 1
-    getTrait (PossessionTrait x) = Just $ item x
-    getTrait _ = Nothing
-
 
 -- |
 -- == Sorting 
