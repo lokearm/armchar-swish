@@ -41,25 +41,15 @@ from the command line.
 
 ## Usage
 
-The following command builds a single character, in this case Eogan
-mac Eogan.
+The following command builds all the character sheets for the
+Hibernia saga defined in `Data/hibernia.json:
 ```
-armchar -c Data/eogan.json -o eogan.md  -t "Summer 1255" -T summer1255eogan.md
+armchar -c Data/hibernia.json 
 ```
-
-To build several characters defined in a saga file, the following
-command does the trick:
-```
-mkdir -p GameStart Current LongSheet
-armchar -s Data/hibernia.json -g GameStart -D Current -t "Summer 1255" -d LongSheet
-```
-Not the three directory options, 
-+ `GameStart` for characters at their entry into the game
-+ `Current` for current character sheets in compact format, in this
-   case advanced until Summer 1255 inclusive.
-+ `LongSheet` for more verbose characters.
 
 The test files are included in the distribution.
+Note that everything is defined in the saga file, including output
+directories;
 
 ## Build
 
