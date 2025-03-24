@@ -15,12 +15,7 @@ aliases:
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
-	+ [ ] Equipment
-		+ [x] computeTrait on Possession
-		+ [ ] check JSON parser for Possession
-		+ [ ] add Equipment to markdown sheet
-		+ [ ] test equipment on Cieran
-	+ [ ] Review Cieran's ingame
+	+ [ ] Step 1. Review Cieran's ingame
 		+ [ ] Add stat boost rituals
 		+ [ ] Add confidence
 	+ [ ] Step 2. Compute Combat Stats

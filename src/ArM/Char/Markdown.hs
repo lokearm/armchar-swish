@@ -25,7 +25,6 @@ import Data.Maybe
 import ArM.Char.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
-import ArM.Char.Types.Trait
 import ArM.DB.Spell
 import ArM.GameRules
 import ArM.BasicIO
@@ -225,6 +224,7 @@ instance Markdown CharacterSheet where
                , showlistMD "+ **Abilities:** "  $ sortTraits $ abilityList c
                , showlistMD "+ **Arts:** "  $ sortTraits $ artList c
                , showlistMD "+ **Spells:** "  $ sortTraits $ spellList c
+               , showlistMD "+ **Possessions:** "  $ sortTraits $ possessionList c
                , toOList $ printCastingTotals c
                ]
    printMDaug db = printMD . addCastingScores db
@@ -376,6 +376,8 @@ instance LongSheet CharacterSheet where
                , showlistMD "+ **Virtues and Flaws:** "  $ sortTraits $ vfList c
                , indentOList $ OList $ [ OString "**Abilities:**"
                         , OList (map (OString . show) ( sortTraits $ abilityList c )) ]
+               , indentOList $ OList $ [ OString "**Possessions:**"
+                        , OList (map (OString . show) ( sortTraits $ possessionList c )) ]
                , mag
                ]
          where c = addCastingScores db c'

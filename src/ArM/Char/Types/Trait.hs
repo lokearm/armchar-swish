@@ -213,7 +213,7 @@ data Vis = Vis
     } deriving ( Show, Ord, Eq, Generic )
 
 data Possession = Possession { item :: Item, itemCount :: Int }
-    deriving ( Show, Ord, Eq, Generic )
+    deriving ( Ord, Eq, Generic )
 instance FromJSON Possession 
 instance ToJSON Possession 
 data Item = WeaponItem Weapon 
@@ -225,6 +225,10 @@ data Item = WeaponItem Weapon
 data StandardItem = StandardItem { weapon :: Maybe String, armour :: Maybe String }
     deriving ( Ord, Eq, Generic )
 
+instance Show Possession where
+    show p = show (item p) ++ cnt
+       where cnt | itemCount p == 1 = ""
+                 | otherwise = " (" ++ show (itemCount p) ++ ")"
 instance Show Item where
     show (Item s ) = s
     show (WeaponItem s ) = show s

@@ -35,10 +35,9 @@ import Data.Maybe
 import Data.List
 
 import ArM.Char.Trait
-import ArM.Char.Types.Character
 import ArM.Char.Types.Advancement
 import ArM.Char.Types.KeyPair
-import ArM.Char.Types.Trait
+import ArM.Char.Types.Character
 import ArM.Char.CharacterSheet
 import ArM.Char.Validation
 import ArM.Char.Virtues

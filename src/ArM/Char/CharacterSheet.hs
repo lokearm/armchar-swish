@@ -30,7 +30,6 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
 
 import ArM.Char.Trait
 import ArM.Char.Types.Character
-import ArM.Char.Types.Trait
 import ArM.DB.Spell
 import ArM.Helper
 
@@ -54,6 +53,7 @@ data CharacterSheet = CharacterSheet
          , ptList :: [ PTrait ]
          , confList :: [ Confidence ]
          , otherList :: [ OtherTrait ]
+         , possessionList :: [ Possession ]
          , csTraits :: [ Trait ]
          }  deriving (Eq,Show,Generic)
 
@@ -70,6 +70,7 @@ defaultSheet = CharacterSheet
          , ptList = []
          , confList = []
          , otherList = [ ]
+         , possessionList = [ ]
          , csTraits = [ ]
          }  
 
@@ -101,7 +102,8 @@ filterCS cs = defaultSheet
                  , charList = x7
                  , confList = x8
                  , otherList = x9
-                 , csTraits = y9
+                 , possessionList = x10
+                 , csTraits = y10
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1
@@ -112,6 +114,7 @@ filterCS cs = defaultSheet
                  (x7,y7) = filterTrait y6
                  (x8,y8) = filterTrait y7
                  (x9,y9) = filterTrait y8
+                 (x10,y10) = filterTrait y9
 
 -- | Find a trait, given by a key, from a list of Trait objects.
 findTrait :: (TraitClass a) => TraitKey -> [a] -> Maybe a

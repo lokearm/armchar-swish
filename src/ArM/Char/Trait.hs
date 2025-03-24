@@ -23,31 +23,18 @@
 -- `toTrait` and `getTrait` functions.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Trait ( ProtoTrait(..)
-                      , Trait(..)
+module ArM.Char.Trait ( module ArM.Char.Types.Trait
+                      , ProtoTrait(..)
                       , TraitKey(..)
-                      , Characteristic(..)
-                      , OtherTrait(..)
-                      , Confidence(..)
-                      , Ability(..)
-                      , Art(..)
-                      , PTrait(..)
-                      , Spell(..)
-                      , Reputation(..)
-                      , VF(..)
-                      , sortTraits
                       , TraitType(..)
                       , advance
                       , defaultPT
-                      , spellTeFoLe
                       , spellKeyName
-                      , Age(..)
                       , Aging(..)
                       , defaultAging
-                      , Possession(..)
                       , Weapon(..)
                       , Armour(..)
-                       ) where
+                      ) where
 
 import ArM.GameRules
 import ArM.Helper
@@ -56,8 +43,8 @@ import GHC.Generics
 import Data.Aeson
 import Data.Maybe 
 
-import ArM.Char.Types.TraitKey
 import ArM.Char.Types.Trait
+import ArM.Char.Types.TraitKey
 import ArM.Debug.Trace
 import ArM.DB.Weapon
 
@@ -545,7 +532,7 @@ instance TraitType Possession where
        | isNothing (possession p) = Nothing
        | otherwise = Just $ Possession 
                    { item = fromJust (possession p)
-                   , itemCount = fromMaybe 0 $ multiplicity p }
+                   , itemCount = fromMaybe 1 $ multiplicity p }
 
 instance TraitType Age where
     advanceTrait p x = updateLR (longevity ag ) 
