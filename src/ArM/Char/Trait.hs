@@ -34,6 +34,7 @@ module ArM.Char.Trait ( module ArM.Char.Types.Trait
                       , defaultAging
                       , Weapon(..)
                       , Armour(..)
+                      , findTrait
                       ) where
 
 import ArM.GameRules
@@ -42,6 +43,7 @@ import ArM.Helper
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe 
+import Data.List
 
 import ArM.Char.Types.Trait
 import ArM.Char.Types.TraitKey
@@ -49,13 +51,17 @@ import ArM.Debug.Trace
 import ArM.DB.Weapon
 
 -- | 
--- = Trait
+-- = Convenience functions
 
+-- | Get the spell name from a TraitKey object
 spellKeyName :: TraitKey -> String
 spellKeyName ( SpellKey _ _ n ) = n
 spellKeyName _ = "Error!"
 
 
+-- | Find a trait, given by a key, from a list of Trait objects.
+findTrait :: (TraitClass a) => TraitKey -> [a] -> Maybe a
+findTrait k = find ( (k==) . traitKey )
 
 -- | 
 -- = ProtoTrait

@@ -55,4 +55,3 @@ instance GenericXPType Float where
     calcXP m x y = x + ( m*( fromMaybe 0 y ) )
     xpround = id
 
-

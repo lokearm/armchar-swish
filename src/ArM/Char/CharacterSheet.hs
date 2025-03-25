@@ -16,15 +16,12 @@
 module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , characterSheet
                                , filterCS
-                               , getArtScore
-                               , getAbilityScore
-                               , getCharacteristicScore
-                               , findTraitCS
+                               , sheetArtScore
+                               , sheetAbilityScore
+                               , sheetCharacteristicScore
                                , castingScore
                                , addCastingScores
                                , labTotals
-                               , techniques
-                               , forms
                                , HasAge(..)
                                ) where
 
@@ -36,7 +33,6 @@ import ArM.Helper
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
-import Data.List
 
 -- import ArM.Debug.Trace
 
@@ -116,9 +112,6 @@ filterCS cs = defaultSheet
                  (x9,y9) = filterTrait y8
                  (x10,y10) = filterTrait y9
 
--- | Find a trait, given by a key, from a list of Trait objects.
-findTrait :: (TraitClass a) => TraitKey -> [a] -> Maybe a
-findTrait k = find ( (k==) . traitKey )
 
 
 -- | Find a trait, given by a key, from the CharacterSheet.
@@ -131,20 +124,20 @@ findTraitCS (CharacteristicKey x) = (fmap toTrait) . findTrait (CharacteristicKe
 findTraitCS _ = \ _ -> Nothing
 
 -- | Get the score and speciality in a given ability.
-getAbilityScore :: CharacterSheet -> TraitKey -> (Int,Maybe String)
-getAbilityScore cs k | isNothing x = (0,Nothing)
+sheetAbilityScore :: CharacterSheet -> TraitKey -> (Int,Maybe String)
+sheetAbilityScore cs k | isNothing x = (0,Nothing)
                      | otherwise = (abilityScore x', speciality x') 
      where x = ( findTrait k . abilityList ) cs
            x' = fromJust x
 -- | Get a given art score 
-getArtScore :: CharacterSheet -> TraitKey -> Int
-getArtScore cs k | isNothing x = 0
+sheetArtScore :: CharacterSheet -> TraitKey -> Int
+sheetArtScore cs k | isNothing x = 0
                  | otherwise = artScore x'
      where x = ( findTrait k . artList ) cs
            x' = fromJust x
 -- | Get a given characteristic score 
-getCharacteristicScore :: CharacterSheet -> TraitKey -> Int
-getCharacteristicScore cs k | isNothing x = 0
+sheetCharacteristicScore :: CharacterSheet -> TraitKey -> Int
+sheetCharacteristicScore cs k | isNothing x = 0
                  | otherwise = charScore x'
      where x = ( findTrait k . charList ) cs
            x' = fromJust x
@@ -153,9 +146,9 @@ getCharacteristicScore cs k | isNothing x = 0
 -- | Helper for `castingScore`
 castingScore' :: CharacterSheet -> [TraitKey] -> [TraitKey] -> Int
 castingScore' cs ts fs = t + f + sta
-    where t = minl $  map (getArtScore cs) ts
-          f = minl $  map (getArtScore cs) fs
-          sta = getCharacteristicScore cs (CharacteristicKey "Sta")
+    where t = minl $  map (sheetArtScore cs) ts
+          f = minl $  map (sheetArtScore cs) fs
+          sta = sheetCharacteristicScore cs (CharacteristicKey "Sta")
           minl [] = 0
           minl (x:xs) = foldl min x xs
 
@@ -192,17 +185,19 @@ labTotal :: CharacterSheet -- ^ Current character sheet
              -> TraitKey       -- ^ Key identifying the form
              -> Int            -- ^ Computed lab total
 labTotal cs te fo = ts + fs + int + mt
-   where ts = getArtScore cs te
-         fs = getArtScore cs fo
-         int = getCharacteristicScore cs (CharacteristicKey "Int" ) 
-         (mt,_) = getAbilityScore cs (AbilityKey "Magic Theory" ) 
+   where ts = sheetArtScore cs te
+         fs = sheetArtScore cs fo
+         int = sheetCharacteristicScore cs (CharacteristicKey "Int" ) 
+         (mt,_) = sheetAbilityScore cs (AbilityKey "Magic Theory" ) 
 
 labTotals :: CharacterSheet -- ^ Current character sheet
              -> [[Int]]     -- ^ Computed lab totals 
 labTotals cs = [ [ labTotal cs te fo | te <- techniques ] | fo <- forms ]
 
+-- | List of Hermetic Techniques
 techniques :: [ TraitKey ]
 techniques = [ ArtKey te | te <- [ "Cr", "In", "Mu", "Pe", "Re" ] ]
+-- | List of Hermetic Forms
 forms :: [ TraitKey ]
 forms = [ ArtKey fo | fo <- [ "An", "Aq", "Au", "Co", "He", "Ig", "Im", "Me", "Te", "Vi" ] ]
 
