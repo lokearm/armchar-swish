@@ -46,6 +46,7 @@ data Trait = AbilityTrait Ability
            | OtherTraitTrait OtherTrait
            | SpecialTraitTrait SpecialTrait
            | PossessionTrait Possession
+           | CombatOptionTrait CombatOption
            | AgeTrait Age
            deriving (Show, Eq, Generic)
 instance Ord Trait where
@@ -212,11 +213,14 @@ instance Show Reputation  where
 -- generic or unique.  If the weapon can be used in different modes, the
 -- ability has to be linked as well.
 data CombatOption = CombatOption 
-     { combatWeapon :: String        -- ^ The main weapon
+     { combatName :: String          -- ^ Describing Name of the weapon combination
+     , combatWeapon :: String        -- ^ The main weapon
      , combatShield :: Maybe String  -- ^ A Shield is optional
-     , combatAbility :: String
-     }
+     , combatAbility :: Maybe String
+     }  deriving (Eq,Ord,Show,Generic)
 
+instance ToJSON CombatOption
+instance FromJSON CombatOption
 -- |
 -- == Weapons and other Possessions
 
@@ -319,6 +323,7 @@ instance TraitClass Trait where
     traitKey (ConfidenceTrait x) = traitKey x
     traitKey (SpecialTraitTrait x) = traitKey x
     traitKey (PossessionTrait x) = traitKey x
+    traitKey (CombatOptionTrait x) = traitKey x
     traitKey (AgeTrait x) = traitKey x
     toTrait = id
     getTrait = Just . id
@@ -385,6 +390,12 @@ instance TraitClass Possession where
     getTrait (PossessionTrait x) = Just x
     getTrait _ = Nothing
     toTrait = PossessionTrait
+
+instance TraitClass CombatOption where
+    traitKey x = CombatKey $ combatName x
+    getTrait (CombatOptionTrait x) = Just x
+    getTrait _ = Nothing
+    toTrait = CombatOptionTrait
 
 -- |
 -- == Sorting 

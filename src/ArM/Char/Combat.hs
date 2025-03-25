@@ -61,3 +61,6 @@ computeCombatLine _ _ _ = defaultCL
 
 computeCombatLines :: WeaponDB -> CharacterSheet -> [CombatOption] -> [CombatLine]
 computeCombatLines db sh = map (computeCombatLine db sh)
+
+computeCombatStats :: WeaponDB -> CharacterSheet -> [CombatLine]
+computeCombatStats db sh = computeCombatLines db sh $ combatList sh

@@ -50,6 +50,7 @@ data CharacterSheet = CharacterSheet
          , confList :: [ Confidence ]
          , otherList :: [ OtherTrait ]
          , possessionList :: [ Possession ]
+         , combatList :: [ CombatOption ]
          , csTraits :: [ Trait ]
          }  deriving (Eq,Show,Generic)
 
@@ -67,6 +68,7 @@ defaultSheet = CharacterSheet
          , confList = []
          , otherList = [ ]
          , possessionList = [ ]
+         , combatList = []
          , csTraits = [ ]
          }  
 
@@ -99,7 +101,8 @@ filterCS cs = defaultSheet
                  , confList = x8
                  , otherList = x9
                  , possessionList = x10
-                 , csTraits = y10
+                 , combatList = x11
+                 , csTraits = y11
                 }
            where (x1,y1) = filterTrait $ traits cs
                  (x2,y2) = filterTrait y1
@@ -111,6 +114,7 @@ filterCS cs = defaultSheet
                  (x8,y8) = filterTrait y7
                  (x9,y9) = filterTrait y8
                  (x10,y10) = filterTrait y9
+                 (x11,y11) = filterTrait y10
 
 
 

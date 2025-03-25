@@ -85,6 +85,7 @@ data ProtoTrait = ProtoTrait
     , strait :: Maybe String      -- ^ special trait, like Longevity Potion
     , aging :: Maybe Aging        -- ^ Aging object 
     , possession :: Maybe Possession -- ^ Possesion includes weapon, vis, equipment, etc.
+    , combat :: Maybe CombatOption -- ^ Possesion includes weapon, vis, equipment, etc.
     , spec :: Maybe String        -- ^ specialisation of an ability
     , detail :: Maybe String      -- ^ detail (options) for a virtue or flaw
     , appliesTo :: Maybe TraitKey  -- ^ not used (intended for virtues/flaws applying to another trait)
@@ -126,6 +127,7 @@ defaultPT = ProtoTrait { ability = Nothing
                              , strait = Nothing
                              , aging = Nothing
                              , possession = Nothing
+                             , combat = Nothing
                              , spec = Nothing
                              , detail = Nothing
                              , appliesTo = Nothing
@@ -162,6 +164,7 @@ instance FromJSON ProtoTrait where
         <*> v .:?  "specialTrait"
         <*> v .:?  "aging"
         <*> v .:?  "possession"
+        <*> v .:?  "combat"
         <*> v .:?  "spec"
         <*> v .:?  "detail"
         <*> v .:?  "appliesTo"
@@ -270,6 +273,7 @@ instance TraitClass ProtoTrait where
        | confidence p /= Nothing = ConfidenceKey $ fromMaybe "Confidence" $ confidence p
        | other p /= Nothing = OtherTraitKey $ fromJust $ other p
        | possession p /= Nothing = traitKey $ fromJust $ possession p
+       | combat p /= Nothing = traitKey $ fromJust $ combat p
        | aging p /= Nothing = AgeKey
        | otherwise  = error "No Trait for this ProtoTrait" 
 
@@ -291,6 +295,7 @@ instance TraitClass ProtoTrait where
                       , cpoints = fromMaybe 0 (points p) }
       | other p /= Nothing = OtherTraitTrait $ fromJust $ computeTrait p
       | possession p /= Nothing = PossessionTrait $ fromJust $ computeTrait p
+      | combat p /= Nothing = CombatOptionTrait $ fromJust $ computeTrait p
       | aging p /= Nothing = AgeTrait $ fromJust $ computeTrait p
       | otherwise  = error "No Trait for this ProtoTrait" 
    getTrait _ = Nothing
@@ -529,6 +534,7 @@ instance TraitType Trait where
     advanceTrait a (ConfidenceTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (SpecialTraitTrait x) = toTrait $ advanceTrait a x
     advanceTrait a (PossessionTrait x) =  toTrait $ advanceTrait a x
+    advanceTrait a (CombatOptionTrait x) =  toTrait $ advanceTrait a x
     advanceTrait a (AgeTrait x) = AgeTrait $ advanceTrait a x
     computeTrait = Just . toTrait
 
@@ -536,6 +542,9 @@ instance TraitType Possession where
     advanceTrait p x = x { itemCount = itemCount x + (fromMaybe 1 $ multiplicity p) }
     computeTrait = possession
 
+instance TraitType CombatOption where
+    advanceTrait p _ = fromJust $ computeTrait p
+    computeTrait = combat 
 instance TraitType Age where
     advanceTrait p x = updateLR (longevity ag ) 
                      $ updateABonus ( agingBonus ag )
