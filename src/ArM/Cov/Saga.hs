@@ -22,7 +22,6 @@ import ArM.Char.Character
 import ArM.Char.Types.Advancement
 import ArM.DB.Spell
 import ArM.DB.Weapon
-import ArM.Char.Markdown
 import ArM.Cov.Covenant
 import ArM.BasicIO
 import ArM.Helper
@@ -56,15 +55,6 @@ data SagaState = SagaState
          , characters :: [Character]
        }  deriving (Eq,Show)
 
-instance Markdown Saga where
-    printMD saga = OList 
-        [ OString $ "# " ++ sagaTitle saga
-        , OString ""
-        , OString $ "+ " ++ wikiLink (sagaStateName saga) 
-        , OString $ "+ " ++ wikiLink (sagaStateName saga ++ " Errors") 
-        , OString $ "+ " ++ wikiLink (sagaStartName saga) 
-        , OString $ "+ " ++ wikiLink (sagaStartName saga ++ " Errors") 
-        ]
 
 -- | Get the name of the Saga
 sagaStateName :: Saga -> String
@@ -98,10 +88,6 @@ sagaCurrentIndex saga = OList
         , OString ""
         , characterIndex $ currentCharacters saga
         ]
-
--- | Make the top level index page (alias for `printMD`)
-sagaIndex :: Saga -> OList
-sagaIndex = printMD
 
 -- |
 -- == SagaFile object

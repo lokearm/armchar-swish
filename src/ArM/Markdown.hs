@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
--- Module      :  ArM.Char.Markdown
+-- Module      :  ArM.Markdown
 -- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
 -- License     :  see LICENSE
 -- Maintainer  :  hg+gamer@schaathun.net
@@ -14,17 +14,21 @@
 -- verbose character sheet.
 --
 -----------------------------------------------------------------------------
-module ArM.Char.Markdown ( Markdown(..)
-                         , LongSheet(..)
-                         , gameStartSheet
-                         , currentSheet
-                         ) where
+module ArM.Markdown ( Markdown(..)
+                    , LongSheet(..)
+                    , gameStartSheet
+                    , currentSheet
+                    , sagaIndex
+                    ) where
 
 import Data.Maybe 
 
 import ArM.Char.Character 
 import ArM.Char.CharacterSheet
 import ArM.Char.Trait
+import ArM.Char.Combat
+import ArM.Cov.Saga
+import ArM.Cov.Covenant
 import ArM.DB.Spell
 import ArM.GameRules
 import ArM.BasicIO
@@ -36,26 +40,26 @@ import ArM.Helper
 -- = Rendering the Character Sheet
 
 -- | Render a character sheet without advancement log
-baseSheet :: SpellDB -> Character -> OList
-baseSheet db c | isNothing (state c ) = s1
+baseSheet :: Saga -> Character -> OList
+baseSheet saga c | isNothing (state c ) = s1
                | otherwise = OList [ s1, s2 ]
        where 
             s1 = printMD $ concept  c 
-            s2 = printMDaug db $ state  c 
+            s2 = printMDaug saga $ state  c 
 
 -- | Render a character sheet at game start.
 -- Unlike the regular `printMD`, this includes only the character design
 -- and not ingame advancements.
-gameStartSheet :: SpellDB -> Character -> OList
-gameStartSheet db c = OList
-            [ baseSheet db c
+gameStartSheet :: Saga -> Character -> OList
+gameStartSheet saga c = OList
+            [ baseSheet saga c
             , OString ""
             , designMD c
             ]
 
 -- | Render the current character sheet without pregame design details.
-currentSheet :: SpellDB -> Character -> OList
-currentSheet db c = OList [ baseSheet db c, advancementMD c ]
+currentSheet :: Saga -> Character -> OList
+currentSheet saga c = OList [ baseSheet saga c, advancementMD c ]
 
 -- | Render the char gen design.
 -- This is a list of all the pregame advancement objects.
@@ -115,16 +119,16 @@ class Markdown a where
 
      -- | This is a hack to augment characters using extra resources
      -- By default, it is identical to `printMD`.
-     printMDaug :: SpellDB    -- ^ Database of Spell information
-                -> a          -- ^ object to render
-                -> OList      -- ^ list of lines for output
+     printMDaug :: Saga      -- ^ Saga including databases for spells etc.
+                -> a         -- ^ object to render
+                -> OList     -- ^ list of lines for output
      printMDaug _ = printMD
 
 instance Markdown a => Markdown (Maybe a) where
    printMD Nothing = OList []
    printMD (Just x) = printMD x
    printMDaug _ Nothing = OList []
-   printMDaug db (Just x) = printMDaug db x
+   printMDaug saga (Just x) = printMDaug saga x
 
 instance Markdown FieldValue where
    printMD  = OString . show
@@ -179,8 +183,8 @@ instance Markdown Character where
                | otherwise = OList [ s1, s2 ]
             s1 = printMD $ concept  c 
             s2 = printMD $ state  c 
-   printMDaug db c = OList
-            [ baseSheet db c
+   printMDaug saga c = OList
+            [ baseSheet saga c
             , designMD c
             , chargenMD c
             , advancementMD c
@@ -227,7 +231,7 @@ instance Markdown CharacterSheet where
                , showlistMD "+ **Possessions:** "  $ sortTraits $ possessionList c
                , toOList $ printCastingTotals c
                ]
-   printMDaug db = printMD . addCastingScores db
+   printMDaug saga = printMD . addCastingScores (spells saga)
 
 instance Markdown CharacterState where
    printMD c = OList
@@ -235,10 +239,10 @@ instance Markdown CharacterState where
        , OString ""
        , printMD $ filterCS c
        ]
-   printMDaug db c = OList
+   printMDaug saga c = OList
        [ OString $ "## " ++ (show $ charTime c) 
        , OString ""
-       , printMDaug db $ filterCS c
+       , printMDaug saga $ filterCS c
        ]
 
 -- |
@@ -347,13 +351,13 @@ instance Markdown Advancement where
 -- points instead of a single paragraph for the full list.
 class Markdown a => LongSheet a where
    -- | By default `printSheetMD` is identical to `printMDaug`
-   printSheetMD :: SpellDB -- ^ spell database
+   printSheetMD :: Saga    -- ^ Saga including databases for spells, etc.
                 -> a       -- ^ object to render
                 -> OList   -- ^ list of lines for output
    printSheetMD = printMDaug
 
 instance LongSheet Character where
-   printSheetMD db c = OList 
+   printSheetMD saga c = OList 
             [ printMD $ concept c
             , sf $ state c 
             , designMD c
@@ -361,14 +365,14 @@ instance LongSheet Character where
             , advancementMD c
             ]
         where sf Nothing = OList []
-              sf (Just s) = printSheetMD db s
+              sf (Just s) = printSheetMD saga s
 instance LongSheet CharacterState where
-   printSheetMD db c = OList [ OString $ "## " ++ (show $ charTime c )
+   printSheetMD saga c = OList [ OString $ "## " ++ (show $ charTime c )
                              , OString ""
-                             , printSheetMD db $ filterCS c ]
+                             , printSheetMD saga $ filterCS c ]
 
 instance LongSheet CharacterSheet where
-   printSheetMD db c' = OList 
+   printSheetMD saga c' = OList 
                [ briefTraits c
                , showlistMD "+ **Characteristics:** "  $ sortTraits $ charList c
                , showlistMD "+ **Personality Traits:** "  $ sortTraits $ ptList c
@@ -380,10 +384,10 @@ instance LongSheet CharacterSheet where
                         , OList (map (OString . show) ( sortTraits $ possessionList c )) ]
                , mag
                ]
-         where c = addCastingScores db c'
+         where c = addCastingScores (spells saga) c'
                mag | isMagus c' = OList [ artMD c
                                         , OString ""
-                                        , printFullGrimoire db $ sortTraits $ spellList c 
+                                        , printFullGrimoire (spells saga) $ sortTraits $ spellList c 
                                         , OString ""
                                         , toOList $ printCastingTotals c ]
                    | otherwise = OString "" 
@@ -469,26 +473,83 @@ coreSpellRecordMD sr = OList [ reqstr
          reqstr | req == [] = OList []
                 | otherwise = OString $ "Req. " ++ show req
 
-{-
--- | Render a spell trait in Markdown
--- The result should normally be subject to indentOList to make an hierarchical
--- list.
-spellMD :: Spell -> OList
-spellMD s = OList [ OString $ show s
-                  , OList [ masteryMD s, f $ spellTComment s ]
-                  ]
-     where f "" = OList [] 
-           f x = OString x
+printCombatMD :: Saga -> CharacterSheet -> OList
+printCombatMD saga cs = OList [ combatHead, combatBody tab ]
+    where tab = computeCombatStats ( weapons saga ) cs
 
--- | Set a list of spells.
--- Each spell is set using `spellMD`, and the result is indented as a
--- hierarchical list.
-printGrimoire :: [Spell] -> OList
-printGrimoire xs = OList [ OString "## Grimoire"
-                         , OString ""
-                         , OList $ map (indentOList . spellMD) xs 
-                         , OString ""
-                         , OString $ "Total: " ++show (totalLevels xs)  
-                            ++ " levels of spells."
-                         ]
--}
+combatBody :: [CombatLine] -> OList
+combatBody = OList . map combatBodyLine
+
+combatBodyLine :: CombatLine -> OList
+combatBodyLine c = OString $ "| " ++ (combatLabel c) ++ 
+                            " | " ++ (show $ combatInit c) ++
+                            " | " ++ (showstat $ combatAtk c) ++
+                            " | " ++ (showstat $ combatDef c) ++
+                            " | " ++ (showstat $ combatDam c) ++
+                            " | " ++ (showstat $ combatRange c) ++
+                            " | " ++ (show $ combatLoad c) ++
+                            " | " ++ (combatComment c) ++
+                            " |"
+showstat Nothing = "N/A"
+showstat (Just x) = show x
+
+combatHead :: OList
+combatHead = OList [ OString "Weapon"
+             , OString "Init"
+             , OString "Atk"
+             , OString "Def"
+             , OString "Dam"
+             , OString "Range"
+             , OString "Load"
+             , OString "Comment"
+             ]
+
+
+-- |
+-- = Saga Markdown
+
+instance Markdown Saga where
+    printMD saga = OList 
+        [ OString $ "# " ++ sagaTitle saga
+        , OString ""
+        , OString $ "+ " ++ wikiLink (sagaStateName saga) 
+        , OString $ "+ " ++ wikiLink (sagaStateName saga ++ " Errors") 
+        , OString $ "+ " ++ wikiLink (sagaStartName saga) 
+        , OString $ "+ " ++ wikiLink (sagaStartName saga ++ " Errors") 
+        ]
+
+-- | Make the top level index page (alias for `printMD`)
+sagaIndex :: Saga -> OList
+sagaIndex = printMD
+
+-- |
+-- = Covenant Markdown
+
+instance LongSheet Covenant 
+instance Markdown Covenant where
+    printMD cov = OList 
+        [ OString $ "# " ++ (covName $ covenantConcept cov )
+        , OString ""
+        , printMD $ covenantConcept cov
+        , OString ""
+        , printMD $ covenantState cov
+        ]
+
+instance LongSheet CovenantConcept
+instance Markdown CovenantConcept where
+    printMD cov = OList  
+       [ OString $ fromMaybe "" $ covConcept cov
+       , OString ""
+       , OString $ "*Founded* " ++ (show $ covFounded cov)
+       , OString ""
+       , OString app
+       ]
+       where app | isNothing (covAppearance cov) = ""
+                 | otherwise = "**Appearance** " ++ (fromJust $ covAppearance cov)
+
+instance LongSheet CovenantState
+instance Markdown CovenantState where
+    printMD cov = OList  
+        [ OString $ "## " ++ (show $ covTime cov)
+        ]
+

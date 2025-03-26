@@ -17,7 +17,7 @@ import ArM.BasicIO
 import ArM.Debug.Time
 import ArM.IO
 import ArM.Char.Character
-import ArM.Char.Markdown
+import ArM.Markdown
 
 
 import Data.Maybe (fromJust)
