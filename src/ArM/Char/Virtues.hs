@@ -25,7 +25,7 @@ import ArM.GameRules
 import qualified Data.Map as Map
 import Data.Maybe
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- |
 -- = Infer traits
@@ -45,7 +45,7 @@ vl2 = [ ( "Puissant (art)",
      , ( "Affinity with (ability)",
               \ x -> defaultPT { ability = Just $ vfDetail x, multiplyXP = Just 1.5 } )
      , ( "Strong Faerie Blood",
-              \ _ -> trace "SFB" $ defaultPT { aging = Just $ defaultAging { agingLimit = Just 50, agingBonus = Just 3 } } )
+              \ _ -> defaultPT { aging = Just $ defaultAging { agingLimit = Just 50, agingBonus = Just 3 } } )
      , ( "Faerie Blood",
               \ _ -> defaultPT { aging = Just $ defaultAging { agingBonus = Just 1 } } )
      ]

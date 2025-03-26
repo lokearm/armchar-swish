@@ -31,6 +31,8 @@ import Data.Maybe
 import Data.List
 import qualified Data.Map as M
 
+import ArM.Debug.Trace
+
 -- |
 -- = The Trait Type
 
@@ -83,9 +85,9 @@ addCharacteristics cs cl = cl
         , combatDef   = fmap (+cqik) $ combatDef cl
         , combatDam   = fmap (+cstr) $ combatDam cl
         } 
-   where cqik = sheetCharacteristicScore cs (CharacteristicKey "qik")
-         cdex = sheetCharacteristicScore cs (CharacteristicKey "dex")
-         cstr = sheetCharacteristicScore cs (CharacteristicKey "str")
+   where cqik = sheetCharacteristicScore cs (CharacteristicKey "Qik")
+         cdex = sheetCharacteristicScore cs (CharacteristicKey "Dex")
+         cstr = sheetCharacteristicScore cs (CharacteristicKey "Str")
 
 -- | Look up weapon stats from a possession
 -- Standard stats from the DB and specific stats from the item are concatenated.
@@ -116,7 +118,7 @@ sheetWeapon1 db cs w = fromMaybe [] sw
 implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine -> CombatLine
 implicitAbility db cs co df
   | ws == [] = df { combatComment = "No weapon" }
-  | otherwise = addShield db cs ab sstr $ df
+  | otherwise = addShield db cs ab sstr $ trace (ab ++ " - " ++ show abscore) $ df
         { combatInit  = weaponInit w -- + weaponInit sh
         , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
         , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
@@ -125,7 +127,7 @@ implicitAbility db cs co df
         , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
         , combatComment = absp
         } 
-   where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey ab
+   where (abscore,abspec) =  sheetAbilityScore cs $ AbilityKey ab
          absp | isNothing abspec = ""
               | otherwise = "Speciality " ++ fromJust abspec
          wstr = combatWeapon co
