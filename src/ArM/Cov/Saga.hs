@@ -45,6 +45,7 @@ data Saga = Saga
        }  deriving (Eq)
 
 -- | Get the most recent SagaState
+sagaState :: Saga -> SagaState
 sagaState = head . sagaStates
 
 instance Show Saga where
@@ -125,7 +126,8 @@ advanceSagaState :: Saga -> SeasonTime -> SagaState -> SagaState
 advanceSagaState saga t st = st { characters =
                              map (advanceCharacter t) ( gameStartCharacters saga ) }
 advanceSaga' :: SeasonTime -> Saga -> Saga
-advanceSaga' t saga = saga { sagaState = advanceSagaState saga t (sagaState saga) }
+advanceSaga' t saga = saga { sagaStates = x:sagaStates saga }
+   where x = advanceSagaState saga t (sagaState saga)
 
 -- | Advance the Saga according to timestamp in the SagaFile.
 advanceSaga :: SagaFile -> Saga -> Saga

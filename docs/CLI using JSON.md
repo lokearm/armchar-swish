@@ -19,6 +19,7 @@ aliases:
 + [ ] Phase 1. Review and bugfix
 	+ [ ] Print and Double-Check Cieran
 	+ [ ] Print and Double-Check Eogan
+	+ [ ] Vis accounting
 	+ [ ] Step 3. Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw
