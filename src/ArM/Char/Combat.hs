@@ -89,7 +89,7 @@ addCharacteristics cs cl = cl
 
 implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine -> CombatLine
 implicitAbility db cs co df
-  | isNothing weapon = df { combatComment = "No weapon" }
+  | ws == [] = df { combatComment = "No weapon" }
   | otherwise = df
         { combatInit  = weaponInit w -- + weaponInit sh
         , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
@@ -98,12 +98,13 @@ implicitAbility db cs co df
         , combatRange = range w
         , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
         } 
-   where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey $ fromJust ab
-         weapon' = sheetPossession cs $ PossessionKey $ combatWeapon co
-         weapon = join $ fmap (weaponStat db ab) weapon'
-         shield = sheetPossession cs $ PossessionKey $ combatShield co
-         sh = fmap (weaponStat db ab) shield
-         w = fromJust weapon
+   where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey ab
+         wstr = combatWeapon co
+         sstr = combatShield co
+         shs = fmap (sheetWeapon db cs) sstr
+         ws = sheetWeapon db cs wstr
+	 w:_ = ws
+	 ab = weaponAbility w
 
 -- Standard stats from the DB and specific stats from the item are concatenated.
 weaponStat :: WeaponDB -> Possession -> [Weapon]
@@ -114,11 +115,11 @@ weaponStat db p = ws
 sheetWeapon :: WeaponDB -> CharacterSheet -> String -> [ Weapon ]
 sheetWeapon db cs w | ws /= [] = ws
                     | isNothing ws' = []
-                    | otherwise = ws'
+                    | otherwise = fromJust ws'
     where ws | isNothing weapon = []
-             | otherwise  = weaponStat db weapon
-          weapon' = sheetPossession cs $ PossessionKey $ combatWeapon co
-          weapon = join $ fmap (weaponStat db) weapon'
+             | otherwise  = weaponStat db $ fromJust weapon
+          weapon' = sheetPossession cs $ PossessionKey w
+          weapon = fmap (weaponStat db) weapon'
           ws' = fmap weaponStats $ lookup w db
 
 explicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> String -> CombatLine -> CombatLine
