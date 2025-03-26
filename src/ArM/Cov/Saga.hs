@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  ArM.Cov.Saga
@@ -116,7 +117,17 @@ data SagaFile = SagaFile
        }  deriving (Eq,Generic,Show)
 
 instance ToJSON SagaFile 
-instance FromJSON SagaFile 
+instance FromJSON SagaFile where
+    parseJSON = withObject "SagaFile" $ \v -> SagaFile
+       <$> v .: "title"
+       <*> v .:? "seasons" .!= []
+       <*> v .:? "currentSeason" .!= NoTime
+       <*> v .:? "rootDirectory" 
+       <*> v .:? "covenantFiles" .!= []
+       <*> v .:? "characterFiles" .!= []
+       <*> v .:? "spellFile" .!= "spells.csv"
+       <*> v .:? "weaponFile" .!= "weapons.csv"
+       <*> v .:? "armourFile" .!= "armour.csv"
 
 
 -- |
