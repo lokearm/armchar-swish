@@ -99,7 +99,7 @@ advChar sn fn cs0 = do
      writeMaybeOList fn $ printMD cs
      return ()
    where seasn = parseSeasonTime sn
-         cs = advanceCharacter seasn cs0
+         cs = advance seasn cs0
 
 main' :: Options -> IO ()
 main' opts | sagaFile opts /= Nothing = do 

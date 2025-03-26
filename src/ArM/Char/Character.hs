@@ -25,11 +25,10 @@ module ArM.Char.Character ( module ArM.Char.Types.Character
                           , AugmentedAdvancement(..)
                           , AdvancementLike(..)
                           , prepareCharacter
-                          , advanceCharacter
+                          , Advance(..)
                           , Season(..)
                           , SeasonTime(..)
                           , characterEntryTime
-                          , nextAdvancement
                           ) where
 
 import Data.Maybe 
@@ -77,8 +76,8 @@ applyAdvancement :: AugmentedAdvancement
                  -> (AugmentedAdvancement,CharacterState)
 applyAdvancement a' cs = (a',cs')
     where cs' = cs { charTime = season a', traits = new }
-          new = advance change tmp
-          tmp = sortTraits $ advance inferred old 
+          new = advanceTraitList change tmp
+          tmp = sortTraits $ advanceTraitList inferred old 
           change = sortTraits $ changes a'
           inferred = inferredTraits a'
           old = sortTraits $ traits cs
@@ -378,27 +377,30 @@ inferSQ ad = ad { effectiveSQ = esq }
         where esq = maybeAdd (sourceQuality ad') (advBonus ad')
               ad' = advancement ad
 
--- | Advance the character until after the given time.
-advanceCharacter :: SeasonTime -> Character -> Character
-advanceCharacter ct c | futureAdvancement c == [] = c
-                      | isNothing (state c) = advanceCharacter ct $ prepareCharacter c
+class Advance a where
+    -- | Advance the character until after the given time.
+    advance :: SeasonTime -> a -> a
+    -- | Advance the character one season forward
+    step :: a -> a
+    -- | Time of the next advancement of the character.
+    nextSeason :: a -> SeasonTime
+
+instance Advance Character where
+   advance ct c | futureAdvancement c == [] = c
+                      | isNothing (state c) = advance ct $ prepareCharacter c
                       | ct < ct' = c
-                      | otherwise =  advanceCharacter ct $ stepCharacter c 
+                      | otherwise =  advance ct $ step c 
             where y =  head $ futureAdvancement c
                   ct' =  season y
 
--- | Advance the character one season forward
-stepCharacter :: Character -> Character
-stepCharacter c = c { state = Just cs 
-                            , pastAdvancement = (a:xs)
-                            , futureAdvancement = ys 
-                            }
+   step c = c { state = Just cs 
+              , pastAdvancement = (a:xs)
+              , futureAdvancement = ys 
+              }
             where (y:ys) = futureAdvancement c
                   xs = pastAdvancement c
                   (a,cs) = applyInGameAdv y (fromJust $ state c)
 
--- | Time of the next advancement of the character.
-nextAdvancement :: Character -> SeasonTime
-nextAdvancement = f . futureAdvancement
-    where f [] = NoTime
-          f (x:_) = season x
+   nextSeason = f . futureAdvancement
+       where f [] = NoTime
+             f (x:_) = season x

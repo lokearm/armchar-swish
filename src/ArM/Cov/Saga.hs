@@ -135,7 +135,7 @@ instance FromJSON SagaFile where
 
 advanceSagaState :: Saga -> SeasonTime -> SagaState -> SagaState
 advanceSagaState saga t st = st { characters =
-                             map (advanceCharacter t) ( gameStartCharacters saga ) }
+                             map (advance t) ( gameStartCharacters saga ) }
 advanceSaga' :: SeasonTime -> Saga -> Saga
 advanceSaga' t saga = saga { sagaStates = x:sagaStates saga }
    where x = advanceSagaState saga t (sagaState saga)
