@@ -63,78 +63,82 @@ data SoakLine = SoakLine
 
 
 -- | Look up weapon stats for a possession.
--- Standard stats from the DB and specific stats from the item are concatenated.
-weaponStat :: WeaponDB -> Possession -> Maybe Weapon
-weaponStat db p = ws
-   where ws' = map (\ x -> M.lookup x db) $ weapon p
-         ws = weaponStats p ++ filterNothing ws'
 
--- : A dummy combat line with error message
-noLine :: CombatLine
-noLine = defaultCL
-        { combatLabel = combatName co
-        , combatComment = "No weapon"
-        }
 
 
 -- | Compute a single line for the Combat Stats table
 computeCombatLine :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine
-computeCombatLine db cs co | isNothing ab = addCharacteristics $ implicitAbility db cs co
-                           | otherwise    = addCharacteristics $ explicitAbility db cs co (fromJust ab)
-     where ab = combatAbikity co
+computeCombatLine db cs co
+   | isNothing ab = f $ implicitAbility db cs co df
+   | otherwise    = f $ explicitAbility db cs co (fromJust ab) df
+     where ab = combatAbility co
+           f = addCharacteristics cs 
+	   df = defaultCL { combatLabel = combatName co }
 
 -- | Add characteristics to the combat stats
 addCharacteristics :: CharacterSheet -> CombatLine -> CombatLine
 addCharacteristics cs cl = cl
-        { combatInit  = combatInit cl + qik
-        , combatAtk   = combatAtl cl + dex
-        , combatDef   = combatDef cl + qik 
-        , combatDam   = combatDam cl + str 
+        { combatInit  = (+qik) $ combatInit cl
+        , combatAtk   = fmap (+dex) $ combatAtk cl
+        , combatDef   = fmap (+qik) $ combatDef cl
+        , combatDam   = fmap (+str) $ combatDam cl
         } 
    where qik = sheetCharacteristicScore cs (CharacteristicKey "qik")
-	 dex = sheetCharacteristicScore cs (CharacteristicKey "dex")
-	 str = sheetCharacteristicScore cs (CharacteristicKey "str")
+         dex = sheetCharacteristicScore cs (CharacteristicKey "dex")
+         str = sheetCharacteristicScore cs (CharacteristicKey "str")
 
-implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine
-implicitAbility db cs co 
-  | isNothing weapon = noLine
-  | otherwise = defaultCL
-        { combatLabel = combatName co
-        , combatInit  = weaponInit w + ( fromMaybe 0 + weaponInit sh)
-        , combatAtk   = atk w + ( fromMaybe 0 + atk sh)  + abscore
-        , combatDef   = def w + ( fromMaybe 0 + def sh)
-        , combatDam   = dam w + ( fromMaybe 0 + dam sh)  + abscore
+implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine -> CombatLine
+implicitAbility db cs co df
+  | isNothing weapon = df { combatComment = "No weapon" }
+  | otherwise = df
+        { combatInit  = weaponInit w -- + weaponInit sh
+        , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
+        , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
+        , combatDam   = fmap (+abscore) $ dam w -- + ( fromMaybe 0 $ dam sh) 
         , combatRange = range w
-        , combatLoad  = load w + ( fromMaybe 0 + load sh)
+        , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
         } 
    where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey $ fromJust ab
          weapon' = sheetPossession cs $ PossessionKey $ combatWeapon co
-	 weapon = join $ fmap (weaponStat db ab) weapon'
+         weapon = join $ fmap (weaponStat db ab) weapon'
          shield = sheetPossession cs $ PossessionKey $ combatShield co
-	 sh = fmap (weaponStat db ab) shield
-	 w = fromJust weapon
+         sh = fmap (weaponStat db ab) shield
+         w = fromJust weapon
 
+-- Standard stats from the DB and specific stats from the item are concatenated.
+weaponStat :: WeaponDB -> Possession -> [Weapon]
+weaponStat db p = ws
+   where ws' = map (\ x -> M.lookup x db) $ weapon p
+         ws = weaponStats p ++ filterNothing ws'
 
+sheetWeapon :: WeaponDB -> CharacterSheet -> String -> [ Weapon ]
+sheetWeapon db cs w | ws /= [] = ws
+                    | isNothing ws' = []
+                    | otherwise = ws'
+    where ws | isNothing weapon = []
+             | otherwise  = weaponStat db weapon
+          weapon' = sheetPossession cs $ PossessionKey $ combatWeapon co
+          weapon = join $ fmap (weaponStat db) weapon'
+          ws' = fmap weaponStats $ lookup w db
 
-explicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> String -> CombatLine
-explicitAbility db cs co ab
-  | isNothing weapon = noLine
+explicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> String -> CombatLine -> CombatLine
+explicitAbility db cs co ab df
+  | isNothing w = df { combatComment = "No weapon" }
   | otherwise = defaultCL
-        { combatLabel = combatName co
-        , combatInit  = weaponInit w + ( fromMaybe 0 + weaponInit sh)
-        , combatAtk   = atk w + ( fromMaybe 0 + atk sh)  + abscore
-        , combatDef   = def w + ( fromMaybe 0 + def sh)
-        , combatDam   = dam w + ( fromMaybe 0 + dam sh)  + abscore
+        { combatInit  = weaponInit w -- + weaponInit sh
+        , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
+        , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
+        , combatDam   = fmap (+abscore) $ dam w -- + ( fromMaybe 0 $ dam sh) 
         , combatRange = range w
-        , combatLoad  = load w + ( fromMaybe 0 + load sh)
+        , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
         } 
    where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey $ fromJust ab
-         weapon' = sheetPossession cs $ PossessionKey $ combatWeapon co
-	 weapon = join $ fmap (weaponStat db ab) weapon'
-         shield = sheetPossession cs $ PossessionKey $ combatShield co
-	 sh = fmap (weaponStat db ab) shield
-	 w = fromJust weapon
-	 w = find ( (ab==) . weaponAbility ) ws
+         wstr = combatWeapon co
+         sstr = combatShield co
+         shs = fmap (sheetWeapon db cs) sstr
+         ws = sheetWeapon db cs wstr
+         w = find ( (ab==) . weaponAbility ) ws
+         sh = find ( (ab==) . weaponAbility ) shs
 
 -- | Collapse a neste Maybe Maybe object to a single Maybe
 join :: Maybe (Maybe a) -> Maybe a
