@@ -18,22 +18,10 @@ tags:
 + These observations show that all three objects are required.
 	+ Weapon stats are stored with unique items (with bonuses) to make sure they are transferred with the item. 
 	+ Weapon stats  only needs to be included in the character file when the item is exceptional
++ One could infer combat options from possessions, but one probably do not want a combat option for just a shield, so this becomes non-trivial
 
-+ Combat stats depend on
-	+ Ability
-	+ Characteristics
-	+ Equpment
-+ Challenges
-	+ Dual use weapons
-	+ Natural weapons
-	+ Shields
-	+ Unique and standard weapons
-+ Combat Option
-	+ `[ Either Weapon StandardItem ]`
-	+ `Ability`
-	+ Should it link to possession or to weapon stats
-
-+ Dual use
++ Dual use cases
 	+ hatchet / thrown axe
 	+ lance / longspear
 	+ javelin / shortspear
+	+ knife (brawl/thrown)

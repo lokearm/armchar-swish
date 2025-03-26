@@ -32,6 +32,8 @@ aliases:
 	+ [ ] Step 6. Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
+	+ [ ]  Step 7. Combat totals
+		+ [ ] Speciality in combat totals
 + [ ] Phase 2. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Book resource
@@ -42,7 +44,6 @@ aliases:
 		+ [ ] Covenant members
 + [ ] Phase 3. Polish
 	+ [ ] Refactor and document code
-	+ [ ] Speciality in combat totals
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
 	+ [ ] Remove trait when advancing

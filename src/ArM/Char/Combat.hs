@@ -31,7 +31,7 @@ import Data.Maybe
 import Data.List
 import qualified Data.Map as M
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- |
 -- = The Trait Type
@@ -118,7 +118,7 @@ sheetWeapon1 db cs w = fromMaybe [] sw
 implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine -> CombatLine
 implicitAbility db cs co df
   | ws == [] = df { combatComment = "No weapon" }
-  | otherwise = addShield db cs ab sstr $ trace (ab ++ " - " ++ show abscore) $ df
+  | otherwise = addShield db cs ab sstr $ df
         { combatInit  = weaponInit w -- + weaponInit sh
         , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
         , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
