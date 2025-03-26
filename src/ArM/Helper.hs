@@ -20,6 +20,11 @@ import ArM.BasicIO
 -- |
 -- = Convenience functions for Maybe
 
+-- | Show a number or «N/A»
+showstat :: Show a => Maybe a -> String
+showstat Nothing = "N/A"
+showstat (Just x) = show x
+
 -- | return the head of a list or Nothing if the list is empty
 maybeHead :: [a] -> Maybe a
 maybeHead [] = Nothing

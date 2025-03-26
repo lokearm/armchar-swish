@@ -42,10 +42,11 @@ import ArM.Helper
 -- | Render a character sheet without advancement log
 baseSheet :: Saga -> Character -> OList
 baseSheet saga c | isNothing (state c ) = s1
-               | otherwise = OList [ s1, s2 ]
+               | otherwise = OList [ s1, s2, OString "", s3 ]
        where 
             s1 = printMD $ concept  c 
             s2 = printMDaug saga $ state  c 
+            s3 = printCombatMD saga $ characterSheet c
 
 -- | Render a character sheet at game start.
 -- Unlike the regular `printMD`, this includes only the character design
@@ -382,6 +383,8 @@ instance LongSheet CharacterSheet where
                         , OList (map (OString . show) ( sortTraits $ abilityList c )) ]
                , indentOList $ OList $ [ OString "**Possessions:**"
                         , OList (map (OString . show) ( sortTraits $ possessionList c )) ]
+               , OString ""
+               , printCombatMD saga c
                , mag
                ]
          where c = addCastingScores (spells saga) c'
@@ -490,19 +493,11 @@ combatBodyLine c = OString $ "| " ++ (combatLabel c) ++
                             " | " ++ (show $ combatLoad c) ++
                             " | " ++ (combatComment c) ++
                             " |"
-showstat Nothing = "N/A"
-showstat (Just x) = show x
 
 combatHead :: OList
-combatHead = OList [ OString "Weapon"
-             , OString "Init"
-             , OString "Atk"
-             , OString "Def"
-             , OString "Dam"
-             , OString "Range"
-             , OString "Load"
-             , OString "Comment"
-             ]
+combatHead = OList [ OString "| Weapon | Init | Atk | Def | Dam | Range | Load | Comment |"
+                   , OString "|  :- |  -: |  -: |  -: |  -: |  -: |  -: | :- |"
+                   ]
 
 
 -- |

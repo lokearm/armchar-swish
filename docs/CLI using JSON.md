@@ -7,9 +7,11 @@ aliases:
 + Main file: `ArmChar.hs`
 + Dedicated Libraries: `ArM/Char`
 + Also reuses some libraries from the swish model
-+ See also [[Character Generation Process]]
-+ See also [[JSON Char Gen Process.canvas|JSON Char Gen Process]] (canvas)
-+ [[Types for JSON]]
++ Design notes
+	+ [[Character Generation Process]]
+	+ [[JSON Char Gen Process.canvas|JSON Char Gen Process]] (canvas)
+	+ [[Combat Stats]]
+	+ [[Types for JSON]]
 
 
 
@@ -18,15 +20,13 @@ aliases:
 	+ [ ] Step 1. Review Cieran's ingame
 		+ [ ] Add stat boost rituals
 		+ [ ] Add confidence
-	+ [ ] Step 2. Compute [[Combat Stats]]
-		+ [ ] Calculate Combat stats from Possessions
-		+ [ ] Show combat stats on sheet
+		+ [ ] check combat totals
 	+ [ ] Step 3. Characteristics
-		+ [x] Sort Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw
 	+ [ ] Step 4. Develop [[Saga object]]
 		+ [ ] single call to advance saga
+		+ [ ] Covenant data model - analogous to Character
 		+ [ ] current and tentative season
 	+ [ ] Step 5. Build website in github runners
 	+ [ ] Step 6. Decrepitude
@@ -34,7 +34,6 @@ aliases:
 		+ [ ] verify
 + [ ] Phase 2. Covenant
 	+ [ ] Step 1. Covenant
-		+ [ ] Covenant data model - analogous to Character
 		+ [ ] Book resource
 		+ [ ] Library
 		+ [ ] Read books from CSV

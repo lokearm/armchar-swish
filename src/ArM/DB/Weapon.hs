@@ -20,6 +20,8 @@ import Text.Read
 import Data.Aeson
 import qualified Data.Map as M
 
+import ArM.Debug.Trace
+
 type WeaponDB = M.Map String Weapon
 type ArmourDB = M.Map String Armour
 
@@ -56,17 +58,17 @@ instance FromJSON Armour
 instance ToJSON Armour 
 
 instance ArMCSV Weapon where
-   fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:_) =
+   fromCSVline (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:_) =
       defaultObject { weaponName = x1 
                 , weaponAbility = x2
                 , weaponInit = read x3
                 , atk = readMaybe x4
                 , def = readMaybe x5
-                , dam = readMaybe x5
-                , str = readMaybe x6
+                , dam = readMaybe x6
                 , range = readMaybe x7
-                , load = read x7
-                , weaponCost = x8
+                , str = readMaybe x8
+                , load = read x9
+                , weaponCost = x10
                 }
    fromCSVline _ = defaultObject
    defaultObject = Weapon
@@ -86,8 +88,8 @@ instance ArMCSV Weapon where
 instance ArMCSV Armour where
    fromCSVline (x1:x2:x3:x4:_) =
       defaultObject { armourName = x1 
-                , armourLoad = read x2
-                , armourProtection = read x3
+                , armourLoad = trace ("x2 = " ++ x2) $ read x2
+                , armourProtection = trace ("x3 = " ++ x3) $ read x3
                 , armourCost = x4
                 }
    fromCSVline _ = defaultObject

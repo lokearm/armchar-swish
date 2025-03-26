@@ -29,7 +29,7 @@ Staff, Great,2,3,3,2,, -1,2, Inexp.,
 Warhammer, Great,0,6,0,12,,2,3, Std.,
 "Axe, Throwing", Thrown,0,2,0,6,5,0,1, Std.,
 Javelin, Thrown,0,2,0,5,10,0,1, Std.,
-Knife, Thrown,0,1,0,2,5, -2,0, Inexp.,
+Thrown Knife, Thrown,0,1,0,2,5, -2,0, Inexp.,
 Sling, Thrown, -3,1,0,4,20, -3,0, Inexp.,Requires two free hands to load and fire.
 Stone, Thrown,0,1,0,2,5, -1,1, Inexp.,
 "Bow, Long", Bow, -2,4,0,8,30,2,2, Exp.,Requires two free hands to load and fire.
