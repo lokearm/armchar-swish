@@ -42,6 +42,7 @@ aliases:
 		+ [ ] Covenant members
 + [ ] Phase 3. Polish
 	+ [ ] Refactor and document code
+	+ [ ] Speciality in combat totals
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
 	+ [ ] Remove trait when advancing
