@@ -120,6 +120,7 @@ advanceSagaState saga t st = st { characters =
 advanceSaga' :: SeasonTime -> Saga -> Saga
 advanceSaga' t saga = saga { sagaState = advanceSagaState saga t (sagaState saga) }
 
+-- | Advance the Saga according to timestamp in the SagaFile.
 advanceSaga :: SagaFile -> Saga -> Saga
 advanceSaga t saga = advanceSaga' (currentSeason t) saga
 

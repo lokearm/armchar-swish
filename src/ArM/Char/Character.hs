@@ -29,6 +29,7 @@ module ArM.Char.Character ( module ArM.Char.Types.Character
                           , Season(..)
                           , SeasonTime(..)
                           , characterEntryTime
+                          , nextAdvancement
                           ) where
 
 import Data.Maybe 
@@ -395,3 +396,9 @@ stepCharacter c = c { state = Just cs
             where (y:ys) = futureAdvancement c
                   xs = pastAdvancement c
                   (a,cs) = applyInGameAdv y (fromJust $ state c)
+
+-- | Time of the next advancement of the character.
+nextAdvancement :: Character -> SeasonTime
+nextAdvancement = f . futureAdvancement
+    where f [] = NoTime
+          f (x:_) = season x
