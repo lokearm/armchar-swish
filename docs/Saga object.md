@@ -13,3 +13,20 @@ tags:
 	+ advance characters in season $N$ first
 	+ then advance covenant for season $N$
 	+ need to advance one season at a time, in case of inter-dependencies
+
+
++ SagaState
+	+ season
+	+ active and future characters
+	+ covenants
+	+ retired characters 
+	+ (retired covenants)
++ Saga
+	+ title
+	+ rootDir
+	+ list of SagaState - selected snapshots
+		+ most recent first
+	+ databases 
+		+ spells
+		+ weapons
+		+ armour

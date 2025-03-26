@@ -35,14 +35,20 @@ import ArM.Helper
 -- Multiple files have to be loaded to generate a Saga object from a `SagaFile`.
 data Saga = Saga 
          { sagaTitle :: String
-         , sagaState :: SagaState
+         , sagaStates :: [ SagaState ]
          , rootDir :: String
          , gameStartCharacters :: [Character]
          , gameStartCovenants :: [Covenant]
          , spells :: SpellDB
          , weapons :: WeaponDB
          , armour :: ArmourDB
-       }  deriving (Eq,Show)
+       }  deriving (Eq)
+
+-- | Get the most recent SagaState
+sagaState = head . sagaStates
+
+instance Show Saga where
+   show saga = "Saga: " ++ sagaTitle saga
 
 currentCharacters :: Saga -> [Character]
 currentCharacters = characters . sagaState
@@ -53,7 +59,7 @@ data SagaState = SagaState
          { seasonTime :: SeasonTime
          , covenants :: [Covenant]
          , characters :: [Character]
-       }  deriving (Eq,Show)
+         }  deriving (Eq,Show)
 
 
 -- | Get the name of the Saga
@@ -98,6 +104,7 @@ sagaCurrentIndex saga = OList
 -- other data in the saga.
 data SagaFile = SagaFile 
          { title :: String
+         , seasons :: [ SeasonTime ]
          , currentSeason :: SeasonTime
          , rootDirectory :: Maybe String
          , covenantFiles :: [String]
