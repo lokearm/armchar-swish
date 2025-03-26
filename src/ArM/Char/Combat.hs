@@ -31,7 +31,7 @@ import Data.Maybe
 import Data.List
 import qualified Data.Map as M
 
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- |
 -- = The Trait Type
@@ -99,8 +99,8 @@ weaponStat db p = ws
 -- | Look up weapon stats from a character sheets.
 -- If a possession is not found, it is looked up in the WeaponDB instead
 sheetWeapon :: WeaponDB -> CharacterSheet -> String -> [ Weapon ]
-sheetWeapon db cs w | ws /= [] = ws
-                    | otherwise = ws'
+sheetWeapon db cs w | ws /= [] = trace ( "sheetweapon1 "++show ws) $ ws
+                    | otherwise = trace ( "sheetweapon2 "++show ws) $ ws'
     where ws = sheetWeapon1 db cs w
           ws' = sheetWeapon2 db w
 
@@ -119,12 +119,12 @@ implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine -> C
 implicitAbility db cs co df
   | ws == [] = df { combatComment = "No weapon" }
   | otherwise = addShield db cs ab sstr $ df
-        { combatInit  = weaponInit w -- + weaponInit sh
-        , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
-        , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
-        , combatDam   = fmap (+abscore) $ dam w -- + ( fromMaybe 0 $ dam sh) 
+        { combatInit  = weaponInit w 
+        , combatAtk   = fmap (+abscore) $ atk w 
+        , combatDef   = fmap (+abscore) $ def w  
+        , combatDam   = dam w 
         , combatRange = range w
-        , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
+        , combatLoad  = load w 
         , combatComment = absp
         } 
    where (abscore,abspec) =  sheetAbilityScore cs $ AbilityKey ab
@@ -144,7 +144,7 @@ addShield db cs ab (Just sstr) df
     { combatInit  = combatInit df + weaponInit sh
     , combatAtk   = fmap (+( fromMaybe 0 $ atk sh)) $ combatAtk df
     , combatDef   = fmap (+( fromMaybe 0 $ def sh)) $ combatDef df
-    , combatDam   = fmap (+( fromMaybe 0 $ dam sh) ) $ combatDef df
+    , combatDam   = fmap (+( fromMaybe 0 $ dam sh) ) $ combatDam df
     , combatLoad  = combatLoad df + load sh
     } 
     where shs = sheetWeapon db cs sstr
@@ -154,12 +154,12 @@ explicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> String -> Comba
 explicitAbility db cs co ab df
   | isNothing w' = df { combatComment = "No weapon" }
   | otherwise = addShield db cs ab sstr $ df
-        { combatInit  = weaponInit w -- + weaponInit sh
-        , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
-        , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
-        , combatDam   = fmap (+abscore) $ dam w -- + ( fromMaybe 0 $ dam sh) 
+        { combatInit  = weaponInit w 
+        , combatAtk   = fmap (+abscore) $ atk w 
+        , combatDef   = fmap (+abscore) $ def w  
+        , combatDam   = dam w 
         , combatRange = range w
-        , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
+        , combatLoad  = load w 
         , combatComment = absp
         } 
    where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey ab
@@ -169,7 +169,7 @@ explicitAbility db cs co ab df
          sstr = combatShield co
          ws = sheetWeapon db cs wstr
          w' = find ( (ab==) . weaponAbility ) ws
-         w = fromJust w'
+         w = trace ("> "++show w') $ fromJust w'
 
 -- | Collapse a neste Maybe Maybe object to a single Maybe
 join :: Maybe (Maybe a) -> Maybe a

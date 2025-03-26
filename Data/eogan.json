@@ -86,6 +86,9 @@
          , { "possession" : { "weapon" : [ "Shortbow" ] } }
          , { "possession" : { "weapon" : [ "Shortspear" ] } }
          , { "possession" : { "weapon" : [ "Round Shield" ] } }
+         , { "combat" : { "weapon" : "Fist" } }
+         , { "combat" : { "weapon" : "Shortspear" } }
+         , { "combat" : { "weapon" : "Shortbow" } }
          , { "combat" : { "name" : "Spear and Shield"
 	                , "weapon" : "Shortspear"
 			, "shield" : "Round Shield"
