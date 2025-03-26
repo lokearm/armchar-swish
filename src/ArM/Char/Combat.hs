@@ -120,11 +120,11 @@ sheetWeapon db cs w | ws /= [] = ws
              | otherwise  = weaponStat db $ fromJust weapon
           weapon' = sheetPossession cs $ PossessionKey w
           weapon = fmap (weaponStat db) weapon'
-          ws' = fmap weaponStats $ lookup w db
+          ws' = fmap weaponStats $ M.lookup w db
 
 explicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> String -> CombatLine -> CombatLine
 explicitAbility db cs co ab df
-  | isNothing w = df { combatComment = "No weapon" }
+  | isNothing w' = df { combatComment = "No weapon" }
   | otherwise = defaultCL
         { combatInit  = weaponInit w -- + weaponInit sh
         , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
@@ -133,13 +133,14 @@ explicitAbility db cs co ab df
         , combatRange = range w
         , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
         } 
-   where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey $ fromJust ab
+   where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey ab
          wstr = combatWeapon co
          sstr = combatShield co
          shs = fmap (sheetWeapon db cs) sstr
          ws = sheetWeapon db cs wstr
-         w = find ( (ab==) . weaponAbility ) ws
-         sh = find ( (ab==) . weaponAbility ) shs
+         w' = find ( (ab==) . weaponAbility ) ws
+	 w = fromJust w'
+         sh = find ( (ab==) . weaponAbility ) $ fromJust shs
 
 -- | Collapse a neste Maybe Maybe object to a single Maybe
 join :: Maybe (Maybe a) -> Maybe a
