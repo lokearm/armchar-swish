@@ -73,74 +73,101 @@ computeCombatLine db cs co
    | otherwise    = f $ explicitAbility db cs co (fromJust ab) df
      where ab = combatAbility co
            f = addCharacteristics cs 
-	   df = defaultCL { combatLabel = combatName co }
+           df = defaultCL { combatLabel = combatName co }
 
 -- | Add characteristics to the combat stats
 addCharacteristics :: CharacterSheet -> CombatLine -> CombatLine
 addCharacteristics cs cl = cl
-        { combatInit  = (+qik) $ combatInit cl
-        , combatAtk   = fmap (+dex) $ combatAtk cl
-        , combatDef   = fmap (+qik) $ combatDef cl
-        , combatDam   = fmap (+str) $ combatDam cl
+        { combatInit  = (+cqik) $ combatInit cl
+        , combatAtk   = fmap (+cdex) $ combatAtk cl
+        , combatDef   = fmap (+cqik) $ combatDef cl
+        , combatDam   = fmap (+cstr) $ combatDam cl
         } 
-   where qik = sheetCharacteristicScore cs (CharacteristicKey "qik")
-         dex = sheetCharacteristicScore cs (CharacteristicKey "dex")
-         str = sheetCharacteristicScore cs (CharacteristicKey "str")
+   where cqik = sheetCharacteristicScore cs (CharacteristicKey "qik")
+         cdex = sheetCharacteristicScore cs (CharacteristicKey "dex")
+         cstr = sheetCharacteristicScore cs (CharacteristicKey "str")
 
-implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine -> CombatLine
-implicitAbility db cs co df
-  | ws == [] = df { combatComment = "No weapon" }
-  | otherwise = df
-        { combatInit  = weaponInit w -- + weaponInit sh
-        , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
-        , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
-        , combatDam   = fmap (+abscore) $ dam w -- + ( fromMaybe 0 $ dam sh) 
-        , combatRange = range w
-        , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
-        } 
-   where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey ab
-         wstr = combatWeapon co
-         sstr = combatShield co
-         shs = fmap (sheetWeapon db cs) sstr
-         ws = sheetWeapon db cs wstr
-	 w:_ = ws
-	 ab = weaponAbility w
-
+-- | Look up weapon stats from a possession
 -- Standard stats from the DB and specific stats from the item are concatenated.
 weaponStat :: WeaponDB -> Possession -> [Weapon]
 weaponStat db p = ws
    where ws' = map (\ x -> M.lookup x db) $ weapon p
          ws = weaponStats p ++ filterNothing ws'
 
+-- | Look up weapon stats from a character sheets.
+-- If a possession is not found, it is looked up in the WeaponDB instead
 sheetWeapon :: WeaponDB -> CharacterSheet -> String -> [ Weapon ]
 sheetWeapon db cs w | ws /= [] = ws
-                    | isNothing ws' = []
-                    | otherwise = fromJust ws'
-    where ws | isNothing weapon = []
-             | otherwise  = weaponStat db $ fromJust weapon
-          weapon' = sheetPossession cs $ PossessionKey w
-          weapon = fmap (weaponStat db) weapon'
-          ws' = fmap weaponStats $ M.lookup w db
+                    | otherwise = ws'
+    where ws = sheetWeapon1 db cs w
+          ws' = sheetWeapon2 db w
 
-explicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> String -> CombatLine -> CombatLine
-explicitAbility db cs co ab df
-  | isNothing w' = df { combatComment = "No weapon" }
-  | otherwise = defaultCL
+sheetWeapon2 :: WeaponDB -> String -> [ Weapon ]
+sheetWeapon2 db w | isNothing r = []
+                  | otherwise = [ fromJust r ]
+    where r = M.lookup w db
+
+sheetWeapon1 :: WeaponDB -> CharacterSheet -> String -> [ Weapon ]
+sheetWeapon1 db cs w = fromMaybe [] sw
+    where sw' = sheetPossession cs $ PossessionKey w
+          sw = fmap (weaponStat db) sw'
+
+
+implicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> CombatLine -> CombatLine
+implicitAbility db cs co df
+  | ws == [] = df { combatComment = "No weapon" }
+  | otherwise = addShield db cs ab sstr $ df
         { combatInit  = weaponInit w -- + weaponInit sh
         , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
         , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
         , combatDam   = fmap (+abscore) $ dam w -- + ( fromMaybe 0 $ dam sh) 
         , combatRange = range w
         , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
+        , combatComment = absp
         } 
    where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey ab
+         absp | isNothing abspec = ""
+              | otherwise = "Speciality " ++ fromJust abspec
          wstr = combatWeapon co
          sstr = combatShield co
-         shs = fmap (sheetWeapon db cs) sstr
+         ws = sheetWeapon db cs wstr
+         w:_ = ws
+         ab = weaponAbility w
+
+addShield :: WeaponDB -> CharacterSheet -> String -> Maybe String -> CombatLine -> CombatLine
+addShield _ _ _ Nothing df = df
+addShield db cs ab (Just sstr) df 
+    | isNothing sh' = df { combatComment = "Shield not found" }
+    | otherwise = df 
+    { combatInit  = combatInit df + weaponInit sh
+    , combatAtk   = fmap (+( fromMaybe 0 $ atk sh)) $ combatAtk df
+    , combatDef   = fmap (+( fromMaybe 0 $ def sh)) $ combatDef df
+    , combatDam   = fmap (+( fromMaybe 0 $ dam sh) ) $ combatDef df
+    , combatLoad  = combatLoad df + load sh
+    } 
+    where shs = sheetWeapon db cs sstr
+          sh' = find ( (ab==) . weaponAbility ) shs
+          sh = fromJust sh'
+explicitAbility :: WeaponDB -> CharacterSheet -> CombatOption -> String -> CombatLine -> CombatLine
+explicitAbility db cs co ab df
+  | isNothing w' = df { combatComment = "No weapon" }
+  | otherwise = addShield db cs ab sstr $ df
+        { combatInit  = weaponInit w -- + weaponInit sh
+        , combatAtk   = fmap (+abscore) $ atk w -- + ( fromMaybe 0 $ atk sh)
+        , combatDef   = def w  -- + ( fromMaybe 0 $ def sh)
+        , combatDam   = fmap (+abscore) $ dam w -- + ( fromMaybe 0 $ dam sh) 
+        , combatRange = range w
+        , combatLoad  = load w -- + ( fromMaybe 0 $ load sh)
+        , combatComment = absp
+        } 
+   where (abscore,abspec) = sheetAbilityScore cs $ AbilityKey ab
+         absp | isNothing abspec = ""
+              | otherwise = "Speciality " ++ fromJust abspec
+         wstr = combatWeapon co
+         sstr = combatShield co
          ws = sheetWeapon db cs wstr
          w' = find ( (ab==) . weaponAbility ) ws
-	 w = fromJust w'
-         sh = find ( (ab==) . weaponAbility ) $ fromJust shs
+         w = fromJust w'
 
 -- | Collapse a neste Maybe Maybe object to a single Maybe
 join :: Maybe (Maybe a) -> Maybe a
