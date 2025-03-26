@@ -19,6 +19,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , sheetArtScore
                                , sheetAbilityScore
                                , sheetCharacteristicScore
+                               , sheetPossession
                                , castingScore
                                , addCastingScores
                                , labTotals
@@ -126,6 +127,10 @@ findTraitCS (ArtKey x) = (fmap toTrait) . findTrait (ArtKey x) . artList
 findTraitCS (SpellKey x y z) = (fmap toTrait) . findTrait (SpellKey x y z) . spellList
 findTraitCS (CharacteristicKey x) = (fmap toTrait) . findTrait (CharacteristicKey x) . charList
 findTraitCS _ = \ _ -> Nothing
+
+-- | Get a given `Possession` from the character sheet
+sheetPossession :: CharacterSheet -> TraitKey -> Maybe Possession
+sheetPossession cs k = ( findTrait k . possessionList ) cs
 
 -- | Get the score and speciality in a given ability.
 sheetAbilityScore :: CharacterSheet -> TraitKey -> (Int,Maybe String)

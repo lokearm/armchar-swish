@@ -220,7 +220,15 @@ data CombatOption = CombatOption
      }  deriving (Eq,Ord,Show,Generic)
 
 instance ToJSON CombatOption
-instance FromJSON CombatOption
+instance FromJSON CombatOption where
+    parseJSON = fmap f . parseJSON'
+      where f p | combatName p == "" = p { combatName = combatWeapon p }
+                | otherwise = p
+            parseJSON' = withObject "CombatOption" $ \v -> CombatOption
+                    <$> v .:?  "name" .!= ""
+                    <*> v .:   "weapon"
+                    <*> v .:?  "shield"
+                    <*> v .:?  "ability"
 -- |
 -- == Weapons and other Possessions
 
