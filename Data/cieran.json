@@ -294,6 +294,8 @@
             , "tefo" : "InTe", "level" : 30
            , "mastery" : [ "Penetration" ] 
          }
+         , { "confidence" : "Confidence", "points" : 9
+             , "comment" : "Adjustment.  Not known when the confidence was gained." }
       ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1223"
@@ -1193,6 +1195,7 @@
                     , { "ability" : "Faerie Lore", "xp" : 4 }
                     , { "ability" : "Latin", "xp" : 2 }
                     , { "ability" : "Hermes Lore", "xp" : 4 }
+                    , { "confidence" : "Confidence", "points" : 5 }
       ]
       },
       { "mode" : "Reading", "season" : "Winter 1253"
@@ -1243,6 +1246,9 @@
                , "agingRoll" : -1
                , "agingComment" : "No aging."
 	    } }
+         , { "confidence" : "Confidence", "points" : 2 }
+	 , { "characteristic" : "Per", "score" : 1
+           , "comment" : "Gift of Perception Ritual Twice" }
       ]
       },
       { "mode" : "Vis study", "season" : "Spring 1254"

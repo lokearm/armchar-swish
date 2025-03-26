@@ -17,10 +17,8 @@ aliases:
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
-	+ [ ] Step 1. Review Cieran's ingame
-		+ [ ] Add stat boost rituals
-		+ [ ] Add confidence
-		+ [ ] check combat totals
+	+ [ ] Print and Double-Check Cieran
+	+ [ ] Print and Double-Check Eogan
 	+ [ ] Step 3. Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw
