@@ -20,19 +20,19 @@ aliases:
 	+ [ ] Print and Double-Check Cieran
 	+ [ ] Print and Double-Check Eogan
 	+ [ ] Vis accounting
+	+ [ ] Debug wiki file names
+		+ [ ] drop subdirectory
+	+ [ ] Build website in github runners
+	+ [ ] Speciality in combat totals
++ [ ] Phase 2. Improvements
 	+ [ ] Step 3. Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw
 	+ [ ] Step 4. Develop [[Saga object]]
-		+ [ ] single call to advance saga
 		+ [ ] Covenant data model - analogous to Character
-		+ [ ] current and tentative season
-	+ [ ] Step 5. Build website in github runners
 	+ [ ] Step 6. Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
-	+ [ ]  Step 7. Combat totals
-		+ [ ] Speciality in combat totals
 + [ ] Phase 2. Covenant
 	+ [ ] Step 1. Covenant
 		+ [ ] Book resource
