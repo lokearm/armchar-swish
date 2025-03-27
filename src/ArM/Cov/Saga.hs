@@ -204,13 +204,17 @@ instance Advance Saga where
 
 -- | Advance the Saga according to timestamp in the SagaFile.
 advanceSaga :: SagaFile -> Saga -> Saga
-advanceSaga t saga = advance (currentSeason t) saga
+advanceSaga t saga = advanceSaga' (seasons t) saga
+
+advanceSaga' :: [SeasonTime] -> Saga -> Saga
+advanceSaga' [] = id
+advanceSaga' (x:xs) = trace ("adv> " ++ show x) $ advanceSaga' xs . advance x 
 
 
 instance Advance SagaState where
    advance t saga 
-      | NoTime == ns = saga 
-      | t >= ns = saga 
+      | NoTime == ns = trace ("SagaState NoTime "++show t) saga 
+      | t < ns = trace ("SagaState t>=ns "++show (t,ns)) saga 
       | otherwise = trace (show (t, ns)) $ advance t $ step saga
      where ns = nextSeason saga
       -- st { characters = map (advance t) ( gameStartCharacters saga ) }
