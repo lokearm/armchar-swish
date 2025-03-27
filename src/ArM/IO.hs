@@ -35,7 +35,7 @@ import ArM.DB.Weapon()
 import ArM.BasicIO
 import ArM.Helper
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- |
 -- = Read Saga Files
@@ -74,35 +74,34 @@ loadSaga saga = do
            , armour = fromJust adb
            }
 
--- | -- Write write character sheets (long format) for the characters in the
--- given saga to the given directory.
--- File names are derived from character names.
-longSheet :: String    -- ^ Directory name
-          -> Saga      -- ^ Saga whose characters to write
-          -> IO Saga
-longSheet dir s = trace "Write longSheet" $ writeLong dir s >> return s
+writeSagaState :: Saga -> SagaState -> IO ()
+writeSagaState saga st = 
+   createDirectoryIfMissing True dir >>
+   writeOList (dir ++ sagaStateName st ++ ".md") (sagaStateIndex st) >>
+   writeCharacters dir saga (characters st)
+       where dir = rootDir saga ++ sagaStateName st ++ "/"
 
+writeSagaStates :: Saga -> [SagaState] -> IO ()
+writeSagaStates _ [] = return ()
+writeSagaStates saga (x:xs) = writeSagaState saga x >> writeSagaStates saga xs
 
 writeSaga :: Saga -> IO ()
 writeSaga saga = do
-   createDirectoryIfMissing True gsf
-   createDirectoryIfMissing True cdir
-   createDirectoryIfMissing True longDir
-   writeGameStart gsf  saga
-   writeCurrent cdir  saga
    writeOList (rootDir saga ++ "/index.md") $ sagaIndex saga
-   writeOList (gsf ++ sagaStartName saga ++ ".md") $ sagaGameStartIndex saga
-   writeOList (cdir ++ sagaStateName saga ++ ".md") $ sagaCurrentIndex saga
+
+   writeSagaStates saga (sagaStates saga)
+   return () 
+
+{-
    writeLns (gsf ++ sagaStartName saga ++ " Errors.md" ) $
                   "# Errors in Character Design":"":pregameErrors saga
    writeLns (cdir ++ sagaStateName saga ++ " Errors.md" ) $
                   "# Errors in Advancement":"":ingameErrors saga
    _ <- longSheet longDir saga
-
-   return () 
-        where gsf = gamestartDir saga
-              cdir = currentDir saga
+        where 
               longDir = cdir ++ "/LongSheet/"
+-}
+
 
 
 
@@ -121,50 +120,14 @@ readCharacter fn = LB.readFile fn
 -- |
 -- = Write Character Sheets
 
--- | Write a charactersheet in MarkDown, with both ingame and pregame logs.
--- This is currently not used.
-writeCharacter :: String   -- ^ Directory for the output files
-              -> Saga      -- ^ Saga containing databases for spells etc.
-              -> Character -- ^ Character whose sheet is written
-              -> IO ()
-writeCharacter dir saga c = do
-     writeOList fn $ printMDaug saga c
-     return ()
-     where fn = dir ++ "/" ++ charID c ++ ".md"
-
--- | Write charactersheets for a list of characters
--- All advancement logs are written, both pregame and ingame.
--- This is currently not used.
-writeCharacterList :: String -> Saga -> [Character] -> IO ()
-writeCharacterList dir saga cs = mapM (writeCharacter dir saga) cs >> return ()
 
 -- | Write charactersheets at Game Start in MarkDown
 -- File name is derived from the character name.
-writeGameStart :: String  -- ^ Directory for the output files
-               -> Saga    -- ^ Saga whose characters are written
+writeCharacters :: String  -- ^ Directory for the output files
+               -> Saga        -- ^ Saga whose characters are written
+               -> [ Character ]  -- ^ List of characters to write
                -> IO ()
-writeGameStart dir saga = mapM wf  cs >> return ()
-     where cs = gameStartCharacters saga
-           wf c = (writeOList (fn c) $ gameStartSheet saga c)
-           fn c = dir ++ "/" ++ characterStartName c ++ ".md"
-
--- | Write current charactersheets in MarkDown
--- File name is derived from the character name.
-writeCurrent :: String  -- ^ Directory for the output files
-             -> Saga    -- ^ Saga whose characters are written
-             -> IO ()
-writeCurrent dir saga = mapM wf  cs >> return ()
-     where cs = currentCharacters saga
-           wf c = (writeOList (fn c) $ currentSheet saga c)
+writeCharacters dir saga cs = mapM wf  cs >> return ()
+     where wf c = (writeOList (fn c) $ printSheetMD saga c)
            fn c = dir ++ "/" ++ characterStateName c ++ ".md"
-
--- | Write current charactersheets in Long Format (MarkDown)
--- File name is derived from the character name.
-writeLong :: String  -- ^ Directory for the output files
-             -> Saga    -- ^ Saga whose characters are written
-             -> IO ()
-writeLong dir saga = mapM wf  cs >> return ()
-     where cs = currentCharacters saga
-           wf c = (writeOList (fn c) $ printSheetMD saga c)
-           fn c = dir ++ "/" ++ charID c ++ ".md"
 

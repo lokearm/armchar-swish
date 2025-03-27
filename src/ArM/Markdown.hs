@@ -505,12 +505,9 @@ combatHead = OList [ OString "| Weapon | Init | Atk | Def | Dam | Range | Load |
 
 instance Markdown Saga where
     printMD saga = OList 
-        [ OString $ "# " ++ sagaTitle saga
-        , OString ""
-        , OString $ "+ " ++ wikiLink (sagaStateName saga) 
-        , OString $ "+ " ++ wikiLink (sagaStateName saga ++ " Errors") 
-        , OString $ "+ " ++ wikiLink (sagaStartName saga) 
-        , OString $ "+ " ++ wikiLink (sagaStartName saga ++ " Errors") 
+        [ OList [ OString $ "# " ++ sagaTitle saga
+                , OString "" ]
+        , OList $ [] --  OString $ "+ " ++ wikiLink (sagaStateName saga) 
         ]
 
 -- | Make the top level index page (alias for `printMD`)

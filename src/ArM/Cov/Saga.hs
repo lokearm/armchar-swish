@@ -65,22 +65,12 @@ data SagaState = SagaState
 
 
 -- | Get the name of the Saga
-sagaStateName :: Saga -> String
-sagaStateName s = sagaTitle s ++ " - " ++ (show $ seasonTime $ sagaState s)
-
--- | Get a string identifying the Saga State, i.e. name and season.
-sagaStartName :: Saga -> String
-sagaStartName s = sagaTitle s ++ " - Game Start"
-
-
--- | Directory for Game Start sheet
-gamestartDir :: Saga -> String
-gamestartDir saga = rootDir saga ++ "/GameStart/"
+sagaStateName :: SagaState -> String
+sagaStateName s = stateTitle s ++ " - " ++ (show $ seasonTime s)
 
 -- | Directory for Current state
-currentDir :: Saga -> String
-currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime $ sagaState saga) ++ "/"
-
+currentDir :: Saga -> SagaState -> String
+currentDir saga st = rootDir saga ++ "/" ++ (show $ seasonTime st) ++ "/"
 
 -- |
 -- == SagaFile object
@@ -118,6 +108,14 @@ instance FromJSON SagaFile where
 
 -- |
 -- = Other Markdown Output
+
+sagaStateIndex :: SagaState -> OList
+sagaStateIndex saga = OList
+        [ OString $ "# " ++ sagaStateName saga
+        , OString ""
+        , characterIndex $ characters saga
+        ]
+
 
 -- |
 -- == Error reports
@@ -171,10 +169,12 @@ ingameErrors saga = foldl (++) [] $ map formatOutput vvs
 -- | Character Index
 -- ==
 
+{-
 -- | Return the canonical file name for the character, without directory.
 -- This is currently the full name with a ".md" suffix.
 charFileName :: Character -> String
 charFileName = (++".md") . fullName 
+-}
 
 -- | Write a single item for `characterIndex`
 characterIndexLine :: Character -> OList
