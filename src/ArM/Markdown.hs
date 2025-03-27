@@ -507,7 +507,7 @@ instance Markdown Saga where
     printMD saga = OList 
         [ OList [ OString $ "# " ++ sagaTitle saga
                 , OString "" ]
-        , OList $ [] --  OString $ "+ " ++ wikiLink (sagaStateName saga) 
+        , OList $ [ OString $ "+ " ++ wikiLink (show $ seasonTime st) | st <- sagaStates saga ]
         ]
 
 -- | Make the top level index page (alias for `printMD`)

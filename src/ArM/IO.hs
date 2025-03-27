@@ -77,9 +77,10 @@ loadSaga saga = do
 writeSagaState :: Saga -> SagaState -> IO ()
 writeSagaState saga st = 
    createDirectoryIfMissing True dir >>
-   writeOList (dir ++ sagaStateName st ++ ".md") (sagaStateIndex st) >>
+   writeOList (dir ++ fn ++ ".md") (sagaStateIndex st) >>
    writeCharacters dir saga (characters st)
-       where dir = rootDir saga ++ sagaStateName st ++ "/"
+       where dir = rootDir saga ++ fn ++ "/"
+             fn = show $ seasonTime st
 
 writeSagaStates :: Saga -> [SagaState] -> IO ()
 writeSagaStates _ [] = return ()
