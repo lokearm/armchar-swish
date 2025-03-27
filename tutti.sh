@@ -2,6 +2,8 @@
 
 cabal run armchar -- -s Data/hibernia.json 
 
+exit 0
+
 for d in Hibernia/GameStart Hibernia/"Summer 1254" Hibernia/"Summer 1254"/LongSheet
 do
    ( cd "$d"

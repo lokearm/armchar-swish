@@ -62,13 +62,13 @@ loadSaga saga = do
      $ advanceSaga saga
      $ Saga { rootDir = fromMaybe "/tmp/" $ rootDirectory saga
            , sagaStates = SagaState
-              { covenants = []  
-              , characters = []  
-              , seasonTime = currentSeason saga
+              { stateTitle = title saga
+              , covenants = []  
+              , characters = filterNothing cs  
+              , seasonTime = GameStart
               }:[]
+           , gameStartCharacters = []
            , sagaTitle = title saga
-           , gameStartCharacters = map fromJust $ filter (Nothing/=) cs
-           , gameStartCovenants = []
            , spells = fromJust db 
            , weapons = fromJust wdb
            , armour = fromJust adb

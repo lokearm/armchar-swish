@@ -517,6 +517,13 @@ instance Markdown Saga where
 sagaIndex :: Saga -> OList
 sagaIndex = printMD
 
+instance Markdown SagaState where
+    printMD saga = OList 
+        [ OString $ "# " ++ stateTitle saga ++ " - " ++ (show $ seasonTime saga)
+        , OString ""
+        , characterIndex $ characters saga
+        ]
+
 -- |
 -- = Covenant Markdown
 

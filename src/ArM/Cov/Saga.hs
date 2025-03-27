@@ -39,7 +39,6 @@ data Saga = Saga
          , sagaStates :: [ SagaState ]
          , rootDir :: String
          , gameStartCharacters :: [Character]
-         , gameStartCovenants :: [Covenant]
          , spells :: SpellDB
          , weapons :: WeaponDB
          , armour :: ArmourDB
@@ -58,7 +57,8 @@ currentCovenants :: Saga -> [Covenant]
 currentCovenants = covenants . sagaState
 
 data SagaState = SagaState 
-         { seasonTime :: SeasonTime
+         { stateTitle :: String
+         , seasonTime :: SeasonTime
          , covenants :: [Covenant]
          , characters :: [Character]
          }  deriving (Eq,Show)
@@ -81,21 +81,6 @@ gamestartDir saga = rootDir saga ++ "/GameStart/"
 currentDir :: Saga -> String
 currentDir saga = rootDir saga ++ "/" ++ (show $ seasonTime $ sagaState saga) ++ "/"
 
--- | Make the index page for the game start description
-sagaGameStartIndex :: Saga -> OList
-sagaGameStartIndex saga = OList 
-        [ OString $ "# " ++ sagaTitle saga ++ " - Game Start"
-        , OString ""
-        , characterIndex $ gameStartCharacters saga
-        ]
-
--- | Make the index page for the current state
-sagaCurrentIndex :: Saga -> OList
-sagaCurrentIndex saga = OList 
-        [ OString $ "# " ++ sagaTitle saga ++ " - " ++ (show $ seasonTime $ sagaState saga)
-        , OString ""
-        , characterIndex $ currentCharacters saga
-        ]
 
 -- |
 -- == SagaFile object
@@ -230,7 +215,8 @@ instance Advance SagaState where
      where ns = nextSeason saga
       -- st { characters = map (advance t) ( gameStartCharacters saga ) }
 
-   step saga = saga { seasonTime = ns
+   step saga = saga { stateTitle = stateTitle saga 
+                    , seasonTime = ns
                     , covenants = map (advance ns) $ covenants saga
                     , characters = map (advance ns) $ characters saga 
                     }
