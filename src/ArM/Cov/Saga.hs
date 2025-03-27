@@ -27,7 +27,7 @@ import ArM.Cov.Covenant
 import ArM.BasicIO
 import ArM.Helper
 
--- import ArM.Debug.Trace
+import ArM.Debug.Trace
 
 -- |
 -- = Saga objects
@@ -221,11 +221,20 @@ instance Advance Saga where
 advanceSaga :: SagaFile -> Saga -> Saga
 advanceSaga t saga = advance (currentSeason t) saga
 
+
 instance Advance SagaState where
-   advance _ _ = error "state note implemented"
+   advance t saga 
+      | NoTime == ns = saga 
+      | t >= ns = saga 
+      | otherwise = trace (show (t, ns)) $ advance t $ step saga
+     where ns = nextSeason saga
       -- st { characters = map (advance t) ( gameStartCharacters saga ) }
 
-   step saga = advance (nextSeason saga) saga
+   step saga = saga { seasonTime = ns
+                    , covenants = map (advance ns) $ covenants saga
+                    , characters = map (advance ns) $ characters saga 
+                    }
+     where ns = nextSeason saga
 
    nextSeason saga = foldl min NoTime ss
       where ss = [ nextSeason x | x <- characters saga ]

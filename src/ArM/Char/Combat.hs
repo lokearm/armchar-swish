@@ -31,7 +31,7 @@ import Data.Maybe
 import Data.List
 import qualified Data.Map as M
 
-import ArM.Debug.Trace
+-- import ArM.Debug.Trace
 
 -- |
 -- = The Trait Type
@@ -99,8 +99,8 @@ weaponStat db p = ws
 -- | Look up weapon stats from a character sheets.
 -- If a possession is not found, it is looked up in the WeaponDB instead
 sheetWeapon :: WeaponDB -> CharacterSheet -> String -> [ Weapon ]
-sheetWeapon db cs w | ws /= [] = trace ( "sheetweapon1 "++show ws) $ ws
-                    | otherwise = trace ( "sheetweapon2 "++show ws) $ ws'
+sheetWeapon db cs w | ws /= [] = ws
+                    | otherwise = ws'
     where ws = sheetWeapon1 db cs w
           ws' = sheetWeapon2 db w
 
@@ -169,7 +169,7 @@ explicitAbility db cs co ab df
          sstr = combatShield co
          ws = sheetWeapon db cs wstr
          w' = find ( (ab==) . weaponAbility ) ws
-         w = trace ("> "++show w') $ fromJust w'
+         w =  fromJust w'
 
 -- | Collapse a neste Maybe Maybe object to a single Maybe
 join :: Maybe (Maybe a) -> Maybe a

@@ -157,3 +157,7 @@ data Book = Book
 instance ToJSON Book
 instance FromJSON Book
 
+instance Advance Covenant where
+   advance _ = id
+   step = id
+   nextSeason _ = NoTime
