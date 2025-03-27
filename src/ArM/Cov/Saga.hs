@@ -130,20 +130,6 @@ instance FromJSON SagaFile where
        <*> v .:? "armourFile" .!= "armour.csv"
 
 
--- |
--- = Advancement
-
-advanceSagaState :: Saga -> SeasonTime -> SagaState -> SagaState
-advanceSagaState saga t st = st { characters =
-                             map (advance t) ( gameStartCharacters saga ) }
-advanceSaga' :: SeasonTime -> Saga -> Saga
-advanceSaga' t saga = saga { sagaStates = x:sagaStates saga }
-   where x = advanceSagaState saga t (sagaState saga)
-
--- | Advance the Saga according to timestamp in the SagaFile.
-advanceSaga :: SagaFile -> Saga -> Saga
-advanceSaga t saga = advanceSaga' (currentSeason t) saga
-
 
 -- |
 -- = Other Markdown Output
@@ -213,3 +199,31 @@ characterIndexLine c = OString $ "+ " ++ wikiLink (characterStateName c)
 characterIndex :: [Character] -> OList
 characterIndex = OList . map characterIndexLine 
 
+-- |
+-- = Advancement
+
+instance Advance Saga where
+   -- advance :: SeasonTime -> a -> a
+   advance t saga = saga { sagaStates = x:sagaStates saga }
+      where x = advance t (sagaState saga)
+
+   -- step :: a -> a
+   step c = error "state note implemented"
+
+   -- nextSeason :: a -> SeasonTime
+   nextSeason = f . sagaStates
+       where f [] = NoTime
+             f (x:_) = nextSeason x
+
+
+-- | Advance the Saga according to timestamp in the SagaFile.
+advanceSaga :: SagaFile -> Saga -> Saga
+advanceSaga t saga = advance (currentSeason t) saga
+
+instance Advance SagaState where
+   advance t st = st { characters =
+                             map (advance t) ( gameStartCharacters saga ) }
+
+   step c = error "state note implemented"
+
+   nextSeason = error "nextSeason not implemented"
