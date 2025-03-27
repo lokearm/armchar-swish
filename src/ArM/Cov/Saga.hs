@@ -208,7 +208,7 @@ instance Advance Saga where
       where x = advance t (sagaState saga)
 
    -- step :: a -> a
-   step c = error "state note implemented"
+   step _ = error "state note implemented"
 
    -- nextSeason :: a -> SeasonTime
    nextSeason = f . sagaStates
@@ -221,9 +221,9 @@ advanceSaga :: SagaFile -> Saga -> Saga
 advanceSaga t saga = advance (currentSeason t) saga
 
 instance Advance SagaState where
-   advance t st = st { characters =
-                             map (advance t) ( gameStartCharacters saga ) }
+   advance _ _ = error "state note implemented"
+      -- st { characters = map (advance t) ( gameStartCharacters saga ) }
 
-   step c = error "state note implemented"
+   step _ = error "state note implemented"
 
    nextSeason = error "nextSeason not implemented"
