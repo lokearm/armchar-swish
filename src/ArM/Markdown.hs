@@ -18,7 +18,6 @@ module ArM.Markdown ( Markdown(..)
                     , LongSheet(..)
                     , gameStartSheet
                     , currentSheet
-                    , sagaIndex
                     ) where
 
 import Data.Maybe 
@@ -477,8 +476,10 @@ coreSpellRecordMD sr = OList [ reqstr
                 | otherwise = OString $ "Req. " ++ show req
 
 printCombatMD :: Saga -> CharacterSheet -> OList
-printCombatMD saga cs = OList [ combatHead, combatBody tab ]
+printCombatMD saga cs = OList x
     where tab = computeCombatStats ( weapons saga ) cs
+          x | tab == [] = []
+            | otherwise = [ combatHead, combatBody tab ]
 
 combatBody :: [CombatLine] -> OList
 combatBody = OList . map combatBodyLine
@@ -510,13 +511,9 @@ instance Markdown Saga where
         , OList $ [ OString $ "+ " ++ pagesLink (show $ seasonTime st) | st <- sagaStates saga ]
         ]
 
--- | Make the top level index page (alias for `printMD`)
-sagaIndex :: Saga -> OList
-sagaIndex = printMD
-
 instance Markdown SagaState where
     printMD saga = OList 
-        [ OString $ "# " ++ stateTitle saga ++ " - " ++ (show $ seasonTime saga)
+        [ OString $ "# " ++ sagaStateName saga 
         , OString ""
         , characterIndex $ characters saga
         ]

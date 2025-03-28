@@ -14,6 +14,18 @@ aliases:
 	+ [[Types for JSON]]
 
 
++ Web pages
+	+ Character sheet
+		+ Use long sheet
+		+ State
+		+ Char Gen
+		+ Future
+		+ Past
+	+ Error reports
+		+ Per season listed
+	+ Advancement - all characters per season
+	+ Add text blocks
+		+ saga data on main page
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
@@ -22,15 +34,13 @@ aliases:
 		+ [ ] Print and Double-Check Eogan
 	+ [ ] Web site
 		+ [ ] Reinstate error report
-		+ [ ] Page and directory structure for github pages
+		+ [x] Page and directory structure for github pages
 		+ [ ] Clean up character sheet layout
-		+ [ ] Set up jekyll preview
-		+ [ ] Build website in github runners
+		+ [x] Set up jekyll preview
+		+ [x] Build website in github runners
 	+ [ ] Finishing touches
 		+ [ ] Vis accounting
 		+ [ ] Speciality in combat totals
-	+ [ ] Refactor
-		+ [ ] Clean up Saga module
 + [ ] Phase 2. Improvements
 	+ [ ] Step 3. Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)

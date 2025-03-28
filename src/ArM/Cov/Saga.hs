@@ -12,7 +12,13 @@
 --
 --
 -----------------------------------------------------------------------------
-module ArM.Cov.Saga where
+module ArM.Cov.Saga ( Saga(..)
+                    , SagaFile(..)
+                    , SagaState(..)
+                    , advanceSaga
+                    , sagaStateName
+                    , characterIndex
+                    ) where
 
 -- import Data.Maybe 
 import Data.Aeson 
@@ -30,7 +36,7 @@ import ArM.Helper
 import ArM.Debug.Trace
 
 -- |
--- = Saga objects
+-- = Saga type
 
 -- | A Saga as it is processed in memory.
 -- Multiple files have to be loaded to generate a Saga object from a `SagaFile`.
@@ -44,23 +50,32 @@ data Saga = Saga
        }  deriving (Eq)
 
 -- | Get the most recent SagaState
+-- This is mainly for backward compatibility
 sagaState :: Saga -> SagaState
 sagaState = head . sagaStates
 
 instance Show Saga where
    show saga = "Saga: " ++ sagaTitle saga
 
+-- | Get characters at game start, or essentially first state recorded.
+-- This is mainly for backward compatibility
 gameStartCharacters :: Saga -> [Character]
 gameStartCharacters = f . sagaStates
     where f [] = []
           f (x:[]) = characters x
           f (_:xs) = f xs
      
+{-
+-- | Get current characters, i.e. after last advancement
 currentCharacters :: Saga -> [Character]
 currentCharacters = characters . sagaState
+-- | Get current covenants, i.e. after last advancement
 currentCovenants :: Saga -> [Covenant]
 currentCovenants = covenants . sagaState
+-}
 
+-- | Saga state at a particular point in time, comprising characters and
+-- covenants at that point.
 data SagaState = SagaState 
          { stateTitle :: String
          , seasonTime :: SeasonTime
@@ -69,17 +84,12 @@ data SagaState = SagaState
          }  deriving (Eq,Show)
 
 
--- | Get the name of the Saga
+-- | Get the name of the Saga as recorded in the SagaState
 sagaStateName :: SagaState -> String
 sagaStateName s = stateTitle s ++ " - " ++ (show $ seasonTime s)
 
--- | Directory for Current state
-currentDir :: Saga -> SagaState -> String
-currentDir saga st = rootDir saga ++ "/" ++ (show $ seasonTime st) ++ "/"
-
 -- |
 -- == SagaFile object
-
 
 -- | A Saga as it is stored on file.
 -- The main purpose here is to identify all the files used for characters and
@@ -112,17 +122,6 @@ instance FromJSON SagaFile where
 
 
 -- |
--- = Other Markdown Output
-
-sagaStateIndex :: SagaState -> OList
-sagaStateIndex saga = OList
-        [ OString $ "# " ++ sagaStateName saga
-        , OString ""
-        , characterIndex $ characters saga
-        ]
-
-
--- |
 -- == Error reports
 
 -- | Get errors from the ingam advancements of a given character.
@@ -142,7 +141,7 @@ renderCharErrors c as = ff $ map f as
          ff (x:xs) = x:ff xs
          ff [] = []
 
--- | Format a header for `rencerCharErrors`
+-- | Format a header for `renderCharErrors`
 augHead :: SeasonTime -> Maybe String -> String
 augHead NoTime Nothing = ("??" )
 augHead x Nothing = (show x )
@@ -163,6 +162,7 @@ pregameErrors saga = foldl (++) [] $ map formatOutput vvs
           vvs = foldl (++) [] vs
           formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
 
+{-
 -- | Exctract a list of validation errors 
 ingameErrors :: Saga -> [String]
 ingameErrors saga = foldl (++) [] $ map formatOutput vvs
@@ -170,6 +170,7 @@ ingameErrors saga = foldl (++) [] $ map formatOutput vvs
           vs = map ingameCharErrors  cs
           vvs = foldl (++) [] vs
           formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
+-}
 
 -- | Character Index
 -- ==
