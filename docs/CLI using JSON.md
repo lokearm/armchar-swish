@@ -21,7 +21,10 @@ aliases:
 		+ [ ] Print and Double-Check Cieran
 		+ [ ] Print and Double-Check Eogan
 	+ [ ] Web site
+		+ [ ] Reinstate error report
 		+ [ ] Page and directory structure for github pages
+		+ [ ] Clean up character sheet layout
+		+ [ ] Set up jekyll preview
 		+ [ ] Build website in github runners
 	+ [ ] Finishing touches
 		+ [ ] Vis accounting
