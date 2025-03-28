@@ -60,6 +60,7 @@ aliases:
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
 + [ ] Phase 4. Polish
+	+ [ ] PDF sheets
 	+ [ ] Refactor and document code
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen

@@ -391,7 +391,9 @@ instance LongSheet CharacterSheet where
                                         , OString ""
                                         , printFullGrimoire (spells saga) $ sortTraits $ spellList c 
                                         , OString ""
-                                        , toOList $ printCastingTotals c ]
+                                        , toOList $ printCastingTotals c 
+                                        , OString ""
+					]
                    | otherwise = OString "" 
 
 -- |
