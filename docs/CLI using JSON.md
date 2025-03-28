@@ -17,23 +17,26 @@ aliases:
 
 ## Roadmap
 + [ ] Phase 1. Review and bugfix
-	+ [ ] Print and Double-Check Cieran
-	+ [ ] Print and Double-Check Eogan
-	+ [ ] Vis accounting
-	+ [ ] Debug wiki file names
-		+ [ ] drop subdirectory
-	+ [ ] Build website in github runners
-	+ [ ] Speciality in combat totals
+	+ [ ] Review
+		+ [ ] Print and Double-Check Cieran
+		+ [ ] Print and Double-Check Eogan
+	+ [ ] Web site
+		+ [ ] Page and directory structure for github pages
+		+ [ ] Build website in github runners
+	+ [ ] Finishing touches
+		+ [ ] Vis accounting
+		+ [ ] Speciality in combat totals
+	+ [ ] Refactor
+		+ [ ] Clean up Saga module
 + [ ] Phase 2. Improvements
 	+ [ ] Step 3. Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw
-	+ [ ] Step 4. Develop [[Saga object]]
-		+ [ ] Covenant data model - analogous to Character
 	+ [ ] Step 6. Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
-+ [ ] Phase 2. Covenant
++ [ ] Phase 3. Covenant
+	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Step 1. Covenant
 		+ [ ] Book resource
 		+ [ ] Library
@@ -41,7 +44,7 @@ aliases:
 	+ [ ] Step 2. Covenant advancement
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
-+ [ ] Phase 3. Polish
++ [ ] Phase 4. Polish
 	+ [ ] Refactor and document code
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
