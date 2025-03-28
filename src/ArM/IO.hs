@@ -67,7 +67,6 @@ loadSaga saga = do
               , characters = filterNothing cs  
               , seasonTime = GameStart
               }:[]
-           , gameStartCharacters = []
            , sagaTitle = title saga
            , spells = fromJust db 
            , weapons = fromJust wdb
@@ -77,7 +76,7 @@ loadSaga saga = do
 writeSagaState :: Saga -> SagaState -> IO ()
 writeSagaState saga st = 
    createDirectoryIfMissing True dir >>
-   writeOList (dir ++ fn ++ ".md") (sagaStateIndex st) >>
+   writeOList (dir ++ "index.md") (sagaStateIndex st) >>
    writeCharacters dir saga (characters st)
        where dir = rootDir saga ++ fn ++ "/"
              fn = show $ seasonTime st

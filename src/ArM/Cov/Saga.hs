@@ -38,7 +38,6 @@ data Saga = Saga
          { sagaTitle :: String
          , sagaStates :: [ SagaState ]
          , rootDir :: String
-         , gameStartCharacters :: [Character]
          , spells :: SpellDB
          , weapons :: WeaponDB
          , armour :: ArmourDB
@@ -51,6 +50,12 @@ sagaState = head . sagaStates
 instance Show Saga where
    show saga = "Saga: " ++ sagaTitle saga
 
+gameStartCharacters :: Saga -> [Character]
+gameStartCharacters = f . sagaStates
+    where f [] = []
+          f (x:[]) = characters x
+          f (_:xs) = f xs
+     
 currentCharacters :: Saga -> [Character]
 currentCharacters = characters . sagaState
 currentCovenants :: Saga -> [Covenant]
@@ -169,16 +174,9 @@ ingameErrors saga = foldl (++) [] $ map formatOutput vvs
 -- | Character Index
 -- ==
 
-{-
--- | Return the canonical file name for the character, without directory.
--- This is currently the full name with a ".md" suffix.
-charFileName :: Character -> String
-charFileName = (++".md") . fullName 
--}
-
 -- | Write a single item for `characterIndex`
 characterIndexLine :: Character -> OList
-characterIndexLine c = OString $ "+ " ++ wikiLink (characterStateName c) 
+characterIndexLine c = OString $ "+ " ++ pagesLink (characterStateName c) 
 
 -- | Write a bullet list of links for a list of characters
 characterIndex :: [Character] -> OList

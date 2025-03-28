@@ -94,7 +94,11 @@ uniqueSort = f . sort
 markdownLink :: String -> String -> String
 markdownLink txt lnk = "[" ++ txt ++ "](" ++ URI.encode lnk ++ ")"
 
--- | Set a markdown link, escaping spaces in the link.
+-- | Set a link for github pages
+pagesLink :: String -> String
+pagesLink lnk = "[" ++ lnk ++ "](" ++ lnk ++ ")"
+
+-- | Set a wikilink
 wikiLink :: String -> String
 wikiLink txt = "[[" ++ txt ++ "]]"
 
