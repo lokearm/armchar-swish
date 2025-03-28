@@ -42,6 +42,8 @@ aliases:
 		+ [ ] Vis accounting
 		+ [ ] Speciality in combat totals
 + [ ] Phase 2. Improvements
+	+ [ ] Validate missing seasons
+	+ [ ] Image for characters
 	+ [ ] Step 3. Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw

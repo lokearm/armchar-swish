@@ -124,13 +124,14 @@ instance FromJSON SagaFile where
 -- |
 -- == Error reports
 
--- | Get errors from the ingam advancements of a given character.
-pregameCharErrors :: Character -> [(String,[String])]
-pregameCharErrors c = renderCharErrors c $ pregameDesign c
-
--- | Get errors from the ingam advancements of a given character.
-ingameCharErrors :: Character -> [(String,[String])]
-ingameCharErrors c = renderCharErrors c $ pastAdvancement c
+-- | Get advancement errors for a given character.
+-- At Game Start, Char Gen errors are returned.  If the character
+-- is already advanced in game, the in-game errors are returned
+charErrors :: Character -> [(String,[String])]
+charErrors c = renderCharErrors c es
+           where es | ps == [] = pregameDesign c
+	            | otherwise = ps
+                 ps = pastAdvancement c
 
 -- | Format strins for `pregameCharErrors` and `ingameCharErrors`
 renderCharErrors :: Character -> [AugmentedAdvancement] -> [(String,[String])]
@@ -155,22 +156,12 @@ filterError (ValidationError x:xs) = x:filterError xs
 filterError [] = []
 
 -- | Exctract a list of validation errors 
-pregameErrors :: Saga -> [String]
-pregameErrors saga = foldl (++) [] $ map formatOutput vvs
-    where cs = gameStartCharacters saga
-          vs = map pregameCharErrors  cs
+advancementErrors :: SagaState -> [String]
+advancementErrors saga = foldl (++) [] $ map formatOutput vvs
+    where cs = characters saga
+          vs = map charErrors  cs
           vvs = foldl (++) [] vs
           formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
-
-{-
--- | Exctract a list of validation errors 
-ingameErrors :: Saga -> [String]
-ingameErrors saga = foldl (++) [] $ map formatOutput vvs
-    where cs = currentCharacters saga
-          vs = map ingameCharErrors  cs
-          vvs = foldl (++) [] vs
-          formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
--}
 
 -- | Character Index
 -- ==
