@@ -42,6 +42,7 @@ aliases:
 		+ [ ] Vis accounting
 		+ [ ] Speciality in combat totals
 + [ ] Phase 2. Improvements
+	+ [ ] Remove dead and retired characters from main list
 	+ [ ] Validate missing seasons
 	+ [ ] Image for characters
 	+ [ ] Step 3. Characteristics

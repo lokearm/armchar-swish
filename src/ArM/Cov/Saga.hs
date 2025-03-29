@@ -22,6 +22,7 @@ module ArM.Cov.Saga ( Saga(..)
 
 -- import Data.Maybe 
 import Data.Aeson 
+import Data.List 
 import GHC.Generics
 
 -- import ArM.Char.Trait
@@ -56,23 +57,6 @@ sagaState = head . sagaStates
 
 instance Show Saga where
    show saga = "Saga: " ++ sagaTitle saga
-
--- | Get characters at game start, or essentially first state recorded.
--- This is mainly for backward compatibility
-gameStartCharacters :: Saga -> [Character]
-gameStartCharacters = f . sagaStates
-    where f [] = []
-          f (x:[]) = characters x
-          f (_:xs) = f xs
-     
-{-
--- | Get current characters, i.e. after last advancement
-currentCharacters :: Saga -> [Character]
-currentCharacters = characters . sagaState
--- | Get current covenants, i.e. after last advancement
-currentCovenants :: Saga -> [Covenant]
-currentCovenants = covenants . sagaState
--}
 
 -- | Saga state at a particular point in time, comprising characters and
 -- covenants at that point.
@@ -124,30 +108,53 @@ instance FromJSON SagaFile where
 -- |
 -- == Error reports
 
+-- | Exctract a list of validation errors 
+advancementErrors :: SagaState -> OList
+advancementErrors saga = OList $ map formatOutput vss
+    where cs = characters saga
+          cvs = map cErrors  cs
+          vvs = foldl (++) [] cvs
+          vss = sortOn ( \ (_,x,_,_) -> x ) vvs
+          formatOutput (cid,_,ssn,vs) = OList 
+              [ OString ( cid ++ ": " ++ ssn ),
+              OList $ map OString (filterError vs) ]
+
+{-
 -- | Get advancement errors for a given character.
 -- At Game Start, Char Gen errors are returned.  If the character
 -- is already advanced in game, the in-game errors are returned
-charErrors :: Character -> [(String,[String])]
+charErrors :: Character -> OList
 charErrors c = renderCharErrors c es
            where es | ps == [] = pregameDesign c
-	            | otherwise = ps
+                    | otherwise = ps
                  ps = pastAdvancement c
 
 -- | Format strins for `pregameCharErrors` and `ingameCharErrors`
-renderCharErrors :: Character -> [AugmentedAdvancement] -> [(String,[String])]
-renderCharErrors c as = ff $ map f as
-   where f a = (charID c ++ ": " ++ augHead (season a) (mode a)
-               , filterError $ validation a)
-         ff ((_,[]):xs) = ff xs
-         ff (x:xs) = x:ff xs
-         ff [] = []
+renderCharErrors :: Character -> [AugmentedAdvancement] -> OList
+renderCharErrors c as = OList [ OString $ (cid ++ ": " ++ sstr)
+                              . OList $  filterError vs ]
+   where (cid,season,sstr,vs) = cErrors c
+-}
+
+aaErrors :: Character -> AugmentedAdvancement -> (String,SeasonTime,String,[Validation])
+aaErrors c a = (charID c, season a, augHead a, vs )
+    where vs = validation  a
+
+cErrors :: Character -> [(String,SeasonTime,String,[Validation])]
+cErrors c = map (aaErrors c) as
+   where as | ps == [] = pregameDesign c
+            | otherwise = ps
+         ps = pastAdvancement c
 
 -- | Format a header for `renderCharErrors`
-augHead :: SeasonTime -> Maybe String -> String
-augHead NoTime Nothing = ("??" )
-augHead x Nothing = (show x )
-augHead NoTime (Just x) = x
-augHead x (Just z) = (show x  ++ " " ++ z)
+augHead :: AugmentedAdvancement -> String
+augHead a = augHead' (season a) (mode a)
+-- | Format a header for `renderCharErrors`
+augHead' :: SeasonTime -> Maybe String -> String
+augHead' NoTime Nothing = ("??" )
+augHead' x Nothing = (show x )
+augHead' NoTime (Just x) = x
+augHead' x (Just z) = (show x  ++ " " ++ z)
 
 -- | Get errors from a list of Validation objects
 filterError :: [Validation] -> [String]
@@ -155,13 +162,6 @@ filterError (Validated _:xs) = filterError xs
 filterError (ValidationError x:xs) = x:filterError xs
 filterError [] = []
 
--- | Exctract a list of validation errors 
-advancementErrors :: SagaState -> [String]
-advancementErrors saga = foldl (++) [] $ map formatOutput vvs
-    where cs = characters saga
-          vs = map charErrors  cs
-          vvs = foldl (++) [] vs
-          formatOutput (x,xs) = ("+ " ++ x):map ("    + "++) xs
 
 -- | Character Index
 -- ==
@@ -207,7 +207,6 @@ instance Advance SagaState where
       | t < ns = trace ("SagaState t>=ns "++show (t,ns)) saga 
       | otherwise = trace (show (t, ns)) $ advance t $ step saga
      where ns = nextSeason saga
-      -- st { characters = map (advance t) ( gameStartCharacters saga ) }
 
    step saga = saga { stateTitle = stateTitle saga 
                     , seasonTime = ns

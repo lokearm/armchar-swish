@@ -243,6 +243,8 @@ instance Markdown CharacterState where
        [ OString $ "## " ++ (show $ charTime c) 
        , OString ""
        , printMDaug saga $ filterCS c
+       , OString ""
+       , printMDaug saga $ filterCS c
        ]
 
 -- |
@@ -393,7 +395,7 @@ instance LongSheet CharacterSheet where
                                         , OString ""
                                         , toOList $ printCastingTotals c 
                                         , OString ""
-					]
+                                        ]
                    | otherwise = OString "" 
 
 -- |
