@@ -31,10 +31,21 @@ aliases:
 	+ [ ] Finishing touches
 		+ [ ] Vis accounting
 		+ [ ] Speciality in combat totals
+	+ [ ] Set up github pages for organisation
+		+ [ ] Overview page
+		+ [ ] haddock
+	+ [ ] Cosmetic
+		+ [ ] Avoid quotation marks in spell list
+		+ [ ] Avoid decimals in spell XP
+	+ [ ] More spell descriptions in CSV file
+	+ [ ] Change character names in test JSON files
 + [ ] Phase 2. Improvements
 	+ [ ] Remove dead and retired characters from main list
 	+ [ ] Validate missing seasons
 	+ [ ] Image for characters
+		+ [ ] Generate image Eogan
+		+ [ ] Image for Cieran
+		+ [ ] Image file in Character obnject
 	+ [ ] Step 3. Characteristics
 		+ [ ] Great/Poor Characteristic (current warning)
 		+ [ ] Handle multiple instances of the same virtue/flaw
@@ -62,7 +73,9 @@ aliases:
 		+ [ ] Linguist
 		+ [ ] Inventive Genius
 		+ [ ] Infer Second Sight from Strong Faerie Blood
+		+ [ ] Unaging
 	+ [ ] Count xp total (ingame) for validationparallel
+	+ [ ] Print weapon tables etc
 + [ ] Phase 5. Performance
 	+ [ ] Step 1.  CharacterState in JSON
 		+ [ ] Remove null entries from JSON output
