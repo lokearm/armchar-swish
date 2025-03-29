@@ -243,8 +243,6 @@ instance Markdown CharacterState where
        [ OString $ "## " ++ (show $ charTime c) 
        , OString ""
        , printMDaug saga $ filterCS c
-       , OString ""
-       , printMDaug saga $ filterCS c
        ]
 
 -- |
@@ -520,6 +518,10 @@ instance Markdown SagaState where
         [ OString $ "# " ++ sagaStateName saga 
         , OString ""
         , characterIndex $ characters saga
+        , OString ""
+        , OString "## Advancement Errors"
+        , OString ""
+        , indentOList $ foldOList $  advancementErrors saga
         ]
 
 -- |

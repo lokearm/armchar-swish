@@ -18,6 +18,8 @@ module ArM.Cov.Saga ( Saga(..)
                     , advanceSaga
                     , sagaStateName
                     , characterIndex
+                    , advancementErrors
+                    , advancementErrorsLimit
                     ) where
 
 -- import Data.Maybe 
@@ -109,38 +111,51 @@ instance FromJSON SagaFile where
 -- == Error reports
 
 -- | Exctract a list of validation errors 
-advancementErrors :: SagaState -> OList
-advancementErrors saga = OList $ map formatOutput vss
+errorList :: SagaState -> [VList]
+errorList saga = sortOn ( \ (_,x,_,_) -> x ) vvs
     where cs = characters saga
           cvs = map cErrors  cs
-          vvs = foldl (++) [] cvs
-          vss = sortOn ( \ (_,x,_,_) -> x ) vvs
-          formatOutput (cid,_,ssn,vs) = OList 
+          vvs = g cvs 
+          g = f . filterVList . foldl (++) [] 
+          f [] = []
+          f ((_,_,_,[]):xs) = f xs
+          f (x:xs) = x:f xs
+
+filterVList :: [VList] -> [VList]
+filterVList = map ( \ (a,b,c,d) -> (a,b,c,filterError d) ) 
+
+
+advancementErrors :: SagaState -> OList
+advancementErrors saga = OList $ map formatOutput errors
+    where formatOutput (cid,_,ssn,vs) = OList 
               [ OString ( cid ++ ": " ++ ssn ),
-              OList $ map OString (filterError vs) ]
+              OList $ map msg vs ]
+          errors = errorList saga
+          msg (ValidationError x) = OString x
+          msg _ = OString ""
 
-{-
--- | Get advancement errors for a given character.
--- At Game Start, Char Gen errors are returned.  If the character
--- is already advanced in game, the in-game errors are returned
-charErrors :: Character -> OList
-charErrors c = renderCharErrors c es
-           where es | ps == [] = pregameDesign c
-                    | otherwise = ps
-                 ps = pastAdvancement c
+type VList = (String,SeasonTime,String,[Validation])
+errorAfter :: VList -> SeasonTime -> Bool
+errorAfter (_,vs,_,_) s = vs > s 
 
--- | Format strins for `pregameCharErrors` and `ingameCharErrors`
-renderCharErrors :: Character -> [AugmentedAdvancement] -> OList
-renderCharErrors c as = OList [ OString $ (cid ++ ": " ++ sstr)
-                              . OList $  filterError vs ]
-   where (cid,season,sstr,vs) = cErrors c
--}
+-- | Exctract a list of validation errors 
+advancementErrorsLimit :: SeasonTime ->  SagaState -> OList
+advancementErrorsLimit ssn saga = OList $ map formatOutput errors
+    where formatOutput (cid,_,sn,vs) = OList 
+              [ OString ( cid ++ ": " ++ sn ),
+              OList $ map msg vs ]
+          errors = f $ errorList saga
+          msg (ValidationError x) = OString x
+          msg _ = OString ""
+          f [] = []
+          f (x:xs) | x `errorAfter` ssn = x:f xs
+                   | otherwise = []
 
-aaErrors :: Character -> AugmentedAdvancement -> (String,SeasonTime,String,[Validation])
+aaErrors :: Character -> AugmentedAdvancement -> VList
 aaErrors c a = (charID c, season a, augHead a, vs )
     where vs = validation  a
 
-cErrors :: Character -> [(String,SeasonTime,String,[Validation])]
+cErrors :: Character -> [VList]
 cErrors c = map (aaErrors c) as
    where as | ps == [] = pregameDesign c
             | otherwise = ps
@@ -157,9 +172,9 @@ augHead' NoTime (Just x) = x
 augHead' x (Just z) = (show x  ++ " " ++ z)
 
 -- | Get errors from a list of Validation objects
-filterError :: [Validation] -> [String]
+filterError :: [Validation] -> [Validation]
 filterError (Validated _:xs) = filterError xs
-filterError (ValidationError x:xs) = x:filterError xs
+filterError (x:xs) = x:filterError xs
 filterError [] = []
 
 

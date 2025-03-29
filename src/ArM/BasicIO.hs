@@ -30,6 +30,14 @@ data OList = OList [ OList ] | OString String deriving ( Show )
 toOList :: [ String ] -> OList
 toOList= OList . map OString 
 
+foldOList :: OList -> OList
+foldOList (OString x) = OString x
+foldOList (OList x) = OList $ f x
+   where f [] = []
+         f (OList y:ys) = y ++ f ys
+         f (OString y:ys) = OString y:f ys
+
+
 -- | Render an OList as a hierarchical markdown list
 indentOList :: OList -> OList
 indentOList (OString x) = OString $ '+':' ':x
