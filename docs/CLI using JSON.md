@@ -31,9 +31,6 @@ aliases:
 	+ [ ] Finishing touches
 		+ [ ] Vis accounting
 		+ [ ] Speciality in combat totals
-	+ [ ] Cosmetic
-		+ [ ] Avoid quotation marks in spell list
-		+ [ ] Avoid decimals in spell XP
 	+ [ ] More spell descriptions in CSV file
 	+ [ ] Change character names in test JSON files
 	+ [ ] Clone armchar repo into organisation and rename to ... harm?
