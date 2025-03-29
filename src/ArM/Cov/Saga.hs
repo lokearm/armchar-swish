@@ -126,7 +126,8 @@ filterVList = map ( \ (a,b,c,d) -> (a,b,c,filterError d) )
 
 
 advancementErrors :: SagaState -> OList
-advancementErrors saga = OList $ map formatOutput errors
+advancementErrors saga | errors == [] = OString "No errors"
+                       | otherwise = OList $ map formatOutput errors
     where formatOutput (cid,_,ssn,vs) = OList 
               [ OString ( cid ++ ": " ++ ssn ),
               OList $ map msg vs ]
