@@ -23,11 +23,14 @@ import Data.Maybe
 type XPType = Float
 -- type XPType = Int
 
+-- | Calculate the XP cost for a given score on the pyramid scale
 pyramidScore :: Num a => Int -> a
 pyramidScore = fromIntegral . f
   where  f y | y < 0 = y*(-y+1) `div` 2
              | otherwise = y*(y+1) `div` 2
 
+-- | The class provides functions which must be implemented differently
+-- depending on the definition of XPType.
 class GenericXPType a where
     getAbilityScore :: Maybe a -> (Int,a)
     -- | Calculate score from total XP, using the arts scale.

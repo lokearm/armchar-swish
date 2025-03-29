@@ -31,16 +31,15 @@ aliases:
 	+ [ ] Finishing touches
 		+ [ ] Vis accounting
 		+ [ ] Speciality in combat totals
-	+ [ ] Set up github pages for organisation
-		+ [ ] Overview page
-		+ [ ] haddock
 	+ [ ] Cosmetic
 		+ [ ] Avoid quotation marks in spell list
 		+ [ ] Avoid decimals in spell XP
 	+ [ ] More spell descriptions in CSV file
 	+ [ ] Change character names in test JSON files
+	+ [ ] Clone armchar repo into organisation and rename to ... harm?
 + [ ] Phase 2. Improvements
 	+ [ ] Remove dead and retired characters from main list
+		+ [ ] Retired property in Aging type
 	+ [ ] Validate missing seasons
 	+ [ ] Image for characters
 		+ [ ] Generate image Eogan

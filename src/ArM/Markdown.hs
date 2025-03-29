@@ -424,7 +424,6 @@ artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ show
 -- |
 -- == Render Spells
 
-
 -- | Render a spell trait in Markdown
 -- The result should normally be subject to indentOList to make an hierarchical
 -- list.
@@ -442,8 +441,8 @@ masteryMD :: Spell -> OList
 masteryMD s | 0 == masteryScore s && 0 == spellExcessXP s = OList []
             | otherwise = OString
                           $ "Mastery: " ++ show (masteryScore s)
-                          ++ " (" ++ show (spellExcessXP s) ++ "xp) "
-                          ++ show (masteryOptions s)
+                          ++ " (" ++ showNum (spellExcessXP s) ++ "xp) "
+                          ++ showStrList (masteryOptions s)
 
 
 -- | Set a list of spells.

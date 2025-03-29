@@ -8,8 +8,7 @@
 --
 -- Description :  Simple utilities to read and write files.
 --
--- This module contains types to process characters, including 
--- persistence in JSON and advancement.
+-- This module contains convenience functions for file output.
 --
 -----------------------------------------------------------------------------
 module ArM.BasicIO where
@@ -18,6 +17,9 @@ import System.IO as IO -- for file IO
 import Data.Aeson
 import Data.Aeson.Text
 import Data.Text.Lazy.IO as I
+
+-- | 
+-- = The OList type
 
 -- | Nested lists of strings.
 -- This is intended to build output files, where each atomic object is rendered 
@@ -47,6 +49,9 @@ indentOList' :: String -> OList -> OList
 indentOList' s (OString x) = OString $ s ++ x
 indentOList' s (OList xs) = OList $ map (indentOList' ("    "++s)) xs
 
+-- | 
+-- == Writing OList to file
+
 writeOListH :: Handle -> OList -> IO ()
 writeOListH h (OString x) = IO.hPutStrLn h x
 writeOListH _ (OList []) = return ()
@@ -62,6 +67,8 @@ writeMaybeOList :: Maybe String -> OList -> IO ()
 writeMaybeOList Nothing   = \ _ -> return ()
 writeMaybeOList (Just fn) = writeOList fn
 
+-- | 
+-- = File output
 
 -- | Write a list of strings into the given file
 writeLns :: String     -- ^ File name

@@ -76,6 +76,11 @@ showSigned :: Int -> String
 showSigned x | x > 0 = "+" ++ show x
             | otherwise = show x
 
+-- | Show a list of strings without brackets and quotes.
+showStrList :: [String] -> String
+showStrList [] = ""
+showStrList (x:xs) = foldl (++) x $ map (", "++) xs
+
 -- |
 -- = Unique Sort
 
