@@ -29,6 +29,7 @@ module ArM.Char.Character ( module ArM.Char.Types.Character
                           , Season(..)
                           , SeasonTime(..)
                           , characterEntryTime
+                          , isGameStart
                           ) where
 
 import Data.Maybe 
@@ -63,6 +64,14 @@ characterEntryTime c | tm == NoTime = f $ futureAdvancement c
      where tm = entryTime c
            f [] = tm
            f (x:_) = season x
+
+-- | The current season of the character 
+characterCurrentTime :: Character -> SeasonTime
+characterCurrentTime = fromMaybe NoTime . fmap charTime . state
+
+-- | The first season the character is played
+isGameStart :: Character -> Bool
+isGameStart = (==GameStart) . characterCurrentTime
 
 -- |
 -- = Advancements

@@ -73,10 +73,13 @@ designMD c  | as == [] = OList []
             ]
             where as = pregameDesign c
 
+chargenMD :: Character -> OList
+chargenMD c = OList [ chargenMD' c, designMD c ]
+
 -- | Render the char gen design.
 -- This is a list of all the pregame advancement objects.
-chargenMD :: Character -> OList
-chargenMD c | as == [] = OList []
+chargenMD' :: Character -> OList
+chargenMD' c | as == [] = OList []
             | otherwise = OList
               [ OString "## Char Gen Advancements"
               , OString ""
@@ -360,12 +363,12 @@ instance LongSheet Character where
    printSheetMD saga c = OList 
             [ printMD $ concept c
             , sf $ state c 
-            , designMD c
-            , chargenMD c
-            , advancementMD c
+            , adv
             ]
         where sf Nothing = OList []
               sf (Just s) = printSheetMD saga s
+              adv | isGameStart c = chargenMD c
+                  | otherwise =  advancementMD c
 instance LongSheet CharacterState where
    printSheetMD saga c = OList [ OString $ "## " ++ (show $ charTime c )
                              , OString ""
