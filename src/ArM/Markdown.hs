@@ -463,15 +463,16 @@ printFullGrimoire db xs = OList [ OString "## Grimoire"
 totalLevels :: [Spell] -> Int
 totalLevels = sum . map spellLevel
 
+-- | Render the spell record as an OList
 coreSpellRecordMD :: Maybe SpellRecord -> OList
 coreSpellRecordMD Nothing = OList []
 coreSpellRecordMD sr = OList [ reqstr
-                             , OString $ (show $ rdt sp)
+                             , OString $ (showRDT sp)
                                ++ (foldl (++) "" $ map (", "++) $  specialSpell sp)
                              , os (description sp)
                              , os (design sp)
                              , os (cite sp)
-                    ]
+                             ]
    where req = techniqueReq sp ++ formReq sp
          sp = fromJust sr
          os "" = OList []
@@ -479,15 +480,24 @@ coreSpellRecordMD sr = OList [ reqstr
          reqstr | req == [] = OList []
                 | otherwise = OString $ "Req. " ++ show req
 
+showRDT :: SpellRecord -> String
+showRDT sp = "**Range:** " ++ r ++
+             "; **Duration:** " ++ d ++
+             "; **Target:** " ++ t
+   where (r,d,t) = rdt sp
+
+-- | Set the Combat Stats of the Character as an `OList`
 printCombatMD :: Saga -> CharacterSheet -> OList
 printCombatMD saga cs = OList x
     where tab = computeCombatStats ( weapons saga ) cs
           x | tab == [] = []
             | otherwise = [ combatHead, combatBody tab ]
 
+-- | Set the table body for `printCombatMD`
 combatBody :: [CombatLine] -> OList
 combatBody = OList . map combatBodyLine
 
+-- | Set a single line for `printCombatMD`
 combatBodyLine :: CombatLine -> OList
 combatBodyLine c = OString $ "| " ++ (combatLabel c) ++ 
                             " | " ++ (show $ combatInit c) ++
@@ -499,6 +509,7 @@ combatBodyLine c = OString $ "| " ++ (combatLabel c) ++
                             " | " ++ (combatComment c) ++
                             " |"
 
+-- | Set the header for `printCombatMD`
 combatHead :: OList
 combatHead = OList [ OString "| Weapon | Init | Atk | Def | Dam | Range | Load | Comment |"
                    , OString "|  :- |  -: |  -: |  -: |  -: |  -: |  -: | :- |"
