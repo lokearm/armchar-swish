@@ -169,7 +169,8 @@
       , "changes" : 
          [ { "ability" : "Infernal Lore", "spec" : "Undead", "xp": 5 }
          , { "ability" : "Parma Magica", "xp": 5 }
-         , { "ability" : "Second Sight", "xp": 4 }
+	 , { "ability" : "Second Sight", "xp": 4 }
+         , { "posession" : { "name" : "Perdo Vis from Jerome's body", "art" : "Pe", "count" : 1 } }
          ] 
       },
       { "mode" : "Reading"
@@ -499,7 +500,7 @@
       },
       { "mode" : "Exposure", "season" : "Autumn 1230"
       , "sourceQuality" : 2
-      , "narrative" : "Autumn 1230 | Exposure  | 2  | Magic Theory|  Help Maine "
+      , "narrative" : "Help Maine "
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 } ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1231"
@@ -616,7 +617,7 @@
       },
       { "mode" : "Reading", "season" : "Winter 1235"
       , "sourceQuality" : 13
-      , "narrative" : "| Winter 1235 | Reading  | 13x1½ | Imaginem 105x1½xp = 157½ -> 17 (4½)|"
+      , "narrative" : "13x1½ -> Imaginem 105x1½xp = 157½ -> 17 (4½)"
       , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
       { "mode" : "Teaching", "season" : "Spring 1235"
@@ -645,7 +646,7 @@
       },
       { "mode" : "Reading", "season" : "Winter 1236"
       , "sourceQuality" : 13
-      , "narrative" : "| Winter 1236 | Reading  | 13x1½ | Imaginem 118x1½xp = 177 -> 18 (6)|"
+      , "narrative" : "13x1½ -> Imaginem 118x1½xp = 177 -> 18 (6)"
       , "changes" : [ { "art" : "Imaginem", "xp" : 13 } ]
       },
       { "mode" : "Teaching", "season" : "Spring 1236"
@@ -824,7 +825,7 @@
       },
       { "mode" : "Reading", "season" : "Autumn 1241"
       , "sourceQuality" : 17
-      , "narrative" : "| Autumn 1241 | Reading  | 17| Creo  | *Growing, Healing, and Creation* -> 72xp (score 11) | "
+      , "narrative" : "17xp Creo  <-  *Growing, Healing, and Creation* -> 72xp (score 11)"
       , "changes" : [ { "art" : "Creo", "xp" : 17 } ]
       },
       { "mode" : "Lab Work", "season" : "Winter 1242"
@@ -854,7 +855,7 @@
       },
       { "mode" : "Exposure", "season" : "Summer 1242"
       , "sourceQuality" : 2
-      , "narrative" : "Lab Assistance. Longevity Ritual.  Exposure Magic Theory -> 7 (140xp)|"
+      , "narrative" : "Lab Assistance. Longevity Ritual.  Exposure Magic Theory -> 7 (140xp)"
       , "changes" : [ { "ability" : "Magic Theory", "xp" : 2 }
          , { "aging" : { "longevity" : 22 } 
          } ]
@@ -866,7 +867,7 @@
       },
       { "mode" : "Reading", "season" : "Winter 1243"
       , "sourceQuality" : 16
-      , "narrative" : " *The Mind's Eye* L16Q13 -> 81xp | No aging"
+      , "narrative" : " *The Mind's Eye* L16Q13 -> 81xp ; No aging"
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } 
          , { "aging" : { "deltaYounger" : 1
             , "agingRollDie" : 0
@@ -893,7 +894,7 @@
       },
       { "mode" : "Reading", "season" : "Winter 1244"
       , "sourceQuality" : 17
-      , "narrative" : "Maine's Tractatus on Creo Vol I (to 16  or 137xp)| No apparent aging |"
+      , "narrative" : "Maine's Tractatus on Creo Vol I (to 16  or 137xp); No apparent aging"
       , "changes" : [ { "art" : "Creo", "xp" : 17 } 
          , { "aging" : { "deltaYounger" : 1
             , "agingRollDie" : 0
@@ -927,7 +928,7 @@
       },
       { "mode" : "Lab Work", "season" : "Winter 1245"
       , "sourceQuality" : 2
-      , "narrative" : "PeVi Spells; Parma Magica to 64xp | Rolls 28-24=4 Apparent Age increases.  lab total 51. Lab text for Break the Shield."
+      , "narrative" : "PeVi Spells; Parma Magica to 64xp; Rolls 28-24=4 Apparent Age increases.  lab total 51. Lab text for Break the Shield."
       , "changes" : [ { "ability" : "Parma Magica", "xp" : 2 } 
          , { "spell" : "Fist of Fey Oblivion"
             , "tefo" : "PeVi", "level" : 5
@@ -969,12 +970,12 @@
       },
       { "mode" : "Copy", "season" : "Autumn 1245"
       , "sourceQuality" : 2
-      , "narrative" : "Copy spell texts | 2 | | Latin; see below|"
+      , "narrative" : "Copy spell texts; 2xp Latin; see below"
       , "changes" : [ { "ability" : "Latin", "xp" : 2} ]
       },
       { "mode" : "Reading", "season" : "Winter 1246"
       , "sourceQuality" : 16
-      , "narrative" : "| Win/Spr/Sum 1246 | Reading  | 3x16 | Mentem| Mentem L16Q13; 3x (13+3) = 42xp (81->123) 15 | no aging|"
+      , "narrative" : "Win/Spr/Sum 1246: 3x16 Mentem (Mentem L16Q13); 3x (13+3) = 42xp (81->123) 15; no aging"
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } 
          , { "aging" : { "deltaYounger" : 1
             , "agingRollDie" : 0
@@ -986,22 +987,22 @@
       },
       { "mode" : "Reading", "season" : "Spring 1246"
       , "sourceQuality" : 16
-      , "narrative" : "| Win/Spr/Sum 1246 | Reading  | 3x16 | Mentem| Mentem L16Q13; 3x (13+3) = 42xp (81->123) 15 | no aging|"
+      , "narrative" : "Win/Spr/Sum 1246: 3x16 Mentem (Mentem L16Q13); 3x (13+3) = 42xp (81->123) 15"
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
       { "mode" : "Reading", "season" : "Summer 1246"
       , "sourceQuality" : 16
-      , "narrative" : "| Win/Spr/Sum 1246 | Reading  | 3x16 | Mentem| Mentem L16Q13; 3x (13+3) = 42xp (81->123) 15 | no aging|"
+      , "narrative" : "Win/Spr/Sum 1246: 3x16 (Mentem L16Q13); 3x (13+3) = 42xp (81->123) 15"
       , "changes" : [ { "art" : "Mentem", "xp" : 16 } ]
       },
       { "mode" : "Reading", "season" : "Autumn 1246"
       , "sourceQuality" : 13
-      , "narrative" : "13 (capped) | Mentem| Mentem L16Q13 to 16 |"
+      , "narrative" : "13 (capped) Mentem L16Q13 to 16 "
       , "changes" : [ { "art" : "Mentem", "xp" : 13, "levelCap" : 16 } ]
       },
       { "mode" : "Reading", "season" : "Winter 1247"
       , "sourceQuality" : 17
-      , "narrative" : "Maine's Tractatus + Book Learner; 8-24=-16 no aging |"
+      , "narrative" : "Maine's Tractatus + Book Learner; 8-24=-16 no aging"
       , "changes" : [ { "art" : "Mentem", "xp" : 17 }
          , { "aging" : { "deltaYounger" : 1
             , "agingRollDie" : 8
@@ -1026,6 +1027,7 @@
       , "narrative" : "CrMe rituals x4 for Com to +5; (58xp) Tractatus on Corpus Q14 "
       , "changes" : [ { "ability" : "Latin", "xp" : 2 } 
 	            , { "characteristic" : "Com", "score" : 5 }
+	            , { "possession" : { "name" : "Mentem vis", "art" : "Me",  "count" : -48 } }
                     ]
       },
       { "mode" : "Reading", "season" : "Winter 1248"
@@ -1190,7 +1192,7 @@
       },
       { "mode" : "Adventure", "season" : "Autumn 1252"
       , "sourceQuality" : 15, "bonusQuality" : 1
-      , "narrative" : "Imaginem 286 + 9 = 295 (5+correspondence&affinity), Faerie Lore 16+4=20, Latin 58+2=60, OoH Lore 7+4=11|"
+      , "narrative" : "Imaginem 286 + 9 = 295 (5+correspondence&affinity), Faerie Lore 16+4=20, Latin 58+2=60, OoH Lore 7+4=11"
       , "changes" : [ { "art" : "Imaginem", "xp" : 6 }
                     , { "ability" : "Faerie Lore", "xp" : 4 }
                     , { "ability" : "Latin", "xp" : 2 }
@@ -1200,7 +1202,7 @@
       },
       { "mode" : "Reading", "season" : "Winter 1253"
       , "sourceQuality" : 13
-      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent (88->114).  Aging roll -21"
+      , "narrative" : "Winter/Spring 1253: 13x2 Rego ; L20Q9 + Book Learner + Correspondent (88->114).  Aging roll -21"
       , "changes" : [ { "art" : "Rego", "xp" : 13 } 
             , { "aging" : { "deltaYounger" : 1
                , "agingRollDie" : -1
@@ -1212,7 +1214,7 @@
       },
       { "mode" : "Reading", "season" : "Spring 1253"
       , "sourceQuality" : 13
-      , "narrative" : "Winter/Spring 1253 | Read | 13x2  | Rego | L20Q9 + Book Learner + Correspondent (88->114)"
+      , "narrative" : "Winter/Spring 1253: 13x2 Rego ; L20Q9 + Book Learner + Correspondent (88->114)"
       , "changes" : [ { "art" : "Rego", "xp" : 13 } ]
       },
       { "mode" : "Lab Work", "season" : "Summer 1253"

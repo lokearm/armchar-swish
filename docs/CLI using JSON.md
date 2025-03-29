@@ -49,6 +49,8 @@ aliases:
 	+ [ ] Step 6. Decrepitude
 		+ [ ] make old grog test file
 		+ [ ] verify
+	+ [ ] Error control
+		+ [ ] Parse invalid ProtoTrait as KeyPairList and display error in advancement log
 + [ ] Phase 3. Covenant
 	+ [ ] Covenant data model - analogous to Character
 	+ [ ] Step 1. Covenant
