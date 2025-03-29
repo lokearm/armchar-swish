@@ -349,10 +349,10 @@ winterEvents :: CharacterState       -- ^ Current Character State
              -> AugmentedAdvancement -- ^ Advancement 
              -> AugmentedAdvancement -- ^ modified Advancement
 winterEvents c a | isWinter $ season a  
-                   = validateAging (y >= yl) agingOb  -- ^ check for aging roll is made if required
-                   $ addYear agingOb                  -- ^ add a yer of aging
-                   $ warpingLR a                      -- ^ add warping point for LR
-                 | otherwise = a
+             = validateAging (y >= yl) agingOb  -- check for aging roll is made if required
+             $ addYear agingOb                  -- add a yer of aging
+             $ warpingLR a                      -- add warping point for LR
+             | otherwise = a
         where ageOb = ageObject c
               y = age c
               pt = find ( (AgeKey ==) . traitKey ) $ changes a
