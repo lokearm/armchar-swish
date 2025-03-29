@@ -477,7 +477,7 @@ coreSpellRecordMD sr = OList [ reqstr
          os "" = OList []
          os x = OString x
          reqstr | req == [] = OList []
-                | otherwise = OString $ "Req. " ++ show req
+                | otherwise = OString $ "Req. " ++ showStrList req
          spstr | [] == specialSpell sp = ""
                | otherwise = "; " ++ showStrList (specialSpell sp)
 
