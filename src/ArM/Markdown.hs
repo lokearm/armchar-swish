@@ -467,8 +467,7 @@ totalLevels = sum . map spellLevel
 coreSpellRecordMD :: Maybe SpellRecord -> OList
 coreSpellRecordMD Nothing = OList []
 coreSpellRecordMD sr = OList [ reqstr
-                             , OString $ (showRDT sp)
-                               ++ (foldl (++) "" $ map (", "++) $  specialSpell sp)
+                             , OString $ (showRDT sp) ++ spstr
                              , os (description sp)
                              , os (design sp)
                              , os (cite sp)
@@ -479,11 +478,13 @@ coreSpellRecordMD sr = OList [ reqstr
          os x = OString x
          reqstr | req == [] = OList []
                 | otherwise = OString $ "Req. " ++ show req
+         spstr | [] == specialSpell sp = ""
+               | otherwise = "; " ++ showStrList (specialSpell sp)
 
 showRDT :: SpellRecord -> String
-showRDT sp = "**Range:** " ++ r ++
-             "; **Duration:** " ++ d ++
-             "; **Target:** " ++ t
+showRDT sp = "Range: " ++ r ++
+             "; Duration: " ++ d ++
+             "; Target: " ++ t
    where (r,d,t) = rdt sp
 
 -- | Set the Combat Stats of the Character as an `OList`
