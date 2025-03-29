@@ -1,3 +1,15 @@
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ArM.DB.CSV
+-- Copyright   :  (c) Hans Georg Schaathun <hg+gamer@schaathun.net>
+-- License     :  see LICENSE
+--
+-- Maintainer  :  hg+gamer@schaathun.net
+-- 
+-- Description :  The ArMCSV class supports parsing a type from CSV files.
+--
+--
+-----------------------------------------------------------------------------
 module ArM.DB.CSV where
 
 import qualified Data.Map as M
