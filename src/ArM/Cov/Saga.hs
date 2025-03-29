@@ -27,7 +27,6 @@ import Data.Aeson
 import Data.List 
 import GHC.Generics
 
--- import ArM.Char.Trait
 import ArM.Char.Character
 import ArM.Char.Types.Advancement
 import ArM.DB.Spell
@@ -106,25 +105,13 @@ instance FromJSON SagaFile where
        <*> v .:? "armourFile" .!= "armour.csv"
 
 
-
 -- |
 -- == Error reports
 
--- | Exctract a list of validation errors 
-errorList :: SagaState -> [VList]
-errorList saga = sortOn ( \ (_,x,_,_) -> x ) vvs
-    where cs = characters saga
-          cvs = map cErrors  cs
-          vvs = g cvs 
-          g = f . filterVList . foldl (++) [] 
-          f [] = []
-          f ((_,_,_,[]):xs) = f xs
-          f (x:xs) = x:f xs
-
-filterVList :: [VList] -> [VList]
-filterVList = map ( \ (a,b,c,d) -> (a,b,c,filterError d) ) 
-
-
+-- | Get an `OList` of all error messages from past advancements in a
+-- saga state.
+--
+-- CharGen errors are only included at GameStart and ignored later.
 advancementErrors :: SagaState -> OList
 advancementErrors saga | errors == [] = OString "No errors"
                        | otherwise = OList $ map formatOutput errors
@@ -135,11 +122,39 @@ advancementErrors saga | errors == [] = OString "No errors"
           msg (ValidationError x) = OString x
           msg _ = OString ""
 
+-- | Convenience type for a list of validation messages for a 
+-- given cvharacter and season
 type VList = (String,SeasonTime,String,[Validation])
+
+-- | Did the `VList` object occur after the given season?
 errorAfter :: VList -> SeasonTime -> Bool
 errorAfter (_,vs,_,_) s = vs > s 
 
--- | Exctract a list of validation errors 
+-- | Exctract all validation errors from previous advancements at
+-- a given saga state
+errorList :: SagaState -> [VList]
+errorList saga = sortOn ( \ (_,x,_,_) -> x ) vvs
+    where cs = characters saga
+          cvs = map cErrors  cs
+          vvs = g cvs 
+          g = f . filterVList . foldl (++) [] 
+          f [] = []
+          f ((_,_,_,[]):xs) = f xs
+          f (x:xs) = x:f xs
+
+-- | Extract only errors from a list of `VList` objects.
+filterVList :: [VList] -> [VList]
+filterVList = map ( \ (a,b,c,d) -> (a,b,c,filterError d) ) 
+
+-- | Get errors from a list of Validation objects
+filterError :: [Validation] -> [Validation]
+filterError (Validated _:xs) = filterError xs
+filterError (x:xs) = x:filterError xs
+filterError [] = []
+
+-- | Exctract a list of validation errors after a given time 
+-- This is not currently used, but could be used to ignore old
+-- errors when reporting recent character states.
 advancementErrorsLimit :: SeasonTime ->  SagaState -> OList
 advancementErrorsLimit ssn saga = OList $ map formatOutput errors
     where formatOutput (cid,_,sn,vs) = OList 
@@ -152,10 +167,14 @@ advancementErrorsLimit ssn saga = OList $ map formatOutput errors
           f (x:xs) | x `errorAfter` ssn = x:f xs
                    | otherwise = []
 
+-- | Get validation messages from a given advancement.
+-- Auxiliary for `cErrors`
 aaErrors :: Character -> AugmentedAdvancement -> VList
 aaErrors c a = (charID c, season a, augHead a, vs )
     where vs = validation  a
 
+-- | Get validation messages from a given character.
+-- Auxiliary for `listErrors`
 cErrors :: Character -> [VList]
 cErrors c = map (aaErrors c) as
    where as | ps == [] = pregameDesign c
@@ -171,12 +190,6 @@ augHead' NoTime Nothing = ("??" )
 augHead' x Nothing = (show x )
 augHead' NoTime (Just x) = x
 augHead' x (Just z) = (show x  ++ " " ++ z)
-
--- | Get errors from a list of Validation objects
-filterError :: [Validation] -> [Validation]
-filterError (Validated _:xs) = filterError xs
-filterError (x:xs) = x:filterError xs
-filterError [] = []
 
 
 -- | Character Index

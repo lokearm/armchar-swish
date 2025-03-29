@@ -17,10 +17,6 @@ aliases:
 + Web pages
 	+ Character sheet
 		+ Use long sheet
-		+ State
-		+ Char Gen
-		+ Future
-		+ Past
 	+ Error reports
 		+ Per season listed
 	+ Advancement - all characters per season
@@ -32,12 +28,6 @@ aliases:
 	+ [ ] Review
 		+ [ ] Print and Double-Check Cieran
 		+ [ ] Print and Double-Check Eogan
-	+ [ ] Web site
-		+ [x] Reinstate error report
-		+ [x] Page and directory structure for github pages
-		+ [ ] Clean up character sheet layout
-		+ [x] Set up jekyll preview
-		+ [x] Build website in github runners
 	+ [ ] Finishing touches
 		+ [ ] Vis accounting
 		+ [ ] Speciality in combat totals
@@ -61,20 +51,23 @@ aliases:
 		+ [ ] Covenant advancement
 		+ [ ] Covenant members
 + [ ] Phase 4. Polish
-	+ [ ] PDF sheets
 	+ [ ] Refactor and document code
 	+ [ ] Comment field on traits
 	+ [ ]  P/G Char Gen
 	+ [ ] Remove trait when advancing
+	+ [ ] More user friendly sheets
+		+ [ ] More compact character sheets
+		+ [ ] PDF sheets
 	+ [ ] Step 3. Virtues and Flaws - Special cases
 		+ [ ] Linguist
 		+ [ ] Inventive Genius
 		+ [ ] Infer Second Sight from Strong Faerie Blood
-	+ [ ] Step 4.  CharacterState in JSON
+	+ [ ] Count xp total (ingame) for validationparallel
++ [ ] Phase 5. Performance
+	+ [ ] Step 1.  CharacterState in JSON
 		+ [ ] Remove null entries from JSON output
 		+ [ ] Read CharacterState from JSON
-	+ [ ] Count xp total (ingame) for validationparallel
-+ [ ] Phase 5. Integer XP
++ [ ] Phase 6. Integer XP
 	+ [ ] handle Correspondent (which goes beyond cap)
 
 + Advancement process.
