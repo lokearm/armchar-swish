@@ -34,6 +34,7 @@ aliases:
 	+ [ ] More spell descriptions in CSV file
 	+ [ ] Change character names in test JSON files
 	+ [ ] Clone armchar repo into organisation and rename to ... harm?
+	+ [ ] Run json syntax check on github workflow
 + [ ] Phase 2. Improvements
 	+ [ ] Remove dead and retired characters from main list
 		+ [ ] Retired property in Aging type

@@ -206,9 +206,11 @@ labTotals cs = [ [ labTotal cs te fo | te <- techniques ] | fo <- forms ]
 -- | List of Hermetic Techniques
 techniques :: [ TraitKey ]
 techniques = [ ArtKey te | te <- [ "Cr", "In", "Mu", "Pe", "Re" ] ]
+
 -- | List of Hermetic Forms
 forms :: [ TraitKey ]
 forms = [ ArtKey fo | fo <- [ "An", "Aq", "Au", "Co", "He", "Ig", "Im", "Me", "Te", "Vi" ] ]
+
 
 -- |
 -- = Character Age 

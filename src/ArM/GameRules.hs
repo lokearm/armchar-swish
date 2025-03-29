@@ -57,4 +57,3 @@ instance GenericXPType Float where
     scoreFromXP x = floor $ (-1+sqrt (1+8*x))/2
     calcXP m x y = x + ( m*( fromMaybe 0 y ) )
     xpround = id
-

@@ -43,7 +43,7 @@ baseSheet :: Saga -> Character -> OList
 baseSheet saga c | isNothing (state c ) = s1
                | otherwise = OList [ s1, s2, OString "", s3 ]
        where 
-            s1 = printMD $ concept  c 
+            s1 = printMDaug saga $ concept  c 
             s2 = printMDaug saga $ state  c 
             s3 = printCombatMD saga $ characterSheet c
 
@@ -73,6 +73,7 @@ designMD c  | as == [] = OList []
             ]
             where as = pregameDesign c
 
+-- | Render the CharGen advancements, both the processed and unprocessed ones.
 chargenMD :: Character -> OList
 chargenMD c = OList [ chargenMD' c, designMD c ]
 
@@ -149,7 +150,6 @@ instance Markdown Trait where
 instance Markdown ProtoTrait where
    printMD = OString . show 
 
-
 -- | Render a list of objects as a comma-separated list on a single
 -- line/paragraph.  This works for any instance of `Show`.
 showlistMD :: Show a => String -> [a] -> OList
@@ -167,7 +167,7 @@ stringMD Nothing = OList []
 stringMD (Just x) = OString x
 
 -- |
--- - Markdown for the Character types
+-- = Markdown for the Character types
 -- 
 -- The `CharacterConcept` is set as a description list.
 -- 
@@ -251,13 +251,12 @@ instance Markdown CharacterState where
 -- |
 -- == Markdown for Age, Confidence, Warping, and Decreptitude
 
--- | Print age, confidence, warping, and decrepitude as bullt points
+-- | Print age, confidence, warping, and decrepitude as bullet points
 briefTraits :: CharacterSheet -> OList
 briefTraits c = OList
           [ printMD (ageObject c)
           , OList $ map printMD $ confList c
           , OList $ map printMD $ otherList c
-          -- , OList $ map printMD $ csTraits c
           ]
 
 -- | Print a table of casting totals for every TeFo combination.
