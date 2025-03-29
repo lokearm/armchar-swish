@@ -92,19 +92,6 @@ writeSaga saga = do
    writeSagaStates saga (sagaStates saga)
    return () 
 
-{-
-   writeLns (gsf ++ sagaStartName saga ++ " Errors.md" ) $
-                  "# Errors in Character Design":"":pregameErrors saga
-   writeLns (cdir ++ sagaStateName saga ++ " Errors.md" ) $
-                  "# Errors in Advancement":"":ingameErrors saga
-   _ <- longSheet longDir saga
-        where 
-              longDir = cdir ++ "/LongSheet/"
--}
-
-
-
-
 -- |
 -- == Read Character Data
 
