@@ -444,6 +444,7 @@ artVisBody cs = map artVisLine $ mergeArt as bs
 -- This is rather crude to say the least.
 mergeArt :: [(TraitKey,String,Int,XPType)] -> [(TraitKey,Int)] 
          -> [(TraitKey,String,Int,XPType,Int)]
+mergeArt [] [] = []
 mergeArt [] ((y1,y2):ys) = (y1,xn,0,0,y2):mergeArt [] ys
      where (ArtKey xn) = y1
 mergeArt ((x1,x2,x3,x4):xs) []  = (x1,x2,x3,x4,0):mergeArt xs [] 
