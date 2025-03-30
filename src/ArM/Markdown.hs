@@ -411,8 +411,8 @@ artMD c | isMagus c = toOList $ artMD' c
 artMD' :: CharacterSheet
       -> [ String ]
 artMD' = ("":) . (h1:) . (h2:) . map artLine . sortTraits . artList 
-   where h1 = "| Art  | Score | XP |" 
-         h2 = "| -: | -: | -: |"
+   where h1 = "| Art  | Score | XP | Vis |" 
+         h2 = "| -: | -: | -: | -: |"
 
 
 -- | Auxiliary for `artMD`, rendering a single line in the table
