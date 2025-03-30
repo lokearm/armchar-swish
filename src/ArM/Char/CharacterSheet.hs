@@ -24,6 +24,7 @@ module ArM.Char.CharacterSheet ( CharacterSheet(..)
                                , addCastingScores
                                , labTotals
                                , HasAge(..)
+                               , sheetVis
                                ) where
 
 import ArM.Char.Trait
@@ -34,6 +35,7 @@ import ArM.Helper
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
+import Data.List
 
 -- import ArM.Debug.Trace
 
@@ -230,4 +232,25 @@ instance HasAge CharacterSheet where
 instance HasAge CharacterState where
     age = age . filterCS
     ageObject = ageObject . filterCS
+
+-- |
+-- = Vis
+
+visList :: CharacterSheet -> [Possession]
+visList = filter (isJust . visArt) . possessionList
+
+xVis :: Possession -> (String,Int)
+xVis p | isNothing (visArt p) = ("",0)
+       | otherwise = (fromJust $ visArt p,itemCount p)
+
+addVis :: [(String,Int)] -> [(String,Int)]
+addVis [] = []
+addVis (("",_):xs) = addVis xs
+addVis (x:[]) = [x]
+addVis (x:y:xs) | fst x == fst y = addVis $ (fst x, snd x+snd y):xs
+                | otherwise = x:(addVis $ y:xs)
+
+sheetVis :: CharacterSheet -> [(TraitKey,Int)]
+sheetVis = sortOn fst . map f . addVis . sort . map xVis . visList
+    where f (x,y) = (ArtKey $ take 2 x,y) 
 

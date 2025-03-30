@@ -419,6 +419,46 @@ artMD' = ("":) . (h1:) . (h2:) . map artLine . sortTraits . artList
 artLine :: Art -> String
 artLine ar = "| " ++ artName ar  ++ " | " ++ show (artScore ar) ++ " | " ++ showNum (artExcessXP ar) ++ " |"
 
+-- | Render art scores and vis stocks as a table
+artVisMD :: CharacterSheet
+      -> OList
+artVisMD c | isMagus c = toOList $ artVisMD' c
+        | otherwise = OList []
+
+-- | Render art scores and vis stocks as a table
+artVisMD' :: CharacterSheet
+          -> [ String ]
+artVisMD' = ("":) . (h1:) . (h2:) . artVisBody
+   where h1 = "| Art  | Score | XP |" 
+         h2 = "| -: | -: | -: |"
+
+-- | Auxiliar for `artVisMD'` rendering the body of the table.
+artVisBody :: CharacterSheet
+           -> [ String ]
+artVisBody cs = map artVisLine $ mergeArt as bs
+   where as = (map tupleArt . sortTraits . artList ) cs
+         bs = sheetVis cs
+         tupleArt a = (traitKey a,artName a, artScore a,artExcessXP a)
+
+-- | Merge lists of art traits and vis possessions.
+-- This is rather crude to say the least.
+mergeArt :: [(TraitKey,String,Int,XPType)] -> [(TraitKey,Int)] 
+         -> [(TraitKey,String,Int,XPType,Int)]
+mergeArt [] ((y1,y2):ys) = (y1,xn,0,0,y2):mergeArt [] ys
+     where (ArtKey xn) = y1
+mergeArt ((x1,x2,x3,x4):xs) []  = (x1,x2,x3,x4,0):mergeArt xs [] 
+mergeArt ((x1,x2,x3,x4):xs) ((y1,y2):ys) 
+     | x1 == y1 = (x1,x2,x3,x4,y2):mergeArt xs ys
+     | x1 < y1 = (x1,x2,x3,x4,0):mergeArt xs ((y1,y2):ys) 
+     | otherwise = (y1,xn,0,0,y2):mergeArt ((x1,x2,x3,x4):xs) ys
+     where (ArtKey xn) = y1
+
+
+-- | Auxiliary for `artVisMD`, rendering a single line in the table
+artVisLine :: (TraitKey,String,Int,XPType,Int) -> String
+artVisLine (_,s,i1,i2,i3) = 
+        "| " ++ s  ++ " | " ++ show i1 ++ " | " ++ showNum i2 ++ " | " ++ show i3 ++ " |"
+
 
 -- |
 -- == Render Spells
