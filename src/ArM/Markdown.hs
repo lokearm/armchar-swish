@@ -389,7 +389,7 @@ instance LongSheet CharacterSheet where
                , mag
                ]
          where c = addCastingScores (spells saga) c'
-               mag | isMagus c' = OList [ artMD c
+               mag | isMagus c' = OList [ artVisMD c
                                         , OString ""
                                         , printFullGrimoire (spells saga) $ sortTraits $ spellList c 
                                         , OString ""
